@@ -28,8 +28,8 @@ public:
 	HResult clear_depth(Float depth_value);
 	HResult clear_stencil(BitField stencil_mask);
 
-	HResult set_clear_color_mask(Bool red,Bool green,Bool blue,Bool alpha_mask);
-	HResult set_clear_depth_mask(Bool depth_mask);
+	HResult set_color_mask(Bool red,Bool green,Bool blue,Bool alpha_mask);
+	HResult set_depth_mask(Bool depth_mask);
 	HResult set_stencil_mask(BitField stencil_mask);
 	HResult set_stencil_mask(HEnum face, BitField stencil_mask);
 
