@@ -1,0 +1,35 @@
+/*
+ *  pecker_iterator.h
+ *
+ *  Created on: 2012-11-3
+ *      Author: ¿Ó’Ú≥«  £® cut / cutxyz£©
+ *		e-mail: cut-12345@hotmail.com
+ *              501931049@qq.com
+ */
+#ifndef PECKER_ITERATOR_H_
+#define PECKER_ITERATOR_H_
+
+typedef enum enumTREE_ITERATOR_INIT_TYPE
+{
+	ITERATOR_INIT_DEFAULT = 0,
+
+	ITERATOR_INIT_MIN,
+	ITERATOR_INIT_MAX,
+
+	ITERATOR_INIT_LEFT,
+	ITERATOR_INIT_RIGHT,
+
+	ITERATOR_INIT_MID,
+
+	TREE_ITERATOR_INIT_TYPE_COUNT
+}TREE_ITERATOR_INIT_TYPE;
+
+typedef enum enumLINEAR_INTERATOR_INIT_TYPE
+{
+	ITERATOR_INIT_BEGIN_INDEX,
+	ITERATOR_INIT_END_INDEX,
+
+	LINEAR_INTERATOR_INIT_TYPE_COUNT
+}LINEAR_INTERATOR_INIT_TYPE;
+
+#endif
