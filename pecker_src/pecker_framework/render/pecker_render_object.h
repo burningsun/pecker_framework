@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_render_object.h
  *
  *  Created on: 2013-3-6
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */

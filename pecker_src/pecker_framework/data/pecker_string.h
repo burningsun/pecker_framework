@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_string.h
  *
  *  Created on: 2012-11-7
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -138,7 +138,7 @@ void print_pecker_string_chars(const _string_chars_& string_)
 	}
 }
 
-// ×Ö·û´®£¬¿É¹²Ïí×Ö·û£¬´øĞ¡cache¼ÓËÙ¶Ì×Ö·û´®µÄ¿Õ¼ä·ÖÅä£¬Ä¬ÈÏ×Ö·û¿Õ¼ä16×Ö½Ú
+// å­—ç¬¦ä¸²ï¼Œå¯å…±äº«å­—ç¬¦ï¼Œå¸¦å°cacheåŠ é€ŸçŸ­å­—ç¬¦ä¸²çš„ç©ºé—´åˆ†é…ï¼Œé»˜è®¤å­—ç¬¦ç©ºé—´16å­—èŠ‚
 template< class char_value_t,class __cmp_t,class allocate_object_t = pecker_simple_allocator< char_value_t >,const int INTERNAL_BUFFER_SIZE = 16 >
 class pecker_share_string_base_t
 {

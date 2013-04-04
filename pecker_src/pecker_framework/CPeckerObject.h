@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * CPeckerObject.h
  *
  *  Created on: 2012-6-19
- *      Author: ÀîÕò³Ç (cut / cutxyz)
+ *      Author: æé•‡åŸ (cut / cutxyz)
  */
 #include "PeckerDefines.h"
 

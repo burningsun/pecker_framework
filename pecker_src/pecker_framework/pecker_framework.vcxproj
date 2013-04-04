@@ -119,7 +119,6 @@
     <ClInclude Include="native\pecker_window.h" />
     <ClInclude Include="PeckerConfig.h" />
     <ClInclude Include="PeckerDefines.h" />
-    <ClInclude Include="pool_alloc.h" />
     <ClInclude Include="render\pecker_render_object.h" />
     <ClInclude Include="render\render_system\opengles\pecker_buffer_gl.h" />
     <ClInclude Include="render\render_system\opengles\pecker_fragment_operation_gl.h" />

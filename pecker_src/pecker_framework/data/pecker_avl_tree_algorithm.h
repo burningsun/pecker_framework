@@ -1,4 +1,4 @@
-#ifndef PECKER_AVL_TREE_ALGORITHM_H_
+ï»¿#ifndef PECKER_AVL_TREE_ALGORITHM_H_
 #define PECKER_AVL_TREE_ALGORITHM_H_
 
 #include "../CPeckerObject.h"
@@ -15,7 +15,7 @@
  *  pecker_avl_tree_algorithm.h
  *
  *  Created on: 2012-11-2
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -28,7 +28,7 @@ typedef nINDEX		 avl_array_index_val;
 typedef nSize			 avl_node_count_val;
 typedef HResult	 avl_result;
 
-// AVL »ù´¡½Úµã
+// AVL åŸºç¡€èŠ‚ç‚¹
 struct _AVL_node_base
 {
 	_AVL_node_base* _M_left;
@@ -63,7 +63,7 @@ inline _AVL_node_base* get_bst_node(_AVL_node_base* pbst_node,avl_array_index_va
 
 
 
-// Çó¶ş²æÊ÷×îĞ¡µÄ½Úµã
+// æ±‚äºŒå‰æ ‘æœ€å°çš„èŠ‚ç‚¹
 inline  const _AVL_node_base* minimum_bst_node(const _AVL_node_base* pbst_node)
 {
 	while (null != pbst_node->_M_left )
@@ -84,7 +84,7 @@ inline  const _AVL_node_base* minimum_bst_node(const _AVL_node_base* pbst_node,c
 }
 
 
-// Çó¶ş²æÊ÷×î´óµÄ½Úµã
+// æ±‚äºŒå‰æ ‘æœ€å¤§çš„èŠ‚ç‚¹
 inline  const _AVL_node_base* maximum_bst_node(const _AVL_node_base* pbst_node)
 {
 	while (null != pbst_node->_M_right) 
@@ -105,7 +105,7 @@ inline  const _AVL_node_base* maximum_bst_node(const _AVL_node_base* pbst_node,c
 }
 
 // avl
-// È¡µÃ½ÚµãµÄ¸ß¶ÈÖµ
+// å–å¾—èŠ‚ç‚¹çš„é«˜åº¦å€¼
 inline _Avl_height get_avl_node_height(const _AVL_node_base* pAvl_node)
 {
 	if (null == pAvl_node)
@@ -118,7 +118,7 @@ inline _Avl_height get_avl_node_height(const _AVL_node_base* pAvl_node)
 	}
 }
 
-//¼ÆËã½ÚµãµÄ¸ß¶ÈÖµ
+//è®¡ç®—èŠ‚ç‚¹çš„é«˜åº¦å€¼
 inline _Avl_height calculate_avl_node_height(const _AVL_node_base* pAvl_left_node,const _AVL_node_base* pAvl_right_node) 
 {
 	_Avl_height left_height = get_avl_node_height(pAvl_left_node);
@@ -144,7 +144,7 @@ inline _Avl_height calculate_avl_node_height(const _AVL_node_base* pAvl_node)
 		return calculate_avl_node_height(pAvl_node->_M_left,pAvl_node->_M_right);
 	}
 }
-//¼ÆËã½ÚµãÆ½ºâÏµÊı
+//è®¡ç®—èŠ‚ç‚¹å¹³è¡¡ç³»æ•°
 inline _Avl_height calculate_avl_node_balance_val(const _AVL_node_base* pAvl_node)
 {
 	if (null != pAvl_node)
@@ -157,7 +157,7 @@ inline _Avl_height calculate_avl_node_balance_val(const _AVL_node_base* pAvl_nod
 	}
 }
 
-//RRĞÍĞı×ª
+//RRå‹æ—‹è½¬
 inline _AVL_node_base* avl_rr_rotate(_AVL_node_base* pAvl_node)
 {
 	_AVL_node_base* pAvl_rt_node = pAvl_node->_M_right;
@@ -167,7 +167,7 @@ inline _AVL_node_base* avl_rr_rotate(_AVL_node_base* pAvl_node)
 	pAvl_rt_node->_M_height = calculate_avl_node_height(pAvl_rt_node->_M_left ,pAvl_rt_node->_M_right);
 	return pAvl_rt_node;
 }
-//LLĞÍĞı×ª
+//LLå‹æ—‹è½¬
 inline _AVL_node_base* avl_ll_rotate(_AVL_node_base* pAvl_node)
 {
 	_AVL_node_base* pAvl_rt_node = pAvl_node->_M_left;
@@ -177,14 +177,14 @@ inline _AVL_node_base* avl_ll_rotate(_AVL_node_base* pAvl_node)
 	pAvl_rt_node->_M_height = calculate_avl_node_height(pAvl_rt_node->_M_left ,pAvl_rt_node->_M_right);
 	return pAvl_rt_node;
 }
-// LRĞÍĞı×ª
+// LRå‹æ—‹è½¬
 // LR = RR(pRoot->m_iRIndex) + LL(pRoot)
 inline _AVL_node_base*  avl_lr_rotate(_AVL_node_base* pAvl_node)
 { 
 	pAvl_node->_M_left = avl_rr_rotate(pAvl_node->_M_left);
 	return avl_ll_rotate(pAvl_node);
 }
-// RLĞÍĞı×ª
+// RLå‹æ—‹è½¬
 // RL = LL(pRoot->m_iRIndex) + RR(pRoot)
 inline _AVL_node_base* avl_rl_rotate(_AVL_node_base* pAvl_node)
 {
@@ -192,7 +192,7 @@ inline _AVL_node_base* avl_rl_rotate(_AVL_node_base* pAvl_node)
 	return avl_rr_rotate(pAvl_node);
 }
 
-//AVLĞı×ªÀàĞÍ
+//AVLæ—‹è½¬ç±»å‹
 typedef enum
 {
 	AVLTREE_NONE_ROTATE = 0,
@@ -205,7 +205,7 @@ typedef enum
 	AVLTREE_ROTATE_TYPE_COUNT
 }AVLTREE_ROTATE_TYPE;
 
-//µ¥½ÚµãĞı×ª±ä»»
+//å•èŠ‚ç‚¹æ—‹è½¬å˜æ¢
 inline  AVLTREE_ROTATE_TYPE AVL_rotate_singlenode(_Avl_height ibalance_value,_AVL_node_base* pAvl_node,_AVL_node_base* & pAvl_node_parent)
 {
 	//_Avl_height ibalance_value = GetAvlBalanceVal(pAvl_node);
@@ -311,7 +311,7 @@ inline  AVLTREE_ROTATE_TYPE AVL_rotate_singlenode_test(_Avl_height ibalance_valu
 }
 #endif
 
-//²åÈë½ÚµãĞı×ª±ä»»
+//æ’å…¥èŠ‚ç‚¹æ—‹è½¬å˜æ¢
 inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_add(_AVL_node_base* &pAvl_root_node,_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
 {
 	avl_array_index_val index =  Avl_node_stack_size - 1;
@@ -335,17 +335,17 @@ inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_add(_AVL_node_base* &pAvl_root_node,
 		iold_height = pAvl_node->_M_height;
 		pAvl_node->_M_height = calculate_avl_node_height(pAvl_node);
 		ibalance_value = calculate_avl_node_balance_val(*Avl_node_stack[index]);
-		// ¶Ôµ¥½Úµã½øĞĞAVLÆ½ºâ·­×ª
+		// å¯¹å•èŠ‚ç‚¹è¿›è¡ŒAVLå¹³è¡¡ç¿»è½¬
 		return_value = AVL_rotate_singlenode(ibalance_value,pAvl_node,*pAvl_parent_ref_node);
 
 		//if (AVLTREE_NONE_ROTATE == return_value && iold_height == (*pAvl_parent_ref_node)->_M_height)
 		
-		if (iold_height == (*pAvl_parent_ref_node)->_M_height) // ·­×ªÖÁ¸ß¶ÈÒ»ÑùµÄ½ÚµãÊ±ÍË³ö
+		if (iold_height == (*pAvl_parent_ref_node)->_M_height) // ç¿»è½¬è‡³é«˜åº¦ä¸€æ ·çš„èŠ‚ç‚¹æ—¶é€€å‡º
 		{
 			break;	
 		}
-		else if (null == pAvl_parent_ref_node || AVLTREE_NOT_SIMPLE_ROTATE == return_value) // ³öÏÖÆ½ºâÖµ>2»òÕß<-2µÄÖµÊ±£¬
-																																										// »òÕßpAvl_parent_ref_nodeÎª¿ÕÊ±,AVLÊ÷½á¹¹±»ÆÆ»µ£¬·­×ª³ö´í
+		else if (null == pAvl_parent_ref_node || AVLTREE_NOT_SIMPLE_ROTATE == return_value) // å‡ºç°å¹³è¡¡å€¼>2æˆ–è€…<-2çš„å€¼æ—¶ï¼Œ
+																																										// æˆ–è€…pAvl_parent_ref_nodeä¸ºç©ºæ—¶,AVLæ ‘ç»“æ„è¢«ç ´åï¼Œç¿»è½¬å‡ºé”™
 		{
 			if (AVLTREE_NOT_SIMPLE_ROTATE != return_value)
 			{
@@ -357,7 +357,7 @@ inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_add(_AVL_node_base* &pAvl_root_node,
 
 	return return_value;
 }
-//É¾³ı½ÚµãĞı×ª±ä»»
+//åˆ é™¤èŠ‚ç‚¹æ—‹è½¬å˜æ¢
 inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_remove(_AVL_node_base* &pAvl_root_node,_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
 {
 	avl_array_index_val index =  Avl_node_stack_size - 1;
@@ -378,7 +378,7 @@ inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_remove(_AVL_node_base* &pAvl_root_no
 		iold_height = pAvl_node->_M_height;
 		pAvl_node->_M_height = calculate_avl_node_height(pAvl_node);
 		ibalance_value = calculate_avl_node_balance_val(pAvl_node);
-		// ¶Ôµ¥½Úµã½øĞĞAVLÆ½ºâ·­×ª
+		// å¯¹å•èŠ‚ç‚¹è¿›è¡ŒAVLå¹³è¡¡ç¿»è½¬
 #ifdef AVL_DEBUG_CODE
 		return_value = AVL_rotate_singlenode_test(ibalance_value,pAvl_node,*pAvl_parent_ref_node,Avl_node_stack);
 #else
@@ -386,12 +386,12 @@ inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_remove(_AVL_node_base* &pAvl_root_no
 #endif
 
 		//if (AVLTREE_NONE_ROTATE == return_value && iold_height == (*pAvl_parent_ref_node)->_M_height)
-		if (iold_height == (*pAvl_parent_ref_node)->_M_height)  // ·­×ªÖÁ¸ß¶ÈÒ»ÑùµÄ½ÚµãÊ±ÍË³ö
+		if (iold_height == (*pAvl_parent_ref_node)->_M_height)  // ç¿»è½¬è‡³é«˜åº¦ä¸€æ ·çš„èŠ‚ç‚¹æ—¶é€€å‡º
 		{
 			break;	
 		}
-		else if (null == pAvl_parent_ref_node || AVLTREE_NOT_SIMPLE_ROTATE == return_value) // ³öÏÖÆ½ºâÖµ>2»òÕß<-2µÄÖµÊ±£¬
-																																									 // »òÕßpAvl_parent_ref_nodeÎª¿ÕÊ±,AVLÊ÷½á¹¹±»ÆÆ»µ£¬·­×ª³ö´í
+		else if (null == pAvl_parent_ref_node || AVLTREE_NOT_SIMPLE_ROTATE == return_value) // å‡ºç°å¹³è¡¡å€¼>2æˆ–è€…<-2çš„å€¼æ—¶ï¼Œ
+																																									 // æˆ–è€…pAvl_parent_ref_nodeä¸ºç©ºæ—¶,AVLæ ‘ç»“æ„è¢«ç ´åï¼Œç¿»è½¬å‡ºé”™
 		{
 			if (AVLTREE_NOT_SIMPLE_ROTATE != return_value)
 			{
@@ -404,14 +404,14 @@ inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_remove(_AVL_node_base* &pAvl_root_no
 	return return_value;
 }
 
-// AVL¼¯ºÏ½Úµã
+// AVLé›†åˆèŠ‚ç‚¹
 template<class key_t>
 struct AVL_node_set : public  _AVL_node_base
 {
 	key_t key;
 };
 
-// AVLÓ³Éä½Úµã
+// AVLæ˜ å°„èŠ‚ç‚¹
 template<class key_t, class value_t>
 struct AVL_node_map_setex : public  AVL_node_set<key_t>
 {
@@ -428,7 +428,7 @@ struct AVL_node_map : public  _AVL_node_base
 
 
 
-// AVL²éÕÒĞÂ½Úµã²åÈëÂ·¾¶¼°²åÈëÎ»ÖÃ
+// AVLæŸ¥æ‰¾æ–°èŠ‚ç‚¹æ’å…¥è·¯å¾„åŠæ’å…¥ä½ç½®
 template<class key_t, class cmp_t, class __AVL_node_t>
 //template<typename ket_t,typename cmp_t,typename __AVL_node_t>
 inline __AVL_node_t* avl_tree_find_add_paths(__AVL_node_t* &pAvl_root_node,const key_t &key,const cmp_t &_compare, avl_result & add_error_code,
@@ -467,14 +467,14 @@ inline __AVL_node_t* avl_tree_find_add_paths(__AVL_node_t* &pAvl_root_node,const
 	return (__AVL_node_t*)*(Avl_node_stack[Avl_node_stack_size-1]);
 }
 
-// Ö±½Ó²åÈë½Úµã
+// ç›´æ¥æ’å…¥èŠ‚ç‚¹
 template<class __AVL_node_t>
 inline __AVL_node_t* avl_tree_add_node(__AVL_node_t* &pAvl_root_node,_AVL_node_base* pAvl_add_node,_AVL_node_base** ppAvl_last_perant_ref,
 	_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
 {
 	*ppAvl_last_perant_ref = pAvl_add_node;
 	AVLTREE_ROTATE_TYPE rotate_type = AVL_rotate_nodes_add((_AVL_node_base*&)pAvl_root_node,Avl_node_stack,Avl_node_stack_size);
-	// ·­×ª³ö´íÍË³ö
+	// ç¿»è½¬å‡ºé”™é€€å‡º
 	if (AVLTREE_ROTATE_ERR == rotate_type || AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
 	{
 		return null;
@@ -482,16 +482,16 @@ inline __AVL_node_t* avl_tree_add_node(__AVL_node_t* &pAvl_root_node,_AVL_node_b
 	return (__AVL_node_t*)pAvl_add_node;
 }
 
-// AVL ²åÈëÒ»¸öÒÑ¾­´æÔÚµÄ½Úµã
+// AVL æ’å…¥ä¸€ä¸ªå·²ç»å­˜åœ¨çš„èŠ‚ç‚¹
 template<class key_t, class cmp_t, class __AVL_node_t>
 //template<typename key_t, typename cmp_t, typename __AVL_node_t>
 inline __AVL_node_t* avl_tree_add(__AVL_node_t* &pAvl_root_node,__AVL_node_t* pAvl_add_node,const cmp_t &_compare,avl_result & add_error_code)
 {
-	_AVL_node_base** node_search_path_array[AVL_MAX_HEIGHT]; //½Úµã·ÃÎÊÂ·¾¶£¬¼ÇÂ¼Ñ¹Õ»½Úµã
-	avl_node_count_val search_path_length = 0;									// ½Úµã·ÃÎÊÂ·¾¶ÖĞ½ÚµãµÄ¸öÊı
+	_AVL_node_base** node_search_path_array[AVL_MAX_HEIGHT]; //èŠ‚ç‚¹è®¿é—®è·¯å¾„ï¼Œè®°å½•å‹æ ˆèŠ‚ç‚¹
+	avl_node_count_val search_path_length = 0;									// èŠ‚ç‚¹è®¿é—®è·¯å¾„ä¸­èŠ‚ç‚¹çš„ä¸ªæ•°
 	_AVL_node_base** avl_ref_node = null;
 
-	pAvl_add_node->_M_left = null;			// ±»²åÈë½ÚµãµÄ³õÊ¼»¯
+	pAvl_add_node->_M_left = null;			// è¢«æ’å…¥èŠ‚ç‚¹çš„åˆå§‹åŒ–
 	pAvl_add_node->_M_right = null;
 	pAvl_add_node->_M_height = 0;
 
@@ -501,19 +501,19 @@ inline __AVL_node_t* avl_tree_add(__AVL_node_t* &pAvl_root_node,__AVL_node_t* pA
 																																						add_error_code,
 																																						node_search_path_array,
 																																						search_path_length,
-																																						avl_ref_node); // ÕÒ³ö²åÈëµã
+																																						avl_ref_node); // æ‰¾å‡ºæ’å…¥ç‚¹
 	if (P_OK == add_error_code)
 	{
 		return avl_tree_add_node< __AVL_node_t >(pAvl_root_node,
 																					pAvl_add_node,
 																					avl_ref_node,
 																					node_search_path_array,
-																					search_path_length); //¶Ô²åÈëµã½øĞĞ²åÈë
+																					search_path_length); //å¯¹æ’å…¥ç‚¹è¿›è¡Œæ’å…¥
 	}
 	return null;
 }
 
-// AVL ²éÕÒÉ¾³ı½ÚµãµÄÂ·¾¶¼°É¾³ı½Úµã
+// AVL æŸ¥æ‰¾åˆ é™¤èŠ‚ç‚¹çš„è·¯å¾„åŠåˆ é™¤èŠ‚ç‚¹
 template<class key_t, class cmp_t, class __AVL_node_t>
 inline __AVL_node_t* avl_tree_find_remove_paths(__AVL_node_t* &pAvl_root_node, const key_t &key,cmp_t &_compare,
 	_AVL_node_base*** P_OUT Avl_node_stack,avl_node_count_val &Avl_node_stack_size,_AVL_node_base** &ppAvl_last_perant_ref)
@@ -545,7 +545,7 @@ inline __AVL_node_t* avl_tree_find_remove_paths(__AVL_node_t* &pAvl_root_node, c
 	return null;
 }
 
-// ¶ş²æÊ÷½ÚµãÀàĞÍ
+// äºŒå‰æ ‘èŠ‚ç‚¹ç±»å‹
 typedef enum enumBstNodeType
 {
 	BST_LEFT_NODE = -1,
@@ -553,7 +553,7 @@ typedef enum enumBstNodeType
 	BST_RIGHT_NODE = 1
 }BST_NODE_TYPE;
 
-// Ö±½ÓÒÆ³ıÒ»¸ö½Úµã
+// ç›´æ¥ç§»é™¤ä¸€ä¸ªèŠ‚ç‚¹
 #ifdef AVL_DEBUG_CODE
 template<class __AVL_node_t, class cmp_t>
 inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_node_base* pAvl_remove_node,_AVL_node_base** ppAvl_last_node_perant_ref,
@@ -580,7 +580,7 @@ inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_nod
 		
 		if (avl_balanceVal <= 0)
 		{
-			// ÕÒÓÒ½ÚµãµÄ×î×óµÄ½ÚµãÌæ»»É¾³ı½Úµã
+			// æ‰¾å³èŠ‚ç‚¹çš„æœ€å·¦çš„èŠ‚ç‚¹æ›¿æ¢åˆ é™¤èŠ‚ç‚¹
 			ppAvl_last_node_perant_ref = &( pAvl_remove_node->_M_right);
 			pAvl_replace_node = pAvl_remove_node->_M_right;
 			Avl_node_stack[Avl_node_stack_size++] = ppAvl_last_node_perant_ref;
@@ -607,7 +607,7 @@ inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_nod
 		}
 		else
 		{
-			// ÕÒ×ó½ÚµãµÄ×îÓÒµÄ½ÚµãÌæ»»É¾³ı½Úµã
+			// æ‰¾å·¦èŠ‚ç‚¹çš„æœ€å³çš„èŠ‚ç‚¹æ›¿æ¢åˆ é™¤èŠ‚ç‚¹
 			ppAvl_last_node_perant_ref = &( pAvl_remove_node->_M_left);
 			pAvl_replace_node = pAvl_remove_node->_M_left;
 			Avl_node_stack[Avl_node_stack_size++] = ppAvl_last_node_perant_ref;
@@ -652,17 +652,17 @@ inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_nod
 	}
 	else if (null != pAvl_left_node)
 	{
-		// Ö»´æÔÚ×ó½Úµã
+		// åªå­˜åœ¨å·¦èŠ‚ç‚¹
 		*ppAvl_last_node_perant_ref = pAvl_left_node;
 	}
 	else if (null != pAvl_right_node)
 	{
-		// Ö»´æÔÚÓÒ½Úµã
+		// åªå­˜åœ¨å³èŠ‚ç‚¹
 		*ppAvl_last_node_perant_ref = pAvl_right_node;
 	}
 	else
 	{
-		//É¾³ı½ÚµãÊÇÒ¶×Ó½Úµã
+		//åˆ é™¤èŠ‚ç‚¹æ˜¯å¶å­èŠ‚ç‚¹
 		*ppAvl_last_node_perant_ref = null;
 	}
 
@@ -670,7 +670,7 @@ inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_nod
 	if (Avl_node_stack_size > 0)
 	{
 		AVLTREE_ROTATE_TYPE rotate_type = AVL_rotate_nodes_remove((_AVL_node_base*&)pAvl_root_node,Avl_node_stack,Avl_node_stack_size);
-		// ·­×ª³ö´íÍË³ö
+		// ç¿»è½¬å‡ºé”™é€€å‡º
 		if (AVLTREE_ROTATE_ERR == rotate_type || AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
 		{
 			return null;
@@ -687,7 +687,7 @@ inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_nod
 	return (__AVL_node_t*)pAvl_remove_node;
 }
 
-// AVL ÒÆ³ı½Úµã
+// AVL ç§»é™¤èŠ‚ç‚¹
 template<class key_t, class cmp_t, class __AVL_node_t>
 inline __AVL_node_t* avl_tree_remove(__AVL_node_t* &pAvl_root_node,const key_t &key,cmp_t &__compare,avl_result & remove_error_code)
 {

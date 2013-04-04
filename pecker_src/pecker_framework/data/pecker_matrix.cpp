@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * PeckerMatrix.cpp
  *
  *  Created on: 2012-7-25
- *      Author: ÀîÕò³Ç (cut / cutxyz)
+ *      Author: æé•‡åŸ (cut / cutxyz)
  */
 #include "pecker_matrix.h"
 #include <math.h>
@@ -556,19 +556,19 @@ pecker_matrix4 pecker_matrix4::inverse() const
 //    matrix A 0 3X3
 //    matrix C 1 3X1
 //
-//    ©°     (matrix A)            ©¦             ©´
-//    ©¦   M00     M01     M02     ©¦     M03     ©¦
-//    ©¦   M10     M12     M13     ©¦     M14     ©¦
-//    ©¦   M20     M21     M22     ©¦     M23     ©¦
-//    ©À©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©È             ©¦
-//    ©¦   M30     M31     M32     ©¦     M33     ©¦
-//    ©¸ (matrix C)                ©¦             ©¼
+//    â”Œ     (matrix A)            â”‚             â”
+//    â”‚   M00     M01     M02     â”‚     M03     â”‚
+//    â”‚   M10     M12     M13     â”‚     M14     â”‚
+//    â”‚   M20     M21     M22     â”‚     M23     â”‚
+//    â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤             â”‚
+//    â”‚   M30     M31     M32     â”‚     M33     â”‚
+//    â”” (matrix C)                â”‚             â”˜
   Float fMatADet = ( m_Mat[M4_00]*(m_Mat[M4_11]*m_Mat[M4_22]-m_Mat[M4_21]*m_Mat[M4_12])
         - m_Mat[M4_10]*(m_Mat[M4_01]*m_Mat[M4_22]-m_Mat[M4_21]*m_Mat[M4_02])
         + m_Mat[M4_20]*(m_Mat[M4_01]*m_Mat[M4_12]-m_Mat[M4_11]*m_Mat[M4_02]) );
 
   pecker_matrix4 res;
-  // matrix A ĞĞÁĞÊ½ÖµÎª0,ÍË³ö¼ÆËã
+  // matrix A è¡Œåˆ—å¼å€¼ä¸º0,é€€å‡ºè®¡ç®—
   if (EQFLOATZERO(fMatADet))
    {
      for (nINDEX i=0;i<M4_INDEX_COUNT;++i)
@@ -583,7 +583,7 @@ pecker_matrix4 pecker_matrix4::inverse() const
    }
 
   fMatADet = 1.0f/fMatADet;
-  //¡¡inverse(matrix A)
+  //ã€€inverse(matrix A)
   res.m_Mat[M4_00] = (m_Mat[M4_11]*m_Mat[M4_22] - m_Mat[M4_12]*m_Mat[M4_21]) * fMatADet;
   res.m_Mat[M4_01] = (m_Mat[M4_02]*m_Mat[M4_21] - m_Mat[M4_01]*m_Mat[M4_22]) * fMatADet;
   res.m_Mat[M4_02] = (m_Mat[M4_01]*m_Mat[M4_12] - m_Mat[M4_02]*m_Mat[M4_11]) * fMatADet;

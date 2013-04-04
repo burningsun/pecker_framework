@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_array_algorithm.h
  *
  *  Created on: 2012-11-1
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -312,7 +312,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 
 // sort
 
-// ÉıĞòÅÅÁĞ
+// å‡åºæ’åˆ—
 template < class item_type, class compare_t,class _Array_container, class _Array_iterator>
 array_result increment_order_partition(_Array_container& array,_Array_iterator& iterator_low,_Array_iterator& iterator_high,_Array_iterator& iterator_out)
 {
@@ -376,7 +376,7 @@ array_result increment_order_partition(_Array_container& array,_Array_iterator& 
 	return P_OK;
 }
 
-// ½µĞòÅÅÁĞ
+// é™åºæ’åˆ—
 template < class item_type, class compare_t,class _Array_container, class _Array_iterator>
 array_result decrement_order_partition(_Array_container& array,_Array_iterator& iterator_low,_Array_iterator& iterator_high,_Array_iterator& iterator_out)
 {

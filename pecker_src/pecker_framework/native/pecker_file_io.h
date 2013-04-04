@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_file_io.h
  *
  *  Created on: 2012-11-14
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -58,7 +58,7 @@ typedef enum enumFILE_ORIGIN
 	FILE_SEEK_END = 2
 }FILE_ORIGIN;
 
-// ÎÄ¼ş²Ù×÷Àà
+// æ–‡ä»¶æ“ä½œç±»
 class pecker_file_io_base
 {
 private:

@@ -1,5 +1,5 @@
-/*  Created on: 2012-12-1
-*      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ï»¿/*  Created on: 2012-12-1
+*      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
 *		e-mail: cut-12345@hotmail.com
 *              501931049@qq.com
 */
@@ -11,7 +11,7 @@
 
 PECKER_BEGIN
 
-// ´øcompare·½·¨µÄÀàµÄÀ©Õ¹±È½Ï
+// å¸¦compareæ–¹æ³•çš„ç±»çš„æ‰©å±•æ¯”è¾ƒ
 template< class compare_value_ext >
 struct pecker_value_compare_extern
 {
@@ -25,7 +25,7 @@ static inline int compare(const compare_value_ext& value1,const compare_value_ex
 }
 };
 
-// ¶àÖÖ»ù±¾ÀàĞÍ±È½Ï
+// å¤šç§åŸºæœ¬ç±»å‹æ¯”è¾ƒ
 template< class classtype >
 struct pecker_value_compare
 {

@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_list.h
  *
  *  Created on: 2012-11-21
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -524,7 +524,7 @@ protected:
 
 		
 		
-		// ³ö´í»Ö¸´
+		// å‡ºé”™æ¢å¤
 		if (null != ptransfer_this_node )
 		{
 			ptransfer_this_node = other_list._M_allocator.transfer_value(_M_allocator,ptransfer_this_node);

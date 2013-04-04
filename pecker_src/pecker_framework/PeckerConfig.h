@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * PeckerConfig.h
  *
  *  Created on: 2012-7-16
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  */
 
 #ifndef PECKERCONFIG_H_

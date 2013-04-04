@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_vector.h
  *
  *  Created on: 2012-7-25
- *      Author: ÀîÕò³Ç (cut / cutxyz)
+ *      Author: æé•‡åŸ (cut / cutxyz)
  */
 
 #ifndef PECKER_VECTOR_H_

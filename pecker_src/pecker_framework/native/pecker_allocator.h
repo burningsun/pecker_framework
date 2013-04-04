@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * PeckerAllocator.h
  *
  *  Created on: 2012-6-19
- *      Author: ÀîÕò³Ç (cut / cutxyz)
+ *      Author: æé•‡åŸ (cut / cutxyz)
  */
 //#pragma once
 #ifndef PECKER_ALLOCATOR_H_

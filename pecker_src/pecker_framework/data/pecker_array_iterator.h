@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_array_iterator.h
  *
  *  Created on: 2012-11-1
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */

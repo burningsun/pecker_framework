@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_bst_iterator.h
  *
  *  Created on: 2012-12-20
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */

@@ -1,4 +1,4 @@
-#include "native/pecker_window.h"
+﻿#include "native/pecker_window.h"
 USING_PECKER_SDK
 
 void show_simple_window()

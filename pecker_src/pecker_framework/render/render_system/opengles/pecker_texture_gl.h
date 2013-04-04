@@ -1,8 +1,8 @@
-/*
+Ôªø/*
  * pecker_texture_gl.h
  *
  *  Created on: 2013-3-20
- *      Author: ¿Ó’Ú≥«  £® cut / cutxyz£©
+ *      Author: ÊùéÈïáÂüé  Ôºà cut / cutxyzÔºâ
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -20,7 +20,7 @@ class pecker_texture_2d_gles2 : public Ipecker_texture2d,public virtual pecker_o
 {
 public:
 	static const UInt MAX_TEXTURE_UNIT_COUNT = 32;
-	static const UInt MAX_TEXTURE_MIP_LEVEL = 15; // Œ∆¿Ì≥ﬂ¥Á 2^15 * 2^15£¨(powervr sgx 540 2048*2048)
+	static const UInt MAX_TEXTURE_MIP_LEVEL = 15; // Á∫πÁêÜÂ∞∫ÂØ∏ 2^15 * 2^15Ôºå(powervr sgx 540 2048*2048)
 	static const UInt MAX_TEXTURE_SIZE = 32768;
 	static const UInt MAX_DEFUALT_TEXTURE_FILTER_COUNT = 16;
 private:

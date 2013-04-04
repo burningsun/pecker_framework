@@ -1,8 +1,8 @@
-/*
+﻿/*
  * pecker_render_buffer_gl.cpp
  *
  *  Created on: 2013-4-2
- *      Author: �����  �� cut / cutxyz��
+ *      Author: 李镇城  （ cut / cutxyz）
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -16,14 +16,14 @@ PECKER_BEGIN
 	
 typedef pecker_simple_allocator<Byte> render_buffer_allocator;
 
-// OPENGL ES 2��ɫ���泣����Ӧ��
+// OPENGL ES 2颜色缓存常量对应表
 static const UInt COLOR_BUFFER_FORMAT_TABLE_GLES2[COLOR_BUFFER_FORMAT_COUNT] 
 = {GL_RGB565,GL_RGBA4,GL_RGB5_A1,GL_RGB8_OES,GL_RGBA8_OES};
-// OPENGL ES 2��Ȼ��泣����Ӧ��
+// OPENGL ES 2深度缓存常量对应表
 static const UInt DEPTH_BUFFER_FORMAT_TABLE_GLES2[DEPTH_BUFFER_FORMAT_COUNT]
 = {GL_DEPTH_COMPONENT16,GL_DEPTH_COMPONENT24_OES,GL_DEPTH_COMPONENT32_OES,
 GL_DEPTH24_STENCIL8_OES};
-// OPENGL ES 2ģ�建�泣����Ӧ��
+// OPENGL ES 2模板缓存常量对应表
 static const UInt STENCIL_BUFFER_FORMAT_TABLE_GLES2[STENCIL_BUFFER_FORMAT_COUNT]
 = {GL_STENCIL_INDEX8,GL_STENCIL_INDEX1_OES,GL_STENCIL_INDEX4_OES,GL_DEPTH24_STENCIL8_OES};
 

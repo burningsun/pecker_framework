@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_shader_program_glsles1.cpp
  *
  *  Created on: 2013-3-6
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -59,16 +59,16 @@ UInt pecker_shader_program_glsles1::load_frame_shader_source(const pecker_string
 	{
 		return 0;
 	}
-	// ´´½¨×ÅÉ«Æ÷
+	// åˆ›å»ºç€è‰²å™¨
 	GLuint shader = glCreateShader(GL_FRAGMENT_SHADER);
 	if (shader)
 	{
-		//±àÒë×ÅÉ«Ô´´úÂë
+		//ç¼–è¯‘ç€è‰²æºä»£ç 
 		const GLchar* pSource = (GLchar*)(str_source_code.get_data());
 		::glShaderSource(shader, 1, &pSource, null);
 		::glCompileShader(shader);
 		GLint compiled = 0;
-		//»ñÈ¡±àÒë½á¹û
+		//è·å–ç¼–è¯‘ç»“æœ
 		::glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 		if (!compiled)
 		{
@@ -103,16 +103,16 @@ UInt pecker_shader_program_glsles1::load_vertex_shader_source(const pecker_strin
 	{
 		return 0;
 	}
-	// ´´½¨×ÅÉ«Æ÷
+	// åˆ›å»ºç€è‰²å™¨
 	GLuint shader = glCreateShader(GL_VERTEX_SHADER);
 	if (shader)
 	{
-		//±àÒë×ÅÉ«Ô´´úÂë
+		//ç¼–è¯‘ç€è‰²æºä»£ç 
 		const GLchar* pSource = (GLchar*)(str_source_code.get_data());
 		::glShaderSource(shader, 1, &pSource, null);
 		::glCompileShader(shader);
 		GLint compiled = 0;
-		//»ñÈ¡±àÒë½á¹û
+		//è·å–ç¼–è¯‘ç»“æœ
 		::glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 		if (!compiled)
 		{

@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_list_algorithm.h
  *
  *  Created on: 2012-11-21
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -123,7 +123,7 @@ inline list_result swap_list_node(linked_list_node_t* pfirst_node,linked_list_no
 		pfirst_node_next->_M_pre_node = psecond_node;
 		pfirst_node_next->_M_next_node = pfirst_node;
 	}
-	else if (pfirst_node_pre != psecond_node && pfirst_node_next != psecond_node)// ·ÇÏàÁÚ½áµã
+	else if (pfirst_node_pre != psecond_node && pfirst_node_next != psecond_node)// éç›¸é‚»ç»“ç‚¹
 	{
 		if (psecond_node_next == pfirst_node || psecond_node_pre == pfirst_node)
 		{

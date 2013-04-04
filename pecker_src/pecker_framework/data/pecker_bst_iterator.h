@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_bst_iterator.h
  *
  *  Created on: 2012-12-9
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -15,7 +15,7 @@
 PECKER_BEGIN
 
 
-// ¶ş²æÊ÷µü´úÆ÷½Ó¿Ú
+// äºŒå‰æ ‘è¿­ä»£å™¨æ¥å£
 template< class BST_node_t >
 PeckerInterface Ipecker_bst_tree_iterator
 {
@@ -27,7 +27,7 @@ PeckerInterface Ipecker_bst_tree_iterator
 	virtual const BST_node_t* get_root_node() const = 0;
 };
 
-// ¶ş²æÊ÷ÖĞĞò±éÀúµü´úÆ÷½Ó¿Ú
+// äºŒå‰æ ‘ä¸­åºéå†è¿­ä»£å™¨æ¥å£
 template< class BST_node_t >
 PeckerInterface Ipecker_bst_tree_inorder_iterator : public Ipecker_bst_tree_iterator< BST_node_t >
 {
@@ -36,7 +36,7 @@ PeckerInterface Ipecker_bst_tree_inorder_iterator : public Ipecker_bst_tree_iter
 	virtual  HResult decrement() = 0;
 };
 
-// ¶ş²æÊ÷ºóĞø±éÀúµü´úÆ÷½Ó¿Ú
+// äºŒå‰æ ‘åç»­éå†è¿­ä»£å™¨æ¥å£
 template< class BST_node_t >
 PeckerInterface Ipecker_bst_tree_posorder_iterator : public Ipecker_bst_tree_iterator< BST_node_t >
 {
@@ -45,7 +45,7 @@ PeckerInterface Ipecker_bst_tree_posorder_iterator : public Ipecker_bst_tree_ite
 	virtual  HResult increment_left() = 0;
 };
 
-// ÎŞ¸¸½ÚµãµÄ¶ş²æÊ÷½ÚµãµÄÖĞĞò±éÀúµü´úÆ÷
+// æ— çˆ¶èŠ‚ç‚¹çš„äºŒå‰æ ‘èŠ‚ç‚¹çš„ä¸­åºéå†è¿­ä»£å™¨
 template< class BST_node_t,
 				   class allocate_object_t = pecker_simple_allocator< const BST_node_t* >,
 				   class pointer_allocate_object_t = pecker_simple_allocator< const BST_node_t** > >
@@ -351,7 +351,7 @@ public:
 	}
 };
 
-// ÎŞ¸¸½ÚµãµÄ¶ş²æÊ÷½ÚµãµÄºóĞò±éÀúµü´úÆ÷
+// æ— çˆ¶èŠ‚ç‚¹çš„äºŒå‰æ ‘èŠ‚ç‚¹çš„ååºéå†è¿­ä»£å™¨
 template< class BST_node_t,
 					class allocate_object_t = pecker_simple_allocator< const BST_node_t* >,
 					class pointer_allocate_object_t = pecker_simple_allocator< const BST_node_t** > >
@@ -560,7 +560,7 @@ public:
 };
 
 
-//  ÎŞ¸¸½ÚµãµÄÈı²æÊ÷½ÚµãµÄÖĞĞò±éÀúµü´úÆ÷
+//  æ— çˆ¶èŠ‚ç‚¹çš„ä¸‰å‰æ ‘èŠ‚ç‚¹çš„ä¸­åºéå†è¿­ä»£å™¨
 template< class TST_node_t,
 class allocate_object_t = pecker_simple_allocator< const TST_node_t* >,
 class pointer_allocate_object_t = pecker_simple_allocator< const TST_node_t** > >
@@ -905,7 +905,7 @@ public:
 };
 
 
-//// ÎŞ¸¸½ÚµãµÄÈı²æÊ÷½ÚµãµÄºóĞò±éÀúµü´úÆ÷
+//// æ— çˆ¶èŠ‚ç‚¹çš„ä¸‰å‰æ ‘èŠ‚ç‚¹çš„ååºéå†è¿­ä»£å™¨
 //template< class TST_node_t,
 //class allocate_object_t = pecker_simple_allocator< const TST_node_t* >,
 //class pointer_allocate_object_t = pecker_simple_allocator< const TST_node_t** > >

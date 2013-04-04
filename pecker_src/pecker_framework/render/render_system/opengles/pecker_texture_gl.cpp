@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_texture_gl.cpp
  *
  *  Created on: 2013-3-20
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -88,13 +88,13 @@ HResult pecker_texture_2d_gles2::allocate_texture_from_gpu_ram(const pecker_text
 			_M_texture_info = top_most_mipinfo;
 			_M_active_miplevel = 0;
 			
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºó1µÄ¸öÊı
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶å1çš„ä¸ªæ•°
 			temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
 			temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
 			temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
 			temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
 
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºóµÚ1¸ö1µÄÎ»ÖÃ
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶åç¬¬1ä¸ª1çš„ä½ç½®
 			temp_value = top_most_mipinfo._M_height;
 			temp_miplevel = 1;
 			if ((temp_value >> 8) == 0) {temp_miplevel = temp_miplevel +8; temp_value = temp_value <<8;}
@@ -103,20 +103,20 @@ HResult pecker_texture_2d_gles2::allocate_texture_from_gpu_ram(const pecker_text
 			temp_miplevel = 16 - (temp_miplevel - (temp_value >> 15));
 			temp_max_miplevel = temp_miplevel;
 
-			// 2µÄN´Î·½»»Ëã³É2½øÖÆ£¬Ö»´æÔÚ1¸ö1£¬¶ÔÓÚ²»Âú×ãÌõ¼şµÄ½øĞĞĞŞÕı
+			// 2çš„Næ¬¡æ–¹æ¢ç®—æˆ2è¿›åˆ¶ï¼Œåªå­˜åœ¨1ä¸ª1ï¼Œå¯¹äºä¸æ»¡è¶³æ¡ä»¶çš„è¿›è¡Œä¿®æ­£
 			if ( 1 < temp_value)
 			{
 				_M_texture_info._M_height = 1 << temp_miplevel;
 			}
 			
 			temp_value = top_most_mipinfo._M_width;
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºó1µÄ¸öÊı
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶å1çš„ä¸ªæ•°
 			temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
 			temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
 			temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
 			temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
 
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºóµÚ1¸ö1µÄÎ»ÖÃ
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶åç¬¬1ä¸ª1çš„ä½ç½®
 			temp_value = top_most_mipinfo._M_width;
 			temp_miplevel = 1;
 			if ((temp_value >> 8) == 0) {temp_miplevel = temp_miplevel +8; temp_value = temp_value <<8;}
@@ -129,7 +129,7 @@ HResult pecker_texture_2d_gles2::allocate_texture_from_gpu_ram(const pecker_text
 				temp_max_miplevel = temp_miplevel;
 			}
 			
-			// 2µÄN´Î·½»»Ëã³É2½øÖÆ£¬Ö»´æÔÚ1¸ö1£¬¶ÔÓÚ²»Âú×ãÌõ¼şµÄ½øĞĞĞŞÕı
+			// 2çš„Næ¬¡æ–¹æ¢ç®—æˆ2è¿›åˆ¶ï¼Œåªå­˜åœ¨1ä¸ª1ï¼Œå¯¹äºä¸æ»¡è¶³æ¡ä»¶çš„è¿›è¡Œä¿®æ­£
 			if ( 1 < temp_value)
 			{
 				_M_texture_info._M_width = 1 << temp_miplevel;
@@ -406,13 +406,13 @@ HResult pecker_texture_cube_gles2::allocate_texture_from_gpu_ram(const pecker_te
 			_M_texture_info[4] = top_most_mipinfo;
 			_M_texture_info[5] = top_most_mipinfo;
 
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºó1µÄ¸öÊı
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶å1çš„ä¸ªæ•°
 			temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
 			temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
 			temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
 			temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
 
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºóµÚ1¸ö1µÄÎ»ÖÃ
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶åç¬¬1ä¸ª1çš„ä½ç½®
 			temp_value = top_most_mipinfo._M_height;
 			temp_miplevel = 1;
 			if ((temp_value >> 8) == 0) {temp_miplevel = temp_miplevel +8; temp_value = temp_value <<8;}
@@ -421,7 +421,7 @@ HResult pecker_texture_cube_gles2::allocate_texture_from_gpu_ram(const pecker_te
 			temp_miplevel = 16 - (temp_miplevel - (temp_value >> 15));
 			temp_max_miplevel = temp_miplevel;
 
-			// 2µÄN´Î·½»»Ëã³É2½øÖÆ£¬Ö»´æÔÚ1¸ö1£¬¶ÔÓÚ²»Âú×ãÌõ¼şµÄ½øĞĞĞŞÕı
+			// 2çš„Næ¬¡æ–¹æ¢ç®—æˆ2è¿›åˆ¶ï¼Œåªå­˜åœ¨1ä¸ª1ï¼Œå¯¹äºä¸æ»¡è¶³æ¡ä»¶çš„è¿›è¡Œä¿®æ­£
 			if ( 1 < temp_value)
 			{
 				_M_texture_info[0]._M_height = 1 << temp_miplevel;
@@ -433,13 +433,13 @@ HResult pecker_texture_cube_gles2::allocate_texture_from_gpu_ram(const pecker_te
 			}
 
 			temp_value = top_most_mipinfo._M_width;
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºó1µÄ¸öÊı
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶å1çš„ä¸ªæ•°
 			temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
 			temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
 			temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
 			temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
 
-			// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºóµÚ1¸ö1µÄÎ»ÖÃ
+			// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶åç¬¬1ä¸ª1çš„ä½ç½®
 			temp_value = top_most_mipinfo._M_width;
 			temp_miplevel = 1;
 			if ((temp_value >> 8) == 0) {temp_miplevel = temp_miplevel +8; temp_value = temp_value <<8;}
@@ -452,7 +452,7 @@ HResult pecker_texture_cube_gles2::allocate_texture_from_gpu_ram(const pecker_te
 				temp_max_miplevel = temp_miplevel;
 			}
 
-			// 2µÄN´Î·½»»Ëã³É2½øÖÆ£¬Ö»´æÔÚ1¸ö1£¬¶ÔÓÚ²»Âú×ãÌõ¼şµÄ½øĞĞĞŞÕı
+			// 2çš„Næ¬¡æ–¹æ¢ç®—æˆ2è¿›åˆ¶ï¼Œåªå­˜åœ¨1ä¸ª1ï¼Œå¯¹äºä¸æ»¡è¶³æ¡ä»¶çš„è¿›è¡Œä¿®æ­£
 			if ( 1 < temp_value)
 			{
 				_M_texture_info[0]._M_width = 1 << temp_miplevel;
@@ -665,13 +665,13 @@ HResult pecker_texture_cube_gles2::allocate_texture_from_gpu_ram(const pecker_te
 				_M_texture_info[4] = top_most_mipinfo;
 				_M_texture_info[5] = top_most_mipinfo;
 
-				// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºó1µÄ¸öÊı
+				// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶å1çš„ä¸ªæ•°
 				temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
 				temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
 				temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
 				temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
 
-				// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºóµÚ1¸ö1µÄÎ»ÖÃ
+				// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶åç¬¬1ä¸ª1çš„ä½ç½®
 				temp_value = top_most_mipinfo._M_height;
 				temp_miplevel = 1;
 				if ((temp_value >> 8) == 0) {temp_miplevel = temp_miplevel +8; temp_value = temp_value <<8;}
@@ -680,20 +680,20 @@ HResult pecker_texture_cube_gles2::allocate_texture_from_gpu_ram(const pecker_te
 				temp_miplevel = 16 - (temp_miplevel - (temp_value >> 15));
 				temp_max_miplevel = temp_miplevel;
 
-				// 2µÄN´Î·½»»Ëã³É2½øÖÆ£¬Ö»´æÔÚ1¸ö1£¬¶ÔÓÚ²»Âú×ãÌõ¼şµÄ½øĞĞĞŞÕı
+				// 2çš„Næ¬¡æ–¹æ¢ç®—æˆ2è¿›åˆ¶ï¼Œåªå­˜åœ¨1ä¸ª1ï¼Œå¯¹äºä¸æ»¡è¶³æ¡ä»¶çš„è¿›è¡Œä¿®æ­£
 				if ( 1 < temp_value)
 				{
 					_M_texture_info[i]._M_height = 1 << temp_miplevel;
 				}
 
 				temp_value = top_most_mipinfo._M_width;
-				// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºó1µÄ¸öÊı
+				// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶å1çš„ä¸ªæ•°
 				temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
 				temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
 				temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
 				temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
 
-				// ¼ÆËã16Î»ÕûÊı×ª»»³É2½øÖÆºóµÚ1¸ö1µÄÎ»ÖÃ
+				// è®¡ç®—16ä½æ•´æ•°è½¬æ¢æˆ2è¿›åˆ¶åç¬¬1ä¸ª1çš„ä½ç½®
 				temp_value = top_most_mipinfo._M_width;
 				temp_miplevel = 1;
 				if ((temp_value >> 8) == 0) {temp_miplevel = temp_miplevel +8; temp_value = temp_value <<8;}
@@ -706,7 +706,7 @@ HResult pecker_texture_cube_gles2::allocate_texture_from_gpu_ram(const pecker_te
 					temp_max_miplevel = temp_miplevel;
 				}
 
-				// 2µÄN´Î·½»»Ëã³É2½øÖÆ£¬Ö»´æÔÚ1¸ö1£¬¶ÔÓÚ²»Âú×ãÌõ¼şµÄ½øĞĞĞŞÕı
+				// 2çš„Næ¬¡æ–¹æ¢ç®—æˆ2è¿›åˆ¶ï¼Œåªå­˜åœ¨1ä¸ª1ï¼Œå¯¹äºä¸æ»¡è¶³æ¡ä»¶çš„è¿›è¡Œä¿®æ­£
 				if ( 1 < temp_value)
 				{
 					_M_texture_info[i]._M_width = 1 << temp_miplevel;

@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_thread.h
  *
  *  Created on: 2012-11-14
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -22,7 +22,7 @@ PECKER_BEGIN
 #endif
 #endif
 
-// ÁÙ½çÇø²Ù×÷Àà
+// ä¸´ç•ŒåŒºæ“ä½œç±»
 class pecker_critical_section
 {
 private:
@@ -35,7 +35,7 @@ public:
 	HResult leave_critical_section();
 };
 
-// ÁÙ½çÇøËø²Ù×÷
+// ä¸´ç•ŒåŒºé”æ“ä½œ
 class pecker_critical_lock
 {
 public: 
@@ -57,7 +57,7 @@ typedef pthread_attr_t  thread_attributes;
 #endif
 
 
-// Ïß³ÌÖ´ĞĞÌå½Ó¿Ú
+// çº¿ç¨‹æ‰§è¡Œä½“æ¥å£
 PeckerInterface Ipecker_runable
 {
 	virtual ~Ipecker_runable(){;}
@@ -65,7 +65,7 @@ PeckerInterface Ipecker_runable
 	//virtual void terminate() = 0;
 };
 
-// Ïß³Ì»ù±¾²Ù×÷Àà
+// çº¿ç¨‹åŸºæœ¬æ“ä½œç±»
 class pecker_thread_base
 {
 private:
@@ -115,7 +115,7 @@ public:
 	static Ulong get_current_thread_id();
 };	
 
-// Ïß³Ì¹ı³ÌÄ¿±êÖ´ĞĞÌå£¨»Øµ÷º¯Êı×ªÏß³ÌÖ´ĞĞÌå£©
+// çº¿ç¨‹è¿‡ç¨‹ç›®æ ‡æ‰§è¡Œä½“ï¼ˆå›è°ƒå‡½æ•°è½¬çº¿ç¨‹æ‰§è¡Œä½“ï¼‰
 class pecker_thread_proc_target : public Ipecker_runable
 {
 private: 
@@ -129,7 +129,7 @@ public:
 	//virtual void terminate();
 };
 
-// Ïß³ÌÄ¿±êÖ´ĞĞÌå (ÊÊÓ¦OOAºÍOOPÁ½ÖÖÖ´ĞĞÌå)
+// çº¿ç¨‹ç›®æ ‡æ‰§è¡Œä½“ (é€‚åº”OOAå’ŒOOPä¸¤ç§æ‰§è¡Œä½“)
 class pecker_thread_target :public Ipecker_runable
 {
 private:
@@ -145,7 +145,7 @@ public:
 	//virtual void terminate();
 };
 
-// Ïß³ÌÀà
+// çº¿ç¨‹ç±»
 class pecker_thread : public pecker_thread_base
 {
 private:

@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * PeckerVector.cpp
  *
  *  Created on: 2012-7-25
- *      Author: ÀîÕò³Ç (cut / cutxyz)
+ *      Author: æé•‡åŸ (cut / cutxyz)
  */
 #include "pecker_vector.h"
 #include <math.h>

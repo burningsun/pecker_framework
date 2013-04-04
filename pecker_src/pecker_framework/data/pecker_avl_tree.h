@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_avl_tree.h
  *
  *  Created on: 2012-11-3
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -42,7 +42,7 @@ typedef bool Avl_tree_boolean_flag;
 //};
 typedef Ipecker_bst_tree_iterator< _AVL_node_base > Ipecker_avl_tree_iterator;
 
-// AVLÊ÷ÖĞĞò±éÀúµü´úÆ÷£¬£¨Êı¾İ´ÓĞ¡µ½´ó£©
+// AVLæ ‘ä¸­åºéå†è¿­ä»£å™¨ï¼Œï¼ˆæ•°æ®ä»å°åˆ°å¤§ï¼‰
 class pecker_avl_tree_inorder_iterator_base : public Ipecker_bst_tree_inorder_iterator< _AVL_node_base >
 {
 protected:
@@ -347,7 +347,7 @@ public:
 	}
 };
 
-// AVLÊ÷ºóĞò±éÀú,(×óÓÒÖĞ)
+// AVLæ ‘ååºéå†,(å·¦å³ä¸­)
 class pecker_avl_tree_posorder_iterator_base  : public Ipecker_bst_tree_posorder_iterator< _AVL_node_base >
 {
 protected:

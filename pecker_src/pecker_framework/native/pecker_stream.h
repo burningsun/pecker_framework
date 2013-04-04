@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_stream.h
  *
  *  Created on: 2012-11-14
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -16,7 +16,7 @@
 #include <stdio.h>
 PECKER_BEGIN
 
-// Á÷¶ÁÈ¡Êı¾İ²Ù×÷½Ó¿Ú
+// æµè¯»å–æ•°æ®æ“ä½œæ¥å£
 PeckerInterface Ipecker_read_stream
 {
 	virtual ~Ipecker_read_stream(){;}
@@ -27,7 +27,7 @@ PeckerInterface Ipecker_read_stream
 	virtual HResult read_double(char &read_value) = 0;
 	virtual int read_chars(char* pread_buffer,int read_buffer_size) = 0;
 };
-// Á÷Ğ´Êı¾İ²Ù×÷½Ó¿Ú
+// æµå†™æ•°æ®æ“ä½œæ¥å£
 PeckerInterface Ipecker_write_stream
 {
 	virtual ~Ipecker_write_stream(){;}

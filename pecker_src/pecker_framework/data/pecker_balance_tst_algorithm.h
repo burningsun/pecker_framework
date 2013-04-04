@@ -1,13 +1,13 @@
-/*
+ï»¿/*
  *  pecker_balance_tst_algorithm.h
  *
  *  Created on: 2012-11-8
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
 //
-//		Èı²æÆ½ºâËÑË÷Ê÷(×Ö·û´®ÄÚ´æ¹²ÏíÓÅ»¯£¬AVLÆ½ºâ¹æÔò(±È´¿´âµÄAVLÊ÷²åÈë·­×ª´ÎÊıÉÙ)) ºÏÌåÊ÷µÄ²åÈë£¬É¾³ı£¬ËÑË÷
+//		ä¸‰å‰å¹³è¡¡æœç´¢æ ‘(å­—ç¬¦ä¸²å†…å­˜å…±äº«ä¼˜åŒ–ï¼ŒAVLå¹³è¡¡è§„åˆ™(æ¯”çº¯ç²¹çš„AVLæ ‘æ’å…¥ç¿»è½¬æ¬¡æ•°å°‘)) åˆä½“æ ‘çš„æ’å…¥ï¼Œåˆ é™¤ï¼Œæœç´¢
 //
 #ifndef PECKER_BALANCE_TST_ALGORITHM_H_
 #define PECKER_BALANCE_TST_ALGORITHM_H_
@@ -46,17 +46,17 @@ typedef nSize				tst_node_count_val;
 typedef nSize				tst_buffer_size;
 typedef HResult		tst_result;
 
-// Èı²æÊ÷½ÚµãÖµÓĞĞ§ÀàĞÍ
+// ä¸‰å‰æ ‘èŠ‚ç‚¹å€¼æœ‰æ•ˆç±»å‹
 typedef enum enumTERNARYTREE_LEGAL_NODE_FLAG_TYPE
 {
-	INVALID_TST_NODE = 0,  //ÎŞĞ§½ÚµãÎŞĞ§Öµ
-	NO_VALUE_TST_NODE,    //ÓĞĞ§½ÚµãÎŞĞ§Öµ
-	HAS_VALUE_TST_NODE,   //ÓĞĞ§½ÚµãÓĞĞ§Öµ
+	INVALID_TST_NODE = 0,  //æ— æ•ˆèŠ‚ç‚¹æ— æ•ˆå€¼
+	NO_VALUE_TST_NODE,    //æœ‰æ•ˆèŠ‚ç‚¹æ— æ•ˆå€¼
+	HAS_VALUE_TST_NODE,   //æœ‰æ•ˆèŠ‚ç‚¹æœ‰æ•ˆå€¼
 
 	TERNARYTREE_LEGAL_NODE_FLAG_TYPE_COUNT
 }TERNARYTREE_LEGAL_NODE_FLAG_TYPE;
 
-// Èı²æÊ÷½ÚµãÀàĞÍ
+// ä¸‰å‰æ ‘èŠ‚ç‚¹ç±»å‹
 template< class key_char_value_t,
 class __cmp_t,
 class allocate_object_t = pecker_simple_allocator< key_char_value_t >,
@@ -144,7 +144,7 @@ inline String_key_t get_tst_key_string(const _BTST_Node* pNode)
 
 
 
-// Èı²æÊ÷²éÕÒ
+// ä¸‰å‰æ ‘æŸ¥æ‰¾
 template< class key_char_value_t,
 class _TST_node >
 inline const _TST_node* avl_tst_tree_find(const _TST_node* pTst_root_node,
@@ -190,7 +190,7 @@ inline const _TST_node* avl_tst_tree_find(const _TST_node* pTst_root_node,
 	return null;
 }
 
-// Èı²æÊ÷²éÕÒ,·µ»Ø¿ÉĞŞ¸ÄµÄ½áµãÖ¸Õë
+// ä¸‰å‰æ ‘æŸ¥æ‰¾,è¿”å›å¯ä¿®æ”¹çš„ç»“ç‚¹æŒ‡é’ˆ
 template< class key_char_value_t,
 class _TST_node >
 inline _TST_node* avl_tst_tree_find_referance(_TST_node* pTst_root_node,
@@ -237,7 +237,7 @@ inline _TST_node* avl_tst_tree_find_referance(_TST_node* pTst_root_node,
 
 }
 
-//Èı²æÊ÷²éÕÒÒÔÄ³×Ö·û´®¿ªÍ·µÄÊ×¸ö½áµã
+//ä¸‰å‰æ ‘æŸ¥æ‰¾ä»¥æŸå­—ç¬¦ä¸²å¼€å¤´çš„é¦–ä¸ªç»“ç‚¹
 template< class key_char_value_t,
 class _TST_node >
 	inline const _TST_node* avl_tst_tree_find_start_string_node(const _TST_node* pTst_root_node,
@@ -284,20 +284,20 @@ class _TST_node >
 	return null;
 }
 
-// Èı²æÊ÷²éÕÒ²åÈëµãÀàĞÍ
+// ä¸‰å‰æ ‘æŸ¥æ‰¾æ’å…¥ç‚¹ç±»å‹
 typedef enum enumTST_FIND_ADD_TYPE
 {
-	ADD_ERR = 0,							// ³ö²î
-	NODE_EXSIT,							// ½Úµã²»´æÔÚ
-	BST_NEW_NODE_ADD,		// ĞèÒªĞÂ½¨½Úµã£¬²¢°´¶ş²æÊ÷²åÈë·½Ê½²åÈëµÄ½áµã
-	TST_NEW_NODE_ADD,			// ĞèÒªĞÂ½¨½Úµã£¬²¢°´Èı²æÊ÷²åÈë·½Ê½²åÈëµÄ½áµã
-	CLIP_AND_ADD_NODE,		// ²ğ·Ö½Úµã£¬²¢ĞÂÔöÒ»¸ö²åÈë½Úµã
-	CLIP_NODE							// ²ğ·Ö½Úµã
+	ADD_ERR = 0,							// å‡ºå·®
+	NODE_EXSIT,							// èŠ‚ç‚¹ä¸å­˜åœ¨
+	BST_NEW_NODE_ADD,		// éœ€è¦æ–°å»ºèŠ‚ç‚¹ï¼Œå¹¶æŒ‰äºŒå‰æ ‘æ’å…¥æ–¹å¼æ’å…¥çš„ç»“ç‚¹
+	TST_NEW_NODE_ADD,			// éœ€è¦æ–°å»ºèŠ‚ç‚¹ï¼Œå¹¶æŒ‰ä¸‰å‰æ ‘æ’å…¥æ–¹å¼æ’å…¥çš„ç»“ç‚¹
+	CLIP_AND_ADD_NODE,		// æ‹†åˆ†èŠ‚ç‚¹ï¼Œå¹¶æ–°å¢ä¸€ä¸ªæ’å…¥èŠ‚ç‚¹
+	CLIP_NODE							// æ‹†åˆ†èŠ‚ç‚¹
 
 }TST_FIND_ADD_TYPE;
 
 
-// ²éÕÒÈı²æÊ÷²åÈëµã
+// æŸ¥æ‰¾ä¸‰å‰æ ‘æ’å…¥ç‚¹
 template< class key_char_value_t,
 class _TST_node >
 inline _TST_node* avl_tst_tree_find_add_node(_TST_node* pTst_root_node,
@@ -436,7 +436,7 @@ inline _TST_node* avl_tst_tree_find_add_node(_TST_node* pTst_root_node,
 
 }
 
-// ¸øÈı²æÊ÷²åÈëÊı¾İ
+// ç»™ä¸‰å‰æ ‘æ’å…¥æ•°æ®
 template< class key_char_value_t,
 class nodes_allocator_t,
 class String_base,
@@ -457,7 +457,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 		return null;
 	}
 
-	if (null == pTst_root_node) // ¸ù½ÚµãÎª¿Õ£¬ĞÂ½¨Ò»¸öÈı²æÊ÷½Úµã×÷Îª¸ù½Úµã
+	if (null == pTst_root_node) // æ ¹èŠ‚ç‚¹ä¸ºç©ºï¼Œæ–°å»ºä¸€ä¸ªä¸‰å‰æ ‘èŠ‚ç‚¹ä½œä¸ºæ ¹èŠ‚ç‚¹
 	{
 		_TST_node_t* newnode = node_allocator.create_node();
 		newnode->_M_left = null;
@@ -480,7 +480,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 	_TST_node_t* pfind_add_node = avl_tst_tree_find_add_node< key_char_value_t,_TST_node_t >
 	(pTst_root_node,pLast_reference_node,pkey_string,key_string_size,add_type,
 			nsame_begin_char_count,
-			ntravl_string_size);// ²éÕÒ²åÈëÊı¾İ½Úµã
+			ntravl_string_size);// æŸ¥æ‰¾æ’å…¥æ•°æ®èŠ‚ç‚¹
 	_TST_node_t* pNew_add_node = null;
 	_TST_node_t* pmid_root_node = null;
 	add_result = P_OK;
@@ -544,7 +544,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 			newnode->_M_legal_flag = HAS_VALUE_TST_NODE;
 			newnode->_M_middle_node = null;
 			newnode->_M_middle_root_node = pfind_add_node;
-			if (null == pfind_add_node->_M_middle_node) // µ±ÖĞ¼ä½áµãÎª¿ÕµÄÊ±ºò£¬Ö±½Ó½«ĞÂÔö½Úµã×÷ÎªÖĞ¼ä½áµã
+			if (null == pfind_add_node->_M_middle_node) // å½“ä¸­é—´ç»“ç‚¹ä¸ºç©ºçš„æ—¶å€™ï¼Œç›´æ¥å°†æ–°å¢èŠ‚ç‚¹ä½œä¸ºä¸­é—´ç»“ç‚¹
 			{
 				pfind_add_node->_M_middle_node = newnode;
 				newnode->_M_left = null;
@@ -552,7 +552,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 				newnode->_M_height = 0;
 				pNew_add_node = newnode;
 			}
-			else // µ±ÖĞ¼ä½áµã·Ç¿ÕµÄÊ±ºò£¬½«pfind_add_nodeÖĞ¼ä½áµã×÷Îª×ÓÊ÷µÄ¸ù½áµã£¬ĞÂÔö½áµã°´AVLÊ÷µÄ²åÈë·½Ê½²åÈë×ÓÊ÷
+			else // å½“ä¸­é—´ç»“ç‚¹éç©ºçš„æ—¶å€™ï¼Œå°†pfind_add_nodeä¸­é—´ç»“ç‚¹ä½œä¸ºå­æ ‘çš„æ ¹ç»“ç‚¹ï¼Œæ–°å¢ç»“ç‚¹æŒ‰AVLæ ‘çš„æ’å…¥æ–¹å¼æ’å…¥å­æ ‘
 			{
 				string_cmp_ string_cmp_type;
 				pNew_add_node = avl_tree_add< String_base,string_cmp_,_TST_node_t >((_TST_node_t*&)(pfind_add_node->_M_middle_node),newnode,string_cmp_type,add_result);
@@ -708,13 +708,13 @@ inline avl_result avl_tst_tree_erase
 	}
 
 	_TST_node* pfind_remove_node = avl_tst_tree_find_referance<key_char_value_t,_TST_node>
-	(pTst_root_node,pkey_string,key_string_size);  // ²éÕÒ±»É¾½áµã
+	(pTst_root_node,pkey_string,key_string_size);  // æŸ¥æ‰¾è¢«åˆ ç»“ç‚¹
 	if (null == pfind_remove_node)
-	{															// ²»´æÔÚ±»É¾½áµã
+	{															// ä¸å­˜åœ¨è¢«åˆ ç»“ç‚¹
 		return P_SUCCESS;
 	}
 
-	if (null != pfind_remove_node->_M_middle_node) // ´æÔÚÉ¾³ı½Úµã£¬µ«É¾³ı½Úµã´æÔÚÖĞ¼ä½áµã£¬Ôò½«½áµãºÏ·¨±êÊ¶ÉèÖÃ³É NO_VALUE_TST_NODE
+	if (null != pfind_remove_node->_M_middle_node) // å­˜åœ¨åˆ é™¤èŠ‚ç‚¹ï¼Œä½†åˆ é™¤èŠ‚ç‚¹å­˜åœ¨ä¸­é—´ç»“ç‚¹ï¼Œåˆ™å°†ç»“ç‚¹åˆæ³•æ ‡è¯†è®¾ç½®æˆ NO_VALUE_TST_NODE
 	{
 		pfind_remove_node->_M_legal_flag = NO_VALUE_TST_NODE;
 		return P_OK;
@@ -725,7 +725,7 @@ inline avl_result avl_tst_tree_erase
 	_TST_node* premoved_node = null;
 	_TST_node* premoved_middle_root_node = (_TST_node*)(pfind_remove_node->_M_middle_root_node);
 
-	// É¾³ı½Úµã
+	// åˆ é™¤èŠ‚ç‚¹
 	if (premoved_middle_root_node == null)
 	{
 		premoved_node = avl_tree_remove<String_base,string_cmp_,_TST_node>
@@ -746,11 +746,11 @@ inline avl_result avl_tst_tree_erase
 		return remove_result;
 	}
 
-	premoved_node->_M_legal_flag = INVALID_TST_NODE; // ÉèÖÃ³ÉÎŞĞ§½ÚµãÎŞĞ§Öµ£¬Ö÷ÒªÊÇÊ¹ÓÃÄÚ´æ³ØÖ±½ÓÃ¶¾ÙÊ±ÓĞÓÃ
+	premoved_node->_M_legal_flag = INVALID_TST_NODE; // è®¾ç½®æˆæ— æ•ˆèŠ‚ç‚¹æ— æ•ˆå€¼ï¼Œä¸»è¦æ˜¯ä½¿ç”¨å†…å­˜æ± ç›´æ¥æšä¸¾æ—¶æœ‰ç”¨
 	node_allocator.release_node(premoved_node);
 	--node_count;
 
-	while (premoved_middle_root_node) // É¾³ı½ÚµãµÄÁ¬´ø½áµã£¬Á¬´ø¿ÉÉ¾½áµãÌØÕ÷ÎªÖĞ¼ä½áµãÎªnull£¬ºÏ·¨±êÊ¶²»µÈÓÚHAS_VALUE_TST_NODE
+	while (premoved_middle_root_node) // åˆ é™¤èŠ‚ç‚¹çš„è¿å¸¦ç»“ç‚¹ï¼Œè¿å¸¦å¯åˆ ç»“ç‚¹ç‰¹å¾ä¸ºä¸­é—´ç»“ç‚¹ä¸ºnullï¼Œåˆæ³•æ ‡è¯†ä¸ç­‰äºHAS_VALUE_TST_NODE
 	{
 		premoved_node = premoved_middle_root_node;
 		premoved_middle_root_node = (_TST_node*)(premoved_node->_M_middle_root_node);
@@ -775,7 +775,7 @@ inline avl_result avl_tst_tree_erase
 			{
 				return remove_result;
 			}
-			premoved_node->_M_legal_flag = INVALID_TST_NODE; // ÉèÖÃ³ÉÎŞĞ§½ÚµãÎŞĞ§Öµ£¬Ö÷ÒªÊÇÊ¹ÓÃÄÚ´æ³ØÖ±½ÓÃ¶¾ÙÊ±ÓĞÓÃ
+			premoved_node->_M_legal_flag = INVALID_TST_NODE; // è®¾ç½®æˆæ— æ•ˆèŠ‚ç‚¹æ— æ•ˆå€¼ï¼Œä¸»è¦æ˜¯ä½¿ç”¨å†…å­˜æ± ç›´æ¥æšä¸¾æ—¶æœ‰ç”¨
 			node_allocator.release_node(premoved_node);
 			--node_count;
 		}
@@ -807,12 +807,12 @@ inline avl_result avl_tst_tree_erase
 	}
 
 	_TST_node* pfind_remove_node = pTst_del_node;
-	if (null == pfind_remove_node) // ²»´æÔÚ±»É¾½áµã
+	if (null == pfind_remove_node) // ä¸å­˜åœ¨è¢«åˆ ç»“ç‚¹
 	{
 		return P_SUCCESS;
 	}
 
-	if (null != pfind_remove_node->_M_middle_node) // ´æÔÚÉ¾³ı½Úµã£¬µ«É¾³ı½Úµã´æÔÚÖĞ¼ä½áµã£¬Ôò½«½áµãºÏ·¨±êÊ¶ÉèÖÃ³É NO_VALUE_TST_NODE
+	if (null != pfind_remove_node->_M_middle_node) // å­˜åœ¨åˆ é™¤èŠ‚ç‚¹ï¼Œä½†åˆ é™¤èŠ‚ç‚¹å­˜åœ¨ä¸­é—´ç»“ç‚¹ï¼Œåˆ™å°†ç»“ç‚¹åˆæ³•æ ‡è¯†è®¾ç½®æˆ NO_VALUE_TST_NODE
 	{
 		pfind_remove_node->_M_legal_flag = NO_VALUE_TST_NODE;
 		return P_OK;
@@ -823,7 +823,7 @@ inline avl_result avl_tst_tree_erase
 	_TST_node* premoved_node = null;
 	_TST_node* premoved_middle_root_node = (_TST_node*)(pfind_remove_node->_M_middle_root_node);
 
-	// É¾³ı½Úµã
+	// åˆ é™¤èŠ‚ç‚¹
 	if (premoved_middle_root_node == null)
 	{
 		premoved_node = avl_tree_remove<String_base,string_cmp_,_TST_node>
@@ -848,7 +848,7 @@ inline avl_result avl_tst_tree_erase
 	node_allocator.release_node(premoved_node);
 	--node_count;
 
-	while (premoved_middle_root_node) // É¾³ı½ÚµãµÄÁ¬´ø½áµã£¬Á¬´ø¿ÉÉ¾½áµãÌØÕ÷ÎªÖĞ¼ä½áµãÎªnull£¬ºÏ·¨±êÊ¶²»µÈÓÚHAS_VALUE_TST_NODE
+	while (premoved_middle_root_node) // åˆ é™¤èŠ‚ç‚¹çš„è¿å¸¦ç»“ç‚¹ï¼Œè¿å¸¦å¯åˆ ç»“ç‚¹ç‰¹å¾ä¸ºä¸­é—´ç»“ç‚¹ä¸ºnullï¼Œåˆæ³•æ ‡è¯†ä¸ç­‰äºHAS_VALUE_TST_NODE
 	{
 		premoved_node = premoved_middle_root_node;
 		premoved_middle_root_node = (_TST_node*)(premoved_node->_M_middle_root_node);
@@ -905,12 +905,12 @@ inline avl_result avl_tst_tree_remove
 	}
 
 	_TST_node* pfind_remove_node = pTst_remove_node;
-	if (null == pfind_remove_node) // ²»´æÔÚ±»É¾½áµã
+	if (null == pfind_remove_node) // ä¸å­˜åœ¨è¢«åˆ ç»“ç‚¹
 	{
 		return P_SUCCESS;
 	}
 
-	if (null != pfind_remove_node->_M_middle_node) // ´æÔÚÉ¾³ı½Úµã£¬µ«É¾³ı½Úµã´æÔÚÖĞ¼ä½áµã£¬Ôò½«½áµãºÏ·¨±êÊ¶ÉèÖÃ³É NO_VALUE_TST_NODE
+	if (null != pfind_remove_node->_M_middle_node) // å­˜åœ¨åˆ é™¤èŠ‚ç‚¹ï¼Œä½†åˆ é™¤èŠ‚ç‚¹å­˜åœ¨ä¸­é—´ç»“ç‚¹ï¼Œåˆ™å°†ç»“ç‚¹åˆæ³•æ ‡è¯†è®¾ç½®æˆ NO_VALUE_TST_NODE
 	{
 		pfind_remove_node->_M_legal_flag = NO_VALUE_TST_NODE;
 		pTst_remove_set_no_value_node = pfind_remove_node;
@@ -923,7 +923,7 @@ inline avl_result avl_tst_tree_remove
 	_TST_node* premoved_middle_root_node = (_TST_node*)(pfind_remove_node->_M_middle_root_node);
 	_TST_node* premove_node_list = null;
 	pfind_remove_node = null;
-	// É¾³ı½Úµã
+	// åˆ é™¤èŠ‚ç‚¹
 	if (premoved_middle_root_node == null)
 	{
 		premoved_node = avl_tree_remove<String_base,string_cmp_,_TST_node>
@@ -951,7 +951,7 @@ inline avl_result avl_tst_tree_remove
 	pTst_remove_node_list = premoved_node;
 	premove_node_list = pTst_remove_node_list;
 
-	while (premoved_middle_root_node) // É¾³ı½ÚµãµÄÁ¬´ø½áµã£¬Á¬´ø¿ÉÉ¾½áµãÌØÕ÷ÎªÖĞ¼ä½áµãÎªnull£¬ºÏ·¨±êÊ¶²»µÈÓÚHAS_VALUE_TST_NODE
+	while (premoved_middle_root_node) // åˆ é™¤èŠ‚ç‚¹çš„è¿å¸¦ç»“ç‚¹ï¼Œè¿å¸¦å¯åˆ ç»“ç‚¹ç‰¹å¾ä¸ºä¸­é—´ç»“ç‚¹ä¸ºnullï¼Œåˆæ³•æ ‡è¯†ä¸ç­‰äºHAS_VALUE_TST_NODE
 	{
 		premoved_node = premoved_middle_root_node;
 		premoved_middle_root_node = (_TST_node*)(premoved_node->_M_middle_root_node);
@@ -1017,7 +1017,7 @@ inline avl_result avl_tst_tree_remove
 		return P_OK;
 	}
 
-	_TST_node* pfind_remove_node = avl_tst_tree_find_referance<key_char_value_t,_TST_node > // ²éÕÒ±»É¾½áµã
+	_TST_node* pfind_remove_node = avl_tst_tree_find_referance<key_char_value_t,_TST_node > // æŸ¥æ‰¾è¢«åˆ ç»“ç‚¹
 	(pTst_root_node,pkey_string,key_string_size);
 	return avl_tst_tree_remove< key_char_value_t,// __cmp_t,
 		//char_allocater_t,

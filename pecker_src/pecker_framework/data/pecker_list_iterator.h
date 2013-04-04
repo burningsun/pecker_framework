@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_list_iterator.h
  *
  *  Created on: 2013-1-7
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -140,7 +140,7 @@ public:
 	{
 		return _M_pContainer;
 	}
-	// Ö÷ÒªÓÃÓÚ¿ìËÙÅÅĞò
+	// ä¸»è¦ç”¨äºå¿«é€Ÿæ’åº
 	static inline int compare(const _List_iterator &iterator1, 
 		const _List_iterator &iterator2)
 	{

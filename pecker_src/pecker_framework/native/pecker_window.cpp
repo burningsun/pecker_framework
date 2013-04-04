@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_window.cpp
  *
  *  Created on: 2012-11-14
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -271,7 +271,7 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 
 		DWORD window_style;
 		DWORD window_ex_style;
-		// ÉèÖÃ´°¿ÚÀàĞÍ
+		// è®¾ç½®çª—å£ç±»å‹
 		switch (_M_window_info._M_window_param._M_window_style)
 		{
 		case FIXED_WIN_BORDERSTYLE:
@@ -295,7 +295,7 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 			break;
 		}
 
-		// Ê¹ÓÃÄ¬ÈÏµÄÊó±ê
+		// ä½¿ç”¨é»˜è®¤çš„é¼ æ ‡
 		switch (_M_window_info._M_window_param._M_cursor_style)
 		{
 		case DEFAULT_CURSOR_BORDERSTYLE:
@@ -306,7 +306,7 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 			break;
 		}
 
-		// ¸ø¶¨Ò»¸ö×¢²á´°¿ÚÊ±Ê¹ÓÃµÄÃû×Ö
+		// ç»™å®šä¸€ä¸ªæ³¨å†Œçª—å£æ—¶ä½¿ç”¨çš„åå­—
 		window_class.lpszClassName = _M_window_info._M_window_title.get_data();
 
 
@@ -324,17 +324,17 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 			break;
 		}
 
-		// ÉèÖÃĞÅÏ¢´¦Àíº¯ÊıÎªWndProc
+		// è®¾ç½®ä¿¡æ¯å¤„ç†å‡½æ•°ä¸ºWndProc
 		window_class.lpfnWndProc = WndProc;
-		// »ñµÃÄ¿Ç°ÔËĞĞµÄ³ÌĞò
+		// è·å¾—ç›®å‰è¿è¡Œçš„ç¨‹åº
 		window_class.hInstance = ::GetModuleHandle(NULL);
-		// Ïò²Ù×÷ÏµÍ³×¢²áÒ»¸öĞÂµÄ´°¿Ú
+		// å‘æ“ä½œç³»ç»Ÿæ³¨å†Œä¸€ä¸ªæ–°çš„çª—å£
 		if (0 == ::RegisterClass(&window_class))
 		{
 			return P_ERR;
 		}
 
-		// ¼ÆËã´°¿ÚµÄ±ßÏß»áÕ¼µôµÄµãÊı, ±ØÒªÊ±ÒªÔö¼Ó´°¿Ú´óĞ¡
+		// è®¡ç®—çª—å£çš„è¾¹çº¿ä¼šå æ‰çš„ç‚¹æ•°, å¿…è¦æ—¶è¦å¢åŠ çª—å£å¤§å°
 		RECT window_rect;
 		::SetRect(&window_rect, 
 			_M_window_info._M_window_param._M_x,
@@ -349,7 +349,7 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 		{
 			hWndParent = (HWND)(_M_perant_context->_M_window_info._M_window_handle);
 		}
-		// ×¼±¸¹¤×÷Íê³É, ´ò¿ªÒ»¸ö´°¿Ú.
+		// å‡†å¤‡å·¥ä½œå®Œæˆ, æ‰“å¼€ä¸€ä¸ªçª—å£.
 		hWnd = ::CreateWindowEx(
 			window_ex_style,
 			_M_window_info._M_window_title.get_data(),

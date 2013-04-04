@@ -69,9 +69,6 @@
     <ClInclude Include="data\pecker_nodes_allocate.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="pool_alloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="native\pecker_timetick.h">
       <Filter>native</Filter>
     </ClInclude>

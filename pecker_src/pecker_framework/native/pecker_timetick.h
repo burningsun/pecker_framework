@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  * pecker_timetick.h
  *
  *  Created on: 2012-11-14
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -21,7 +21,7 @@ typedef LARGE_INTEGER Time_ticker;
 #endif
 
 PECKER_BEGIN
-// ¼ÆÊ±Æ÷£¬Ê±¼äµ¥Î»ÊÇºÁÃë£¬¸¡µãÊı¡£
+// è®¡æ—¶å™¨ï¼Œæ—¶é—´å•ä½æ˜¯æ¯«ç§’ï¼Œæµ®ç‚¹æ•°ã€‚
 class pecker_tick
 {
 private:

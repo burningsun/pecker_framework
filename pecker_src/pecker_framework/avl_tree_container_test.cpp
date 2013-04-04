@@ -1,4 +1,4 @@
-//#define AVL_DEBUG_CODE
+ï»¿//#define AVL_DEBUG_CODE
 #include "data/pecker_avl_tree.h"
 #include "data/pecker_array.h"
 #include "data/pecker_string.h"
@@ -325,14 +325,14 @@ int avl_stl_map_cmp(int itime = 1)
 	LONGLONG QPartStartTick,QPartStopTick;
 	double dfMinus, dfFreq, dfEscapeTime;
 	QueryPerformanceFrequency(&litmp);
-	dfFreq = (double)litmp.QuadPart;   // »ñµÃ¼ÆÊıÆ÷µÄÊ±ÖÓÆµÂÊ
+	dfFreq = (double)litmp.QuadPart;   // è·å¾—è®¡æ•°å™¨çš„æ—¶é’Ÿé¢‘ç‡
 	std::ifstream myfile;
 
 	myfile.close();
 	myfile.open("inputaddsearch.txt");
 
 	QueryPerformanceCounter(&litmp);
-	QPartStartTick = litmp.QuadPart;               // »ñµÃ³õÊ¼Öµ
+	QPartStartTick = litmp.QuadPart;               // è·å¾—åˆå§‹å€¼
 	while(1)
 	{
 		if (myfile.eof())
@@ -342,9 +342,9 @@ int avl_stl_map_cmp(int itime = 1)
 		myfile >> strin;
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 
 	std::cout << "read file time = " << dfEscapeTime << std::endl;
 
@@ -364,9 +364,9 @@ int avl_stl_map_cmp(int itime = 1)
 		array.push(strin);
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 	std::cout << "load file to mem "<< dfEscapeTime << std::endl;
 	std::cout << "......." << std::endl;
 
@@ -392,7 +392,7 @@ int avl_map_time(pecker_array< std::string >& array )
 	LONGLONG QPartStartTick,QPartStopTick;
 	double dfMinus, dfFreq, dfEscapeTime;
 	QueryPerformanceFrequency(&litmp);
-	dfFreq = (double)litmp.QuadPart;   // »ñµÃ¼ÆÊıÆ÷µÄÊ±ÖÓÆµÂÊ
+	dfFreq = (double)litmp.QuadPart;   // è·å¾—è®¡æ•°å™¨çš„æ—¶é’Ÿé¢‘ç‡
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
 	int icount = 0;
 
@@ -417,9 +417,9 @@ int avl_map_time(pecker_array< std::string >& array )
 		array_iterator1.increment();
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 	std::cout << "avl insert "<< dfEscapeTime << std::endl;
 
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
@@ -432,7 +432,7 @@ int avl_map_time(pecker_array< std::string >& array )
 		if (pvalue)
 		{
 			//std::cout << *pvalue << ",";
-			//avl_tree_strings_map.find(*pvalue); // release»áÖ±½ÓºÍĞ³,ËùÒÔÒª¼Óµã¶«Î÷
+			//avl_tree_strings_map.find(*pvalue); // releaseä¼šç›´æ¥å’Œè°,æ‰€ä»¥è¦åŠ ç‚¹ä¸œè¥¿
 			if (null == avl_tree_strings_map.find(*pvalue))
 			{
 				std::cout << "find null" << std::endl;
@@ -446,9 +446,9 @@ int avl_map_time(pecker_array< std::string >& array )
 		array_iterator1.increment();
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 	std::cout << "avl find "<< dfEscapeTime << std::endl;
 
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
@@ -474,9 +474,9 @@ int avl_map_time(pecker_array< std::string >& array )
 		array_iterator1.increment();
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 	std::cout << "avl erase "<< dfEscapeTime << std::endl;
 	return 0;
 }
@@ -491,7 +491,7 @@ int stl_map_time(pecker_array< std::string >& array)
 	LONGLONG QPartStartTick,QPartStopTick;
 	double dfMinus, dfFreq, dfEscapeTime;
 	QueryPerformanceFrequency(&litmp);
-	dfFreq = (double)litmp.QuadPart;   // »ñµÃ¼ÆÊıÆ÷µÄÊ±ÖÓÆµÂÊ
+	dfFreq = (double)litmp.QuadPart;   // è·å¾—è®¡æ•°å™¨çš„æ—¶é’Ÿé¢‘ç‡
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
 	int icount = 0;
 
@@ -514,9 +514,9 @@ int stl_map_time(pecker_array< std::string >& array)
 		array_iterator1.increment();
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 	std::cout << "stl map insert "<< dfEscapeTime << std::endl;
 
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
@@ -540,9 +540,9 @@ int stl_map_time(pecker_array< std::string >& array)
 		array_iterator1.increment();
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 	std::cout << "stl map find "<< dfEscapeTime << std::endl;
 
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
@@ -565,9 +565,9 @@ int stl_map_time(pecker_array< std::string >& array)
 		array_iterator1.increment();
 	}
 	QueryPerformanceCounter(&litmp);
-	QPartStopTick = litmp.QuadPart;   //»ñµÃÖĞÖ¹Öµ
+	QPartStopTick = litmp.QuadPart;   //è·å¾—ä¸­æ­¢å€¼
 	dfMinus = (double)(QPartStopTick-QPartStartTick);
-	dfEscapeTime = dfMinus / dfFreq;    // »ñµÃ¶ÔÓ¦µÄÊ±¼äÖµ£¬µ¥Î»ÎªÃë
+	dfEscapeTime = dfMinus / dfFreq;    // è·å¾—å¯¹åº”çš„æ—¶é—´å€¼ï¼Œå•ä½ä¸ºç§’
 	std::cout << "stl map erase "<< dfEscapeTime << std::endl;
 	return 0;
 }
