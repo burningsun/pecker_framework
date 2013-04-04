@@ -1,0 +1,1 @@
+NATIVE_SRC_FILES := native/pecker_tick.cpp 
