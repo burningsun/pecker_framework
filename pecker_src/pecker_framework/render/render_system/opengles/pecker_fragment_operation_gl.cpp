@@ -7,11 +7,19 @@
  *              501931049@qq.com
  */
 
-#include "pecker_frame_buffer_gl.h"
+#include "pecker_fragment_operation_gl.h"
 #include <GLES2/gl2.h>
 PECKER_BEGIN
 
+pecker_fragment_operation_gles2::pecker_fragment_operation_gles2()
+{
 
+}
+
+pecker_fragment_operation_gles2::~pecker_fragment_operation_gles2()
+{
+
+}
 
 
 PECKER_END
