@@ -1,0 +1,140 @@
+;	COMDAT ??$avl_tree_find@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@Ustringcmp_t_std@@U?$AVL_node_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@pecker_sdk@@@pecker_sdk@@YAPBU?$AVL_node_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@0@PBU10@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABUstringcmp_t_std@@@Z
+_TEXT	SEGMENT
+_ilen2$125000 = -12					; size = 4
+tv202 = -8						; size = 4
+_ilen1$124999 = -4					; size = 4
+_pAvl_root_node$ = 8					; size = 4
+_key$ = 12						; size = 4
+??$avl_tree_find@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@Ustringcmp_t_std@@U?$AVL_node_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@pecker_sdk@@@pecker_sdk@@YAPBU?$AVL_node_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@0@PBU10@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABUstringcmp_t_std@@@Z PROC ; pecker_sdk::avl_tree_find<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,stringcmp_t_std,pecker_sdk::AVL_node_map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> >, COMDAT
+
+; 451  : {
+
+	push	ebp
+	mov	ebp, esp
+	sub	esp, 12					; 0000000cH
+	push	ebx
+	mov	ebx, DWORD PTR _pAvl_root_node$[ebp]
+	push	esi
+	push	edi
+
+; 452  : 	while (null != pAvl_root_node)
+
+	test	ebx, ebx
+	je	SHORT $LN5@avl_tree_f@4
+
+; 453  : 	{
+; 454  : 		int cmp_result = _compare(key,pAvl_root_node->key);
+
+	mov	ecx, DWORD PTR _key$[ebp]
+	mov	edi, DWORD PTR [ecx+16]
+	mov	eax, DWORD PTR [ecx+20]
+	mov	DWORD PTR _ilen1$124999[ebp], edi
+	mov	DWORD PTR tv202[ebp], eax
+	jmp	SHORT $LN6@avl_tree_f@4
+$LL42@avl_tree_f@4:
+	mov	edi, DWORD PTR _ilen1$124999[ebp]
+	mov	ecx, DWORD PTR _key$[ebp]
+$LN6@avl_tree_f@4:
+	cmp	DWORD PTR tv202[ebp], 16		; 00000010H
+	mov	eax, DWORD PTR [ebx+28]
+	lea	edx, DWORD PTR [ebx+12]
+	mov	DWORD PTR _ilen2$125000[ebp], eax
+	jb	SHORT $LN26@avl_tree_f@4
+	mov	ecx, DWORD PTR [ecx]
+$LN26@avl_tree_f@4:
+	cmp	DWORD PTR [edx+20], 16			; 00000010H
+	jb	SHORT $LN34@avl_tree_f@4
+	mov	edx, DWORD PTR [edx]
+$LN34@avl_tree_f@4:
+	cmp	edi, eax
+	jle	SHORT $LN13@avl_tree_f@4
+	mov	edi, eax
+$LN13@avl_tree_f@4:
+	xor	esi, esi
+	test	edi, edi
+	jle	SHORT $LN43@avl_tree_f@4
+	mov	ebx, edx
+	sub	ebx, ecx
+$LL12@avl_tree_f@4:
+	movsx	eax, BYTE PTR [ebx+ecx]
+	movsx	edx, BYTE PTR [ecx]
+	sub	edx, eax
+	jne	SHORT $LN40@avl_tree_f@4
+	inc	esi
+	inc	ecx
+	cmp	esi, edi
+	jl	SHORT $LL12@avl_tree_f@4
+	mov	ebx, DWORD PTR _pAvl_root_node$[ebp]
+	mov	eax, DWORD PTR _ilen2$125000[ebp]
+$LN43@avl_tree_f@4:
+	mov	edx, DWORD PTR _ilen1$124999[ebp]
+	sub	edx, eax
+$LN14@avl_tree_f@4:
+
+; 455  : 		if (cmp_result < 0)
+
+	test	edx, edx
+	jns	SHORT $LN44@avl_tree_f@4
+
+; 456  : 		{
+; 457  : 			pAvl_root_node = (__AVL_node_t*)(pAvl_root_node->_M_left);
+
+	mov	ebx, DWORD PTR [ebx]
+	jmp	SHORT $LN45@avl_tree_f@4
+$LN40@avl_tree_f@4:
+
+; 453  : 	{
+; 454  : 		int cmp_result = _compare(key,pAvl_root_node->key);
+
+	mov	ebx, DWORD PTR _pAvl_root_node$[ebp]
+	jmp	SHORT $LN14@avl_tree_f@4
+$LN44@avl_tree_f@4:
+
+; 458  : 		}
+; 459  : 		else if (cmp_result > 0)
+
+	jle	SHORT $LN2@avl_tree_f@4
+
+; 460  : 		{
+; 461  : 			pAvl_root_node = (__AVL_node_t*)(pAvl_root_node->_M_right);
+
+	mov	ebx, DWORD PTR [ebx+4]
+$LN45@avl_tree_f@4:
+	mov	DWORD PTR _pAvl_root_node$[ebp], ebx
+	test	ebx, ebx
+	jne	SHORT $LL42@avl_tree_f@4
+$LN5@avl_tree_f@4:
+	pop	edi
+	pop	esi
+
+; 466  : 		}
+; 467  : 	}
+; 468  : 	return null;
+
+	xor	eax, eax
+	pop	ebx
+
+; 469  : }
+
+	mov	esp, ebp
+	pop	ebp
+	ret	0
+$LN2@avl_tree_f@4:
+	pop	edi
+	pop	esi
+
+; 462  : 		}
+; 463  : 		else
+; 464  : 		{
+; 465  : 			return pAvl_root_node;
+
+	mov	eax, ebx
+	pop	ebx
+
+; 469  : }
+
+	mov	esp, ebp
+	pop	ebp
+	ret	0
+??$avl_tree_find@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@Ustringcmp_t_std@@U?$AVL_node_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@pecker_sdk@@@pecker_sdk@@YAPBU?$AVL_node_map@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@0@PBU10@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABUstringcmp_t_std@@@Z ENDP ; pecker_sdk::avl_tree_find<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,stringcmp_t_std,pecker_sdk::AVL_node_map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> >
+_TEXT	ENDS

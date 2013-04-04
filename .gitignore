@@ -11,3 +11,8 @@
 *.lai
 *.la
 *.a
+Debug
+ipch
+/pecker_src/pecker_framework.sdf
+/pecker_src/pecker_framework.suo
+/pecker_src/pecker_framework/Debug

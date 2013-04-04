@@ -1,0 +1,249 @@
+;	COMDAT ??$avl_tst_tree_find@DU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U?$pecker_tst_map_node@DHU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U_AVL_node_base@2@@2@@pecker_sdk@@YAPBU?$pecker_tst_map_node@DHU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U_AVL_node_base@2@@0@PBU10@PBDH@Z
+_TEXT	SEGMENT
+_last_cmp_result$ = -68					; size = 4
+_index$ = -56						; size = 4
+_nsearch_string_size$ = -44				; size = 4
+_psearch_string$ = -32					; size = 4
+_nbegin_same_char_size$ = -20				; size = 4
+_ptemp_find_node$ = -8					; size = 4
+_pTst_root_node$ = 8					; size = 4
+_pkey_string$ = 12					; size = 4
+_key_string_size$ = 16					; size = 4
+??$avl_tst_tree_find@DU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U?$pecker_tst_map_node@DHU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U_AVL_node_base@2@@2@@pecker_sdk@@YAPBU?$pecker_tst_map_node@DHU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U_AVL_node_base@2@@0@PBU10@PBDH@Z PROC ; pecker_sdk::avl_tst_tree_find<char,pecker_sdk::string_char_compare<char>,pecker_sdk::pecker_simple_allocator<char>,pecker_sdk::pecker_tst_map_node<char,int,pecker_sdk::string_char_compare<char>,pecker_sdk::pecker_simple_allocator<char>,pecker_sdk::_AVL_node_base> >, COMDAT
+
+; 83   : {
+
+	push	ebp
+	mov	ebp, esp
+	sub	esp, 264				; 00000108H
+	push	ebx
+	push	esi
+	push	edi
+	lea	edi, DWORD PTR [ebp-264]
+	mov	ecx, 66					; 00000042H
+	mov	eax, -858993460				; ccccccccH
+	rep stosd
+
+; 84   : 	//typedef pecker_share_string_base_t< key_char_value_t,__cmp_t,allocate_object_t>  String_base;
+; 85   : 
+; 86   : 	if (null == pTst_root_node || null == pkey_string || 0 >= key_string_size)
+
+	cmp	DWORD PTR _pTst_root_node$[ebp], 0
+	je	SHORT $LN9@avl_tst_tr@5
+	cmp	DWORD PTR _pkey_string$[ebp], 0
+	je	SHORT $LN9@avl_tst_tr@5
+	cmp	DWORD PTR _key_string_size$[ebp], 0
+	jg	SHORT $LN10@avl_tst_tr@5
+$LN9@avl_tst_tr@5:
+
+; 87   : 	{
+; 88   : 		return null;
+
+	xor	eax, eax
+	jmp	$LN11@avl_tst_tr@5
+$LN10@avl_tst_tr@5:
+
+; 89   : 	}
+; 90   : 
+; 91   : 	const _TST_node* ptemp_find_node = pTst_root_node;
+
+	mov	eax, DWORD PTR _pTst_root_node$[ebp]
+	mov	DWORD PTR _ptemp_find_node$[ebp], eax
+
+; 92   : 	string_size_t nbegin_same_char_size = 0;
+
+	mov	DWORD PTR _nbegin_same_char_size$[ebp], 0
+
+; 93   : 	const key_char_value_t* psearch_string;
+; 94   : 	string_size_t nsearch_string_size;
+; 95   : 	tst_array_index_val index = 0;
+
+	mov	DWORD PTR _index$[ebp], 0
+
+; 96   : 	int last_cmp_result;
+; 97   : 
+; 98   : 	psearch_string = pkey_string + index;
+
+	mov	eax, DWORD PTR _pkey_string$[ebp]
+	add	eax, DWORD PTR _index$[ebp]
+	mov	DWORD PTR _psearch_string$[ebp], eax
+
+; 99   : 	nsearch_string_size = key_string_size - index;
+
+	mov	eax, DWORD PTR _key_string_size$[ebp]
+	sub	eax, DWORD PTR _index$[ebp]
+	mov	DWORD PTR _nsearch_string_size$[ebp], eax
+$LN8@avl_tst_tr@5:
+
+; 100  : 	
+; 101  : 
+; 102  : 	while (ptemp_find_node)
+
+	cmp	DWORD PTR _ptemp_find_node$[ebp], 0
+	je	$LN7@avl_tst_tr@5
+
+; 103  : 	{
+; 104  : 		last_cmp_result = ptemp_find_node->key.compare_same_chars(psearch_string,nsearch_string_size,nbegin_same_char_size);
+
+	lea	eax, DWORD PTR _nbegin_same_char_size$[ebp]
+	push	eax
+	mov	ecx, DWORD PTR _nsearch_string_size$[ebp]
+	push	ecx
+	mov	edx, DWORD PTR _psearch_string$[ebp]
+	push	edx
+	mov	ecx, DWORD PTR _ptemp_find_node$[ebp]
+	add	ecx, 12					; 0000000cH
+	call	?compare_same_chars@?$pecker_share_string_base_t@DU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@@pecker_sdk@@QBEHPBDHAAH@Z ; pecker_sdk::pecker_share_string_base_t<char,pecker_sdk::string_char_compare<char>,pecker_sdk::pecker_simple_allocator<char> >::compare_same_chars
+	mov	DWORD PTR _last_cmp_result$[ebp], eax
+
+; 105  : 
+; 106  : 		if (last_cmp_result < 0)
+
+	cmp	DWORD PTR _last_cmp_result$[ebp], 0
+	jge	SHORT $LN6@avl_tst_tr@5
+
+; 107  : 		{
+; 108  : 			ptemp_find_node =  (_TST_node*)(ptemp_find_node->_M_right);
+
+	mov	eax, DWORD PTR _ptemp_find_node$[ebp]
+	mov	ecx, DWORD PTR [eax+4]
+	mov	DWORD PTR _ptemp_find_node$[ebp], ecx
+	jmp	SHORT $LN5@avl_tst_tr@5
+$LN6@avl_tst_tr@5:
+
+; 109  : 		}
+; 110  : 		else if (last_cmp_result > 0)
+
+	cmp	DWORD PTR _last_cmp_result$[ebp], 0
+	jle	SHORT $LN4@avl_tst_tr@5
+
+; 111  : 		{
+; 112  : 			ptemp_find_node = (_TST_node*)(ptemp_find_node->_M_left);
+
+	mov	eax, DWORD PTR _ptemp_find_node$[ebp]
+	mov	ecx, DWORD PTR [eax]
+	mov	DWORD PTR _ptemp_find_node$[ebp], ecx
+
+; 113  : 		}
+; 114  : 		else
+
+	jmp	SHORT $LN5@avl_tst_tr@5
+$LN4@avl_tst_tr@5:
+
+; 115  : 		{
+; 116  : 			index += nbegin_same_char_size;
+
+	mov	eax, DWORD PTR _index$[ebp]
+	add	eax, DWORD PTR _nbegin_same_char_size$[ebp]
+	mov	DWORD PTR _index$[ebp], eax
+
+; 117  : 			if (index >= key_string_size)
+
+	mov	eax, DWORD PTR _index$[ebp]
+	cmp	eax, DWORD PTR _key_string_size$[ebp]
+	jl	SHORT $LN2@avl_tst_tr@5
+
+; 118  : 			{
+; 119  : 				if (nbegin_same_char_size == ptemp_find_node->key.get_string_length())
+
+	mov	ecx, DWORD PTR _ptemp_find_node$[ebp]
+	add	ecx, 12					; 0000000cH
+	call	?get_string_length@?$pecker_share_string_base_t@DU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@@pecker_sdk@@QBEHXZ ; pecker_sdk::pecker_share_string_base_t<char,pecker_sdk::string_char_compare<char>,pecker_sdk::pecker_simple_allocator<char> >::get_string_length
+	cmp	DWORD PTR _nbegin_same_char_size$[ebp], eax
+	jne	SHORT $LN1@avl_tst_tr@5
+
+; 120  : 				{
+; 121  : 					return ptemp_find_node;
+
+	mov	eax, DWORD PTR _ptemp_find_node$[ebp]
+	jmp	SHORT $LN11@avl_tst_tr@5
+$LN1@avl_tst_tr@5:
+
+; 122  : 				}
+; 123  : 				break;
+
+	jmp	SHORT $LN7@avl_tst_tr@5
+$LN2@avl_tst_tr@5:
+
+; 124  : 			}
+; 125  : 			ptemp_find_node = (_TST_node*)(ptemp_find_node->_M_middle_node);
+
+	mov	eax, DWORD PTR _ptemp_find_node$[ebp]
+	mov	ecx, DWORD PTR [eax+40]
+	mov	DWORD PTR _ptemp_find_node$[ebp], ecx
+
+; 126  : 			psearch_string = pkey_string + index;
+
+	mov	eax, DWORD PTR _pkey_string$[ebp]
+	add	eax, DWORD PTR _index$[ebp]
+	mov	DWORD PTR _psearch_string$[ebp], eax
+
+; 127  : 			nsearch_string_size = key_string_size - index;
+
+	mov	eax, DWORD PTR _key_string_size$[ebp]
+	sub	eax, DWORD PTR _index$[ebp]
+	mov	DWORD PTR _nsearch_string_size$[ebp], eax
+$LN5@avl_tst_tr@5:
+
+; 128  : 		}
+; 129  : 	}
+
+	jmp	$LN8@avl_tst_tr@5
+$LN7@avl_tst_tr@5:
+
+; 130  : 	return null;
+
+	xor	eax, eax
+$LN11@avl_tst_tr@5:
+
+; 131  : }
+
+	push	edx
+	mov	ecx, ebp
+	push	eax
+	lea	edx, DWORD PTR $LN15@avl_tst_tr@5
+	call	@_RTC_CheckStackVars@8
+	pop	eax
+	pop	edx
+	pop	edi
+	pop	esi
+	pop	ebx
+	add	esp, 264				; 00000108H
+	cmp	ebp, esp
+	call	__RTC_CheckEsp
+	mov	esp, ebp
+	pop	ebp
+	ret	0
+	npad	3
+$LN15@avl_tst_tr@5:
+	DD	1
+	DD	$LN14@avl_tst_tr@5
+$LN14@avl_tst_tr@5:
+	DD	-20					; ffffffecH
+	DD	4
+	DD	$LN13@avl_tst_tr@5
+$LN13@avl_tst_tr@5:
+	DB	110					; 0000006eH
+	DB	98					; 00000062H
+	DB	101					; 00000065H
+	DB	103					; 00000067H
+	DB	105					; 00000069H
+	DB	110					; 0000006eH
+	DB	95					; 0000005fH
+	DB	115					; 00000073H
+	DB	97					; 00000061H
+	DB	109					; 0000006dH
+	DB	101					; 00000065H
+	DB	95					; 0000005fH
+	DB	99					; 00000063H
+	DB	104					; 00000068H
+	DB	97					; 00000061H
+	DB	114					; 00000072H
+	DB	95					; 0000005fH
+	DB	115					; 00000073H
+	DB	105					; 00000069H
+	DB	122					; 0000007aH
+	DB	101					; 00000065H
+	DB	0
+??$avl_tst_tree_find@DU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U?$pecker_tst_map_node@DHU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U_AVL_node_base@2@@2@@pecker_sdk@@YAPBU?$pecker_tst_map_node@DHU?$string_char_compare@D@pecker_sdk@@V?$pecker_simple_allocator@D@2@U_AVL_node_base@2@@0@PBU10@PBDH@Z ENDP ; pecker_sdk::avl_tst_tree_find<char,pecker_sdk::string_char_compare<char>,pecker_sdk::pecker_simple_allocator<char>,pecker_sdk::pecker_tst_map_node<char,int,pecker_sdk::string_char_compare<char>,pecker_sdk::pecker_simple_allocator<char>,pecker_sdk::_AVL_node_base> >
+_TEXT	ENDS

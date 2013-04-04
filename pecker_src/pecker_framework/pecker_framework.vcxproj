@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{76A56045-00A1-411F-B387-19B3FE8A873E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>pecker_framework</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExpandAttributedSource>true</ExpandAttributedSource>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <AdditionalIncludeDirectories>$(SolutionDir)\depends_lib\OGLES2\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
+      <AdditionalDependencies>$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libEGL.lib;$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <EnablePREfast>false</EnablePREfast>
+      <ExpandAttributedSource>true</ExpandAttributedSource>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <GlobalOptimizations>true</GlobalOptimizations>
+      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
+      <Parallelization>false</Parallelization>
+      <UseIntelOptimizedHeaders>false</UseIntelOptimizedHeaders>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <Profile>true</Profile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="CPeckerObject.h" />
+    <ClInclude Include="data\pecker_array.h" />
+    <ClInclude Include="data\pecker_array_algorithm.h" />
+    <ClInclude Include="data\pecker_array_iterator.h" />
+    <ClInclude Include="data\pecker_avl_tree.h" />
+    <ClInclude Include="data\pecker_avl_tree_algorithm.h" />
+    <ClInclude Include="data\pecker_balance_tenary_tree.h" />
+    <ClInclude Include="data\pecker_balance_tst_algorithm.h" />
+    <ClInclude Include="data\pecker_bst_algorithm.h" />
+    <ClInclude Include="data\pecker_bst_iterator.h" />
+    <ClInclude Include="data\pecker_iterator.h" />
+    <ClInclude Include="data\pecker_list.h" />
+    <ClInclude Include="data\pecker_list_algorithm.h" />
+    <ClInclude Include="data\pecker_list_iterator.h" />
+    <ClInclude Include="data\pecker_matrix.h" />
+    <ClInclude Include="data\pecker_nodes_allocate.h" />
+    <ClInclude Include="data\pecker_stack.h" />
+    <ClInclude Include="data\pecker_value_compare.h" />
+    <ClInclude Include="data\pecker_string.h" />
+    <ClInclude Include="data\pecker_vector.h" />
+    <ClInclude Include="native\pecker_allocator.h" />
+    <ClInclude Include="native\pecker_file_io.h" />
+    <ClInclude Include="native\pecker_log.h" />
+    <ClInclude Include="native\pecker_stream.h" />
+    <ClInclude Include="native\pecker_thread.h" />
+    <ClInclude Include="native\pecker_timetick.h" />
+    <ClInclude Include="native\pecker_window.h" />
+    <ClInclude Include="PeckerConfig.h" />
+    <ClInclude Include="PeckerDefines.h" />
+    <ClInclude Include="pool_alloc.h" />
+    <ClInclude Include="render\pecker_render_object.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_buffer_gl.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_fragment_operation_gl.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_frame_buffer_gl.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_opengles_device.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_opengles_object.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_render_buffer_gl.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_shader_program_glsles1.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_shader_program_glsles3.h" />
+    <ClInclude Include="render\render_system\opengles\pecker_texture_gl.h" />
+    <ClInclude Include="render\render_system\pecker_buffer.h" />
+    <ClInclude Include="render\render_system\pecker_fragment_operation.h" />
+    <ClInclude Include="render\render_system\pecker_frame_buffer.h" />
+    <ClInclude Include="render\render_system\pecker_render_application.h" />
+    <ClInclude Include="render\render_system\pecker_render_buffer.h" />
+    <ClInclude Include="render\render_system\pecker_texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="array_test.cpp" />
+    <ClCompile Include="avl_tree_container_test.cpp" />
+    <ClCompile Include="bst_iterator_test.cpp" />
+    <ClCompile Include="btst_tree_test.cpp" />
+    <ClCompile Include="data\pecker_matrix.cpp" />
+    <ClCompile Include="data\pecker_vector.cpp" />
+    <ClCompile Include="list_test.cpp" />
+    <ClCompile Include="native\pecker_file_io.cpp" />
+    <ClCompile Include="native\pecker_stream.cpp" />
+    <ClCompile Include="native\pecker_thread.cpp" />
+    <ClCompile Include="native\pecker_tick.cpp" />
+    <ClCompile Include="native\pecker_window.cpp" />
+    <ClCompile Include="PeckerObject.cpp" />
+    <ClCompile Include="render\pecker_render_object.cpp" />
+    <ClCompile Include="render\render_system\opengles\pecker_buffer_gl.cpp" />
+    <ClCompile Include="render\render_system\opengles\pecker_fragment_operation_gl.cpp" />
+    <ClCompile Include="render\render_system\opengles\pecker_frame_buffer_gl.cpp" />
+    <ClCompile Include="render\render_system\opengles\pecker_opengles_object.cpp" />
+    <ClCompile Include="render\render_system\opengles\pecker_render_buffer_gl.cpp" />
+    <ClCompile Include="render\render_system\opengles\pecker_shader_program_glsles1.cpp" />
+    <ClCompile Include="render\render_system\opengles\pecker_texture_gl.cpp" />
+    <ClCompile Include="render\render_system\pecker_buffer.cpp" />
+    <ClCompile Include="render\render_system\pecker_render_application.cpp" />
+    <ClCompile Include="render\render_system\pecker_render_buffer.cpp" />
+    <ClCompile Include="render\render_system\pecker_texture.cpp" />
+    <ClCompile Include="share_string_test.cpp" />
+    <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="thread_test.cpp" />
+    <ClCompile Include="vertex_index_test.cpp" />
+    <ClCompile Include="window_test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="avlasm_debug.txt" />
+    <None Include="avlasm_release_.txt" />
+    <None Include="avlpeckerstring.txt" />
+    <None Include="avlstdstringasm.txt" />
+    <None Include="testlog.txt" />
+    <None Include="tetlog4.txt" />
+    <None Include="texlog3.txt" />
+    <None Include="textlog2.txt" />
+    <None Include="tstasm_debug.txt" />
+    <None Include="tstasm_release.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
