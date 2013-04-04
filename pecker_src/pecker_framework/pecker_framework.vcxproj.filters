@@ -281,5 +281,6 @@
     <None Include="textlog2.txt" />
     <None Include="texlog3.txt" />
     <None Include="tetlog4.txt" />
+    <None Include="license.txt" />
   </ItemGroup>
 </Project>

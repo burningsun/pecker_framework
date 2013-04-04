@@ -25,7 +25,7 @@ public:
 	static const UInt MAX_DEFUALT_TEXTURE_FILTER_COUNT = 16;
 private:
 	UInt _M_gpu_target;
-	nSize _M_mip_level_count;
+	UInt _M_mip_level_count;
 	nSize _M_defualt_texture_filter_count;
 	HEnum _M_render_type;
 	UInt _M_active_miplevel;
@@ -73,7 +73,7 @@ class pecker_texture_cube_gles2 : public Ipecker_texture_cube,public virtual pec
 {
 private:
 	UInt _M_gpu_target;
-	nSize _M_mip_level_count;
+	UInt _M_mip_level_count;
 	nSize _M_defualt_texture_filter_count;
 	HEnum _M_render_type;
 	UInt _M_active_miplevel;
