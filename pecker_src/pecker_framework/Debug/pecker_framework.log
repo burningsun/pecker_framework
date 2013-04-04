@@ -1,4 +1,0 @@
-﻿  test_main.cpp
-LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/PROFILE' specification
-array_test.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:REF' specification
-  pecker_framework.vcxproj -> F:\codes\pecker_framework_git\pecker_src\Debug\pecker_framework.exe
