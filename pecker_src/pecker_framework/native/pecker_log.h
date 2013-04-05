@@ -27,6 +27,8 @@
 #endif
 #endif
 
+#define MAX_ERROR_INFO_BYTES 2048
+extern char g_error_info[MAX_ERROR_INFO_BYTES];
 PECKER_BEGIN
 
 PECKER_END

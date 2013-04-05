@@ -444,7 +444,6 @@ public:
 
 		return P_OK;
 	}
-
 	string_result init(const char_value_t* pstring_chars, string_size_t string_length,string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
 	{
 		if ( (null == pstring_chars && 0 >= string_length) )
@@ -466,6 +465,41 @@ public:
 
 		return P_OK;
 	}
+	string_result init(const char_value_t* pstring_chars, string_size_t string_length,
+		const char_value_t& end_char,string_boolean_flag bfill_all_end_space = STRING_BOOLEAN_FALSE,string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
+	{
+		if ( (null == pstring_chars && 0 >= string_length) )
+		{
+			return P_ERR;
+		}
+
+		string_result init_result = init(string_length+1,bnew_buffer);
+		if (P_OK != init_result)
+		{
+			return init_result;
+		}
+
+		_M_string_length = string_length;
+		for (string_char_index index = 0; index < string_length; ++index)
+		{
+			*(_M_pthis_string_data+index) = *(pstring_chars + index);
+		}
+		if (STRING_BOOLEAN_FALSE == bfill_all_end_space)
+		{
+			*(_M_pthis_string_data+string_length) = end_char;
+		}
+		else
+		{
+			for (string_char_index index = string_length;index < _M_string_buffer_size; ++index)
+			{
+				*(_M_pthis_string_data+string_length) = end_char;
+			}
+		}
+		
+		return P_OK;
+	}
+
+
 	string_result copy(const String_base& other)
 	{
 		if (this != &other)

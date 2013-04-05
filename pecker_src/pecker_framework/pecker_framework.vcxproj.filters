@@ -266,6 +266,9 @@
     <ClCompile Include="render\render_system\opengles\pecker_fragment_operation_gl.cpp">
       <Filter>render\render_system\opengles</Filter>
     </ClCompile>
+    <ClCompile Include="native\pecker_log.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="testlog.txt" />

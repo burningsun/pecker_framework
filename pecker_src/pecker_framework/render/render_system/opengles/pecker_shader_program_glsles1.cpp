@@ -8,6 +8,7 @@
  */
 
 #include "pecker_shader_program_glsles1.h"
+#include "../../../native/pecker_log.h"
 #include <GLES2/gl2.h>
 PECKER_BEGIN
 
@@ -32,21 +33,84 @@ pecker_shader_program_glsles1::~pecker_shader_program_glsles1()
 UInt pecker_shader_program_glsles1::init_shader_program(UInt nvertex_shader, UInt nframe_shader,const pecker_string* P_IN pstr_bind_attributes /* = null */,
 	nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)	
 {
-	if (0 != _M_program)
+	if (0 == nvertex_shader || 0 == nframe_shader)
 	{
-		return 0;
+		return P_INVALID_VALUE;
 	}
 
-	return _M_program;
+	if (0 != _M_frame_shader || 0 != _M_vertex_shader || 0 != _M_program)
+	{
+		return P_UNIQUE_ERR;
+	}
+	GLuint program = glCreateProgram();
+
+	if (0 == program)
+	{
+		PECKER_LOG_ERR("pecker_shader_program_glsles1::init_shader_program","program location = %d",_M_program);
+		return P_FAIL;
+	}
+
+	glAttachShader(program, nframe_shader);
+	glAttachShader(program, nvertex_shader);
+
+	for (nINDEX i = 0; i < nAttributes_count; ++i)
+	{
+		const pecker_string* str_attributes = &pstr_bind_attributes[i];
+
+		if(null != str_attributes && null != str_attributes->get_data())
+		{
+			glBindAttribLocation(program, i, (const GLchar*)(str_attributes->get_data()));
+			if (GL_NO_ERROR != glGetError())
+			{
+				glDeleteProgram(program);
+				return P_INVALID_VALUE;
+			}
+		}
+	}
+
+	glLinkProgram(program);
+	GLint linked = 0;
+	glGetProgramiv(program, GL_LINK_STATUS, &linked);
+	if (!linked)
+	{
+		
+		//glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLen);
+		//if (infoLen >= MAX_ERROR_INFO_BYTES)
+		//{
+		//	infoLen = MAX_ERROR_INFO_BYTES -1 ;
+		//}
+
+		if (null != pstr_error_info)
+		{
+			GLsizei infoLen = 0;
+			GLint error_info_length = 0;
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &error_info_length);
+			pstr_error_info->init(error_info_length+1);
+			glGetProgramInfoLog(program, MAX_ERROR_INFO_BYTES, &infoLen, (GLchar*)(pstr_error_info->get_data()));
+			PECKER_LOG_ERR("pecker_shader_program_glsles1::init_shader_program",
+				"LinkProgram error=%s",pstr_error_info->get_data());
+			pstr_error_info->init(infoLen+1);
+		}
+	
+
+		//}
+
+		glDeleteProgram(program);
+		program = 0;
+	}
+   else
+   {
+		_M_vertex_shader = nvertex_shader;
+		_M_frame_shader = nframe_shader;
+		_M_program = program;
+   }
+
+
+	return program;
 }
 UInt pecker_shader_program_glsles1::init_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
 {
-	if (0 != _M_program)
-	{
-		return 0;
-	}
-
-	return _M_program;
+	return init_shader_program(_M_vertex_shader,_M_frame_shader,pstr_bind_attributes,nAttributes_count,pstr_error_info);
 }
 
 UInt pecker_shader_program_glsles1::load_frame_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info /* = null */)
@@ -144,10 +208,11 @@ UInt pecker_shader_program_glsles1::delete_shader_program()
 	{
 		::glDeleteProgram(_M_program);
 		UInt uerror_code = pecker_opengles_v2_object::get_last_error_code();
-		if (GL_NO_ERROR == uerror_code)
-		{
-			_M_program = 0;
-		}
+		//if (GL_NO_ERROR == uerror_code)
+		//{
+		//	_M_program = 0;
+		//}
+		_M_program = 0;
 		return uerror_code;
 
 	}
@@ -159,11 +224,11 @@ UInt pecker_shader_program_glsles1::delete_frame_shader()
 	{
 		::glDeleteShader(_M_frame_shader);
 		UInt uerror_code = pecker_opengles_v2_object::get_last_error_code();
-		if (GL_NO_ERROR == uerror_code)
-		{
-			_M_frame_shader = 0;
-		}
-
+		//if (GL_NO_ERROR == uerror_code)
+		//{
+		//	_M_frame_shader = 0;
+		//}
+		_M_frame_shader = 0;
 		return uerror_code;
 		
 	}
@@ -175,10 +240,11 @@ UInt pecker_shader_program_glsles1::delete_vertex_shader()
 	{
 		::glDeleteShader(_M_vertex_shader);
 		UInt uerror_code = pecker_opengles_v2_object::get_last_error_code();
-		if (GL_NO_ERROR == uerror_code)
-		{
-			_M_vertex_shader = 0;
-		}
+		//if (GL_NO_ERROR == uerror_code)
+		//{
+		//	_M_vertex_shader = 0;
+		//}
+		_M_vertex_shader = 0;
 		return uerror_code;
 	}
 	return P_OK;

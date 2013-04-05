@@ -145,6 +145,7 @@
     <ClCompile Include="data\pecker_vector.cpp" />
     <ClCompile Include="list_test.cpp" />
     <ClCompile Include="native\pecker_file_io.cpp" />
+    <ClCompile Include="native\pecker_log.cpp" />
     <ClCompile Include="native\pecker_stream.cpp" />
     <ClCompile Include="native\pecker_thread.cpp" />
     <ClCompile Include="native\pecker_tick.cpp" />

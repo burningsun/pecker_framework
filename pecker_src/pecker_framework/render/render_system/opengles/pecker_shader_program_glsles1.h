@@ -20,6 +20,7 @@ private:
 	UInt  _M_program;
 	UInt _M_frame_shader;
 	UInt _M_vertex_shader;
+	//UInt _M_attribute_count;
 public:
 	pecker_shader_program_glsles1();
 	virtual ~pecker_shader_program_glsles1();
@@ -46,6 +47,8 @@ public:
 	UInt get_program() const;
 	UInt get_frame_shader() const;
 	UInt get_vertex_shader() const;
+public:
+	UInt get_attribute_count();
 
 public:
 	static pecker_shader_program_glsles1* get_using_program();
