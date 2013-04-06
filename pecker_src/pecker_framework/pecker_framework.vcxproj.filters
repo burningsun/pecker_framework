@@ -174,6 +174,9 @@
     <ClInclude Include="render\render_system\opengles\pecker_fragment_operation_gl.h">
       <Filter>render\render_system\opengles</Filter>
     </ClInclude>
+    <ClInclude Include="render\render_system\pecker_gpu_program.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">

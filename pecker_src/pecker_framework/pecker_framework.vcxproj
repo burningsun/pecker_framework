@@ -132,6 +132,7 @@
     <ClInclude Include="render\render_system\pecker_buffer.h" />
     <ClInclude Include="render\render_system\pecker_fragment_operation.h" />
     <ClInclude Include="render\render_system\pecker_frame_buffer.h" />
+    <ClInclude Include="render\render_system\pecker_gpu_program.h" />
     <ClInclude Include="render\render_system\pecker_render_application.h" />
     <ClInclude Include="render\render_system\pecker_render_buffer.h" />
     <ClInclude Include="render\render_system\pecker_texture.h" />

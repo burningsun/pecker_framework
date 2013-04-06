@@ -11,10 +11,11 @@
 #define PECKER_SHADER_PROGRAM_GLSLES1_H_
 
 #include "pecker_opengles_object.h"
+#include "../pecker_gpu_program.h"
 #include "../../../data/pecker_matrix.h"
 PECKER_BEGIN
 
-class pecker_shader_program_glsles1 : public pecker_opengles_v2_object
+class pecker_shader_program_glsles1 : public Ipecker_gpu_program, public virtual pecker_opengles_v2_object
 {
 private:
 	UInt  _M_program;
