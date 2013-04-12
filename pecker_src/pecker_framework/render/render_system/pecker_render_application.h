@@ -13,14 +13,22 @@
 #include "../pecker_render_object.h"
 #include "pecker_buffer.h"
 #include "pecker_texture.h"
+#include "pecker_gpu_program.h"
 
 PECKER_BEGIN
 
-//struct render_draw_params
-//{
-//
-//};
-
+PeckerInterface Ipecker_graphic_device
+{
+	virtual ~Ipecker_graphic_device(){;}
+	virtual HResult bind_frame_buffer_object(Ipecker_frame_buffer_object* prender_object) = 0;
+	virtual HResult bind_vertex_buffer(Ipecker_vertex_buffer* pvertex_buffer) = 0;
+	virtual HResult bind_index_buffer(Ipecker_index_buffer* pindex_buffer) = 0;
+	virtual HResult use_gpu_program(Ipecker_gpu_program* pshader_program) = 0;
+	virtual HResult set_object(HEnum object_type,PVoid pobject) = 0;
+	virtual HResult begin() = 0;
+	virtual HResult end() = 0;
+	virtual HResult get_error_info(pecker_string &error_info) = 0;
+};
 
 PeckerInterface Ipecker_render_application
 {
