@@ -72,9 +72,9 @@ class pecker_window_context;
 //	virtual HResult on_windowproc(pecker_window_context* pwindow_context, UInt umessage,Long wParam,Long lParam) = 0;
 //};
 
-PeckerInterface pecker_window_display //: public pecker_window_process
+PeckerInterface Ipecker_window_display //: public pecker_window_process
 {
-	virtual ~pecker_window_display(){;}
+	virtual ~Ipecker_window_display(){;}
 	virtual HResult on_init_view(nSize x,nSize y,nSize width,nSize height) = 0;
 	virtual HResult on_resize_view(nSize x,nSize y,nSize width,nSize height) = 0;
 	virtual HResult on_draw_frame() = 0;
@@ -85,10 +85,12 @@ PeckerInterface pecker_window_display //: public pecker_window_process
 	virtual HResult on_close_frame() = 0;
 	virtual HResult on_resume_frame() = 0;
 
+	virtual HResult attach_graphic_device(PeckerInterface Ipecker_render_device* pdevice) = 0;
+
 	//virtual HResult on_render() = 0;
 };
 
-class pecker_window_context : protected pecker_window_display
+class pecker_window_context : protected Ipecker_window_display
 {
 public:
 	pecker_window_context();
@@ -97,6 +99,7 @@ protected:
 	pecker_window_context* _M_perant_context;
 	Boolean _M_closed;
 	pecker_window_info _M_window_info;
+	PeckerInterface Ipecker_render_device* _M_render_device;
 
 	pecker_thread					_M_render_thread;
 	pecker_critical_section  _M_render_lock;
@@ -107,6 +110,7 @@ protected:
 	virtual HResult on_render();
 	virtual HResult on_parse();
 	virtual HResult on_resume();
+	HResult attach_graphic_device(PeckerInterface Ipecker_render_device* pdevice);
 public:
 	static HResult pecker_windows_apps(pecker_window_context* pwindow_context, UInt umessage,Long wParam,Long lParam);
 	static HResult pecker_render_thread(pecker_window_context* pwindow_context);
@@ -119,6 +123,7 @@ public:
 	virtual HResult set_full_screen(Boolean bfull_screen_enable);
 	virtual HResult show(Boolean bIs_dialog = BOOL_FALSE);
 	virtual HResult close();
+	
 };
 
 template< class graphic_driver >

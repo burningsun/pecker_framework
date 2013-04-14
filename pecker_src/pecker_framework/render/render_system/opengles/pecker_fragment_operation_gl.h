@@ -7,8 +7,8 @@
  *              501931049@qq.com
  */
 
-#ifndef PECKER_FRAME_BUFFER_GL_H_
-#define  PECKER_FRAME_BUFFER_GL_H_
+#ifndef PECKER_FRAMENT_OPERATION_GL_H_
+#define  PECKER_FRAMENT_OPERATION_GL_H_
 
 #include "pecker_opengles_object.h"
 #include "../pecker_fragment_operation.h"
@@ -59,4 +59,4 @@ public:
 
 PECKER_END
 
-#endif //PECKER_FRAME_BUFFER_GL_H_
+#endif //PECKER_FRAMENT_OPERATION_GL_H_

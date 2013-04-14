@@ -108,12 +108,12 @@ UInt pecker_shader_program_glsles1::init_shader_program(UInt nvertex_shader, UIn
 
 	return program;
 }
-UInt pecker_shader_program_glsles1::init_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
 {
 	return init_shader_program(_M_vertex_shader,_M_frame_shader,pstr_bind_attributes,nAttributes_count,pstr_error_info);
 }
 
-UInt pecker_shader_program_glsles1::load_frame_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info /* = null */)
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::load_frame_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info /* = null */)
 {
 	if (0 != _M_frame_shader)
 	{
@@ -157,7 +157,7 @@ UInt pecker_shader_program_glsles1::load_frame_shader_source(const pecker_string
 	}
 	return (UInt)shader;
 }
-UInt pecker_shader_program_glsles1::load_vertex_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info /* = null */)
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::load_vertex_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info /* = null */)
 {
 	if (0 != _M_vertex_shader)
 	{
@@ -202,7 +202,7 @@ UInt pecker_shader_program_glsles1::load_vertex_shader_source(const pecker_strin
 	return (UInt)shader;
 }
 
-UInt pecker_shader_program_glsles1::delete_shader_program()
+HResult pecker_shader_program_glsles1::delete_shader_program()
 {
 	if (0 != _M_program)
 	{
@@ -218,7 +218,7 @@ UInt pecker_shader_program_glsles1::delete_shader_program()
 	}
 	return P_OK;
 }
-UInt pecker_shader_program_glsles1::delete_frame_shader()
+HResult pecker_shader_program_glsles1::delete_frame_shader()
 {
 	if (0 != _M_frame_shader)
 	{
@@ -234,7 +234,7 @@ UInt pecker_shader_program_glsles1::delete_frame_shader()
 	}
 	return P_OK;
 }
-UInt pecker_shader_program_glsles1::delete_vertex_shader()
+HResult pecker_shader_program_glsles1::delete_vertex_shader()
 {
 	if (0 != _M_vertex_shader)
 	{
@@ -250,7 +250,7 @@ UInt pecker_shader_program_glsles1::delete_vertex_shader()
 	return P_OK;
 }
 
-UInt pecker_shader_program_glsles1::using_program()
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::using_program()
 {
 	if (0 != _M_program)
 	{
@@ -264,7 +264,11 @@ UInt pecker_shader_program_glsles1::using_program()
 	}
 	return 0;
 }
-	
+
+Ipecker_gpu_program_param* pecker_shader_program_glsles1::get_program_param()
+{
+	return null;
+}
 UInt pecker_shader_program_glsles1::get_attribute_location(const pecker_string& str_attribute_name) const
 {
 	UInt return_index = (UInt)(-1);

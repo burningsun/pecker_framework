@@ -8,6 +8,7 @@
  */
 
 #include "pecker_frame_buffer_gl.h"
+#include "pecker_fragment_operation_gl.h"
 #include <GLES2/gl2.h>
 PECKER_BEGIN
 
@@ -195,5 +196,11 @@ HEnum pecker_frame_buffer_gles2::check_status() const
 	return FRAMEBUFFER_NOT_EXIST;
 }
 
+
+Ipecker_fragment_operation* pecker_frame_buffer_gles2::get_fragmet_operation()
+{
+	static pecker_fragment_operation_gles2 fragment_operation;
+	return &fragment_operation;
+}
 
 PECKER_END

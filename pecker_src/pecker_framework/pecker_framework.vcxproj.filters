@@ -177,6 +177,12 @@
     <ClInclude Include="render\render_system\pecker_gpu_program.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
+    <ClInclude Include="render\render_system\pecker_render_system.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pecker_render_device.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">

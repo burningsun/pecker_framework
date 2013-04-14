@@ -106,6 +106,8 @@ PeckerInterface Ipecker_frame_buffer //: public Ipecker_graphic_buffer
 	virtual HResult attach_texture(Ipecker_texture* ptexture,HEnum attach_index = 0)=0;//,HEnum face_type = 0,nSize zoffset = 0) = 0;
 	virtual HResult attach_frame_buffer_object(Ipecker_frame_buffer_object* pframe_buffer_object,HEnum attach_index = 0) = 0;
 	virtual HEnum check_status() const= 0;
+
+	virtual PeckerInterface Ipecker_fragment_operation* get_fragmet_operation() = 0;
 };
 
 

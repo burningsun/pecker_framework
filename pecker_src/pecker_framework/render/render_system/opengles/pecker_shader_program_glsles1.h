@@ -26,16 +26,18 @@ public:
 	pecker_shader_program_glsles1();
 	virtual ~pecker_shader_program_glsles1();
 	UInt init_shader_program(UInt nvertex_shader, UInt nframe_shader,const pecker_string* P_IN pstr_bind_attributes = null,nSize nAttributes_count = 0,pecker_string* P_OUT pstr_error_info = null);
-	UInt init_shader_program(const pecker_string* P_IN pstr_bind_attributes = null,nSize nAttributes_count = 0,pecker_string* P_OUT pstr_error_info = null);
+	GPU_LOCATION_HANDLE init_shader_program(const pecker_string* P_IN pstr_bind_attributes = null,nSize nAttributes_count = 0,pecker_string* P_OUT pstr_error_info = null);
 
-	UInt load_frame_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info = null);
-	UInt load_vertex_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info = null);
+	GPU_LOCATION_HANDLE load_frame_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info = null);
+	GPU_LOCATION_HANDLE load_vertex_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info = null);
 
-	UInt delete_shader_program();
-	UInt delete_frame_shader();
-	UInt delete_vertex_shader();
+	HResult delete_shader_program();
+	HResult delete_frame_shader();
+	HResult delete_vertex_shader();
 
-	UInt using_program();
+	Ipecker_gpu_program_param* get_program_param();
+
+	GPU_LOCATION_HANDLE using_program();
 	UInt get_attribute_location(const pecker_string& str_attribute_name) const;
 	HResult get_active_attribute(UInt attribute_index,HEnum& attribute_type,nSize &attribute_size, pecker_string& str_attribute_name) const;
 

@@ -12,6 +12,7 @@
 
 #include "pecker_opengles_object.h"
 #include "../pecker_frame_buffer.h"
+#include "../pecker_fragment_operation.h"
 
 PECKER_BEGIN
 
@@ -32,6 +33,7 @@ public:
 	HResult attach_texture(Ipecker_texture* ptexture,HEnum attach_index = 0);//,HEnum face_type = 0,nSize zoffset = 0);
 	HResult attach_frame_buffer_object(Ipecker_frame_buffer_object* pframe_buffer_object,HEnum attach_index = 0);
 	HEnum check_status() const;
+	Ipecker_fragment_operation* get_fragmet_operation();
 public:
 	virtual UInt get_object_location() const;
 };

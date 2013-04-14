@@ -8,6 +8,8 @@
  */
 #include "pecker_window.h"
 #include "pecker_stream.h"
+#include "../render/render_system/pecker_render_device.h"
+
 PECKER_BEGIN
 
 #ifdef WINDOWS_PC
@@ -45,7 +47,7 @@ DWORD  WINAPI pecker_render_thread_callback(__in  LPVOID lpParameter)
 #endif
 
 static UInt globle_windows_id = 0;
-pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_closed(BOOL_FALSE)
+pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_closed(BOOL_FALSE),_M_render_device(null)
 {
 	_M_window_info._M_window_id = globle_windows_id;
 	++globle_windows_id;
@@ -223,7 +225,24 @@ HResult pecker_window_context::pecker_render_thread(pecker_window_context* pwind
 	return P_OK;
 }
 
+HResult pecker_window_context::attach_graphic_device(PeckerInterface Ipecker_render_device* pdevice)
+{
+	if (null != pdevice)
+	{
+		if (null != _M_render_device)
+		{
+			pecker_render_object* pobject = dynamic_cast<pecker_render_object*>(_M_render_device);
+			if (null != pobject)
+			{
+				pobject->release_this_reference();
+			}
+		}
+		_M_render_device = pdevice;
 
+		return P_OK;
+	}
+	return P_INVALID_VALUE;
+}
 
 
 Boolean pecker_window_context::is_visiable() const
