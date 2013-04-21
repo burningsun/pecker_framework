@@ -10,11 +10,11 @@
 
 #include "pecker_texture_gl.h"
 #include "../pecker_frame_buffer.h"
-#include "../../../native/pecker_allocator.h"
+#include "pecker_render_resource_container_gl.h"
 #include <GLES2/gl2.h>
 PECKER_BEGIN
 
-typedef pecker_simple_allocator<Byte> texture_buffer_allocator;
+
 
 pecker_texture_2d_gles2::pecker_texture_2d_gles2():
 							_M_gpu_target(0),

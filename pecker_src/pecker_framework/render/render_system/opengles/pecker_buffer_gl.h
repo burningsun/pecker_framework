@@ -16,7 +16,7 @@
 
 PECKER_BEGIN
 
-class pecker_vertex_buffer_gles2 : public Ipecker_vertex_buffer, public  pecker_opengles_v2_object
+class pecker_vertex_buffer_gles2 : public Ipecker_vertex_buffer, public  virtual pecker_opengles_v2_object
 {
 public:
 	static const UInt MAX_VERTEXT_ATTRIBUTE_COUNT = 8;
@@ -87,7 +87,7 @@ public:
 	virtual UInt get_object_location() const;
 };
 
-class pecker_index_buffer_gles2 : public Ipecker_index_buffer, public  pecker_opengles_v2_object
+class pecker_index_buffer_gles2 : public Ipecker_index_buffer, public virtual pecker_opengles_v2_object
 {
 protected:
 	union index_cpu_ram_buffer

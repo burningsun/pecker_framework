@@ -9,12 +9,12 @@
 
 #include "pecker_render_buffer_gl.h"
 #include "../pecker_frame_buffer.h"
-#include "../../../native/pecker_allocator.h"
+#include "pecker_render_resource_container_gl.h"
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 PECKER_BEGIN
 	
-typedef pecker_simple_allocator<Byte> render_buffer_allocator;
+
 
 // OPENGL ES 2颜色缓存常量对应表
 static const UInt COLOR_BUFFER_FORMAT_TABLE_GLES2[COLOR_BUFFER_FORMAT_COUNT] 

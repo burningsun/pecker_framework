@@ -30,7 +30,7 @@ pecker_shader_program_glsles1::~pecker_shader_program_glsles1()
 		g_pusing_shader_program = null;
 	}
 }
-UInt pecker_shader_program_glsles1::init_shader_program(UInt nvertex_shader, UInt nframe_shader,const pecker_string* P_IN pstr_bind_attributes /* = null */,
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(UInt nvertex_shader, UInt nframe_shader,const pecker_string* P_IN pstr_bind_attributes /* = null */,
 	nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)	
 {
 	if (0 == nvertex_shader || 0 == nframe_shader)
@@ -108,7 +108,8 @@ UInt pecker_shader_program_glsles1::init_shader_program(UInt nvertex_shader, UIn
 
 	return program;
 }
-GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
+ GPU_LOCATION_HANDLE pecker_shader_program_glsles1::int_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
+//GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
 {
 	return init_shader_program(_M_vertex_shader,_M_frame_shader,pstr_bind_attributes,nAttributes_count,pstr_error_info);
 }
@@ -267,7 +268,8 @@ GPU_LOCATION_HANDLE pecker_shader_program_glsles1::using_program()
 
 Ipecker_gpu_program_param* pecker_shader_program_glsles1::get_program_param()
 {
-	return null;
+	_M_render_param.set_program_location(_M_program);
+	return &_M_render_param;
 }
 UInt pecker_shader_program_glsles1::get_attribute_location(const pecker_string& str_attribute_name) const
 {
@@ -339,12 +341,12 @@ HResult  pecker_shader_program_glsles1::get_uniform_float_value
 	
 HResult pecker_shader_program_glsles1::get_uniform_int_value(UInt uniform_index,SInt* P_INOUT pUniform_value) const
 {
-	if (0 != _M_program)
-	{
+	//if (0 != _M_program)
+	//{
 		::glGetUniformiv(_M_program,uniform_index,pUniform_value);
 		return pecker_opengles_v2_object::get_last_error_code();
-	}
-	return P_OK;
+	//}
+	//return P_OK;
 }
 
 UInt  pecker_shader_program_glsles1::get_program() const
@@ -555,5 +557,241 @@ UInt pecker_shader_program_glsles1::get_object_location() const
 	return _M_program;
 }
 
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+pecker_gpu_program_param_gles2::pecker_gpu_program_param_gles2():_M_program(0)
+{
+	;
+}
+
+pecker_gpu_program_param_gles2::~pecker_gpu_program_param_gles2()
+{
+	_M_program = 0;
+}
+
+void pecker_gpu_program_param_gles2::set_program_location(UInt program)
+{
+	_M_program = program;
+}
+GPU_LOCATION_HANDLE pecker_gpu_program_param_gles2::get_attribute_location_by_name(const pecker_string& str_attribute_name)
+{
+	GPU_LOCATION_HANDLE return_index = (GPU_LOCATION_HANDLE)(-1);
+	if (0 != _M_program && str_attribute_name.get_string_length() > 0)
+	{
+		return_index = ::glGetAttribLocation(_M_program,str_attribute_name.get_data());
+	}
+	return return_index;
+}
+GPU_LOCATION_HANDLE pecker_gpu_program_param_gles2::get_uniform_location_by_name(const pecker_string& str_uniform_name)
+{
+	GPU_LOCATION_HANDLE return_index = (GPU_LOCATION_HANDLE)(-1);
+	if (0 != _M_program && str_uniform_name.get_string_length() > 0)
+	{
+		return_index = ::glGetUniformLocation(_M_program,str_uniform_name.get_data());
+	}
+	return return_index;
+}
+HResult pecker_gpu_program_param_gles2::get_uniform_int_value(GPU_LOCATION_HANDLE uniform_location,SInt* P_OUT pint_value)
+{
+	::glGetUniformiv(_M_program,(GLint)uniform_location,pint_value);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::get_uniform_float_value(GPU_LOCATION_HANDLE uniform_location,Float* P_OUT pfloat_value)
+{
+	::glGetUniformfv(_M_program,(GLint)uniform_location,pfloat_value);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_int(GPU_LOCATION_HANDLE uniform_location,SInt x)
+{
+	::glUniform1i((GLint)uniform_location,x);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_int(GPU_LOCATION_HANDLE uniform_location,SInt x,SInt y)
+{
+	::glUniform2i((GLint)uniform_location,x,y);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_int(GPU_LOCATION_HANDLE uniform_location,SInt x,SInt y,SInt z)
+{
+	::glUniform3i((GLint)uniform_location,x,y,z);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_int(GPU_LOCATION_HANDLE uniform_location,SInt x,SInt y,SInt z,SInt w)
+{
+	::glUniform4i((GLint)uniform_location,x,y,z,w);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_float(GPU_LOCATION_HANDLE uniform_location,Float x)
+{
+	::glUniform1f((GLint)uniform_location,x);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_float(GPU_LOCATION_HANDLE uniform_location,Float x,Float y)
+{
+	::glUniform2f((GLint)uniform_location,x,y);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_float(GPU_LOCATION_HANDLE uniform_location,Float x,Float y,Float z)
+{
+	::glUniform3f((GLint)uniform_location,x,y,z);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_float(GPU_LOCATION_HANDLE uniform_location,Float x,Float y,Float z,Float w)
+{
+	::glUniform4f((GLint)uniform_location,x,y,z,w);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_vector(GPU_LOCATION_HANDLE uniform_location,const pecker_vector2& vector2)
+{
+	::glUniform2f((GLint)uniform_location,vector2.x,vector2.y);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_vector(GPU_LOCATION_HANDLE uniform_location,const pecker_vector3& vector3)
+{
+	::glUniform3f((GLint)uniform_location,vector3.x,vector3.y,vector3.z);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_vector(GPU_LOCATION_HANDLE uniform_location,const pecker_vector4& vector4)
+{
+	::glUniform4f((GLint)uniform_location,vector4.x,vector4.y,vector4.z,vector4.w);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_int_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const SInt* pint_array)
+{
+	::glUniform1iv((GLint)uniform_location,array_size,pint_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_float_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const Float* pfloat_array)
+{
+	::glUniform1fv((GLint)uniform_location,array_size,pfloat_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_vector_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_vector2* pvector_array)
+{
+	::glUniform2fv((GLint)uniform_location,array_size,(const GLfloat*)pvector_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_vector_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_vector3* pvector_array)
+{
+	::glUniform3fv((GLint)uniform_location,array_size,(const GLfloat*)pvector_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_vector_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_vector4* pvector_array)
+{
+	::glUniform4fv((GLint)uniform_location,array_size,(const GLfloat*)pvector_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_uniform_matrix_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_matrix3* pmaxtrix_array)
+{
+	::glUniformMatrix3fv((GLint)uniform_location,array_size,GL_FALSE,(const GLfloat*)pmaxtrix_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_uniform_matrix_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_matrix4* pmaxtrix_array)
+{
+	::glUniformMatrix4fv((GLint)uniform_location,array_size,GL_FALSE,(const GLfloat*)pmaxtrix_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::get_attribute_value(GPU_LOCATION_HANDLE attribute_location,HEnum attribute_type,Float* P_OUT pvalue)
+{
+	::glGetVertexAttribfv((GLint)attribute_location,attribute_type,pvalue);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::get_attribute_value(GPU_LOCATION_HANDLE attribute_location,HEnum attribute_type,SInt* P_OUT pvalue)
+{
+	::glGetVertexAttribiv((GLint)attribute_location,attribute_type,pvalue);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::get_attribute_value(GPU_LOCATION_HANDLE attribute_location,HEnum attribute_type,PVoid* P_OUT pvalue)
+{
+	::glGetVertexAttribPointerv((GLint)attribute_location,attribute_type,pvalue);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_attribute_float(GPU_LOCATION_HANDLE attribute_location,Float x)
+{
+	::glVertexAttrib1f((GLint)attribute_location,x);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_float(GPU_LOCATION_HANDLE attribute_location,Float x,Float y)
+{
+	::glVertexAttrib2f((GLint)attribute_location,x,y);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_float(GPU_LOCATION_HANDLE attribute_location,Float x,Float y,Float z)
+{
+	::glVertexAttrib3f((GLint)attribute_location,x,y,z);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_float(GPU_LOCATION_HANDLE attribute_location,Float x,Float y,Float z,Float w)
+{
+	::glVertexAttrib4f((GLint)attribute_location,x,y,z,w);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_attribute_vector(GPU_LOCATION_HANDLE attribute_location,const pecker_vector2& vector2)
+{
+	::glVertexAttrib2f((GLint)attribute_location,vector2.x,vector2.y);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_vector(GPU_LOCATION_HANDLE attribute_location,const pecker_vector3& vector3)
+{
+	::glVertexAttrib3f((GLint)attribute_location,vector3.x,vector3.y,vector3.z);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_vector(GPU_LOCATION_HANDLE attribute_location,const pecker_vector4& vector4)
+{
+	::glVertexAttrib4f((GLint)attribute_location,vector4.x,vector4.y,vector4.z,vector4.w);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_attribute_float_array(GPU_LOCATION_HANDLE attribute_location,nSize array_size,const Float* pfloat_array)
+{
+	::glVertexAttrib1fv((GLint)attribute_location,pfloat_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_vector_array(GPU_LOCATION_HANDLE attribute_location,nSize array_size,const pecker_vector2* pvector_array)
+{
+	::glVertexAttrib2fv((GLint)attribute_location,(const GLfloat*)pvector_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_vector_array(GPU_LOCATION_HANDLE attribute_location,nSize array_size,const pecker_vector3* pvector_array)
+{
+	::glVertexAttrib3fv((GLint)attribute_location,(const GLfloat*)pvector_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+HResult pecker_gpu_program_param_gles2::set_attribute_vector_array(GPU_LOCATION_HANDLE attribute_location,nSize array_size,const pecker_vector4* pvector_array)
+{
+	::glVertexAttrib4fv((GLint)attribute_location,(const GLfloat*)pvector_array);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::set_vertex_attribute_pointer(GPU_LOCATION_HANDLE attribute_location,nSize attribute_size,HEnum attribute_type, HFlag nstride,const PVoid P_IN ppointer,HEnum attribute_data_type ,Bool normalized /* = false */ )
+{
+	::glVertexAttribPointer((GLint)attribute_location,attribute_size,attribute_type,normalized,nstride,ppointer);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::enable_vertex_attribute_pointer(GPU_LOCATION_HANDLE attribute_location)
+{
+	::glEnableVertexAttribArray((GLint)attribute_location);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
+
+HResult pecker_gpu_program_param_gles2::disable_vertex_attribute_pointer(GPU_LOCATION_HANDLE attribute_location)
+{
+	::glDisableVertexAttribArray((GLint)attribute_location);
+	return pecker_opengles_v2_object::get_last_error_code();
+}
 
 PECKER_END

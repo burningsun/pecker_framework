@@ -37,8 +37,10 @@ PeckerInterface Ipecker_gpu_program_param
 	virtual HResult set_uniform_vector(GPU_LOCATION_HANDLE uniform_location,const pecker_vector4& vector4) = 0;
 
 	virtual HResult set_uniform_int_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const SInt* pint_array) = 0;
-
+	virtual HResult get_uniform_int_value(GPU_LOCATION_HANDLE uniform_location,SInt* P_OUT pint_value) = 0;
 	virtual HResult set_uniform_float_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const Float* pfloat_array) = 0;
+	virtual HResult get_uniform_float_value(GPU_LOCATION_HANDLE uniform_location,Float* P_OUT pfloat_value) = 0;
+
 	virtual HResult set_uniform_vector_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_vector2* pvector_array) = 0;
 	virtual HResult set_uniform_vector_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_vector3* pvector_array) = 0;
 	virtual HResult set_uniform_vector_array(GPU_LOCATION_HANDLE uniform_location,nSize array_size,const pecker_vector4* pvector_array) = 0;
@@ -64,7 +66,12 @@ PeckerInterface Ipecker_gpu_program_param
 	virtual HResult set_attribute_vector_array(GPU_LOCATION_HANDLE attribute_location,nSize array_size,const pecker_vector3* pvector_array) = 0;
 	virtual HResult set_attribute_vector_array(GPU_LOCATION_HANDLE attribute_location,nSize array_size,const pecker_vector4* pvector_array) = 0;
 
-	virtual GPU_LOCATION_HANDLE get_uniform_location_by_name(const pecker_string& str_attribute_name) = 0;
+	virtual HResult enable_vertex_attribute_pointer(GPU_LOCATION_HANDLE attribute_location) = 0;
+	virtual HResult disable_vertex_attribute_pointer(GPU_LOCATION_HANDLE attribute_location) = 0;
+    virtual HResult set_vertex_attribute_pointer(GPU_LOCATION_HANDLE attribute_location,nSize attribute_size,HEnum attribute_type,
+		HFlag nstride,const PVoid P_IN ppointer,HEnum attribute_data_type ,Bool normalized = false ) = 0;
+
+	virtual GPU_LOCATION_HANDLE get_uniform_location_by_name(const pecker_string& str_uniform_name) = 0;
 	virtual GPU_LOCATION_HANDLE get_attribute_location_by_name(const pecker_string& str_attribute_name) = 0;
 };
 

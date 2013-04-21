@@ -52,7 +52,7 @@ PeckerInterface Ipecker_texture : public Ipecker_frame_buffer_object//: public I
 
 	virtual UInt get_mip_level() const = 0;
 
-	virtual HResult set_defualt_texture_filters_info(const pecker_texture_filter_info* filters) = 0;
+	virtual HResult set_defualt_texture_filters_info(const pecker_texture_filter_info* filters,nSize filters_count) = 0;
 
 
 	virtual HResult allocate_texture_from_gpu_ram(const pecker_texture_layer_info& top_most_mipinfo) = 0;

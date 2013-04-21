@@ -7,13 +7,13 @@
  *              501931049@qq.com
  */
 #include "pecker_buffer_gl.h"
-#include "../../../native/pecker_allocator.h"
+#include "pecker_render_resource_container_gl.h"
 #include <GLES2/gl2.h>
 
 
 
 PECKER_BEGIN
-typedef pecker_simple_allocator<Byte> render_buffer_allocator;
+
 
 pecker_vertex_buffer_gles2::pecker_vertex_buffer_gles2():
 _M_bytes_count(0),_M_gpu_target(0),_M_vertex_attribute_count(0),_M_first_update_buffer(false),_M_vbo_setting(DEFUALT_VBO)
@@ -39,7 +39,7 @@ HResult pecker_vertex_buffer_gles2::allocate_buffer_from_cpu_ram(nSize number_of
 		return P_UNIQUE_ERR;
 	}
 
-	_M_vertex_buffer._M_bytes = render_buffer_allocator::allocate_objects(number_of_bytes);
+	_M_vertex_buffer._M_bytes = graphic_buffer_allocator_gles2::allocate_objects(number_of_bytes);
 	if (null != _M_vertex_buffer._M_bytes)
 	{
 		_M_bytes_count = number_of_bytes;
@@ -64,7 +64,7 @@ HResult pecker_vertex_buffer_gles2::release_buffer_from_cpu_ram()
 {
 	if (null != _M_vertex_buffer._M_bytes)
 	{
-		render_buffer_allocator::deallocate_objects(_M_vertex_buffer._M_bytes);
+		graphic_buffer_allocator_gles2::deallocate_objects(_M_vertex_buffer._M_bytes);
 		_M_vertex_buffer._M_bytes = null;
 		
 	}
@@ -350,7 +350,7 @@ HResult pecker_index_buffer_gles2::allocate_buffer_from_cpu_ram(nSize number_of_
 		return P_UNIQUE_ERR;
 	}
 
-	_M_index_buffer._M_bytes = render_buffer_allocator::allocate_objects(number_of_bytes);
+	_M_index_buffer._M_bytes = graphic_buffer_allocator_gles2::allocate_objects(number_of_bytes);
 	if (null != _M_index_buffer._M_bytes)
 	{
 		_M_bytes_count = number_of_bytes;
@@ -375,7 +375,7 @@ HResult pecker_index_buffer_gles2::release_buffer_from_cpu_ram()
 {
 	if (null != _M_index_buffer._M_bytes)
 	{
-		render_buffer_allocator::deallocate_objects(_M_index_buffer._M_bytes);
+		graphic_buffer_allocator_gles2::deallocate_objects(_M_index_buffer._M_bytes);
 		_M_index_buffer._M_bytes = null;
 
 	}
