@@ -28,6 +28,7 @@ extern void test_thread_runable_1();
 extern void show_simple_window();
 #include <iostream>
 
+#include "data/pecker_shape.h"
 //#include "data/test.h"
 int main()
 {

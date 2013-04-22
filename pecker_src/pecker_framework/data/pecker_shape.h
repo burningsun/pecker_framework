@@ -1,0 +1,80 @@
+/*
+ *  pecker_shape.h
+ *
+ *  Created on: 2013-4-22
+ *      Author: ¿Ó’Ú≥«  £® cut / cutxyz£©
+ *		e-mail: cut-12345@hotmail.com
+ *              501931049@qq.com
+ */
+#ifndef PECKER_SHAPE_H_
+#define PECKER_SHAPE_H_
+
+#include "../CPeckerObject.h"
+#include "pecker_vector.h"
+
+PECKER_BEGIN
+
+enum SHAPE_TYPE
+{
+	DOT_2D = 0,
+	LINE_2D,
+	RECTANGLE_2D,
+	SQURE_2D,
+	TRIANGLE_2D,
+	CIRCULAR_2D,
+	OVAL_2D,
+	POLYGON_2D,
+
+	DOT_3D = 0,
+	LINE_3D,
+	RECTANGLE_3D,
+	SQURE_3D,
+	TRIANGLE_3D,
+	CIRCULAR_3D,
+	OVAL_3D,
+	POLYGON_3D,
+
+	SHAPE_TYPE_COUNT
+};
+
+PeckerInterface Ipecker_shape_logic
+{
+	virtual ~Ipecker_shape_logic(){;}
+	virtual Boolean intersect(const Ipecker_shape_logic* pshape) const = 0;
+	virtual Boolean contains(const Ipecker_shape_logic* pshape) const = 0; 
+	virtual SInt equals(const Ipecker_shape_logic* pshape) const = 0;
+	virtual HEnum get_shape_type() const = 0;
+};
+
+class pecker_dot : public virtual Ipecker_shape_logic
+{
+private:
+	pecker_vector2 _M_dot;
+public:
+	inline Float getX() const
+	{
+		return _M_dot.x;
+	}
+	inline Float getY() const
+	{
+		return _M_dot.y;
+	}
+	inline const pecker_vector2& get_point() const
+	{
+		return _M_dot;
+	}
+	inline void setX(Float x)
+	{
+		_M_dot.x = x;
+	}
+	inline void setY(Float y)
+	{
+		_M_dot.y = y;
+	}
+
+};
+
+
+PECKER_END
+
+#endif//PECKER_SHAPE_H_

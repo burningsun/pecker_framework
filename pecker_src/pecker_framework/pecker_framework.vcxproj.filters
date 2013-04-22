@@ -186,6 +186,9 @@
     <ClInclude Include="render\render_system\opengles\pecker_render_resource_container_gl.h">
       <Filter>render\render_system\opengles</Filter>
     </ClInclude>
+    <ClInclude Include="data\pecker_shape.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">
