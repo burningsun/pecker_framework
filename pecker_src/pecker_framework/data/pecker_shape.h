@@ -37,16 +37,26 @@ enum SHAPE_TYPE
 	SHAPE_TYPE_COUNT
 };
 
+enum SHAPE_EQUALS_RESULT
+{
+	SAME_SHAPE = 0,
+	DIFFERENCE_SHAPE,
+	DIFFERENCE_SHAPE_TYPE,
+	COMPARE_SHAPE_ERROR,
+
+	SHAPE_EQUALS_RESULT_TYPE
+};
+
 PeckerInterface Ipecker_shape_logic
 {
 	virtual ~Ipecker_shape_logic(){;}
 	virtual Boolean intersect(const Ipecker_shape_logic* pshape) const = 0;
 	virtual Boolean contains(const Ipecker_shape_logic* pshape) const = 0; 
-	virtual SInt equals(const Ipecker_shape_logic* pshape) const = 0;
+	virtual HEnum equals(const Ipecker_shape_logic* pshape) const = 0;
 	virtual HEnum get_shape_type() const = 0;
 };
 
-class pecker_dot : public virtual Ipecker_shape_logic
+class pecker_dot2d_float : public virtual Ipecker_shape_logic
 {
 private:
 	pecker_vector2 _M_dot;
@@ -71,6 +81,15 @@ public:
 	{
 		_M_dot.y = y;
 	}
+
+public:
+	pecker_dot2d_float();
+	~pecker_dot2d_float();
+
+	virtual Boolean intersect(const Ipecker_shape_logic* pshape) const;
+	virtual Boolean contains(const Ipecker_shape_logic* pshape) const; 
+	virtual HEnum equals(const Ipecker_shape_logic* pshape) const;
+	virtual HEnum get_shape_type() const;
 
 };
 

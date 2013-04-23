@@ -189,6 +189,9 @@
     <ClInclude Include="data\pecker_shape.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="data\pecker_shape_compare_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">
@@ -286,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="render\render_system\opengles\pecker_opengles_device.cpp">
       <Filter>render\render_system\opengles</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pecker_shape.cpp">
+      <Filter>data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -152,11 +152,15 @@ pecker_vector2 pecker_vector2::rotated90ed() const
   return pecker_vector2(-y,x);
 }
 
-Float pecker_vector2::dot(const pecker_vector2 & other)
+Float pecker_vector2::dot(const pecker_vector2 & other) const
 {
   return (x*other.x + y*other.y);
 }
 
+Float pecker_vector2::cross_value(const pecker_vector2& other) const
+{
+	return (x*other.y - y*other.x);
+}
 
 Float* pecker_vector2::get_data()
 {
@@ -293,7 +297,7 @@ pecker_vector3 pecker_vector3::normalized() const
   return (res /= length());
 }
 
-Float pecker_vector3::dot(const pecker_vector3 & other)
+Float pecker_vector3::dot(const pecker_vector3 & other) const
 {
   return (x*other.x + y*other.y + z*other.z);
 }
@@ -455,7 +459,7 @@ pecker_vector4 pecker_vector4::normalized() const
   return (res /= length());
 }
 
-Float pecker_vector4::dot(const pecker_vector4 & other)
+Float pecker_vector4::dot(const pecker_vector4 & other) const
 {
   return (x*other.x + y*other.y + z*other.z + w*other.w);
 }

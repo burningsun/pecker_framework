@@ -107,6 +107,7 @@
     <ClInclude Include="data\pecker_matrix.h" />
     <ClInclude Include="data\pecker_nodes_allocate.h" />
     <ClInclude Include="data\pecker_shape.h" />
+    <ClInclude Include="data\pecker_shape_compare_algorithm.h" />
     <ClInclude Include="data\pecker_stack.h" />
     <ClInclude Include="data\pecker_value_compare.h" />
     <ClInclude Include="data\pecker_string.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="bst_iterator_test.cpp" />
     <ClCompile Include="btst_tree_test.cpp" />
     <ClCompile Include="data\pecker_matrix.cpp" />
+    <ClCompile Include="data\pecker_shape.cpp" />
     <ClCompile Include="data\pecker_vector.cpp" />
     <ClCompile Include="list_test.cpp" />
     <ClCompile Include="native\pecker_file_io.cpp" />
