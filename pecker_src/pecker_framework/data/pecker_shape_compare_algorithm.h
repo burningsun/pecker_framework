@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_shape_compare_algorithm.h
  *
  *  Created on: 2013-4-23
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
@@ -77,7 +77,7 @@ inline Bool equal_oval2d_int(SInt first_shape_x,SInt first_shape_y,nSize first_s
 	SInt second_shape_x,SInt second_shape_y,nSize second_shape_w,nSize second_shape_h )
 {
 	return (equal_dot2d_int(first_shape_x,first_shape_y,second_shape_x,second_shape_y) &&
-		equal_rectangle_size_int(first_shape_h,first_shape_w,second_shape_h,second_shape_w) );
+		equal_rectangle2d_size_int(first_shape_h,first_shape_w,second_shape_h,second_shape_w) );
 }
 
 inline Bool equal_oval2d_float(const pecker_vector2& first_shape_top_point,const pecker_vector2& first_shape_size,
@@ -110,9 +110,9 @@ inline Bool equal_ploygon2d_float(const pecker_vector2* first_shape_points,nSize
 }
 
 //////////////////////////////////////////////////////////////////////////
-//µãCÔÚÏß¶ÎABÉÏ
-//1¡¢ÏòÁ¿AB²æ³ËÏòÁ¿AC£¬Èç¹û²æ»ıµÈÓÚ0£¬ÔòA B CÈıµã¹²Ïß             
-//2¡¢ÈôCÔÚÖ±ÏßABÉÏ£¬ÇÒCÔÚÒÔABÎª¶Ô½ÇÏßµÄ¾ØĞÎÄÚ£¬ÔòCÔÚÏß¶ÎABÉÏ
+//ç‚¹Cåœ¨çº¿æ®µABä¸Š
+//1ã€å‘é‡ABå‰ä¹˜å‘é‡ACï¼Œå¦‚æœå‰ç§¯ç­‰äº0ï¼Œåˆ™A B Cä¸‰ç‚¹å…±çº¿             
+//2ã€è‹¥Cåœ¨ç›´çº¿ABä¸Šï¼Œä¸”Cåœ¨ä»¥ABä¸ºå¯¹è§’çº¿çš„çŸ©å½¢å†…ï¼Œåˆ™Cåœ¨çº¿æ®µABä¸Š
 inline Bool intersect_line_dot_2d_float(const pecker_vector2& line_pointA,const pecker_vector2& line_pointB,const pecker_vector2& pointC)
 {
 	pecker_vector2 lineAB = line_pointB - line_pointA;

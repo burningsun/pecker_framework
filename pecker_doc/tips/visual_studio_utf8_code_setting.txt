@@ -1,0 +1,1 @@
+﻿File->Advanced Save Options...->Encoding(select Unicode (UTF-8 with signature)-Codepage 65001)

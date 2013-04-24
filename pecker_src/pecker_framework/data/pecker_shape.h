@@ -1,8 +1,8 @@
-/*
+ï»¿/*
  *  pecker_shape.h
  *
  *  Created on: 2013-4-22
- *      Author: ÀîÕò³Ç  £¨ cut / cutxyz£©
+ *      Author: æé•‡åŸ  ï¼ˆ cut / cutxyzï¼‰
  *		e-mail: cut-12345@hotmail.com
  *              501931049@qq.com
  */
