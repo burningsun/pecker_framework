@@ -12,6 +12,7 @@
 #include "../CPeckerObject.h"
 #include "pecker_vector.h"
 #include "pecker_value_compare.h"
+#include <math.h>
 
 PECKER_BEGIN
 
@@ -229,7 +230,7 @@ inline BitField intersect_line_line_2d_float(const pecker_vector2& pointA,const 
 	// 点A，C 在直线AB两侧，并且 点C，D在直线CD两侧，则线段AC与线段CD相交 (充分必要条件，两侧包含点在直线上的情况)
 	Float cross_AB_CD_value = lineAB.cross_value(lineCD);
 
-	if (0 == cross_AB_CD_value) //平衡，重合
+	if (EQFLOATZERO(cross_AB_CD_value)) //平衡，重合
 	{
 		return_result |= BALANCE_LINE;
 		Float min_x = pointA.x;
@@ -307,6 +308,198 @@ inline BitField intersect_line_line_2d_float(const pecker_vector2& pointA,const 
 
 	return return_result;
 }
+
+inline BitField intersect_line_line_2d_int(SInt pointAx,SInt pointAy,SInt pointBx,SInt pointBy,
+	SInt pointCx,SInt pointCy,SInt pointDx,SInt pointDy)
+{
+	BitField return_result = 0;
+	SInt lineABx = pointBx - pointAx;
+	SInt lineABy = pointBy - pointAy;
+	SInt lineCDx = pointDx - pointCx;
+	SInt lineCDy = pointDy - pointCy;
+	// 点A，C 在直线AB两侧，并且 点C，D在直线CD两侧，则线段AC与线段CD相交 (充分必要条件，两侧包含点在直线上的情况)
+	SInt cross_AB_CD_value = lineABy*lineCDx - lineABx*lineCDy; 
+
+	if (0 == cross_AB_CD_value) //平衡，重合
+	{
+		return_result |= BALANCE_LINE;
+		Float min_x = pointAx;
+		Float min_y = pointAy;
+		Float max_x = pointBx;
+		Float max_y = pointBy;
+
+		if (min_x > max_x)
+		{
+			min_x = pointBx;
+			max_x = pointAx;
+		}
+		if (min_y > max_y)
+		{
+			min_y = pointBy;
+			max_y = pointAy;
+		}
+
+		if ((pointCx >= min_x && pointCx <= max_x && pointCy >= min_y && pointCy <= max_y) ||
+			(pointDx >= min_x && pointDx <= max_x && pointDy >= min_y && pointDy <= max_y))
+		{
+			return_result |= LINE_INTERSECT_TRUE;
+		}
+	}
+	else // 不平衡，交叉
+	{
+		return_result |= INTERSECT_LINE;
+		
+		SInt lineACx = pointCx - pointAx;
+		SInt lineACy = pointCy - pointAy;
+		SInt lineADx = pointDx - pointAx;
+		SInt lineADy = pointDy - pointAy;
+
+		SInt cross_AC_AB_value = lineABy*lineACx - lineABx*lineACy;
+		SInt cross_AD_AB_value = lineABy*lineADx - lineABx*lineADy;
+		SInt cross = cross_AC_AB_value * cross_AD_AB_value;
+
+		if (cross_AC_AB_value > 0)
+		{
+			return_result |= C_POINT_ABOVE;
+		}
+		else if (cross_AC_AB_value < 0)
+		{
+			return_result |= C_POINT_BELOW;
+		}
+		if (cross_AD_AB_value > 0)
+		{
+			return_result |= D_POINT_ABOVE;
+		}
+		else if (cross_AD_AB_value < 0)
+		{
+			return_result |= D_POINT_BELOW;
+		}
+		if ( cross <= 0)
+		{
+			Float min_x = pointAx;
+			Float min_y = pointAy;
+			Float max_x = pointBx;
+			Float max_y = pointBy;
+
+			if (min_x > max_x)
+			{
+				min_x = pointBx;
+				max_x = pointAx;
+			}
+			if (min_y > max_y)
+			{
+				min_y = pointBy;
+				max_y = pointAy;
+			}
+
+			if ((pointCx >= min_x && pointCx <= max_x && pointCy >= min_y && pointCy <= max_y) ||
+				(pointDx >= min_x && pointDx <= max_x && pointDy >= min_y && pointDy <= max_y))
+			{
+				return_result |= LINE_INTERSECT_TRUE;
+			}
+		}
+	}
+
+	return return_result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+inline Float euler_distance_dot_2d_float(const pecker_vector2& pointA,const pecker_vector2& pointB)
+{
+	pecker_vector2 pointBA = pointB - pointA;
+	return pointBA.length();
+}
+
+inline Float euler_distance_dot_2d_int(SInt pointAx,SInt pointAy,SInt pointBx,SInt pointBy)
+{
+	SInt pointBAx = pointBx - pointAx;
+	SInt pointBAy = pointBy - pointAy;
+	return sqrt( (Float)(pointBAx * pointBAx + pointAy * pointAy));
+}
+
+inline Float euler_distance_dot_to_line_2d_float(const pecker_vector2& line_pointA,const pecker_vector2& line_pointB,const pecker_vector2& pointC)
+{
+	pecker_vector2 lineAB = line_pointB - line_pointA;
+	pecker_vector2 lineAC = pointC - line_pointA;
+	// 方法1：
+	// lineAB dot  lineAC = |lineAB| |lineAC| * cos<AB,AC> 
+	// normalAB = lineAB/|lineAB|;
+	//
+	// projAB = normalAB * (|lineAC| * cos<AB,AC>) 
+	//              =  normalAB * (lineAB dot  lineAC / |lineAB|) 
+	//              = (lineAB/|lineAB|)*(lineAB dot  lineAC / |lineAB|)
+	//             =  (lineAB dot  lineAC)  / (|lineAB|*|lineAB|) * lineAB 
+	//     
+	// d*d + |projAB| * |projAB| = |lineAC| * |lineAC|
+	// d = sqrt(|lineAC| * |lineAC| - |projAB| * |projAB|);
+	//pecker_vector3 project_AC_to_AB = (lineAC.dot(lineAB)  / lineAB.length_square()) * lineAB;
+	//Float sqrt_value = lineAC.length_square() - project_AC_to_AB.length_square();
+	Float dotAC_AB = lineAC.dot(lineAB);
+	Float sqrt_value = lineAC.length_square() - (dotAC_AB * dotAC_AB / lineAB.length_square());
+	if (sqrt_value >= 0)
+	{
+		return sqrt(sqrt_value);
+	}
+	else
+	{
+		return -1.0f;
+	}
+	
+	// 方法2：
+	//// 向量AB的法向量为ABNormal
+	//// 点C到直线AB的距离 等于 |ABNormal · lineAC | / |ABNormal|·|lineAC|
+	//pecker_vector2 lineABNormal = line_pointB - line_pointA;
+	//lineABNormal.rotated90();
+	//pecker_vector2 lineAC = pointC - line_pointA;
+	//Float lineABNormal_length = lineABNormal.length();
+
+	//if (EQFLOATZERO(lineABNormal_length)) // A,B两个点是同一个点，输入错误
+	//{
+	//	return -1.0f;
+	//}
+ //   Float lineAC_length =  lineAC.length();
+	//if (EQFLOATZERO(lineAC_length)) // C,A两个点是同一个点，则C到AB的距离为0
+	//{
+	//	return 0.0f;
+	//}
+	//return (abs(lineAC.dot(lineABNormal)) / (lineABNormal_length * lineAC_length));
+
+}
+inline Float euler_distance_dot_to_line_3d_float(const pecker_vector3& line_pointA,const pecker_vector3& line_pointB,const pecker_vector3& pointC)
+{
+	pecker_vector3 lineAB = line_pointB - line_pointA;
+	pecker_vector3 lineAC = pointC - line_pointA;
+	// 方法1：
+	// lineAB dot  lineAC = |lineAB| |lineAC| * cos<AB,AC> 
+	// normalAB = lineAB/|lineAB|;
+	//
+	// projAB = normalAB * (|lineAC| * cos<AB,AC>) 
+	//              =  normalAB * (lineAB dot  lineAC / |lineAB|) 
+	//              = (lineAB/|lineAB|)*(lineAB dot  lineAC / |lineAB|)
+	//             =  (lineAB dot  lineAC)  / (|lineAB|*|lineAB|) * lineAB 
+	//     
+	// d*d + |projAB| * |projAB| = |lineAC| * |lineAC|
+	// d = sqrt(|lineAC| * |lineAC| - |projAB| * |projAB|);
+	//pecker_vector3 project_AC_to_AB = (lineAC.dot(lineAB)  / lineAB.length_square()) * lineAB;
+	//Float sqrt_value = lineAC.length_square() - project_AC_to_AB.length_square();
+	Float dotAC_AB = lineAC.dot(lineAB);
+	Float sqrt_value = lineAC.length_square() - (dotAC_AB * dotAC_AB / lineAB.length_square());
+	if (sqrt_value >= 0)
+	{
+		return sqrt(sqrt_value);
+	}
+	else
+	{
+		return -1.0f;
+	}
+
+	// 方法2：
+	// | lineAB cross lineAC | = |lineAB| * |lineAC| * sin<AB,AC>
+	// d = |lineAC| * sin<AB,AC> 
+	// | lineAB cross lineAC | = |lineAB| * d
+	// d = | lineAB cross lineAC | / |lineAB|
+	//return (lineAC.cross(lineAB)).length() / lineAB.length();
+} 
 
 PECKER_END
 

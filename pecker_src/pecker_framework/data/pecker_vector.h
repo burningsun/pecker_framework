@@ -59,14 +59,14 @@ struct pecker_vector2
 
   Float length_square() const;
   Float length() const;
-  pecker_vector2 normalize();
+  pecker_vector2& normalize();
   pecker_vector2 normalized() const;
-  pecker_vector2 rotated90();
+  pecker_vector2& rotated90();
   pecker_vector2 rotated90ed() const;
-
   Float dot(const pecker_vector2 & other) const;
   Float cross_value(const pecker_vector2& other) const;
   Float* get_data();
+
 };
 
 struct pecker_vector3
@@ -108,7 +108,7 @@ struct pecker_vector3
 
   Float length_square() const;
   Float length() const;
-  pecker_vector3 normalize();
+  pecker_vector3& normalize();
   pecker_vector3 normalized() const;
 
   Float dot(const pecker_vector3 & other) const;
@@ -159,11 +159,14 @@ struct pecker_vector4
 
   Float length_square() const;
   Float length() const;
-  pecker_vector4 normalize();
+  pecker_vector4& normalize();
   pecker_vector4 normalized() const;
   Float dot(const pecker_vector4 & other) const;
   
   Float* get_data();
+  
+  Float lengthxyz() const;
+
 };
 
 PECKER_END

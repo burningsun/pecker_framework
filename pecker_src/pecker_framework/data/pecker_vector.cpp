@@ -129,17 +129,27 @@ Float pecker_vector2::length() const
   return (Float)(sqrt(dx*dx + dy*dy));
 }
 
-pecker_vector2 pecker_vector2::normalize()
+pecker_vector2& pecker_vector2::normalize()
 {
-  return (*this/=length());
+	Float div = length();
+	if (EQFLOATZERO(div))
+	{
+		return *this;
+	}
+	else
+	{
+		return (*this/=length());
+	}
+  
 }
 
 pecker_vector2 pecker_vector2::normalized() const
 {
-  return pecker_vector2(*this);
+	pecker_vector2 retrun_value(*this);
+	return (retrun_value.normalize());
 }
 
-pecker_vector2 pecker_vector2::rotated90()
+pecker_vector2& pecker_vector2::rotated90()
 {
   Float temp = -y;
   y = x;
@@ -151,6 +161,7 @@ pecker_vector2 pecker_vector2::rotated90ed() const
 {
   return pecker_vector2(-y,x);
 }
+
 
 Float pecker_vector2::dot(const pecker_vector2 & other) const
 {
@@ -166,6 +177,11 @@ Float* pecker_vector2::get_data()
 {
   return (Float*)this;
 }
+
+//Float pecker_vector2::model() const
+//{
+//	return sqrt(x*x+y*y);
+//}
 
 pecker_vector3::pecker_vector3():x(0.0f),y(0.0f),z(0.0f)
 { ;}
@@ -286,7 +302,7 @@ Float pecker_vector3::length() const
   Double dz = z;
   return (Float)(sqrt(dx*dx+dy*dy+dz*dz));
 }
-pecker_vector3 pecker_vector3::normalize()
+pecker_vector3& pecker_vector3::normalize()
 {
   return (*this /= length());
 }
@@ -316,6 +332,10 @@ Float* pecker_vector3::get_data()
 {
   return (Float*)this;
 }
+//Float pecker_vector3::model() const
+//{
+//	return sqrt(x*x+y*y+z*z);
+//}
 
 pecker_vector4::pecker_vector4():x(0.0f),y(0.0f),z(0.0f),w(0.0f)
 { ;}
@@ -448,7 +468,7 @@ Float pecker_vector4::length() const
   return (Float)(sqrt(x*x+y*y+z*z+w*w));
 }
 
-pecker_vector4 pecker_vector4::normalize()
+pecker_vector4& pecker_vector4::normalize()
 {
   return (*this /= length());
 }
@@ -468,6 +488,16 @@ Float* pecker_vector4::get_data()
 {
   return (Float*)this;
 }
+
+Float pecker_vector4::lengthxyz() const
+{
+	return sqrt(x*x+y*y+z*z);
+}
+
+//Float pecker_vector4::model() const
+//{
+//	return sqrt(x*x+y*y+z*z+w*w);
+//}
 
 PECKER_END
 

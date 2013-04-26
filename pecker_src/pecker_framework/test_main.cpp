@@ -26,6 +26,7 @@ extern void test_thread_runable();
 extern void test_thread_proc_1();
 extern void test_thread_runable_1();
 extern void show_simple_window();
+extern void shape_logic_test();
 #include <iostream>
 
 #include "data/pecker_shape.h"
@@ -34,55 +35,55 @@ int main()
 {
 
 	
-	
-	unsigned int temp_value = 65535;
-	unsigned int mip = temp_value;
-	unsigned long long temp64 = 0xFF;
-	temp64 *= 0x10000000;
+	shape_logic_test();
+	//unsigned int temp_value = 65535;
+	//unsigned int mip = temp_value;
+	//unsigned long long temp64 = 0xFF;
+	//temp64 *= 0x10000000;
 
-	temp_value = temp64 & 0xFFFFFFFF;
-	temp_value = (temp_value&0x55555555) + ((temp_value>>1)&0x55555555);     
-	temp_value = (temp_value&0x33333333) + ((temp_value>>2)&0x33333333);
-	temp_value = (temp_value&0x0f0f0f0f) + ((temp_value>>4)&0x0f0f0f0f);     
-	temp_value = (temp_value&0x00ff00ff) + ((temp_value>>8)&0x00ff00ff);     
-	temp_value = (temp_value&0x0000ffff) + ((temp_value>>16)&0x0000ffff); 
-	mip = temp_value;
-	temp_value = (temp64 >> 32) & 0xFFFFFFFF;
-	temp_value = (temp_value&0x55555555) + ((temp_value>>1)&0x55555555);     
-	temp_value = (temp_value&0x33333333) + ((temp_value>>2)&0x33333333);
-	temp_value = (temp_value&0x0f0f0f0f) + ((temp_value>>4)&0x0f0f0f0f);     
-	temp_value = (temp_value&0x00ff00ff) + ((temp_value>>8)&0x00ff00ff);     
-	temp_value = (temp_value&0x0000ffff) + ((temp_value>>16)&0x0000ffff); 
-	mip += temp_value;
-	PECKER_LOG_INFO("1 count","temp_value=%d,count 1 = %d",mip,temp_value);
-
-	 temp_value = 65535;
+	//temp_value = temp64 & 0xFFFFFFFF;
 	//temp_value = (temp_value&0x55555555) + ((temp_value>>1)&0x55555555);     
 	//temp_value = (temp_value&0x33333333) + ((temp_value>>2)&0x33333333);
 	//temp_value = (temp_value&0x0f0f0f0f) + ((temp_value>>4)&0x0f0f0f0f);     
 	//temp_value = (temp_value&0x00ff00ff) + ((temp_value>>8)&0x00ff00ff);     
 	//temp_value = (temp_value&0x0000ffff) + ((temp_value>>16)&0x0000ffff); 
-	temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
-	temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
-	temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
-	temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
-	PECKER_LOG_INFO("1 count","temp_value=%d,count 1 = %d",mip,temp_value);
+	//mip = temp_value;
+	//temp_value = (temp64 >> 32) & 0xFFFFFFFF;
+	//temp_value = (temp_value&0x55555555) + ((temp_value>>1)&0x55555555);     
+	//temp_value = (temp_value&0x33333333) + ((temp_value>>2)&0x33333333);
+	//temp_value = (temp_value&0x0f0f0f0f) + ((temp_value>>4)&0x0f0f0f0f);     
+	//temp_value = (temp_value&0x00ff00ff) + ((temp_value>>8)&0x00ff00ff);     
+	//temp_value = (temp_value&0x0000ffff) + ((temp_value>>16)&0x0000ffff); 
+	//mip += temp_value;
+	//PECKER_LOG_INFO("1 count","temp_value=%d,count 1 = %d",mip,temp_value);
 
-	temp_value = mip;
+	// temp_value = 65535;
+	////temp_value = (temp_value&0x55555555) + ((temp_value>>1)&0x55555555);     
+	////temp_value = (temp_value&0x33333333) + ((temp_value>>2)&0x33333333);
+	////temp_value = (temp_value&0x0f0f0f0f) + ((temp_value>>4)&0x0f0f0f0f);     
+	////temp_value = (temp_value&0x00ff00ff) + ((temp_value>>8)&0x00ff00ff);     
+	////temp_value = (temp_value&0x0000ffff) + ((temp_value>>16)&0x0000ffff); 
+	//temp_value = (temp_value&0x5555) + ((temp_value>>1)&0x5555);     
+	//temp_value = (temp_value&0x3333) + ((temp_value>>2)&0x3333);
+	//temp_value = (temp_value&0x0f0f) + ((temp_value>>4)&0x0f0f);     
+	//temp_value = (temp_value&0x00ff) + ((temp_value>>8)&0x00ff);     
+	//PECKER_LOG_INFO("1 count","temp_value=%d,count 1 = %d",mip,temp_value);
+
+	//temp_value = mip;
+	////mip = 1;
+	////if ((temp_value >> 16) == 0) {mip = mip +16; temp_value = temp_value <<16;}
+	////if ((temp_value >> 24) == 0) {mip = mip + 8; temp_value = temp_value << 8;}
+	////if ((temp_value >> 28) == 0) {mip = mip + 4; temp_value = temp_value << 4;}
+	////if ((temp_value >> 30) == 0) {mip = mip + 2; temp_value = temp_value << 2;}
+	////mip = 32 - (mip - (temp_value >> 31));
+
 	//mip = 1;
-	//if ((temp_value >> 16) == 0) {mip = mip +16; temp_value = temp_value <<16;}
-	//if ((temp_value >> 24) == 0) {mip = mip + 8; temp_value = temp_value << 8;}
-	//if ((temp_value >> 28) == 0) {mip = mip + 4; temp_value = temp_value << 4;}
-	//if ((temp_value >> 30) == 0) {mip = mip + 2; temp_value = temp_value << 2;}
-	//mip = 32 - (mip - (temp_value >> 31));
+	//if ((temp_value >> 8) == 0) {mip = mip +8; temp_value = temp_value <<8;}
+	//if ((temp_value >> 12) == 0) {mip = mip + 4; temp_value = temp_value << 4;}
+	//if ((temp_value >> 14) == 0) {mip = mip + 2; temp_value = temp_value << 2;}
+	//mip = 16 - (mip - (temp_value >> 15));
 
-	mip = 1;
-	if ((temp_value >> 8) == 0) {mip = mip +8; temp_value = temp_value <<8;}
-	if ((temp_value >> 12) == 0) {mip = mip + 4; temp_value = temp_value << 4;}
-	if ((temp_value >> 14) == 0) {mip = mip + 2; temp_value = temp_value << 2;}
-	mip = 16 - (mip - (temp_value >> 15));
-
-	PECKER_LOG_INFO("first 1 num","first 1 num = %d",mip);
+	//PECKER_LOG_INFO("first 1 num","first 1 num = %d",mip);
 
 	//show_simple_window();
 	//test_thread_runable_1();

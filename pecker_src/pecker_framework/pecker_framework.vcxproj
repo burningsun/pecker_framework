@@ -171,6 +171,7 @@
     <ClCompile Include="render\render_system\pecker_render_application.cpp" />
     <ClCompile Include="render\render_system\pecker_render_buffer.cpp" />
     <ClCompile Include="render\render_system\pecker_texture.cpp" />
+    <ClCompile Include="shape_logic_test.cpp" />
     <ClCompile Include="share_string_test.cpp" />
     <ClCompile Include="test_main.cpp" />
     <ClCompile Include="thread_test.cpp" />

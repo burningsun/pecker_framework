@@ -8,7 +8,7 @@
  */
 
 #include "pecker_shape.h"
-
+#include "pecker_shape_compare_algorithm.h"
 PECKER_BEGIN
 
 

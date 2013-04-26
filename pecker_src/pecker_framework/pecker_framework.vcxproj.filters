@@ -293,6 +293,9 @@
     <ClCompile Include="data\pecker_shape.cpp">
       <Filter>data</Filter>
     </ClCompile>
+    <ClCompile Include="shape_logic_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="testlog.txt" />
