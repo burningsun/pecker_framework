@@ -11,6 +11,16 @@
 #include <GLES2/gl2.h>
 PECKER_BEGIN
 
+	static HEnum gFragment_operation_table[ENABLE_FRAGMENT_OPERATION_STATE_COUNT] = {GL_CULL_FACE,
+	GL_POLYGON_OFFSET_FILL,
+	GL_SCISSOR_TEST,
+	GL_SAMPLE_COVERAGE,
+	GL_SAMPLE_ALPHA_TO_COVERAGE,
+	GL_STENCIL_TEST,
+	GL_DEPTH_TEST,
+	GL_BLEND,
+	GL_DITHER};
+
 pecker_fragment_operation_gles2::pecker_fragment_operation_gles2()
 {
 
@@ -181,4 +191,34 @@ HResult pecker_fragment_operation_gles2::bind_frame_buffer_object(Ipecker_frame_
 	}
 }
 
+Bool pecker_fragment_operation_gles2::enable_state(HEnum state)
+{
+	if (state >= ENABLE_FRAGMENT_OPERATION_STATE_COUNT)
+	{
+		return false;
+	}
+	state = gFragment_operation_table[state];
+	glEnable(state);
+	return glIsEnabled(state);
+}
+Bool pecker_fragment_operation_gles2::disable_state(HEnum state)
+{
+	if (state >= ENABLE_FRAGMENT_OPERATION_STATE_COUNT)
+	{
+		return false;
+	}
+
+	state = gFragment_operation_table[state];
+	glDisable(state);
+	return !(glIsEnabled(state));
+}
+Bool pecker_fragment_operation_gles2::is_enable(HEnum state) const
+{
+	if (state >= ENABLE_FRAGMENT_OPERATION_STATE_COUNT)
+	{
+		return false;
+	}
+	state = gFragment_operation_table[state];
+	return glIsEnabled(state);
+}
 PECKER_END

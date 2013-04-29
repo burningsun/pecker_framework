@@ -13,7 +13,20 @@
 #include "pecker_frame_buffer.h"
 
 PECKER_BEGIN
+enum	ENABLE_FRAGMENT_OPERATION_STATE
+{
+	CULL_FACE_OPERATION = 0,
+	POLYGON_OFFSET_FILL_OPERATION,
+	SCISSOR_TEST_OPERATION,
+	SAMPLE_COVERAGE_OPERATION,
+	SAMPLE_ALPHA_TO_COVERAGE_OPERATION,
+	STENCIL_TEST_OPERATION,
+	DEPTH_TEST_OPERATION,
+	BLEND_OPERATION,
+	DITHER_OPERATION,
 
+	ENABLE_FRAGMENT_OPERATION_STATE_COUNT
+};
 
 PeckerInterface Ipecker_fragment_operation
 {
@@ -50,6 +63,10 @@ PeckerInterface Ipecker_fragment_operation
 	virtual HResult set_sample_coverage(Float value_,Bool invert) = 0;
 
 	virtual HResult bind_frame_buffer_object(Ipecker_frame_buffer_object* pframe_buffer_object) = 0;
+
+	virtual Bool enable_state(HEnum state) = 0;
+	virtual Bool disable_state(HEnum state) = 0;
+	virtual Bool is_enable(HEnum state) const = 0;
 
 	
 };

@@ -36,8 +36,12 @@ public:
 
 	HResult set_viewport(SInt x,SInt y,nSize width,nSize height);
 
-	HResult set_const_value(HEnum name,HEnum operation_type,nSize nvalue_count,const PVoid P_IN value_);
-	HResult set_value(HEnum name,HEnum operation_type,nSize nvalue_count,PVoid P_IN value_);
+	//HResult set_const_value(HEnum name,HEnum operation_type,nSize nvalue_count,const PVoid P_IN value_);
+	//HResult set_value(HEnum name,HEnum operation_type,nSize nvalue_count,PVoid P_IN value_);
+
+	Ipecker_fragment_operation* get_fragment_operation() const;
+
+	HResult get_state_value(HEnum state,pecker_state_value& state_value) const;
 
 	HResult get_device_info(HEnum info_type,pecker_string& P_OUT strInfo) const;
 

@@ -14,6 +14,26 @@
 
 PECKER_BEGIN
 
+struct pecker_color
+{
+	pecker_color():_M_red(0.0f),
+		_M_green(0.0f),
+		_M_blue(0.0f),
+		_M_alpha(0.0f){;}
+
+	pecker_color(Byte red,Byte green,Byte blue,Byte alpha_value):_M_red( (Float)((SInt)red)/255.0f),
+		_M_green( (Float)((SInt)green)/255.0f),
+		_M_blue( (Float)((SInt)blue)/255.0f),
+		_M_alpha( (Float)((SInt)alpha_value)/255.0f){;}
+
+	pecker_color(Float red,Float green,Float blue,Float alpha_value):_M_red(red),
+		_M_green(green),
+		_M_blue(blue),
+		_M_alpha(alpha_value){;}
+
+	Float _M_red,_M_green,_M_blue,_M_alpha;
+};
+
 typedef enum enumRENDER_SYSTEM_TYPE
 {
 	UNKNOWN_RENDER_SYSTEM = 0,

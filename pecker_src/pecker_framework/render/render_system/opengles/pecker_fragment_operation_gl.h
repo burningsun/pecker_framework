@@ -54,6 +54,9 @@ public:
 
 	HResult bind_frame_buffer_object(Ipecker_frame_buffer_object* pframe_buffer_object);
 
+	Bool enable_state(HEnum state);
+	Bool disable_state(HEnum state);
+	Bool is_enable(HEnum state) const;
 
 };
 
