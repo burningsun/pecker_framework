@@ -103,6 +103,91 @@ union INT_FLOAT_SHARE_MEM_VAL
 
 #define PECKER_PI 3.141592653
 
+
+inline void set_bytes_in_bitfield_mask(BitField& bitfield32bit,Byte bit0to7,Byte bit8to15,Byte bit16to23,Byte bit24to31)
+{
+	bitfield32bit = (((BitField)bit0to7 << 24) & 0xFF000000)| 
+		(((BitField)bit8to15 << 16) & 0x00FF0000)|
+		(((BitField)bit16to23 << 8) & 0x0000FF00)|
+		(((BitField)bit24to31) & 0x000000FF);
+}
+
+inline void set_u16_in_bitfield_mask(BitField& bitfield32bit,U16bit bit0to15,U16bit bit16to31)
+{
+	bitfield32bit = (((BitField)bit0to15 << 16) & 0xFFFF0000)| 
+		(((BitField)bit16to31) & 0x0000FFFF);
+}
+
+// bit order 0 ~31
+#define BIT_0_MASK_0_to_31		(1 << 31) 
+#define BIT_1_MASK_0_to_31		(1 << 30) 
+#define BIT_2_MASK_0_to_31		(1 << 29) 
+#define BIT_3_MASK_0_to_31		(1 << 28) 
+#define BIT_4_MASK_0_to_31		(1 << 27) 
+#define BIT_5_MASK_0_to_31		(1 << 26) 
+#define BIT_6_MASK_0_to_31		(1 << 25) 
+#define BIT_7_MASK_0_to_31		(1 << 24) 
+#define BIT_8_MASK_0_to_31		(1 << 23) 
+#define BIT_9_MASK_0_to_31		(1 << 22) 
+#define BIT_10_MASK_0_to_31		(1 << 21) 
+#define BIT_11_MASK_0_to_31		(1 << 20) 
+#define BIT_12_MASK_0_to_31		(1 << 19) 
+#define BIT_13_MASK_0_to_31		(1 << 18) 
+#define BIT_14_MASK_0_to_31		(1 << 17) 
+#define BIT_15_MASK_0_to_31		(1 << 16) 
+
+#define BIT_16_MASK_0_to_31		(1 << 15) 
+#define BIT_17_MASK_0_to_31		(1 << 14) 
+#define BIT_18_MASK_0_to_31		(1 << 13) 
+#define BIT_19_MASK_0_to_31		(1 << 12) 
+#define BIT_20_MASK_0_to_31		(1 << 11) 
+#define BIT_21_MASK_0_to_31		(1 << 10) 
+#define BIT_22_MASK_0_to_31		(1 << 9) 
+#define BIT_23_MASK_0_to_31		(1 << 8) 
+#define BIT_24_MASK_0_to_31		(1 << 7) 
+#define BIT_25_MASK_0_to_31		(1 << 6) 
+#define BIT_26_MASK_0_to_31		(1 << 5) 
+#define BIT_27_MASK_0_to_31		(1 << 4) 
+#define BIT_28_MASK_0_to_31		(1 << 3) 
+#define BIT_29_MASK_0_to_31		(1 << 2) 
+#define BIT_30_MASK_0_to_31		(1 << 1) 
+#define BIT_31_MASK_0_to_31		(1) 
+
+// bit order 31~0
+#define BIT_0_MASK_31_to_0		(1) 
+#define BIT_1_MASK_31_to_0		(1 << 1) 
+#define BIT_2_MASK_31_to_0		(1 << 2) 
+#define BIT_3_MASK_31_to_0		(1 << 3) 
+#define BIT_4_MASK_31_to_0		(1 << 4) 
+#define BIT_5_MASK_31_to_0		(1 << 5) 
+#define BIT_6_MASK_31_to_0		(1 << 6) 
+#define BIT_7_MASK_31_to_0		(1 << 7) 
+#define BIT_8_MASK_31_to_0		(1 << 8) 
+#define BIT_9_MASK_31_to_0		(1 << 9) 
+#define BIT_10_MASK_31_to_0		(1 << 10) 
+#define BIT_11_MASK_31_to_0		(1 << 11) 
+#define BIT_12_MASK_31_to_0		(1 << 12) 
+#define BIT_13_MASK_31_to_0		(1 << 13) 
+#define BIT_14_MASK_31_to_0		(1 << 14) 
+#define BIT_15_MASK_31_to_0		(1 << 15) 
+
+#define BIT_16_MASK_31_to_0		(1 << 16) 
+#define BIT_17_MASK_31_to_0		(1 << 17) 
+#define BIT_18_MASK_31_to_0		(1 << 18) 
+#define BIT_19_MASK_31_to_0		(1 << 19) 
+#define BIT_20_MASK_31_to_0		(1 << 20) 
+#define BIT_21_MASK_31_to_0		(1 << 21) 
+#define BIT_22_MASK_31_to_0		(1 << 22) 
+#define BIT_23_MASK_31_to_0		(1 << 23) 
+#define BIT_24_MASK_31_to_0		(1 << 24) 
+#define BIT_25_MASK_31_to_0		(1 << 25) 
+#define BIT_26_MASK_31_to_0		(1 << 26) 
+#define BIT_27_MASK_31_to_0		(1 << 27) 
+#define BIT_28_MASK_31_to_0		(1 << 28) 
+#define BIT_29_MASK_31_to_0		(1 << 29) 
+#define BIT_30_MASK_31_to_0		(1 << 30) 
+#define BIT_31_MASK_31_to_0		(1 << 31) 
+
 PECKER_END
 
 #endif

@@ -244,6 +244,15 @@ HResult pecker_window_context::attach_graphic_device(PeckerInterface Ipecker_ren
 	return P_INVALID_VALUE;
 }
 
+nSize pecker_window_context::get_width() const
+{
+	return _M_window_info._M_window_param._M_width;
+}
+
+nSize pecker_window_context::get_height() const
+{
+	return _M_window_info._M_window_param._M_height;
+}
 
 Boolean pecker_window_context::is_visiable() const
 {

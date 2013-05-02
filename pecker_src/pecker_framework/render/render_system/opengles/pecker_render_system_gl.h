@@ -20,6 +20,7 @@ class pecker_render_system_gles2 : public Ipecker_render_system,public virtual p
 {
 private:
 	pecker_render_device_gles2 _M_graphic_device;
+	pecker_render_system_param _M_config;
 public:
 	pecker_render_system_gles2();
 	virtual ~pecker_render_system_gles2();
