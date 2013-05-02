@@ -254,6 +254,19 @@ nSize pecker_window_context::get_height() const
 	return _M_window_info._M_window_param._M_height;
 }
 
+Handle pecker_window_context::get_native_window() const
+{
+	return _M_window_info._M_window_handle;
+}
+Handle pecker_window_context::get_native_display() const
+{
+	return null;
+}
+Handle pecker_window_context::get_native_pixelmap() const
+{
+	return null;
+}
+
 Boolean pecker_window_context::is_visiable() const
 {
 	return _M_window_info._M_visiable;

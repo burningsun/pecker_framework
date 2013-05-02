@@ -28,7 +28,7 @@ struct pecker_render_system_param
 												  // 12~19 texture format
 	BitField _M_sample; //    bit order 0~31bit , 0~15 sample per pixel  16~31 number of multisample buffers
 	BitField _M_transparent; //   bit order 0~31bit , 0~7 transparent type 8~15 red 16~23 green 24~31 blue
-
+	nINDEX _M_config_ID;
 	nSize  _M_pbuffer_width;
 	nSize  _M_pbuffer_height;
 
