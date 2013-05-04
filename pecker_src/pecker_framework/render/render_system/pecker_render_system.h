@@ -34,7 +34,7 @@ struct pecker_render_system_param
 	nINDEX _M_config_ID;
 	nSize  _M_pbuffer_width;
 	nSize  _M_pbuffer_height;
-
+	nSize	_M_swap_interval;
 	nSize	_M_back_buffer_size;
 	PVoid _M_pback_buffer;
 };
