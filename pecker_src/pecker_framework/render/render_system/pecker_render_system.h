@@ -26,8 +26,11 @@ struct pecker_render_system_param
 												   //  4 max pbuffer height, 5 max pbuffer pixels,6 bind to  texture rgb bit,7 bind to texture rgba bit,
 												  // 8 mip texture bit , 9 10 11texture target
 												  // 12~19 texture format
+												  // 20 FSAAmode enable
 	BitField _M_sample; //    bit order 0~31bit , 0~15 sample per pixel  16~31 number of multisample buffers
 	BitField _M_transparent; //   bit order 0~31bit , 0~7 transparent type 8~15 red 16~23 green 24~31 blue
+	HEnum _M_context_prepriority;
+	
 	nINDEX _M_config_ID;
 	nSize  _M_pbuffer_width;
 	nSize  _M_pbuffer_height;
@@ -47,6 +50,16 @@ enum RENDER_SYS_PARAM_COLOR_BUFFER_TYPE
 	RENDER_SYS_PARAM_COLOR_BUFFER_TYPE_COUNT
 };
 
+enum CONTEXT_PREPRIORITY_TYPE
+{
+	CONTEXT_DEFAULT_PREPRIORITY = 0,
+	CONTEXT_LOW_PREPRIORITY,
+	CONTEXT_MEDIUM_PREPRIORITY,
+	CONTEXT_HIGH_PREPRIORITY,
+
+
+	CONTEXT_PREPRIORITY_TYPE_COUNT
+};
 
 PeckerInterface Ipecker_render_system
 {
