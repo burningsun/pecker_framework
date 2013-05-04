@@ -113,6 +113,16 @@ enum PECKER_RENDER_STATE_VALUE
 	PECKER_RENDER_STATE_VALUE_COUNT
 };
 
+struct pecker_viewport
+{
+	nINDEX _M_x;
+	nINDEX _M_y;
+	nSize _M_width;
+	nSize _M_height;
+	pecker_viewport():_M_x(0),_M_y(0),_M_width(0),_M_height(0){;}
+	pecker_viewport(nINDEX x,nINDEX y,nSize w,nSize h):_M_x(x),_M_y(y),_M_width(w),_M_height(h){;}
+};
+
 PeckerInterface Ipecker_render_device
 {
 	virtual ~Ipecker_render_device(){;}
@@ -130,7 +140,8 @@ PeckerInterface Ipecker_render_device
 	virtual HResult release_frame_buffer(Ipecker_frame_buffer* &pframe_buffer) = 0;
 
 	virtual HResult set_viewport(SInt x,SInt y,nSize width,nSize height) = 0;
-
+	virtual HResult set_viewport(const pecker_viewport& viewport) = 0;
+	virtual const pecker_viewport& get_viewport() const= 0;
 
 	virtual Ipecker_fragment_operation* get_fragment_operation() const = 0;
 	virtual HResult get_state_value(HEnum state,pecker_state_value& state_value) const = 0;

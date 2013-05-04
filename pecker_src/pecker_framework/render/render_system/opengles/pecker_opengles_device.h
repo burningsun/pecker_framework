@@ -17,6 +17,8 @@ PECKER_BEGIN
 
 class pecker_render_device_gles2 : public Ipecker_render_device, public virtual pecker_opengles_v2_object
 {
+private:
+	pecker_viewport _M_viewport;
 public:
 	pecker_render_device_gles2();
 	virtual ~pecker_render_device_gles2();
@@ -35,6 +37,8 @@ public:
 	HResult release_frame_buffer(Ipecker_frame_buffer* &pframe_buffer);
 
 	HResult set_viewport(SInt x,SInt y,nSize width,nSize height);
+	HResult set_viewport(const pecker_viewport& viewport);
+	const pecker_viewport& get_viewport() const;
 
 	//HResult set_const_value(HEnum name,HEnum operation_type,nSize nvalue_count,const PVoid P_IN value_);
 	//HResult set_value(HEnum name,HEnum operation_type,nSize nvalue_count,PVoid P_IN value_);

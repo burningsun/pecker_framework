@@ -331,7 +331,25 @@ HResult pecker_render_device_gles2::release_frame_buffer(Ipecker_frame_buffer* &
 HResult pecker_render_device_gles2::set_viewport(SInt x,SInt y,nSize width,nSize height)
 {
 	glViewport(x,y,width,height);
-	return pecker_opengles_v2_object::get_last_error_code();
+	HResult return_value =  pecker_opengles_v2_object::get_last_error_code();
+	if (P_OK == return_value)
+	{
+		_M_viewport._M_x = x;
+		_M_viewport._M_y = y;
+		_M_viewport._M_width = width;
+		_M_viewport._M_height = height;
+	}
+	return return_value;
+}
+
+HResult pecker_render_device_gles2::set_viewport(const pecker_viewport& viewport)
+{
+	return set_viewport(viewport._M_x,viewport._M_y,viewport._M_width,viewport._M_height);
+}
+
+const pecker_viewport& pecker_render_device_gles2::get_viewport() const
+{
+	return _M_viewport;
 }
 
 //HResult pecker_render_device_gles2::set_const_value(HEnum name,HEnum operation_type,nSize nvalue_count,const PVoid P_IN value_)
