@@ -267,6 +267,11 @@ Handle pecker_window_context::get_native_pixelmap() const
 	return null;
 }
 
+HResult pecker_window_context::set_buffers_geometry(nINDEX visual_id)
+{
+	return P_OK;
+}
+
 Boolean pecker_window_context::is_visiable() const
 {
 	return _M_window_info._M_visiable;
@@ -514,6 +519,7 @@ HResult pecker_program_apps::execute_program(pecker_window_context* pwindow_cont
 	return P_ERR;
 	
 }
+
 
 HResult pecker_program_apps::execute_program(pecker_string str_file_path,const pecker_string &str_cmd_params)
 {

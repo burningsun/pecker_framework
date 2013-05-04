@@ -93,6 +93,7 @@ PeckerInterface Ipecker_window_display //: public pecker_window_process
 	virtual Handle get_native_window() const = 0;
 	virtual Handle get_native_display() const = 0;
 	virtual Handle get_native_pixelmap() const = 0;
+	virtual HResult set_buffers_geometry(nINDEX visual_id) = 0;
 	//virtual HResult on_render() = 0;
 };
 
@@ -123,6 +124,7 @@ public:
 	virtual Handle get_native_window() const;
 	virtual Handle get_native_display() const;
 	virtual Handle get_native_pixelmap() const;
+	virtual HResult set_buffers_geometry(nINDEX visual_id) ;
 public:
 	static HResult pecker_windows_apps(pecker_window_context* pwindow_context, UInt umessage,Long wParam,Long lParam);
 	static HResult pecker_render_thread(pecker_window_context* pwindow_context);
