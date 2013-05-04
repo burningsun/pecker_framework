@@ -135,10 +135,16 @@ enum BIT_MASK_TYPE
 #define BIT_16_to_23_MASK_0_to_31 BYTE_3TH_MASK
 #define BIT_24_to_31_MASK_0_to_31 BYTE_4TH_MASK
 
+#define  BIT_0_to_15_MASK_0_to_31 SHORT_1ST_MASK
+#define  BIT_16_to_31_MASK_0_to_31 SHORT_2ND_MASK
+
 #define BIT_0_to_7_MASK_31_to_0 BYTE_4TH_MASK
 #define BIT_8_to_15_MASK_31_to_0 BYTE_3TH_MASK
 #define BIT_16_to_23_MASK_31_to_0 BYTE_2ND_MASK
 #define BIT_24_to_31_MASK_31_to_0 BYTE_1ST_MASK
+
+#define  BIT_0_to_15_MASK_31_to_0 SHORT_2ND_MASK
+#define  BIT_16_to_31_MASK_31_to_0  SHORT_1ST_MASK
 
 inline BitField get_bitfield_mask(BitField bitfield,HEnum masktype)
 {
@@ -157,6 +163,43 @@ inline BitField get_bitfield_mask(BitField bitfield,HEnum masktype)
 		break;
 	case BYTE_4TH_MASK:
 		return_value = (bitfield & 0x000000FF);
+		break;
+	case SHORT_1ST_MASK:
+		return_value = ((bitfield & 0xFFFF0000)>>16);
+		break;
+	case SHORT_2ND_MASK:
+		return_value = (bitfield&0x0000FFFF);
+		break;
+	default:
+		break;
+	}
+
+	return return_value;
+}
+
+inline BitField set_bitfield_mask(BitField bitfield,BitField mask_value,HEnum masktype)
+{
+	BitField return_value = bitfield;
+
+	switch (masktype)
+	{
+	case BYTE_1ST_MASK:
+		return_value = (bitfield & 0x00FFFFFF) | ((mask_value & 0xFF000000) >> 24);
+		break;
+	case BYTE_2ND_MASK:
+		return_value = (bitfield & 0xFF00FFFF) | ((mask_value & 0x00FF0000) >> 16);
+		break;
+	case BYTE_3TH_MASK:
+		return_value = (bitfield & 0xFFFF00FF) | ((mask_value & 0x0000FF00) >> 8);
+		break;
+	case BYTE_4TH_MASK:
+		return_value = (bitfield & 0xFFFFFF00) | (mask_value & 0x000000FF);
+		break;
+	case SHORT_1ST_MASK:
+		return_value = (bitfield & 0x0000FFFF) | ((mask_value & 0xFFFF0000)>>16);
+		break;
+	case SHORT_2ND_MASK:
+		return_value =  (bitfield & 0xFFFF0000) | (mask_value&0x0000FFFF);
 		break;
 	default:
 		break;
