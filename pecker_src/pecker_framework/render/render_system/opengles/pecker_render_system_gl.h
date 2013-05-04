@@ -40,7 +40,9 @@ private:
 
 	EGLint		_M_MajorVersion;
 	EGLint		_M_MinorVersion;
-
+private:
+	rsys_config_stack _M_optimation_tmp_config_stack1;
+	rsys_config_stack _M_optimation_tmp_config_stack2;
 public:
 	pecker_render_system_gles2();
 	virtual ~pecker_render_system_gles2();
@@ -58,6 +60,9 @@ public:
 	HResult close_render_display(Ipecker_window_display* pwindows_display);
 public:
 	static HResult pecker_config_to_egl_config(const pecker_render_system_param& config,rsys_config_stack& P_OUT egl_config);
+	static Bool is_egl_externsion_supported(EGLDisplay egl_display,const char* pstr_extension);
+protected:
+	HResult select_config(const pecker_render_system_param& config,nINDEX &config_id,EGLConfig &selection_config);
 };
 
 
