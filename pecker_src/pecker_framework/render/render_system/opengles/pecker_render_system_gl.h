@@ -30,7 +30,6 @@ class pecker_render_system_gles2 : public Ipecker_render_system,public virtual p
 {
 private:
 	pecker_render_device_gles2 _M_graphic_device;
-	pecker_render_system_param _M_config;
 	Bool	_M_device_is_open;
 
 	EGLDisplay	_M_EGLDisplay;
@@ -40,29 +39,36 @@ private:
 
 	EGLint		_M_MajorVersion;
 	EGLint		_M_MinorVersion;
+protected:
+	pecker_render_system_const_param _M_const_config;
+	pecker_render_system_variable_param _M_variable_config;
+
+	Ipecker_window_display* _M_pwindow_display;
 private:
 	rsys_config_stack _M_optimation_tmp_config_stack1;
 	rsys_config_stack _M_optimation_tmp_config_stack2;
 public:
 	pecker_render_system_gles2();
 	virtual ~pecker_render_system_gles2();
-	HResult set_render_system_param(const pecker_render_system_param & sys_param);
-	Ipecker_render_device* open_render_device(Ipecker_window_display* pwindows_display);
-	HResult close_render_device();
+	virtual HResult set_render_system_param(const pecker_render_system_const_param & sys_param);
+	virtual Ipecker_render_device* open_render_device(Ipecker_window_display* pwindows_display);
+	virtual HResult close_render_device();
 	
-	HResult resize_render_display(nSize x,nSize y,nSize width,nSize height,Ipecker_window_display* pwindows_display);
+	virtual HResult render_complete();
+	virtual HResult flush_frame_buffer(Bool bfinish = false);
 
-	HResult swap_frame_buffer();
-	HResult flush_frame_buffer();
+	virtual HResult set_param(HEnum update_type, const pecker_render_system_variable_param& sys_param);
+	virtual const pecker_render_system_variable_param& get_param(HEnum param_type) const;
 
-	HResult parse_render_display(Ipecker_window_display* pwindows_display);
-	HResult resume_render_display(Ipecker_window_display* pwindows_display);
-	HResult close_render_display(Ipecker_window_display* pwindows_display);
+	//virtual HResult resize_render_display(nSize x,nSize y,nSize width,nSize height);
+	//virtual HResult parse_render_display();
+	//virtual HResult resume_render_display();
+	//virtual HResult close_render_display();
 public:
-	static HResult pecker_config_to_egl_config(const pecker_render_system_param& config,rsys_config_stack& P_OUT egl_config);
+	static HResult pecker_config_to_egl_config(const pecker_render_system_const_param& config,rsys_config_stack& P_OUT egl_config);
 	static Bool is_egl_externsion_supported(EGLDisplay egl_display,const char* pstr_extension);
 protected:
-	HResult select_config(const pecker_render_system_param& config,nINDEX &config_id,EGLConfig &selection_config);
+	HResult select_config(const pecker_render_system_const_param& config,nINDEX &config_id,EGLConfig &selection_config);
 };
 
 

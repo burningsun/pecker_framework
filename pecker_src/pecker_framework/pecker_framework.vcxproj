@@ -119,6 +119,7 @@
     <ClInclude Include="native\pecker_thread.h" />
     <ClInclude Include="native\pecker_timetick.h" />
     <ClInclude Include="native\pecker_window.h" />
+    <ClInclude Include="native\pecker_window_context.h" />
     <ClInclude Include="PeckerConfig.h" />
     <ClInclude Include="PeckerDefines.h" />
     <ClInclude Include="render\pecker_render_object.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="native\pecker_thread.cpp" />
     <ClCompile Include="native\pecker_tick.cpp" />
     <ClCompile Include="native\pecker_window.cpp" />
+    <ClCompile Include="native\pecker_window_context.cpp" />
     <ClCompile Include="PeckerObject.cpp" />
     <ClCompile Include="render\pecker_render_object.cpp" />
     <ClCompile Include="render\render_system\opengles\pecker_buffer_gl.cpp" />

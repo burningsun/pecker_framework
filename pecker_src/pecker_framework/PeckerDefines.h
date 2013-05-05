@@ -98,6 +98,7 @@ union INT_FLOAT_SHARE_MEM_VAL
 #define P_NULLITEM	7
 #define  P_TIMEOUT	8
 #define  P_RUNNING_WAIT 9
+#define  P_UNINIT 10
 #define  P_UNIQUE_ERR -4
 #define  P_MAXUNSIGNEDVAL -1
 

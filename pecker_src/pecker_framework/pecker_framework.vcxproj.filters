@@ -195,6 +195,9 @@
     <ClInclude Include="render\render_system\opengles\pecker_render_system_gl.h">
       <Filter>render\render_system\opengles</Filter>
     </ClInclude>
+    <ClInclude Include="native\pecker_window_context.h">
+      <Filter>native</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">
@@ -304,6 +307,9 @@
     </ClCompile>
     <ClCompile Include="render\render_system\opengles\pecker_render_system_gl.cpp">
       <Filter>render\render_system\opengles</Filter>
+    </ClCompile>
+    <ClCompile Include="native\pecker_window_context.cpp">
+      <Filter>native</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

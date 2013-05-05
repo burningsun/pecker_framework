@@ -22,31 +22,44 @@ static HEnum gRSYS_color_buffer_type_table[RENDER_SYS_PARAM_COLOR_BUFFER_TYPE_CO
 
 pecker_render_system_gles2::pecker_render_system_gles2():_M_device_is_open(false),
 	_M_EGLWindow(EGL_NO_SURFACE),_M_EGLContext(EGL_NO_CONTEXT),_M_EGLDisplay(EGL_NO_DISPLAY),
-	_M_MajorVersion(0),_M_MinorVersion(0)
+	_M_MajorVersion(0),_M_MinorVersion(0),_M_pwindow_display(null)
 {
-	set_bytes_in_bitfield_mask(_M_config._M_color_buffer,0,0,0,RSYS_RGB_BUFFER);
-	set_bytes_in_bitfield_mask(_M_config._M_color_bpp,8,8,8,8);
-	set_bytes_in_bitfield_mask(_M_config._M_render_buffer,0,0,16,8);
-	set_u16_in_bitfield_mask(_M_config._M_sample,4,1);
-	set_bytes_in_bitfield_mask(_M_config._M_transparent,0,0,0,0);
-	_M_config._M_config_mask = BIT_0_MASK_0_to_31;
+	set_bytes_in_bitfield_mask(_M_const_config._M_color_buffer,0,0,0,RSYS_RGB_BUFFER);
+	set_bytes_in_bitfield_mask(_M_const_config._M_color_bpp,8,8,8,8);
+	set_bytes_in_bitfield_mask(_M_const_config._M_render_buffer,0,0,16,8);
+	set_u16_in_bitfield_mask(_M_const_config._M_sample,4,1);
+	set_bytes_in_bitfield_mask(_M_const_config._M_transparent,0,0,0,0);
+	_M_const_config._M_config_mask = PBUFFER_BIT_FIELD;
 
-	_M_config._M_swap_interval = 0;
-
-	_M_config._M_pbuffer_width = 0;
-	_M_config._M_pbuffer_height = 0;
-	_M_config._M_back_buffer_size = 0;
-	_M_config._M_pback_buffer = null;
+	//_M_const_config._M_swap_interval = 0;
+	_M_variable_config._M_swap_interval = 0;
+	_M_variable_config._M_context_prepriority = CONTEXT_DEFAULT_PREPRIORITY;
+	_M_const_config._M_pbuffer_width = 0;
+	_M_const_config._M_pbuffer_height = 0;
+	_M_const_config._M_back_buffer_size = 0;
+	_M_const_config._M_pback_buffer = null;
 }
 
 pecker_render_system_gles2::~pecker_render_system_gles2()
 {
-
+	if (_M_pwindow_display)
+	{
+		_M_pwindow_display->deinit_render_resource();
+	}
+	close_render_device();
 }
-HResult pecker_render_system_gles2::set_render_system_param(const pecker_render_system_param & sys_param)
+HResult pecker_render_system_gles2::set_render_system_param(const pecker_render_system_const_param & sys_param)
 {
-	_M_config = sys_param;
-	return P_OK;
+	if (_M_device_is_open)
+	{
+		return P_UNIQUE_ERR;
+	}
+	else
+	{
+		_M_const_config = sys_param;
+		return P_OK;
+	}
+
 }
 
 Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_window_display* pwindows_display)
@@ -60,8 +73,8 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 		return &_M_graphic_device;
 	}
 
-	_M_config._M_pbuffer_width = pwindows_display->get_width();
-	_M_config._M_pbuffer_height = pwindows_display->get_height();
+	_M_const_config._M_pbuffer_width = pwindows_display->get_width();
+	_M_const_config._M_pbuffer_height = pwindows_display->get_height();
 
 	// 从窗口中获取底层display接口，windows对应的是HDC
 	_M_EGLDisplay = eglGetDisplay((EGLNativeDisplayType)(pwindows_display->get_native_display()));
@@ -79,27 +92,27 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 
 	if(!eglInitialize(_M_EGLDisplay, &_M_MajorVersion, &_M_MinorVersion))
 	{
-		PECKER_LOG_ERR("Unable to initialise EGL","EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Unable to initialise EGL,EGL ERROR %d",eglGetError());
 		return null;
 	}
 
-	PECKER_LOG_INFO("EGL initialized","EGL %d %d",_M_MajorVersion,_M_MinorVersion);
+	PECKER_LOG_INFO("render system info","EGL initialized,EGL %d %d",_M_MajorVersion,_M_MinorVersion);
 	
 	// 绑定底层渲染API
 	if (!eglBindAPI(EGL_OPENGL_ES_API))
 	{
-		PECKER_LOG_ERR("Unable to bind API EGL","EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Unable to bind API EGL,EGL ERROR %d",eglGetError());
 		return null;
 	}
 
-	pecker_render_system_param backup_config = _M_config;
+	pecker_render_system_const_param backup_config = _M_const_config;
 	const EGLint* pattrib_list = null;
 
 	Ipecker_render_device*  preturn_value =  &_M_graphic_device;
 	do 
 	{
 		nINDEX egl_config_id = 0;
-		if (P_OK == select_config(_M_config,egl_config_id,_M_EGLConfig))
+		if (P_OK == select_config(_M_const_config,egl_config_id,_M_EGLConfig))
 		{
 			// 已经存在一个context，则删除
 			if (_M_EGLContext)
@@ -121,7 +134,7 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 			if (is_egl_externsion_supported(_M_EGLDisplay,"EGL_IMG_context_priority"))
 			{
 				attrible_cmd = EGL_CONTEXT_PRIORITY_LEVEL_IMG;
-				switch(_M_config._M_context_prepriority)
+				switch(_M_variable_config._M_context_prepriority)
 				{
 				case CONTEXT_LOW_PREPRIORITY:
 					attrible_data = EGL_CONTEXT_PRIORITY_LOW_IMG;
@@ -147,48 +160,48 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 			BitField temp_bitfield;
 			if (EGL_NO_CONTEXT == _M_EGLContext)
 			{
-				if (_M_config._M_config_ID > 0)
+				if (_M_const_config._M_config_ID > 0)
 				{
-					PECKER_LOG_ERR("create context EGL","unable to create a context by config id,ERROR=%d",eglGetError());
+					PECKER_LOG_ERR("render system error","create context EGL,unable to create a context by config id,ERROR=%d",eglGetError());
 					preturn_value = null;
 					break;
 				}
-				else if (_M_config._M_config_mask & BIT_0_MASK_0_to_31)
+				else if (_M_const_config._M_config_mask & PBUFFER_BIT_FIELD)
 				{
-					_M_config._M_config_mask &= ~BIT_0_MASK_0_to_31;
+					_M_const_config._M_config_mask &= ~PBUFFER_BIT_FIELD;
 					continue;
 				}
-				else if (get_bitfield_mask(_M_config._M_render_buffer,BIT_24_to_31_MASK_0_to_31) > 0)
+				else if (get_bitfield_mask(_M_const_config._M_render_buffer,STCENCIL_BUFFER_SIZE_BITS_FIELD) > 0)
 				{
-					_M_config._M_render_buffer = set_bitfield_mask(_M_config._M_render_buffer,0,BIT_24_to_31_MASK_0_to_31);
+					_M_const_config._M_render_buffer = set_bitfield_mask(_M_const_config._M_render_buffer,0,STCENCIL_BUFFER_SIZE_BITS_FIELD);
 					continue;
 				}
-				else if ( (temp_bitfield = get_bitfield_mask(_M_config._M_sample,BIT_16_to_23_MASK_0_to_31)) > 1)
+				else if ( (temp_bitfield = get_bitfield_mask(_M_const_config._M_sample,NUMBER_OF_SAMPLE_BUFFER_BITS_FIELD)) > 1)
 				{
 					--temp_bitfield;
-					_M_config._M_render_buffer = set_bitfield_mask(_M_config._M_render_buffer,temp_bitfield,BIT_16_to_31_MASK_0_to_31);
+					_M_const_config._M_render_buffer = set_bitfield_mask(_M_const_config._M_sample,temp_bitfield,NUMBER_OF_SAMPLE_BUFFER_BITS_FIELD);
 					continue;
 				}
-				else if (BIT_20_MASK_0_to_31 & _M_config._M_config_mask)
+				else if (FSAAMODE_BIT_FIELD & _M_const_config._M_config_mask)
 				{
-					if ( get_bitfield_mask(_M_config._M_sample,BIT_16_to_31_MASK_0_to_31) == 1)
+					if ( get_bitfield_mask(_M_const_config._M_sample,NUMBER_OF_SAMPLE_BUFFER_BITS_FIELD) == 1)
 					{
-						temp_bitfield = get_bitfield_mask(_M_config._M_sample,BIT_0_to_15_MASK_0_to_31);
+						temp_bitfield = get_bitfield_mask(_M_const_config._M_sample,SAMPLE_PER_PIXEL_SIZE_BITS_FIELD);
 						if (temp_bitfield > 4)
 						{
 							temp_bitfield = 4;
-							_M_config._M_render_buffer = set_bitfield_mask(_M_config._M_render_buffer,temp_bitfield,BIT_0_to_15_MASK_0_to_31);
+							_M_const_config._M_render_buffer = set_bitfield_mask(_M_const_config._M_sample,temp_bitfield,SAMPLE_PER_PIXEL_SIZE_BITS_FIELD);
 						}
 						else if (temp_bitfield > 2)
 						{
 							temp_bitfield = 2;
-							_M_config._M_render_buffer = set_bitfield_mask(_M_config._M_render_buffer,temp_bitfield,BIT_0_to_15_MASK_0_to_31);
+							_M_const_config._M_render_buffer = set_bitfield_mask(_M_const_config._M_sample,temp_bitfield,SAMPLE_PER_PIXEL_SIZE_BITS_FIELD);
 						}
 						else
 						{
 							temp_bitfield = 0;
-							_M_config._M_render_buffer = set_bitfield_mask(_M_config._M_render_buffer,temp_bitfield,BIT_0_to_15_MASK_0_to_31);
-							_M_config._M_render_buffer = set_bitfield_mask(_M_config._M_render_buffer,0,BIT_24_to_31_MASK_0_to_31);
+							_M_const_config._M_render_buffer = set_bitfield_mask(_M_const_config._M_sample,temp_bitfield,SAMPLE_PER_PIXEL_SIZE_BITS_FIELD);
+							_M_const_config._M_render_buffer = set_bitfield_mask(_M_const_config._M_sample,0,NUMBER_OF_SAMPLE_BUFFER_BITS_FIELD);
 						}
 						
 				}
@@ -196,7 +209,7 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 			}
 			else
 			{
-				PECKER_LOG_ERR("create context EGL","give up to try create context %s","... ...");
+				PECKER_LOG_ERR("render system error","create context EGL,give up to try create context %s","... ...");
 				preturn_value = null;
 				break;
 			}
@@ -205,7 +218,7 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 		else
 		{
 			
-			PECKER_LOG_ERR("select config error","restore the orignal config! %s","... ....");
+			PECKER_LOG_ERR("render system error","select config error,restore the orignal config! %s","... ....");
 			preturn_value = null;
 			break;
 		}
@@ -213,16 +226,16 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 	
 	if (null == preturn_value)
 	{
-		_M_config = backup_config;
+		_M_const_config = backup_config;
 	}
 
 	// 创建egl窗口
 	_M_EGLWindow = EGL_NO_SURFACE;
 
 	// 如果pixmap标志被设置，使用pixmaps的方式创建surface
-	if (_M_config._M_config_mask & BIT_1_MASK_0_to_31)
+	if (_M_const_config._M_config_mask & PIXMAP_BIT_FIELD)
 	{
-		PECKER_LOG_INFO("open device EGL","using pixmaps,about to create egl surface");
+		PECKER_LOG_INFO("render system info","open device EGL, using pixmaps,about to create egl surface,%s","... ...");
 		_M_EGLWindow = eglCreatePixmapSurface(_M_EGLDisplay,_M_EGLConfig,(EGLNativePixmapType)(pwindows_display->get_native_pixelmap()),pattrib_list);
 	}
 	// 使用指定窗口创建surface
@@ -231,28 +244,32 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 		EGLint egl_visual_id;
 		eglGetConfigAttrib(_M_EGLDisplay,_M_EGLConfig,EGL_NATIVE_VISUAL_ID,&egl_visual_id);
 		pwindows_display->set_buffers_geometry(egl_visual_id);
-		PECKER_LOG_INFO("open device EGL","using native window handle,about to create egl surface");
+		PECKER_LOG_INFO("render system info","open device EGL,using native window handle,about to create egl surface,%s","... ...");
 		_M_EGLWindow = eglCreateWindowSurface(_M_EGLDisplay,_M_EGLConfig,(EGLNativeWindowType)(pwindows_display->get_native_window()),pattrib_list);
 	}
 	//使用null创建surface
 	if (EGL_NO_SURFACE == _M_EGLWindow)
 	{
-		PECKER_LOG_INFO("open device EGL","using null window handle value,about to create egl surface");
+		PECKER_LOG_INFO("render system info","open device EGL,using null window handle value,about to create egl surface,%s","... ...");
 		_M_EGLWindow = eglCreateWindowSurface(_M_EGLDisplay,_M_EGLConfig,null,pattrib_list);
 	}
 	// 多次尝试都创建补成功，放弃继续尝试，退出
 	if (EGL_NO_SURFACE == _M_EGLWindow)
 	{
-		PECKER_LOG_ERR("create window surface EGL","unable to create surface,%s","... ...");
+		PECKER_LOG_ERR("render system error","create window surface EGL,unable to create surface,%s","... ...");
 		preturn_value = null;
 		return preturn_value;
 	}
 
 	if (!eglMakeCurrent(_M_EGLDisplay,_M_EGLWindow,_M_EGLWindow,_M_EGLContext))
 	{
-		PECKER_LOG_ERR("make current EGL","unable to make context current ERROR = %d",eglGetError());
+		PECKER_LOG_ERR("render system error","make current EGL,unable to make context current ERROR = %d",eglGetError());
 		preturn_value = null;
 		return preturn_value;
+	}
+	else
+	{
+		_M_pwindow_display = pwindows_display;
 	}
 
 	EGLint width = 0;
@@ -264,33 +281,36 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 
 
 #ifdef EGL_VERSION_1_1
-	eglSwapInterval(_M_EGLDisplay,_M_config._M_swap_interval);
+	eglSwapInterval(_M_EGLDisplay,_M_variable_config._M_swap_interval);
 #endif
 	return preturn_value;
 }
 
 HResult pecker_render_system_gles2::close_render_device()
 {
+	_M_pwindow_display = null;
+	_M_device_is_open = false;
 	if (EGL_NO_DISPLAY == _M_EGLDisplay)
 	{
 		return P_OK;
 	}
-	
+	HResult return_value = P_OK;
 	EGLBoolean bresult = eglSwapBuffers(_M_EGLDisplay,_M_EGLWindow);
-	PECKER_LOG_INFO("eglSwapBuffers before close render device","ERROR = %d",eglGetError());
+	PECKER_LOG_INFO("render system info","eglSwapBuffers before close render device,ERROR = %d",eglGetError());
 	bresult = eglMakeCurrent(_M_EGLDisplay,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
-	PECKER_LOG_INFO("eglMakeCurrent before close render device","ERROR = %d",eglGetError());
+	PECKER_LOG_INFO("render system info","eglMakeCurrent before close render device,ERROR = %d",eglGetError());
 	if (EGL_NO_CONTEXT != _M_EGLContext)
 	{
 		bresult = eglDestroyContext(_M_EGLDisplay,_M_EGLContext);
 		if (bresult)
 		{
 			_M_EGLContext = EGL_NO_CONTEXT;
-			PECKER_LOG_INFO("close render device","eglDestroyContext ok! %s","... ...");
+			PECKER_LOG_INFO("render system info","close render device,eglDestroyContext ok! %s","... ...");
 		}
 		else
 		{
-			PECKER_LOG_ERR("close render device","eglDestroyContext fail! ERROR = %d",eglGetError());
+			PECKER_LOG_ERR("render system error","close render device,eglDestroyContext fail! ERROR = %d",eglGetError());
+			return_value = P_FAIL;
 		}
 	}
 	if (EGL_NO_SURFACE != _M_EGLWindow)
@@ -299,11 +319,12 @@ HResult pecker_render_system_gles2::close_render_device()
 		if (bresult)
 		{
 			_M_EGLWindow = EGL_NO_SURFACE;
-			PECKER_LOG_INFO("close render device","eglDestroySurface ok! %s","... ...");
+			PECKER_LOG_INFO("render system info","close render device,eglDestroySurface ok! %s","... ...");
 		}
 		else
 		{
-			PECKER_LOG_ERR("close render device","eglDestroySurface fail! ERROR = %d",eglGetError());
+			PECKER_LOG_ERR("render system error","close render device,eglDestroySurface fail! ERROR = %d",eglGetError());
+			return_value = P_FAIL;
 		}
 	}
 
@@ -311,46 +332,155 @@ HResult pecker_render_system_gles2::close_render_device()
 	if (bresult)
 	{
 		_M_EGLDisplay = EGL_NO_DISPLAY;
-		PECKER_LOG_INFO("close render device","eglTerminate ok! %s","... ...");
+		PECKER_LOG_INFO("render system info","close render device,eglTerminate ok! %s","... ...");
 	}
 	else
 	{
-		PECKER_LOG_ERR("close render device","eglTerminate fail! ERROR = %d",eglGetError());
+		PECKER_LOG_ERR("render system error","close render device,eglTerminate fail! ERROR = %d",eglGetError());
+		return_value = P_FAIL;
 	}
 
+	return return_value;
 }
 
-HResult pecker_render_system_gles2::resize_render_display(nSize x,nSize y,nSize width,nSize height,Ipecker_window_display* pwindows_display)
+HResult pecker_render_system_gles2::render_complete()
 {
-	return P_OK;
-}
+	if (null == _M_pwindow_display)
+	{
+		return P_UNINIT;
+	}
+	HResult return_value = P_OK;
+	EGLBoolean egl_result; 
+	// 使用pixmap的情况下，单缓冲，用eglWaitGL等待绘图完成，否则使用eglSwapBuffers交换绘图缓冲
+	if (_M_const_config._M_config_mask & PIXMAP_BIT_FIELD)
+	{
+		egl_result = eglWaitGL();
+		if (!egl_result)
+		{
+			PECKER_LOG_ERR("render system error","render_complete,eglWaitGL EGL ERROR = %d",eglGetError());
+			return_value = P_FAIL;
+		}
+		else
+		{
+			if (_M_const_config._M_config_mask & ENABLE_PIXMAP_COPY_BIT_FIELD)
+			{
+				return_value = _M_pwindow_display->pixmap_copy();
+			}
+			if (P_OK != return_value)
+			{
+				PECKER_LOG_ERR("render system error","render_complete, pixmap_copy ERROR = %d",return_value);
+			}
+		}
 
-HResult pecker_render_system_gles2::swap_frame_buffer()
+	}
+	else
+	{
+		egl_result = eglSwapBuffers(_M_EGLDisplay,_M_EGLWindow);
+		if (!egl_result)
+		{
+			PECKER_LOG_ERR("render system error"," render_complete,eglSwapBuffers EGL ERROR = %d",eglGetError());
+			return_value = P_FAIL;
+		}
+	}
+
+	if (!egl_result)
+	{
+		if (EGL_CONTEXT_LOST == eglGetError())
+		{
+			// 出现EGL_CONTEXT_LOST的情况则尝试性修复
+
+			Ipecker_window_display* pbackp_window_display = _M_pwindow_display;
+			// 释放当前窗口的渲染资源
+			pbackp_window_display->deinit_render_resource();
+			// 关闭渲染设备
+			this->close_render_device();
+			// 重新打开渲染设备
+			
+			if (null != this->open_render_device(pbackp_window_display))
+			{
+				// 重新初始化窗口的渲染资源
+				pbackp_window_display->init_render_resource();
+				return_value = P_OK;
+			}
+		}
+		else
+		{
+			PECKER_LOG_ERR("render system error","render_complete failed! %s","... ...");
+		}
+	}
+
+	return return_value;
+}
+HResult pecker_render_system_gles2::flush_frame_buffer(Bool bfinish /* = false */)
 {
-	//eglWaitGL()
-	//eglSwapBuffers()
+	if (bfinish)
+	{
+		glFinish();
+	}
+	else
+	{
+		glFlush();
+	}
+	
 	return pecker_opengles_v2_object::get_last_error_code();
 }
-HResult pecker_render_system_gles2::flush_frame_buffer()
-{
-	glFlush();
-	return pecker_opengles_v2_object::get_last_error_code();
-}
 
-HResult pecker_render_system_gles2::parse_render_display(Ipecker_window_display* pwindows_display)
+HResult pecker_render_system_gles2::set_param(HEnum update_type, const pecker_render_system_variable_param& sys_param)
 {
-	return P_OK;
+	HResult return_value = P_OK;
+	switch (update_type)
+	{
+	case RSYS_RESET_ALL:
+		_M_variable_config = sys_param;
+		break;
+	case RSYS_SET_TARGET:
+		_M_variable_config._M_target_type = sys_param._M_target_type;
+		break;
+	case RSYS_CONTEXT_PREPRIORITY:
+		_M_variable_config._M_context_prepriority = sys_param._M_context_prepriority;
+		break;
+	case RSYS_SWAP_INTERNVAL:
+		_M_variable_config._M_swap_interval = sys_param._M_swap_interval;
+		break;
+	case RSYS_SET_STATUS:
+		_M_variable_config._M_status_param1 = sys_param._M_status_param1;
+		_M_variable_config._M_status_param2 = sys_param._M_status_param2;
+		break;
+	case RSYS_SET_RENDER_COMPELETE_PARAM:
+		_M_variable_config._M_render_complete_param1 = sys_param._M_render_complete_param1;
+		_M_variable_config._M_render_complete_param2 = sys_param._M_render_complete_param2;
+		_M_variable_config._M_render_complete_param3 = sys_param._M_render_complete_param3;
+		_M_variable_config._M_render_complete_param4 = sys_param._M_render_complete_param4;
+		_M_variable_config._M_render_complete_param5 = sys_param._M_render_complete_param5;
+		break;
+	default:
+		return_value = P_INVALID_ENUM;
+		break;
+	}
+	return return_value;
 }
-HResult pecker_render_system_gles2::resume_render_display(Ipecker_window_display* pwindows_display)
+const pecker_render_system_variable_param& pecker_render_system_gles2::get_param(HEnum param_type) const
 {
-	return P_OK;
+	return _M_variable_config;
 }
-HResult pecker_render_system_gles2::close_render_display(Ipecker_window_display* pwindows_display)
-{
-	return P_OK;
-}
+//HResult pecker_render_system_gles2::resize_render_display(nSize x,nSize y,nSize width,nSize height)
+//{
+//	return P_OK;
+//}
+//HResult pecker_render_system_gles2::parse_render_display()
+//{
+//	return P_OK;
+//}
+//HResult pecker_render_system_gles2::resume_render_display()
+//{
+//	return P_OK;
+//}
+//HResult pecker_render_system_gles2::close_render_display()
+//{
+//	return P_OK;
+//}
 
-HResult pecker_render_system_gles2::pecker_config_to_egl_config(const pecker_render_system_param& config,rsys_config_stack& P_OUT egl_config)
+HResult pecker_render_system_gles2::pecker_config_to_egl_config(const pecker_render_system_const_param& config,rsys_config_stack& P_OUT egl_config)
 {
 	HEnum config_cmd;
 	HEnum config_data;
@@ -369,44 +499,44 @@ HResult pecker_render_system_gles2::pecker_config_to_egl_config(const pecker_ren
 	//if (0 ==config._M_color_format)
 	//{
 		config_cmd = EGL_RED_SIZE;
-		config_data = get_bitfield_mask(config._M_color_bpp,BIT_0_to_7_MASK_0_to_31);
+		config_data = get_bitfield_mask(config._M_color_bpp,RED_SIZE_BITS_FIELD);
 		egl_config.push(config_cmd);
 		egl_config.push(config_data);
 
 		config_cmd = EGL_GREEN_SIZE;
-		config_data = get_bitfield_mask(config._M_color_bpp,BIT_8_to_15_MASK_0_to_31);
+		config_data = get_bitfield_mask(config._M_color_bpp,GREEN_SIZE_BITS_FIELD);
 		egl_config.push(config_cmd);
 		egl_config.push(config_data);
 
 		config_cmd = EGL_BLUE_SIZE;
-		config_data = get_bitfield_mask(config._M_color_bpp,BIT_16_to_23_MASK_0_to_31);
+		config_data = get_bitfield_mask(config._M_color_bpp,BLUE_SIZE_BITS_FIELD);
 		egl_config.push(config_cmd);
 		egl_config.push(config_data);
 
 		config_cmd = EGL_ALPHA_SIZE;
-		config_data = get_bitfield_mask(config._M_color_bpp,BIT_24_to_31_MASK_0_to_31);
+		config_data = get_bitfield_mask(config._M_color_bpp,ALPHA_SIZE_BITS_FIELD);
 		egl_config.push(config_cmd);
 		egl_config.push(config_data);
 	//}
 
 
 	config_cmd = EGL_DEPTH_SIZE;
-	config_data = get_bitfield_mask(config._M_render_buffer,BIT_16_to_23_MASK_0_to_31);
+	config_data = get_bitfield_mask(config._M_render_buffer,DEPTH_BUFFER_SIZE_BITS_FIELD);
 	egl_config.push(config_cmd);
 	egl_config.push(config_data);
 
 	config_cmd = EGL_STENCIL_SIZE;
-	config_data = get_bitfield_mask(config._M_render_buffer,BIT_24_to_31_MASK_0_to_31);
+	config_data = get_bitfield_mask(config._M_render_buffer,STCENCIL_BUFFER_SIZE_BITS_FIELD);
 	egl_config.push(config_cmd);
 	egl_config.push(config_data);
 
 	config_cmd = EGL_ALPHA_MASK_SIZE;
-	config_data = get_bitfield_mask(config._M_render_buffer,BIT_16_to_23_MASK_0_to_31);
+	config_data = get_bitfield_mask(config._M_render_buffer,ALPHA_MASK_SIZE_BITS_FIELD);
 	egl_config.push(config_cmd);
 	egl_config.push(config_data);
 
 	config_cmd = EGL_COLOR_BUFFER_TYPE;
-	config_data = get_bitfield_mask(config._M_color_buffer,BIT_24_to_31_MASK_0_to_31);
+	config_data = get_bitfield_mask(config._M_color_buffer,COLOR_BUFFER_BITS_TYPE_FIELD);
 	if (config_data < RENDER_SYS_PARAM_COLOR_BUFFER_TYPE_COUNT)
 	{
 		config_data = gRSYS_color_buffer_type_table[config_data];
@@ -417,7 +547,7 @@ HResult pecker_render_system_gles2::pecker_config_to_egl_config(const pecker_ren
 	if (EGL_LUMINANCE_BUFFER == config_data)
 	{
 		config_cmd = EGL_LUMINANCE_SIZE;
-		config_data = get_bitfield_mask(config._M_color_buffer,BIT_0_to_7_MASK_0_to_31);
+		config_data = get_bitfield_mask(config._M_color_buffer,LUMINANCE_SIZE_BITS_FIELD);
 		egl_config.push(config_cmd);
 		egl_config.push(config_data);
 	}
@@ -426,12 +556,12 @@ HResult pecker_render_system_gles2::pecker_config_to_egl_config(const pecker_ren
 	egl_config.push(config_cmd);
 	config_data = EGL_WINDOW_BIT;
 
-	if (BIT_0_MASK_0_to_31 & config._M_config_mask)
+	if (PBUFFER_BIT_FIELD & config._M_config_mask)
 	{
 		config_data |= EGL_PBUFFER_BIT;
 	}
 
-	if (BIT_1_MASK_0_to_31 & config._M_config_mask)
+	if (PIXMAP_BIT_FIELD & config._M_config_mask)
 	{
 		config_data |= EGL_PIXMAP_BIT;
 	}
@@ -443,16 +573,16 @@ HResult pecker_render_system_gles2::pecker_config_to_egl_config(const pecker_ren
 	egl_config.push(config_cmd);
 	egl_config.push(config_data);
 
-	if (BIT_20_MASK_0_to_31 & config._M_config_mask)
+	if (FSAAMODE_BIT_FIELD & config._M_config_mask)
 	{
 		config_cmd = EGL_SAMPLE_BUFFERS;
-		config_data = get_bitfield_mask(config._M_sample,BIT_16_to_31_MASK_0_to_31);
+		config_data = get_bitfield_mask(config._M_sample,NUMBER_OF_SAMPLE_BUFFER_BITS_FIELD);
 		egl_config.push(config_cmd);
 		egl_config.push(config_data);
 		if (config_data > 0)
 		{
 			config_cmd = EGL_SAMPLES;
-			config_data = get_bitfield_mask(config._M_sample,BIT_0_to_15_MASK_0_to_31);
+			config_data = get_bitfield_mask(config._M_sample,SAMPLE_PER_PIXEL_SIZE_BITS_FIELD);
 			egl_config.push(config_cmd);
 			egl_config.push(config_data);
 		}
@@ -499,7 +629,7 @@ Bool pecker_render_system_gles2::is_egl_externsion_supported(EGLDisplay egl_disp
 	return false;
 }
 
-HResult pecker_render_system_gles2::select_config(const pecker_render_system_param& config,nINDEX &config_id,EGLConfig &selection_config)
+HResult pecker_render_system_gles2::select_config(const pecker_render_system_const_param& config,nINDEX &config_id,EGLConfig &selection_config)
 {
 	HResult return_value;
 
@@ -515,14 +645,14 @@ HResult pecker_render_system_gles2::select_config(const pecker_render_system_par
 	// 获取egl config的总数
 	if (!eglChooseConfig(_M_EGLDisplay,pconfig_list,NULL,0,&total_num_configs))
 	{
-		PECKER_LOG_ERR("Choose config error for get total number configs EGL","EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Choose config error for get total number configs EGL,EGL ERROR %d",eglGetError());
 		return_value = P_FAIL;
 		return return_value;
 	}
 
 	if (0 == total_num_configs)
 	{
-		PECKER_LOG_ERR("Choose config error EGL","total number of configs = %d",total_num_configs);
+		PECKER_LOG_ERR("render system error","Choose config error EGL,total number of configs = %d",total_num_configs);
 		return_value = P_FAIL;
 		return return_value;
 	}
@@ -534,7 +664,7 @@ HResult pecker_render_system_gles2::select_config(const pecker_render_system_par
 	// 设置EGL的配置，配置可能有多个
 	if (!eglChooseConfig(_M_EGLDisplay,pconfig_list,pconfigs,total_num_configs,&num_configs))
 	{
-		PECKER_LOG_ERR("Choose config error EGL","EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Choose config error EGL,EGL ERROR %d",eglGetError());
 		return_value = P_FAIL;
 		return return_value;
 	}
