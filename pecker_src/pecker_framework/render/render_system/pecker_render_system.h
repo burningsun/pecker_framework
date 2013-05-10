@@ -135,6 +135,7 @@ PeckerInterface Ipecker_render_system
 
 	virtual HResult set_param(HEnum update_type, const pecker_render_system_variable_param& sys_param) = 0;
 	virtual const pecker_render_system_variable_param& get_param(HEnum param_type) const = 0;
+
 	//virtual HResult resize_render_display(nSize x,nSize y,nSize width,nSize height) = 0;
 	//virtual HResult parse_render_display() = 0;
 	//virtual HResult resume_render_display() = 0;

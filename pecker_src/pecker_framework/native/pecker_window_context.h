@@ -10,7 +10,7 @@
 #define PECKER_WINDOW_CONTEXT_H_
 
 #include "pecker_window.h"
-
+#include "../render/render_system/pecker_render_system.h"
 PECKER_BEGIN
 
 class pecker_window_context : protected Ipecker_window_display

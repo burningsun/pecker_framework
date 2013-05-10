@@ -463,6 +463,7 @@ const pecker_render_system_variable_param& pecker_render_system_gles2::get_param
 {
 	return _M_variable_config;
 }
+
 //HResult pecker_render_system_gles2::resize_render_display(nSize x,nSize y,nSize width,nSize height)
 //{
 //	return P_OK;
