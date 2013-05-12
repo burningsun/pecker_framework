@@ -109,6 +109,7 @@ public:
 
 	HResult set_thread_affinity_mask(Ulong cpu_mask);
 
+	Boolean is_running() const;
 public:
 	static void exit_current_thread(Ulong exit_code);
 	static void sleep(Ulong wait_milisec_time);

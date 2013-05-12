@@ -46,10 +46,10 @@ struct pecker_window_param
 	UInt _M_window_style;
 	UInt _M_window_external_style;
 	UInt _M_cursor_style;
-	UInt _M_width;
-	UInt _M_height;
-	UInt _M_x;
-	UInt _M_y;
+	nSize _M_width;
+	nSize _M_height;
+	nINDEX _M_x;
+	nINDEX _M_y;
 };
 struct pecker_window_info
 {
@@ -64,6 +64,7 @@ struct pecker_window_info
 	Boolean _M_using_render_thread;
 	pecker_window_param _M_window_param;
 	pecker_string _M_window_title;
+	pecker_string _M_render_system_name;
 };
 
 PeckerInterface Ipecker_window_display

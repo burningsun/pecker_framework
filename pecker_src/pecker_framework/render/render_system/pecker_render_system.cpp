@@ -8,11 +8,14 @@
  */
 
 #include "pecker_render_system.h"
-
+#include "opengles/pecker_render_system_gl.h"
 PECKER_BEGIN
-
 Ipecker_render_system* pecker_render_system_factory::create_render_system(const pecker_string &render_system_name)
 {
+	if (render_system_name.compare("opengl es 2.0",strlen("opengl es 2.0")))
+	{
+		return new pecker_render_system_gles2();
+	}
 	return null;
 }
 void pecker_render_system_factory::release_render_system(Ipecker_render_system* &prender_system)

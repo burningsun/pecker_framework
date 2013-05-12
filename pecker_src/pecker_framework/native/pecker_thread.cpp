@@ -313,6 +313,25 @@ Boolean pecker_thread_base::set_thread_priority(SInt npriority)
 	return result_value;
 }
 
+Boolean pecker_thread_base::is_running() const
+{
+	Boolean return_value = BOOL_FALSE;
+#ifdef WINDOWS_PC
+	DWORD exit_code;
+	if (::GetExitCodeThread(_M_hthread,&exit_code))
+	{
+		if (STILL_ACTIVE == exit_code)
+		{
+			return_value = BOOL_TRUE;
+		}
+	}
+	else
+	{
+		return_value = BOOL_INVALID_VAL;
+	}
+#endif
+	return return_value;
+}
 HResult pecker_thread_base::get_thread_exit_code(Ulong &exit_code) const
 {
 	HResult result_value;
