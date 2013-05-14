@@ -65,7 +65,7 @@ public:
 
 
 public:
-	static HResult pecker_windows_apps(pecker_window_context* pwindow_context, UInt umessage,Long wParam,Long lParam);
+	static HResult pecker_windows_apps(long hwnd,pecker_window_context* pwindow_context, UInt umessage,Long wParam,Long lParam);
 	static HResult pecker_render_thread(pecker_window_context* pwindow_context);
 
 public:

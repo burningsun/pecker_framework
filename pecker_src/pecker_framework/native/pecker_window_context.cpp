@@ -25,7 +25,7 @@ static LRESULT WINAPI WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 	if (WM_CREATE == message)
 	{	// Store pointer to Win32Window in user data area
 		::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG)(((LPCREATESTRUCT)lParam)->lpCreateParams));
-		return 0;
+		//return 0;
 	}
 
 	// look up window instance
@@ -34,7 +34,7 @@ static LRESULT WINAPI WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
 	if (null != pWinForm)
 	{
-		return pecker_window_context::pecker_windows_apps(pWinForm,message,wParam,lParam);
+		return pecker_window_context::pecker_windows_apps((long)hwnd,pWinForm,message,wParam,lParam);
 	}
 
 	return ::DefWindowProc(hwnd, message, wParam, lParam);
@@ -83,6 +83,7 @@ pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_clos
 #endif
 	_M_window_info._M_window_param._M_width = 800;
 	_M_window_info._M_window_param._M_height = 600;
+	_M_window_info._M_render_system_name.init( "opengl es 2.0",strlen("opengl es 2.0"));
 
 
 }
@@ -125,7 +126,7 @@ HResult pecker_window_context::on_resume()
 	return P_OK;
 }
 
-HResult pecker_window_context::pecker_windows_apps(pecker_window_context* pwindow_context, UInt umessage,Long wParam,Long lParam)
+HResult pecker_window_context::pecker_windows_apps(long hwnd,pecker_window_context* pwindow_context, UInt umessage,Long wParam,Long lParam)
 {
 	if (null == pwindow_context)
 	{
@@ -140,6 +141,7 @@ HResult pecker_window_context::pecker_windows_apps(pecker_window_context* pwindo
 	{
 	case WM_CREATE:
 		pwindow_context->_M_closed = BOOL_FALSE;
+		pwindow_context->_M_window_info._M_window_handle = (Handle)(HWND)hwnd;
 		hresult = pwindow_context->on_create();
 		if (P_OK == hresult)
 		{
@@ -153,13 +155,14 @@ HResult pecker_window_context::pecker_windows_apps(pecker_window_context* pwindo
 			pwindow_context->_M_window_info._M_window_param._M_height = temp_rect.bottom - temp_rect.top;
 
 			// 初始化窗口
-			pwindow_context->on_init_view(pwindow_context->_M_window_info._M_window_param._M_x,
+			hresult = pwindow_context->on_init_view(pwindow_context->_M_window_info._M_window_param._M_x,
 																		pwindow_context->_M_window_info._M_window_param._M_y,
 																		pwindow_context->_M_window_info._M_window_param._M_width,
 																		pwindow_context->_M_window_info._M_window_param._M_height);
 
-
+			hresult = pwindow_context->init_render_resource();
 			thread_lock.unlock();
+			hresult = pwindow_context->load_render_resource();
 		}
 		break;
 	case WM_CLOSE:
@@ -171,11 +174,12 @@ HResult pecker_window_context::pecker_windows_apps(pecker_window_context* pwindo
 			thread_lock.unlock();
 			pwindow_context->_M_render_thread.join_thread(-1);
 			hresult = pwindow_context->on_close_frame();
+			hresult = pwindow_context->release_render_resource();
 		}
 		hresult =  pwindow_context->on_close();
 		break;
 	case WM_PAINT:
-		if (BOOL_TRUE != pwindow_context->_M_window_info._M_using_render_thread)
+		if (BOOL_TRUE != pwindow_context->_M_window_info._M_using_render_thread && null != pwindow_context->_M_render_device)
 		{
 			hresult = pwindow_context->on_draw_frame();
 			if (P_OK == hresult)
@@ -191,6 +195,8 @@ HResult pecker_window_context::pecker_windows_apps(pecker_window_context* pwindo
 			pecker_critical_lock thread_lock;
 			thread_lock.lock(&pwindow_context->_M_render_lock);
 			hresult = pwindow_context->on_resize_view(cleint_rect.left,cleint_rect.top,cleint_rect.right - cleint_rect.left,cleint_rect.bottom - cleint_rect.top);
+			hresult = pwindow_context->deinit_render_resource();
+			hresult = pwindow_context->init_render_resource();
 			thread_lock.unlock();
 		}
 		break;
@@ -355,15 +361,18 @@ HResult pecker_window_context::on_next_frame(Boolean  bswap_buffer)
 
 HResult pecker_window_context::on_parse_frame()
 {
-	return P_OK;
+	HResult result = this->deinit_render_resource();
+	return result;
 }
 HResult pecker_window_context::on_close_frame()
 {
-	return P_OK;
+	HResult result = this->deinit_render_resource();
+	return result;
 }
 HResult pecker_window_context::on_resume_frame()
 {
-	return P_OK;
+	HResult result = this->init_render_resource();
+	return result;
 }
 
 HResult pecker_window_context::load_render_resource()
@@ -407,7 +416,13 @@ Handle pecker_window_context::get_native_window() const
 }
 Handle pecker_window_context::get_native_display() const
 {
+#ifdef WINDOWS_PC
+	HDC hdc = ::GetDC((HWND)(_M_window_info._M_window_handle));
+	return (Handle)hdc;
+#else
 	return null;
+#endif
+	
 }
 Handle pecker_window_context::get_native_pixelmap() const
 {

@@ -290,7 +290,7 @@ HResult pecker_render_system_gles2::close_render_device()
 {
 	_M_pwindow_display = null;
 	_M_device_is_open = false;
-	if (EGL_NO_DISPLAY == _M_EGLDisplay)
+	if (EGL_NO_DISPLAY == _M_EGLDisplay || EGL_NO_SURFACE == _M_EGLWindow)
 	{
 		return P_OK;
 	}
@@ -659,7 +659,7 @@ HResult pecker_render_system_gles2::select_config(const pecker_render_system_con
 	}
 
 	//根据上面获取的egl总数，利用类对象的加速栈优化，快速内存分配
-	_M_optimation_tmp_config_stack2.init(total_num_configs);
+	_M_optimation_tmp_config_stack2.resize(total_num_configs);
 	EGLConfig* pconfigs = (EGLConfig*)(_M_optimation_tmp_config_stack2.get_begin_reference());
 	EGLint num_configs;
 	// 设置EGL的配置，配置可能有多个

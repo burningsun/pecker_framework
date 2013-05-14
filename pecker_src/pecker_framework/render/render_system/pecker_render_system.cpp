@@ -12,7 +12,7 @@
 PECKER_BEGIN
 Ipecker_render_system* pecker_render_system_factory::create_render_system(const pecker_string &render_system_name)
 {
-	if (render_system_name.compare("opengl es 2.0",strlen("opengl es 2.0")))
+	if (0 == render_system_name.compare("opengl es 2.0",strlen("opengl es 2.0")))
 	{
 		return new pecker_render_system_gles2();
 	}

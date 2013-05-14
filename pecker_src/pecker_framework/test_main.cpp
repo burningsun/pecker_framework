@@ -35,7 +35,7 @@ int main()
 {
 
 	
-	shape_logic_test();
+	//shape_logic_test();
 	//unsigned int temp_value = 65535;
 	//unsigned int mip = temp_value;
 	//unsigned long long temp64 = 0xFF;
@@ -85,7 +85,7 @@ int main()
 
 	//PECKER_LOG_INFO("first 1 num","first 1 num = %d",mip);
 
-	//show_simple_window();
+	show_simple_window();
 	//test_thread_runable_1();
 	//test_thread_proc_1();
 	//test_thread_runable();
