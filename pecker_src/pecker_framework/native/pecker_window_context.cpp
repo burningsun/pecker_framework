@@ -192,12 +192,17 @@ HResult pecker_window_context::pecker_windows_apps(long hwnd,pecker_window_conte
 		RECT cleint_rect;
 		if (::GetClientRect((HWND)(pwindow_context->_M_window_info._M_window_handle),&cleint_rect))
 		{
-			pecker_critical_lock thread_lock;
-			thread_lock.lock(&pwindow_context->_M_render_lock);
-			hresult = pwindow_context->on_resize_view(cleint_rect.left,cleint_rect.top,cleint_rect.right - cleint_rect.left,cleint_rect.bottom - cleint_rect.top);
-			hresult = pwindow_context->deinit_render_resource();
-			hresult = pwindow_context->init_render_resource();
-			thread_lock.unlock();
+			if (cleint_rect.left != pwindow_context->_M_window_info._M_window_param._M_x || 
+				cleint_rect.top != pwindow_context->_M_window_info._M_window_param._M_y ||
+				(cleint_rect.right - cleint_rect.left) != pwindow_context->_M_window_info._M_window_param._M_width ||
+				(cleint_rect.bottom - cleint_rect.top) != pwindow_context->_M_window_info._M_window_param._M_height)
+			{
+				pecker_critical_lock thread_lock;
+				thread_lock.lock(&pwindow_context->_M_render_lock);
+				hresult = pwindow_context->on_resize_view(cleint_rect.left,cleint_rect.top,cleint_rect.right - cleint_rect.left,cleint_rect.bottom - cleint_rect.top);
+				thread_lock.unlock();
+			}
+
 		}
 		break;
 	case WM_DESTROY:
@@ -305,7 +310,7 @@ HResult pecker_window_context::on_init_view(nSize x,nSize y,nSize width,nSize he
 		_M_render_system = pecker_render_system_factory::create_render_system(_M_window_info._M_render_system_name);
 		if (null != _M_render_system)
 		{
-			Ipecker_render_device* pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
+			pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
 		}
 	}
 	
@@ -320,17 +325,20 @@ HResult pecker_window_context::on_resize_view(nSize x,nSize y,nSize width,nSize 
 {
 	// 创建渲染设备
 	Ipecker_render_device* pdevice = null;
+
+	this->deinit_render_resource();
+
 	if (null != _M_render_system)
 	{
 		_M_render_system->close_render_device();
-		Ipecker_render_device* pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
+		pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
 	}
 	else
 	{
 		_M_render_system = pecker_render_system_factory::create_render_system(_M_window_info._M_render_system_name);
 		if (null != _M_render_system)
 		{
-			Ipecker_render_device* pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
+		   pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
 		}
 	}
 
@@ -339,6 +347,9 @@ HResult pecker_window_context::on_resize_view(nSize x,nSize y,nSize width,nSize 
 	{
 		_M_render_device->set_viewport(x,y,width,height);
 	}
+	
+	this->init_render_resource();
+
 	return result_value;
 }
 HResult pecker_window_context::on_draw_frame()
@@ -367,6 +378,10 @@ HResult pecker_window_context::on_parse_frame()
 HResult pecker_window_context::on_close_frame()
 {
 	HResult result = this->deinit_render_resource();
+	if (null != _M_render_system)
+	{
+		_M_render_system->close_render_device();
+	}
 	return result;
 }
 HResult pecker_window_context::on_resume_frame()

@@ -125,10 +125,10 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 			HEnum attrible_data;
 			
 			// 使用opengl es 2.0
-			attrible_cmd = EGL_CONTEXT_CLIENT_VERSION;
-			attrible_data = 2;
-			pcontext_attrible_stack->push(attrible_cmd);
-			pcontext_attrible_stack->push(attrible_data);
+			//attrible_cmd = EGL_CONTEXT_CLIENT_VERSION;
+			//attrible_data = 2;
+			//pcontext_attrible_stack->push(attrible_cmd);
+			//pcontext_attrible_stack->push(attrible_data);
 			
 			//
 			if (is_egl_externsion_supported(_M_EGLDisplay,"EGL_IMG_context_priority"))
