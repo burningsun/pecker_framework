@@ -92,7 +92,7 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 
 	if(!eglInitialize(_M_EGLDisplay, &_M_MajorVersion, &_M_MinorVersion))
 	{
-		PECKER_LOG_ERR("render system error","Unable to initialise EGL,EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Unable to initialise EGL,EGL ERROR 0x%x",eglGetError());
 		return null;
 	}
 
@@ -101,7 +101,7 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 	// 绑定底层渲染API
 	if (!eglBindAPI(EGL_OPENGL_ES_API))
 	{
-		PECKER_LOG_ERR("render system error","Unable to bind API EGL,EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Unable to bind API EGL,EGL ERROR 0x%x",eglGetError());
 		return null;
 	}
 
@@ -162,7 +162,7 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 			{
 				if (_M_const_config._M_config_ID > 0)
 				{
-					PECKER_LOG_ERR("render system error","create context EGL,unable to create a context by config id,ERROR=%d",eglGetError());
+					PECKER_LOG_ERR("render system error","create context EGL,unable to create a context by config id,ERROR=0x%x",eglGetError());
 					preturn_value = null;
 					break;
 				}
@@ -263,7 +263,7 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 
 	if (!eglMakeCurrent(_M_EGLDisplay,_M_EGLWindow,_M_EGLWindow,_M_EGLContext))
 	{
-		PECKER_LOG_ERR("render system error","make current EGL,unable to make context current ERROR = %d",eglGetError());
+		PECKER_LOG_ERR("render system error","make current EGL,unable to make context current ERROR = 0x%x",eglGetError());
 		preturn_value = null;
 		return preturn_value;
 	}
@@ -296,9 +296,9 @@ HResult pecker_render_system_gles2::close_render_device()
 	}
 	HResult return_value = P_OK;
 	EGLBoolean bresult = eglSwapBuffers(_M_EGLDisplay,_M_EGLWindow);
-	PECKER_LOG_INFO("render system info","eglSwapBuffers before close render device,ERROR = %d",eglGetError());
+	PECKER_LOG_INFO("render system info","eglSwapBuffers before close render device,ERROR = 0x%x(0x3000 success)",eglGetError());
 	bresult = eglMakeCurrent(_M_EGLDisplay,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
-	PECKER_LOG_INFO("render system info","eglMakeCurrent before close render device,ERROR = %d",eglGetError());
+	PECKER_LOG_INFO("render system info","eglMakeCurrent before close render device,ERROR = 0x%x(0x3000 success)",eglGetError());
 	if (EGL_NO_CONTEXT != _M_EGLContext)
 	{
 		bresult = eglDestroyContext(_M_EGLDisplay,_M_EGLContext);
@@ -309,7 +309,7 @@ HResult pecker_render_system_gles2::close_render_device()
 		}
 		else
 		{
-			PECKER_LOG_ERR("render system error","close render device,eglDestroyContext fail! ERROR = %d",eglGetError());
+			PECKER_LOG_ERR("render system error","close render device,eglDestroyContext fail! ERROR = 0x%x",eglGetError());
 			return_value = P_FAIL;
 		}
 	}
@@ -323,7 +323,7 @@ HResult pecker_render_system_gles2::close_render_device()
 		}
 		else
 		{
-			PECKER_LOG_ERR("render system error","close render device,eglDestroySurface fail! ERROR = %d",eglGetError());
+			PECKER_LOG_ERR("render system error","close render device,eglDestroySurface fail! ERROR = 0x%x",eglGetError());
 			return_value = P_FAIL;
 		}
 	}
@@ -336,7 +336,7 @@ HResult pecker_render_system_gles2::close_render_device()
 	}
 	else
 	{
-		PECKER_LOG_ERR("render system error","close render device,eglTerminate fail! ERROR = %d",eglGetError());
+		PECKER_LOG_ERR("render system error","close render device,eglTerminate fail! ERROR = 0x%x",eglGetError());
 		return_value = P_FAIL;
 	}
 
@@ -357,7 +357,7 @@ HResult pecker_render_system_gles2::render_complete()
 		egl_result = eglWaitGL();
 		if (!egl_result)
 		{
-			PECKER_LOG_ERR("render system error","render_complete,eglWaitGL EGL ERROR = %d",eglGetError());
+			PECKER_LOG_ERR("render system error","render_complete,eglWaitGL EGL ERROR = 0x%x",eglGetError());
 			return_value = P_FAIL;
 		}
 		else
@@ -378,7 +378,7 @@ HResult pecker_render_system_gles2::render_complete()
 		egl_result = eglSwapBuffers(_M_EGLDisplay,_M_EGLWindow);
 		if (!egl_result)
 		{
-			PECKER_LOG_ERR("render system error"," render_complete,eglSwapBuffers EGL ERROR = %d",eglGetError());
+			PECKER_LOG_ERR("render system error"," render_complete,eglSwapBuffers EGL ERROR = 0x%x",eglGetError());
 			return_value = P_FAIL;
 		}
 	}
@@ -646,7 +646,7 @@ HResult pecker_render_system_gles2::select_config(const pecker_render_system_con
 	// 获取egl config的总数
 	if (!eglChooseConfig(_M_EGLDisplay,pconfig_list,NULL,0,&total_num_configs))
 	{
-		PECKER_LOG_ERR("render system error","Choose config error for get total number configs EGL,EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Choose config error for get total number configs EGL,EGL ERROR 0x%x",eglGetError());
 		return_value = P_FAIL;
 		return return_value;
 	}
@@ -662,10 +662,15 @@ HResult pecker_render_system_gles2::select_config(const pecker_render_system_con
 	_M_optimation_tmp_config_stack2.resize(total_num_configs);
 	EGLConfig* pconfigs = (EGLConfig*)(_M_optimation_tmp_config_stack2.get_begin_reference());
 	EGLint num_configs;
+
+	//if (!eglChooseConfig(_M_EGLDisplay, pconfig_list, pconfigs, 1, &num_configs) || (num_configs != 1))
+	//{
+	//	MessageBox(0, "eglChooseConfig() failed.", "Error", MB_OK|MB_ICONEXCLAMATION);
+	//}
 	// 设置EGL的配置，配置可能有多个
 	if (!eglChooseConfig(_M_EGLDisplay,pconfig_list,pconfigs,total_num_configs,&num_configs))
 	{
-		PECKER_LOG_ERR("render system error","Choose config error EGL,EGL ERROR %d",eglGetError());
+		PECKER_LOG_ERR("render system error","Choose config error EGL,EGL ERROR 0x%x",eglGetError());
 		return_value = P_FAIL;
 		return return_value;
 	}

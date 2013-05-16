@@ -18,15 +18,19 @@ class pecker_window_context : protected Ipecker_window_display
 public:
 	pecker_window_context();
 	virtual ~pecker_window_context();
+private:
+	Ipecker_render_device* _M_render_device;
+	Ipecker_render_system* _M_render_system;
 protected:
 	pecker_window_context* _M_perant_context;
 	Boolean _M_closed;
 	pecker_window_info _M_window_info;
-	Ipecker_render_device* _M_render_device;
-	Ipecker_render_system* _M_render_system;
-	pecker_thread					_M_render_thread;
-	pecker_critical_section  _M_render_lock;
 
+	pecker_thread				_M_render_thread;
+	pecker_critical_section  _M_render_lock;
+protected:
+	Ipecker_render_device* get_render_device() ; 
+	Ipecker_render_system* get_render_system();
 protected:
 	virtual HResult on_event(UInt umessage,Long wParam,Long lParam);
 	virtual HResult on_create();

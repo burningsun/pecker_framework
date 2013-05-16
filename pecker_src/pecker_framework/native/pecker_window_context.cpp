@@ -94,6 +94,15 @@ pecker_window_context::~pecker_window_context()
 	//on_close();
 }
 
+Ipecker_render_device* pecker_window_context::get_render_device() 
+{
+	return _M_render_device;
+}
+Ipecker_render_system* pecker_window_context::get_render_system()
+{
+	return _M_render_system;
+}
+
 HResult pecker_window_context::on_event(UInt umessage,Long wParam,Long lParam)
 {
 	return P_OK;
@@ -593,21 +602,31 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 
 		if (NULL != hWnd)
 		{
+
+
 			DWORD show_style = SW_NORMAL;
 			if (_M_window_info._M_visiable != BOOL_TRUE)
 			{
 				show_style = SW_HIDE;
 			}
-			if (::ShowWindow(hWnd,show_style))
-			{
-				_M_render_thread.start_thread();
-			}
-			::SetActiveWindow(hWnd);
+
+			::ShowWindow(hWnd,show_style);
 
 			if (BOOL_TRUE == _M_window_info._M_using_render_thread)
 			{
-				_M_render_thread.init_thread(pecker_render_thread_callback,this);
+				if (BOOL_TRUE != _M_render_thread.is_running())
+				{
+					_M_render_thread.init_thread(pecker_render_thread_callback,this);
+					if (BOOL_TRUE != _M_render_thread.is_running())
+					{
+						_M_render_thread.start_thread();
+					}
+				}
 			}
+
+			::SetActiveWindow(hWnd);
+
+
 		}
 		else
 		{
