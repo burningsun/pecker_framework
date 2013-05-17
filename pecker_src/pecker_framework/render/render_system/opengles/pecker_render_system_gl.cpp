@@ -22,7 +22,7 @@ static HEnum gRSYS_color_buffer_type_table[RENDER_SYS_PARAM_COLOR_BUFFER_TYPE_CO
 
 pecker_render_system_gles2::pecker_render_system_gles2():_M_device_is_open(false),
 	_M_EGLWindow(EGL_NO_SURFACE),_M_EGLContext(EGL_NO_CONTEXT),_M_EGLDisplay(EGL_NO_DISPLAY),
-	_M_MajorVersion(0),_M_MinorVersion(0),_M_pwindow_display(null)
+	_M_MajorVersion(0),_M_MinorVersion(0),_M_pwindow_display(null),_M_current_render_thread(0)
 {
 	set_bytes_in_bitfield_mask(_M_const_config._M_color_buffer,0,0,0,RSYS_RGB_BUFFER);
 	set_bytes_in_bitfield_mask(_M_const_config._M_color_bpp,8,8,8,8);
@@ -282,6 +282,10 @@ Ipecker_render_device* pecker_render_system_gles2::open_render_device(Ipecker_wi
 
 #ifdef EGL_VERSION_1_1
 	eglSwapInterval(_M_EGLDisplay,_M_variable_config._M_swap_interval);
+#endif
+
+#ifdef WINDOWS_PC
+	_M_current_render_thread = (long)::GetCurrentThreadId();
 #endif
 	return preturn_value;
 }
@@ -700,5 +704,14 @@ HResult pecker_render_system_gles2::select_config(const pecker_render_system_con
 	return return_value;
 }
 
+
+void pecker_render_system_gles2::debug_print_egl_config(const rsys_config_stack& egl_config)
+{
+	const HEnum* pconfig = egl_config.begin();
+	for (nINDEX i=0;i<egl_config.get_size();++i)
+	{
+
+	}
+}
 PECKER_END
 

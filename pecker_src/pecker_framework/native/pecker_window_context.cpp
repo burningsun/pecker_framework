@@ -48,7 +48,7 @@ DWORD  WINAPI pecker_render_thread_callback(__in  LPVOID lpParameter)
 #endif
 
 static UInt globle_windows_id = 0;
-pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_closed(BOOL_FALSE),_M_render_device(null),_M_render_system(null)
+pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_closed(BOOL_FALSE),_M_render_device(null),_M_render_system(null),_M_reopen_device_flag(BOOL_FALSE)
 {
 	_M_window_info._M_window_id = globle_windows_id;
 	++globle_windows_id;
@@ -58,7 +58,7 @@ pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_clos
 	_M_window_info._M_window_handle = null;
 	_M_window_info._M_menu_handle = null;
 	_M_window_info._M_visiable = BOOL_TRUE;
-	_M_window_info._M_using_render_thread = BOOL_FALSE;
+	_M_window_info._M_using_render_thread = BOOL_TRUE;
 	_M_window_info._M_window_title.init("pfx_win\0\0\0\0\0\0\0\0\0",16);
 	
 	pecker_write_stream_to_memery write_stream;
@@ -162,16 +162,20 @@ HResult pecker_window_context::pecker_windows_apps(long hwnd,pecker_window_conte
 			pwindow_context->_M_window_info._M_window_param._M_y = temp_rect.top;
 			pwindow_context->_M_window_info._M_window_param._M_width = temp_rect.right - temp_rect.left;
 			pwindow_context->_M_window_info._M_window_param._M_height = temp_rect.bottom - temp_rect.top;
-
-			// 初始化窗口
-			hresult = pwindow_context->on_init_view(pwindow_context->_M_window_info._M_window_param._M_x,
-																		pwindow_context->_M_window_info._M_window_param._M_y,
-																		pwindow_context->_M_window_info._M_window_param._M_width,
-																		pwindow_context->_M_window_info._M_window_param._M_height);
-
-			hresult = pwindow_context->init_render_resource();
+			pwindow_context->_M_reopen_device_flag = BOOL_TRUE;
 			thread_lock.unlock();
 			hresult = pwindow_context->load_render_resource();
+
+			if (BOOL_TRUE != pwindow_context->_M_window_info._M_using_render_thread)
+			{
+				//初始化窗口
+				hresult = pwindow_context->on_init_view(pwindow_context->_M_window_info._M_window_param._M_x,
+					pwindow_context->_M_window_info._M_window_param._M_y,
+					pwindow_context->_M_window_info._M_window_param._M_width,
+					pwindow_context->_M_window_info._M_window_param._M_height);
+
+				hresult = pwindow_context->init_render_resource();
+			}
 		}
 		break;
 	case WM_CLOSE:
@@ -182,7 +186,11 @@ HResult pecker_window_context::pecker_windows_apps(long hwnd,pecker_window_conte
 			pwindow_context->_M_closed = BOOL_TRUE;
 			thread_lock.unlock();
 			pwindow_context->_M_render_thread.join_thread(-1);
-			hresult = pwindow_context->on_close_frame();
+
+			if (BOOL_TRUE != pwindow_context->_M_window_info._M_using_render_thread)
+			{
+				hresult = pwindow_context->on_close_frame();
+			}
 			hresult = pwindow_context->release_render_resource();
 		}
 		hresult =  pwindow_context->on_close();
@@ -205,11 +213,22 @@ HResult pecker_window_context::pecker_windows_apps(long hwnd,pecker_window_conte
 				cleint_rect.top != pwindow_context->_M_window_info._M_window_param._M_y ||
 				(cleint_rect.right - cleint_rect.left) != pwindow_context->_M_window_info._M_window_param._M_width ||
 				(cleint_rect.bottom - cleint_rect.top) != pwindow_context->_M_window_info._M_window_param._M_height)
-			{
-				pecker_critical_lock thread_lock;
-				thread_lock.lock(&pwindow_context->_M_render_lock);
-				hresult = pwindow_context->on_resize_view(cleint_rect.left,cleint_rect.top,cleint_rect.right - cleint_rect.left,cleint_rect.bottom - cleint_rect.top);
-				thread_lock.unlock();
+			{				
+				if (BOOL_TRUE != pwindow_context->_M_window_info._M_using_render_thread)
+				{
+					pwindow_context->on_resize_view(cleint_rect.left,cleint_rect.top,cleint_rect.right - cleint_rect.left,cleint_rect.bottom - cleint_rect.top);
+				}
+				else
+				{
+					pecker_critical_lock thread_lock;
+					thread_lock.lock(&pwindow_context->_M_render_lock);
+					pwindow_context->_M_reopen_device_flag = BOOL_TRUE;
+					pwindow_context->_M_window_info._M_window_param._M_x = cleint_rect.left;
+					pwindow_context->_M_window_info._M_window_param._M_y = cleint_rect.top;
+					pwindow_context->_M_window_info._M_window_param._M_width = cleint_rect.right - cleint_rect.left;
+					pwindow_context->_M_window_info._M_window_param._M_height = cleint_rect.bottom - cleint_rect.top;
+					thread_lock.unlock();
+				}
 			}
 
 		}
@@ -239,14 +258,29 @@ HResult pecker_window_context::pecker_windows_apps(long hwnd,pecker_window_conte
 
 HResult pecker_window_context::pecker_render_thread(pecker_window_context* pwindow_context)
 {
+	PECKER_LOG_INFO("pecker_render_thread"," render thread start %s","... ...");
+
 	if (null == pwindow_context)
 	{
+		PECKER_LOG_INFO("pecker_render_thread"," pwindow_context is null %s","... ...");
 		return P_INVALID_VALUE;
 	}
 
 	HResult return_value = P_OK;
+
+	long current_thread_location;
+
+#ifdef WINDOWS_PC
+	DWORD show_style = SW_NORMAL;
+	if (pwindow_context->_M_window_info._M_visiable != BOOL_TRUE)
+	{
+		show_style = SW_HIDE;
+	}
+#endif
+
 	do
 	{
+
 		pecker_critical_lock thread_lock;
 		thread_lock.lock(&pwindow_context->_M_render_lock);
 
@@ -254,18 +288,52 @@ HResult pecker_window_context::pecker_render_thread(pecker_window_context* pwind
 		{
 			break;
 		}
+		pwindow_context->on_init_view(pwindow_context->_M_window_info._M_window_param._M_x,
+																	pwindow_context->_M_window_info._M_window_param._M_y,
+																	pwindow_context->_M_window_info._M_window_param._M_width,
+																	pwindow_context->_M_window_info._M_window_param._M_height);
 
-		if (pwindow_context->_M_render_device)
-		{
-			pwindow_context->on_draw_frame();
-			pwindow_context->on_next_frame(pwindow_context->_M_window_info._M_is_mul_frame_buffer);
-		}
+		return_value = pwindow_context->init_render_resource();
 
-
+		pwindow_context->_M_reopen_device_flag = BOOL_FALSE;
 		thread_lock.unlock();
+
+		PECKER_LOG_INFO("pecker_render_thread","pwindow_context->on_init_view ok %s","... ...");
+
+
+#ifdef WINDOWS_PC
+		::ShowWindow((HWND)(pwindow_context->_M_window_info._M_window_handle),show_style);
+#endif
+		 do
+		{
+			thread_lock.lock(&pwindow_context->_M_render_lock);
+
+			if (BOOL_FALSE != pwindow_context->_M_closed || BOOL_TRUE == pwindow_context->_M_reopen_device_flag)
+			{
+				break;
+			}
+
+			if (pwindow_context->_M_render_system)
+			{
+				//pwindow_context->_M_render_system->current_render_thread(current_thread_location);
+
+				if (pwindow_context->_M_render_device)
+				{
+					pwindow_context->on_draw_frame();
+					pwindow_context->on_next_frame(pwindow_context->_M_window_info._M_is_mul_frame_buffer);
+				}
+			}
+			thread_lock.unlock();
+		}
+		while(1);
+		return_value = pwindow_context->deinit_render_resource();
+		return_value = pwindow_context->on_close_frame();
+
+		PECKER_LOG_INFO("pecker_render_thread","close frame and close device %s","... ...");
 	}
 	while(1);
 
+	PECKER_LOG_INFO("pecker_render_thread","render thread exit! %s","... ...");
 	return return_value;
 }
 
@@ -610,7 +678,7 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 				show_style = SW_HIDE;
 			}
 
-			::ShowWindow(hWnd,show_style);
+			
 
 			if (BOOL_TRUE == _M_window_info._M_using_render_thread)
 			{
@@ -622,7 +690,14 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 						_M_render_thread.start_thread();
 					}
 				}
+				::ShowWindow(hWnd,SW_HIDE);
 			}
+			else
+			{
+				::ShowWindow(hWnd,show_style);
+			}
+
+			
 
 			::SetActiveWindow(hWnd);
 

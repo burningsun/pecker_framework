@@ -39,6 +39,8 @@ private:
 
 	EGLint		_M_MajorVersion;
 	EGLint		_M_MinorVersion;
+
+	long			_M_current_render_thread;
 protected:
 	pecker_render_system_const_param _M_const_config;
 	pecker_render_system_variable_param _M_variable_config;
@@ -60,6 +62,7 @@ public:
 	virtual HResult set_param(HEnum update_type, const pecker_render_system_variable_param& sys_param);
 	virtual const pecker_render_system_variable_param& get_param(HEnum param_type) const;
 
+
 	//virtual HResult resize_render_display(nSize x,nSize y,nSize width,nSize height);
 	//virtual HResult parse_render_display();
 	//virtual HResult resume_render_display();
@@ -67,6 +70,7 @@ public:
 public:
 	static HResult pecker_config_to_egl_config(const pecker_render_system_const_param& config,rsys_config_stack& P_OUT egl_config);
 	static Bool is_egl_externsion_supported(EGLDisplay egl_display,const char* pstr_extension);
+	static void debug_print_egl_config(const rsys_config_stack& egl_config);
 protected:
 	HResult select_config(const pecker_render_system_const_param& config,nINDEX &config_id,EGLConfig &selection_config);
 };

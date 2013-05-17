@@ -24,6 +24,7 @@ private:
 protected:
 	pecker_window_context* _M_perant_context;
 	Boolean _M_closed;
+	Boolean _M_reopen_device_flag;
 	pecker_window_info _M_window_info;
 
 	pecker_thread				_M_render_thread;
