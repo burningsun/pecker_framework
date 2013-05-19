@@ -103,6 +103,10 @@ Ipecker_render_system* pecker_window_context::get_render_system()
 	return _M_render_system;
 }
 
+HResult pecker_window_context::on_init()
+{
+	return P_OK;
+}
 HResult pecker_window_context::on_event(UInt umessage,Long wParam,Long lParam)
 {
 	return P_OK;
@@ -282,31 +286,45 @@ HResult pecker_window_context::pecker_render_thread(pecker_window_context* pwind
 	{
 
 		pecker_critical_lock thread_lock;
-		thread_lock.lock(&pwindow_context->_M_render_lock);
+		int view_x = 0;
+		int view_y = 0;
+		int view_width = 0;
+		int view_height = 0;
+
+		//thread_lock.lock(&pwindow_context->_M_render_lock);
 
 		if (BOOL_FALSE != pwindow_context->_M_closed)
 		{
 			break;
 		}
-		pwindow_context->on_init_view(pwindow_context->_M_window_info._M_window_param._M_x,
-																	pwindow_context->_M_window_info._M_window_param._M_y,
-																	pwindow_context->_M_window_info._M_window_param._M_width,
-																	pwindow_context->_M_window_info._M_window_param._M_height);
+		
+
+		view_x = pwindow_context->_M_window_info._M_window_param._M_x;
+		view_y = pwindow_context->_M_window_info._M_window_param._M_y;
+		view_width = pwindow_context->_M_window_info._M_window_param._M_width;
+		view_height = pwindow_context->_M_window_info._M_window_param._M_height;
+
+		//thread_lock.unlock();
+
+		pwindow_context->on_init_view(view_x,view_y,view_width,view_height);
 
 		return_value = pwindow_context->init_render_resource();
 
-		pwindow_context->_M_reopen_device_flag = BOOL_FALSE;
-		thread_lock.unlock();
+
 
 		PECKER_LOG_INFO("pecker_render_thread","pwindow_context->on_init_view ok %s","... ...");
 
-
+		//thread_lock.lock(&pwindow_context->_M_render_lock);
 #ifdef WINDOWS_PC
 		::ShowWindow((HWND)(pwindow_context->_M_window_info._M_window_handle),show_style);
 #endif
+		pwindow_context->_M_reopen_device_flag = BOOL_FALSE;
+		//thread_lock.unlock();
+
 		 do
 		{
-			thread_lock.lock(&pwindow_context->_M_render_lock);
+			pecker_critical_lock thread_lock_render;
+			thread_lock_render.lock(&pwindow_context->_M_render_lock);
 
 			if (BOOL_FALSE != pwindow_context->_M_closed || BOOL_TRUE == pwindow_context->_M_reopen_device_flag)
 			{
@@ -323,7 +341,7 @@ HResult pecker_window_context::pecker_render_thread(pecker_window_context* pwind
 					pwindow_context->on_next_frame(pwindow_context->_M_window_info._M_is_mul_frame_buffer);
 				}
 			}
-			thread_lock.unlock();
+			thread_lock_render.unlock();
 		}
 		while(1);
 		return_value = pwindow_context->deinit_render_resource();
@@ -346,7 +364,11 @@ HResult pecker_window_context::attach_graphic_device(PeckerInterface Ipecker_ren
 		pecker_render_object* pobject = dynamic_cast<pecker_render_object*>(_M_render_device);
 		if (null != pobject)
 		{
-			pobject->release_this_reference();
+			if (pobject != pobject_refinput_device)
+			{
+				pobject->release_this_reference();
+			}
+			
 			if (pobject_refinput_device)
 			{
 				_M_render_device =dynamic_cast<Ipecker_render_device*>(pobject_refinput_device->get_this_reference());
@@ -380,7 +402,7 @@ HResult pecker_window_context::on_init_view(nSize x,nSize y,nSize width,nSize he
 	if (null != _M_render_system)
 	{
 		_M_render_system->close_render_device();
-		Ipecker_render_device* pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
+		pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
 	}
 	else
 	{
@@ -562,6 +584,7 @@ HResult pecker_window_context::set_full_screen(Boolean bfull_screen_enable)
 HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 {
 
+	on_init();
 #ifdef WINDOWS_PC
 	HWND hWnd = (HWND)_M_window_info._M_window_handle;
 	if (null == _M_window_info._M_window_handle)

@@ -5,6 +5,11 @@ USING_PECKER_SDK
 class myTestForm :  public pecker_window_context
 {
 protected:
+	HResult on_init()
+	{
+		//_M_window_info._M_window_param._M_window_style = RESIZEABLE_WIN_BORDERSTYLE;
+		return P_OK;
+	}
 	HResult on_render()
 	{
 		Ipecker_render_device* graphics_dev = get_render_device();

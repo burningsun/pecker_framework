@@ -34,6 +34,7 @@ protected:
 	Ipecker_render_system* get_render_system();
 protected:
 	virtual HResult on_event(UInt umessage,Long wParam,Long lParam);
+	virtual HResult on_init();
 	virtual HResult on_create();
 	virtual HResult on_close();
 	virtual HResult on_render();
