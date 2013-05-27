@@ -27,10 +27,18 @@ extern void test_thread_proc_1();
 extern void test_thread_runable_1();
 extern void show_simple_window();
 extern void shape_logic_test();
+
+extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow);
+
 #include <iostream>
+
 
 #include "data/pecker_shape.h"
 //#include "data/test.h"
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow)
+//{
+//	return EglWinMain(hInstance,hPrevInstance,lpCmdLine,nCmdShow);
+//}
 int main()
 {
 

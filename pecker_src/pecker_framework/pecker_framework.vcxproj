@@ -154,6 +154,7 @@
     <ClCompile Include="data\pecker_matrix.cpp" />
     <ClCompile Include="data\pecker_shape.cpp" />
     <ClCompile Include="data\pecker_vector.cpp" />
+    <ClCompile Include="egl_test_code.cpp" />
     <ClCompile Include="list_test.cpp" />
     <ClCompile Include="native\pecker_file_io.cpp" />
     <ClCompile Include="native\pecker_log.cpp" />

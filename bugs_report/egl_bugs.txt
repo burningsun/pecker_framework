@@ -1,0 +1,3 @@
+egl bugs on PowerVR SDK opengl es windows lib:
+
+run ok in windows xp ,but crash on exit.

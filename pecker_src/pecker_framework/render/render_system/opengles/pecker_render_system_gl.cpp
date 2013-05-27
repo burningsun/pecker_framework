@@ -42,11 +42,15 @@ pecker_render_system_gles2::pecker_render_system_gles2():_M_device_is_open(false
 
 pecker_render_system_gles2::~pecker_render_system_gles2()
 {
+	
 	if (_M_pwindow_display)
 	{
 		_M_pwindow_display->deinit_render_resource();
 	}
 	close_render_device();
+
+	_M_optimation_tmp_config_stack1.~pecker_stack_pool_array();
+	_M_optimation_tmp_config_stack2.~pecker_stack_pool_array();
 }
 HResult pecker_render_system_gles2::set_render_system_param(const pecker_render_system_const_param & sys_param)
 {

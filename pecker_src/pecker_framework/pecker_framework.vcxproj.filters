@@ -311,6 +311,9 @@
     <ClCompile Include="native\pecker_window_context.cpp">
       <Filter>native</Filter>
     </ClCompile>
+    <ClCompile Include="egl_test_code.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="testlog.txt" />

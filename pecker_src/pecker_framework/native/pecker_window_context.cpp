@@ -412,6 +412,7 @@ HResult pecker_window_context::on_init_view(nSize x,nSize y,nSize width,nSize he
 			pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
 		}
 	}
+	//pdevice = null;
 	
 	HResult result_value = attach_graphic_device(pdevice);
 	if (P_OK == result_value)
@@ -440,6 +441,8 @@ HResult pecker_window_context::on_resize_view(nSize x,nSize y,nSize width,nSize 
 		   pdevice = _M_render_system->open_render_device(dynamic_cast<Ipecker_window_display*>(this));
 		}
 	}
+
+	//pdevice = null;
 
 	HResult result_value = attach_graphic_device(pdevice);
 	if (P_OK == result_value)
@@ -480,6 +483,7 @@ HResult pecker_window_context::on_close_frame()
 	if (null != _M_render_system)
 	{
 		_M_render_system->close_render_device();
+		pecker_render_system_factory::release_render_system(_M_render_system);
 	}
 	return result;
 }
