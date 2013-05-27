@@ -198,6 +198,12 @@
     <ClInclude Include="native\pecker_window_context.h">
       <Filter>native</Filter>
     </ClInclude>
+    <ClInclude Include="render\render_util\pecker_render_canvas.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pecker_render_system_defines.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">
@@ -313,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="egl_test_code.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_util\pecker_render_canvas.cpp">
+      <Filter>render\render_util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

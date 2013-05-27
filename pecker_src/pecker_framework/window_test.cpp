@@ -7,7 +7,7 @@ class myTestForm :  public pecker_window_context
 protected:
 	HResult on_init()
 	{
-		//_M_window_info._M_window_param._M_window_style = RESIZEABLE_WIN_BORDERSTYLE;
+		_M_window_info._M_window_param._M_window_style = RESIZEABLE_WIN_BORDERSTYLE;
 		return P_OK;
 	}
 	HResult on_render()
@@ -16,7 +16,7 @@ protected:
 		Ipecker_fragment_operation* frame_op = graphics_dev->get_fragment_operation();
 		
 		HResult result_ = frame_op->clear_color(0.7f,0.2f,0.7f,1.0f);
-		result_ = frame_op->set_clear_mask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		result_ = frame_op->set_clear_mask(PECKER_FP_DEPTH_BUFFER_BIT | PECKER_FP_COLOR_BUFFER_BIT);
 		return P_OK;
 	}
 };
