@@ -53,13 +53,13 @@
       <ExpandAttributedSource>true</ExpandAttributedSource>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)\depends_lib\OGLES2\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\depends_lib\OGLES2\Include;$(SolutionDir)\depends_lib\freetype\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
-      <AdditionalDependencies>$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libEGL.lib;$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libEGL.lib;$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libGLESv2.lib;$(SolutionDir)\depends_lib\freetype\windows\freetype2412_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -116,6 +116,7 @@
     <ClInclude Include="data\pecker_vector.h" />
     <ClInclude Include="native\pecker_allocator.h" />
     <ClInclude Include="native\pecker_file_io.h" />
+    <ClInclude Include="native\pecker_font.h" />
     <ClInclude Include="native\pecker_log.h" />
     <ClInclude Include="native\pecker_stream.h" />
     <ClInclude Include="native\pecker_thread.h" />
