@@ -207,6 +207,9 @@
     <ClInclude Include="native\pecker_font.h">
       <Filter>native</Filter>
     </ClInclude>
+    <ClInclude Include="data\pecker_combination.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">

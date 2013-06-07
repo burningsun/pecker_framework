@@ -32,7 +32,7 @@ extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR
 
 #include <iostream>
 
-
+//extern void test_select();
 #include "data/pecker_shape.h"
 //#include "data/test.h"
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow)
@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLin
 int main()
 {
 
-	
+	//test_select();
 	//shape_logic_test();
 	//unsigned int temp_value = 65535;
 	//unsigned int mip = temp_value;
