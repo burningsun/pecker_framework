@@ -390,7 +390,7 @@ HResult pecker_render_device_gles2::get_state_value(HEnum state,pecker_state_val
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
-HResult pecker_render_device_gles2::get_device_info(HEnum info_type,pecker_string& P_OUT strInfo) const
+HResult pecker_render_device_gles2::get_device_info(HEnum info_type,render_string& P_OUT strInfo) const
 {
 	if (info_type >= DEVICE_INFO_TYPE_COUNT)
 	{

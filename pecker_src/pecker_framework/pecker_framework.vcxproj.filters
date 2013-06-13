@@ -210,6 +210,9 @@
     <ClInclude Include="data\pecker_combination.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="native\pecker_alloc_containers.h">
+      <Filter>native</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="render\render_util\pecker_render_canvas.cpp">
       <Filter>render\render_util</Filter>
+    </ClCompile>
+    <ClCompile Include="native\pecker_font.cpp">
+      <Filter>native</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

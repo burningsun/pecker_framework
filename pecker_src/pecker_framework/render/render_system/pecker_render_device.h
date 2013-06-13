@@ -148,7 +148,7 @@ PeckerInterface Ipecker_render_device
 	//virtual HResult set_const_value(HEnum name,HEnum operation_type,nSize nvalue_count,const PVoid P_IN value_) = 0;
 	//virtual HResult set_value(HEnum name,HEnum operation_type,nSize nvalue_count,PVoid P_IN value_) = 0;
 
-	virtual HResult get_device_info(HEnum info_type,pecker_string& P_OUT strInfo) const= 0;
+	virtual HResult get_device_info(HEnum info_type,render_string& P_OUT strInfo) const= 0;
 };
 
 

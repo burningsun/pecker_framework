@@ -71,18 +71,18 @@ PeckerInterface Ipecker_gpu_program_param
     virtual HResult set_vertex_attribute_pointer(GPU_LOCATION_HANDLE attribute_location,nSize attribute_size,HEnum attribute_type,
 		HFlag nstride,const PVoid P_IN ppointer,HEnum attribute_data_type ,Bool normalized = false ) = 0;
 
-	virtual GPU_LOCATION_HANDLE get_uniform_location_by_name(const pecker_string& str_uniform_name) = 0;
-	virtual GPU_LOCATION_HANDLE get_attribute_location_by_name(const pecker_string& str_attribute_name) = 0;
+	virtual GPU_LOCATION_HANDLE get_uniform_location_by_name(const render_string& str_uniform_name) = 0;
+	virtual GPU_LOCATION_HANDLE get_attribute_location_by_name(const render_string& str_attribute_name) = 0;
 };
 
 PeckerInterface Ipecker_gpu_program
 {
 	virtual ~Ipecker_gpu_program(){}
 
-	virtual GPU_LOCATION_HANDLE int_shader_program(const pecker_string* P_IN pstr_bind_attributes = null,nSize nAttributes_count = 0,pecker_string* P_OUT pstr_error_info = null) = 0;
+	virtual GPU_LOCATION_HANDLE int_shader_program(const render_string* P_IN pstr_bind_attributes = null,nSize nAttributes_count = 0,render_string* P_OUT pstr_error_info = null) = 0;
 	
-	virtual GPU_LOCATION_HANDLE load_frame_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info = null) = 0;
-	virtual GPU_LOCATION_HANDLE load_vertex_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info = null) = 0;
+	virtual GPU_LOCATION_HANDLE load_frame_shader_source(const render_string& str_source_code,render_string* P_OUT pstr_error_info = null) = 0;
+	virtual GPU_LOCATION_HANDLE load_vertex_shader_source(const render_string& str_source_code,render_string* P_OUT pstr_error_info = null) = 0;
 
 	virtual HResult delete_shader_program() = 0;
 	virtual HResult delete_frame_shader() = 0;

@@ -21,6 +21,8 @@
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
 
+#include "data/pecker_string.h"
+USING_PECKER_SDK
 /******************************************************************************
  Defines
 ******************************************************************************/
@@ -348,11 +350,19 @@ int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmd
 		glGetShaderiv(uiFragShader, GL_INFO_LOG_LENGTH, &i32InfoLogLength);
 
 		// Allocate enough space for the message and retrieve it
-		char* pszInfoLog = new char[i32InfoLogLength];
+		render_char* pszInfoLog = new render_char[i32InfoLogLength];
         glGetShaderInfoLog(uiFragShader, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 
 		// Displays the error in a dialog box
-		MessageBox(hWnd, i32InfoLogLength ? pszInfoLog : _T(""), _T("Failed to compile fragment shader"), MB_OK|MB_ICONEXCLAMATION);
+		if (i32InfoLogLength)
+		{
+			MessageBoxA(hWnd,  pszInfoLog,"Failed to compile fragment shader",MB_OK|MB_ICONEXCLAMATION);
+		}
+		else
+		{
+			MessageBoxA(hWnd,  "", "Failed to compile fragment shader", MB_OK|MB_ICONEXCLAMATION);
+		}
+		
 		delete[] pszInfoLog;
 
 		goto cleanup;
@@ -368,10 +378,17 @@ int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmd
 
 		int i32InfoLogLength, i32CharsWritten;
 		glGetShaderiv(uiVertShader, GL_INFO_LOG_LENGTH, &i32InfoLogLength);
-		char* pszInfoLog = new char[i32InfoLogLength];
+		render_char* pszInfoLog = new render_char[i32InfoLogLength];
         glGetShaderInfoLog(uiVertShader, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 
-		MessageBox(hWnd, i32InfoLogLength ? pszInfoLog : _T(""), _T("Failed to compile vertex shader"), MB_OK|MB_ICONEXCLAMATION);
+		if (i32InfoLogLength)
+		{
+			MessageBoxA(hWnd,  pszInfoLog,"Failed to compile fragment shader",MB_OK|MB_ICONEXCLAMATION);
+		}
+		else
+		{
+			MessageBoxA(hWnd,  "", "Failed to compile fragment shader", MB_OK|MB_ICONEXCLAMATION);
+		}
 
 		delete[] pszInfoLog;
 
@@ -398,10 +415,17 @@ int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmd
 	{
 		int i32InfoLogLength, i32CharsWritten;
 		glGetProgramiv(uiProgramObject, GL_INFO_LOG_LENGTH, &i32InfoLogLength);
-		char* pszInfoLog = new char[i32InfoLogLength];
+		render_char* pszInfoLog = new render_char[i32InfoLogLength];
 		glGetProgramInfoLog(uiProgramObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 
-		MessageBox(hWnd, i32InfoLogLength ? pszInfoLog : _T(""), _T("Failed to link program"), MB_OK|MB_ICONEXCLAMATION);
+		if (i32InfoLogLength)
+		{
+			MessageBoxA(hWnd,  pszInfoLog,"Failed to compile fragment shader",MB_OK|MB_ICONEXCLAMATION);
+		}
+		else
+		{
+			MessageBoxA(hWnd,  "", "Failed to compile fragment shader", MB_OK|MB_ICONEXCLAMATION);
+		}
 
 		delete[] pszInfoLog;
 		goto cleanup;

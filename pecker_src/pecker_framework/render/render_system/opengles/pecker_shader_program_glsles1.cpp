@@ -30,8 +30,8 @@ pecker_shader_program_glsles1::~pecker_shader_program_glsles1()
 		g_pusing_shader_program = null;
 	}
 }
-GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(UInt nvertex_shader, UInt nframe_shader,const pecker_string* P_IN pstr_bind_attributes /* = null */,
-	nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)	
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(UInt nvertex_shader, UInt nframe_shader,const render_string* P_IN pstr_bind_attributes /* = null */,
+	nSize nAttributes_count /* = 0 */,render_string* P_OUT pstr_error_info /* = null */)	
 {
 	if (0 == nvertex_shader || 0 == nframe_shader)
 	{
@@ -55,7 +55,7 @@ GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(UInt nver
 
 	for (nINDEX i = 0; i < nAttributes_count; ++i)
 	{
-		const pecker_string* str_attributes = &pstr_bind_attributes[i];
+		const render_string* str_attributes = &pstr_bind_attributes[i];
 
 		if(null != str_attributes && null != str_attributes->get_data())
 		{
@@ -108,13 +108,13 @@ GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(UInt nver
 
 	return program;
 }
- GPU_LOCATION_HANDLE pecker_shader_program_glsles1::int_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
-//GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(const pecker_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,pecker_string* P_OUT pstr_error_info /* = null */)
+ GPU_LOCATION_HANDLE pecker_shader_program_glsles1::int_shader_program(const render_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,render_string* P_OUT pstr_error_info /* = null */)
+//GPU_LOCATION_HANDLE pecker_shader_program_glsles1::init_shader_program(const render_string* P_IN pstr_bind_attributes /* = null */,nSize nAttributes_count /* = 0 */,render_string* P_OUT pstr_error_info /* = null */)
 {
 	return init_shader_program(_M_vertex_shader,_M_frame_shader,pstr_bind_attributes,nAttributes_count,pstr_error_info);
 }
 
-GPU_LOCATION_HANDLE pecker_shader_program_glsles1::load_frame_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info /* = null */)
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::load_frame_shader_source(const render_string& str_source_code,render_string* P_OUT pstr_error_info /* = null */)
 {
 	if (0 != _M_frame_shader)
 	{
@@ -158,7 +158,7 @@ GPU_LOCATION_HANDLE pecker_shader_program_glsles1::load_frame_shader_source(cons
 	}
 	return (UInt)shader;
 }
-GPU_LOCATION_HANDLE pecker_shader_program_glsles1::load_vertex_shader_source(const pecker_string& str_source_code,pecker_string* P_OUT pstr_error_info /* = null */)
+GPU_LOCATION_HANDLE pecker_shader_program_glsles1::load_vertex_shader_source(const render_string& str_source_code,render_string* P_OUT pstr_error_info /* = null */)
 {
 	if (0 != _M_vertex_shader)
 	{
@@ -271,7 +271,7 @@ Ipecker_gpu_program_param* pecker_shader_program_glsles1::get_program_param()
 	_M_render_param.set_program_location(_M_program);
 	return &_M_render_param;
 }
-UInt pecker_shader_program_glsles1::get_attribute_location(const pecker_string& str_attribute_name) const
+UInt pecker_shader_program_glsles1::get_attribute_location(const render_string& str_attribute_name) const
 {
 	UInt return_index = (UInt)(-1);
 	if (0 != _M_program && str_attribute_name.get_string_length() > 0)
@@ -286,7 +286,7 @@ UInt pecker_shader_program_glsles1::get_attribute_location(const pecker_string& 
 }
 	
 HResult  pecker_shader_program_glsles1::get_active_attribute
-	(UInt attribute_index,HEnum& attribute_type,nSize &attribute_size, pecker_string& str_attribute_name) const
+	(UInt attribute_index,HEnum& attribute_type,nSize &attribute_size, render_string& str_attribute_name) const
 {
 	GLsizei strlength = 0;
 	::glGetActiveAttrib(_M_program,attribute_index,strlength,&strlength,&attribute_size,(GLenum*)(&attribute_type),null);
@@ -304,7 +304,7 @@ HResult  pecker_shader_program_glsles1::get_active_attribute
 
 	
 UInt  pecker_shader_program_glsles1::get_uniform_location
-	(const pecker_string& str_uniform_name) const
+	(const render_string& str_uniform_name) const
 {
 	UInt return_index = (UInt)(-1);
 	if (0 != _M_program && str_uniform_name.get_string_length() > 0)
@@ -315,7 +315,7 @@ UInt  pecker_shader_program_glsles1::get_uniform_location
 }
 	
 HResult  pecker_shader_program_glsles1::get_active_uniform
-	(UInt uniform_index,HEnum& uniform_type,nSize &uniform_size, pecker_string& str_uniform_name) const
+	(UInt uniform_index,HEnum& uniform_type,nSize &uniform_size, render_string& str_uniform_name) const
 {
 
 	GLsizei strlength = 0;
@@ -574,7 +574,7 @@ void pecker_gpu_program_param_gles2::set_program_location(UInt program)
 {
 	_M_program = program;
 }
-GPU_LOCATION_HANDLE pecker_gpu_program_param_gles2::get_attribute_location_by_name(const pecker_string& str_attribute_name)
+GPU_LOCATION_HANDLE pecker_gpu_program_param_gles2::get_attribute_location_by_name(const render_string& str_attribute_name)
 {
 	GPU_LOCATION_HANDLE return_index = (GPU_LOCATION_HANDLE)(-1);
 	if (0 != _M_program && str_attribute_name.get_string_length() > 0)
@@ -583,7 +583,7 @@ GPU_LOCATION_HANDLE pecker_gpu_program_param_gles2::get_attribute_location_by_na
 	}
 	return return_index;
 }
-GPU_LOCATION_HANDLE pecker_gpu_program_param_gles2::get_uniform_location_by_name(const pecker_string& str_uniform_name)
+GPU_LOCATION_HANDLE pecker_gpu_program_param_gles2::get_uniform_location_by_name(const render_string& str_uniform_name)
 {
 	GPU_LOCATION_HANDLE return_index = (GPU_LOCATION_HANDLE)(-1);
 	if (0 != _M_program && str_uniform_name.get_string_length() > 0)

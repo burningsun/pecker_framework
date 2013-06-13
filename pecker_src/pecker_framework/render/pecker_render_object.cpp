@@ -23,7 +23,7 @@ pecker_render_object::~pecker_render_object()
 	_M_reference_count = 0;
 }
 
-const pecker_string & pecker_render_object::toString(pecker_string P_IN &string_input) const
+const render_string & pecker_render_object::toString(render_string P_IN &string_input) const
 {
 	const char* pstring_chars = typeid(*this).name();
 	nSize string_len = strlen(pstring_chars);

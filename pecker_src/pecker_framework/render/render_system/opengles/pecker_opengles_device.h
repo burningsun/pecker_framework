@@ -47,7 +47,7 @@ public:
 
 	HResult get_state_value(HEnum state,pecker_state_value& state_value) const;
 
-	HResult get_device_info(HEnum info_type,pecker_string& P_OUT strInfo) const;
+	HResult get_device_info(HEnum info_type,render_string& P_OUT strInfo) const;
 
 };
 

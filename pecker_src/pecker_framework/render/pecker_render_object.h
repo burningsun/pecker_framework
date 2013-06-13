@@ -62,7 +62,7 @@ public:
 	pecker_render_object();
 	virtual ~pecker_render_object();
 
-	virtual const pecker_string &toString(pecker_string P_IN &string_input) const; 
+	virtual const render_string &toString(render_string P_IN &string_input) const; 
 	virtual const pecker_render_system_info &get_render_system_info(pecker_render_system_info P_IN &system_info) const;
 
 	virtual pecker_render_object* get_this_reference();

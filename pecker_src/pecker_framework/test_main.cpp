@@ -35,10 +35,10 @@ extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR
 //extern void test_select();
 #include "data/pecker_shape.h"
 //#include "data/test.h"
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow)
-{
-	return EglWinMain(hInstance,hPrevInstance,lpCmdLine,nCmdShow);
-}
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow)
+//{
+//	return EglWinMain(hInstance,hPrevInstance,lpCmdLine,nCmdShow);
+//}
 int main()
 {
 

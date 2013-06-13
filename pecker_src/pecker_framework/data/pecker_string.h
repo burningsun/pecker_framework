@@ -10,6 +10,7 @@
 #define PECKER_STRING_H_
 
 #include "../native/pecker_allocator.h"
+#include "../native/pecker_alloc_containers.h"
 #include "pecker_iterator.h"
 #include "../native/pecker_log.h"
 #include "../data/pecker_value_compare.h"
@@ -965,7 +966,24 @@ public:
 };
 
 //
-typedef pecker_share_string_base_t< char,pecker_value_compare< char > > pecker_string;
+typedef pecker_share_string_base_t< char,pecker_value_compare< char >,pecker_acsii_string_alloc,16 > pecker_string_ascii;
+typedef pecker_share_string_base_t< wchar_t,pecker_value_compare< wchar_t > ,pecker_utf_string_alloc, 32> pecker_string_utf;
+
+#ifndef _UNICODE
+	typedef  char pecker_char;
+	typedef pecker_string_ascii pecker_string;
+	#define PECKER_SYSTEM_CHAR_T(X) X
+	#define PECKER_CHAR_STRING_LENGTH(X) (strlen(X))
+#else
+	typedef  wchar_t pecker_char;
+	typedef pecker_string_utf pecker_string;
+	#define PECKER_SYSTEM_CHAR_T(X) L##X
+	#define PECKER_CHAR_STRING_LENGTH(X) (wcslen(X))
+#endif
+
+#define render_string  pecker_string_ascii
+#define render_char		char
+
 
 PECKER_END
 

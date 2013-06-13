@@ -59,7 +59,7 @@ pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_clos
 	_M_window_info._M_menu_handle = null;
 	_M_window_info._M_visiable = BOOL_TRUE;
 	_M_window_info._M_using_render_thread = BOOL_TRUE;
-	_M_window_info._M_window_title.init("pfx_win\0\0\0\0\0\0\0\0\0",16);
+	_M_window_info._M_window_title.init(PECKER_SYSTEM_CHAR_T("pfx_win\0\0\0\0\0\0\0\0\0"),16);
 	
 	pecker_write_stream_to_memery write_stream;
 	write_stream.bind_write_buffer( (char*)(_M_window_info._M_window_title.get_data() + 7),8);
@@ -83,7 +83,7 @@ pecker_window_context::pecker_window_context() : _M_perant_context(null),_M_clos
 #endif
 	_M_window_info._M_window_param._M_width = 800;
 	_M_window_info._M_window_param._M_height = 600;
-	_M_window_info._M_render_system_name.init( "opengl es 2.0",strlen("opengl es 2.0"));
+	_M_window_info._M_render_system_name.init( PECKER_SYSTEM_CHAR_T("opengl es 2.0"),PECKER_CHAR_STRING_LENGTH(PECKER_SYSTEM_CHAR_T("opengl es 2.0")));
 
 
 }
@@ -634,6 +634,7 @@ HResult pecker_window_context::show(Boolean bIs_dialog /* = BOOL_FALSE */)
 		}
 
 		// 给定一个注册窗口时使用的名字
+		LPCWSTR aaa;
 		window_class.lpszClassName = _M_window_info._M_window_title.get_data();
 
 
@@ -772,11 +773,11 @@ static pecker_string g_str_current_directory;
 HResult pecker_program_apps::init_apps()
 {
 #ifdef WINDOWS_PC
-	char path_chars[2048] = {0};
+	pecker_char path_chars[2048] = {0};
 	DWORD length = 2048;
 	if (::GetCurrentDirectory(length,path_chars))
 	{
-		g_str_current_directory.init(path_chars,strlen(path_chars));
+		g_str_current_directory.init(path_chars,PECKER_CHAR_STRING_LENGTH(path_chars));
 		return P_OK;
 	}
 	else
