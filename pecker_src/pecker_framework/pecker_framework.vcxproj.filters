@@ -204,14 +204,17 @@
     <ClInclude Include="render\render_system\pecker_render_system_defines.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
-    <ClInclude Include="native\pecker_font.h">
-      <Filter>native</Filter>
-    </ClInclude>
     <ClInclude Include="data\pecker_combination.h">
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="native\pecker_alloc_containers.h">
       <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_util\pecker_font.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_util\pecker_pen.h">
+      <Filter>render\render_util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -332,8 +335,11 @@
     <ClCompile Include="render\render_util\pecker_render_canvas.cpp">
       <Filter>render\render_util</Filter>
     </ClCompile>
-    <ClCompile Include="native\pecker_font.cpp">
-      <Filter>native</Filter>
+    <ClCompile Include="render\render_util\pecker_font.cpp">
+      <Filter>render\render_util</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_util\pecker_pen.cpp">
+      <Filter>render\render_util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

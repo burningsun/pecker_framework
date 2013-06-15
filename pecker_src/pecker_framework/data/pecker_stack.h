@@ -13,8 +13,8 @@
 PECKER_BEGIN
 
 template< class value_type,
-				   class allocate_object_t = pecker_simple_allocator< value_type >,
-				   class pointer_allocate_object_t = pecker_simple_allocator< value_type* >,
+				   class allocate_object_t = pecker_system_defualt_allocator( value_type ),
+				   class pointer_allocate_object_t = pecker_system_defualt_allocator( value_type* ),
 					const int INTERNAL_BUFFER_SIZE = 512 >
 class pecker_stack_pool_array
 {

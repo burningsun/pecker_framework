@@ -59,7 +59,7 @@ typedef enum enumTERNARYTREE_LEGAL_NODE_FLAG_TYPE
 // 三叉树节点类型
 template< class key_char_value_t,
 class __cmp_t,
-class allocate_object_t = pecker_simple_allocator< key_char_value_t >,
+class allocate_object_t = pecker_system_defualt_allocator( key_char_value_t ),
 class bst_base_node_t = _AVL_node_base>
 struct pecker_tst_set_node : public bst_base_node_t
 {
@@ -72,7 +72,7 @@ struct pecker_tst_set_node : public bst_base_node_t
 template< class key_char_value_t,
 class value_t,
 class __cmp_t,
-class allocate_object_t = pecker_simple_allocator< key_char_value_t >,
+class allocate_object_t = pecker_system_defualt_allocator( key_char_value_t ),
 class bst_base_node_t = _AVL_node_base>
 struct pecker_tst_map_node_extern : public pecker_tst_set_node<key_char_value_t,__cmp_t,allocate_object_t,bst_base_node_t>
 {
@@ -82,7 +82,7 @@ struct pecker_tst_map_node_extern : public pecker_tst_set_node<key_char_value_t,
 template< class key_char_value_t,
 class value_t,
 class __cmp_t,
-class allocate_object_t = pecker_simple_allocator< key_char_value_t >,
+class allocate_object_t = pecker_system_defualt_allocator( key_char_value_t ),
 class bst_base_node_t = _AVL_node_base>
 struct pecker_tst_map_node : public bst_base_node_t
 {

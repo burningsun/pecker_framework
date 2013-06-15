@@ -20,7 +20,7 @@ PECKER_BEGIN
 
 template< class item_value_t, 
 					class linked_list_node_t = pecker_linked_list_node_t< item_value_t >,
-					class nodes_allocator_t = pecker_nodes_simple_allocater< linked_list_node_t > >
+					class nodes_allocator_t = pecker_system_defualt_nodes_allocator( linked_list_node_t ) >
 class pecker_list
 {
 	typedef pecker_list_iterator< linked_list_node_t, pecker_list< item_value_t,linked_list_node_t,nodes_allocator_t > > _List_iterator;

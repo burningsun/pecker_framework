@@ -10,11 +10,12 @@
 #define PECKER_ARRAY_H_
 
 #include "../native/pecker_allocator.h"
+#include "../native/pecker_alloc_containers.h"
 #include "pecker_array_algorithm.h"
 #include "pecker_array_iterator.h"
 PECKER_BEGIN
 
-template< class class_type,class allocate_object_t = pecker_simple_allocator< class_type > >
+template< class class_type,class allocate_object_t = pecker_system_defualt_allocator( class_type ) >
 class pecker_array
 {
 	typedef pecker_array_iterator< pecker_array< class_type,allocate_object_t > > _Array_iterator;
@@ -296,8 +297,8 @@ public:
 };
 
 template<class class_type,
-class allocate_object_t = pecker_simple_allocator< class_type >,
-class pointer_allocate_object_t = pecker_simple_allocator< class_type* > >
+class allocate_object_t = pecker_system_defualt_allocator( class_type ),
+class pointer_allocate_object_t = pecker_system_defualt_allocator( class_type* ) >
 class pecker_pool_array
 {
 	typedef pecker_array_iterator< pecker_pool_array< class_type,allocate_object_t > > _Array_iterator;

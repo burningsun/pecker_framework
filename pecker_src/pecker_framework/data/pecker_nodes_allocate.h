@@ -12,6 +12,7 @@
 #include "../CPeckerObject.h"
 #include "pecker_array.h"
 #include "../native/pecker_allocator.h"
+#include "../native/pecker_alloc_containers.h"
 
 PECKER_BEGIN
 
@@ -28,7 +29,7 @@ struct pecker_serial_node :  public _node_t
 	node_serial_number	_M_node_ID;
 };
 
-template<class _node_t, class allocate_object_t = pecker_simple_allocator<_node_t> >
+template<class _node_t, class allocate_object_t = pecker_system_defualt_allocator(_node_t) >
 class pecker_nodes_simple_allocater
 {
 public:
@@ -135,87 +136,6 @@ public:
 
 	}
 };
-//template< class _node_t, class allocate_object_t = pecker_simple_allocator<_node_t> >
-//class pecker_nodes_pool_allocater
-//{
-//	typedef pecker_serial_node< _node_t >  SerialNode;
-//private:
-//	nodes_pool_size _M_pool_size;
-//	pecker_pool_array< SerialNode, allocate_object_t > _M_pool;
-//	pecker_pool_array< node_serial_number > _M_recycler_pool;
-//public:
-//	pecker_nodes_pool_allocater( array_buffer_size_val pool_init_size,
-//															array_buffer_size_val recycler_pool_size = ARRAY_DEFAULT_ALLOCATE_STEP,
-//															array_buffer_size_val auto_allocate_size = ARRAY_DEFAULT_ALLOCATE_STEP,
-//															array_buffer_size_val array_buffer_array_allocate_step = ARRAY_DEFAULT_ALLOCATE_STEP
-//		):_M_pool_size(0),
-//		_M_pool(auto_allocate_size,array_buffer_array_allocate_step),
-//		_M_recycler_pool(auto_allocate_size,array_buffer_array_allocate_step)
-//	{
-//		_M_pool.init(pool_init_size);
-//		_M_recycler_pool.init(pool_init_size);
-//	}
-//
-//	 _node_t* create_node()
-//	{
-//		 SerialNode* pnew_node = null;
-//		 array_buffer_size_val recycler_pool_size = _M_recycler_pool.get_size();
-//		 if (recycler_pool_size > 0)
-//		 {
-//			 array_index_val index = recycler_pool_size-1;
-//			 const node_serial_number* pindex = _M_recycler_pool.get_at(index);
-//			 if (pindex)
-//			 {
-//				 pnew_node = _M_pool.get_reference_at(*pindex);
-//			 }
-//		 }
-//		 else
-//		 {
-//			  array_index_val index = _M_pool.get_size();
-//			  if (index >= 0 && P_OK ==  _M_pool.resize(index+1))
-//			  {
-//				 pnew_node = _M_pool.get_reference_at(index);
-//				 pnew_node->_M_node_ID = index;
-//			  }
-//		 }
-//
-//		 if (null != pnew_node)
-//		 {
-//			 ++_M_pool_size;
-//		 }
-//		 return static_cast< _node_t* >(pnew_node);
-//	}
-//	void release_node(_node_t* pNode)
-//	{
-//		if (null != pNode)
-//		{
-//			SerialNode* pnew_node = (_node_t*)pNode;
-//			if (pnew_node == _M_pool.get_at(pnew_node->_M_node_ID))
-//			{
-//				--_M_pool_size;
-//				_M_recycler_pool.push(pnew_node->_M_node_ID);
-//			}
-//		}
-//	}
-//	void clear(nodes_boolean_flag bForce_release = NODES_BOOLEAN_FLASE)
-//	{
-//		_M_recycler_pool.resize(0,-1,-1,bForce_release);
-//		_M_pool.resize(0,-1,-1,bForce_release);
-//		_M_pool_size = 0;
-//	}
-//	nodes_pool_size get_size() const
-//	{
-//		return _M_pool_size;
-//	}
-//	nodes_boolean_flag Is_pool() const
-//	{
-//		return NODES_BOOLEAN_TRUE;
-//	}
-//};
-
-
-
-
 
 
 PECKER_END

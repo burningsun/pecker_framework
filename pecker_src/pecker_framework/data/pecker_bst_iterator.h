@@ -47,8 +47,8 @@ PeckerInterface Ipecker_bst_tree_posorder_iterator : public Ipecker_bst_tree_ite
 
 // 无父节点的二叉树节点的中序遍历迭代器
 template< class BST_node_t,
-				   class allocate_object_t = pecker_simple_allocator< const BST_node_t* >,
-				   class pointer_allocate_object_t = pecker_simple_allocator< const BST_node_t** > >
+				   class allocate_object_t = pecker_system_defualt_allocator( const BST_node_t* ),
+				   class pointer_allocate_object_t = pecker_system_defualt_allocator( const BST_node_t** ) >
 class pecker_bst_tree_no_perent_node_inorder_iterator_base : public Ipecker_bst_tree_inorder_iterator< BST_node_t >
 {
 	typedef pecker_stack_pool_array< const BST_node_t*,allocate_object_t,pointer_allocate_object_t  > _Stack_container;
@@ -353,8 +353,8 @@ public:
 
 // 无父节点的二叉树节点的后序遍历迭代器
 template< class BST_node_t,
-					class allocate_object_t = pecker_simple_allocator< const BST_node_t* >,
-					class pointer_allocate_object_t = pecker_simple_allocator< const BST_node_t** > >
+					class allocate_object_t = pecker_system_defualt_allocator( const BST_node_t* ),
+					class pointer_allocate_object_t = pecker_system_defualt_allocator( const BST_node_t** ) >
 class pecker_bst_tree_no_perent_node_posorder_iterator_base : public Ipecker_bst_tree_posorder_iterator< BST_node_t >
 {
 	typedef pecker_stack_pool_array< const BST_node_t*,allocate_object_t,pointer_allocate_object_t  > _Stack_container;
@@ -562,8 +562,8 @@ public:
 
 //  无父节点的三叉树节点的中序遍历迭代器
 template< class TST_node_t,
-class allocate_object_t = pecker_simple_allocator< const TST_node_t* >,
-class pointer_allocate_object_t = pecker_simple_allocator< const TST_node_t** > >
+class allocate_object_t = pecker_system_defualt_allocator( const TST_node_t* ),
+class pointer_allocate_object_t = pecker_system_defualt_allocator( const TST_node_t** ) >
 class pecker_tst_tree_no_perent_node_inorder_iterator_base : public Ipecker_bst_tree_inorder_iterator< TST_node_t >
 {
 	typedef pecker_stack_pool_array< const TST_node_t*,allocate_object_t,pointer_allocate_object_t  > _Stack_container;
