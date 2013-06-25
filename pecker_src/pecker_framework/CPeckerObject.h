@@ -138,7 +138,7 @@ typedef struct _st_isize
 {
   U32bit w;
   U32bit h;
-}PeckerSize;
+}pekcer_size;
 
 typedef struct _st_point
 {

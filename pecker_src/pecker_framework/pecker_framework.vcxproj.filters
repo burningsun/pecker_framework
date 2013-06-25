@@ -216,6 +216,12 @@
     <ClInclude Include="render\render_util\pecker_pen.h">
       <Filter>render\render_util</Filter>
     </ClInclude>
+    <ClInclude Include="native\pecker_system.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pecker_string_adapter.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PeckerObject.cpp">
@@ -340,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="render\render_util\pecker_pen.cpp">
       <Filter>render\render_util</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pecker_string_adapter.cpp">
+      <Filter>data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

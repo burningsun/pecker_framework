@@ -8,19 +8,19 @@
 USING_PECKER_SDK
 
 typedef pecker_tst_map_node<char,char, pecker_value_compare<char>,pecker_simple_allocator<char>, _AVL_node_base> _TST_node;
-typedef pecker_share_string_base_t<char, pecker_value_compare<char>,pecker_simple_allocator<char> > String_base;
+typedef pecker_share_string_base_t<char, pecker_value_compare<char>,pecker_simple_allocator<char> > String_base_itrtest;
 typedef pecker_nodes_simple_allocater<_TST_node> _TST_node_allocater;
-typedef pecker_btst_map_container<char,String_base,char,_TST_node,_TST_node_allocater>   BTSTree;
+typedef pecker_btst_map_container<char,String_base_itrtest,char,_TST_node,_TST_node_allocater>   BTSTree;
 typedef pecker_tst_tree_no_perent_node_inorder_iterator_base<  _TST_node, pecker_simple_allocator< const _TST_node* >,pecker_simple_allocator< const _TST_node** > > _TST_inorder_iterator;
 
-typedef pecker_avl_tree_map_container< String_base,int,
-	pecker_value_compare_extern< String_base >,
-	AVL_node_map< String_base,int >,
-	pecker_nodes_simple_allocater< AVL_node_map< String_base,int > > > _AVL_Tree_map;
+typedef pecker_avl_tree_map_container< String_base_itrtest,int,
+	pecker_value_compare_extern< String_base_itrtest >,
+	AVL_node_map< String_base_itrtest,int >,
+	pecker_nodes_simple_allocater< AVL_node_map< String_base_itrtest,int > > > _AVL_Tree_map;
 
 typedef pecker_bst_tree_no_perent_node_inorder_iterator_base< _AVL_node_base > _AVL_inorder_iterator;
 
-void print_pecker_string(const String_base& string_)
+void print_pecker_string(const String_base_itrtest& string_)
 {
 	if (string_.get_string_length() > 0)
 	{
@@ -41,7 +41,7 @@ void print_pecker_string(const String_base& string_)
 
 
 
-void init_input_data(pecker_array< String_base >& array)
+void init_input_data(pecker_array< String_base_itrtest >& array)
 {
 	array.clear();
 	array.init(1000000,256);
@@ -63,7 +63,7 @@ void init_input_data(pecker_array< String_base >& array)
 
 	static Char string_buff[4096];
 
-	String_base strin;
+	String_base_itrtest strin;
 
 	while(1)
 	{
@@ -78,7 +78,7 @@ void init_input_data(pecker_array< String_base >& array)
 	}
 }
 
-void init_input_data2(pecker_array< String_base >& array)
+void init_input_data2(pecker_array< String_base_itrtest >& array)
 {
 	array.clear();
 	array.init(1000000,256);
@@ -100,7 +100,7 @@ void init_input_data2(pecker_array< String_base >& array)
 
 	static Char string_buff[4096];
 
-	String_base strin;
+	String_base_itrtest strin;
 
 	while(1)
 	{
@@ -118,17 +118,17 @@ void init_input_data2(pecker_array< String_base >& array)
 void tst_iterator_test_value()
 {
 	BTSTree tst_map;
-	pecker_array< String_base > array;
+	pecker_array< String_base_itrtest > array;
 	_TST_inorder_iterator inorder_iterator;
 
 	init_input_data(array);
-	pecker_array_iterator< pecker_array<String_base> >array_iterator1;
+	pecker_array_iterator< pecker_array<String_base_itrtest> >array_iterator1;
 	array.get_iterator(&array_iterator1);
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
 	int icount = 0;
 	while (1)
 	{
-		const String_base* pvalue = array.get_at(&array_iterator1);
+		const String_base_itrtest* pvalue = array.get_at(&array_iterator1);
 		if (pvalue)
 		{
 			HResult res = tst_map.insert(*pvalue,icount);
@@ -175,17 +175,17 @@ void tst_iterator_test_clear()
 {
 	BTSTree tst_map_og;
 	BTSTree tst_map;
-	pecker_array< String_base > array;
+	pecker_array< String_base_itrtest > array;
 	_TST_inorder_iterator inorder_iterator;
 
 	init_input_data2(array);
-	pecker_array_iterator< pecker_array<String_base> >array_iterator1;
+	pecker_array_iterator< pecker_array<String_base_itrtest> >array_iterator1;
 	array.get_iterator(&array_iterator1);
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
 	int icount = 0;
 	while (1)
 	{
-		const String_base* pvalue = array.get_at(&array_iterator1);
+		const String_base_itrtest* pvalue = array.get_at(&array_iterator1);
 		if (pvalue)
 		{
 			HResult res = tst_map_og.insert(*pvalue,icount);
@@ -208,7 +208,7 @@ void tst_iterator_test_clear()
 	icount = 0;
 	while (1)
 	{
-		const String_base* pvalue = array.get_at(&array_iterator1);
+		const String_base_itrtest* pvalue = array.get_at(&array_iterator1);
 		if (pvalue)
 		{
 			HResult res = tst_map.insert(*pvalue,icount);
@@ -273,17 +273,17 @@ void tst_iterator_test_clear()
 void tst_iterator_test()
 {
 	BTSTree tst_map;
-	pecker_array< String_base > array;
+	pecker_array< String_base_itrtest > array;
 	_TST_inorder_iterator inorder_iterator;
 	
 	init_input_data(array);
-	pecker_array_iterator< pecker_array<String_base> >array_iterator1;
+	pecker_array_iterator< pecker_array<String_base_itrtest> >array_iterator1;
 	array.get_iterator(&array_iterator1);
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
 	int icount = 0;
 	while (1)
 	{
-		const String_base* pvalue = array.get_at(&array_iterator1);
+		const String_base_itrtest* pvalue = array.get_at(&array_iterator1);
 		if (pvalue)
 		{
 			HResult res = tst_map.insert(*pvalue,icount);
@@ -395,17 +395,17 @@ void tst_iterator_test()
 void avlbst_iterator_test()
 {
 	_AVL_Tree_map avlbst_map;
-	pecker_array< String_base > array;
+	pecker_array< String_base_itrtest > array;
 	_AVL_inorder_iterator inorder_iterator;
 
 	init_input_data(array);
-	pecker_array_iterator< pecker_array<String_base> >array_iterator1;
+	pecker_array_iterator< pecker_array<String_base_itrtest> >array_iterator1;
 	array.get_iterator(&array_iterator1);
 	array_iterator1.init(ITERATOR_INIT_BEGIN_INDEX);
 	int icount = 0;
 	while (1)
 	{
-		const String_base* pvalue = array.get_at(&array_iterator1);
+		const String_base_itrtest* pvalue = array.get_at(&array_iterator1);
 		if (pvalue)
 		{
 			HResult res = avlbst_map.insert(*pvalue,icount);

@@ -394,6 +394,20 @@ public:
 		}
 		return return_value;
 	}
+
+	tst_result  insert(const key_value_t* pstring_key,string_size_t string_size,const value_t& insert_value,_BTST_Node* &pInsert_node)
+	{
+		tst_result return_value;
+		pInsert_node = avl_tst_tree_insert<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>
+			(_M_root_node,pstring_key,string_size,_M_allocator,return_value,_M_nodes_count);
+		if (null != pInsert_node && P_OK == return_value)
+		{
+			pInsert_node->value = insert_value;
+			++_M_value_count;
+		}
+		return return_value;
+	}
+
 	tst_result erase(const key_value_t* pstring_key,string_size_t string_size)
 	{
 		tst_result return_value = avl_tst_tree_erase<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>(_M_root_node,pstring_key,string_size,_M_allocator,_M_nodes_count);
@@ -605,6 +619,15 @@ protected:
 	}
 };
 
+#define pecker_avltst_set_node(item_value_type) pecker_tst_set_node<item_value_type, pecker_value_compare< item_value_type >,pecker_system_defualt_allocator< item_value_type >, _AVL_node_base>
+#define pecker_avltst_set_string(item_value_type) pecker_share_string_base_t< item_value_type, pecker_value_compare< item_value_type >,pecker_system_defualt_allocator( item_value_type ),sizeof(item_value_type)*16 >
+#define pecker_avltst_set(item_value_type) pecker_btst_set_container< item_value_type, pecker_avltst_set_string(item_value_type),item_value_type,pecker_avltst_set_node(item_value_type),pecker_system_defualt_nodes_allocator(pecker_avltst_set_node(item_value_type)) >
+
+//#define pecker_avltst_map_node(key_value_type,item_value_type) pecker_tst_map_node< key_value_type,item_value_type, pecker_value_compare< key_value_type >,pecker_system_defualt_allocator(key_value_type), _AVL_node_base > 
+#define pecker_avltst_map_string(key_value_type) pecker_share_string_base_t< key_value_type, pecker_value_compare< key_value_type >,pecker_system_defualt_allocator( key_value_type ),sizeof(key_value_type)*16 >
+//template< class String_key_t, class value_t, class bst_base_node_t = _AVL_node_base >
+#define pecker_avltst_map_node(key_value_type,item_value_type) pecker_tst_map_node_< pecker_avltst_map_string(key_value_type),item_value_type, _AVL_node_base > 
+#define pecker_avltst_map(key_value_type,item_value_type) pecker_btst_map_container< key_value_type, pecker_avltst_map_string(key_value_type),item_value_type,pecker_avltst_map_node(key_value_type,item_value_type),pecker_system_defualt_nodes_allocator(pecker_avltst_map_node(key_value_type,item_value_type)) >
 
 PECKER_END
 

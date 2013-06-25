@@ -87,6 +87,7 @@ public:
 };
 
 
+
 class pecker_program_apps
 {
 public:
@@ -94,6 +95,8 @@ public:
 	static HResult execute_program(pecker_window_context* pwindow_context,const pecker_string& str_cmd_params);
 	static HResult execute_program(pecker_string str_file_path,const pecker_string& str_cmd_params);
 	static const pecker_string& get_current_directory();
+	static pekcer_size get_device_dpi();
+	static pekcer_size get_screen_pixels();
 };
 PECKER_END
 #endif // PECKER_WINDOW_CONTEXT_H_

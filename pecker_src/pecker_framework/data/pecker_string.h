@@ -140,7 +140,7 @@ void print_pecker_string_chars(const _string_chars_& string_)
 }
 
 // 字符串，可共享字符，带小cache加速短字符串的空间分配，默认字符空间16字节
-template< class char_value_t,class __cmp_t,class allocate_object_t = pecker_simple_allocator< char_value_t >,const int INTERNAL_BUFFER_SIZE = 16 >
+template< class char_value_t,class __cmp_t,class allocate_object_t = pecker_system_defualt_allocator(char_value_t ),const int INTERNAL_BUFFER_SIZE = 16 >
 class pecker_share_string_base_t
 {
 	typedef pecker_share_string_base_t< char_value_t,__cmp_t,allocate_object_t,INTERNAL_BUFFER_SIZE> String_base;
@@ -493,13 +493,33 @@ public:
 		{
 			for (string_char_index index = string_length;index < _M_string_buffer_size; ++index)
 			{
-				*(_M_pthis_string_data+string_length) = end_char;
+				*(_M_pthis_string_data+index) = end_char;
 			}
 		}
 		
 		return P_OK;
 	}
-
+	
+	string_result resize(string_size_t string_length,string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
+	{
+		string_result result_value = init(string_length,bnew_buffer);
+		if (P_OK == result_value)
+		{
+			_M_string_length = string_length;
+		}
+		return result_value;
+	}
+	string_result resize(string_size_t string_length,const char_value_t& end_char, string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
+	{
+		string_result result_value = init(string_length+1,bnew_buffer);
+		if (P_OK == result_value)
+		{
+			_M_string_length = string_length;
+			*(_M_string_buffer_size + _M_string_length) = end_char;
+		}
+		
+		return result_value;
+	}
 
 	string_result copy(const String_base& other)
 	{
@@ -813,6 +833,12 @@ public:
 	{
 		return _M_pthis_string_data;
 	}
+
+	inline char_value_t* get_data_reference()
+	{
+		return _M_pthis_string_data;
+	}
+
 	inline string_size_t get_string_length() const
 	{
 		return _M_string_length;
@@ -966,8 +992,11 @@ public:
 };
 
 //
-typedef pecker_share_string_base_t< char,pecker_value_compare< char >,pecker_acsii_string_alloc,16 > pecker_string_ascii;
-typedef pecker_share_string_base_t< wchar_t,pecker_value_compare< wchar_t > ,pecker_utf_string_alloc, 32> pecker_string_utf;
+typedef pecker_share_string_base_t< char,pecker_value_compare< char >,pecker_acsii_string_alloc,(sizeof(char) * 16) > pecker_string_ascii;
+typedef pecker_share_string_base_t< wchar_t,pecker_value_compare< wchar_t > ,pecker_utf_string_alloc, (sizeof(wchar_t) * 16) > pecker_string_unicode;
+
+typedef char pecker_char_ascii;
+typedef wchar_t pecker_char_unicode;
 
 #ifndef _UNICODE
 	typedef  char pecker_char;
@@ -976,13 +1005,25 @@ typedef pecker_share_string_base_t< wchar_t,pecker_value_compare< wchar_t > ,pec
 	#define PECKER_CHAR_STRING_LENGTH(X) (strlen(X))
 #else
 	typedef  wchar_t pecker_char;
-	typedef pecker_string_utf pecker_string;
+	typedef pecker_string_unicode pecker_string;
 	#define PECKER_SYSTEM_CHAR_T(X) L##X
 	#define PECKER_CHAR_STRING_LENGTH(X) (wcslen(X))
 #endif
 
+#define  PEKCER_UTF_CHAR_T(x) L##x
+#define PECKER_UTF_STRING_LENGTH(X) (wcslen(X))
+
 #define render_string  pecker_string_ascii
 #define render_char		char
+
+template<class string_type_1,class string_type_2>
+class pecker_same_chartype_string_adapter
+{
+	static HResult convert(const string_type_1& str_src,string_type_2& str_dsc)
+	{
+		return str_dsc.init(str_src.get_data(), str_src.get_string_length());
+	}
+};
 
 
 PECKER_END

@@ -770,6 +770,9 @@ HResult pecker_window_context::close()
 
 
 static pecker_string g_str_current_directory;
+#ifdef WINDOWS_PC
+static HDC hDisplayDC = NULL;
+#endif
 HResult pecker_program_apps::init_apps()
 {
 #ifdef WINDOWS_PC
@@ -783,6 +786,10 @@ HResult pecker_program_apps::init_apps()
 	else
 	{
 		return P_FAIL;
+	}
+	if (NULL != hDisplayDC)
+	{
+		hDisplayDC = ::CreateDC(PECKER_SYSTEM_CHAR_T("DISPLAY"), NULL, NULL, NULL);
 	}
 #endif
 	return P_OK;
@@ -834,6 +841,30 @@ HResult pecker_program_apps::execute_program(pecker_string str_file_path,const p
 const pecker_string& pecker_program_apps::get_current_directory()
 {
 	return g_str_current_directory;
+}
+
+pekcer_size pecker_program_apps::get_device_dpi()
+{
+	pekcer_size dpi_size;
+	
+#ifdef WINDOWS_PC
+	dpi_size.w = ::GetDeviceCaps(hDisplayDC,LOGPIXELSX);
+	dpi_size.h = ::GetDeviceCaps(hDisplayDC,LOGPIXELSY);
+#endif
+
+	return dpi_size;
+}
+
+pekcer_size pecker_program_apps::get_screen_pixels()
+{
+	pekcer_size screen_size;
+
+#ifdef WINDOWS_PC
+	screen_size.w = ::GetDeviceCaps(hDisplayDC,HORZRES);
+	screen_size.h = ::GetDeviceCaps(hDisplayDC,VERTRES);
+#endif
+
+	return screen_size;
 }
 
 PECKER_END

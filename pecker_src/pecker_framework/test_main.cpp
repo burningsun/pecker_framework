@@ -34,6 +34,7 @@ extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR
 
 //extern void test_select();
 #include "data/pecker_shape.h"
+#include "native/pecker_window_context.h"
 //#include "data/test.h"
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow)
 //{
@@ -41,7 +42,7 @@ extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR
 //}
 int main()
 {
-
+	PECKER_SDK pecker_program_apps::init_apps();
 	//test_select();
 	//shape_logic_test();
 	//unsigned int temp_value = 65535;
