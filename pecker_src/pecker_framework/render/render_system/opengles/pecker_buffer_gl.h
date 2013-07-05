@@ -16,18 +16,29 @@
 
 PECKER_BEGIN
 
+
+union pekcer_cpu_ram_buffer
+{
+	PVoid		_M_buffer;
+	Float*		_M_float_buffer;
+	SInt*		_M_int_buffer;
+	UShort* _M_ushort_buffer;
+	Byte*		_M_bytes;
+};
+
 class pecker_vertex_buffer_gles2 : public Ipecker_vertex_buffer, public  virtual pecker_opengles_v2_object
 {
 public:
 	static const UInt MAX_VERTEXT_ATTRIBUTE_COUNT = 8;
 protected:
-	union vertex_cpu_ram_buffer
-	{
-		PVoid	_M_buffer;
-		Float* _M_float_buffer;
-		SInt*	_M_int_buffer;
-		Byte*	_M_bytes;
-	};
+	//union vertex_cpu_ram_buffer
+	//{
+	//	PVoid	_M_buffer;
+	//	Float* _M_float_buffer;
+	//	SInt*	_M_int_buffer;
+	//	Byte*	_M_bytes;
+	//};
+	typedef pekcer_cpu_ram_buffer vertex_cpu_ram_buffer;
 
 private:
 	vertex_cpu_ram_buffer _M_vertex_buffer;
@@ -67,7 +78,7 @@ public:
 	HResult update_gpu_buffer(const update_gpu_ram_info& pupdate_info);
 
 	HResult bind_gpu_buffer();
-	HResult set_vbo_using_setting(HEnum setting);
+	HResult set_vbo_using_setting(VBO_USING_SETTING setting);
 	//
 	//HResult set_multi_vertex_attribute_setting(Bool bEnable = false);
 	//HResult set_active_single_vertex_attribute_setting(UInt vex_info_index);
@@ -90,13 +101,15 @@ public:
 class pecker_index_buffer_gles2 : public Ipecker_index_buffer, public virtual pecker_opengles_v2_object
 {
 protected:
-	union index_cpu_ram_buffer
-	{
-		PVoid	_M_buffer;
-		Float* _M_float_buffer;
-		SInt*	_M_int_buffer;
-		Byte*	_M_bytes;
-	};
+	//union index_cpu_ram_buffer
+	//{
+	//	PVoid	_M_buffer;
+	//	Float* _M_float_buffer;
+	//	SInt*	_M_int_buffer;
+	//	UShort* _M_ushort_buffer;
+	//	Byte*	_M_bytes;
+	//};
+	typedef pekcer_cpu_ram_buffer index_cpu_ram_buffer;
 private:
 	index_cpu_ram_buffer _M_index_buffer;
 	nSize	_M_bytes_count;
@@ -169,6 +182,8 @@ public:
 	HResult bind_buffer_index(Ipecker_graphic_buffer* pbuffer,UInt buffer_index);
 
 };
+
+extern const HEnum gGL_Attribute_data_type_table[ATTRIBUTE_DATA_TYPE_COUNT];
 PECKER_END
 
 #endif // PECKER_BUFFER_GL_H_

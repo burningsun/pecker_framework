@@ -10,7 +10,7 @@
 #ifndef PECKER_LOG_H_
 #define PECKER_LOG_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #ifdef ANDROID_OS
 #include <android/log.h>
 #define PECKER_LOG_(X,...) ((void)__android_log_print(ANDROID_LOG_INFO, (X), __VA_ARGS__))

@@ -56,12 +56,12 @@ HResult combination_sets(const sets_data_type* pdatas,nSize data_size,
 {
 	if (null == ptable || null == pfilter)
 	{
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 	ptable->clear();
 	if (null == pdatas || 0 == data_size)
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	nINDEX index = 0;
@@ -85,14 +85,14 @@ HResult combination_sets(const sets_data_type* pdatas,nSize data_size,
 			else if (SET_FILTER_OK == filter_result)
 			{
 				HResult insert_result = ptable->Insert_set_to_table(index,data_size,start_set_item,new_set_data);
-				if (P_OK != insert_result && P_UNIQUE_ERR != insert_result)
+				if (PEK_STATUS_OK != insert_result && PEK_STATUS_UNIQUE_ERR != insert_result)
 				{
 					return insert_result;
 				}
 			}
 			else 
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 		}
@@ -106,13 +106,13 @@ HResult combination_sets(const sets_data_type* pdatas,nSize data_size,
 	if (SET_FILTER_OK == filter_result)
 	{
 		HResult insert_result = ptable->Insert_set_to_table(index,data_size,start_set_item,new_set_data);
-		if (P_OK != insert_result && P_UNIQUE_ERR != insert_result)
+		if (PEK_STATUS_OK != insert_result && PEK_STATUS_UNIQUE_ERR != insert_result)
 		{
 			return insert_result;
 		}
 	}
 
-	return P_OK;
+	return PEK_STATUS_OK;
 };
 
 template < class sets_data_type, class set_type >
@@ -148,9 +148,9 @@ public:
 		if (null != pbind_table)
 		{
 			_M_pbind_table = pbind_table;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 	
 	HResult set_select_count(nSize icount) 
@@ -158,11 +158,11 @@ public:
 		if (icount > 0)
 		{
 			_M_select_count = icount;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_INVALID_VALUE;
+			return PEK_STATUS_INVALID_VALUE;
 		}
 	}
 
@@ -245,9 +245,9 @@ public:
 		if (null != pbind_table)
 		{
 			_M_pbind_table = pbind_table;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 
 	HResult set_select_count(nSize icount) 
@@ -255,11 +255,11 @@ public:
 		if (icount > 0)
 		{
 			_M_select_count = icount;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_INVALID_VALUE;
+			return PEK_STATUS_INVALID_VALUE;
 		}
 	}
 
@@ -304,7 +304,7 @@ public:
 			}
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 };

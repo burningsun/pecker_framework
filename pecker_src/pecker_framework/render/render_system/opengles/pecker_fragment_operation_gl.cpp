@@ -8,38 +8,50 @@
  */
 
 #include "pecker_fragment_operation_gl.h"
+#include "pecker_buffer_gl.h"
 #include <GLES2/gl2.h>
 PECKER_BEGIN
 
-static HEnum gFragment_operation_table[ENABLE_FRAGMENT_OPERATION_STATE_COUNT] = {GL_CULL_FACE,
-GL_POLYGON_OFFSET_FILL,
-GL_SCISSOR_TEST,
-GL_SAMPLE_COVERAGE,
-GL_SAMPLE_ALPHA_TO_COVERAGE,
-GL_STENCIL_TEST,
-GL_DEPTH_TEST,
-GL_BLEND,
-GL_DITHER};
 
-static HEnum gFragment_render_face_table[FRAGMEMT_RENDER_FACE_TYPE_COUNT] = {GL_FRONT, GL_BACK, GL_FRONT_AND_BACK};
+const HEnum gGL_Fragment_operation_table[ENABLE_FRAGMENT_OPERATION_STATE_COUNT] = {GL_CULL_FACE,
+																																											GL_POLYGON_OFFSET_FILL,
+																																											GL_SCISSOR_TEST,
+																																											GL_SAMPLE_COVERAGE,
+																																											GL_SAMPLE_ALPHA_TO_COVERAGE,
+																																											GL_STENCIL_TEST,
+																																											GL_DEPTH_TEST,
+																																											GL_BLEND,
+																																											GL_DITHER};
 
-static HEnum gStencil_func_table[STENCIL_FUNCTION_TYPE_COUNT] = {GL_EQUAL, GL_NOTEQUAL, GL_LESS,
+const HEnum gGL_Fragment_render_face_table[FRAGMEMT_RENDER_FACE_TYPE_COUNT] = {GL_FRONT, GL_BACK, GL_FRONT_AND_BACK};
+
+const HEnum gGL_Stencil_func_table[STENCIL_FUNCTION_TYPE_COUNT] = {GL_EQUAL, GL_NOTEQUAL, GL_LESS,
 																															GL_GREATER, GL_LEQUAL, GL_GEQUAL, GL_ALWAYS, GL_NEVER};
 
-static HEnum gStencil_op_table[STENCIL_OPERATION_TYPE_COUNT] = {GL_ZERO,GL_REPLACE,GL_INCR, GL_DECR,
+const HEnum gGL_Stencil_op_table[STENCIL_OPERATION_TYPE_COUNT] = {GL_ZERO,GL_REPLACE,GL_INCR, GL_DECR,
 																															GL_INCR_WRAP, GL_DECR_WRAP,GL_KEEP,GL_INVERT};
 
-static HEnum* gDepth_func_table = gStencil_func_table;
+const HEnum* const gGL_Depth_func_table = gGL_Stencil_func_table;
 
-static HEnum gBlend_color_func_table[BLEND_COLOR_FUNCION_TYPE_COUNT] = {GL_ZERO,
+const HEnum gGL_Blend_color_func_table[BLEND_COLOR_FUNCION_TYPE_COUNT] = {GL_ZERO,
 	GL_ONE , GL_SRC_COLOR , GL_ONE_MINUS_SRC_COLOR, GL_SRC_ALPHA, 
 	GL_ONE_MINUS_SRC_ALPHA, GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR, GL_DST_ALPHA, 
 	GL_ONE_MINUS_DST_ALPHA, GL_CONSTANT_COLOR, GL_ONE_MINUS_CONSTANT_COLOR,
 	GL_CONSTANT_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA, GL_SRC_ALPHA_SATURATE};
 
-static HEnum gBlend_color_mode_table[BLEND_COLOR_MODE_COUNT] = 
+const HEnum gGL_Blend_color_mode_table[BLEND_COLOR_MODE_COUNT] = 
 	{GL_FUNC_ADD, GL_FUNC_SUBTRACT, GL_FUNC_REVERSE_SUBTRACT,
 	GL_BLEND_EQUATION, GL_BLEND_EQUATION_RGB, GL_BLEND_EQUATION_ALPHA};
+
+
+
+const HEnum gGL_DRAW_MODE_TABLE[DRAW_MODE_COUNT] = {GL_POINTS, 
+																													 GL_LINES                   ,
+																													 GL_LINE_LOOP          ,
+																													 GL_LINE_STRIP          ,
+																													 GL_TRIANGLES          ,
+																													 GL_TRIANGLE_STRIP,
+																													 GL_TRIANGLE_FAN   };
 
 pecker_fragment_operation_gles2::pecker_fragment_operation_gles2()
 {
@@ -127,7 +139,7 @@ HResult pecker_fragment_operation_gles2::set_stencil_mask(HEnum face, BitField s
 	{
 		return P_INVALID_ENUM;
 	}
-	glStencilMaskSeparate(gFragment_render_face_table[face],stencil_mask);
+	glStencilMaskSeparate(gGL_Fragment_render_face_table[face],stencil_mask);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -143,7 +155,7 @@ HResult pecker_fragment_operation_gles2::set_stencil_test_func(HEnum test_func,S
 	{
 		return P_INVALID_ENUM;
 	}
-	glStencilFunc(gStencil_func_table[test_func],ref,mask);
+	glStencilFunc(gGL_Stencil_func_table[test_func],ref,mask);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -153,7 +165,7 @@ HResult pecker_fragment_operation_gles2::set_stencil_test_func(HEnum face, HEnum
 	{
 		return P_INVALID_ENUM;
 	}
-	glStencilFuncSeparate(gFragment_render_face_table[face],gStencil_func_table[test_func],ref,mask);
+	glStencilFuncSeparate(gGL_Fragment_render_face_table[face],gGL_Stencil_func_table[test_func],ref,mask);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -163,7 +175,7 @@ HResult pecker_fragment_operation_gles2::set_depth_test_func(HEnum test_func)
 	{
 		return P_INVALID_ENUM;
 	}
-	glDepthFunc(gDepth_func_table[test_func]);
+	glDepthFunc(gGL_Depth_func_table[test_func]);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -175,8 +187,8 @@ HResult pecker_fragment_operation_gles2::stencil_test(HEnum s_fial_operation,HEn
 	{
 		return P_INVALID_ENUM;
 	}
-	glStencilOp(gStencil_op_table[s_fial_operation],
-		gStencil_op_table[z_fial_operation],gStencil_op_table[z_pass_operation]);
+	glStencilOp(gGL_Stencil_op_table[s_fial_operation],
+		gGL_Stencil_op_table[z_fial_operation],gGL_Stencil_op_table[z_pass_operation]);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -189,9 +201,9 @@ HResult pecker_fragment_operation_gles2::stencil_test(HEnum face,HEnum s_fial_op
 	{
 		return P_INVALID_ENUM;
 	}
-	glStencilOpSeparate(gFragment_render_face_table[face],
-		gStencil_op_table[s_fial_operation],gStencil_op_table[z_fial_operation],
-		gStencil_op_table[z_pass_operation]);
+	glStencilOpSeparate(gGL_Fragment_render_face_table[face],
+		gGL_Stencil_op_table[s_fial_operation],gGL_Stencil_op_table[z_fial_operation],
+		gGL_Stencil_op_table[z_pass_operation]);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -202,7 +214,7 @@ HResult pecker_fragment_operation_gles2::set_blend_func(HEnum src_factor,HEnum d
 	{
 		return P_INVALID_ENUM;
 	}
-	glBlendFunc(gBlend_color_func_table[src_factor],gBlend_color_func_table[dst_factor]);
+	glBlendFunc(gGL_Blend_color_func_table[src_factor],gGL_Blend_color_func_table[dst_factor]);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -215,10 +227,10 @@ HResult pecker_fragment_operation_gles2::set_blend_func(HEnum src_rgb_factor,HEn
 	{
 		return P_INVALID_ENUM;
 	}
-	glBlendFuncSeparate(gBlend_color_func_table[src_rgb_factor],
-		gBlend_color_func_table[dst_rgb_factor],
-		gBlend_color_func_table[src_alpha_factor],
-		gBlend_color_func_table[dst_alpha_factor]);
+	glBlendFuncSeparate(gGL_Blend_color_func_table[src_rgb_factor],
+		gGL_Blend_color_func_table[dst_rgb_factor],
+		gGL_Blend_color_func_table[src_alpha_factor],
+		gGL_Blend_color_func_table[dst_alpha_factor]);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -234,7 +246,7 @@ HResult pecker_fragment_operation_gles2::set_blend_equation(HEnum color_mode)
 	{
 		return P_INVALID_ENUM;
 	}
-	glBlendEquation(gBlend_color_mode_table[color_mode]);
+	glBlendEquation(gGL_Blend_color_mode_table[color_mode]);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -245,8 +257,8 @@ HResult pecker_fragment_operation_gles2::set_blend_equation(HEnum rgb_mode,HEnum
 	{
 		return P_INVALID_ENUM;
 	}
-	glBlendEquationSeparate(gBlend_color_mode_table[rgb_mode],
-		gBlend_color_mode_table[alpha_mode]);
+	glBlendEquationSeparate(gGL_Blend_color_mode_table[rgb_mode],
+		gGL_Blend_color_mode_table[alpha_mode]);
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
@@ -274,7 +286,7 @@ Bool pecker_fragment_operation_gles2::enable_state(HEnum state)
 	{
 		return false;
 	}
-	state = gFragment_operation_table[state];
+	state = gGL_Fragment_operation_table[state];
 	glEnable(state);
 	return glIsEnabled(state);
 }
@@ -285,7 +297,7 @@ Bool pecker_fragment_operation_gles2::disable_state(HEnum state)
 		return false;
 	}
 
-	state = gFragment_operation_table[state];
+	state = gGL_Fragment_operation_table[state];
 	glDisable(state);
 	return !(glIsEnabled(state));
 }
@@ -295,7 +307,33 @@ Bool pecker_fragment_operation_gles2::is_enable(HEnum state) const
 	{
 		return false;
 	}
-	state = gFragment_operation_table[state];
+	state = gGL_Fragment_operation_table[state];
 	return glIsEnabled(state);
+}
+
+HResult pecker_fragment_operation_gles2::draw_array(DRAW_MODE draw_mode,nINDEX fist,nSize count)
+{
+	if (draw_mode < DRAW_MODE_COUNT)
+	{
+		glDrawArrays(gGL_DRAW_MODE_TABLE[draw_mode],fist,count);
+		return get_last_error_code();
+	}
+	else
+	{
+		return P_INVALID_VALUE;
+	}
+}
+
+HResult pecker_fragment_operation_gles2::draw_element(DRAW_MODE draw_mode,nSize count,ATTRIBUTE_DATA_TYPE datatype,PVoid pindex_buffer /* = null */ )
+{
+	if (draw_mode < DRAW_MODE_COUNT && datatype < ATTRIBUTE_DATA_TYPE_COUNT)
+	{
+		glDrawElements(gGL_DRAW_MODE_TABLE[draw_mode],count,gGL_Attribute_data_type_table[datatype],pindex_buffer);
+		return get_last_error_code();
+	}
+	else
+	{
+		return P_INVALID_VALUE;
+	}
 }
 PECKER_END

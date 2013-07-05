@@ -1,7 +1,7 @@
 ﻿#ifndef PECKER_AVL_TREE_ALGORITHM_H_
 #define PECKER_AVL_TREE_ALGORITHM_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 
 //#define TST_DEBUG_CODE
 
@@ -73,7 +73,7 @@ inline  const _AVL_node_base* minimum_bst_node(const _AVL_node_base* pbst_node)
 	return pbst_node;
 }
 
-inline  const _AVL_node_base* minimum_bst_node(const _AVL_node_base* pbst_node,const _AVL_node_base** P_INOUT node_paths,avl_node_count_val &pathsize)
+inline  const _AVL_node_base* minimum_bst_node(const _AVL_node_base* pbst_node,const _AVL_node_base** PARAM_INOUT node_paths,avl_node_count_val &pathsize)
 {
 	while (null != pbst_node )
 	{
@@ -94,7 +94,7 @@ inline  const _AVL_node_base* maximum_bst_node(const _AVL_node_base* pbst_node)
 	return pbst_node;
 }
 
-inline  const _AVL_node_base* maximum_bst_node(const _AVL_node_base* pbst_node,const _AVL_node_base** P_INOUT node_paths,avl_node_count_val &pathsize)
+inline  const _AVL_node_base* maximum_bst_node(const _AVL_node_base* pbst_node,const _AVL_node_base** PARAM_INOUT node_paths,avl_node_count_val &pathsize)
 {
 	while (null != pbst_node )
 	{
@@ -260,7 +260,7 @@ inline  AVLTREE_ROTATE_TYPE AVL_rotate_singlenode(_Avl_height ibalance_value,_AV
 }
 
 #ifdef AVL_DEBUG_CODE
-inline  AVLTREE_ROTATE_TYPE AVL_rotate_singlenode_test(_Avl_height ibalance_value,_AVL_node_base* pAvl_node,_AVL_node_base* & pAvl_node_parent,_AVL_node_base*** P_INOUT Avl_node_stack)
+inline  AVLTREE_ROTATE_TYPE AVL_rotate_singlenode_test(_Avl_height ibalance_value,_AVL_node_base* pAvl_node,_AVL_node_base* & pAvl_node_parent,_AVL_node_base*** PARAM_INOUT Avl_node_stack)
 {
 	//_Avl_height ibalance_value = GetAvlBalanceVal(pAvl_node);
 	if (-2 < ibalance_value && ibalance_value < 2)
@@ -312,7 +312,7 @@ inline  AVLTREE_ROTATE_TYPE AVL_rotate_singlenode_test(_Avl_height ibalance_valu
 #endif
 
 //插入节点旋转变换
-inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_add(_AVL_node_base* &pAvl_root_node,_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
+inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_add(_AVL_node_base* &pAvl_root_node,_AVL_node_base*** PARAM_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
 {
 	avl_array_index_val index =  Avl_node_stack_size - 1;
 	AVLTREE_ROTATE_TYPE return_value = AVLTREE_NONE_ROTATE;
@@ -358,7 +358,7 @@ inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_add(_AVL_node_base* &pAvl_root_node,
 	return return_value;
 }
 //删除节点旋转变换
-inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_remove(_AVL_node_base* &pAvl_root_node,_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
+inline AVLTREE_ROTATE_TYPE AVL_rotate_nodes_remove(_AVL_node_base* &pAvl_root_node,_AVL_node_base*** PARAM_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
 {
 	avl_array_index_val index =  Avl_node_stack_size - 1;
 	AVLTREE_ROTATE_TYPE return_value = AVLTREE_NONE_ROTATE;
@@ -432,14 +432,14 @@ struct AVL_node_map : public  _AVL_node_base
 template<class key_t, class cmp_t, class __AVL_node_t>
 //template<typename ket_t,typename cmp_t,typename __AVL_node_t>
 inline __AVL_node_t* avl_tree_find_add_paths(__AVL_node_t* &pAvl_root_node,const key_t &key,const cmp_t &_compare, avl_result & add_error_code,
-	_AVL_node_base*** P_OUT Avl_node_stack,avl_node_count_val &Avl_node_stack_size,_AVL_node_base** &ppAvl_last_node_perant_ref)
+	_AVL_node_base*** PARAM_OUT Avl_node_stack,avl_node_count_val &Avl_node_stack_size,_AVL_node_base** &ppAvl_last_node_perant_ref)
 {
 	__AVL_node_t* pAvl_tmp_node = pAvl_root_node;
 	Avl_node_stack_size = 0;
 	ppAvl_last_node_perant_ref = (_AVL_node_base**)(&pAvl_root_node);
 	if (null == pAvl_tmp_node)
 	{
-		add_error_code = P_OK;
+		add_error_code = PEK_STATUS_OK;
 		return null;
 	}
 	while (null != pAvl_tmp_node)
@@ -459,18 +459,18 @@ inline __AVL_node_t* avl_tree_find_add_paths(__AVL_node_t* &pAvl_root_node,const
 		}
 		else
 		{
-			add_error_code = P_UNIQUE_ERR;
+			add_error_code = PEK_STATUS_UNIQUE_ERR;
 			return pAvl_tmp_node;
 		}
 	}
-	add_error_code = P_OK;
+	add_error_code = PEK_STATUS_OK;
 	return (__AVL_node_t*)*(Avl_node_stack[Avl_node_stack_size-1]);
 }
 
 // 直接插入节点
 template<class __AVL_node_t>
 inline __AVL_node_t* avl_tree_add_node(__AVL_node_t* &pAvl_root_node,_AVL_node_base* pAvl_add_node,_AVL_node_base** ppAvl_last_perant_ref,
-	_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
+	_AVL_node_base*** PARAM_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
 {
 	*ppAvl_last_perant_ref = pAvl_add_node;
 	AVLTREE_ROTATE_TYPE rotate_type = AVL_rotate_nodes_add((_AVL_node_base*&)pAvl_root_node,Avl_node_stack,Avl_node_stack_size);
@@ -502,7 +502,7 @@ inline __AVL_node_t* avl_tree_add(__AVL_node_t* &pAvl_root_node,__AVL_node_t* pA
 																																						node_search_path_array,
 																																						search_path_length,
 																																						avl_ref_node); // 找出插入点
-	if (P_OK == add_error_code)
+	if (PEK_STATUS_OK == add_error_code)
 	{
 		return avl_tree_add_node< __AVL_node_t >(pAvl_root_node,
 																					pAvl_add_node,
@@ -516,7 +516,7 @@ inline __AVL_node_t* avl_tree_add(__AVL_node_t* &pAvl_root_node,__AVL_node_t* pA
 // AVL 查找删除节点的路径及删除节点
 template<class key_t, class cmp_t, class __AVL_node_t>
 inline __AVL_node_t* avl_tree_find_remove_paths(__AVL_node_t* &pAvl_root_node, const key_t &key,cmp_t &_compare,
-	_AVL_node_base*** P_OUT Avl_node_stack,avl_node_count_val &Avl_node_stack_size,_AVL_node_base** &ppAvl_last_perant_ref)
+	_AVL_node_base*** PARAM_OUT Avl_node_stack,avl_node_count_val &Avl_node_stack_size,_AVL_node_base** &ppAvl_last_perant_ref)
 {
 	__AVL_node_t* pAvl_tmp_node = pAvl_root_node;
 	Avl_node_stack_size = 0;
@@ -557,11 +557,11 @@ typedef enum enumBstNodeType
 #ifdef AVL_DEBUG_CODE
 template<class __AVL_node_t, class cmp_t>
 inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_node_base* pAvl_remove_node,_AVL_node_base** ppAvl_last_node_perant_ref,
-	_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size,cmp_t &_compare)
+	_AVL_node_base*** PARAM_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size,cmp_t &_compare)
 #else
 template<class __AVL_node_t>
 inline __AVL_node_t* avl_tree_remove_node(__AVL_node_t* &pAvl_root_node,_AVL_node_base* pAvl_remove_node,_AVL_node_base** ppAvl_last_node_perant_ref,
-	_AVL_node_base*** P_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
+	_AVL_node_base*** PARAM_INOUT Avl_node_stack,avl_node_count_val Avl_node_stack_size)
 #endif
 {
 	_AVL_node_base* pAvl_left_node = pAvl_remove_node->_M_left;
@@ -707,16 +707,16 @@ inline __AVL_node_t* avl_tree_remove(__AVL_node_t* &pAvl_root_node,const key_t &
 
 		if (null == pAvl_remove_node)
 		{
-			remove_error_code = P_ERR;
+			remove_error_code = PEK_STATUS_ERROR;
 		}
 		else
 		{
-			remove_error_code = P_OK;
+			remove_error_code = PEK_STATUS_OK;
 		}
 		return pAvl_remove_node;
 	}
 
-	remove_error_code = P_SUCCESS;
+	remove_error_code = PEK_STATUS_SUCCESS;
 	return null;
 }
 

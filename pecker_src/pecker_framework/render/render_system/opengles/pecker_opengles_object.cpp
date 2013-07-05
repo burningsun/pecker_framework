@@ -12,7 +12,7 @@
 PECKER_BEGIN
 
 
-const pecker_render_system_info & pecker_opengles_v2_object::get_render_system_info(pecker_render_system_info P_IN &system_info) const
+const pecker_render_system_info & pecker_opengles_v2_object::get_render_system_info(pecker_render_system_info PARAM_IN &system_info) const
 {
 	system_info._M_system_type = OPENGLES_RENDER_SYSTEM;
 	system_info._M_version_part1 = 2;
@@ -35,7 +35,7 @@ HResult pecker_opengles_v2_object::get_last_error_code()
 	return uerror_code;
 }
 
-const pecker_render_system_info & pecker_opengles_v3_object::get_render_system_info(pecker_render_system_info P_IN &system_info) const
+const pecker_render_system_info & pecker_opengles_v3_object::get_render_system_info(pecker_render_system_info PARAM_IN &system_info) const
 {
 	system_info._M_system_type = OPENGLES_RENDER_SYSTEM;
 	system_info._M_version_part1 = 3;

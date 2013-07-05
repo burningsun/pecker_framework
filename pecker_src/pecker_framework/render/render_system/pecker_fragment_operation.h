@@ -11,7 +11,7 @@
 #define  PECKER_FRAGMET_OPERATION_H_
 
 #include "pecker_frame_buffer.h"
-
+#include "pecker_buffer.h"
 PECKER_BEGIN
 enum	ENABLE_FRAGMENT_OPERATION_STATE
 {
@@ -117,6 +117,18 @@ enum BLEND_COLOR_MODE
 	BLEND_COLOR_MODE_COUNT
 };
 
+enum DRAW_MODE
+{
+		DRAW_POINTS                      = 0,
+		DRAW_LINES,                         
+		DRAW_LINE_LOOP,                
+		DRAW_LINE_STRIP,                
+		DRAW_TRIANGLES,                
+		DRAW_TRIANGLE_STRIP,      
+		DRAW_TRIANGLE_FAN,
+
+		DRAW_MODE_COUNT
+};
 
 PeckerInterface Ipecker_fragment_operation
 {
@@ -153,6 +165,10 @@ PeckerInterface Ipecker_fragment_operation
 	virtual HResult set_sample_coverage(Float value_,Bool invert) = 0;
 
 	virtual HResult bind_frame_buffer_object(Ipecker_frame_buffer_object* pframe_buffer_object) = 0;
+
+
+	virtual HResult draw_array(DRAW_MODE draw_mode,nINDEX fist,nSize count) = 0;
+	virtual HResult draw_element(DRAW_MODE draw_mode,nSize count,ATTRIBUTE_DATA_TYPE datatype,PVoid pindex_buffer = null ) = 0;
 
 	virtual Bool enable_state(HEnum state) = 0;
 	virtual Bool disable_state(HEnum state) = 0;

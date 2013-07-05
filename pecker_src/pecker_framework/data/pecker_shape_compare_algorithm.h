@@ -9,7 +9,7 @@
 #ifndef PECKER_SHAPE_COMPARE_ALGORITHM_H_
 #define PECKER_SHAPE_COMPARE_ALGORITHM_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #include "pecker_vector.h"
 #include "pecker_value_compare.h"
 #include <math.h>

@@ -10,7 +10,7 @@
 #ifndef PECKER_THREAD_H_
 #define PECKER_THREAD_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 
 PECKER_BEGIN
 

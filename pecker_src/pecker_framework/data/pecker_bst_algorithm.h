@@ -137,18 +137,18 @@ inline HResult clear_bst_tree(BST_node_t* &bst_root_node,
 	{
 		BST_node_t* perase_node = (BST_node_t*)(this_iterator.get_current_node());
 		HResult result_ = this_iterator.increment_right();
-		if (P_OK == result_)
+		if (PEK_STATUS_OK == result_)
 		{
 			Node_allocator.release_node(perase_node);
 		}
-		else  if (P_SUCCESS == result_)
+		else  if (PEK_STATUS_SUCCESS == result_)
 		{
 			Node_allocator.release_node(perase_node);
 			break;
 		}
-		else if (P_ERR == result_)
+		else if (PEK_STATUS_ERROR == result_)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		else
 		{
@@ -157,7 +157,7 @@ inline HResult clear_bst_tree(BST_node_t* &bst_root_node,
 
 	}
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template<class key_t, class cmp_t, class BST_node_t>
@@ -209,7 +209,7 @@ BST_node_t* add_bst_node(BST_node_t* &pBST_root_node,BST_node_t* pAdd_node,const
 {
 	BST_node_t* pnode_to_be_add = null;
 	int cmp_result;
-	error_code = P_OK;
+	error_code = PEK_STATUS_OK;
 	while (null != pBST_root_node)
 	{
 		cmp_result = _compare(pAdd_node->key,pBST_root_node->key);
@@ -224,7 +224,7 @@ BST_node_t* add_bst_node(BST_node_t* &pBST_root_node,BST_node_t* pAdd_node,const
 		}
 		else
 		{
-			error_code = P_UNIQUE_ERR;
+			error_code = PEK_STATUS_UNIQUE_ERR;
 			return null;
 		}
 	}
@@ -243,7 +243,7 @@ BST_node_t* add_bst_node(BST_node_t* &pBST_root_node,BST_node_t* pAdd_node,const
 		}
 		else
 		{
-			error_code = P_UNIQUE_ERR;
+			error_code = PEK_STATUS_UNIQUE_ERR;
 			return null;
 		}
 	}
@@ -272,7 +272,7 @@ inline HResult copy_bst_tree(const BST_node_t* psrc_bst_root_node,BST_node_t* &p
 		}
 		else
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		*ptemp_copy_node = pcopy_node;
@@ -308,7 +308,7 @@ inline HResult copy_bst_tree(const BST_node_t* psrc_bst_root_node,BST_node_t* &p
 			}
 		}
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 

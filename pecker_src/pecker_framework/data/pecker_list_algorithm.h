@@ -9,7 +9,7 @@
 #ifndef PECKER_LIST_ALGORITHM_H_
 #define PECKER_LIST_ALGORITHM_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 PECKER_BEGIN
 
 typedef HResult	 list_result;
@@ -60,10 +60,10 @@ inline list_result push_back_list_node(linked_list_node_t*& pbegin_node,linked_l
 			padd_node->_M_next_node = null;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 template < class linked_list_node_t >
@@ -90,10 +90,10 @@ inline list_result push_fornt_list_node(linked_list_node_t*& pend_node,linked_li
 			padd_node->_M_pre_node = null;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 template < class linked_list_node_t >
@@ -101,11 +101,11 @@ inline list_result swap_list_node(linked_list_node_t* pfirst_node,linked_list_no
 {
 	if (pfirst_node == psecond_node)
 	{
-		return P_SUCCESS;
+		return PEK_STATUS_SUCCESS;
 	}
 	else if (null == pfirst_node || null == psecond_node)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	linked_list_node_t* pfirst_node_pre = pfirst_node->_M_pre_node;
@@ -127,7 +127,7 @@ inline list_result swap_list_node(linked_list_node_t* pfirst_node,linked_list_no
 	{
 		if (psecond_node_next == pfirst_node || psecond_node_pre == pfirst_node)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		pfirst_node_pre->_M_next_node = psecond_node;
 		pfirst_node_next->_M_pre_node = psecond_node;
@@ -140,7 +140,7 @@ inline list_result swap_list_node(linked_list_node_t* pfirst_node,linked_list_no
 	psecond_node->_M_pre_node = pfirst_node_pre;
 	psecond_node->_M_next_node = pfirst_node_next;
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template < class linked_list_node_t >
@@ -148,7 +148,7 @@ inline list_result remove_list_node(linked_list_node_t* premove_node)
 {
 	if (null == premove_node)
 	{
-		return P_SUCCESS;
+		return PEK_STATUS_SUCCESS;
 	}
 	else
 	{
@@ -165,7 +165,7 @@ inline list_result remove_list_node(linked_list_node_t* premove_node)
 			ptmp_pre_node->_M_next_node = ptmp_next_node;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 }
@@ -191,7 +191,7 @@ inline list_result remove_list_nodes_unsafe(linked_list_node_t* pbegin_node,link
 
 	ptmp_pre_node->_M_next_node = ptmp_next_node;
 	ptmp_next_node->_M_pre_node = ptmp_pre_node;
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template < class linked_list_node_t >
@@ -218,10 +218,10 @@ inline list_result insert_list_node_next(linked_list_node_t*& pnode_to_be_add,li
 			padd_node->_M_next_node = pnext_node;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 template < class linked_list_node_t >
@@ -248,10 +248,10 @@ inline list_result insert_list_node_pre(linked_list_node_t*& pnode_to_be_add,lin
 			padd_node->pre_node = pre_node;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 PECKER_END

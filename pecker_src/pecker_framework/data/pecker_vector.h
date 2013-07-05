@@ -8,7 +8,7 @@
 #ifndef PECKER_VECTOR_H_
 #define PECKER_VECTOR_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 
 PECKER_BEGIN
 
@@ -25,7 +25,7 @@ struct pecker_vector2
   pecker_vector2();
   pecker_vector2(Float val);
   pecker_vector2(Float x,Float y);
-  pecker_vector2(const Float* P_IN vec2);
+  pecker_vector2(const Float* PARAM_IN vec2);
   pecker_vector2(const pecker_vector2 &other);
   pecker_vector2(const pecker_vector3 &vec3);
 
@@ -74,7 +74,7 @@ struct pecker_vector3
   Float x,y,z;
   pecker_vector3();
   pecker_vector3(Float val);
-  pecker_vector3(const Float* P_IN vec3);
+  pecker_vector3(const Float* PARAM_IN vec3);
   pecker_vector3(Float x,Float y,Float z);
   pecker_vector3(const pecker_vector3 & other);
   pecker_vector3(const pecker_vector4 & vec4);

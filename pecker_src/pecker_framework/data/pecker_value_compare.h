@@ -7,7 +7,7 @@
 #ifndef PECKER_VALUE_COMPARE_H_
 #define PECKER_VALUE_COMPARE_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 
 PECKER_BEGIN
 

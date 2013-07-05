@@ -9,7 +9,7 @@
 #ifndef PECKER_ARRAY_ALGORITHM_H_
 #define PECKER_ARRAY_ALGORITHM_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 PECKER_BEGIN
 
 #define  ARRAY_DEFAULT_ALLOCATE_STEP 16
@@ -53,7 +53,7 @@ inline array_result resize_array(class_type* & pArray_buffer,
 				pArray_buffer = null;
 			}
 			current_array_buffer_size = 0;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		
 
@@ -69,14 +69,14 @@ inline array_result resize_array(class_type* & pArray_buffer,
 
 		if (new_array_buffer_size == current_array_buffer_size)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 	}
 	else
 	{
 		if (new_array_size <= current_array_size)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 
 		array_buffer_size_val tmp_mod_result = new_array_size % new_allocate_object_step;
@@ -91,7 +91,7 @@ inline array_result resize_array(class_type* & pArray_buffer,
 
 		if (new_array_buffer_size <= current_array_buffer_size)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 	}
 
@@ -113,14 +113,14 @@ inline array_result resize_array(class_type* & pArray_buffer,
 		allocate_object_t::deallocate_objects(pArray_buffer);
 		pArray_buffer = ptemp_new_allocate_object_buffer;
 		current_array_buffer_size = new_array_buffer_size;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	else
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template< class class_type,class pointer_allocate_object_t,class allocate_object_t >
@@ -153,7 +153,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 		ppArray_buffer_pointer = null;
 		current_array_buffer_pointer_size = 0;
 		current_array_buffer_pointer_buffer_size = 0;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	array_result resize_result = resize_array<class_type*, pointer_allocate_object_t>(ppArray_buffer_pointer,
@@ -164,7 +164,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 		ARRAY_BOOLEAN_FLASE,
 		ARRAY_BOOLEAN_FLASE);
 	
-	if (P_OK != resize_result)
+	if (PEK_STATUS_OK != resize_result)
 	{
 		return resize_result;
 	}
@@ -176,7 +176,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 		class_type** ptemp_new_allocate_object_pointer_buffer = pointer_allocate_object_t::allocate_objects(new_buffer_pointer_size);
 		if (null == ptemp_new_allocate_object_pointer_buffer)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		array_index_val index = 0;
@@ -198,7 +198,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 			}
 
 			pointer_allocate_object_t::deallocate_objects(ptemp_new_allocate_object_pointer_buffer);
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		else
 		{
@@ -242,14 +242,14 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 		}
 
 		current_array_buffer_pointer_size = new_buffer_pointer_size;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 
 
 	if (new_buffer_pointer_size == current_array_buffer_pointer_size)
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	else if (new_buffer_pointer_size < current_array_buffer_pointer_size)
 	{
@@ -265,7 +265,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 		
 			
 		current_array_buffer_pointer_size = new_buffer_pointer_size;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	else if (new_buffer_pointer_size > current_array_buffer_pointer_size)
 	{
@@ -291,7 +291,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 
 			pointer_allocate_object_t::deallocate_objects(ptemp_new_allocate_object_pointer_buffer);
 			ptemp_new_allocate_object_pointer_buffer = null;
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		else
 		{
@@ -306,7 +306,7 @@ inline array_result resize_array_pool(class_type** & ppArray_buffer_pointer,
 	}
 
 	current_array_buffer_pointer_size = new_buffer_pointer_size;
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 
@@ -321,20 +321,20 @@ array_result increment_order_partition(_Array_container& array,_Array_iterator& 
 	const item_type* pitem = array.get_at(&iterator_low);
 	if (null == pitem)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	item_type clip_item = *pitem;
 
 	pitem_high =  array.get_at(&iterator_high);
 	if (null == pitem_high)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	pitem_low =  array.get_at(&iterator_low);
 	if (null == pitem_low)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	while (0 != _Array_iterator::compare(iterator_low,iterator_high) )
@@ -345,14 +345,14 @@ array_result increment_order_partition(_Array_container& array,_Array_iterator& 
 			pitem_high =  array.get_at(&iterator_high);
 			if (null == pitem_high)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 
 		//if (P_OK != swap< item_type,_Array_container , _Array_iterator >(array,iterator_low,iterator_high))
-		if (P_OK != array.swap_value(&iterator_low,&iterator_high))
+		if (PEK_STATUS_OK != array.swap_value(&iterator_low,&iterator_high))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		while (0 != _Array_iterator::compare(iterator_low,iterator_high) && compare_t::compare(*pitem_low,clip_item) <= 0)
@@ -361,19 +361,19 @@ array_result increment_order_partition(_Array_container& array,_Array_iterator& 
 			pitem_low =  array.get_at(&iterator_low);
 			if (null == pitem_high)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 
 		//if (P_OK != swap< item_type,_Array_container , _Array_iterator >(array,iterator_low,iterator_high))
-		if (P_OK != array.swap_value(&iterator_low,&iterator_high))
+		if (PEK_STATUS_OK != array.swap_value(&iterator_low,&iterator_high))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 	}
 	iterator_out.copy(&iterator_low);
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 // 降序排列
@@ -385,20 +385,20 @@ array_result decrement_order_partition(_Array_container& array,_Array_iterator& 
 	const item_type* pitem = array.get_at(&iterator_low);
 	if (null == pitem)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	item_type clip_item = *pitem;
 
 	pitem_high =  array.get_at(&iterator_high);
 	if (null == pitem_high)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	pitem_low =  array.get_at(&iterator_low);
 	if (null == pitem_low)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	while (0 != _Array_iterator::compare(iterator_low,iterator_high) )
@@ -409,14 +409,14 @@ array_result decrement_order_partition(_Array_container& array,_Array_iterator& 
 			pitem_high =  array.get_at(&iterator_high);
 			if (null == pitem_high)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 
 		//if (P_OK != swap< item_type,_Array_container , _Array_iterator >(array,iterator_low,iterator_high))
-		if (P_OK != array.swap_value(&iterator_low,&iterator_high))
+		if (PEK_STATUS_OK != array.swap_value(&iterator_low,&iterator_high))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		while (0 != _Array_iterator::compare(iterator_low,iterator_high) && compare_t::compare(*pitem_low,clip_item) >= 0)
@@ -425,19 +425,19 @@ array_result decrement_order_partition(_Array_container& array,_Array_iterator& 
 			pitem_low =  array.get_at(&iterator_low);
 			if (null == pitem_high)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 
 		//if (P_OK != swap< item_type,_Array_container , _Array_iterator >(array,iterator_low,iterator_high))
-		if (P_OK != array.swap_value(&iterator_low,&iterator_high))
+		if (PEK_STATUS_OK != array.swap_value(&iterator_low,&iterator_high))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 	}
 	iterator_out.copy(&iterator_low);
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 
@@ -448,9 +448,9 @@ array_result quick_sort_increment(_Array_container& array,const _Array_iterator&
 	_Array_iterator iterator_high(iterator_high_);
 	_Array_iterator iterator_clip;
 	
-	if (P_OK != increment_order_partition< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,iterator_high,iterator_clip))
+	if (PEK_STATUS_OK != increment_order_partition< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,iterator_high,iterator_clip))
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	iterator_low.copy(&iterator_low_);
@@ -460,9 +460,9 @@ array_result quick_sort_increment(_Array_container& array,const _Array_iterator&
 	{
 		_Array_iterator itmp_pre(iterator_clip);
 		itmp_pre.decrement();
-		if (P_OK != quick_sort_increment< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,itmp_pre))
+		if (PEK_STATUS_OK != quick_sort_increment< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,itmp_pre))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 
@@ -470,13 +470,13 @@ array_result quick_sort_increment(_Array_container& array,const _Array_iterator&
 	{
 		_Array_iterator itmp_next(iterator_clip);
 		itmp_next.increment();
-		if (P_OK != quick_sort_increment< item_type, compare_t, _Array_container, _Array_iterator >(array,itmp_next,iterator_high))
+		if (PEK_STATUS_OK != quick_sort_increment< item_type, compare_t, _Array_container, _Array_iterator >(array,itmp_next,iterator_high))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template < class item_type, class compare_t,class _Array_container, class _Array_iterator >
@@ -486,9 +486,9 @@ array_result quick_sort_decrement(_Array_container& array,const _Array_iterator&
 	_Array_iterator iterator_high(iterator_high_);
 	_Array_iterator iterator_clip;
 
-	if (P_OK != decrement_order_partition< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,iterator_high,iterator_clip))
+	if (PEK_STATUS_OK != decrement_order_partition< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,iterator_high,iterator_clip))
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	iterator_low.copy(&iterator_low_);
@@ -498,9 +498,9 @@ array_result quick_sort_decrement(_Array_container& array,const _Array_iterator&
 	{
 		_Array_iterator itmp_pre(iterator_clip);
 		itmp_pre.decrement();
-		if (P_OK != quick_sort_decrement< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,itmp_pre))
+		if (PEK_STATUS_OK != quick_sort_decrement< item_type, compare_t, _Array_container, _Array_iterator >(array,iterator_low,itmp_pre))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 
@@ -508,13 +508,13 @@ array_result quick_sort_decrement(_Array_container& array,const _Array_iterator&
 	{
 		_Array_iterator itmp_next(iterator_clip);
 		itmp_next.increment();
-		if (P_OK != quick_sort_decrement< item_type, compare_t, _Array_container, _Array_iterator >(array,itmp_next,iterator_high))
+		if (PEK_STATUS_OK != quick_sort_decrement< item_type, compare_t, _Array_container, _Array_iterator >(array,itmp_next,iterator_high))
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 

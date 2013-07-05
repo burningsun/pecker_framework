@@ -12,7 +12,7 @@
 #ifndef PECKER_BALANCE_TST_ALGORITHM_H_
 #define PECKER_BALANCE_TST_ALGORITHM_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #include "pecker_value_compare.h"
 #include "pecker_avl_tree_algorithm.h"
 #include "pecker_nodes_allocate.h"
@@ -453,7 +453,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 
 	if (null == pkey_string || 0 >= key_string_size)
 	{
-		add_result = P_ERR;
+		add_result = PEK_STATUS_ERROR;
 		return null;
 	}
 
@@ -469,7 +469,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 		newnode->key.init(pkey_string,key_string_size);
 		pTst_root_node = newnode;
 		++node_count;
-		add_result = P_OK;
+		add_result = PEK_STATUS_OK;
 		return newnode;
 	}
 	string_size_t nsame_begin_char_count = 0;
@@ -483,7 +483,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 			ntravl_string_size);// 查找插入数据节点
 	_TST_node_t* pNew_add_node = null;
 	_TST_node_t* pmid_root_node = null;
-	add_result = P_OK;
+	add_result = PEK_STATUS_OK;
 
 	switch(add_type)
 	{
@@ -494,7 +494,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 		}
 		else
 		{
-			add_result = P_UNIQUE_ERR;
+			add_result = PEK_STATUS_UNIQUE_ERR;
 		}
 		pNew_add_node = pfind_add_node;
 		break;
@@ -506,7 +506,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 
 			if (null == newnode)
 			{
-				add_result = P_ERR;
+				add_result = PEK_STATUS_ERROR;
 				break;
 			}
 			++node_count;
@@ -534,7 +534,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 
 			if (null == newnode)
 			{
-				add_result = P_ERR;
+				add_result = PEK_STATUS_ERROR;
 				break;
 			}
 			++node_count;
@@ -565,7 +565,7 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 			_TST_node_t* newnode = node_allocator.create_node();
 			if (null == newnode)
 			{
-				add_result = P_ERR;
+				add_result = PEK_STATUS_ERROR;
 				break;
 			}
 			++node_count;
@@ -607,14 +607,14 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 			_TST_node_t* newnode = node_allocator.create_node();
 			if (null == newnode)
 			{
-				add_result = P_ERR;
+				add_result = PEK_STATUS_ERROR;
 				break;
 			}
 
 			_TST_node_t* newnode2 = node_allocator.create_node();
 			if (null == newnode2)
 			{
-				add_result = P_ERR;
+				add_result = PEK_STATUS_ERROR;
 				break;
 			}
 			node_count += 2;
@@ -673,10 +673,10 @@ inline _TST_node_t* avl_tst_tree_insert(_TST_node_t* & pTst_root_node,
 		break;
 
 		case ADD_ERR:
-		add_result = P_ERR;
+		add_result = PEK_STATUS_ERROR;
 		break;
 		default:
-		add_result = P_FAIL;
+		add_result = PEK_STATUS_FAIL;
 		break;
 	}
 
@@ -699,25 +699,25 @@ inline avl_result avl_tst_tree_erase
 
 	if (null == pkey_string || 0 >= key_string_size)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	if (null == pTst_root_node)
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	_TST_node* pfind_remove_node = avl_tst_tree_find_referance<key_char_value_t,_TST_node>
 	(pTst_root_node,pkey_string,key_string_size);  // 查找被删结点
 	if (null == pfind_remove_node)
 	{															// 不存在被删结点
-		return P_SUCCESS;
+		return PEK_STATUS_SUCCESS;
 	}
 
 	if (null != pfind_remove_node->_M_middle_node) // 存在删除节点，但删除节点存在中间结点，则将结点合法标识设置成 NO_VALUE_TST_NODE
 	{
 		pfind_remove_node->_M_legal_flag = NO_VALUE_TST_NODE;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	string_cmp_ string_cmp_type;
@@ -739,9 +739,9 @@ inline avl_result avl_tst_tree_erase
 
 	if (null == premoved_node)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
-	else if (P_OK != remove_result)
+	else if (PEK_STATUS_OK != remove_result)
 	{
 		return remove_result;
 	}
@@ -769,9 +769,9 @@ inline avl_result avl_tst_tree_erase
 			}
 			if (null == premoved_node)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
-			else if (P_OK != remove_result)
+			else if (PEK_STATUS_OK != remove_result)
 			{
 				return remove_result;
 			}
@@ -785,7 +785,7 @@ inline avl_result avl_tst_tree_erase
 		}
 
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template< class key_char_value_t,
@@ -803,19 +803,19 @@ inline avl_result avl_tst_tree_erase
 
 	if (null == pTst_root_node && null != pTst_del_node)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	_TST_node* pfind_remove_node = pTst_del_node;
 	if (null == pfind_remove_node) // 不存在被删结点
 	{
-		return P_SUCCESS;
+		return PEK_STATUS_SUCCESS;
 	}
 
 	if (null != pfind_remove_node->_M_middle_node) // 存在删除节点，但删除节点存在中间结点，则将结点合法标识设置成 NO_VALUE_TST_NODE
 	{
 		pfind_remove_node->_M_legal_flag = NO_VALUE_TST_NODE;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	string_cmp_ string_cmp_type;
@@ -837,9 +837,9 @@ inline avl_result avl_tst_tree_erase
 
 	if (null == premoved_node)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
-	else if (P_OK != remove_result)
+	else if (PEK_STATUS_OK != remove_result)
 	{
 		return remove_result;
 	}
@@ -867,9 +867,9 @@ inline avl_result avl_tst_tree_erase
 			}
 			if (null == premoved_node)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
-			else if (P_OK != remove_result)
+			else if (PEK_STATUS_OK != remove_result)
 			{
 				return remove_result;
 			}
@@ -883,7 +883,7 @@ inline avl_result avl_tst_tree_erase
 		}
 
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template< class key_char_value_t, 
@@ -901,20 +901,20 @@ inline avl_result avl_tst_tree_remove
 	pTst_remove_node_list = null;
 	if (null == pTst_root_node && null != pTst_remove_node)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	_TST_node* pfind_remove_node = pTst_remove_node;
 	if (null == pfind_remove_node) // 不存在被删结点
 	{
-		return P_SUCCESS;
+		return PEK_STATUS_SUCCESS;
 	}
 
 	if (null != pfind_remove_node->_M_middle_node) // 存在删除节点，但删除节点存在中间结点，则将结点合法标识设置成 NO_VALUE_TST_NODE
 	{
 		pfind_remove_node->_M_legal_flag = NO_VALUE_TST_NODE;
 		pTst_remove_set_no_value_node = pfind_remove_node;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	string_cmp_ string_cmp_type;
@@ -937,9 +937,9 @@ inline avl_result avl_tst_tree_remove
 
 	if (null == premoved_node)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
-	else if (P_OK != remove_result)
+	else if (PEK_STATUS_OK != remove_result)
 	{
 		return remove_result;
 	}
@@ -971,9 +971,9 @@ inline avl_result avl_tst_tree_remove
 			if (null == premoved_node)
 			{
 				premove_node_list->_M_right = null;
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
-			else if (P_OK != remove_result)
+			else if (PEK_STATUS_OK != remove_result)
 			{
 				premove_node_list->_M_right = null;
 				return remove_result;
@@ -992,7 +992,7 @@ inline avl_result avl_tst_tree_remove
 	}
 
 	premove_node_list->_M_right = null;
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template< class key_char_value_t,
@@ -1009,12 +1009,12 @@ inline avl_result avl_tst_tree_remove
 	//typedef pecker_share_string_base_t< key_char_value_t,__cmp_t,char_allocater_t> String_base;
 	if (null == pkey_string || 0 >= key_string_size)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	if (null == pTst_root_node)
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	_TST_node* pfind_remove_node = avl_tst_tree_find_referance<key_char_value_t,_TST_node > // 查找被删结点
@@ -1051,7 +1051,7 @@ inline HResult copy_tst_tree(const _TST_node* psrc_bst_root_node,_TST_node* &pde
 		}
 		else
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		*ptemp_copy_node = pcopy_node;
@@ -1093,7 +1093,7 @@ inline HResult copy_tst_tree(const _TST_node* psrc_bst_root_node,_TST_node* &pde
 		}
 		
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template< class String_key_t, class _TST_node ,class nodes_allocator_t, class Nodes_stack  >
@@ -1102,7 +1102,7 @@ inline HResult clear_tst_tree(_TST_node* &bst_root_node,//tst_node_count_val &no
 {
 	if (null == bst_root_node)
 	{
-		return P_SUCCESS;
+		return PEK_STATUS_SUCCESS;
 	}
 	
 	_TST_node* ptemp_node = (_TST_node*)leftmost_tst_node< _TST_node, Nodes_stack >(bst_root_node,nodes_path);
@@ -1195,7 +1195,7 @@ inline HResult clear_tst_tree(_TST_node* &bst_root_node,//tst_node_count_val &no
 	Node_allocator.release_node(bst_root_node);
 	bst_root_node = null;
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 template< class String_key_t, class _TST_node ,class nodes_allocator_t, class Nodes_stack  >
@@ -1204,7 +1204,7 @@ inline HResult clear_tst_tree(_TST_node* &bst_root_node,//tst_node_count_val &no
 	{
 		if (null == bst_root_node || release_count <= 0)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		_TST_node* ptemp_node = (_TST_node*)leftmost_tst_node< _TST_node, Nodes_stack >(bst_root_node,nodes_path);
@@ -1292,7 +1292,7 @@ inline HResult clear_tst_tree(_TST_node* &bst_root_node,//tst_node_count_val &no
 			++icount;
 			if (icount >= release_count)
 			{
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 		}
 
@@ -1303,7 +1303,7 @@ inline HResult clear_tst_tree(_TST_node* &bst_root_node,//tst_node_count_val &no
 		Node_allocator.release_node(bst_root_node);
 		bst_root_node = null;
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 PECKER_END
 

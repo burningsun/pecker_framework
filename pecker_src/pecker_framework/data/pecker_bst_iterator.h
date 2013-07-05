@@ -118,7 +118,7 @@ public:
 			else
 			{
 				_M_pBst_current_node = null;
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			if (_M_stack.get_size() > 0)
@@ -130,9 +130,9 @@ public:
 			{
 				_M_pBst_current_node = null;
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult reinit(const BST_node_t* pBst_root_node,TREE_ITERATOR_INIT_TYPE init_type = ITERATOR_INIT_MIN)
@@ -149,14 +149,14 @@ public:
 
 			return init(init_type);
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult copy(const _Inorder_iterator* pBst_other_iterator)
 	{
 		if (this == pBst_other_iterator)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pBst_other_iterator)
 		{
@@ -167,16 +167,16 @@ public:
 
 			_M_stack = pBst_other_iterator->_M_stack;
 
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult increment()
 	{
 		if (null == _M_pBst_current_node || true == _M_b_catch_end_flag)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		const BST_node_t* pBst_tmp_node = _M_pBst_current_node;
@@ -199,13 +199,13 @@ public:
 				}
 				else
 				{
-					return P_ERR;
+					return PEK_STATUS_ERROR;
 				}
 			}
 			if (index < 0)
 			{
 				_M_b_catch_end_flag = true;
-				return P_SUCCESS;
+				return PEK_STATUS_SUCCESS;
 			}
 			else
 			{
@@ -242,7 +242,7 @@ public:
 		
 				_M_pBst_current_node = pBst_tmp_node;
 				_M_b_catch_begin_flag = false;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 		}
 		else
@@ -253,14 +253,14 @@ public:
 			_M_pBst_current_node = pBst_tmp_node;
 		}
 		_M_b_catch_begin_flag = false;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	HResult decrement()
 	{
 		if (null == _M_pBst_current_node || true == _M_b_catch_begin_flag)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		const BST_node_t* pBst_tmp_node = _M_pBst_current_node;
@@ -283,13 +283,13 @@ public:
 				}
 				else
 				{
-					return P_ERR;
+					return PEK_STATUS_ERROR;
 				}
 			}
 			if (index < 0)
 			{
 				_M_b_catch_begin_flag = true;
-				return P_SUCCESS;
+				return PEK_STATUS_SUCCESS;
 			}
 			else
 			{
@@ -326,7 +326,7 @@ public:
 
 				_M_pBst_current_node = pBst_tmp_node;
 				_M_b_catch_end_flag = false;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 		}
 		else
@@ -337,7 +337,7 @@ public:
 			_M_pBst_current_node = pBst_tmp_node;
 		}
 		_M_b_catch_end_flag = false;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline const BST_node_t* get_current_node() const
@@ -414,7 +414,7 @@ public:
 			else
 			{
 				_M_pBst_current_node = null;
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			if (_M_stack.get_size() > 0)
@@ -426,9 +426,9 @@ public:
 			{
 				_M_pBst_current_node = null;
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult reinit(const BST_node_t* pBst_root_node,TREE_ITERATOR_INIT_TYPE init_type = ITERATOR_INIT_LEFT)
@@ -446,14 +446,14 @@ public:
 
 			return init(init_type);
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult copy(const pecker_bst_tree_no_perent_node_posorder_iterator_base* pBst_other_iterator)
 	{
 		if (this == pBst_other_iterator)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pBst_other_iterator)
 		{
@@ -461,16 +461,16 @@ public:
 			_M_pBst_current_node = pBst_other_iterator->_M_pBst_current_node;
 			_M_stack = pBst_other_iterator->_M_stack;
 
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult increment_right()
 	{
 		if (null == _M_pBst_current_node || _M_pBst_current_node == _M_pBst_iterator_root)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 			
 		const BST_node_t* pBst_tmp_node = _M_pBst_current_node;
@@ -482,7 +482,7 @@ public:
 			{
 				_M_pBst_current_node = pBst_top_node;
 				_M_stack.pop();
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else if (pBst_top_node->_M_left == pBst_tmp_node)
 			{
@@ -490,12 +490,12 @@ public:
 			}
 			else
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		while (null != pBst_tmp_node->_M_right)
@@ -504,14 +504,14 @@ public:
 		}
 		_M_stack.pop();
 		_M_pBst_current_node = pBst_tmp_node;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	HResult increment_left()
 	{
 		if (null == _M_pBst_current_node || _M_pBst_current_node == _M_pBst_iterator_root)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		const BST_node_t* pBst_tmp_node = _M_pBst_current_node;
@@ -523,7 +523,7 @@ public:
 			{
 				_M_pBst_current_node = pBst_top_node;
 				_M_stack.pop();
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else if (pBst_top_node->_M_right == pBst_tmp_node)
 			{
@@ -531,12 +531,12 @@ public:
 			}
 			else
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		while (null != pBst_tmp_node->_M_left)
@@ -545,7 +545,7 @@ public:
 		}
 		_M_stack.pop();
 		_M_pBst_current_node = pBst_tmp_node;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline const BST_node_t* get_current_node() const
@@ -629,7 +629,7 @@ public:
 			else
 			{
 				_M_pTst_current_node = null;
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			if (_M_stack.get_size() > 0)
@@ -641,9 +641,9 @@ public:
 			{
 				_M_pTst_current_node = null;
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult reinit(const TST_node_t* pTst_root_node,TREE_ITERATOR_INIT_TYPE init_type = ITERATOR_INIT_MIN)
@@ -660,14 +660,14 @@ public:
 
 			return init(init_type);
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult copy(const _Inorder_iterator* pTst_other_iterator)
 	{
 		if (this == pTst_other_iterator)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pTst_other_iterator)
 		{
@@ -678,9 +678,9 @@ public:
 
 			_M_stack = pTst_other_iterator->_M_stack;
 
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult increment()
@@ -688,7 +688,7 @@ public:
 		//_M_pTst_last_node = _M_pTst_current_node;
 		if (null == _M_pTst_current_node || true == _M_b_catch_end_flag)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 		const TST_node_t* pTst_tmp_node = _M_pTst_current_node;
 		const TST_node_t* pTst_tmp_node_last = null;
@@ -700,7 +700,7 @@ public:
 			_M_pTst_current_node = minimum_bst_node< TST_node_t,_Stack_container >((const TST_node_t*)(pTst_tmp_node->_M_middle_node),_M_stack);
 			_M_stack.pop();
 			_M_b_catch_begin_flag = false;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pTst_tmp_node->_M_right)
 		{
@@ -709,7 +709,7 @@ public:
 			_M_stack.pop();
 
 			_M_b_catch_begin_flag = false;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 
 		nINDEX index = _M_stack.get_size() - 1;
@@ -719,7 +719,7 @@ public:
 		if (index < 0)
 		{
 			_M_b_catch_end_flag = true;
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		do 
@@ -740,7 +740,7 @@ public:
 					_M_stack.pop();
 
 					_M_b_catch_begin_flag = false;
-					return P_OK;
+					return PEK_STATUS_OK;
 				}
 				pTst_tmp_node_last = pTst_tmp_node;
 				pTst_tmp_node = pBst_top_node;
@@ -762,7 +762,7 @@ public:
 			{
 				_M_pTst_current_node = pTst_tmp_node;
 				_M_b_catch_end_flag = true;
-				return P_SUCCESS;
+				return PEK_STATUS_SUCCESS;
 			}
 
 			while(pTst_tmp_node != pBst_top_node->_M_right)
@@ -780,9 +780,9 @@ public:
 		if (index < 0)
 		{
 			_M_b_catch_end_flag = true;
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	HResult decrement()
@@ -790,7 +790,7 @@ public:
 		if (null == _M_pTst_current_node || true == _M_b_catch_begin_flag)
 		{
 			//_M_pTst_last_node = _M_pTst_current_node;
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 		const TST_node_t* pTst_tmp_node = _M_pTst_current_node;
 		const TST_node_t* pTst_tmp_node_last = null;
@@ -804,7 +804,7 @@ public:
 
 			_M_b_catch_end_flag = false;
 			//_M_pTst_last_node = _M_pTst_current_node;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 
 		nINDEX index = _M_stack.get_size() - 1;
@@ -815,7 +815,7 @@ public:
 		{
 			_M_b_catch_begin_flag = true;
 			//_M_pTst_last_node = _M_pTst_current_node;
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		do 
@@ -864,7 +864,7 @@ public:
 			{
 				_M_pTst_current_node = pTst_tmp_node;
 				_M_b_catch_begin_flag = true;
-				return P_SUCCESS;
+				return PEK_STATUS_SUCCESS;
 			}
 
 			
@@ -876,7 +876,7 @@ public:
 				{
 					_M_pTst_current_node = pTst_tmp_node;
 					_M_b_catch_begin_flag = true;
-					return P_SUCCESS;
+					return PEK_STATUS_SUCCESS;
 				}
 				pBst_top_node = *_M_stack.get_at(index);
 			}
@@ -888,9 +888,9 @@ public:
 		if (index < 0)
 		{
 			_M_b_catch_begin_flag = true;
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline const TST_node_t* get_current_node() const

@@ -17,7 +17,7 @@ pecker_vector2::pecker_vector2(Float val):x(val),y(val)
 { ;}
 pecker_vector2::pecker_vector2(Float x,Float y):x(x),y(y)
 { ;}
-pecker_vector2::pecker_vector2(const Float* P_IN vec2):x(vec2[0]),y(vec2[1])
+pecker_vector2::pecker_vector2(const Float* PARAM_IN vec2):x(vec2[0]),y(vec2[1])
 { ;}
 pecker_vector2::pecker_vector2(const pecker_vector2 & other):x(other.x),y(other.y)
 { ;}
@@ -187,7 +187,7 @@ pecker_vector3::pecker_vector3():x(0.0f),y(0.0f),z(0.0f)
 { ;}
 pecker_vector3::pecker_vector3(Float val):x(val),y(val),z(val)
 { ;}
-pecker_vector3::pecker_vector3(const Float* P_IN vec3):x(vec3[0]),y(vec3[1]),z(vec3[2])
+pecker_vector3::pecker_vector3(const Float* PARAM_IN vec3):x(vec3[0]),y(vec3[1]),z(vec3[2])
 { ;}
 pecker_vector3::pecker_vector3(Float x,Float y,Float z):x(x),y(y),z(z)
 { ;}

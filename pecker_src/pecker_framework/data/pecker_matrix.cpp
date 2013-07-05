@@ -612,21 +612,21 @@ pecker_matrix4 pecker_matrix4::inverse() const
 
 
 
-HResult LinearEqSolve(Float* P_INOUT pRes, Float ** P_INOUT pSrc,nSize nCnt)
+HResult LinearEqSolve(Float* PARAM_INOUT pRes, Float ** PARAM_INOUT pSrc,nSize nCnt)
 {
   if (null == pRes || null == pSrc)
   {
-    return P_FAIL;
+    return PEK_STATUS_FAIL;
   }
 
   if (1 == nCnt)
   {
     if (0 == pSrc[ 0 ][ 1 ])
     {
-      return P_FAIL;
+      return PEK_STATUS_FAIL;
     }
     pRes[ 0 ] = pSrc[ 0 ][ 0 ]/pSrc[ 0 ][ 1 ];
-    return P_OK;
+    return PEK_STATUS_OK;
   }
 
   Float ftempVal;
@@ -648,7 +648,7 @@ HResult LinearEqSolve(Float* P_INOUT pRes, Float ** P_INOUT pSrc,nSize nCnt)
 
       if (EQFLOATZERO(pSrc[ntmpCnt][nCnt]))
       {
-        return P_FAIL;
+        return PEK_STATUS_FAIL;
       }
       for (nINDEX j=0;j<ntmpCnt;++j)
       {
@@ -663,7 +663,7 @@ HResult LinearEqSolve(Float* P_INOUT pRes, Float ** P_INOUT pSrc,nSize nCnt)
     }
 
     HResult res = LinearEqSolve(pRes, pSrc, nCnt-1);
-    if (P_OK != res)
+    if (PEK_STATUS_OK != res)
     {
       return res;
     }
@@ -678,13 +678,13 @@ HResult LinearEqSolve(Float* P_INOUT pRes, Float ** P_INOUT pSrc,nSize nCnt)
 
   if (EQFLOATZERO(pSrc[nCnt-1][nCnt]))
   {
-    return P_FAIL;
+    return PEK_STATUS_FAIL;
   }
 
   ftempVal = ftempVal / pSrc[nCnt-1][nCnt];
   pRes[nCnt-1] = ftempVal;
 
-  return P_OK;
+  return PEK_STATUS_OK;
 }
 
 // M.M^-1=I.
@@ -701,7 +701,7 @@ pecker_matrix4 pecker_matrix4::inverseEx() const
   arrpArrMat[M4_02] = &arrMat[M4_22];
   arrpArrMat[M4_03] = &arrMat[M4_33];
 
-  HResult res =  P_OK;
+  HResult res =  PEK_STATUS_OK;
 
   for (nINDEX i=0; i<4; ++i)
   {
@@ -711,7 +711,7 @@ pecker_matrix4 pecker_matrix4::inverseEx() const
       memcpy(&arrpArrMat[j][M4_01],&m_Mat[4*j],4*sizeof(Float));
     }
     res = LinearEqSolve(arrRes, (Float**)arrpArrMat, 4);
-    if (P_OK != res)
+    if (PEK_STATUS_OK != res)
     {
       //CPeckerLogger::GetSignleton()->LogOut(LOGINFO_ERROR,"CMatrix4::inverseEx","LinearEqSolve errors!");
 		PECKER_LOG_ERR("CMatrix4::inverseEx","LinearEqSolve errors!",0);

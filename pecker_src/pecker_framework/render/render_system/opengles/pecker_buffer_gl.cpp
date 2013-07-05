@@ -14,6 +14,16 @@
 
 PECKER_BEGIN
 
+const HEnum gGL_Attribute_data_type_table[ATTRIBUTE_DATA_TYPE_COUNT] = {
+																																		GL_BYTE                         ,
+																																		GL_UNSIGNED_BYTE     ,
+																																		GL_SHORT                      ,
+																																		GL_UNSIGNED_SHORT ,
+																																		GL_INT                            ,
+																																		GL_UNSIGNED_INT       ,
+																																		GL_FLOAT                       ,
+																																		GL_FIXED                        
+																																		};
 
 pecker_vertex_buffer_gles2::pecker_vertex_buffer_gles2():
 _M_bytes_count(0),_M_gpu_target(0),_M_vertex_attribute_count(0),_M_first_update_buffer(false),_M_vbo_setting(DEFUALT_VBO)
@@ -38,8 +48,9 @@ HResult pecker_vertex_buffer_gles2::allocate_buffer_from_cpu_ram(nSize number_of
 	{
 		return P_UNIQUE_ERR;
 	}
-
-	_M_vertex_buffer._M_bytes = graphic_buffer_allocator_gles2::allocate_objects(number_of_bytes);
+	int number_of_ints =  (number_of_bytes + sizeof(pecker_cov_type) - sizeof(Byte)) * sizeof(Byte) / sizeof(pecker_cov_type);
+	
+	_M_vertex_buffer._M_bytes = (Byte*)(graphic_buffer_allocator_gles2::allocate_objects(number_of_ints));
 	if (null != _M_vertex_buffer._M_bytes)
 	{
 		_M_bytes_count = number_of_bytes;
@@ -64,7 +75,7 @@ HResult pecker_vertex_buffer_gles2::release_buffer_from_cpu_ram()
 {
 	if (null != _M_vertex_buffer._M_bytes)
 	{
-		graphic_buffer_allocator_gles2::deallocate_objects(_M_vertex_buffer._M_bytes);
+		graphic_buffer_allocator_gles2::deallocate_objects((pecker_cov_type*)_M_vertex_buffer._M_bytes);
 		_M_vertex_buffer._M_bytes = null;
 		
 	}
@@ -192,7 +203,9 @@ HResult pecker_vertex_buffer_gles2::bind_gpu_buffer()
 HResult pecker_vertex_buffer_gles2::add_defualt_vertex_attribute_setting(const vertex_attribute_info& vertex_attri_info)
 {
 	if (vertex_attri_info._M_attribute_index < MAX_VERTEXT_ATTRIBUTE_COUNT &&
-		vertex_attri_info._M_attribute_index >= 0)
+		vertex_attri_info._M_attribute_index >= 0 && 
+		vertex_attri_info._M_attribute_data_type < ATTRIBUTE_DATA_TYPE_COUNT &&
+		vertex_attri_info._M_attribute_data_type >= 0)
 	{
 		if (_M_vertex_attribute[vertex_attri_info._M_attribute_index]._M_attribute_index < 0)
 		{
@@ -273,7 +286,7 @@ HResult pecker_vertex_buffer_gles2::use_vertex_attrible()
 			glEnableVertexAttribArray(_M_vertex_attribute[i]._M_attribute_index);
 			glVertexAttribPointer(_M_vertex_attribute[i]._M_attribute_index,
 				_M_vertex_attribute[i]._M_attribute_size,
-				_M_vertex_attribute[i]._M_attribute_data_type,
+				gGL_Attribute_data_type_table[_M_vertex_attribute[i]._M_attribute_data_type],
 				_M_vertex_attribute[i]._M_normalized,
 				_M_vertex_attribute[i]._M_stride,
 				_M_vertex_attribute[i]._M_offset + pIndata);
@@ -308,7 +321,7 @@ HResult pecker_vertex_buffer_gles2::finish_using_vertex_attrible()
 	return pecker_opengles_v2_object::get_last_error_code();
 }
 
-HResult pecker_vertex_buffer_gles2::set_vbo_using_setting(HEnum setting)
+HResult pecker_vertex_buffer_gles2::set_vbo_using_setting(VBO_USING_SETTING setting)
 {
 	if (setting < VBO_USING_SETTING_COUNT)
 	{
@@ -350,7 +363,10 @@ HResult pecker_index_buffer_gles2::allocate_buffer_from_cpu_ram(nSize number_of_
 		return P_UNIQUE_ERR;
 	}
 
-	_M_index_buffer._M_bytes = graphic_buffer_allocator_gles2::allocate_objects(number_of_bytes);
+	//_M_index_buffer._M_bytes = graphic_buffer_allocator_gles2::allocate_objects(number_of_bytes);
+	int number_of_ints =  (number_of_bytes + sizeof(pecker_cov_type) - sizeof(Byte)) * sizeof(Byte) / sizeof(pecker_cov_type);
+
+	_M_index_buffer._M_bytes = (Byte*)(graphic_buffer_allocator_gles2::allocate_objects(number_of_ints));
 	if (null != _M_index_buffer._M_bytes)
 	{
 		_M_bytes_count = number_of_bytes;
@@ -375,7 +391,7 @@ HResult pecker_index_buffer_gles2::release_buffer_from_cpu_ram()
 {
 	if (null != _M_index_buffer._M_bytes)
 	{
-		graphic_buffer_allocator_gles2::deallocate_objects(_M_index_buffer._M_bytes);
+		graphic_buffer_allocator_gles2::deallocate_objects((pecker_cov_type*)_M_index_buffer._M_bytes);
 		_M_index_buffer._M_bytes = null;
 
 	}

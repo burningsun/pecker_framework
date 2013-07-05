@@ -224,14 +224,14 @@ public:
 		_M_pthis_string_data = _M_pstring_data_header._Small_buffer;
 		_M_string_length = 0;
 
-		return P_OK;
+		return PEK_STATUS_OK;
 
 	}
 	string_result swap(String_base &other_string)
 	{
 		if (this == &other_string)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 
 		char_value_t* ptmp_header = null;
@@ -355,14 +355,14 @@ public:
 		}
 
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	string_result init(string_size_t string_length,string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
 	{
 		if ( (0 >= string_length) )
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		char_value_t* pheaderpointer = null;
@@ -425,7 +425,7 @@ public:
 	
 		if (null == pheaderpointer)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		if (null != _M_shared_buffer_pre_string)
@@ -443,17 +443,17 @@ public:
 		_M_pthis_string_data = pheaderpointer;
 		_M_string_length = 0;//string_length;
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	string_result init(const char_value_t* pstring_chars, string_size_t string_length,string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
 	{
 		if ( (null == pstring_chars && 0 >= string_length) )
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		string_result init_result = init(string_length,bnew_buffer);
-		if (P_OK != init_result)
+		if (PEK_STATUS_OK != init_result)
 		{
 			return init_result;
 		}
@@ -464,18 +464,18 @@ public:
 			*(_M_pthis_string_data+index) = *(pstring_chars + index);
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	string_result init(const char_value_t* pstring_chars, string_size_t string_length,
 		const char_value_t& end_char,string_boolean_flag bfill_all_end_space = STRING_BOOLEAN_FALSE,string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
 	{
 		if ( (null == pstring_chars && 0 >= string_length) )
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		string_result init_result = init(string_length+1,bnew_buffer);
-		if (P_OK != init_result)
+		if (PEK_STATUS_OK != init_result)
 		{
 			return init_result;
 		}
@@ -497,13 +497,13 @@ public:
 			}
 		}
 		
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	
 	string_result resize(string_size_t string_length,string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
 	{
 		string_result result_value = init(string_length,bnew_buffer);
-		if (P_OK == result_value)
+		if (PEK_STATUS_OK == result_value)
 		{
 			_M_string_length = string_length;
 		}
@@ -512,7 +512,7 @@ public:
 	string_result resize(string_size_t string_length,const char_value_t& end_char, string_boolean_flag bnew_buffer = STRING_BOOLEAN_FALSE)
 	{
 		string_result result_value = init(string_length+1,bnew_buffer);
-		if (P_OK == result_value)
+		if (PEK_STATUS_OK == result_value)
 		{
 			_M_string_length = string_length;
 			*(_M_string_buffer_size + _M_string_length) = end_char;
@@ -527,13 +527,13 @@ public:
 		{
 			return init(other.get_data(),other.get_string_length(),STRING_BOOLEAN_FALSE);
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	string_result get_share_buffer_sub_string(String_base& reference_sub_string,string_offerset_t ioffset,string_size_t sub_string_length = -1)
 	{
 		if ( (ioffset >= _M_string_length) || (ioffset < 0) || (this == &reference_sub_string) )
 		{
-			return P_FAIL;
+			return PEK_STATUS_FAIL;
 		}
 		
 		if (ioffset < 0)
@@ -562,7 +562,7 @@ public:
 			}
 			_M_shared_buffer_next_string = &reference_sub_string;
 
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
@@ -576,7 +576,7 @@ public:
 	{
 		if (ioffset >= _M_string_length || ioffset < 0 || this == &sub_string)
 		{
-			return P_FAIL;
+			return PEK_STATUS_FAIL;
 		}
 		if (ioffset < 0)
 		{
@@ -592,25 +592,25 @@ public:
 	{
 		if (index >= _M_string_length)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		if ((null == _M_shared_buffer_next_string && null == _M_shared_buffer_pre_string)||
 			(bforce_set_all_reference && _M_string_buffer_size > _BUFFER_SIZE))
 		{
 			_M_pthis_string_data[index] = char_value;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
 			if (index < _M_string_length)
 			{
 				_M_pthis_string_data[index] = char_value;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 	}
@@ -626,7 +626,7 @@ public:
 	{
 		if ( (null == pstring_chars && 0 >= string_length) )
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 
 		string_size_t new_string_length = string_length + _M_string_length;
@@ -683,7 +683,7 @@ public:
 				}
 				else
 				{
-					return P_ERR;
+					return PEK_STATUS_ERROR;
 				}
 			}
 		}
@@ -709,7 +709,7 @@ public:
 		}
 		_M_string_length = new_string_length;
 
-		return P_OK;
+		return PEK_STATUS_OK;
 
 
 	}
@@ -760,10 +760,10 @@ public:
 	{
 		if (nclip_index >= _M_string_length)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		string_result sub_string_reslut = get_share_buffer_sub_string(new_string,nclip_index);
-		if (P_OK == sub_string_reslut)
+		if (PEK_STATUS_OK == sub_string_reslut)
 		{
 			_M_string_length = nclip_index;
 		}
@@ -776,10 +776,10 @@ public:
 	{
 		if (nclip_index >= _M_string_length)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		string_result sub_string_reslut = get_share_buffer_sub_string(new_string,0,nclip_index);
-		if (P_OK == sub_string_reslut)
+		if (PEK_STATUS_OK == sub_string_reslut)
 		{
 			_M_string_length -= nclip_index;
 			_M_pthis_string_data += nclip_index;
@@ -793,10 +793,10 @@ public:
 	{
 		if (nclip_index >= _M_string_length)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		string_result sub_string_reslut = get_sub_string(new_string,nclip_index);
-		if (P_OK == sub_string_reslut)
+		if (PEK_STATUS_OK == sub_string_reslut)
 		{
 			_M_string_length = nclip_index;
 		}
@@ -808,10 +808,10 @@ public:
 	{
 		if (nclip_index >= _M_string_length)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		string_result sub_string_reslut = get_sub_string(new_string,0,nclip_index);
-		if (P_OK == sub_string_reslut)
+		if (PEK_STATUS_OK == sub_string_reslut)
 		{
 			_M_string_length -= nclip_index;
 			_M_pthis_string_data += nclip_index;
@@ -920,7 +920,7 @@ public:
 			(null == sub_string1._M_shared_buffer_pre_string && null == sub_string1._M_shared_buffer_next_string) ||
 			(null == sub_string2._M_shared_buffer_pre_string && null == sub_string2._M_shared_buffer_next_string) )
 		{
-			string_result str_result = P_ERR;
+			string_result str_result = PEK_STATUS_ERROR;
 
 			if (&sub_string1 == &new_string)
 			{
@@ -930,7 +930,7 @@ public:
 			{
 				string_size_t str_size = sub_string2._M_string_length;
 				str_result = new_string.append_string(sub_string1);
-				if (P_OK == str_result)
+				if (PEK_STATUS_OK == str_result)
 				{
 					char_value_t* pheader = new_string._M_pthis_string_data + sub_string1._M_string_length;
 					for (string_char_index index = 0;index<str_size; ++index)
@@ -946,7 +946,7 @@ public:
 			else
 			{
 				str_result = new_string.init(sub_string1.get_string_length() + sub_string2.get_string_length());
-				if (P_OK == str_result)
+				if (PEK_STATUS_OK == str_result)
 				{
 					char_value_t* pheader = new_string._M_pthis_string_data;
 					for (string_char_index index = 0;index<sub_string1._M_string_length; ++index)
@@ -986,7 +986,7 @@ public:
 			new_string._M_pthis_string_data = sub_string2._M_pthis_string_data;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 };

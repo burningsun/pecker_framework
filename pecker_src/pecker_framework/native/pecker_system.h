@@ -8,7 +8,7 @@
 #ifndef PECKER_SYSTEM_H_
 #define PECKER_SYSTEM_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 
 
 PECKER_BEGIN

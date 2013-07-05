@@ -21,7 +21,7 @@ PECKER_BEGIN
 
 typedef pecker_simple_allocator<HEnum> render_system_config_param_allocator_gles2;
 typedef pecker_simple_allocator<HEnum*> render_system_config_param_pointer_allocator_gles2;
-typedef pecker_simple_allocator<Byte> graphic_buffer_allocator_gles2;
+typedef pecker_simple_allocator<pecker_cov_type> graphic_buffer_allocator_gles2;
 typedef pecker_simple_allocator<Byte> texture_buffer_allocator_gles2;
 //typedef pecker_simple_allocator<Byte> render_buffer_allocator;
 typedef pecker_simple_allocator<pecker_shader_program_glsles1> gpu_program_allocator_gles2;

@@ -257,7 +257,7 @@ int tst_stress_time(pecker_array< String_base >& array)
 				pvalue->get_string_length(),
 				node_alloc,
 				tst_node_count);
-			if (myresult != P_OK)
+			if (myresult != PEK_STATUS_OK)
 			{
 				sprintf(string_log_buf,"string = %%%d.%ds result = %%d",pvalue->get_string_length(),pvalue->get_string_length());
 				PECKER_LOG_ERR("tst erase error",string_log_buf,pvalue->get_data(),myresult);
@@ -450,7 +450,7 @@ int  avl_stress_insert_time(pecker_array< String_base >& array ,_AVL_Tree_map& a
 		if (pvalue)
 		{
 			res = avl_tree_strings_map.insert(*pvalue,icount);
-			if (P_OK != res)
+			if (PEK_STATUS_OK != res)
 			{
 				sprintf(string_log_buf,"string = %%%d.%ds result=%%d icount = %%d",pvalue->get_string_length(),pvalue->get_string_length());
 				PECKER_LOG_ERR("tst insert error",string_log_buf,pvalue->get_data(),res,icount);
@@ -667,7 +667,7 @@ int  avl_std_string_stress_insert_time(pecker_array< std::string >& array ,_AVL_
 		if (pvalue)
 		{
 			res = avl_tree_strings_map.insert(*pvalue,icount);
-			if (P_OK != res)
+			if (PEK_STATUS_OK != res)
 			{
 				sprintf(string_log_buf,"string = %%%d.%ds result=%%d icount = %%d",pvalue->length(),pvalue->length());
 				PECKER_LOG_ERR("tst insert error",string_log_buf,pvalue->data(),res,icount);

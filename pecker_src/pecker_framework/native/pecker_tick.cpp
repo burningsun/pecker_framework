@@ -38,13 +38,13 @@ HResult pecker_tick::init()
 	}
 #endif
 #endif
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 HResult pecker_tick::start()
 {
 	if (_M_start_tick > -1.0)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 #ifdef ANDROID_OS
 	HResult hresult = clock_gettime(CLOCK_MONOTONIC, &_M_ticker);
@@ -56,7 +56,7 @@ HResult pecker_tick::start()
 	_M_start_tick = (Double)(_M_ticker.QuadPart);
 #endif
 #endif
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 Double pecker_tick::get_microsecond()
 {
@@ -84,7 +84,7 @@ HResult pecker_tick::stop()
 		_M_start_tick = -2.0;
 	}
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 PECKER_END

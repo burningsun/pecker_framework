@@ -44,6 +44,8 @@ typedef char* CharStr;
 
 typedef S32bit SInt;
 typedef U32bit UInt;
+typedef S16bit Short;
+typedef U16bit UShort;
 typedef long Long;
 typedef unsigned long Ulong; 
 
@@ -57,6 +59,17 @@ typedef int nINDEX;
 typedef unsigned char Byte;
 typedef unsigned int HEnum;
 typedef unsigned int BitField;
+
+union pecker_cov_type
+{
+	SInt			m_int_type;
+	UInt			m_uint_type;
+	Float		m_float_type;
+	Short		m_short_type[2];
+	UShort	m_ushort_type[2];
+	Char		m_char_type[4];
+	Byte			m_uchar_type[4];
+};
 
 typedef bool Bool;
 typedef Char Boolc;
@@ -76,31 +89,65 @@ union INT_FLOAT_SHARE_MEM_VAL
 	Float _M_float;
 };
 
+typedef struct _st_stringchars
+{
+	Char* _M_buffer;
+	U32bit _M_buffer_size;
+}string_chars;
+typedef string_chars Bytes;
+
+typedef struct _st_const_stringchars
+{
+	const Char* _M_buffer;
+	U32bit _M_buffer_size;
+}const_string_chars;
+typedef const_string_chars const_bytes;
+
+typedef enum
+{
+	LESSER = -1,
+	EQUALS = 0,
+	GREATER = 1,
+	COMPARE_RESULT_COUNT
+}COMPARE_RESULT;
+
+typedef struct _st_isize
+{
+	U32bit w;
+	U32bit h;
+}pekcer_size;
+
+typedef struct _st_point
+{
+	U32bit x;
+	U32bit y;
+}pekcer_point;
+
 #define PeckerInterface struct
-#define P_IN
-#define P_OUT
-#define P_REF &
-#define P_INOUT
+#define PARAM_IN
+#define PARAM_OUT
+#define PARAM_REF &
+#define PARAM_INOUT
 
 #define null 0
-#define P_OK    0
-#define P_FAIL 	1
-#define P_ERR	-1
-#define P_INVALID_ENUM -1
-#define P_INVALID_VALUE -2
-#define P_INVALID_OPERATION -3
-#define P_OUT_OF_MEMORY -6
-#define P_WAITRESULT 2
-#define P_FIN 3
-#define P_STACKOVERFLOW 4
-#define P_OVERFLOW 5
-#define P_SUCCESS      6
-#define P_NULLITEM	7
-#define  P_TIMEOUT	8
-#define  P_RUNNING_WAIT 9
-#define  P_UNINIT 10
-#define  P_UNIQUE_ERR -4
-#define  P_MAXUNSIGNEDVAL -1
+#define PEK_STATUS_OK    0
+#define PEK_STATUS_FAIL 	1
+#define PEK_STATUS_ERROR	-1
+#define PEK_STATUS_INVALID_ENUM -1
+#define PEK_STATUS_INVALID_VALUE -2
+#define PEK_STATUS_INVALID_OPERATION -3
+#define PEK_STATUS_OUT_OF_MEMORY -6
+#define PEK_STATUS_WAITRESULT 2
+#define PEK_STATUS_FIN 3
+#define PEK_STATUS_STACKOVERFLOW 4
+#define PEK_STATUS_OVERFLOW 5
+#define PEK_STATUS_SUCCESS      6
+#define PEK_STATUS_NULLITEM	7
+#define  PEK_STATUS_TIMEOUT	8
+#define  PEK_STATUS_RUNNING_WAIT 9
+#define  PEK_STATUS_UNINIT 10
+#define  PEK_STATUS_UNIQUE_ERR -4
+#define  PEK_STATUS_MAXUNSIGNEDVAL -1
 
 #define PECKER_PI 3.141592653
 

@@ -9,7 +9,7 @@
 #ifndef PECKER_RENDER_OBJECT_H_
 #define  PECKER_RENDER_OBJECT_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #include "../data/pecker_string.h"
 
 PECKER_BEGIN
@@ -62,8 +62,8 @@ public:
 	pecker_render_object();
 	virtual ~pecker_render_object();
 
-	virtual const render_string &toString(render_string P_IN &string_input) const; 
-	virtual const pecker_render_system_info &get_render_system_info(pecker_render_system_info P_IN &system_info) const;
+	virtual const render_string &toString(render_string PARAM_IN &string_input) const; 
+	virtual const pecker_render_system_info &get_render_system_info(pecker_render_system_info PARAM_IN &system_info) const;
 
 	virtual pecker_render_object* get_this_reference();
 	virtual HResult release_this_reference();

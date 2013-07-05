@@ -50,11 +50,11 @@ public:
 	{
 		if (&other == this)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		list_size othersize = other.get_size();
 		list_size listsize = _M_node_count - othersize;
-		list_result return_result = P_OK;
+		list_result return_result = PEK_STATUS_OK;
 		if (listsize >= 0)
 		{
 			for (list_size i=0;i<listsize;++i)
@@ -89,7 +89,7 @@ public:
 			{
 				if (null == push(ptemp_other_node->value))
 				{
-					return_result = P_ERR;
+					return_result = PEK_STATUS_ERROR;
 					break;
 				}
 				ptemp_other_node = ptemp_other_node->_M_next_node;
@@ -103,7 +103,7 @@ public:
 	{
 		if (&other != this)
 		{
-			if (P_OK == _M_allocator.swap(other._M_allocator))
+			if (PEK_STATUS_OK == _M_allocator.swap(other._M_allocator))
 			{
 				list_size tmp_size = _M_node_count;
 				_M_node_count =  other._M_node_count;
@@ -116,12 +116,12 @@ public:
 				ptemp_node = _M_pend_node;
 				_M_pend_node = other._M_pend_node;
 				other._M_pend_node = ptemp_node;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	list_result clear()
 	{
@@ -131,7 +131,7 @@ public:
 			_M_pbegin_node = null;
 			_M_pend_node = null;
 			_M_node_count = 0;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
@@ -146,14 +146,14 @@ public:
 			_M_pend_node = null;
 			_M_node_count = 0;
 
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 	}
 
 	const linked_list_node_t* push(const item_value_t& item_value)
 	{
 		linked_list_node_t* pnode = _M_allocator.create_node();
-		if (P_OK == push_back_list_node< linked_list_node_t >(_M_pend_node,pnode))
+		if (PEK_STATUS_OK == push_back_list_node< linked_list_node_t >(_M_pend_node,pnode))
 		{
 			_M_pend_node = pnode;
 			pnode->value = item_value;
@@ -178,7 +178,7 @@ public:
 			ptemp_pre_node = _M_pend_node->_M_pre_node;
 		}
 		list_result return_result = remove_list_node< linked_list_node_t >(_M_pend_node);
-		if (P_OK == return_result)
+		if (PEK_STATUS_OK == return_result)
 		{
 			_M_allocator.release_node(_M_pend_node);
 			_M_pend_node = ptemp_pre_node;
@@ -194,7 +194,7 @@ public:
 	const linked_list_node_t* push_front(const item_value_t& item_value)
 	{
 		linked_list_node_t* pnode = _M_allocator.create_node();
-		if (P_OK == push_fornt_list_node< linked_list_node_t >(_M_pbegin_node,pnode))
+		if (PEK_STATUS_OK == push_fornt_list_node< linked_list_node_t >(_M_pbegin_node,pnode))
 		{
 			_M_pbegin_node = pnode;
 			pnode->value = item_value;
@@ -219,7 +219,7 @@ public:
 			ptemp_next_node = _M_pbegin_node->_M_next_node;
 		}
 		list_result return_result = remove_list_node< linked_list_node_t >(_M_pbegin_node);
-		if (P_OK == return_result)
+		if (PEK_STATUS_OK == return_result)
 		{
 			_M_allocator.release_node(_M_pbegin_node);
 			_M_pbegin_node = ptemp_next_node;
@@ -249,7 +249,7 @@ public:
 	{
 		if (null != plist_iterator)
 		{
-			if (P_OK == plist_iterator->reinit(this))
+			if (PEK_STATUS_OK == plist_iterator->reinit(this))
 			{
 				return plist_iterator;
 			}
@@ -293,7 +293,7 @@ public:
 		else
 		{
 			linked_list_node_t* pnode = _M_allocator.create_node();
-			if (P_OK == insert_list_node_next< linked_list_node_t >(pitem_node,pnode))
+			if (PEK_STATUS_OK == insert_list_node_next< linked_list_node_t >(pitem_node,pnode))
 			{
 				++_M_node_count;
 				return pnode;
@@ -329,7 +329,7 @@ public:
 		else
 		{
 			linked_list_node_t* pnode = _M_allocator.create_node();
-			if (P_OK == insert_list_node_pre< linked_list_node_t >(pitem_node,pnode))
+			if (PEK_STATUS_OK == insert_list_node_pre< linked_list_node_t >(pitem_node,pnode))
 			{
 				++_M_node_count;
 				return pnode;
@@ -358,7 +358,7 @@ public:
 		else
 		{
 			list_result return_result = remove_list_node< linked_list_node_t >(pitem_node);
-			if (P_OK == return_result)
+			if (PEK_STATUS_OK == return_result)
 			{
 				_M_allocator.release_node(pitem_node);
 			}
@@ -412,11 +412,11 @@ public:
 
 		if (false == bcheck_ok)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		list_result return_result = remove_list_nodes_unsafe< linked_list_node_t >(pitem_node_begin,pitem_node_end);
-		if (P_OK != return_result)
+		if (PEK_STATUS_OK != return_result)
 		{
 			return return_result;
 		}
@@ -443,14 +443,14 @@ public:
 			 _M_allocator.release_node(pitem_node_erase);
 		 }
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 protected:
 	inline list_result swap_node(linked_list_node_t* pfirst_node,linked_list_node_t* psecond_node)
 	{
 		list_result return_result = swap_list_node< linked_list_node_t >(pfirst_node,psecond_node);
-		if (P_OK == return_result)
+		if (PEK_STATUS_OK == return_result)
 		{
 			if (pfirst_node == _M_pbegin_node && psecond_node == _M_pend_node)
 			{
@@ -491,7 +491,7 @@ protected:
 	{
 		if (null == pitem_this_node || null == pitem_other_node)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		linked_list_node_t* ptransfer_this_node = _M_allocator.transfer_value(other_list._M_allocator,pitem_this_node);
 		linked_list_node_t* ptransfer_other_node = other_list._M_allocator.transfer_value(_M_allocator,pitem_other_node);
@@ -499,7 +499,7 @@ protected:
 		if (null != ptransfer_this_node && null != ptransfer_other_node)
 		{
 			list_result return_result = swap_list_node< linked_list_node_t >(ptransfer_this_node,ptransfer_other_node);
-			if (P_OK == return_result)
+			if (PEK_STATUS_OK == return_result)
 			{
 				if (pitem_this_node == _M_pbegin_node)
 				{
@@ -531,7 +531,7 @@ protected:
 
 			if (null == ptransfer_this_node)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			if (pitem_this_node == _M_pbegin_node)
@@ -550,7 +550,7 @@ protected:
 
 			if (null == ptransfer_other_node)
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			if (pitem_other_node == other_list._M_pbegin_node)
@@ -563,7 +563,7 @@ protected:
 			}
 		}
 
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 };

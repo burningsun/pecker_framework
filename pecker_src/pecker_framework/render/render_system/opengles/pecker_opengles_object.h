@@ -17,7 +17,7 @@ PECKER_BEGIN
 class pecker_opengles_v2_object : public pecker_render_object
 {
 public:
-	virtual const pecker_render_system_info &get_render_system_info(pecker_render_system_info P_IN &system_info) const;
+	virtual const pecker_render_system_info &get_render_system_info(pecker_render_system_info PARAM_IN &system_info) const;
 	virtual UInt get_object_location() const;
 	static HResult get_last_error_code();
 };
@@ -25,7 +25,7 @@ public:
 class pecker_opengles_v3_object : public pecker_render_object
 {
 public:
-	virtual const pecker_render_system_info &get_render_system_info(pecker_render_system_info P_IN &system_info) const;
+	virtual const pecker_render_system_info &get_render_system_info(pecker_render_system_info PARAM_IN &system_info) const;
 	virtual UInt get_object_location() const;
 	static HResult get_last_error_code();
 };

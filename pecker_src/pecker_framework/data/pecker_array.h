@@ -76,7 +76,7 @@ public:
 			_M_auto_allocate_step = other_array._M_auto_allocate_step;
 			other_array._M_auto_allocate_step = temp_size;
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	inline array_result swap_value(const _Array_iterator* piterator1,const _Array_iterator* piterator2)
 	{
@@ -88,11 +88,11 @@ public:
 			class_type ptemp_item = *pitem_hight;
 			*pitem_hight = *pitem_low;
 			*pitem_low = ptemp_item;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 	inline array_result swap_value(array_index_val index1,array_index_val index2)
@@ -105,11 +105,11 @@ public:
 			class_type ptemp_item = *pitem_hight;
 			*pitem_hight = *pitem_low;
 			*pitem_low = ptemp_item;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 
@@ -120,7 +120,7 @@ public:
 			init_size = 1;
 		}
 		array_result resize_result = resize(init_size,auto_allocate_size);
-		if (P_OK == resize_result)
+		if (PEK_STATUS_OK == resize_result)
 		{
 			_M_array_size = 0;
 		}
@@ -137,7 +137,7 @@ public:
 				other_array._M_auto_allocate_step,
 				ARRAY_BOOLEAN_FLASE,
 				ARRAY_BOOLEAN_TRUE);
-			if (P_OK == resize_result)
+			if (PEK_STATUS_OK == resize_result)
 			{
 				_M_array_size = other_array._M_array_size;
 				_M_auto_allocate_step = other_array._M_auto_allocate_step;
@@ -149,7 +149,7 @@ public:
 			}
 			return resize_result;
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline const class_type* get_at(array_index_val index) const
@@ -179,11 +179,11 @@ public:
 		if (index >=0 && index < _M_array_size)
 		{
 			_M_parray_buffer[index] = set_item;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 	
@@ -202,7 +202,7 @@ public:
 			bForce_release,
 			ARRAY_BOOLEAN_FLASE);
 
-		if (P_OK == resize_result)
+		if (PEK_STATUS_OK == resize_result)
 		{
 			_M_array_size = resize_size;
 			_M_auto_allocate_step = auto_allocate_size;
@@ -223,7 +223,7 @@ public:
 	inline array_result push(const class_type& set_item)
 	{
 		array_result resize_result = resize(_M_array_size+1);
-		if (P_OK == resize_result)
+		if (PEK_STATUS_OK == resize_result)
 		{
 			_M_parray_buffer[_M_array_size-1] = set_item;
 		}
@@ -237,7 +237,7 @@ public:
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 	}
 
@@ -269,7 +269,7 @@ public:
 	{
 		if (null != parray_iterator)
 		{
-			if (P_OK == parray_iterator->reinit(this))
+			if (PEK_STATUS_OK == parray_iterator->reinit(this))
 			{
 				return parray_iterator;
 			}
@@ -381,7 +381,7 @@ public:
 			_M_array_buffer_array_allocate_step = other_array._M_array_buffer_array_allocate_step;
 			other_array._M_array_buffer_array_allocate_step = temp_size;
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	inline array_result swap_value(const _Array_iterator* piterator1,const _Array_iterator* piterator2)
 	{
@@ -393,11 +393,11 @@ public:
 			class_type ptemp_item = *pitem_hight;
 			*pitem_hight = *pitem_low;
 			*pitem_low = ptemp_item;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 	inline array_result swap_value(array_index_val index1,array_index_val index2)
@@ -410,11 +410,11 @@ public:
 			class_type ptemp_item = *pitem_hight;
 			*pitem_hight = *pitem_low;
 			*pitem_low = ptemp_item;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 	}
 
@@ -427,7 +427,7 @@ public:
 			init_buffer_size = 1;
 		}
 		array_result resize_result = resize(init_buffer_size,auto_allocate_size,auto_allocate_buffer_array_step);
-		if (P_OK == resize_result)
+		if (PEK_STATUS_OK == resize_result)
 		{
 			_M_pool_size = 0;
 		}
@@ -449,7 +449,7 @@ public:
 				ARRAY_BOOLEAN_FLASE,
 				ARRAY_BOOLEAN_TRUE);
 
-			if (P_OK == resize_result)
+			if (PEK_STATUS_OK == resize_result)
 			{
 				_M_pool_size = other_array._M_pool_size;
 				_M_auto_allocate_step = other_array._M_auto_allocate_step;
@@ -473,7 +473,7 @@ public:
 			}
 			return resize_result;
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	
 	inline const class_type* get_at(array_index_val index) const
@@ -509,11 +509,11 @@ public:
 			array_index_val row_index = index / _M_auto_allocate_step;
 			array_index_val column_index = index % _M_auto_allocate_step;
 			_M_ppArray_buffer_array[row_index][column_index] = set_item;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_FAIL;
+			return PEK_STATUS_FAIL;
 		}
 	}
 
@@ -543,7 +543,7 @@ public:
 			bForce_release,
 			ARRAY_BOOLEAN_FLASE);
 
-		if (P_OK == resize_result)
+		if (PEK_STATUS_OK == resize_result)
 		{
 			_M_pool_size = resize_size;
 			_M_auto_allocate_step = auto_allocate_size;
@@ -566,7 +566,7 @@ public:
 	inline array_result push(const class_type& set_item)
 	{
 		array_result resize_result = resize(_M_pool_size+1);
-		if (P_OK == resize_result)
+		if (PEK_STATUS_OK == resize_result)
 		{
 			*get_reference_at(_M_pool_size-1) = set_item;
 		}
@@ -580,7 +580,7 @@ public:
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 	}
 
@@ -612,7 +612,7 @@ public:
 	{
 		if (null != parray_iterator)
 		{
-			if (P_OK == parray_iterator->reinit(this))
+			if (PEK_STATUS_OK == parray_iterator->reinit(this))
 			{
 				return parray_iterator;
 			}

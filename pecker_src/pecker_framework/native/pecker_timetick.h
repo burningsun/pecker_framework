@@ -10,7 +10,7 @@
 #ifndef PECKER_TIMETICK_H_
 #define PECKER_TIMETICK_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #ifdef ANDROID_OS
 #include <time.h>
 typedef timespec Time_ticker;

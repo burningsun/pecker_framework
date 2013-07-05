@@ -9,7 +9,7 @@
 #ifndef PECKER_SHAPE_H_
 #define PECKER_SHAPE_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #include "pecker_vector.h"
 
 PECKER_BEGIN

@@ -10,7 +10,7 @@
 #ifndef PECKER_FILE_IO_H_
 #define PECKER_FILE_IO_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 
 PECKER_BEGIN
 
@@ -46,8 +46,8 @@ PECKER_BEGIN
 #define PFO_OPEN_EX_BIT				7
 
 //file open result
-#define PRST_OK 								P_OK
-#define PRST_FAIL								P_FAIL
+#define PRST_OK 								PEK_STATUS_OK
+#define PRST_FAIL								PEK_STATUS_FAIL
 #define PRST_OPENS						2
 #define PRST_NOT_OPEN				3
 
@@ -65,7 +65,7 @@ private:
 	
 public:
 	static HResult set_install_apkfile_path(const Char* pstr_path,nSize path_length);
-	static const ConstStringChars& get_install_apkfile_path();
+	static const const_string_chars& get_install_apkfile_path();
 	static Handle get_private_apkfile_manager();
 	static Boolean is_file_exists(const Char* pstr_path,nSize path_length);
 	static HFlag get_file_rw_mode(const Char* pstr_path,nSize path_length);
@@ -79,7 +79,7 @@ public:
 
 	virtual HResult open(const Char* pstr_path,nSize path_length, HFlag nOpenType);
 	virtual Bytes& read_to_memery(Bytes& memery_buffer,UInt origin = FILE_SEEK_SET,Long offset = 0);
-	virtual nSize write_to_file(const ConstBytes&  memery_buffer,UInt origin = FILE_SEEK_SET,Long offset = 0);
+	virtual nSize write_to_file(const const_bytes&  memery_buffer,UInt origin = FILE_SEEK_SET,Long offset = 0);
 	virtual nSize get_file_size();
 	virtual HResult close();
 

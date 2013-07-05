@@ -27,21 +27,21 @@ HResult pecker_read_stream_form_memery::bind_read_buffer(CONST_STREAM_BUFFER pbi
 {
 	if (null == pbind_buffer || bind_size <= 0)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&_M_critical_section);
 
 	_M_bind_read_buffer = pbind_buffer;
 	_M_bind_read_size = bind_size; 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 HResult pecker_read_stream_form_memery::read_integer(int &read_value)
 {
 	if (null == _M_bind_read_buffer || 0 == _M_bind_read_size)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&_M_critical_section);
@@ -50,21 +50,21 @@ HResult pecker_read_stream_form_memery::read_integer(int &read_value)
 	{
 		_M_bind_read_buffer = null; 
 		_M_bind_read_size = 0;
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	else
 	{
 		_M_bind_read_buffer += index;
 		_M_bind_read_size -= index;
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 HResult pecker_read_stream_form_memery::read_long(long long &read_value)
 {
 	if (null == _M_bind_read_buffer || 0 == _M_bind_read_size)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&_M_critical_section);
@@ -73,21 +73,21 @@ HResult pecker_read_stream_form_memery::read_long(long long &read_value)
 	{
 		_M_bind_read_buffer = null; 
 		_M_bind_read_size = 0;
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	else
 	{
 		_M_bind_read_buffer += index;
 		_M_bind_read_size -= index;
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 HResult pecker_read_stream_form_memery::read_char(char &read_value)
 {
 	if (null == _M_bind_read_buffer || 0 == _M_bind_read_size)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&_M_critical_section);
@@ -97,11 +97,11 @@ HResult pecker_read_stream_form_memery::read_char(char &read_value)
 		read_value = _M_bind_read_buffer[0];
 		++_M_bind_read_buffer;
 		--_M_bind_read_size;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	else
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	//int index = sscanf(_M_bind_read_buffer,"%c",&read_value);
 
@@ -116,14 +116,14 @@ HResult pecker_read_stream_form_memery::read_char(char &read_value)
 	//	_M_bind_read_buffer += index;
 	//	_M_bind_read_size -= index;
 	//}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 HResult pecker_read_stream_form_memery::read_float(char &read_value)
 {
 	if (null == _M_bind_read_buffer || 0 == _M_bind_read_size)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&_M_critical_section);
@@ -132,21 +132,21 @@ HResult pecker_read_stream_form_memery::read_float(char &read_value)
 	{
 		_M_bind_read_buffer = null; 
 		_M_bind_read_size = 0;
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	else
 	{
 		_M_bind_read_buffer += index;
 		_M_bind_read_size -= index;
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 HResult pecker_read_stream_form_memery::read_double(char &read_value)
 {
 	if (null == _M_bind_read_buffer || 0 == _M_bind_read_size)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	pecker_critical_lock cs_lock;
@@ -156,14 +156,14 @@ HResult pecker_read_stream_form_memery::read_double(char &read_value)
 	{
 		_M_bind_read_buffer = null; 
 		_M_bind_read_size = 0;
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	else
 	{
 		_M_bind_read_buffer += index;
 		_M_bind_read_size -= index;
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 int pecker_read_stream_form_memery::read_chars(char* pread_buffer,int read_buffer_size)
@@ -181,7 +181,7 @@ int pecker_read_stream_form_memery::read_chars(char* pread_buffer,int read_buffe
 	int ireadsize = 0;
 	for (ireadsize=0;ireadsize<read_buffer_size;++ireadsize)
 	{
-		if (P_OK == read_char(read_char_value))
+		if (PEK_STATUS_OK == read_char(read_char_value))
 		{
 			if ( '\n' == read_char_value || 0 == read_char_value)
 			{
@@ -224,7 +224,7 @@ HResult pecker_write_stream_to_memery::bind_write_buffer( STREAM_BUFFER pbind_bu
 {
 	if (null == pbind_buffer || bind_size <= 0)
 	{
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	pecker_critical_lock cs_lock;
@@ -233,7 +233,7 @@ HResult pecker_write_stream_to_memery::bind_write_buffer( STREAM_BUFFER pbind_bu
 	_M_bind_write_buffer = pbind_buffer;
 	_M_bind_write_size = bind_size;
 	
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 HResult pecker_write_stream_to_memery::write_integer(int write_value)
@@ -252,9 +252,9 @@ HResult pecker_write_stream_to_memery::write_integer(int write_value)
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_write_stream_to_memery::write_unsigned_integer(unsigned int write_value)
@@ -273,9 +273,9 @@ HResult pecker_write_stream_to_memery::write_unsigned_integer(unsigned int write
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_write_stream_to_memery::write_long(long long write_value)
@@ -293,9 +293,9 @@ HResult pecker_write_stream_to_memery::write_long(long long write_value)
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_write_stream_to_memery::write_unsigned_long(unsigned long long write_value)
@@ -313,9 +313,9 @@ HResult pecker_write_stream_to_memery::write_unsigned_long(unsigned long long wr
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_write_stream_to_memery::write_char(char write_value)
@@ -334,9 +334,9 @@ HResult pecker_write_stream_to_memery::write_char(char write_value)
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_write_stream_to_memery::write_byte(char write_value)
@@ -356,9 +356,9 @@ HResult pecker_write_stream_to_memery::write_byte(char write_value)
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_write_stream_to_memery::write_float(char write_value)
@@ -377,9 +377,9 @@ HResult pecker_write_stream_to_memery::write_float(char write_value)
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_write_stream_to_memery::write_double(char write_value)
@@ -397,9 +397,9 @@ HResult pecker_write_stream_to_memery::write_double(char write_value)
 		_M_bind_write_buffer[index] = 0;
 		_M_bind_write_buffer+=index;
 		_M_bind_write_size -= index;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 int pecker_write_stream_to_memery::write_chars(char* pwrite_buffer,int write_buffer_size)
@@ -418,7 +418,7 @@ int pecker_write_stream_to_memery::write_chars(char* pwrite_buffer,int write_buf
 			--iwritesize;
 			break;
 		}
-		if (P_OK != write_char(write_char_value))
+		if (PEK_STATUS_OK != write_char(write_char_value))
 		{
 			break;
 		}

@@ -14,7 +14,7 @@
 //#define  AVL_DEBUG_CODE
 //#endif
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #include "pecker_iterator.h"
 #include "pecker_bst_iterator.h"
 #include "pecker_avl_tree_algorithm.h"
@@ -113,7 +113,7 @@ public:
 			else
 			{
 				_M_pAvl_current_node = null;
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			if (_M_Avl_node_stack_size > 0)
@@ -124,9 +124,9 @@ public:
 			{
 				_M_pAvl_current_node = null;
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult reinit(const _AVL_node_base* pAvl_root_node,TREE_ITERATOR_INIT_TYPE init_type = ITERATOR_INIT_MIN)
@@ -143,14 +143,14 @@ public:
 
 			return init(init_type);
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult copy(const pecker_avl_tree_inorder_iterator_base* pAvl_other_iterator)
 	{
 		if (this == pAvl_other_iterator)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pAvl_other_iterator)
 		{
@@ -165,16 +165,16 @@ public:
 				_M_Avl_node_stack[index] = pAvl_other_iterator->_M_Avl_node_stack[index];
 			}
 
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	inline HResult increment()
 	{
 		if (null == _M_pAvl_current_node || AVL_TREE_BOOLEAN_TRUE == _M_b_catch_end_flag)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		const _AVL_node_base* pAvl_tmp_node = _M_pAvl_current_node;
@@ -195,13 +195,13 @@ public:
 				}
 				else
 				{
-					return P_ERR;
+					return PEK_STATUS_ERROR;
 				}
 			}
 			if (index < 0)
 			{
 				_M_b_catch_end_flag = AVL_TREE_BOOLEAN_TRUE;
-				return P_SUCCESS;
+				return PEK_STATUS_SUCCESS;
 			}
 			else
 			{
@@ -215,7 +215,7 @@ public:
 				}
 				_M_pAvl_current_node = pAvl_tmp_node;
 				_M_b_catch_begin_flag = AVL_TREE_BOOLEAN_FLASE;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 		}
 		else
@@ -226,14 +226,14 @@ public:
 			_M_pAvl_current_node = pAvl_tmp_node;
 		}
 		_M_b_catch_begin_flag = AVL_TREE_BOOLEAN_FLASE;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline HResult decrement()
 	{
 		if (null == _M_pAvl_current_node || AVL_TREE_BOOLEAN_TRUE == _M_b_catch_begin_flag)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		const _AVL_node_base* pAvl_tmp_node = _M_pAvl_current_node;
@@ -254,13 +254,13 @@ public:
 				}
 				else
 				{
-					return P_ERR;
+					return PEK_STATUS_ERROR;
 				}
 			}
 			if (index < 0)
 			{
 				_M_b_catch_begin_flag = AVL_TREE_BOOLEAN_TRUE;
-				return P_SUCCESS;
+				return PEK_STATUS_SUCCESS;
 			}
 			else
 			{
@@ -274,7 +274,7 @@ public:
 				}
 				_M_pAvl_current_node = pAvl_tmp_node;
 				_M_b_catch_end_flag = AVL_TREE_BOOLEAN_FLASE;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 		}
 		else
@@ -285,7 +285,7 @@ public:
 			_M_pAvl_current_node = pAvl_tmp_node;
 		}
 		_M_b_catch_end_flag = AVL_TREE_BOOLEAN_FLASE;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline const _AVL_node_base* get_current_node() const
@@ -341,9 +341,9 @@ public:
 					break;
 				}
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 };
 
@@ -417,7 +417,7 @@ public:
 			else
 			{
 				_M_pAvl_current_node = null;
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			if (_M_Avl_node_stack_size > 0)
@@ -428,9 +428,9 @@ public:
 			{
 				_M_pAvl_current_node = null;
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult reinit(const _AVL_node_base* pAvl_root_node,TREE_ITERATOR_INIT_TYPE init_type = ITERATOR_INIT_LEFT)
@@ -448,14 +448,14 @@ public:
 
 			return init(init_type);
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	HResult copy(const pecker_avl_tree_posorder_iterator_base* pAvl_other_iterator)
 	{
 		if (this == pAvl_other_iterator)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pAvl_other_iterator)
 		{
@@ -470,16 +470,16 @@ public:
 				_M_Avl_node_stack[index] = pAvl_other_iterator->_M_Avl_node_stack[index];
 			}
 
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	inline HResult increment_right()
 	{
 		if (null == _M_pAvl_current_node || _M_pAvl_current_node == _M_pAvl_iterator_root)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 		avl_array_index_val index = _M_Avl_node_stack_size - 1;
 		const _AVL_node_base* pAvl_tmp_node = _M_pAvl_current_node;
@@ -490,7 +490,7 @@ public:
 			{
 				_M_pAvl_current_node = _M_Avl_node_stack[index];
 				--_M_Avl_node_stack_size;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else if (_M_Avl_node_stack[index]->_M_left == pAvl_tmp_node)
 			{
@@ -499,12 +499,12 @@ public:
 			}
 			else
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		//while (null != pAvl_tmp_node->_M_left)
@@ -518,14 +518,14 @@ public:
 		}
 		--_M_Avl_node_stack_size;
 		_M_pAvl_current_node = pAvl_tmp_node;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline HResult increment_left()
 	{
 		if (null == _M_pAvl_current_node || _M_pAvl_current_node == _M_pAvl_iterator_root)
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 		avl_array_index_val index = _M_Avl_node_stack_size - 1;
 		const _AVL_node_base* pAvl_tmp_node = _M_pAvl_current_node;
@@ -536,7 +536,7 @@ public:
 			{
 				_M_pAvl_current_node = _M_Avl_node_stack[index];
 				--_M_Avl_node_stack_size;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else if (_M_Avl_node_stack[index]->_M_right == pAvl_tmp_node)
 			{
@@ -545,12 +545,12 @@ public:
 			}
 			else
 			{
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 		//while (null != pAvl_tmp_node->_M_left)
@@ -564,7 +564,7 @@ public:
 		}
 		--_M_Avl_node_stack_size;
 		_M_pAvl_current_node = pAvl_tmp_node;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline const _AVL_node_base* get_current_node() const
@@ -640,14 +640,14 @@ protected:
 			__AVL_node_t* perase_node = (__AVL_node_t*)(this_iterator.get_current_node());
 			avl_result result_ = this_iterator.increment_right();
 			//avl_result result_ = this_iterator.increment_left();
-			if (P_OK == result_)
+			if (PEK_STATUS_OK == result_)
 			{
 //#ifdef AVL_DEBUG_CODE
 //				std::cout << "release node = "<<perase_node->key<<std::endl;
 //#endif
 				_M_allocator.release_node(perase_node);
 			}
-			else  if (P_SUCCESS == result_)
+			else  if (PEK_STATUS_SUCCESS == result_)
 			{
 //#ifdef AVL_DEBUG_CODE
 //				std::cout << "release node = "<<perase_node->key<<std::endl;
@@ -664,7 +664,7 @@ protected:
 			}
 			
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	nodes_allocator_t &get_nodes_allocater() 
 	{
@@ -675,11 +675,11 @@ public:
 	{
 		if (null == other)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		if (other == this)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		//clear(AVL_TREE_BOOLEAN_TRUE);
 		if (_M_allocator.Is_pool())
@@ -703,11 +703,11 @@ public:
 			avl_result result_ = this_iterator.increment_right();
 
 			++icount;
-			if (P_OK == result_)
+			if (PEK_STATUS_OK == result_)
 			{
 				fast_allocator.release_node(perase_node);
 			}
-			else  if (P_SUCCESS == result_)
+			else  if (PEK_STATUS_SUCCESS == result_)
 			{
 				fast_allocator.release_node(perase_node);
 				break;
@@ -754,11 +754,11 @@ public:
 					avl_result result_ = this_iterator.increment_right();
 
 					++icount;
-					if (P_OK == result_)
+					if (PEK_STATUS_OK == result_)
 					{
 						_M_allocator.release_node(perase_node);
 					}
-					else  if (P_SUCCESS == result_)
+					else  if (PEK_STATUS_SUCCESS == result_)
 					{
 						_M_allocator.release_node(perase_node);
 						break;
@@ -770,7 +770,7 @@ public:
 
 				}
 
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			*ptemp_copy_node = pcopy_node;
@@ -808,11 +808,11 @@ public:
 			avl_result result_ = this_iterator.increment_right();
 
 			++icount;
-			if (P_OK == result_)
+			if (PEK_STATUS_OK == result_)
 			{
 				_M_allocator.release_node(perase_node);
 			}
-			else  if (P_SUCCESS == result_)
+			else  if (PEK_STATUS_SUCCESS == result_)
 			{
 				_M_allocator.release_node(perase_node);
 				break;
@@ -823,7 +823,7 @@ public:
 			}
 
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	avl_result clear(Avl_tree_boolean_flag bForce_release = AVL_TREE_BOOLEAN_FLASE)
 	{
@@ -842,7 +842,7 @@ public:
 			this->_M_node_count = 0;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}	
 
 	inline const __AVL_node_t* get_root() const
@@ -868,7 +868,7 @@ public:
 		}
 		avl_result add_error_code;
 		avl_tree_add<key_t,cmp_t,__AVL_node_t>(_M_root_node,newnode,_M_compare,add_error_code);
-		if (P_OK == add_error_code)
+		if (PEK_STATUS_OK == add_error_code)
 		{
 			++_M_node_count;
 		}
@@ -912,7 +912,7 @@ public:
 			avl_result add_error_code;
 			erase_node->key = key;
 			avl_tree_add<key_t,cmp_t,__AVL_node_t>(_M_root_node,erase_node,_M_compare,add_error_code);
-			if (P_OK != add_error_code)
+			if (PEK_STATUS_OK != add_error_code)
 			{
 				--_M_node_count;
 			}
@@ -925,7 +925,7 @@ public:
 		
 	}
 
-	inline _Tree_iterator* get_iterator(_Tree_iterator* P_INOUT pIterator) const
+	inline _Tree_iterator* get_iterator(_Tree_iterator* PARAM_INOUT pIterator) const
 	{
 		if (pIterator)
 		{
@@ -934,7 +934,7 @@ public:
 		return pIterator;
 	}
 
-	inline const key_t* get_at(const _Tree_iterator* P_IN pIterator) const
+	inline const key_t* get_at(const _Tree_iterator* PARAM_IN pIterator) const
 	{
 		if (pIterator && _M_root_node == pIterator->get_root_node())
 		{
@@ -948,7 +948,7 @@ public:
 		return null;
 	}
 
-	inline const __AVL_node_t* get_node(const _Tree_iterator* P_IN pIterator) const
+	inline const __AVL_node_t* get_node(const _Tree_iterator* PARAM_IN pIterator) const
 	{
 		if (pIterator && _M_root_node == pIterator->get_root_node())
 		{
@@ -1017,11 +1017,11 @@ protected:
 			__AVL_node_t* perase_node = (__AVL_node_t*)(this_iterator.get_current_node());
 			avl_result result_ = this_iterator.increment_right();
 
-			if (P_OK == result_)
+			if (PEK_STATUS_OK == result_)
 			{
 				_M_allocator.release_node(perase_node);
 			}
-			else  if (P_SUCCESS == result_)
+			else  if (PEK_STATUS_SUCCESS == result_)
 			{
 				_M_allocator.release_node(perase_node);
 				break;
@@ -1032,7 +1032,7 @@ protected:
 			}
 
 		}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	inline nodes_allocator_t &get_nodes_allocater() const
 	{
@@ -1043,11 +1043,11 @@ public:
 	{
 		if (null == other)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		if (other == this)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		//clear(AVL_TREE_BOOLEAN_TRUE);
 		if (_M_allocator.Is_pool())
@@ -1072,11 +1072,11 @@ public:
 			avl_result result_ = this_iterator.increment_right();
 
 			++icount;
-			if (P_OK == result_)
+			if (PEK_STATUS_OK == result_)
 			{
 				fast_allocator.release_node(perase_node);
 			}
-			else  if (P_SUCCESS == result_)
+			else  if (PEK_STATUS_SUCCESS == result_)
 			{
 				fast_allocator.release_node(perase_node);
 				break;
@@ -1118,11 +1118,11 @@ public:
 					__AVL_node_t* perase_node = (__AVL_node_t*)(this_iterator.get_current_node());
 					avl_result result_ = this_iterator.increment_right();
 
-					if (P_OK == result_)
+					if (PEK_STATUS_OK == result_)
 					{
 						_M_allocator.release_node(perase_node);
 					}
-					else  if (P_SUCCESS == result_)
+					else  if (PEK_STATUS_SUCCESS == result_)
 					{
 						_M_allocator.release_node(perase_node);
 						break;
@@ -1133,7 +1133,7 @@ public:
 					}
 
 				}
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
 
 			*ptemp_copy_node = pcopy_node;
@@ -1170,11 +1170,11 @@ public:
 			__AVL_node_t* perase_node = (__AVL_node_t*)(this_iterator.get_current_node());
 			avl_result result_ = this_iterator.increment_right();
 
-			if (P_OK == result_)
+			if (PEK_STATUS_OK == result_)
 			{
 				_M_allocator.release_node(perase_node);
 			}
-			else  if (P_SUCCESS == result_)
+			else  if (PEK_STATUS_SUCCESS == result_)
 			{
 				_M_allocator.release_node(perase_node);
 				break;
@@ -1186,7 +1186,7 @@ public:
 
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	avl_result clear(Avl_tree_boolean_flag bForce_release = AVL_TREE_BOOLEAN_FLASE)
 	{
@@ -1205,7 +1205,7 @@ public:
 			this->_M_node_count = 0;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}	
 
 	inline const __AVL_node_t* get_root() const
@@ -1232,7 +1232,7 @@ public:
 		}
 		avl_result add_error_code;
 		avl_tree_add<key_t,cmp_t,__AVL_node_t>(_M_root_node,newnode,_M_compare,add_error_code);
-		if (P_OK == add_error_code)
+		if (PEK_STATUS_OK == add_error_code)
 		{
 			++_M_node_count;
 		}
@@ -1276,7 +1276,7 @@ public:
 			avl_result add_error_code;
 			erase_node->key = key;
 			avl_tree_add<key_t,cmp_t,__AVL_node_t>(_M_root_node,erase_node,_M_compare,add_error_code);
-			if (P_OK != add_error_code)
+			if (PEK_STATUS_OK != add_error_code)
 			{
 				--_M_node_count;
 			}
@@ -1298,7 +1298,7 @@ public:
 			erase_node->key = key;
 			erase_node->value = newvalue;
 			avl_tree_add<key_t,cmp_t,__AVL_node_t>(_M_root_node,erase_node,_M_compare,add_error_code);
-			if (P_OK != add_error_code)
+			if (PEK_STATUS_OK != add_error_code)
 			{
 				--_M_node_count;
 			}
@@ -1316,12 +1316,12 @@ public:
 		if (null != pfind_node)
 		{
 			pfind_node->value = newvalue;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
-	inline _Tree_iterator* get_iterator(_Tree_iterator* P_INOUT pIterator) const
+	inline _Tree_iterator* get_iterator(_Tree_iterator* PARAM_INOUT pIterator) const
 	{
 		if (pIterator)
 		{
@@ -1330,7 +1330,7 @@ public:
 		return pIterator;
 	}
 
-	inline const value_t* get_at(const _Tree_iterator* P_IN pIterator) const
+	inline const value_t* get_at(const _Tree_iterator* PARAM_IN pIterator) const
 	{
 		if (pIterator && _M_root_node == pIterator->get_root_node())
 		{
@@ -1344,7 +1344,7 @@ public:
 		return null;
 	}
 
-	inline const __AVL_node_t* get_node(const _Tree_iterator* P_IN pIterator) const
+	inline const __AVL_node_t* get_node(const _Tree_iterator* PARAM_IN pIterator) const
 	{
 		if (pIterator && _M_root_node == pIterator->get_root_node())
 		{

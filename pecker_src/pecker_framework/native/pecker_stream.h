@@ -10,7 +10,7 @@
 #ifndef PECKER_STREAM_H_
 #define PECKER_STREAM_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #include "pecker_thread.h"
 
 #include <stdio.h>
@@ -61,66 +61,7 @@ public:
 	int read_chars(char* pread_buffer,int read_buffer_size);
 };
 
-//inline HResult pecker_read_stream_form_memery::read_char(char &read_value)
-//{
-//	if (null == _M_bind_read_buffer || 0 == _M_bind_read_size)
-//	{
-//		return P_ERR;
-//	}
-//	pecker_critical_lock cs_lock;
-//	cs_lock.lock(&_M_critical_section);
-//	int index = sscanf(_M_bind_read_buffer,"%c",&read_value);
-//	if (index  > _M_bind_read_size)
-//	{
-//		_M_bind_read_buffer = null; 
-//		_M_bind_read_size = 0;
-//		return P_ERR;
-//	}
-//	else
-//	{
-//		_M_bind_read_buffer += index;
-//		_M_bind_read_size -= index;
-//	}
-//	return P_OK;
-//}
-//
-//inline int pecker_read_stream_form_memery::read_chars(char* pread_buffer,int read_buffer_size)
-//{
-//	if (null == _M_bind_read_buffer || 0 == _M_bind_read_size)
-//	{
-//		return 0;
-//	}
-//
-//	pecker_critical_lock cs_lock;
-//	cs_lock.lock(&_M_critical_section);
-//
-//	char read_char_value = 0;
-//	int isubsize = 1;
-//	int ireadsize = 0;
-//	for (ireadsize=0;ireadsize<read_buffer_size;++ireadsize)
-//	{
-//		if (P_OK == read_char(read_char_value))
-//		{
-//			if ( '\n' == read_char_value || 0 == read_char_value)
-//			{
-//				ireadsize -= isubsize;
-//				break;
-//			}
-//			if ('\r' == read_char_value)
-//			{
-//				++isubsize;
-//				continue;
-//			}
-//			pread_buffer[ireadsize] = read_char_value;
-//		}
-//		else
-//		{
-//			break;
-//		}
-//	}
-//
-//	return ireadsize;
-//}
+
 
 class pecker_write_stream_to_memery : public Ipecker_write_stream
 {

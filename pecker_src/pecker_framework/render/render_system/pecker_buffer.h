@@ -89,12 +89,24 @@ PeckerInterface Ipecker_graphic_buffer
 
 };
 
+enum ATTRIBUTE_DATA_TYPE
+{
+	DATA_TYPE_BYTE								= 0,              
+	DATA_TYPE_UNSIGNED_BYTE,    
+	DATA_TYPE_SHORT,                     
+	DATA_TYPE_UNSIGNED_SHORT,
+	DATA_TYPE_INT,                           
+	DATA_TYPE_UNSIGNED_INT,       
+	DATA_TYPE_FLOAT,                      
+	DATA_TYPE_FIXED,
+	ATTRIBUTE_DATA_TYPE_COUNT
+};
 struct vertex_attribute_info
 {
 	nINDEX _M_attribute_index;
 	nSize _M_attribute_size;
 	HFlag _M_stride;
-	HEnum _M_attribute_data_type;
+	ATTRIBUTE_DATA_TYPE _M_attribute_data_type;
 	UInt _M_offset;
 	Bool _M_normalized;
 	Bool _M_use_vbo;
@@ -103,7 +115,7 @@ struct vertex_attribute_info
 											nINDEX attribute_index = -1,
 											nSize attribute_size = 0,
 											HFlag stride = 0,
-											HEnum attribute_data_type = 0,
+											ATTRIBUTE_DATA_TYPE attribute_data_type = DATA_TYPE_BYTE,
 											UInt offset = 0,
 											Bool normalized = false,
 											Bool use_vbo = false):
@@ -133,7 +145,7 @@ PeckerInterface Ipecker_vertex_buffer : public Ipecker_graphic_buffer
 	virtual vertex_attribute_info* get_vertex_attribute_reference(UInt vex_info_index) = 0;
 	virtual nSize get_vertex_attribute_setting_count() const = 0;
 
-	virtual HResult set_vbo_using_setting(HEnum setting) = 0;
+	virtual HResult set_vbo_using_setting(VBO_USING_SETTING setting) = 0;
 	virtual HResult use_vertex_attrible() = 0;
 	virtual HResult finish_using_vertex_attrible() = 0;
 

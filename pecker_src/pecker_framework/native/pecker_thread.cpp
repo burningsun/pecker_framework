@@ -44,7 +44,7 @@ HResult pecker_critical_section::enter_critical_section()
 	_M_is_enter_critical_section = BOOL_TRUE;
 #endif
 #endif
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 HResult pecker_critical_section::leave_critical_section()
 {
@@ -60,7 +60,7 @@ HResult pecker_critical_section::leave_critical_section()
 
 #endif
 #endif
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 //
 //
@@ -85,7 +85,7 @@ HResult pecker_critical_lock::lock(pecker_critical_section* pcritical_section)
 		HResult hresult = pcritical_section->enter_critical_section();
 		_M_bind_critial_section = pcritical_section;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_critical_lock::unlock()
@@ -96,7 +96,7 @@ HResult pecker_critical_lock::unlock()
 		_M_bind_critial_section = null;
 		return ptemp_critial_section_pointer->leave_critical_section();
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 //};
 
@@ -112,10 +112,10 @@ pecker_thread_base::pecker_thread_base():_M_thread_id(0)
 pecker_thread_base::~pecker_thread_base()
 {
 	HResult join_result = this->join_thread(1000);
-	if (P_OK != join_result)
+	if (PEK_STATUS_OK != join_result)
 	{
 		Ulong exit_code;
-		if (P_OK == get_thread_exit_code(exit_code))
+		if (PEK_STATUS_OK == get_thread_exit_code(exit_code))
 		{
 			terminate_thread(exit_code);
 		}
@@ -154,16 +154,16 @@ HResult pecker_thread_base::start_thread(pecker_thread_proc_callback pthread_pro
 		_M_hthread = ::CreateThread(pattribute,thread_stack_size,pthread_proc,proc_params,thread_creation_flag,&_M_thread_id);
 		if (NULL != _M_hthread)
 		{
-			result_value = P_OK;
+			result_value = PEK_STATUS_OK;
 		}
 		else
 		{
-			result_value = P_FAIL;
+			result_value = PEK_STATUS_FAIL;
 		}
 	}
 	else
 	{
-		result_value = P_RUNNING_WAIT;
+		result_value = PEK_STATUS_RUNNING_WAIT;
 	}
 
 #endif
@@ -177,9 +177,9 @@ DWORD WINAPI pecker_runable_thread_function( LPVOID lpParam )
 	if (pthread_target)
 	{
 		pthread_target->run();
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_FAIL;
+	return PEK_STATUS_FAIL;
 }
 #endif
 
@@ -192,16 +192,16 @@ HResult pecker_thread_base::start_thread(Ipecker_runable* ptarget,  thread_attri
 		_M_hthread = ::CreateThread(pattribute,thread_stack_size,pecker_runable_thread_function,ptarget,thread_creation_flag,&_M_thread_id);
 		if (NULL != _M_hthread)
 		{
-			result_value = P_OK;
+			result_value = PEK_STATUS_OK;
 		}
 		else
 		{
-			result_value = P_FAIL;
+			result_value = PEK_STATUS_FAIL;
 		}
 	}
 	else
 	{
-		result_value = P_RUNNING_WAIT;
+		result_value = PEK_STATUS_RUNNING_WAIT;
 	}
 
 #endif
@@ -219,23 +219,23 @@ HResult pecker_thread_base::join_thread(Ulong wait_milisec_time /* = 0 */)
 		
 		if ( !::CloseHandle(_M_hthread))
 		{
-			result_value = P_ERR;
+			result_value = PEK_STATUS_ERROR;
 		}
 		else
 		{
-			result_value = P_OK;
+			result_value = PEK_STATUS_OK;
 			_M_thread_id = 0;
 			_M_hthread = NULL;
 		}
 		break;
 	case  WAIT_ABANDONED:
-		result_value = P_WAITRESULT;
+		result_value = PEK_STATUS_WAITRESULT;
 		break;
 	case WAIT_TIMEOUT:
-		result_value = P_TIMEOUT;
+		result_value = PEK_STATUS_TIMEOUT;
 		break;
 	case WAIT_FAILED:
-		result_value = P_FAIL;
+		result_value = PEK_STATUS_FAIL;
 		break;
 
 	}
@@ -250,14 +250,14 @@ HResult pecker_thread_base::terminate_thread(Ulong exit_code)
 #ifdef WINDOWS_PC
 	if (::TerminateThread(_M_hthread,exit_code))
 	{
-		result_value = P_OK;
+		result_value = PEK_STATUS_OK;
 		::CloseHandle(_M_hthread);
 		_M_thread_id = 0;
 		_M_hthread = NULL;
 	}
 	else
 	{
-		result_value = P_FAIL;
+		result_value = PEK_STATUS_FAIL;
 	}
 #endif
 	return result_value;
@@ -269,11 +269,11 @@ HResult pecker_thread_base::pause_thread()
 #ifdef WINDOWS_PC
 	if (-1 != ::SuspendThread(_M_hthread))
 	{
-		result_value = P_OK;
+		result_value = PEK_STATUS_OK;
 	}
 	else
 	{
-		result_value = P_FAIL;
+		result_value = PEK_STATUS_FAIL;
 	}
 #endif
 	return result_value;
@@ -285,11 +285,11 @@ HResult pecker_thread_base::resume_thread()
 #ifdef WINDOWS_PC
 	if (-1 != ::ResumeThread(_M_hthread))
 	{
-		result_value = P_OK;
+		result_value = PEK_STATUS_OK;
 	}
 	else
 	{
-		result_value = P_FAIL;
+		result_value = PEK_STATUS_FAIL;
 	}
 #endif
 	return result_value;
@@ -338,11 +338,11 @@ HResult pecker_thread_base::get_thread_exit_code(Ulong &exit_code) const
 #ifdef WINDOWS_PC
 	if (::GetExitCodeThread(_M_hthread,&exit_code))
 	{
-		result_value = P_OK;
+		result_value = PEK_STATUS_OK;
 	}
 	else
 	{
-		result_value = P_FAIL;
+		result_value = PEK_STATUS_FAIL;
 	}
 #endif
 	return result_value;
@@ -354,11 +354,11 @@ HResult pecker_thread_base::set_thread_affinity_mask(Ulong cpu_mask)
 #ifdef WINDOWS_PC
 	if (0 != ::SetThreadAffinityMask(_M_hthread,cpu_mask))
 	{
-		result_value = P_OK;
+		result_value = PEK_STATUS_OK;
 	}
 	else
 	{
-		result_value = P_FAIL;
+		result_value = PEK_STATUS_FAIL;
 	}
 #endif
 	return result_value;
@@ -392,9 +392,9 @@ HResult pecker_thread_proc_target::init(pecker_thread_proc_callback ptarget_proc
 	{
 		_M_ptarget_proc = ptarget_proc;
 		_M_params = params;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 void pecker_thread_proc_target::run()
@@ -415,7 +415,7 @@ pecker_thread_target::~pecker_thread_target()
 HResult pecker_thread_target::init(pecker_thread_proc_callback ptarget_proc,PVoid params)
 {
 	HResult init_result =  _M_proc_target.init(ptarget_proc,params);
-	if (P_OK == init_result)
+	if (PEK_STATUS_OK == init_result)
 	{
 		_M_ptarget = &_M_proc_target;
 	}
@@ -427,9 +427,9 @@ HResult pecker_thread_target::init(Ipecker_runable* ptarget)
 	if (null != ptarget)
 	{
 		_M_ptarget = ptarget;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 void pecker_thread_target::run()
@@ -466,7 +466,7 @@ HResult pecker_thread::init_thread_info(const thread_attributes* pattribute /* =
 	_M_thread_stack_size = thread_stack_size;
 	_M_thread_creation_flag = thread_creation_flag;
 
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 HResult pecker_thread::init_thread_target(pecker_thread_proc_callback pthread_proc,
@@ -483,7 +483,7 @@ HResult pecker_thread::init_thread_target(Ipecker_runable* ptarget)
 HResult pecker_thread::init_thread(Ipecker_runable* ptarget,const thread_attributes* pattribute /* = null */, nSize thread_stack_size /* = 0 */, HFlag thread_creation_flag /* = 0 */)
 {
 	HResult init_result = _M_thread_target.init(ptarget);
-	if (P_OK == init_result)
+	if (PEK_STATUS_OK == init_result)
 	{
 		 if (null != pattribute)
 		 {
@@ -503,7 +503,7 @@ HResult pecker_thread::init_thread(Ipecker_runable* ptarget,const thread_attribu
 HResult pecker_thread::init_thread(pecker_thread_proc_callback pthread_proc, PVoid proc_params, const thread_attributes* pattribute /* = null */, nSize thread_stack_size /* = 0 */, HFlag thread_creation_flag /* = 0 */)
 {
 	HResult init_result = _M_thread_target.init(pthread_proc,proc_params);
-	if (P_OK == init_result)
+	if (PEK_STATUS_OK == init_result)
 	{
 		if (null != pattribute)
 		{
@@ -522,22 +522,22 @@ HResult pecker_thread::init_thread(pecker_thread_proc_callback pthread_proc, PVo
 
 HResult pecker_thread::start_thread(pecker_thread_proc_callback pthread_proc, PVoid proc_params, thread_attributes* pattribute /* = null */, nSize thread_stack_size /* = 0 */, HFlag thread_creation_flag /* = 0 */)
 {
-	if (P_OK == init_thread(pthread_proc,proc_params,pattribute,thread_stack_size,thread_creation_flag))
+	if (PEK_STATUS_OK == init_thread(pthread_proc,proc_params,pattribute,thread_stack_size,thread_creation_flag))
 	{
 		return pecker_thread_base::start_thread(&_M_thread_target,_M_pthread_attr,_M_thread_stack_size,_M_thread_creation_flag);
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_thread::start_thread(Ipecker_runable* ptarget,thread_attributes* pattribute /*= null*/,
 	nSize thread_stack_size /*= 0*/,
 	HFlag thread_creation_flag /*= 0*/)
 {
-	if (P_OK == init_thread(ptarget,pattribute,thread_stack_size,thread_creation_flag))
+	if (PEK_STATUS_OK == init_thread(ptarget,pattribute,thread_stack_size,thread_creation_flag))
 	{
 		return pecker_thread_base::start_thread(&_M_thread_target,_M_pthread_attr,_M_thread_stack_size,_M_thread_creation_flag);
 	}
-	return P_ERR;
+	return PEK_STATUS_ERROR;
 }
 
 HResult pecker_thread::start_thread()

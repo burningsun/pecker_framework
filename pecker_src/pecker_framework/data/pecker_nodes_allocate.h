@@ -9,7 +9,7 @@
 #ifndef PECKER_NODES_ALLOCATE_H_
 #define PECKER_NODES_ALLOCATE_H_
 
-#include "../CPeckerObject.h"
+#include "../pecker_reference.h"
 #include "pecker_array.h"
 #include "../native/pecker_allocator.h"
 #include "../native/pecker_alloc_containers.h"

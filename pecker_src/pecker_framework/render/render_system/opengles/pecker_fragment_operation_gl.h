@@ -58,6 +58,9 @@ public:
 	Bool disable_state(HEnum state);
 	Bool is_enable(HEnum state) const;
 
+
+	HResult draw_array(DRAW_MODE draw_mode,nINDEX fist,nSize count);
+	HResult draw_element(DRAW_MODE draw_mode,nSize count,ATTRIBUTE_DATA_TYPE datatype,PVoid pindex_buffer = null );
 };
 
 PECKER_END

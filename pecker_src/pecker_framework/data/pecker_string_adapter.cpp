@@ -11,22 +11,22 @@
 #include "pecker_string_adapter.h"
 PECKER_BEGIN
 
-HResult string_ascii_to_unicode_adapter::convert(const pecker_char_unicode* P_IN pstr_unicode,nSize nunicode_size,pecker_char_ascii* P_OUT pstr_ascii_buffer,nSize nAscii_buffer_size,nSize &nConvered_ascii_string_size)
+HResult string_ascii_to_unicode_adapter::convert(const pecker_char_unicode* PARAM_IN pstr_unicode,nSize nunicode_size,pecker_char_ascii* PARAM_OUT pstr_ascii_buffer,nSize nAscii_buffer_size,nSize &nConvered_ascii_string_size)
 {
 	if (null == pstr_unicode || 0 >= nunicode_size)
 	{
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 	nConvered_ascii_string_size = wcstombs(null,pstr_unicode,0);
 
 	if (nConvered_ascii_string_size < 0)
 	{
-		return P_FAIL;
+		return PEK_STATUS_FAIL;
 	}
 
 	if (null == pstr_ascii_buffer ||  1 >= nAscii_buffer_size)
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	nConvered_ascii_string_size += 1 ;
@@ -39,31 +39,31 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_char_unicode* P_IN
 
 	if (nConvered_ascii_string_size < 0)
 	{
-		return P_FAIL;
+		return PEK_STATUS_FAIL;
 	}
 	else
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 }
 
-HResult string_ascii_to_unicode_adapter::convert(const pecker_char_ascii* P_IN pstr_ascii,nSize nAscii_size,pecker_char_unicode* P_OUT pstr_unicode_buffer,nSize nunicode_buffer_size,nSize &nConvered_unicode_string_size)
+HResult string_ascii_to_unicode_adapter::convert(const pecker_char_ascii* PARAM_IN pstr_ascii,nSize nAscii_size,pecker_char_unicode* PARAM_OUT pstr_unicode_buffer,nSize nunicode_buffer_size,nSize &nConvered_unicode_string_size)
 {
 	if (null == pstr_ascii || 0 >= nAscii_size)
 	{
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 	nConvered_unicode_string_size = mbstowcs(null,pstr_ascii,0);
 
 	if (nConvered_unicode_string_size < 0)
 	{
-		return P_FAIL;
+		return PEK_STATUS_FAIL;
 	}
 
 	if (null == pstr_unicode_buffer ||  1 >= nunicode_buffer_size)
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	nConvered_unicode_string_size += 1;
@@ -76,11 +76,11 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_char_ascii* P_IN p
 
 	if (nConvered_unicode_string_size < 0)
 	{
-		return P_FAIL;
+		return PEK_STATUS_FAIL;
 	}
 	else
 	{
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 }
 
@@ -91,7 +91,7 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_string_ascii& str_
 		nSize unicode_strlen = mbstowcs(null,str_ascii.get_data(),0);
 		if (unicode_strlen < 0)
 		{
-			return P_FAIL;
+			return PEK_STATUS_FAIL;
 		}
 		else
 		{
@@ -100,17 +100,17 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_string_ascii& str_
 			if (unicode_strlen >= 0)
 			{
 				str_unicode.resize(unicode_strlen);
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else
 			{
-				return P_FAIL;
+				return PEK_STATUS_FAIL;
 			}
 		}
 	}
 	else
 	{
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 }
 
@@ -121,7 +121,7 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_string_unicode& st
 		nSize ascii_strlen = wcstombs(null,str_unicode.get_data(),0);
 		if (ascii_strlen < 0)
 		{
-			return P_FAIL;
+			return PEK_STATUS_FAIL;
 		}
 		else
 		{
@@ -130,28 +130,28 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_string_unicode& st
 			if (ascii_strlen >= 0)
 			{
 				str_ascii.resize(ascii_strlen);
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else
 			{
-				return P_FAIL;
+				return PEK_STATUS_FAIL;
 			}
 		}
 	}
 	else
 	{
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 }
 
-HResult string_ascii_to_unicode_adapter::convert(const pecker_char_ascii* P_IN pstr_ascii,nSize nAscii_size,pecker_string_unicode& str_unicode)
+HResult string_ascii_to_unicode_adapter::convert(const pecker_char_ascii* PARAM_IN pstr_ascii,nSize nAscii_size,pecker_string_unicode& str_unicode)
 {
 	if (null != pstr_ascii && nAscii_size > 0)
 	{
 		nSize unicode_strlen = mbstowcs(null,pstr_ascii,0);
 		if (unicode_strlen < 0)
 		{
-			return P_FAIL;
+			return PEK_STATUS_FAIL;
 		}
 		else
 		{
@@ -160,28 +160,28 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_char_ascii* P_IN p
 			if (unicode_strlen >= 0)
 			{
 				str_unicode.resize(unicode_strlen);
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else
 			{
-				return P_FAIL;
+				return PEK_STATUS_FAIL;
 			}
 		}
 	}
 	else
 	{
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 }
 
-HResult string_ascii_to_unicode_adapter::convert(const pecker_char_unicode* P_IN pstr_unicode,nSize nunicode_size,pecker_string_ascii& str_ascii)
+HResult string_ascii_to_unicode_adapter::convert(const pecker_char_unicode* PARAM_IN pstr_unicode,nSize nunicode_size,pecker_string_ascii& str_ascii)
 {
 	if (null == pstr_unicode && nunicode_size > 0)
 	{
 		nSize ascii_strlen = wcstombs(null,pstr_unicode,0);
 		if (ascii_strlen < 0)
 		{
-			return P_FAIL;
+			return PEK_STATUS_FAIL;
 		}
 		else
 		{
@@ -190,17 +190,17 @@ HResult string_ascii_to_unicode_adapter::convert(const pecker_char_unicode* P_IN
 			if (ascii_strlen >= 0)
 			{
 				str_ascii.resize(ascii_strlen);
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 			else
 			{
-				return P_FAIL;
+				return PEK_STATUS_FAIL;
 			}
 		}
 	}
 	else
 	{
-		return P_INVALID_VALUE;
+		return PEK_STATUS_INVALID_VALUE;
 	}
 }
 

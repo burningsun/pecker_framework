@@ -58,14 +58,14 @@ public:
 				_M_pCurrent_node = _M_pContainer->end();
 				break;
 			default:
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
 			_M_pCurrent_node = null;
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 
@@ -78,38 +78,38 @@ public:
 			_M_pContainer = pcontainer;
 			return init(init_type);
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	virtual array_result copy(const pecker_list_iterator< linked_list_node_t,list_container >* pother_liner_iterator)
 	{
 		if (this == pother_liner_iterator)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pother_liner_iterator)
 		{
 			_M_pContainer = pother_liner_iterator->_M_pContainer;
 			_M_pCurrent_node = pother_liner_iterator->_M_pCurrent_node;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	inline virtual array_result increment()
 	{
 		if (null == _M_pContainer)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		if (null != _M_pCurrent_node->_M_next_node)
 		{
 			_M_pCurrent_node = _M_pCurrent_node->_M_next_node;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 		
 	}
@@ -118,16 +118,16 @@ public:
 	{
 		if (null == _M_pContainer)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		if (null != _M_pCurrent_node->_M_pre_node)
 		{
 			_M_pCurrent_node = _M_pCurrent_node->_M_pre_node;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 	}
 

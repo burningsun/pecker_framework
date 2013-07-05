@@ -1,40 +1,40 @@
 ﻿#include "native/pecker_log.h"
-extern int avl_cmp_stress_main();
-extern void avl_alg_func_main();
-extern void array_test_main();
-extern void array_pool_test_main();
-extern int avl_tree_container_test_main();
-extern int avl_stl_map_cmp(int itime);
-extern int pool_alloc_main();
-extern int string_share_test();
-extern int btst_test_main();
-extern int _3_map_cmp(int itime);
-extern int _2_map_cmp(int itime);
-//extern int test_io();
-extern int _2_avl_key_map_cmp(int itime);
-//extern void out_pn9_sn();
-//extern int test_pn9_sn();
-extern void array_stack_pool_test_main();
-extern void tst_iterator_test();
-extern void tst_iterator_test_value();
-extern void avlbst_iterator_test();
-extern int list_test();
-//extern void test_stream_main();
-extern void tst_iterator_test_clear();
-extern void test_thread_proc();
-extern void test_thread_runable();
-extern void test_thread_proc_1();
-extern void test_thread_runable_1();
-extern void show_simple_window();
-extern void shape_logic_test();
-
-extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow);
-
+//extern int avl_cmp_stress_main();
+//extern void avl_alg_func_main();
+//extern void array_test_main();
+//extern void array_pool_test_main();
+//extern int avl_tree_container_test_main();
+//extern int avl_stl_map_cmp(int itime);
+//extern int pool_alloc_main();
+//extern int string_share_test();
+//extern int btst_test_main();
+//extern int _3_map_cmp(int itime);
+//extern int _2_map_cmp(int itime);
+////extern int test_io();
+//extern int _2_avl_key_map_cmp(int itime);
+////extern void out_pn9_sn();
+////extern int test_pn9_sn();
+//extern void array_stack_pool_test_main();
+//extern void tst_iterator_test();
+//extern void tst_iterator_test_value();
+//extern void avlbst_iterator_test();
+//extern int list_test();
+////extern void test_stream_main();
+//extern void tst_iterator_test_clear();
+//extern void test_thread_proc();
+//extern void test_thread_runable();
+//extern void test_thread_proc_1();
+//extern void test_thread_runable_1();
+//extern void show_simple_window();
+//extern void shape_logic_test();
+//
+//extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow);
+//
 #include <iostream>
-
-//extern void test_select();
-#include "data/pecker_shape.h"
-#include "native/pecker_window_context.h"
+//
+////extern void test_select();
+//#include "data/pecker_shape.h"
+//#include "native/pecker_window_context.h"
 //#include "data/test.h"
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLine, int nCmdShow)
 //{
@@ -42,7 +42,7 @@ extern int WINAPI EglWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR
 //}
 int main()
 {
-	PECKER_SDK pecker_program_apps::init_apps();
+	//PECKER_SDK pecker_program_apps::init_apps();
 	//test_select();
 	//shape_logic_test();
 	//unsigned int temp_value = 65535;
@@ -94,7 +94,7 @@ int main()
 
 	//PECKER_LOG_INFO("first 1 num","first 1 num = %d",mip);
 
-	show_simple_window();
+	//show_simple_window();
 	//test_thread_runable_1();
 	//test_thread_proc_1();
 	//test_thread_runable();

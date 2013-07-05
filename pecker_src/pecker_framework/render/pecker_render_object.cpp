@@ -23,7 +23,7 @@ pecker_render_object::~pecker_render_object()
 	_M_reference_count = 0;
 }
 
-const render_string & pecker_render_object::toString(render_string P_IN &string_input) const
+const render_string & pecker_render_object::toString(render_string PARAM_IN &string_input) const
 {
 	const char* pstring_chars = typeid(*this).name();
 	nSize string_len = strlen(pstring_chars);
@@ -31,7 +31,7 @@ const render_string & pecker_render_object::toString(render_string P_IN &string_
 	return string_input;
 }
 
-const pecker_render_system_info &pecker_render_object::get_render_system_info(pecker_render_system_info P_IN &system_info) const
+const pecker_render_system_info &pecker_render_object::get_render_system_info(pecker_render_system_info PARAM_IN &system_info) const
 {
 	system_info._M_system_type = UNKNOWN_RENDER_SYSTEM;
 	system_info._M_version_part1 = 0;
@@ -52,7 +52,7 @@ HResult pecker_render_object::release_this_reference()
 	{
 		this->~pecker_render_object();
 	}
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
 

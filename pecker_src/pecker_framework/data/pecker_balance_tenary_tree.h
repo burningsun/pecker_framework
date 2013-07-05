@@ -88,11 +88,11 @@ public:
 		typedef bst_node_allocator< _BTST_Node,nodes_allocator_t > _Pool_allocator;
 		if (null == other)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		if (other == this)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		//clear(TST_TREE_BOOLEAN_TRUE);
 		_Pool_allocator fast_allocate(&_M_allocator);
@@ -110,7 +110,7 @@ public:
 		tst_result return_result = copy_tst_tree< _BTST_Node,_Pool_allocator,_Stack_,_Stack_ref >(other->get_root(),_M_root_node,fast_allocate,node_path_stack,node_ref_path_stack);
 		clr_path.clear();
 		clear_tst_tree< String_key_t,_BTST_Node,nodes_allocator_t,_Stack_cst >(ptemp_root_node,_M_allocator,clr_path);
-		if (P_OK == return_result)
+		if (PEK_STATUS_OK == return_result)
 		{
 			_M_nodes_count = other->_M_nodes_count;
 			_M_value_count = other->_M_value_count;
@@ -137,7 +137,7 @@ public:
 			this->_M_nodes_count = 0;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}	
 public:
 	const _BTST_Node* findnode(const key_value_t* pstring_key,string_size_t string_size) const
@@ -149,7 +149,7 @@ public:
 		tst_result return_value;
 		_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>
 			(_M_root_node,pstring_key,string_size,_M_allocator,return_value,_M_nodes_count);
-		if (null != pInsert_node && P_OK == return_value)
+		if (null != pInsert_node && PEK_STATUS_OK == return_value)
 		{
 			++_M_value_count;
 		}
@@ -158,7 +158,7 @@ public:
 	tst_result erase(const key_value_t* pstring_key,string_size_t string_size)
 	{
 		tst_result return_value = avl_tst_tree_erase<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>(_M_root_node,pstring_key,string_size,_M_allocator,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 		}
@@ -170,13 +170,13 @@ public:
 		_Pool_allocator fast_allocate(&_M_allocator);
 
 		tst_result return_value = avl_tst_tree_erase<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>(_M_root_node,pstring_key,string_size,fast_allocate,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 			
 			_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>
 				(_M_root_node,pstring_key,string_size,fast_allocate,return_value,_M_nodes_count);
-			if (null != pInsert_node && P_OK == return_value)
+			if (null != pInsert_node && PEK_STATUS_OK == return_value)
 			{
 				++_M_value_count;
 			}
@@ -198,7 +198,7 @@ public:
 	{
 		tst_result return_value;
 		_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>(_M_root_node,string_key.get_data(),string_key.get_string_length(),_M_allocator,return_value);
-		if (null != pInsert_node && P_OK == return_value)
+		if (null != pInsert_node && PEK_STATUS_OK == return_value)
 		{
 			++_M_value_count;
 		}
@@ -207,7 +207,7 @@ public:
 	tst_result erase(const String_key_t& string_key)
 	{
 		tst_result return_value = avl_tst_tree_erase<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>(_M_root_node,string_key.get_data(),string_key.get_string_length(),_M_allocator,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 		}
@@ -219,13 +219,13 @@ public:
 		_Pool_allocator fast_allocate(&_M_allocator);
 
 		tst_result return_value = avl_tst_tree_erase<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>(_M_root_node,string_key.get_data(),string_key.get_string_length(),fast_allocate,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 
 			_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>
 				(_M_root_node,new_string_key.get_data(),new_string_key.get_string_length(),fast_allocate,return_value,_M_nodes_count);
-			if (null != pInsert_node && P_OK == return_value)
+			if (null != pInsert_node && PEK_STATUS_OK == return_value)
 			{
 				++_M_value_count;
 			}
@@ -251,7 +251,7 @@ public:
 		return _M_root_node;
 	}
 
-	inline _Tree_iterator* get_iterator(_Tree_iterator* P_INOUT pIterator) const
+	inline _Tree_iterator* get_iterator(_Tree_iterator* PARAM_INOUT pIterator) const
 	{
 		if (pIterator)
 		{
@@ -260,7 +260,7 @@ public:
 		return pIterator;
 	}
 
-	inline String_key_t get_key(const _Tree_iterator* P_IN pIterator) const
+	inline String_key_t get_key(const _Tree_iterator* PARAM_IN pIterator) const
 	{
 
 		if (pIterator && _M_root_node == pIterator->get_root_node())
@@ -321,11 +321,11 @@ public:
 		typedef bst_node_allocator< _BTST_Node,nodes_allocator_t > _Pool_allocator;
 		if (null == other)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		if (other == this)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		//clear(TST_TREE_BOOLEAN_TRUE);
 		_Pool_allocator fast_allocate(&_M_allocator);
@@ -343,7 +343,7 @@ public:
 		tst_result return_result = copy_tst_tree< _BTST_Node,_Pool_allocator,_Stack_,_Stack_ref >(other->get_root(),_M_root_node,fast_allocate,node_path_stack,node_ref_path_stack);
 		clr_path.clear();
 		clear_tst_tree< String_key_t,_BTST_Node,nodes_allocator_t,_Stack_cst >(ptemp_root_node,_M_allocator,clr_path);
-		if (P_OK == return_result)
+		if (PEK_STATUS_OK == return_result)
 		{
 			_M_nodes_count = other->_M_nodes_count;
 			_M_value_count = other->_M_value_count;
@@ -370,7 +370,7 @@ public:
 			this->_M_nodes_count = 0;
 		}
 
-		return P_OK;
+		return PEK_STATUS_OK;
 	}	
 public:
 	const _BTST_Node* findnode(const key_value_t* pstring_key,string_size_t string_size) const
@@ -387,7 +387,7 @@ public:
 		tst_result return_value;
 		_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>
 			(_M_root_node,pstring_key,string_size,_M_allocator,return_value,_M_nodes_count);
-		if (null != pInsert_node && P_OK == return_value)
+		if (null != pInsert_node && PEK_STATUS_OK == return_value)
 		{
 			pInsert_node->value = insert_value;
 			++_M_value_count;
@@ -400,7 +400,7 @@ public:
 		tst_result return_value;
 		pInsert_node = avl_tst_tree_insert<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>
 			(_M_root_node,pstring_key,string_size,_M_allocator,return_value,_M_nodes_count);
-		if (null != pInsert_node && P_OK == return_value)
+		if (null != pInsert_node && PEK_STATUS_OK == return_value)
 		{
 			pInsert_node->value = insert_value;
 			++_M_value_count;
@@ -411,7 +411,7 @@ public:
 	tst_result erase(const key_value_t* pstring_key,string_size_t string_size)
 	{
 		tst_result return_value = avl_tst_tree_erase<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>(_M_root_node,pstring_key,string_size,_M_allocator,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 		}
@@ -423,13 +423,13 @@ public:
 		_Pool_allocator fast_allocate(&_M_allocator);
 
 		tst_result return_value = avl_tst_tree_erase<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>(_M_root_node,pstring_key,string_size,fast_allocate,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 
 			_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>
 				(_M_root_node,pnew_string_key,new_string_size,fast_allocate,return_value,_M_nodes_count);
-			if (null != pInsert_node && P_OK == return_value)
+			if (null != pInsert_node && PEK_STATUS_OK == return_value)
 			{
 				++_M_value_count;
 			}
@@ -443,13 +443,13 @@ public:
 		_Pool_allocator fast_allocate(&_M_allocator);
 
 		tst_result return_value = avl_tst_tree_erase<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>(_M_root_node,pstring_key,string_size,fast_allocate,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 
 			_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>
 				(_M_root_node,pnew_string_key,new_string_size,fast_allocate,return_value,_M_nodes_count);
-			if (null != pInsert_node && P_OK == return_value)
+			if (null != pInsert_node && PEK_STATUS_OK == return_value)
 			{
 				pInsert_node->value = replace_value;
 				++_M_value_count;
@@ -464,9 +464,9 @@ public:
 		if (pfind_node)
 		{
 			pfind_node->value = replace_value;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	const _BTST_Node* findnode(const String_key_t& string_key) const
@@ -478,7 +478,7 @@ public:
 		tst_result return_value;
 		_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>
 			(_M_root_node,string_key.get_data(),string_key.get_string_length(),_M_allocator,return_value,_M_nodes_count);
-		if (null != pInsert_node && P_OK == return_value)
+		if (null != pInsert_node && PEK_STATUS_OK == return_value)
 		{
 			pInsert_node->value = insert_value;
 			++_M_value_count;
@@ -488,7 +488,7 @@ public:
 	tst_result erase(const String_key_t& string_key)
 	{
 		tst_result return_value = avl_tst_tree_erase<key_value_t,nodes_allocator_t,String_key_t,_BTST_Node>(_M_root_node,string_key.get_data(),string_key.get_string_length(),_M_allocator,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 		}
@@ -500,13 +500,13 @@ public:
 		_Pool_allocator fast_allocate(&_M_allocator);
 
 		tst_result return_value = avl_tst_tree_erase<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>(_M_root_node,string_key.get_data(),string_key.get_string_length(),fast_allocate,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 
 			_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>
 				(_M_root_node,new_string_key.get_data(),new_string_key.get_string_length(),fast_allocate,return_value,_M_nodes_count);
-			if (null != pInsert_node && P_OK == return_value)
+			if (null != pInsert_node && PEK_STATUS_OK == return_value)
 			{
 				++_M_value_count;
 			}
@@ -520,13 +520,13 @@ public:
 		_Pool_allocator fast_allocate(&_M_allocator);
 
 		tst_result return_value = avl_tst_tree_erase<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>(_M_root_node,string_key.get_data(),string_key.get_string_length(),fast_allocate,_M_nodes_count);
-		if (P_OK == return_value && _M_value_count > 0)
+		if (PEK_STATUS_OK == return_value && _M_value_count > 0)
 		{
 			--_M_value_count;
 
 			_BTST_Node* pInsert_node = avl_tst_tree_insert<key_value_t,_Pool_allocator,String_key_t,_BTST_Node>
 				(_M_root_node,new_string_key.get_data(),new_string_key.get_string_length(),fast_allocate,return_value,_M_nodes_count);
-			if (null != pInsert_node && P_OK == return_value)
+			if (null != pInsert_node && PEK_STATUS_OK == return_value)
 			{
 				pInsert_node->value = replace_value;
 				++_M_value_count;
@@ -541,9 +541,9 @@ public:
 		if (pfind_node)
 		{
 			pfind_node->value = replace_value;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 	const _BTST_Node* find_node_with_string_begin(const String_key_t& string_key) const
 	{
@@ -563,7 +563,7 @@ public:
 		return _M_root_node;
 	}
 
-	inline _Tree_iterator* get_iterator(_Tree_iterator* P_INOUT pIterator) const
+	inline _Tree_iterator* get_iterator(_Tree_iterator* PARAM_INOUT pIterator) const
 	{
 		if (pIterator)
 		{
@@ -572,7 +572,7 @@ public:
 		return pIterator;
 	}
 
-	inline String_key_t get_key(const _Tree_iterator* P_IN pIterator) const
+	inline String_key_t get_key(const _Tree_iterator* PARAM_IN pIterator) const
 	{
 
 		if (pIterator && _M_root_node == pIterator->get_root_node())
@@ -585,7 +585,7 @@ public:
 		return string_return;
 	}
 
-	inline const value_t* get_value(const _Tree_iterator* P_IN pIterator) const
+	inline const value_t* get_value(const _Tree_iterator* PARAM_IN pIterator) const
 	{
 		if (pIterator && _M_root_node == pIterator->get_root_node())
 		{

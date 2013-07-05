@@ -17,11 +17,11 @@ class string_ascii_to_unicode_adapter
 public:
 	static HResult convert(const pecker_string_ascii& str_ascii,pecker_string_unicode& str_unicode);
 	static HResult convert(const pecker_string_unicode& str_unicode,pecker_string_ascii& str_ascii);
-	static HResult convert(const pecker_char_ascii* P_IN pstr_ascii,nSize nAscii_size,pecker_char_unicode* P_OUT pstr_unicode_buffer,nSize nunicode_buffer_size,nSize &nConvered_unicode_string_size);
-	static HResult convert(const pecker_char_unicode* P_IN pstr_unicode,nSize nunicode_size,pecker_char_ascii* P_OUT pstr_ascii_buffer,nSize nAscii_buffer_size,nSize &nConvered_ascii_string_size);
+	static HResult convert(const pecker_char_ascii* PARAM_IN pstr_ascii,nSize nAscii_size,pecker_char_unicode* PARAM_OUT pstr_unicode_buffer,nSize nunicode_buffer_size,nSize &nConvered_unicode_string_size);
+	static HResult convert(const pecker_char_unicode* PARAM_IN pstr_unicode,nSize nunicode_size,pecker_char_ascii* PARAM_OUT pstr_ascii_buffer,nSize nAscii_buffer_size,nSize &nConvered_ascii_string_size);
 
-	static HResult convert(const pecker_char_unicode* P_IN pstr_unicode,nSize nunicode_size,pecker_string_ascii& str_ascii);
-	static HResult convert(const pecker_char_ascii* P_IN pstr_ascii,nSize nAscii_size,pecker_string_unicode& str_unicode);
+	static HResult convert(const pecker_char_unicode* PARAM_IN pstr_unicode,nSize nunicode_size,pecker_string_ascii& str_ascii);
+	static HResult convert(const pecker_char_ascii* PARAM_IN pstr_ascii,nSize nAscii_size,pecker_string_unicode& str_unicode);
 };
 
 PECKER_END

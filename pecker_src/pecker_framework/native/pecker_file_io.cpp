@@ -35,19 +35,19 @@ PECKER_BEGIN
 #define MAX_FILE_PATH_LENGTH 512
 static Char gstr_install_apkfile_path[MAX_FILE_PATH_LENGTH] = "";
 static nSize gn_install_apkfile_path_length = 0;
-ConstStringChars gconststr_install_apkfile_path = {gstr_install_apkfile_path,gn_install_apkfile_path_length};
+const_string_chars gconststr_install_apkfile_path = {gstr_install_apkfile_path,gn_install_apkfile_path_length};
 
 HResult pecker_file_io_base::set_install_apkfile_path(const Char* pstr_path,nSize path_length)
 {
 	if (path_length > MAX_FILE_PATH_LENGTH)
 	{
-		return P_FAIL;
+		return PEK_STATUS_FAIL;
 	}
 	memcpy(gstr_install_apkfile_path,pstr_path,path_length);
-	return P_OK;
+	return PEK_STATUS_OK;
 }
 
-const ConstStringChars& pecker_file_io_base::get_install_apkfile_path()
+const const_string_chars& pecker_file_io_base::get_install_apkfile_path()
 {
 	return gconststr_install_apkfile_path;
 }
@@ -167,7 +167,7 @@ Bytes& pecker_file_io_base::read_to_memery(Bytes& memery_buffer,UInt origin /* =
 	return memery_buffer;
 }
 
-nSize pecker_file_io_base::write_to_file(const ConstBytes& memery_buffer,UInt origin /* = FILE_SEEK_SET */,Long offset /* = 0 */)
+nSize pecker_file_io_base::write_to_file(const const_bytes& memery_buffer,UInt origin /* = FILE_SEEK_SET */,Long offset /* = 0 */)
 {
 	if (null != _M_hFile && null != memery_buffer._M_buffer && memery_buffer._M_buffer_size > 0)
 	{
@@ -197,11 +197,11 @@ HResult pecker_file_io_base::close()
 	if(null == _M_hFile || 0 == fclose((FILE*)_M_hFile))
 	{
 		_M_hFile = null;
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 	else
 	{
-		return P_FAIL;
+		return PEK_STATUS_FAIL;
 	}
 }
 

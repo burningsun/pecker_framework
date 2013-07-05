@@ -53,7 +53,7 @@ public:
 			if (0 >= size)
 			{
 				_M_current_index = -1;
-				return P_OK;
+				return PEK_STATUS_OK;
 			}
 
 			if (ITERATOR_INIT_BEGIN_INDEX == init_type)
@@ -67,14 +67,14 @@ public:
 			else
 			{
 				_M_current_index = -1;
-				return P_ERR;
+				return PEK_STATUS_ERROR;
 			}
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else
 		{
 			_M_current_index = -1;
-			return P_SUCCESS;
+			return PEK_STATUS_SUCCESS;
 		}
 
 
@@ -87,43 +87,43 @@ public:
 			_M_pContainer = pcontainer;
 			return init(init_type);
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	virtual array_result copy(const pecker_array_iterator< array_container >* pother_liner_iterator)
 	{
 		if (this == pother_liner_iterator)
 		{
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
 		else if (null != pother_liner_iterator)
 		{
 			_M_pContainer = pother_liner_iterator->_M_pContainer;
 			_M_current_index = pother_liner_iterator->_M_current_index;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 	inline virtual array_result increment()
 	{
 		if (null == _M_pContainer)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 		++_M_current_index;
 		//if (_M_current_index < (_M_pContainer->get_size() - 1))
 		//{
 		//	++_M_current_index;
 		//}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline virtual array_result decrement()
 	{
 		if (null == _M_pContainer)
 		{
-			return P_ERR;
+			return PEK_STATUS_ERROR;
 		}
 
 		--_M_current_index;
@@ -131,7 +131,7 @@ public:
 		//{
 		//	--_M_current_index;
 		//}
-		return P_OK;
+		return PEK_STATUS_OK;
 	}
 
 	inline virtual array_index_val get_current_index() const
@@ -144,9 +144,9 @@ public:
 		if (null != _M_pContainer && set_index >=0 && set_index < _M_pContainer->get_size())
 		{
 			_M_current_index = set_index;
-			return P_OK;
+			return PEK_STATUS_OK;
 		}
-		return P_ERR;
+		return PEK_STATUS_ERROR;
 	}
 
 
