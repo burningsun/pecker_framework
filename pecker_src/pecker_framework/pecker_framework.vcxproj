@@ -10,6 +10,37 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="data\pecker_value_compare.h" />
+    <ClInclude Include="data\pfx_array.h" />
+    <ClInclude Include="data\pfx_array_algorithm.h" />
+    <ClInclude Include="data\pfx_avl_tree.h" />
+    <ClInclude Include="data\pfx_avl_tree_algorithm.h" />
+    <ClInclude Include="data\pfx_balance_tenary_tree.h" />
+    <ClInclude Include="data\pfx_balance_tst_algorithm.h" />
+    <ClInclude Include="data\pfx_bst_algorithm.h" />
+    <ClInclude Include="data\pfx_bst_iterator.h" />
+    <ClInclude Include="data\pfx_iterator.h" />
+    <ClInclude Include="data\pfx_list.h" />
+    <ClInclude Include="data\pfx_matrix4.h" />
+    <ClInclude Include="data\pfx_stack.h" />
+    <ClInclude Include="data\pfx_string.h" />
+    <ClInclude Include="data\pfx_vector4.h" />
+    <ClInclude Include="native\pfx_allocator.h" />
+    <ClInclude Include="native\pfx_log.h" />
+    <ClInclude Include="native\pfx_timetick.h" />
+    <ClInclude Include="pfx.h" />
+    <ClInclude Include="pfx_configs.h" />
+    <ClInclude Include="pfx_defines.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="data\pfx_string.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="native\pfx_allocator.cpp" />
+    <ClCompile Include="native\pfx_timetick.cpp" />
+    <ClCompile Include="test\pfx_list_test.cpp" />
+    <ClCompile Include="test\test_main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{76A56045-00A1-411F-B387-19B3FE8A873E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -91,71 +122,6 @@
       <AdditionalDependencies>$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libEGL.lib;$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libGLESv2.lib;%(AdditionalDependencies)kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="pecker_reference.h" />
-    <ClInclude Include="data\pecker_array.h" />
-    <ClInclude Include="data\pecker_array_algorithm.h" />
-    <ClInclude Include="data\pecker_array_iterator.h" />
-    <ClInclude Include="data\pecker_avl_tree.h" />
-    <ClInclude Include="data\pecker_avl_tree_algorithm.h" />
-    <ClInclude Include="data\pecker_balance_tenary_tree.h" />
-    <ClInclude Include="data\pecker_balance_tst_algorithm.h" />
-    <ClInclude Include="data\pecker_bst_algorithm.h" />
-    <ClInclude Include="data\pecker_bst_iterator.h" />
-    <ClInclude Include="data\pecker_iterator.h" />
-    <ClInclude Include="data\pecker_list.h" />
-    <ClInclude Include="data\pecker_list_algorithm.h" />
-    <ClInclude Include="data\pecker_list_iterator.h" />
-    <ClInclude Include="data\pecker_matrix.h" />
-    <ClInclude Include="data\pecker_nodes_allocate.h" />
-    <ClInclude Include="data\pecker_shape.h" />
-    <ClInclude Include="data\pecker_shape_compare_algorithm.h" />
-    <ClInclude Include="data\pecker_stack.h" />
-    <ClInclude Include="data\pecker_string_adapter.h" />
-    <ClInclude Include="data\pecker_value_compare.h" />
-    <ClInclude Include="data\pecker_string.h" />
-    <ClInclude Include="data\pecker_vector.h" />
-    <ClInclude Include="native\pecker_allocator.h" />
-    <ClInclude Include="native\pecker_alloc_containers.h" />
-    <ClInclude Include="native\pecker_file_io.h" />
-    <ClInclude Include="native\pecker_log.h" />
-    <ClInclude Include="native\pecker_stream.h" />
-    <ClInclude Include="native\pecker_system.h" />
-    <ClInclude Include="native\pecker_thread.h" />
-    <ClInclude Include="native\pecker_timetick.h" />
-    <ClInclude Include="PeckerConfig.h" />
-    <ClInclude Include="PeckerDefines.h" />
-    <ClInclude Include="render\pecker_render_object.h" />
-    <ClInclude Include="render\render_system\opengles\pecker_opengles_object.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="btst_tree_test.cpp" />
-    <ClCompile Include="data\pecker_matrix.cpp" />
-    <ClCompile Include="data\pecker_shape.cpp" />
-    <ClCompile Include="data\pecker_string_adapter.cpp" />
-    <ClCompile Include="data\pecker_vector.cpp" />
-    <ClCompile Include="native\pecker_file_io.cpp" />
-    <ClCompile Include="native\pecker_log.cpp" />
-    <ClCompile Include="native\pecker_stream.cpp" />
-    <ClCompile Include="native\pecker_thread.cpp" />
-    <ClCompile Include="native\pecker_tick.cpp" />
-    <ClCompile Include="render\pecker_render_object.cpp" />
-    <ClCompile Include="render\render_system\opengles\pecker_opengles_object.cpp" />
-    <ClCompile Include="test_main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="avlasm_debug.txt" />
-    <None Include="avlasm_release_.txt" />
-    <None Include="avlpeckerstring.txt" />
-    <None Include="avlstdstringasm.txt" />
-    <None Include="license.txt" />
-    <None Include="testlog.txt" />
-    <None Include="tetlog4.txt" />
-    <None Include="texlog3.txt" />
-    <None Include="textlog2.txt" />
-    <None Include="tstasm_debug.txt" />
-    <None Include="tstasm_release.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

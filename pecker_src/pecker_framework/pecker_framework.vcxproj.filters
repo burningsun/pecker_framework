@@ -37,166 +37,93 @@
     <Filter Include="render\render_system\openglex">
       <UniqueIdentifier>{36365b7d-0e9f-49a1-bb8c-e7199d577a8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{ed8aea05-9168-41ba-8260-d0a9296a20f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="data\pecker_array.h">
+    <ClInclude Include="native\pfx_allocator.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="native\pfx_log.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="native\pfx_timetick.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_array.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="data\pecker_array_algorithm.h">
+    <ClInclude Include="data\pfx_array_algorithm.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="data\pecker_avl_tree.h">
+    <ClInclude Include="data\pfx_avl_tree.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="data\pecker_avl_tree_algorithm.h">
+    <ClInclude Include="data\pfx_avl_tree_algorithm.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="data\pecker_balance_tst_algorithm.h">
+    <ClInclude Include="data\pfx_balance_tenary_tree.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="PeckerDefines.h">
+    <ClInclude Include="data\pfx_balance_tst_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_bst_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_bst_iterator.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_iterator.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_list.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_matrix4.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_stack.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_string.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_vector4.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="pfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PeckerConfig.h">
+    <ClInclude Include="pfx_configs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="data\pecker_iterator.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_nodes_allocate.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_timetick.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_log.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_stream.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_thread.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_file_io.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_list.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_list_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_balance_tenary_tree.h">
-      <Filter>data</Filter>
+    <ClInclude Include="pfx_defines.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="data\pecker_value_compare.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="data\pecker_string.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_allocator.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_stack.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_bst_iterator.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_bst_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_array_iterator.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_list_iterator.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_vector.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_matrix.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="render\pecker_render_object.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_shape.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_shape_compare_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_alloc_containers.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="native\pecker_system.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_string_adapter.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="render\render_system\opengles\pecker_opengles_object.h">
-      <Filter>render\render_system\openglex</Filter>
-    </ClInclude>
-    <ClInclude Include="pecker_reference.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="native\pecker_tick.cpp">
-      <Filter>native</Filter>
-    </ClCompile>
-    <ClCompile Include="native\pecker_stream.cpp">
-      <Filter>native</Filter>
-    </ClCompile>
-    <ClCompile Include="native\pecker_thread.cpp">
-      <Filter>native</Filter>
-    </ClCompile>
-    <ClCompile Include="native\pecker_file_io.cpp">
-      <Filter>native</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pecker_matrix.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pecker_vector.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
-    <ClCompile Include="render\pecker_render_object.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="native\pecker_log.cpp">
-      <Filter>native</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pecker_shape.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pecker_string_adapter.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
-    <ClCompile Include="render\render_system\opengles\pecker_opengles_object.cpp">
-      <Filter>render\render_system\openglex</Filter>
-    </ClCompile>
-    <ClCompile Include="btst_tree_test.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test_main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="native\pfx_timetick.cpp">
+      <Filter>native</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="testlog.txt" />
-    <None Include="tstasm_release.txt" />
-    <None Include="avlasm_release_.txt" />
-    <None Include="avlasm_debug.txt" />
-    <None Include="tstasm_debug.txt" />
-    <None Include="avlstdstringasm.txt" />
-    <None Include="avlpeckerstring.txt" />
-    <None Include="textlog2.txt" />
-    <None Include="texlog3.txt" />
-    <None Include="tetlog4.txt" />
-    <None Include="license.txt" />
+    <ClCompile Include="native\pfx_allocator.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pfx_string.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_list_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\test_main.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

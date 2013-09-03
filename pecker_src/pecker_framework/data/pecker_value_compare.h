@@ -7,7 +7,32 @@
 #ifndef PECKER_VALUE_COMPARE_H_
 #define PECKER_VALUE_COMPARE_H_
 
-#include "../pecker_reference.h"
+#include "../pfx_defines.h"
+
+PFX_BEGIN
+
+#define  COMPARE_TWO_VALUE(A,B,CMP) CMP(A,B)
+typedef int (*CMP_A_AND_B)(void* A,void* B) ;
+inline int cmp_a_and_b_int(int A, int B)
+{
+	return (A - B);
+}
+inline int cmp_a_and_b_char(char A, char B)
+{
+	return (A - B);
+}
+inline int cmp_a_and_b_wchar(wchar_t A, wchar_t B)
+{
+	return (A - B);
+}
+inline int cmp_a_and_b_short(short A,short B)
+{
+	return (A-B);
+}
+
+PFX_END
+
+#ifdef __cplusplus
 
 PECKER_BEGIN
 
@@ -112,5 +137,7 @@ static inline int compare(const int &value1,const int &value2)
 
 
 PECKER_END
+
+#endif
 
 #endif //PECKER_VALUE_COMPARE_H_
