@@ -21,20 +21,20 @@ typedef LARGE_INTEGER Time_ticker;
 #endif
 #endif
 
-PFX_BEGIN
+PFX_C_EXTERN_BEGIN
 	// 计时器，时间单位是毫秒，浮点数。
-	struct	st_tick_instance
+	typedef struct st_tick_instance
 	{
 		Time_ticker		m_ticker;
 		Double			m_start_tick;
 		BitField			m_flags;
-	};
+	}st_tick_instance_t;
 
-	pfx_result	init_timetick(st_tick_instance* PARAM_INOUT ptick);
-	pfx_result	start_timetick(st_tick_instance* PARAM_INOUT ptick);
-	pfx_result	stop_timetick(st_tick_instance* PARAM_INOUT ptick);
-	Double	get_millisecond(st_tick_instance* PARAM_INOUT ptick);
-PFX_END
+	pfx_result	init_timetick(st_tick_instance_t* PARAM_INOUT ptick);
+	pfx_result	start_timetick(st_tick_instance_t* PARAM_INOUT ptick);
+	pfx_result	stop_timetick(st_tick_instance_t* PARAM_INOUT ptick);
+	Double	get_millisecond(st_tick_instance_t* PARAM_INOUT ptick);
+PFX_C_EXTERN_END
 
 #ifdef __cplusplus
 PECKER_BEGIN
@@ -42,7 +42,7 @@ PECKER_BEGIN
 class PFX_API pecker_tick
 {
 private:
-	st_tick_instance m_tick;
+	st_tick_instance_t m_tick;
 public:
 	pecker_tick();
 	~pecker_tick();

@@ -15,7 +15,7 @@ int main()
 	//PECKER_LOG_ENDLINE;
 
 	//// test tick
-	//st_tick_instance tick;
+	//st_tick_instance_t tick;
 	//init_timetick(&tick);
 	//PECKER_LOG_("开始计时\n");
 	//start_timetick(&tick);

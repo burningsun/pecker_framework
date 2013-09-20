@@ -9,6 +9,6 @@
 
 #include "pfx_allocator.h"
 
-//PFX_BEGIN
-//const IAllocator gDefualt_allocator = {allocate_object,deallocate_object};
-//PFX_END
+//PFX_C_EXTERN_BEGIN
+const IAllocator gDefualt_allocator = {default_allocator_allocate_obj,default_allocator_deallocate_obj}; 
+//PFX_C_EXTERN_END

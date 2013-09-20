@@ -11,11 +11,12 @@ USING_PECKER_SDK
 #define STOP_TICK_FLAG 0X10101010
 #define RUN_TICK_FLAG 0X01010101
 
+//PFX_C_EXTERN_BEGIN
 #if (OS_CONFIG == OS_WINDOWS)
 	static double dfrequency = -1.0;
 #endif
 
-pfx_result	init_timetick(st_tick_instance* PARAM_INOUT ptick)
+pfx_result	init_timetick(st_tick_instance_t* PARAM_INOUT ptick)
 {
 #if (OS_CONFIG == OS_WINDOWS)
 	if (dfrequency < 0)
@@ -37,7 +38,7 @@ pfx_result	init_timetick(st_tick_instance* PARAM_INOUT ptick)
 }
 
 
-inline pfx_result inline_start_timetick(st_tick_instance* PARAM_INOUT ptick)
+PFX_INLINE pfx_result inline_start_timetick(st_tick_instance_t* PARAM_INOUT ptick)
 {
 	if (STOP_TICK_FLAG == ptick->m_flags)
 	{
@@ -67,7 +68,7 @@ inline pfx_result inline_start_timetick(st_tick_instance* PARAM_INOUT ptick)
 
 
 
-pfx_result	inline_stop_timetick(st_tick_instance* PARAM_INOUT ptick)
+pfx_result	inline_stop_timetick(st_tick_instance_t* PARAM_INOUT ptick)
 {
 	if (RUN_TICK_FLAG == ptick->m_flags)
 	{
@@ -84,7 +85,7 @@ pfx_result	inline_stop_timetick(st_tick_instance* PARAM_INOUT ptick)
 	}
 }
 
-Double	inline_get_millisecond(st_tick_instance* PARAM_INOUT ptick)
+Double	inline_get_millisecond(st_tick_instance_t* PARAM_INOUT ptick)
 {
 	if (RUN_TICK_FLAG == ptick->m_flags)
 	{
@@ -94,8 +95,9 @@ Double	inline_get_millisecond(st_tick_instance* PARAM_INOUT ptick)
 		return (current_tick - _M_start_tick);
 #else
 #if (OS_CONFIG == OS_WINDOWS)
+		Double stop_tick;
 		QueryPerformanceCounter(&ptick->m_ticker);
-		Double stop_tick = (Double)(ptick->m_ticker.QuadPart);
+		stop_tick = (Double)(ptick->m_ticker.QuadPart);
 		return ((stop_tick- ptick->m_start_tick)/dfrequency);
 #endif
 #endif
@@ -103,7 +105,7 @@ Double	inline_get_millisecond(st_tick_instance* PARAM_INOUT ptick)
 	return 0.0;
 }
 
-pfx_result	start_timetick(st_tick_instance* PARAM_INOUT ptick)
+pfx_result	start_timetick(st_tick_instance_t* PARAM_INOUT ptick)
 {
 	if (NULL == ptick)
 	{
@@ -115,7 +117,7 @@ pfx_result	start_timetick(st_tick_instance* PARAM_INOUT ptick)
 	}
 }
 
-pfx_result	stop_timetick(st_tick_instance* PARAM_INOUT ptick)
+pfx_result	stop_timetick(st_tick_instance_t* PARAM_INOUT ptick)
 {
 	if (NULL == ptick)
 	{
@@ -127,7 +129,7 @@ pfx_result	stop_timetick(st_tick_instance* PARAM_INOUT ptick)
 	}
 }
 
-Double	get_millisecond(st_tick_instance* PARAM_INOUT ptick)
+Double	get_millisecond(st_tick_instance_t* PARAM_INOUT ptick)
 {
 	if (NULL == ptick)
 	{
@@ -135,6 +137,9 @@ Double	get_millisecond(st_tick_instance* PARAM_INOUT ptick)
 	}
 	return inline_get_millisecond(ptick);
 }
+//PFX_C_EXTERN_END
+
+#ifdef __cplusplus
 
 pecker_tick::pecker_tick()
 {
@@ -161,3 +166,4 @@ Double pecker_tick::get_millisecond()
 	return inline_get_millisecond(&m_tick);
 }
 
+#endif

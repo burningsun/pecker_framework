@@ -8,13 +8,13 @@
 #include "../data/pfx_list.h"
 #include "../native/pfx_log.h"
 
-PFX_BEGIN
+PFX_C_EXTERN_BEGIN
 
-	struct my_linked_list_node
+	typedef struct st_my_linked_list_node
 	{
 		int m_item;
 		linked_list_node_t m_node;
-	};
+	}my_linked_list_node;
 
 	const my_linked_list_node* cov_to_my_linked_list_node(const linked_list_node_t* pnode)
 	{
@@ -40,14 +40,16 @@ PFX_BEGIN
 		return -1;
 	}
 
-PFX_END
+PFX_C_EXTERN_END
 
 
 
 int list_test_main()
 {
 	my_linked_list_node nodes[256];
-	for (int i=0;i<256;++i)
+	linked_list_node_t* pnode;
+	int i;
+	for (i=0;i<256;++i)
 	{
 		my_linked_list_node* ptmpnode = (my_linked_list_node*) cov_to_my_linked_list_node ( init_linked_list_node(&nodes[i].m_node) );
 		if (ptmpnode)
@@ -56,14 +58,14 @@ int list_test_main()
 		}
 	}
 
-	linked_list_node_t* pnode = &nodes[0].m_node;
-	for (int i=1;i<256;++i)
+	pnode = &nodes[0].m_node;
+	for (i=1;i<256;++i)
 	{
 		pnode = (linked_list_node_t*)insert_linked_list_node_end(pnode,&nodes[i].m_node);
 	}
 
 	pnode = &nodes[0].m_node;
-	for (int i=0;i<256;++i)
+	for (i=0;i<256;++i)
 	{
 		my_linked_list_node* ptmpnode = (my_linked_list_node*) cov_to_my_linked_list_node (pnode);
 		if (ptmpnode)

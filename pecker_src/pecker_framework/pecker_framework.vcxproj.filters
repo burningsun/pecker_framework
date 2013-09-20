@@ -107,22 +107,37 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="native\pfx_timetick.cpp">
-      <Filter>native</Filter>
+    <ClCompile Include="data\pfx_string.cpp">
+      <Filter>data</Filter>
     </ClCompile>
     <ClCompile Include="native\pfx_allocator.cpp">
       <Filter>native</Filter>
     </ClCompile>
-    <ClCompile Include="data\pfx_string.cpp">
-      <Filter>data</Filter>
+    <ClCompile Include="native\pfx_timetick.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="test\pfx_list_test.cpp">
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="test\test_main.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_string_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pfx_array_algorithm.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_array_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_arrayblock_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_dynamic_linear_array_test.cpp">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

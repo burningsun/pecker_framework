@@ -10,12 +10,12 @@
 
 #include "../pfx_defines.h"
 
-inline void*	simple_allocate_object(size_t size)
+PFX_INLINE void*	simple_allocate_object(size_t size)
 {
 	return malloc(size);
 }
 
-inline void		simple_deallocate_object(void* PARAM_INOUT pobject)
+PFX_INLINE void		simple_deallocate_object(void* PARAM_INOUT pobject)
 {
 	free(pobject);
 }
@@ -29,26 +29,26 @@ inline void		simple_deallocate_object(void* PARAM_INOUT pobject)
 #define ALLOCATE_OBJECTS(TYPE,size)	(##TYPE *)allocate_object(size * sizeof(##TYPE))
 #define DEALLOCATE_OBJECTS				deallocate_object
 
-PFX_BEGIN
+PFX_C_EXTERN_BEGIN
 
-PFX_Interface IAllocator
+typedef PFX_Interface Iallocator
 {
 	 void*	(*allocate_obj)(Long handle, size_t size);
 	 void	(*dellocate_obj)(Long handle,void* PARAM_INOUT pobject);
-};
+}IAllocator;
 
-inline void* default_allocator_allocate_obj(Long handle,size_t size)
+PFX_INLINE void* default_allocator_allocate_obj(Long handle,size_t size)
 {
 	return allocate_object(size);
 }
 
-inline void default_allocator_deallocate_obj(Long handle,void* PARAM_INOUT pobject)
+PFX_INLINE void default_allocator_deallocate_obj(Long handle,void* PARAM_INOUT pobject)
 {
 	 deallocate_object(pobject);
 }
 
 
-const IAllocator gDefualt_allocator = {default_allocator_allocate_obj,default_allocator_deallocate_obj}; 
-PFX_END
+extern const IAllocator gDefualt_allocator;// = {default_allocator_allocate_obj,default_allocator_deallocate_obj}; 
+PFX_C_EXTERN_END
 
 #endif			//PFX_ALLOCATOR_H_

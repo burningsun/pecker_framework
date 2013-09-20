@@ -9,28 +9,28 @@
 
 #include "../pfx_defines.h"
 
-PFX_BEGIN
+PFX_C_EXTERN_BEGIN
 
 #define  COMPARE_TWO_VALUE(A,B,CMP) CMP(A,B)
 typedef int (*CMP_A_AND_B)(void* A,void* B) ;
-inline int cmp_a_and_b_int(int A, int B)
+PFX_INLINE int cmp_a_and_b_int(int A, int B)
 {
 	return (A - B);
 }
-inline int cmp_a_and_b_char(char A, char B)
+PFX_INLINE int cmp_a_and_b_char(char A, char B)
 {
 	return (A - B);
 }
-inline int cmp_a_and_b_wchar(wchar_t A, wchar_t B)
+PFX_INLINE int cmp_a_and_b_wchar(wchar_t A, wchar_t B)
 {
 	return (A - B);
 }
-inline int cmp_a_and_b_short(short A,short B)
+PFX_INLINE int cmp_a_and_b_short(short A,short B)
 {
 	return (A-B);
 }
 
-PFX_END
+PFX_C_EXTERN_END
 
 #ifdef __cplusplus
 
@@ -40,11 +40,11 @@ PECKER_BEGIN
 template< class compare_value_ext >
 struct pecker_value_compare_extern
 {
-inline int operator()(const compare_value_ext& value1,const compare_value_ext& value2) const
+PFX_INLINE int operator()(const compare_value_ext& value1,const compare_value_ext& value2) const
 {
 	return value1.compare(value2);
 }
-static inline int compare(const compare_value_ext& value1,const compare_value_ext& value2)
+static PFX_INLINE int compare(const compare_value_ext& value1,const compare_value_ext& value2)
 {
 	return value1.compare(value2);
 }
@@ -54,8 +54,8 @@ static inline int compare(const compare_value_ext& value1,const compare_value_ex
 template< class classtype >
 struct pecker_value_compare
 {
-inline int operator () (const classtype& value1,const classtype& value2) const;
-static inline int compare(const classtype& value1,const classtype& value2);
+PFX_INLINE int operator () (const classtype& value1,const classtype& value2) const;
+static PFX_INLINE int compare(const classtype& value1,const classtype& value2);
 };
 
 template< class classtype >
@@ -96,11 +96,11 @@ template<>
 struct pecker_value_compare<char>
 {
 //static int tst_char_cmp_count;
-inline int operator () (const char &value1,const char &value2) const
+PFX_INLINE int operator () (const char &value1,const char &value2) const
 {
 	return (value1 - value2);
 }
-static inline int compare(const char &value1,const char &value2)
+static PFX_INLINE int compare(const char &value1,const char &value2)
 {
 	//++tst_char_cmp_count;
 	return (value1 - value2);
@@ -110,12 +110,12 @@ static inline int compare(const char &value1,const char &value2)
 template<>
 struct pecker_value_compare<short>
 {
-inline int operator () (const short &value1,const short &value2) const
+PFX_INLINE int operator () (const short &value1,const short &value2) const
 {
 	return (value1 - value2);
 }
 
-static inline int compare(const short &value1,const short &value2)
+static PFX_INLINE int compare(const short &value1,const short &value2)
 {
 	return (value1 - value2);
 }
@@ -124,12 +124,12 @@ static inline int compare(const short &value1,const short &value2)
 template<>
 struct pecker_value_compare<int>
 {
-inline int operator () (const int &value1,const int &value2) const
+PFX_INLINE int operator () (const int &value1,const int &value2) const
 {
 	return (value1 - value2);
 }
 
-static inline int compare(const int &value1,const int &value2)
+static PFX_INLINE int compare(const int &value1,const int &value2)
 {
 	return (value1 - value2);
 }
