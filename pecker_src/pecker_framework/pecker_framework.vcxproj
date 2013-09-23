@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="data\pecker_collection.h" />
     <ClInclude Include="data\pecker_value_compare.h" />
     <ClInclude Include="data\pfx_array.h" />
     <ClInclude Include="data\pfx_array_algorithm.h" />
@@ -35,6 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="data\pfx_array_algorithm.cpp" />
+    <ClCompile Include="data\pfx_avl_tree_algorithm.cpp" />
+    <ClCompile Include="data\pfx_bst_iterator.cpp" />
     <ClCompile Include="data\pfx_string.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="native\pfx_allocator.cpp" />

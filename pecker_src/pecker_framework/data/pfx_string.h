@@ -33,65 +33,65 @@ typedef struct st_pfx_string
 }pfx_string_t;
 
 // 强制转换一个buffer成为字符串
-pfx_string_t* init_string_by_buffer(size_t char_size,size_t min_buffer_size,char* PARAM_INOUT string_obj_buffer,pfx_result* PARAM_INOUT pstatus);
+pfx_string_t* init_string_by_buffer(size_t char_size,size_t min_buffer_size,char* PARAM_INOUT string_obj_buffer,pfx_result_t* PARAM_INOUT pstatus);
 
 // 从内存分配器中新建一个字符串
-pfx_string_t* new_string(size_t char_size,size_t min_char_count,const IAllocator* PARAM_IN pAllocator,pfx_result* PARAM_INOUT pstatus);
+pfx_string_t* new_string(size_t char_size,size_t min_char_count,const IAllocator* PARAM_IN pAllocator,pfx_result_t* PARAM_INOUT pstatus);
 
 // 释放一个字符串占有的额外的内存资源
-pfx_result relese_string_extern_buffer(pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator);
+pfx_result_t relese_string_extern_buffer(pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator);
 
 // 从内存分配器中删除一个字符串
-PFX_INLINE pfx_result delete_string(pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator)
+PFX_INLINE pfx_result_t delete_string(pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator)
 {
-	pfx_result status = relese_string_extern_buffer(pstr,pAllocator);
+	pfx_result_t status = relese_string_extern_buffer(pstr,pAllocator);
 
 	if (pAllocator && PFX_STATUS_OK == status)
 	{
-		pAllocator->dellocate_obj((Long)pAllocator, pstr);
+		pAllocator->dellocate_obj((pfx_long_t)pAllocator, pstr);
 	}
 
 	return status;
 }
 
 // 初始化字符串
-pfx_result init_string(pfx_string_t* PARAM_INOUT pstr,
+pfx_result_t init_string(pfx_string_t* PARAM_INOUT pstr,
 	size_t string_len,
 	const IAllocator* PARAM_IN pchar_allocator);
 // 使用现有buffer初始化字符串结构体，同时原有buffer转化为字符结构体
-pfx_result init_string_by_charsbuffer(pfx_string_t* PARAM_INOUT pstr,
+pfx_result_t init_string_by_charsbuffer(pfx_string_t* PARAM_INOUT pstr,
 	const char* PARAM_IN pstr_chars,size_t chars_buffer_size,
 	const IAllocator* PARAM_IN pchar_allocator);
 
 // 字符串拷贝
-pfx_result copy_string(pfx_string_t* PARAM_INOUT pstr_dec,
+pfx_result_t copy_string(pfx_string_t* PARAM_INOUT pstr_dec,
 	const pfx_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator);
 
 // 清除字符串buffer中的字符串
-PFX_INLINE pfx_result clear_string(pfx_string_t* PARAM_INOUT pstr,
+PFX_INLINE pfx_result_t clear_string(pfx_string_t* PARAM_INOUT pstr,
 const IAllocator* PARAM_IN pAllocator)
 {
 	return relese_string_extern_buffer(pstr,pAllocator);
 }
 
 // 交换默认大小一样的字符串 
-pfx_result swap_string(pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB);
+pfx_result_t swap_string(pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB);
 
 // 交换默认大小不一样的字符串 
-pfx_result swap_string_by_allocator(pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB,
+pfx_result_t swap_string_by_allocator(pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB,
 	const IAllocator* PARAM_IN pchar_allocator);
 
 // 重新定义字符串大小
-pfx_result resize_string(pfx_string_t* PARAM_INOUT pstr,size_t string_len,Bool bnew_allocate, const IAllocator* PARAM_IN pchar_allocator);
+pfx_result_t resize_string(pfx_string_t* PARAM_INOUT pstr,size_t string_len,pfx_bool_t bnew_allocate, const IAllocator* PARAM_IN pchar_allocator);
 
 // 获取子字符串
-pfx_result get_sub_string(const pfx_string_t* PARAM_IN porign_string, pfx_string_t* PARAM_INOUT preference_sub_string,size_t ioffset,size_t sub_string_length,const IAllocator* PARAM_IN pchar_allocator);
+pfx_result_t get_sub_string(const pfx_string_t* PARAM_IN porign_string, pfx_string_t* PARAM_INOUT preference_sub_string,size_t ioffset,size_t sub_string_length,const IAllocator* PARAM_IN pchar_allocator);
 
 // 给字符串后面加入新的字符串
-pfx_result append_string_by_chars(pfx_string_t* PARAM_INOUT pstr,const char* PARAM_IN str_chars, size_t chars_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
+pfx_result_t append_string_by_chars(pfx_string_t* PARAM_INOUT pstr,const char* PARAM_IN str_chars, size_t chars_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
 
 // 给字符串后面加入新的字符串
-PFX_INLINE pfx_result append_string_by_string(pfx_string_t* PARAM_INOUT pstr,const pfx_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator)
+PFX_INLINE pfx_result_t append_string_by_string(pfx_string_t* PARAM_INOUT pstr,const pfx_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator)
 {
 	if (null == pstr || null == pappend_string)
 	{
@@ -105,7 +105,7 @@ PFX_INLINE pfx_result append_string_by_string(pfx_string_t* PARAM_INOUT pstr,con
 }
 
 // 获取指定位置的字节
-PFX_INLINE char get_string_buffer_at_unsafe(const pfx_string_t* PARAM_IN pstr,size_t index,pfx_result* pstatus)
+PFX_INLINE char get_string_buffer_at_unsafe(const pfx_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus)
 {
 	if (index < pstr->m_string_buffer_length)
 	{
@@ -118,9 +118,9 @@ PFX_INLINE char get_string_buffer_at_unsafe(const pfx_string_t* PARAM_IN pstr,si
 		return (char)0xFF;
 	}
 }
-PFX_INLINE char get_string_buffer_at(const pfx_string_t* PARAM_IN pstr,size_t index,pfx_result* pstatus)
+PFX_INLINE char get_string_buffer_at(const pfx_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus)
 {
-	pfx_result status;
+	pfx_result_t status;
 	char return_char = (char)0xFF;
 	if (null != pstr)
 	{
@@ -143,9 +143,9 @@ PFX_INLINE char get_string_buffer_at(const pfx_string_t* PARAM_IN pstr,size_t in
 }
 
 // 设置指定位置的字节
-PFX_INLINE pfx_result set_string_buffer_at_unsafe( pfx_string_t* PARAM_INOUT pstr,size_t index,char set_char)
+PFX_INLINE pfx_result_t set_string_buffer_at_unsafe( pfx_string_t* PARAM_INOUT pstr,size_t index,char set_char)
 {
-	pfx_result status = PFX_STATUS_INVALID_PARAMS;
+	pfx_result_t status = PFX_STATUS_INVALID_PARAMS;
 	if (index < pstr->m_string_buffer_length)
 	{
 		status = PFX_STATUS_OK;
@@ -157,9 +157,9 @@ PFX_INLINE pfx_result set_string_buffer_at_unsafe( pfx_string_t* PARAM_INOUT pst
 	}
 	return status;
 }
-PFX_INLINE pfx_result set_string_buffer_at(pfx_string_t* PARAM_INOUT pstr,size_t index,char set_char)
+PFX_INLINE pfx_result_t set_string_buffer_at(pfx_string_t* PARAM_INOUT pstr,size_t index,char set_char)
 {
-	pfx_result status = PFX_STATUS_INVALID_PARAMS;
+	pfx_result_t status = PFX_STATUS_INVALID_PARAMS;
 	if (null != pstr)
 	{
 		if (null != pstr->m_pthis_string_data)
@@ -176,9 +176,9 @@ PFX_INLINE pfx_result set_string_buffer_at(pfx_string_t* PARAM_INOUT pstr,size_t
 }
 
 // 设定指定位置的buffer
-PFX_INLINE pfx_result set_string_buffer_chars_at(pfx_string_t* PARAM_INOUT pstr,size_t index,const char* PARAM_INOUT set_chars,size_t set_buffer_size)
+PFX_INLINE pfx_result_t set_string_buffer_chars_at(pfx_string_t* PARAM_INOUT pstr,size_t index,const char* PARAM_INOUT set_chars,size_t set_buffer_size)
 {
-	pfx_result status = PFX_STATUS_INVALID_PARAMS;
+	pfx_result_t status = PFX_STATUS_INVALID_PARAMS;
 	if (null != pstr)
 	{
 		size_t i;
@@ -226,7 +226,7 @@ typedef struct st_pfx_share_buffer_string
 }pfx_share_buffer_string_t;
 
 // 强制转换一个buffer成为共享字符串
-PFX_INLINE pfx_share_buffer_string_t* init_share_buffer_string_by_buffer(size_t char_size,size_t min_buffer_size,char* PARAM_INOUT string_obj_buffer,pfx_result* PARAM_INOUT pstatus)
+PFX_INLINE pfx_share_buffer_string_t* init_share_buffer_string_by_buffer(size_t char_size,size_t min_buffer_size,char* PARAM_INOUT string_obj_buffer,pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_share_buffer_string_t* preturn_string = null;
 
@@ -241,7 +241,7 @@ PFX_INLINE pfx_share_buffer_string_t* init_share_buffer_string_by_buffer(size_t 
 	}
 	else
 	{
-		pfx_result status_res = PFX_STATUS_OK;
+		pfx_result_t status_res = PFX_STATUS_OK;
 
 		preturn_string = (pfx_share_buffer_string_t*)string_obj_buffer;
 		
@@ -288,7 +288,7 @@ PFX_INLINE pfx_share_buffer_string_t* init_share_buffer_string_by_buffer(size_t 
 	}
 }
 // 新建一个共享字符串
-PFX_INLINE pfx_share_buffer_string_t* new_share_string(size_t char_size,size_t min_char_count,const IAllocator* PARAM_IN pAllocator,pfx_result* PARAM_INOUT pstatus)
+PFX_INLINE pfx_share_buffer_string_t* new_share_string(size_t char_size,size_t min_char_count,const IAllocator* PARAM_IN pAllocator,pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_share_buffer_string_t* preturn_string = null;
 	char* ptemp_string = null;
@@ -305,7 +305,7 @@ PFX_INLINE pfx_share_buffer_string_t* new_share_string(size_t char_size,size_t m
 	}
 
 	allocate_size += sizeof(pfx_share_buffer_string_t) + sizeof(pfx_string_t);
-	ptemp_string = (char*)(pAllocator->allocate_obj((Long)pAllocator,allocate_size));
+	ptemp_string = (char*)(pAllocator->allocate_obj((pfx_long_t)pAllocator,allocate_size));
 
 	if (null == ptemp_string)
 	{
@@ -319,7 +319,7 @@ PFX_INLINE pfx_share_buffer_string_t* new_share_string(size_t char_size,size_t m
 		preturn_string = init_share_buffer_string_by_buffer(char_size,allocate_size,ptemp_string,pstatus);
 		if (null == preturn_string)
 		{
-			pAllocator->dellocate_obj((Long)pAllocator,ptemp_string);
+			pAllocator->dellocate_obj((pfx_long_t)pAllocator,ptemp_string);
 		}
 	}
 
@@ -327,11 +327,11 @@ PFX_INLINE pfx_share_buffer_string_t* new_share_string(size_t char_size,size_t m
 }
 
 // 初始化共享字符串
-PFX_INLINE pfx_result init_share_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,
+PFX_INLINE pfx_result_t init_share_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,
 	size_t string_len,
 	const IAllocator* PARAM_IN pchar_allocator)
 {
-	pfx_result status = PFX_STATUS_OK;
+	pfx_result_t status = PFX_STATUS_OK;
 	if (null != pstr)
 	{
 		if (!check_is_linked_list_only_one_node(&pstr->m_list_node))
@@ -351,7 +351,7 @@ PFX_INLINE pfx_result init_share_string(pfx_share_buffer_string_t* PARAM_INOUT p
 				}
 				else
 				{
-					pstr->m_reference_string = (pfx_string_t*)((Long)pstr + sizeof(pfx_share_buffer_string_t));
+					pstr->m_reference_string = (pfx_string_t*)((pfx_long_t)pstr + sizeof(pfx_share_buffer_string_t));
 				}
 				
 			}
@@ -382,11 +382,11 @@ PFX_INLINE pfx_result init_share_string(pfx_share_buffer_string_t* PARAM_INOUT p
 	return status;
 };
 // 使用现有buffer初始化字符串结构体，同时原有buffer转化为字符结构体
-PFX_INLINE pfx_result init_share_string_by_charsbuffer(pfx_share_buffer_string_t* PARAM_INOUT pstr,
+PFX_INLINE pfx_result_t init_share_string_by_charsbuffer(pfx_share_buffer_string_t* PARAM_INOUT pstr,
 	const char* PARAM_IN pstr_chars,size_t chars_buffer_size,
 	const IAllocator* PARAM_IN pchar_allocator)
 {
-	pfx_result status = PFX_STATUS_OK;
+	pfx_result_t status = PFX_STATUS_OK;
 	if (null != pstr)
 	{
 		if (!check_is_linked_list_only_one_node(&pstr->m_list_node))
@@ -406,7 +406,7 @@ PFX_INLINE pfx_result init_share_string_by_charsbuffer(pfx_share_buffer_string_t
 				}
 				else
 				{
-					pstr->m_reference_string = (pfx_string_t*)((Long)pstr + sizeof(pfx_share_buffer_string_t));
+					pstr->m_reference_string = (pfx_string_t*)((pfx_long_t)pstr + sizeof(pfx_share_buffer_string_t));
 				}
 			}
 
@@ -434,15 +434,15 @@ PFX_INLINE pfx_result init_share_string_by_charsbuffer(pfx_share_buffer_string_t
 	return status;
 }
 
-pfx_result get_share_buffer_sub_string(const pfx_share_buffer_string_t* PARAM_INOUT porign_string,
+pfx_result_t get_share_buffer_sub_string(const pfx_share_buffer_string_t* PARAM_INOUT porign_string,
 																	 pfx_share_buffer_string_t* PARAM_INOUT preference_sub_string,size_t ioffset,size_t sub_string_length,
 																	 const IAllocator* PARAM_IN pchar_allocator);
-pfx_result delete_share_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator);
+pfx_result_t delete_share_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator);
 
 // 重新定义共享字符串大小
-PFX_INLINE pfx_result resize_share_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,size_t string_len,Bool bnew_allocate, const IAllocator* PARAM_IN pchar_allocator)
+PFX_INLINE pfx_result_t resize_share_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,size_t string_len,pfx_bool_t bnew_allocate, const IAllocator* PARAM_IN pchar_allocator)
 {
-	pfx_result status = PFX_STATUS_OK;
+	pfx_result_t status = PFX_STATUS_OK;
 	if (null != pstr)
 	{
 		if (!check_is_linked_list_only_one_node(&pstr->m_list_node))
@@ -462,7 +462,7 @@ PFX_INLINE pfx_result resize_share_string(pfx_share_buffer_string_t* PARAM_INOUT
 				}
 				else
 				{
-					pstr->m_reference_string = (pfx_string_t*)((Long)pstr + sizeof(pfx_share_buffer_string_t));
+					pstr->m_reference_string = (pfx_string_t*)((pfx_long_t)pstr + sizeof(pfx_share_buffer_string_t));
 				}
 			}
 
@@ -491,8 +491,8 @@ PFX_INLINE pfx_result resize_share_string(pfx_share_buffer_string_t* PARAM_INOUT
 }
 
 // 在共享字符串后面添加新的字符串
-pfx_result append_share_string_by_chars(pfx_share_buffer_string_t* PARAM_INOUT pstr,const char* PARAM_IN str_chars, size_t chars_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
-PFX_INLINE pfx_result append_share_string_by_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,const pfx_share_buffer_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator)
+pfx_result_t append_share_string_by_chars(pfx_share_buffer_string_t* PARAM_INOUT pstr,const char* PARAM_IN str_chars, size_t chars_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
+PFX_INLINE pfx_result_t append_share_string_by_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,const pfx_share_buffer_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator)
 {
 	if (null == pstr || null == pappend_string || null == pstr->m_reference_string)
 	{
@@ -512,10 +512,10 @@ PFX_INLINE pfx_result append_share_string_by_string(pfx_share_buffer_string_t* P
 }
 
 // 修改共享字符串内的字符
-pfx_result set_share_string_buffer_chars_at(pfx_share_buffer_string_t* PARAM_INOUT pstr,size_t index,
+pfx_result_t set_share_string_buffer_chars_at(pfx_share_buffer_string_t* PARAM_INOUT pstr,size_t index,
 	const char* PARAM_INOUT set_chars,size_t set_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
 
-PFX_INLINE pfx_result set_share_string_buffer_by_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,size_t index,
+PFX_INLINE pfx_result_t set_share_string_buffer_by_string(pfx_share_buffer_string_t* PARAM_INOUT pstr,size_t index,
 	const pfx_share_buffer_string_t* PARAM_IN pset_string,const IAllocator* PARAM_IN pchar_allocator)
 {
 	if (null == pstr || null == pset_string || null == pstr->m_reference_string)
@@ -536,9 +536,9 @@ PFX_INLINE pfx_result set_share_string_buffer_by_string(pfx_share_buffer_string_
 }
 
 // 获取共享字符串内的字符
-PFX_INLINE char get_share_string_buffer_at(const pfx_share_buffer_string_t* PARAM_IN pstr,size_t index,pfx_result* pstatus)
+PFX_INLINE char get_share_string_buffer_at(const pfx_share_buffer_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus)
 {
-	pfx_result status;
+	pfx_result_t status;
 	char return_char = (char)0xFF;
 	if (null != pstr)
 	{

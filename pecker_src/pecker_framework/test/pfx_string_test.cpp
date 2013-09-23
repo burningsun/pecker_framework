@@ -13,6 +13,26 @@
 
 int string_test_main()
 {
+	pfx_result_t status;
+	pfx_string_t* pstr = new_string(sizeof(pfx_char),MIN_STRING_BUFFER_SIZE,&gDefualt_allocator,&status);
+
+	if (null != pstr && PFX_STATUS_OK == status)
+	{
+		pfx_char print_string_format[256];
+		status = init_string_by_charsbuffer(pstr,(char*)pfx_char_type("hello world!!"),
+			pfx_strlen(pfx_char_type("hello world!!")) * sizeof(pfx_char),&gDefualt_allocator);
+		pfx_sprintf(print_string_format,pfx_char_type("code = %%.%ds\n"),pstr->m_string_buffer_length / pstr->m_char_size);
+		PECKER_LOG_DIRECT(print_string_format,pstr->m_pthis_string_data);
+	}
+	else
+	{
+		PECKER_LOG_("new_string status = %d pstr = %08X",status,pstr);
+	}
+
+	if (PFX_STATUS_OK == status)
+	{
+
+	}
 
 	return 0;
 }

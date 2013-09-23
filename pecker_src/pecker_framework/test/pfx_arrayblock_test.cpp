@@ -11,7 +11,7 @@
 
 void arrablock_test(size_t buffer_size,ALIGNED_TYPE_t aligned_type)
 {
-	pfx_result status = PFX_STATUS_OK;
+	pfx_result_t status = PFX_STATUS_OK;
 	pfx_arraybuffer_block_t* pblock = new_arraybuffer_block(buffer_size,aligned_type,
 		&gDefualt_allocator,
 		&status);
@@ -85,8 +85,7 @@ void print_aligned_type(int i)
 }
 int arrayblock_test_main()
 {
-	pfx_result status;
-	nINDEX	i;
+	pfx_index_t	i;
 
 	for (i=0;i<ALIGNED_TYPE_COUNT;++i)
 	{

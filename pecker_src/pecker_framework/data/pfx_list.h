@@ -123,7 +123,7 @@ PFX_INLINE linked_list_node_t* remove_linked_list_node(linked_list_node_t* PARAM
 
 }
 
-PFX_INLINE Bool check_is_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE pfx_bool_t check_is_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (pnode && (null == pnode->m_prev_node))
 	{
@@ -135,7 +135,7 @@ PFX_INLINE Bool check_is_linked_list_first_node(const linked_list_node_t* PARAM_
 	}
 }
 
-PFX_INLINE Bool check_is_linked_list_last_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE pfx_bool_t check_is_linked_list_last_node(const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (pnode && (null == pnode->m_pnext_node))
 	{
@@ -147,7 +147,7 @@ PFX_INLINE Bool check_is_linked_list_last_node(const linked_list_node_t* PARAM_I
 	}
 }
 
-PFX_INLINE Bool check_is_linked_list_only_one_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node(const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (pnode && (null == pnode->m_prev_node) && (null == pnode->m_pnext_node))
 	{

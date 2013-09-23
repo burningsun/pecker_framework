@@ -15,7 +15,7 @@ pfx_base_array_t* init_base_array_by_buffer(size_t item_size,
 																				char* PARAM_INOUT pbuffer,
 																				size_t buffer_size,
 																				const IAllocator* PARAM_IN pitem_allocator,
-																				pfx_result* PARAM_INOUT pstatus)
+																				pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_base_array_t* preturn_array = null;
 	if (null == pbuffer || buffer_size < sizeof(pfx_base_array_t) || null == pitem_allocator
@@ -35,7 +35,7 @@ pfx_base_array_t* init_base_array_by_buffer(size_t item_size,
 	preturn_array->m_using_extern_buffer = 0;
 	preturn_array->m_buffer_size = preturn_array->m_defualt_array_size;
 	preturn_array->m_pitem_allocator = pitem_allocator;
-	preturn_array->m_parray_data = (preturn_array->m_defualt_array_size > 0) ? ((void*)((Long)pbuffer + sizeof(pfx_base_array_t))) : null; 
+	preturn_array->m_parray_data = (preturn_array->m_defualt_array_size > 0) ? ((void*)((pfx_long_t)pbuffer + sizeof(pfx_base_array_t))) : null; 
 	
 	if (null != pstatus)
 	{
@@ -49,7 +49,7 @@ pfx_base_array_t* new_base_array(const IAllocator* PARAM_IN parray_allocator,
 										size_t default_item_count,
 										size_t allocate_step,
 										const IAllocator* PARAM_IN parray_item_allocator,
-										pfx_result* PARAM_INOUT pstatus)
+										pfx_result_t* PARAM_INOUT pstatus)
 {
 	size_t allocate_size = 0;
 	char* allocate_buffer = null;
@@ -67,7 +67,7 @@ pfx_base_array_t* new_base_array(const IAllocator* PARAM_IN parray_allocator,
 	}
 
 	allocate_size = sizeof(pfx_base_array_t) + item_size*default_item_count;
-	allocate_buffer = (char*)parray_allocator->allocate_obj((Long)parray_allocator,allocate_size);
+	allocate_buffer = (char*)parray_allocator->allocate_obj((pfx_long_t)parray_allocator,allocate_size);
 	if (null == allocate_buffer)
 	{
 		if (null != pstatus)
@@ -79,12 +79,12 @@ pfx_base_array_t* new_base_array(const IAllocator* PARAM_IN parray_allocator,
 	preturn_array = init_base_array_by_buffer(item_size,allocate_step,allocate_buffer,allocate_size,parray_item_allocator,pstatus);
 	if (null == preturn_array)
 	{
-		parray_allocator->dellocate_obj((Long)parray_allocator,allocate_buffer);
+		parray_allocator->dellocate_obj((pfx_long_t)parray_allocator,allocate_buffer);
 	}
 	return preturn_array;
 }
 
-pfx_result delete_base_array(pfx_base_array_t* pdel_array, const IAllocator* PARAM_IN parray_allocator)
+pfx_result_t delete_base_array(pfx_base_array_t* pdel_array, const IAllocator* PARAM_IN parray_allocator)
 {
 	if (null == pdel_array || null == parray_allocator)
 	{
@@ -99,11 +99,11 @@ pfx_result delete_base_array(pfx_base_array_t* pdel_array, const IAllocator* PAR
 		}
 		if (null != pdel_array->m_parray_data)
 		{
-			pdel_array->m_pitem_allocator->dellocate_obj((Long)(pdel_array->m_pitem_allocator),pdel_array->m_parray_data);
+			pdel_array->m_pitem_allocator->dellocate_obj((pfx_long_t)(pdel_array->m_pitem_allocator),pdel_array->m_parray_data);
 		}
 	}
 
-	parray_allocator->dellocate_obj((Long)parray_allocator,pdel_array);
+	parray_allocator->dellocate_obj((pfx_long_t)parray_allocator,pdel_array);
 
 	return PFX_STATUS_OK;
 }
@@ -127,7 +127,7 @@ PFX_INLINE_CODE size_t get_resize_array_buffer_size(pfx_base_array_t* PARAM_INOU
 	return new_buffer_size;
 }
 
-PFX_INLINE_CODE pfx_result resize_null_array_buffer(pfx_base_array_t* PARAM_INOUT parray,size_t item_count)
+PFX_INLINE_CODE pfx_result_t resize_null_array_buffer(pfx_base_array_t* PARAM_INOUT parray,size_t item_count)
 {
 	size_t new_buffer_size;
 	if (0 == item_count)
@@ -140,7 +140,7 @@ PFX_INLINE_CODE pfx_result resize_null_array_buffer(pfx_base_array_t* PARAM_INOU
 		return PFX_STATUS_MEM_ERR;
 	}
 	new_buffer_size = get_resize_array_buffer_size(parray,item_count);
-	parray->m_parray_data = parray->m_pitem_allocator->allocate_obj((Long)(parray->m_pitem_allocator),parray->m_item_size * new_buffer_size);
+	parray->m_parray_data = parray->m_pitem_allocator->allocate_obj((pfx_long_t)(parray->m_pitem_allocator),parray->m_item_size * new_buffer_size);
 	if (null != parray->m_parray_data)
 	{
 		parray->m_using_extern_buffer = 1;
@@ -154,7 +154,7 @@ PFX_INLINE_CODE pfx_result resize_null_array_buffer(pfx_base_array_t* PARAM_INOU
 	}
 }
 
-PFX_INLINE_CODE pfx_result resize_internal_array_buffer(pfx_base_array_t* PARAM_INOUT parray,size_t item_count)
+PFX_INLINE_CODE pfx_result_t resize_internal_array_buffer(pfx_base_array_t* PARAM_INOUT parray,size_t item_count)
 {
 	size_t new_buffer_size;
 	char* new_array_items = null;
@@ -178,7 +178,7 @@ PFX_INLINE_CODE pfx_result resize_internal_array_buffer(pfx_base_array_t* PARAM_
 	}
 
 	new_buffer_size = get_resize_array_buffer_size(parray,item_count);
-	new_array_items = (char*)parray->m_pitem_allocator->allocate_obj((Long)(parray->m_pitem_allocator),parray->m_item_size * new_buffer_size);
+	new_array_items = (char*)parray->m_pitem_allocator->allocate_obj((pfx_long_t)(parray->m_pitem_allocator),parray->m_item_size * new_buffer_size);
 	if (null != new_array_items)
 	{
 		size_t min_copy_size = ((parray->m_buffer_length > item_count)?item_count:parray->m_buffer_length)*parray->m_item_size;
@@ -195,7 +195,7 @@ PFX_INLINE_CODE pfx_result resize_internal_array_buffer(pfx_base_array_t* PARAM_
 	}
 }
 
-PFX_INLINE_CODE pfx_result resize_external_array_buffer(pfx_base_array_t* PARAM_INOUT parray,size_t item_count,Bool bnew_buffer)
+PFX_INLINE_CODE pfx_result_t resize_external_array_buffer(pfx_base_array_t* PARAM_INOUT parray,size_t item_count,pfx_bool_t bnew_buffer)
 {
 	size_t new_buffer_size;
 	char* new_array_items = null;
@@ -210,10 +210,10 @@ PFX_INLINE_CODE pfx_result resize_external_array_buffer(pfx_base_array_t* PARAM_
 		parray->m_buffer_length = item_count;
 		if (bnew_buffer)
 		{
-			memcpy( ((void*)((Long)parray + sizeof(pfx_base_array_t))),parray->m_parray_data,item_count*parray->m_item_size);
+			memcpy( ((void*)((pfx_long_t)parray + sizeof(pfx_base_array_t))),parray->m_parray_data,item_count*parray->m_item_size);
 
-			parray->m_pitem_allocator->dellocate_obj((Long)parray->m_pitem_allocator,parray->m_parray_data);
-			parray->m_parray_data = (parray->m_defualt_array_size > 0) ? ((void*)((Long)parray + sizeof(pfx_base_array_t))):(null);
+			parray->m_pitem_allocator->dellocate_obj((pfx_long_t)parray->m_pitem_allocator,parray->m_parray_data);
+			parray->m_parray_data = (parray->m_defualt_array_size > 0) ? ((void*)((pfx_long_t)parray + sizeof(pfx_base_array_t))):(null);
 			parray->m_buffer_size = parray->m_defualt_array_size;
 			parray->m_using_extern_buffer = 0;
 
@@ -237,7 +237,7 @@ PFX_INLINE_CODE pfx_result resize_external_array_buffer(pfx_base_array_t* PARAM_
 	}
 
 	new_buffer_size = get_resize_array_buffer_size(parray,item_count);
-	new_array_items = (char*)parray->m_pitem_allocator->allocate_obj((Long)(parray->m_pitem_allocator),parray->m_item_size * new_buffer_size);
+	new_array_items = (char*)parray->m_pitem_allocator->allocate_obj((pfx_long_t)(parray->m_pitem_allocator),parray->m_item_size * new_buffer_size);
 	if (null != new_array_items)
 	{
 		size_t min_copy_size = ((parray->m_buffer_length > item_count)?item_count:parray->m_buffer_length)*parray->m_item_size;
@@ -245,7 +245,7 @@ PFX_INLINE_CODE pfx_result resize_external_array_buffer(pfx_base_array_t* PARAM_
 		parray->m_using_extern_buffer = 1;
 		parray->m_buffer_length = item_count;
 		parray->m_buffer_size = new_buffer_size;
-		parray->m_pitem_allocator->dellocate_obj((Long)(parray->m_pitem_allocator),parray->m_parray_data);
+		parray->m_pitem_allocator->dellocate_obj((pfx_long_t)(parray->m_pitem_allocator),parray->m_parray_data);
 		parray->m_parray_data = new_array_items;
 		return PFX_STATUS_OK;
 	}
@@ -255,9 +255,9 @@ PFX_INLINE_CODE pfx_result resize_external_array_buffer(pfx_base_array_t* PARAM_
 	}
 }
 
-pfx_result resize_base_array(pfx_base_array_t* PARAM_INOUT parray,size_t item_count,Bool bnew_buffer,size_t new_resize_step)
+pfx_result_t resize_base_array(pfx_base_array_t* PARAM_INOUT parray,size_t item_count,pfx_bool_t bnew_buffer,size_t new_resize_step)
 {
-	pfx_result status = PFX_STATUS_OK;
+	pfx_result_t status = PFX_STATUS_OK;
 	size_t		  back_up_step;
 	if (null == parray || parray->m_auto_allocate_step <= 0)
 	{
@@ -294,11 +294,11 @@ pfx_result resize_base_array(pfx_base_array_t* PARAM_INOUT parray,size_t item_co
 }
 
 pfx_arraybuffer_block_t* init_arraybuffer_block_by_buffer(	char* PARAM_INOUT pbuffer,
-	size_t buffer_size, ALIGNED_TYPE_t aligned_type,pfx_result* PARAM_INOUT pstatus)
+	size_t buffer_size, ALIGNED_TYPE_t aligned_type,pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_arraybuffer_block_t* preturn_block = null;
 	unsigned long bitmask = (1 << aligned_type) - 1;
-	nINDEX aligned_offset = 0;
+	pfx_index_t aligned_offset = 0;
 	if (buffer_size < sizeof(pfx_arraybuffer_block_t))
 	{
 		if (pstatus)
@@ -309,7 +309,7 @@ pfx_arraybuffer_block_t* init_arraybuffer_block_by_buffer(	char* PARAM_INOUT pbu
 	}
 
 	preturn_block = (pfx_arraybuffer_block_t*)pbuffer;
-	preturn_block->m_pblock_data = (char*)(((Ulong)&preturn_block->m_char_begins + bitmask) & (~bitmask)) ;
+	preturn_block->m_pblock_data = (char*)(((pfx_ulong_t)&preturn_block->m_char_begins + bitmask) & (~bitmask)) ;
 	aligned_offset = preturn_block->m_pblock_data - &(preturn_block->m_char_begins);
 
 	if (buffer_size < (sizeof(pfx_arraybuffer_block_t) + aligned_offset))
@@ -331,7 +331,7 @@ pfx_arraybuffer_block_t* init_arraybuffer_block_by_buffer(	char* PARAM_INOUT pbu
 
 pfx_arraybuffer_block_t* new_arraybuffer_block(size_t buffer_size,ALIGNED_TYPE_t aligned_type,
 	const IAllocator* PARAM_IN parray_item_allocator,
-	pfx_result* PARAM_INOUT pstatus)
+	pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_arraybuffer_block_t* preturn_block;
 	size_t allocate_size; 
@@ -343,7 +343,7 @@ pfx_arraybuffer_block_t* new_arraybuffer_block(size_t buffer_size,ALIGNED_TYPE_t
 	}
 
 	allocate_size = sizeof(pfx_arraybuffer_block_t) + ((1 << aligned_type) - 1) + buffer_size - 1;
-	pbuffer = (char*)parray_item_allocator->allocate_obj((Long)parray_item_allocator,allocate_size);
+	pbuffer = (char*)parray_item_allocator->allocate_obj((pfx_long_t)parray_item_allocator,allocate_size);
 	if (null != pbuffer)
 	{
 		preturn_block = init_arraybuffer_block_by_buffer(pbuffer,allocate_size,aligned_type,pstatus);
@@ -358,14 +358,14 @@ pfx_arraybuffer_block_t* new_arraybuffer_block(size_t buffer_size,ALIGNED_TYPE_t
 	return preturn_block;
 }
 
-pfx_result delete_arraybuffer_block(pfx_arraybuffer_block_t* PARAM_INOUT parray_block,
+pfx_result_t delete_arraybuffer_block(pfx_arraybuffer_block_t* PARAM_INOUT parray_block,
 	const IAllocator* PARAM_IN parray_item_allocator)
 {
 	if (null == parray_block || null == parray_item_allocator)
 	{
 		return PFX_STATUS_INVALID_PARAMS;
 	}
-	parray_item_allocator->dellocate_obj((Long)(parray_item_allocator),parray_block);
+	parray_item_allocator->dellocate_obj((pfx_long_t)(parray_item_allocator),parray_block);
 	return PFX_STATUS_OK;
 }
 
@@ -378,7 +378,7 @@ pfx_dynamic_linear_array_t* init_dynamic_linear_array_by_buffer(size_t item_size
 	ALIGNED_TYPE_t aligned_type,
 	const IAllocator* PARAM_IN pblock_allocator,
 	const IAllocator* PARAM_IN pblock_array_item_allocator,
-	pfx_result* PARAM_INOUT pstatus)
+	pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_dynamic_linear_array_t*  preturn_array = null;
 	pfx_base_array_t* pblock_array = null;
@@ -437,8 +437,8 @@ PFX_INLINE_CODE size_t calculate_dynamic_linear_array_block_count(pfx_dynamic_li
 }
 
 // 按block数组索引释放指定范围的block
-PFX_INLINE_CODE pfx_result release_array_block_buffer_by_index(pfx_dynamic_linear_array_t* parray,
-	size_t begin_index,size_t end_index,Bool resize_block_array_flag)
+PFX_INLINE_CODE pfx_result_t release_array_block_buffer_by_index(pfx_dynamic_linear_array_t* parray,
+	size_t begin_index,size_t end_index,pfx_bool_t resize_block_array_flag)
 {
 	size_t i;
 	size_t block_count = 
@@ -463,7 +463,7 @@ PFX_INLINE_CODE pfx_result release_array_block_buffer_by_index(pfx_dynamic_linea
 }
 
 // 释放数组所有block
-PFX_INLINE_CODE pfx_result release_array_block_buffer(pfx_dynamic_linear_array_t* parray)
+PFX_INLINE_CODE pfx_result_t release_array_block_buffer(pfx_dynamic_linear_array_t* parray)
 {
 	size_t block_count = parray->m_block_array.m_buffer_length;
 	size_t i;
@@ -490,7 +490,7 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN 
 	ALIGNED_TYPE_t aligned_type,
 	const IAllocator* PARAM_IN pblock_allocator,
 	const IAllocator* PARAM_IN pblock_array_item_allocator,
-	pfx_result* PARAM_INOUT pstatus)
+	pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_dynamic_linear_array_t*  preturn_array = null;
 	char* pbuffer = null;
@@ -503,7 +503,7 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN 
 		}
 		return null;
 	}
-	pbuffer = (char*)parray_allocator->allocate_obj((Long)parray_allocator,sizeof(pfx_dynamic_linear_array_t));
+	pbuffer = (char*)parray_allocator->allocate_obj((pfx_long_t)parray_allocator,sizeof(pfx_dynamic_linear_array_t));
 	if (null == pbuffer)
 	{
 		if (null != pstatus)
@@ -519,7 +519,7 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN 
 
 	if (null == preturn_array)
 	{
-		parray_allocator->dellocate_obj((Long)parray_allocator,pbuffer);
+		parray_allocator->dellocate_obj((pfx_long_t)parray_allocator,pbuffer);
 	}
 	else
 	{
@@ -527,7 +527,7 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN 
 		// 计算获得需要的block数量
 		size_t default_block_count = calculate_dynamic_linear_array_block_count(preturn_array,default_item_buffer_count);
 		// 将block数组重新设置大小
-		pfx_result status = resize_base_array(&preturn_array->m_block_array,default_block_count,pfx_false,INVALID_VALUE);
+		pfx_result_t status = resize_base_array(&preturn_array->m_block_array,default_block_count,pfx_false,INVALID_VALUE);
 		
 		// 设置数组大小成功，则清理可用数组可用元素，而不清理内存
 		if (PFX_STATUS_OK == status)
@@ -539,7 +539,7 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN 
 		if (PFX_STATUS_OK != status)
 		{
 			clear_base_array(&preturn_array->m_block_array,pfx_true,INVALID_VALUE);
-			parray_allocator->dellocate_obj((Long)parray_allocator,pbuffer);
+			parray_allocator->dellocate_obj((pfx_long_t)parray_allocator,pbuffer);
 
 			if (pstatus)
 			{
@@ -583,7 +583,7 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN 
 
 		if (PFX_STATUS_OK != status)
 		{
-			parray_allocator->dellocate_obj((Long)parray_allocator,pbuffer);
+			parray_allocator->dellocate_obj((pfx_long_t)parray_allocator,pbuffer);
 			preturn_array = null;
 		}
 
@@ -592,7 +592,7 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN 
 	return preturn_array;
 }
 
-pfx_result delete_dynamic_linear_array(pfx_dynamic_linear_array_t* pdel_array, 
+pfx_result_t delete_dynamic_linear_array(pfx_dynamic_linear_array_t* pdel_array, 
 	const IAllocator* PARAM_IN parray_allocator)
 {
 	if (null == pdel_array || null == parray_allocator)
@@ -601,15 +601,15 @@ pfx_result delete_dynamic_linear_array(pfx_dynamic_linear_array_t* pdel_array,
 	}
 
 	release_array_block_buffer(pdel_array);
-	parray_allocator->dellocate_obj((Long)parray_allocator,pdel_array);
+	parray_allocator->dellocate_obj((pfx_long_t)parray_allocator,pdel_array);
 	
 	return PFX_STATUS_OK;
 }
 
-pfx_result resize_dynamic_linear_array(pfx_dynamic_linear_array_t* PARAM_INOUT parray,
-	size_t item_count,Bool bnew_buffer)
+pfx_result_t resize_dynamic_linear_array(pfx_dynamic_linear_array_t* PARAM_INOUT parray,
+	size_t item_count,pfx_bool_t bnew_buffer)
 {
-	pfx_result status = PFX_STATUS_OK;
+	pfx_result_t status = PFX_STATUS_OK;
 	size_t i;
 	size_t old_block_count = parray->m_block_array.m_buffer_length;
 	// 计算获得需要的block数量

@@ -105,6 +105,9 @@
     <ClInclude Include="data\pecker_value_compare.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="data\pecker_collection.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="data\pfx_string.cpp">
@@ -139,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="test\pfx_dynamic_linear_array_test.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pfx_avl_tree_algorithm.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pfx_bst_iterator.cpp">
+      <Filter>data</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

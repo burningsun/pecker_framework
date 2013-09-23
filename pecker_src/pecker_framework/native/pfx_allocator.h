@@ -33,16 +33,16 @@ PFX_C_EXTERN_BEGIN
 
 typedef PFX_Interface Iallocator
 {
-	 void*	(*allocate_obj)(Long handle, size_t size);
-	 void	(*dellocate_obj)(Long handle,void* PARAM_INOUT pobject);
+	 void*	(*allocate_obj)(pfx_long_t handle, size_t size);
+	 void	(*dellocate_obj)(pfx_long_t handle,void* PARAM_INOUT pobject);
 }IAllocator;
 
-PFX_INLINE void* default_allocator_allocate_obj(Long handle,size_t size)
+PFX_INLINE void* default_allocator_allocate_obj(pfx_long_t handle,size_t size)
 {
 	return allocate_object(size);
 }
 
-PFX_INLINE void default_allocator_deallocate_obj(Long handle,void* PARAM_INOUT pobject)
+PFX_INLINE void default_allocator_deallocate_obj(pfx_long_t handle,void* PARAM_INOUT pobject)
 {
 	 deallocate_object(pobject);
 }

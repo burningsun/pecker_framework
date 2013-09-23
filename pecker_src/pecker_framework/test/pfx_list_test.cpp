@@ -20,7 +20,7 @@ PFX_C_EXTERN_BEGIN
 	{
 		if (pnode)
 		{
-			Long addr = (Long) pnode - sizeof(int);
+			pfx_long_t addr = (pfx_long_t) pnode - sizeof(int);
 			my_linked_list_node* pnew_node = (my_linked_list_node*)addr;
 			return pnew_node;
 		}
@@ -30,7 +30,7 @@ PFX_C_EXTERN_BEGIN
 	{
 		if (pnode)
 		{
-			Long addr = (Long) pnode - sizeof(int);
+			pfx_long_t addr = (pfx_long_t) pnode - sizeof(int);
 			my_linked_list_node* pnew_node = (my_linked_list_node*)addr;
 			if (pnew_node)
 			{

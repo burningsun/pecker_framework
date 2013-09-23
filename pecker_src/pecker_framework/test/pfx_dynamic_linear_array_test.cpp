@@ -19,11 +19,11 @@ PFX_C_EXTERN_END
 
 int dynamic_linear_array_test_main()
 {
-	pfx_result status;
-	nINDEX	i;
-	U64bit push_back_n_items[50];
+	pfx_result_t status;
+	pfx_index_t	i;
+	pfx_u64_t push_back_n_items[50];
 	pfx_dynamic_linear_array_t*  parray = new_dynamic_linear_array(&gDefualt_allocator,
-		sizeof(U64bit),16,16,32,ALIGNED_1_BYTE,&gDefualt_allocator,&gDefualt_allocator,&status);
+		sizeof(pfx_u64_t),16,16,32,ALIGNED_1_BYTE,&gDefualt_allocator,&gDefualt_allocator,&status);
 
 	if (PFX_STATUS_OK != status)
 	{
@@ -33,8 +33,8 @@ int dynamic_linear_array_test_main()
 
 	for (i=0;i<1000;++i)
 	{
-		U64bit add_item = i;
-		U64bit* padd_item = (U64bit*)dynamic_linear_array_push_back(parray,&add_item,&status);
+		pfx_u64_t add_item = i;
+		pfx_u64_t* padd_item = (pfx_u64_t*)dynamic_linear_array_push_back(parray,&add_item,&status);
 		PECKER_LOG_("base_array_push_back status = %d\n",status);
 		if (null == padd_item)
 		{
@@ -48,7 +48,7 @@ int dynamic_linear_array_test_main()
 
 	for (i=0;i<1000;++i)
 	{
-		U64bit* pitem = (U64bit*)get_item_at_dynamic_linear_array_linear(parray,i);
+		pfx_u64_t* pitem = (pfx_u64_t*)get_item_at_dynamic_linear_array_linear(parray,i);
 		if (null == pitem)
 		{
 			PECKER_LOG_("base_array_push_back item=%d\n",pitem);
@@ -62,7 +62,7 @@ int dynamic_linear_array_test_main()
 
 	for (i=0;i<1000;++i)
 	{
-		U64bit* pop_item = (U64bit*)dynamic_linear_array_pop_back(parray,pfx_false,&status);
+		pfx_u64_t* pop_item = (pfx_u64_t*)dynamic_linear_array_pop_back(parray,pfx_false,&status);
 		PECKER_LOG_("base_array_pop_back status = %d\n",status);
 		if (null == pop_item)
 		{
@@ -77,14 +77,14 @@ int dynamic_linear_array_test_main()
 	status = clear_dynamic_linear_array(parray,pfx_true);
 	PECKER_LOG_("clear_base_array status = %d\n",status);
 
-	for (i=0;i<(sizeof(push_back_n_items)/sizeof(U64bit));++i)
+	for (i=0;i<(sizeof(push_back_n_items)/sizeof(pfx_u64_t));++i)
 	{
 		push_back_n_items[i] = i;
 	}
 
 	for (i=0;i<20;++i)
 	{
-		U64bit* padd_item = (U64bit*)dynamic_linear_array_push_back_n(parray,push_back_n_items,(sizeof(push_back_n_items)/sizeof(U64bit)),&status);
+		pfx_u64_t* padd_item = (pfx_u64_t*)dynamic_linear_array_push_back_n(parray,push_back_n_items,(sizeof(push_back_n_items)/sizeof(pfx_u64_t)),&status);
 		PECKER_LOG_("base_array_push_back status = %d\n",status);
 		if (null == padd_item)
 		{
@@ -98,7 +98,7 @@ int dynamic_linear_array_test_main()
 
 	for (i=0;i<1000;++i)
 	{
-		U64bit* pitem = (U64bit*)get_item_at_dynamic_linear_array_linear(parray,i);
+		pfx_u64_t* pitem = (pfx_u64_t*)get_item_at_dynamic_linear_array_linear(parray,i);
 		if (null == pitem)
 		{
 			PECKER_LOG_("base_array_push_back item=%d\n",pitem);
@@ -113,7 +113,7 @@ int dynamic_linear_array_test_main()
 	for (i=0;i<20;++i)
 	{
 		size_t ncount = 0;
-		U64bit* pop_item = (U64bit*)dynamic_linear_array_pop_back_n(parray,(sizeof(push_back_n_items)/sizeof(U64bit)),pfx_false,&ncount,&status);
+		pfx_u64_t* pop_item = (pfx_u64_t*)dynamic_linear_array_pop_back_n(parray,(sizeof(push_back_n_items)/sizeof(pfx_u64_t)),pfx_false,&ncount,&status);
 		//PECKER_LOG_("base_array_pop_back status = %d,count = %d\n",status,ncount);
 		PECKER_LOG_("base_array_pop_back status = %d",status);
 		if (null == pop_item)

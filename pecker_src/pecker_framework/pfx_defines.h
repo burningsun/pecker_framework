@@ -22,14 +22,14 @@
 #define pfx_char_type(x) L ## x
 #define pfx_printf wprintf
 #define pfx_sscanf swscanf
-#define pfx_sprintf swprintf_s
+#define pfx_sprintf swprintf
 #define pfx_strlen wcslen
 #else
 #define pfx_char char
 #define pfx_char_type(x) x
 #define pfx_printf printf
 #define pfx_sscanf sscanf
-#define pfx_sprintf sprintf_s
+#define pfx_sprintf sprintf
 #define pfx_strlen strlen
 #endif
 
@@ -116,139 +116,139 @@ enum PFX_STATUS_CODE
 
 PFX_C_EXTERN_BEGIN
 // 类型定义
-typedef unsigned char U8bit;
-typedef unsigned short U16bit;
-typedef unsigned int U32bit;
-typedef unsigned long long U64bit;
+typedef unsigned char			pfx_u8_t;
+typedef unsigned short		pfx_u16_t;
+typedef unsigned int				pfx_u32_t;
+typedef unsigned long long pfx_u64_t;
 
-typedef char S8bit;
-typedef short S16bit;
-typedef int S32bit;
-typedef long long S64bit;
+typedef char							pfx_s8_t;
+typedef short							pfx_s16_t;
+typedef int								pfx_s32_t;
+typedef long long					pfx_s64_t;
 
-typedef float Float;
-typedef double Double;
+typedef float							pfx_float_t;
+typedef double						pfx_double_t;
 
-typedef void* Handle;
-typedef void* PVoid;
-typedef char Char;
-typedef char* CharStr;
+typedef void*							pfx_handle_t;
+typedef void*							pfx_pvoid_t;
+typedef char							pfx_char_t;
+typedef char*							pfx_charstr_t;
 
-typedef S32bit SInt;
-typedef U32bit UInt;
-typedef S16bit Short;
-typedef U16bit UShort;
-typedef long Long;
-typedef unsigned long Ulong; 
+typedef pfx_s32_t					pfx_sint_t;
+typedef pfx_u32_t					pfx_uint_t;
+typedef pfx_s16_t					pfx_short_t;
+typedef pfx_u16_t					pfx_ushort_t;
+typedef long							pfx_long_t;
+typedef unsigned long			pfx_ulong_t; 
 
-typedef long HADDR;
-typedef long pfx_result;
-typedef long pfx_flag;
-typedef unsigned long pfx_enum;
-typedef int nPosCoord;
-typedef int nSize;
-typedef unsigned int uSize;
-typedef int nINDEX;
-typedef unsigned char Byte;
-//typedef unsigned int pfx_enum;
-typedef unsigned int BitField;
+typedef long							pfx_address_t;
+typedef long							pfx_result_t;
+typedef long							pfx_flag_t;
+typedef unsigned long			pfx_enum_t;
+typedef int								pfx_pos_coord_t;
+typedef int								pfx_nsize_t;
+typedef unsigned int				pfx_usize_t;
+typedef int								pfx_index_t;
+typedef unsigned char			pfx_byte_t;
+//typedef unsigned int pfx_enum_t;
+typedef unsigned int				pfx_bitfield_t;
 //typedef char Bool;
 
 typedef enum enum_bool
 {
 	pfx_false = 0,
 	pfx_true
-}Bool;
+}pfx_bool_t;
 //#define pfx_true (1)
 //#define pfx_false (0)
 
 typedef union PFX_16bit_DataType
 {
-	Short		m_short_type;
-	UShort	m_ushort_type;
-	Char		m_char_type[2];
-	Byte			m_uchar_type[2];
-}PFX_16bit_DataType_t;
+	pfx_short_t		m_short_type;
+	pfx_ushort_t		m_ushort_type;
+	pfx_char_t			m_char_type[2];
+	pfx_byte_t			m_uchar_type[2];
+}pfx_16bit_t;
 
 typedef union PFX_32bit_DataType
 {
-	SInt									m_int_type;
-	UInt									m_uint_type;
-	Float								m_float_type;
-	Long								m_long_type;
-	Ulong								m_ulong_type;
-	Short								m_short_type[2];
-	UShort							m_ushort_type[2];
-	Char								m_char_type[4];
-	Byte									m_uchar_type[4];
-	PFX_16bit_DataType_t	m_16bit_type[2];
-}PFX_32bit_DataType_t;
+	pfx_sint_t									m_int_type;
+	pfx_uint_t									m_uint_type;
+	pfx_float_t									m_float_type;
+	pfx_long_t									m_long_type;
+	pfx_ulong_t								m_ulong_type;
+	pfx_short_t								m_short_type[2];
+	pfx_ushort_t								m_ushort_type[2];
+	pfx_char_t									m_char_type[4];
+	pfx_byte_t									m_uchar_type[4];
+	pfx_16bit_t								m_16bit_type[2];
+}pfx_32_bit_t;
 
 typedef union PFX_64bit_DataType
 {
 	long long						m_longlong_type;
 	unsigned long long		m_ullong_type;
 	double							m_double_type;
-	SInt									m_int_type[2];
-	UInt									m_uint_type[2];
-	Float								m_float_type[2];
-	Long								m_long_type[2];
-	Ulong								m_ulong_type[2];
-	Short								m_short_type[4];
-	UShort							m_ushort_type[4];
-	Char								m_char_type[8];
-	Byte									m_uchar_type[8];
-	PFX_32bit_DataType_t	m_32bit_type[2];
-	PFX_16bit_DataType_t	m_16bit_type[4];
-}PFX_64bit_DataType_t;
+	pfx_sint_t						m_int_type[2];
+	pfx_uint_t						m_uint_type[2];
+	pfx_float_t						m_float_type[2];
+	pfx_long_t						m_long_type[2];
+	pfx_ulong_t					m_ulong_type[2];
+	pfx_short_t					m_short_type[4];
+	pfx_ushort_t					m_ushort_type[4];
+	pfx_char_t						m_char_type[8];
+	pfx_byte_t						m_uchar_type[8];
+	pfx_32_bit_t					m_32bit_type[2];
+	pfx_16bit_t					m_16bit_type[4];
+}pfx_64bit_t;
 
 typedef union PFX_128bit_DataType
 {
 	long long						m_longlong_type[2];
 	unsigned long long		m_ullong_type[2];
 	double							m_double_type[2];
-	SInt									m_int_type[4];
-	UInt									m_uint_type[4];
-	Float								m_float_type[4];
-	Long								m_long_type[4];
-	Ulong								m_ulong_type[4];
-	Short								m_short_type[8];
-	UShort							m_ushort_type[8];
-	Char								m_char_type[16];
-	Byte									m_uchar_type[16];
-	PFX_64bit_DataType_t	m_64bit_type[2];
-	PFX_32bit_DataType_t	m_32bit_type[4];
-	PFX_16bit_DataType_t	m_16bit_type[8];
-}PFX_128bit_DataType_t;
+	pfx_sint_t						m_int_type[4];
+	pfx_uint_t						m_uint_type[4];
+	pfx_float_t						m_float_type[4];
+	pfx_long_t						m_long_type[4];
+	pfx_ulong_t					m_ulong_type[4];
+	pfx_short_t					m_short_type[8];
+	pfx_ushort_t					m_ushort_type[8];
+	pfx_char_t						m_char_type[16];
+	pfx_byte_t						m_uchar_type[16];
+	pfx_64bit_t					m_64bit_type[2];
+	pfx_32_bit_t					m_32bit_type[4];
+	pfx_16bit_t					m_16bit_type[8];
+}pfx_128bit_t;
 
 #ifdef __cplusplus
 // 位操作
-PFX_INLINE void set_bytes_in_bitfield_mask(BitField& bitfield32bit,Byte bit0to7,Byte bit8to15,Byte bit16to23,Byte bit24to31)
+PFX_INLINE void set_bytes_in_bitfield_mask(pfx_bitfield_t& bitfield32bit,pfx_byte_t bit0to7,pfx_byte_t bit8to15,pfx_byte_t bit16to23,pfx_byte_t bit24to31)
 {
-	bitfield32bit = (((BitField)bit0to7 << 24) & 0xFF000000)| 
-		(((BitField)bit8to15 << 16) & 0x00FF0000)|
-		(((BitField)bit16to23 << 8) & 0x0000FF00)|
-		(((BitField)bit24to31) & 0x000000FF);
+	bitfield32bit = (((pfx_bitfield_t)bit0to7 << 24) & 0xFF000000)| 
+		(((pfx_bitfield_t)bit8to15 << 16) & 0x00FF0000)|
+		(((pfx_bitfield_t)bit16to23 << 8) & 0x0000FF00)|
+		(((pfx_bitfield_t)bit24to31) & 0x000000FF);
 }
 
-PFX_INLINE void set_u16_in_bitfield_mask(BitField& bitfield32bit,U16bit bit0to15,U16bit bit16to31)
+PFX_INLINE void set_u16_in_bitfield_mask(pfx_bitfield_t& bitfield32bit,pfx_u16_t bit0to15,pfx_u16_t bit16to31)
 {
-	bitfield32bit = (((BitField)bit0to15 << 16) & 0xFFFF0000)| 
-		(((BitField)bit16to31) & 0x0000FFFF);
+	bitfield32bit = (((pfx_bitfield_t)bit0to15 << 16) & 0xFFFF0000)| 
+		(((pfx_bitfield_t)bit16to31) & 0x0000FFFF);
 }
 #else
 #define  set_bytes_in_bitfield_mask( bitfield32bit,bit0to7,bit8to15,bit16to23,bit24to31)  \
 {																																							\
-	bitfield32bit = (((BitField)bit0to7 << 24) & 0xFF000000)|														\
-		(((BitField)bit8to15 << 16) & 0x00FF0000)|																			\
-		(((BitField)bit16to23 << 8) & 0x0000FF00)|																			\
-		(((BitField)bit24to31) & 0x000000FF);																					\
+	bitfield32bit = (((pfx_bitfield_t)bit0to7 << 24) & 0xFF000000)|														\
+		(((pfx_bitfield_t)bit8to15 << 16) & 0x00FF0000)|																			\
+		(((pfx_bitfield_t)bit16to23 << 8) & 0x0000FF00)|																			\
+		(((pfx_bitfield_t)bit24to31) & 0x000000FF);																					\
 }
 
 #define  set_u16_in_bitfield_mask(bitfield32bit,bit0to15,bit16to31)										\
 {																																							\
-	bitfield32bit = (((BitField)bit0to15 << 16) & 0xFFFF0000)|														\
-		(((BitField)bit16to31) & 0x0000FFFF);																					\
+	bitfield32bit = (((pfx_bitfield_t)bit0to15 << 16) & 0xFFFF0000)|														\
+		(((pfx_bitfield_t)bit16to31) & 0x0000FFFF);																					\
 }
 #endif
 
@@ -280,9 +280,9 @@ enum BIT_MASK_TYPE
 #define  BIT_0_to_15_MASK_31_to_0 SHORT_2ND_MASK
 #define  BIT_16_to_31_MASK_31_to_0  SHORT_1ST_MASK
 
-PFX_INLINE BitField get_bitfield_mask(BitField bitfield,pfx_enum masktype)
+PFX_INLINE pfx_bitfield_t get_bitfield_mask(pfx_bitfield_t bitfield,pfx_enum_t masktype)
 {
-	BitField return_value = 0;
+	pfx_bitfield_t return_value = 0;
 
 	switch (masktype)
 	{
@@ -311,9 +311,9 @@ PFX_INLINE BitField get_bitfield_mask(BitField bitfield,pfx_enum masktype)
 	return return_value;
 }
 
-PFX_INLINE BitField set_bitfield_mask(BitField bitfield,BitField mask_value,pfx_enum masktype)
+PFX_INLINE pfx_bitfield_t set_bitfield_mask(pfx_bitfield_t bitfield,pfx_bitfield_t mask_value,pfx_enum_t masktype)
 {
-	BitField return_value = bitfield;
+	pfx_bitfield_t return_value = bitfield;
 
 	switch (masktype)
 	{

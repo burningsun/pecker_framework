@@ -13,6 +13,13 @@ PFX_C_EXTERN_BEGIN
 
 #define  COMPARE_TWO_VALUE(A,B,CMP) CMP(A,B)
 typedef int (*CMP_A_AND_B)(void* A,void* B) ;
+typedef int (*compare_two_value_func)(pfx_long_t A,pfx_long_t B) ;
+
+PFX_INLINE int cmp_a_and_b_long(pfx_long_t A, pfx_long_t B)
+{
+	return (A - B);
+}
+
 PFX_INLINE int cmp_a_and_b_int(int A, int B)
 {
 	return (A - B);
