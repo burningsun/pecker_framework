@@ -113,11 +113,11 @@ PFX_INLINE const binary_search_tree_node_t* find_node_form_binary_search_tree (p
 		int cmp_result = cmp_method(find_key,(proot_node->m_key));
 		if (cmp_result < 0)
 		{
-			proot_node = preturn_node->m_pleft_node;
+			proot_node = proot_node->m_pleft_node;
 		}
 		else if (cmp_result > 0)
 		{
-			proot_node = preturn_node->m_pright_node;
+			proot_node = proot_node->m_pright_node;
 		}
 		else
 		{
@@ -144,11 +144,11 @@ PFX_INLINE const binary_search_tree_node_t* find_first_near_node_form_binary_sea
 
 		if (cmp_result < 0)
 		{
-			proot_node = preturn_node->m_pleft_node;
+			proot_node = proot_node->m_pleft_node;
 		}
 		else if (cmp_result > 0)
 		{
-			proot_node = preturn_node->m_pright_node;
+			proot_node = proot_node->m_pright_node;
 		}
 		else
 		{
@@ -233,18 +233,28 @@ PFX_INLINE pfx_result_t remove_bst_node_unsafe (
 
 	if (psub_remove_node == premove_node)
 	{
-		psub_romove_ref_node->m_parent_node = psub_remove_node->m_parent_node;
+		if (psub_romove_ref_node)
+		{
+			psub_romove_ref_node->m_parent_node = psub_remove_node->m_parent_node;
+		}
+
 		init_binary_search_tree_node_nokey_unsafe(premove_node,null,null,null);
 		return PFX_STATUS_OK;
 	}
 
 	if (psub_remove_node->m_parent_node == premove_node)
 	{
-		psub_romove_ref_node->m_parent_node = psub_remove_node;
+		if (psub_romove_ref_node)
+		{
+			psub_romove_ref_node->m_parent_node = psub_remove_node;
+		}
 	}
 	else
 	{
-		psub_romove_ref_node->m_parent_node = psub_remove_node->m_parent_node;
+		if (psub_romove_ref_node)
+		{
+			psub_romove_ref_node->m_parent_node = psub_remove_node->m_parent_node;
+		}
 	}
 	
 
@@ -306,6 +316,7 @@ PFX_INLINE pfx_result_t add_bst_node_unsafe (
 	{
 		*pproot_node = padd_node;
 		init_binary_search_tree_node_nokey_unsafe ((binary_search_tree_node_t*)padd_node,null,null,null);
+		*ppadded_node = padd_node;
 		return PFX_STATUS_OK;
 	}
 

@@ -44,10 +44,14 @@
     <ClCompile Include="native\pfx_timetick.cpp" />
     <ClCompile Include="test\pfx_arrayblock_test.cpp" />
     <ClCompile Include="test\pfx_array_test.cpp" />
+    <ClCompile Include="test\pfx_bst_test.cpp" />
     <ClCompile Include="test\pfx_dynamic_linear_array_test.cpp" />
     <ClCompile Include="test\pfx_list_test.cpp" />
     <ClCompile Include="test\pfx_string_test.cpp" />
     <ClCompile Include="test\test_main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test_data\bst_test_data.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{76A56045-00A1-411F-B387-19B3FE8A873E}</ProjectGuid>

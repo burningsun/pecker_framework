@@ -40,6 +40,9 @@
     <Filter Include="test">
       <UniqueIdentifier>{ed8aea05-9168-41ba-8260-d0a9296a20f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test_data">
+      <UniqueIdentifier>{f82080b8-bb6e-4c0f-ab1d-b0025f82b543}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="native\pfx_allocator.h">
@@ -149,5 +152,13 @@
     <ClCompile Include="data\pfx_bst_iterator.cpp">
       <Filter>data</Filter>
     </ClCompile>
+    <ClCompile Include="test\pfx_bst_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test_data\bst_test_data.txt">
+      <Filter>test_data</Filter>
+    </None>
   </ItemGroup>
 </Project>
