@@ -2,7 +2,7 @@
  * pfx_array_algorithm.cpp
  *
  *  Created on: 2013-9-12
- *      Author: 李镇城 (cut / cutxyz)
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 #include "pfx_array_algorithm.h"
 

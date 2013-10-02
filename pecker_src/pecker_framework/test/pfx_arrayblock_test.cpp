@@ -2,7 +2,7 @@
  * pfx_arrayblock_test.cpp
  *
  *  Created on: 2013-9-20
- *      Author: 李镇城 (cut / cutxyz)
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 #include "../data/pfx_array_algorithm.h"

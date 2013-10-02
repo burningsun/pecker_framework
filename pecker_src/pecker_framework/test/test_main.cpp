@@ -2,7 +2,7 @@
  * test_main.cpp
  *
  *  Created on: 2013-9-3
- *      Author: 李镇城 (cut / cutxyz)
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 #include "../pfx_defines.h"
 #include "../data/pfx_math.h"

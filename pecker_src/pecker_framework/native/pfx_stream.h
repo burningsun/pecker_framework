@@ -2,7 +2,7 @@
  * pfx_stream.h
  *
  *  Created on: 2013-9-28
- *      Author: 李镇城 (cut / cutxyz)
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 #ifndef		PFX_STREAM_H_

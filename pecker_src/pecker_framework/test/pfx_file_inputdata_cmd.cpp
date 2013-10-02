@@ -2,7 +2,7 @@
  * pfx_file_inputdata_cmd.cpp
  *
  *  Created on: 2013-9-29
- *      Author: 李镇城 (cut / cutxyz)
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 
