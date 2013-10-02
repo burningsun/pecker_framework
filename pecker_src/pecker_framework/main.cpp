@@ -5,6 +5,9 @@
 extern int test_main();
 
 #include <locale.h>
+
+
+
 int main()
 {
 	setlocale(LC_ALL,"chs"); 

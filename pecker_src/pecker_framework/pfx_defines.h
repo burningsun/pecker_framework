@@ -36,7 +36,11 @@
 // 状态
 enum PFX_STATUS_CODE
 {
-	PFX_STATUS_ERROR_COUNT = -21,
+	PFX_STATUS_ERROR_COUNT = -24,
+	PFX_STATUS_OVERRANGE,
+
+	PFX_STATUS_DENIED,
+	PFX_STATUS_NOT_EXISTS,
 
 	PFX_STATUS_DIFF_TYPE,
 	
@@ -90,20 +94,29 @@ enum PFX_STATUS_CODE
 #define MAX_UNSIGNED_VALUE (-1)
 #define PECKER_PI 3.141592653
 
+#ifdef __cplusplus
 #define	PFX_C_EXTERN_BEGIN extern "C" {
+#else // __cplusplus
+#define	PFX_C_EXTERN_BEGIN
+#endif // __cplusplus
+
+#ifdef __cplusplus
 #define	PFX_C_EXTERN_END  };
+#else// __cplusplus
+#define	PFX_C_EXTERN_END
+#endif // __cplusplus
 
 #ifdef __cplusplus
 #define PECKER_BEGIN namespace pecker_sdk{
 #define PECKER_END  }
 #define PECKER_SDK ::pecker_sdk::
 #define USING_PECKER_SDK using namespace pecker_sdk;
-#else
+#else // __cplusplus
 #define PECKER_BEGIN
 #define PECKER_END
 #define PECKER_SDK
 #define USING_PECKER_SDK
-#endif
+#endif // __cplusplus
 
 #define FOR_ONE_LOOP_BEGIN {
 #define FOR_ONE_LOOP_END }while(0);
@@ -132,6 +145,7 @@ typedef double						pfx_double_t;
 typedef void*							pfx_handle_t;
 typedef void*							pfx_pvoid_t;
 typedef char							pfx_char_t;
+typedef wchar_t					pfx_wchar_t;
 typedef char*							pfx_charstr_t;
 
 typedef pfx_s32_t					pfx_sint_t;
@@ -150,7 +164,7 @@ typedef int								pfx_nsize_t;
 typedef unsigned int				pfx_usize_t;
 typedef int								pfx_index_t;
 typedef unsigned char			pfx_byte_t;
-//typedef unsigned int pfx_enum_t;
+typedef unsigned int				pfx_enum_int_t;
 typedef unsigned int				pfx_bitfield_t;
 //typedef char Bool;
 
@@ -161,6 +175,20 @@ typedef enum enum_bool
 }pfx_bool_t;
 //#define pfx_true (1)
 //#define pfx_false (0)
+typedef struct st_float_type
+{
+	unsigned		m_signed_bit:1;
+	unsigned		m_exponent :8;
+	unsigned		m_value : 23; 
+}pfx_float_struct_t;
+
+typedef struct st_double_type
+{
+	unsigned		m_signed_bit:1;
+	unsigned		m_exponent :11;
+	unsigned		m_value_1 : 20;
+	unsigned		m_value_2	: 32;
+}pfx_double_struct_t;
 
 typedef union PFX_16bit_DataType
 {
@@ -182,6 +210,7 @@ typedef union PFX_32bit_DataType
 	pfx_char_t									m_char_type[4];
 	pfx_byte_t									m_uchar_type[4];
 	pfx_16bit_t								m_16bit_type[2];
+	pfx_float_struct_t						m_float_st_type;
 }pfx_32_bit_t;
 
 typedef union PFX_64bit_DataType
@@ -200,6 +229,7 @@ typedef union PFX_64bit_DataType
 	pfx_byte_t						m_uchar_type[8];
 	pfx_32_bit_t					m_32bit_type[2];
 	pfx_16bit_t					m_16bit_type[4];
+	pfx_double_struct_t		m_double_st_type;
 }pfx_64bit_t;
 
 typedef union PFX_128bit_DataType
@@ -220,6 +250,9 @@ typedef union PFX_128bit_DataType
 	pfx_32_bit_t					m_32bit_type[4];
 	pfx_16bit_t					m_16bit_type[8];
 }pfx_128bit_t;
+
+
+#define RETURN_INVALID_RESULT(condition,return_status) {if (condition) {return (return_status);} };
 
 #ifdef __cplusplus
 // 位操作

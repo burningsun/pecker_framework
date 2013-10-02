@@ -43,6 +43,9 @@
     <Filter Include="test_data">
       <UniqueIdentifier>{f82080b8-bb6e-4c0f-ab1d-b0025f82b543}</UniqueIdentifier>
     </Filter>
+    <Filter Include="configs">
+      <UniqueIdentifier>{8d1cbbb2-3b99-493a-bc7e-40a6024cd519}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="native\pfx_allocator.h">
@@ -96,19 +99,37 @@
     <ClInclude Include="data\pfx_vector4.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="pfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pfx_configs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pfx_defines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="data\pecker_value_compare.h">
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="data\pecker_collection.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="native\pfx_file_io.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="native\pfx_stream.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="test\pfx_file_inputdata_cmd.h">
+      <Filter>test</Filter>
+    </ClInclude>
+    <ClInclude Include="pfx_configs.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="pfx.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="pfx_defines.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_math.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_balance_bst.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_bst.h">
       <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>
@@ -154,6 +175,21 @@
     </ClCompile>
     <ClCompile Include="test\pfx_bst_test.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="native\pfx_file_io.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="native\pfx_stream.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_file_inputdata_cmd.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_stream_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pfx_bst_algorithm.cpp">
+      <Filter>data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

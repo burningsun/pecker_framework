@@ -18,6 +18,30 @@ struct st_linked_list_node
 	linked_list_node_t* m_prev_node;
 	linked_list_node_t* m_pnext_node;
 };
+
+PFX_INLINE linked_list_node_t* init_linked_list_node(linked_list_node_t* PARAM_INOUT pnode);
+
+PFX_INLINE const linked_list_node_t* find_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode);
+
+PFX_INLINE const linked_list_node_t* find_linked_list_last_node(const linked_list_node_t*	PARAM_IN	pnode);
+
+PFX_INLINE const linked_list_node_t* insert_linked_list_node_end(linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add);
+
+PFX_INLINE const linked_list_node_t* insert_linked_list_node_begin(linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add);
+
+PFX_INLINE linked_list_node_t* remove_linked_list_node(linked_list_node_t* PARAM_INOUT pnode);
+
+PFX_INLINE pfx_bool_t check_is_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode);
+
+PFX_INLINE pfx_bool_t check_is_linked_list_last_node(const linked_list_node_t* PARAM_IN	pnode);
+
+PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node(const linked_list_node_t* PARAM_IN	pnode);
+
+PFX_INLINE const linked_list_node_t* get_linked_list_next_node(const linked_list_node_t* PARAM_IN	pnode);
+
+PFX_INLINE const linked_list_node_t* get_linked_list_prev_node(const linked_list_node_t* PARAM_IN	pnode);
+
+//////////////////////////////////////////////////////////////////////////
 PFX_INLINE linked_list_node_t* init_linked_list_node(linked_list_node_t* PARAM_INOUT pnode)
 {
 	memset(pnode,0,sizeof(linked_list_node_t));

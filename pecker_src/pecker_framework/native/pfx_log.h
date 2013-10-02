@@ -20,6 +20,8 @@
 #else
 #if (OS_CONFIG == OS_WINDOWS)
 #include <stdio.h>
+#define PECKER_LOG_DIRECT_A(X,...){ printf(X, __VA_ARGS__);}
+#define PECKER_LOG_DIRECT_W(X,...){ wprintf(X, __VA_ARGS__);}
 #define PECKER_LOG_DIRECT(X,...){ pfx_printf(X, __VA_ARGS__);}
 #define PECKER_LOG_(X,...){ pfx_printf((pfx_char_type(X)), __VA_ARGS__);}
 #define PECKER_LOG_INFO(X,Y,...){pfx_printf(pfx_char_type("LOG_INFO "));pfx_printf(pfx_char_type(X));pfx_printf(pfx_char_type("\n")); pfx_printf(pfx_char_type(Y), __VA_ARGS__);pfx_printf(pfx_char_type("\n"));}

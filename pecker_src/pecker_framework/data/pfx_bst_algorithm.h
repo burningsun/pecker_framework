@@ -11,18 +11,123 @@
 #include "../native/pfx_allocator.h"
 #include "../pfx_defines.h"
 #include "pecker_value_compare.h"
+#include "../native/pfx_allocator.h"
 
 PFX_C_EXTERN_BEGIN
 
+// 二叉树内部标记，主要用于平衡树应用
+typedef struct st_binary_search_tree_node_mask
+{
+	unsigned		m_revered_mask	: 8;		// 保留位
+	unsigned		m_valid_mask		: 8;		// 合法性判断位，用于假删除
+	unsigned 	m_balance_mask	: 16;	// 平衡树标志位
+}st_binary_search_tree_node_mask_t;
+
+typedef union un_binary_search_tree_node_mask
+{
+	st_binary_search_tree_node_mask_t	m_mask;
+	pfx_bitfield_t												m_mask_bits;
+}binary_search_tree_node_mask_t;
+
+// 二叉树节点基本结构
 typedef struct st_binary_search_tree_node binary_search_tree_node_t;
 
 struct st_binary_search_tree_node
 {
-	binary_search_tree_node_t*	m_parent_node;
-	binary_search_tree_node_t*	m_pleft_node;
-	binary_search_tree_node_t*	m_pright_node;
-	pfx_long_t											m_key;
+	binary_search_tree_node_t*				m_parent_node;	// 父节点，主要用于优化遍历，以及可修改型迭代器的应用
+	binary_search_tree_node_t*				m_pleft_node;		// 左子树
+	binary_search_tree_node_t*				m_pright_node;	// 右子树
+	binary_search_tree_node_mask_t		m_mask;				// 内部标记，平衡树扩展应用
+	pfx_long_t												m_key;					//	 键
 };
+
+// 分配新的二叉树节点的内存
+typedef binary_search_tree_node_t* (*new_bst_node_func)(const IAllocator* PARAM_IN pallocator,const binary_search_tree_node_t* PARAM_IN pother_node);
+
+// 删除二叉树节点所占的内存，注意这不实现移除二叉树节点
+typedef pfx_result_t (*delete_bst_node_func)(const IAllocator* PARAM_IN pallocator,binary_search_tree_node_t* PARAM_IN pdel_node);
+
+// 检查是否为叶子节点
+PFX_INLINE pfx_bool_t check_binary_search_tree_leaf_node_unsafe(const binary_search_tree_node_t* PARAM_IN pnode);
+
+// 检查节点是否为定义好的叶子节点
+PFX_INLINE pfx_bool_t check_binary_search_tree_define_leaf_node_unsafe(const binary_search_tree_node_t* PARAM_IN pnode,
+	const binary_search_tree_node_t* pnull_node);
+
+// 初始化二叉树节点
+PFX_INLINE void init_binary_search_tree_node_unsafe (binary_search_tree_node_t* PARAM_INOUT ptree_node,
+	binary_search_tree_node_t*  PARAM_IN pleft_node,
+	binary_search_tree_node_t*  PARAM_IN pright_node,
+	binary_search_tree_node_t*  PARAM_IN parent_node,
+	pfx_long_t key);
+
+// 初始化二叉树节点不含键初始化
+PFX_INLINE void init_binary_search_tree_node_nokey_unsafe (binary_search_tree_node_t* PARAM_INOUT ptree_node,
+	binary_search_tree_node_t*  PARAM_IN pleft_node,
+	binary_search_tree_node_t*  PARAM_IN pright_node,
+	binary_search_tree_node_t*  PARAM_IN parent_node);
+
+// 查找指定根节点下最小的节点
+PFX_INLINE const binary_search_tree_node_t* min_binary_search_tree_node_unsafe (const binary_search_tree_node_t* PARAM_IN proot_node);
+
+// 查找指定根节点下最小的节点
+PFX_INLINE const binary_search_tree_node_t* min_binary_search_tree_define_leaf_node_unsafe (const binary_search_tree_node_t* PARAM_IN proot_node,
+	const binary_search_tree_node_t* pnull_node);
+
+// 查找指定根节点下最大的节点
+PFX_INLINE const binary_search_tree_node_t* max_binary_search_tree_node_unsafe (const binary_search_tree_node_t* PARAM_IN proot_node);
+
+// 查找指定根节点下最大的节点
+PFX_INLINE const binary_search_tree_node_t* max_binary_search_tree_define_leaf_node_unsafe (const binary_search_tree_node_t* PARAM_IN proot_node,
+	const binary_search_tree_node_t* pnull_node);
+
+// 查找指定键的节点
+PFX_INLINE const binary_search_tree_node_t* find_node_form_binary_search_tree (pfx_long_t find_key,
+	const binary_search_tree_node_t* PARAM_IN proot_node,
+	compare_two_value_func cmp_method);
+
+// 查找指定键最接近的节点
+PFX_INLINE const binary_search_tree_node_t* find_first_near_node_form_binary_search_tree (pfx_long_t find_key,
+	const binary_search_tree_node_t* PARAM_IN proot_node,
+	compare_two_value_func cmp_method,
+	int* PARAM_INOUT plast_cmp_result);
+
+// 查找需要移除的节点，用于平衡树扩展
+PFX_INLINE const binary_search_tree_node_t* find_remove_replace_node_form_binary_search_tree_unsafe (
+	const binary_search_tree_node_t* PARAM_IN premove_node,
+	binary_search_tree_node_t** PARAM_INOUT ppsub_remove_node,
+	const binary_search_tree_node_t* pnull_node);
+
+// 移除节点
+PFX_INLINE pfx_result_t remove_bst_node_unsafe (
+	binary_search_tree_node_t**				PARAM_INOUT pproot_node,
+	binary_search_tree_node_t*				PARAM_INOUT	premove_node,
+	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_node,
+	const binary_search_tree_node_t*	PARAM_IN			pnull_node);
+
+// 添加节点
+PFX_INLINE pfx_result_t add_bst_node_unsafe (
+	binary_search_tree_node_t** PARAM_INOUT pproot_node,
+	binary_search_tree_node_t*	PARAM_INOUT	padd_node,
+	binary_search_tree_node_t**	PARAM_INOUT	ppadded_node,
+	compare_two_value_func		cmp_method);
+
+// 默认
+// 分配新的二叉树节点的内存
+binary_search_tree_node_t* new_bst_node_func_default(const IAllocator* PARAM_IN pallocator,const binary_search_tree_node_t* PARAM_IN pother_node);
+
+// 默认
+// 删除二叉树节点所占的内存
+pfx_result_t delete_bst_node_func_default(const IAllocator* PARAM_IN pallocator,binary_search_tree_node_t* PARAM_IN pdel_node);
+
+// 复制树
+pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const binary_search_tree_node_t* PARAM_IN psrc_root_node,
+	const IAllocator* PARAM_IN pallocator,new_bst_node_func new_node_method);
+
+// 删除树
+pfx_result_t clear_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const IAllocator* PARAM_IN pallocator,delete_bst_node_func delete_node_method);
+
+//////////////////////////////////////////////////////////////////////////
 
 PFX_INLINE pfx_bool_t check_binary_search_tree_leaf_node_unsafe(const binary_search_tree_node_t* PARAM_IN pnode)
 {
@@ -52,6 +157,7 @@ PFX_INLINE void init_binary_search_tree_node_unsafe (binary_search_tree_node_t* 
 	ptree_node->m_pleft_node = pleft_node;
 	ptree_node->m_pright_node = pright_node;
 	ptree_node->m_parent_node = parent_node;
+	ptree_node->m_mask.m_mask_bits = 0;
 	ptree_node->m_key = key;
 }
 
@@ -63,6 +169,7 @@ PFX_INLINE void init_binary_search_tree_node_nokey_unsafe (binary_search_tree_no
 	ptree_node->m_pleft_node = pleft_node;
 	ptree_node->m_pright_node = pright_node;
 	ptree_node->m_parent_node = parent_node;
+	ptree_node->m_mask.m_mask_bits = 0;
 }
 
 PFX_INLINE const binary_search_tree_node_t* min_binary_search_tree_node_unsafe (const binary_search_tree_node_t* PARAM_IN proot_node)

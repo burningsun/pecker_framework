@@ -8,241 +8,422 @@
 #include "../data/pfx_bst_iterator.h"
 #include "../data/pfx_bst_algorithm.h"
 #include "../native/pfx_log.h"
+#include "pfx_file_inputdata_cmd.h"
+#include "../native/pfx_stream.h"
+#include "../data/pfx_bst_iterator.h"
 
 #include <fstream>
 #include <string>
 #include <iostream>
 
-typedef enum 
+
+
+#define	NONE_FLAG_				(-1)
+#define	INORDER_FLAG_INC	(0)
+#define	INORDER_FLAG_DEC	(1)
+#define	PREORDER_FLAG		(2)
+#define	POSORDER_FLAG		(3)
+#define	REPOSORDER_FLAG	(4)
+
+static binary_search_tree_node_t* proot_node = null;
+static pfx_flag_t									 gorder_flag = NONE_FLAG_;
+static pfx_index_t								 count = 0;
+static binary_search_tree_node_t* proot_node_2 = null;
+
+
+pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_chars,pfx_usize_t nchars_count)
 {
-	CMD_NONE = 0,
-	CMD_ADD,
-	CMD_SEARCH,
-	CMD_DEL,
-	CMD_CLR,
-	CMD_TRAINORDER,
-	CMD_TRACOVORDDER,
-	//CMD_SHOWALL,
-	CMD_COUNT,
-}CMD_INOUT;
+	pfx_result_t status;
+	pfx_stream_format_t stm_format;
+	pfx_index_t	offset = 0;
+	init_input_format_ex(&stm_format,PFX_DEC_INT_FORMAT,0,MAX_UNSIGNED_VALUE,0);
 
-void bst_file_data_test()
-{
-	std::ifstream myfile;
-	myfile.close();
-	myfile.open("test_data\\bst_test_data.txt");
-
-	int i =0;
-	CMD_INOUT cmdType = CMD_NONE;
-	int index = 0;
-
-	binary_search_tree_node_t* proot_node = null;
-
-	while(1)
+	switch (*cmd_type)
 	{
-		if (myfile.eof())
-			break;
-
-		switch (cmdType)
+	case CMD_ADD:
 		{
-		case CMD_ADD:
+			binary_search_tree_node_t* pbst_node = new binary_search_tree_node_t;
+			binary_search_tree_node_t* pbst_added_node = null;
+
+
+			status = string_a_parse_int(pstr_chars,&stm_format,(pfx_sint_t*)&(pbst_node->m_key),&offset);
+			if (PFX_STATUS_OK != status)
 			{
-				binary_search_tree_node_t* pbst_node = new binary_search_tree_node_t;
-				binary_search_tree_node_t* pbst_added_node = null;
-				myfile >> pbst_node->m_key;
+				PECKER_LOG_ ("parse error!!","");
+				break;
+			}
 
-				init_binary_search_tree_node_nokey_unsafe(pbst_node,null,null,null);
+			init_binary_search_tree_node_nokey_unsafe(pbst_node,null,null,null);
 
-				pfx_result_t status = add_bst_node_unsafe(&proot_node,pbst_node,&pbst_added_node,cmp_a_and_b_long);
+			pfx_result_t status = add_bst_node_unsafe(&proot_node,pbst_node,&pbst_added_node,cmp_a_and_b_long);
+			if (PFX_STATUS_OK == status)
+			{
+				PECKER_LOG_("add ok! proot_node=%08X,pbst_added_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+					proot_node,pbst_added_node->m_key,
+					pbst_added_node->m_parent_node,
+					pbst_added_node->m_pleft_node,
+					pbst_added_node->m_pright_node);
+			}
+			else if (PFX_STATUS_UNIQUE == status)
+			{
+				PECKER_LOG_("add UNIQUE! proot_node=%08X, pbst_added_node=%08X,pbst_added_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+					proot_node,
+					pbst_added_node,
+					pbst_added_node->m_key,
+					pbst_added_node->m_parent_node,
+					pbst_added_node->m_pleft_node,
+					pbst_added_node->m_pright_node);
+			}
+			else
+			{
+				PECKER_LOG_("add error = %d\n",status);
+			}
+		}
+
+		break;
+	case CMD_DEL:
+		{
+			pfx_long_t key = -1;
+			const binary_search_tree_node_t* pbst_node;
+			
+
+			status = string_a_parse_int(pstr_chars,&stm_format,(pfx_sint_t*)&key,&offset);
+			if (PFX_STATUS_OK != status)
+			{
+				PECKER_LOG_ ("parse error!!","");
+				break;
+			}
+
+			pbst_node = find_node_form_binary_search_tree(key,proot_node,cmp_a_and_b_long);
+			if (pbst_node)
+			{
+				binary_search_tree_node_t* pbst_ref = null;
+				pfx_result_t status;
+
+				PECKER_LOG_("find ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+					proot_node,pbst_node->m_key,
+					pbst_node->m_parent_node,
+					pbst_node->m_pleft_node,
+					pbst_node->m_pright_node);
+
+				status = remove_bst_node_unsafe(&proot_node,(binary_search_tree_node_t*)pbst_node,&pbst_ref,null);
 				if (PFX_STATUS_OK == status)
 				{
-					PECKER_LOG_("add ok! proot_node=%08X,pbst_added_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
-						proot_node,pbst_added_node->m_key,
-						pbst_added_node->m_parent_node,
-						pbst_added_node->m_pleft_node,
-						pbst_added_node->m_pright_node);
-				}
-				else if (PFX_STATUS_UNIQUE == status)
-				{
-					PECKER_LOG_("add UNIQUE! proot_node=%08X, pbst_added_node=%08X,pbst_added_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
-						proot_node,
-						pbst_added_node,
-						pbst_added_node->m_key,
-						pbst_added_node->m_parent_node,
-						pbst_added_node->m_pleft_node,
-						pbst_added_node->m_pright_node);
-				}
-				else
-				{
-					PECKER_LOG_("add error = %d\n",status);
-				}
-			}
-			break;
-		case CMD_SEARCH:
-			{
-				pfx_long_t key = -1;
-				const binary_search_tree_node_t* pbst_node;
-
-				myfile >> key;
-				pbst_node = find_node_form_binary_search_tree(key,proot_node,cmp_a_and_b_long);
-				if (pbst_node)
-				{
-					PECKER_LOG_("find ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+					PECKER_LOG_("remove ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X),pbst_ref = %08X\n",
 						proot_node,pbst_node->m_key,
 						pbst_node->m_parent_node,
 						pbst_node->m_pleft_node,
-						pbst_node->m_pright_node);
+						pbst_node->m_pright_node,
+						pbst_ref);
+					delete ((binary_search_tree_node_t*)pbst_node);
+					pbst_node = null;
 				}
 				else
 				{
-					PECKER_LOG_("find nothing!\n",0);
+					PECKER_LOG_("remove error = %d\n",status);
 				}
 
 			}
-			break;
-		case CMD_DEL:
+			else
 			{
-				pfx_long_t key = -1;
-				const binary_search_tree_node_t* pbst_node;
+				PECKER_LOG_("find nothing!\n",0);
+			}
 
-				myfile >> key;
-				pbst_node = find_node_form_binary_search_tree(key,proot_node,cmp_a_and_b_long);
-				if (pbst_node)
+
+		}
+		break;
+	case CMD_SEARCH:
+		{
+			pfx_long_t key = -1;
+			const binary_search_tree_node_t* pbst_node;
+
+			status = string_a_parse_int(pstr_chars,&stm_format,(pfx_sint_t*)&key,&offset);
+			if (PFX_STATUS_OK != status)
+			{
+				PECKER_LOG_ ("parse error!!","");
+				break;
+			}
+
+			pbst_node = find_node_form_binary_search_tree(key,proot_node,cmp_a_and_b_long);
+			if (pbst_node)
+			{
+				PECKER_LOG_("find ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+					proot_node,pbst_node->m_key,
+					pbst_node->m_parent_node,
+					pbst_node->m_pleft_node,
+					pbst_node->m_pright_node);
+			}
+			else
+			{
+				PECKER_LOG_("find nothing!\n",0);
+			}
+		}
+		break;
+	case CMD_COPY:
+		{
+			if (null == proot_node_2)
+			{
+				status = copy_binary_search_tree_unsafe(&proot_node_2,proot_node,&gDefualt_allocator,new_bst_node_func_default);
+				PECKER_LOG_("copy status = %d\n",status);
+			}
+			else
+			{
+				status = clear_binary_search_tree_unsafe(&proot_node_2,&gDefualt_allocator,delete_bst_node_func_default);
+				PECKER_LOG_("clear status = %d\n",status);
+				status = copy_binary_search_tree_unsafe(&proot_node_2,proot_node,&gDefualt_allocator,new_bst_node_func_default);
+				PECKER_LOG_("copy status = %d\n",status);
+			}
+		}
+		break;
+	case CMD_CLR:
+		{
+			if (null == proot_node_2)
+			{
+				PECKER_LOG_("proot_node_2 = null!\n","");
+			}
+			else
+			{
+				status = clear_binary_search_tree_unsafe(&proot_node_2,&gDefualt_allocator,delete_bst_node_func_default);
+				PECKER_LOG_("clear status = %d\n",status);
+			}
+		}
+		*cmd_type = CMD_NONE;
+		break;
+	case CMD_TRAINORDER:
+			if (0 == strncmp(pstr_chars,"inorder",strlen("inorder")))
+			{
+				const binary_search_tree_node_t* pbegin = get_binary_search_tree_inorder_begin_node (proot_node);
+				const binary_search_tree_node_t* pend = get_binary_search_tree_inorder_end_node (proot_node);
+
+				const binary_search_tree_node_t* pcur_node = pbegin;
+
+				if (INORDER_FLAG_INC != gorder_flag)
 				{
-					binary_search_tree_node_t* pbst_ref = null;
-					pfx_result_t status;
-
-					PECKER_LOG_("find ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
-						proot_node,pbst_node->m_key,
-						pbst_node->m_parent_node,
-						pbst_node->m_pleft_node,
-						pbst_node->m_pright_node);
-
-					status = remove_bst_node_unsafe(&proot_node,(binary_search_tree_node_t*)pbst_node,&pbst_ref,null);
-					if (PFX_STATUS_OK == status)
+					gorder_flag = INORDER_FLAG_INC;
+					PECKER_LOG_("==========inorder inc=============\n","");
+					count = 0;
+				}
+				do
+				{
+					++count;
+					if (null != pcur_node)
 					{
-						PECKER_LOG_("remove ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X),pbst_ref = %08X\n",
-							proot_node,pbst_node->m_key,
-							pbst_node->m_parent_node,
-							pbst_node->m_pleft_node,
-							pbst_node->m_pright_node,
-							pbst_ref);
-						delete ((binary_search_tree_node_t*)pbst_node);
-						pbst_node = null;
+						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+							count,
+							pcur_node->m_key,
+							pcur_node->m_parent_node,
+							pcur_node->m_pleft_node,
+							pcur_node->m_pright_node);
 					}
 					else
 					{
-						PECKER_LOG_("remove error = %d\n",status);
+						break;
 					}
 
-				}
-				else
-				{
-					PECKER_LOG_("find nothing!\n",0);
-				}
+					if (pcur_node == pend)
+					{
+						break;
+					}
+
+					pcur_node = binary_search_tree_inorder_increase (pcur_node,proot_node);
+				}while(1);
 
 
 			}
-			break;
-		case CMD_CLR:
+			else 	if (0 == strncmp(pstr_chars,"posorder",strlen("posorder")))
+			{
+				const binary_search_tree_node_t* pbegin = get_binary_search_tree_posorder_begin_node (proot_node);
+				const binary_search_tree_node_t* pend = get_binary_search_tree_posorder_end_node (proot_node);
 
-			break;
-		case CMD_TRAINORDER:
-			std::cout << "===============trav inorder============= "<< std::endl;
-			break;
-		case CMD_TRACOVORDDER:
-			std::cout << "=============trav decorder =============="<< std::endl;
-			break;
-		default:
-			break;
-		}
+				const binary_search_tree_node_t* pcur_node = pbegin;
 
-		std::string strin;
-		myfile >> strin;
-		if ("[printfn]"==strin)
-		{
-			std::cout << "===============node buff=========== "<< std::endl;
-			std::cout << "=================================== "<< std::endl;
+				if (POSORDER_FLAG != gorder_flag)
+				{
+					gorder_flag = POSORDER_FLAG;
+					PECKER_LOG_("==========posorder=============\n","");
+					count = 0;
+				}
 
-			continue;
-		}
-		if ("[printfsn]"==strin)
-		{
-			std::cout << "===============save node buff=========== "<< std::endl;
-			std::cout << "=================================== "<< std::endl;
+				do
+				{
+					++count;
+					if (null != pcur_node)
+					{
+						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+							count,
+							pcur_node->m_key,
+							pcur_node->m_parent_node,
+							pcur_node->m_pleft_node,
+							pcur_node->m_pright_node);
+					}
+					else
+					{
+						break;
+					}
 
-			continue;
-		}
-		if ("[show]"==strin)
-		{
-			std::cout << "===============all tree============= "<< std::endl;
-			std::cout << "=================================== "<< std::endl;
+					if (pcur_node == pend)
+					{
+						break;
+					}
 
-			continue;
-		}
-		if ("[none]"==strin)
-		{
-			cmdType = CMD_NONE;
-			continue;
-		}
-		if ("[add]"==strin)
-		{
-			cmdType = CMD_ADD;
-			std::cout << "===============add============= "<< std::endl;
-			continue;
-		}
-		else if ("[del]"==strin)
-		{
-			cmdType = CMD_DEL;
-			std::cout << "===============del============= "<< std::endl;
-			continue;
-		}
-		else if("[search]"==strin)
-		{
-			cmdType = CMD_SEARCH;
-			std::cout << "===============search============= "<< std::endl;
-			continue;
-		}
-		else if ("[clr]"==strin)
-		{
-			cmdType = CMD_CLR;
-			std::cout << "===============clr============= "<< std::endl;
-			//continue;
-		}
-		else if ("[incorder]"==strin)
-		{
-			cmdType = CMD_TRAINORDER;
-			std::cout << "===============incorder============= "<< std::endl;
-			continue;
-		}
-		else if ("[decorder]"==strin)
-		{
-			cmdType = CMD_TRACOVORDDER;
-			std::cout << "===============decorder============= "<< std::endl;
-			continue;
-		}
-		else if ("[Visiable]"==strin)
-		{
-			continue;
-		}
-		else if ("[Hide]"==strin)
-		{
-			continue;
-		}
+					pcur_node = binary_search_tree_posorder_increase (pcur_node,proot_node);
+				}while(1);
 
 
+			}
+			else 	if (0 == strncmp(pstr_chars,"preorder",strlen("preorder")))
+			{
+				pfx_preorder_iterator_t					 preorder_itr;
+				const binary_search_tree_node_t* pbegin;
+				const binary_search_tree_node_t* pend;
+				get_binary_search_tree_preorder_begin_iterator (proot_node,&preorder_itr);
+				pbegin = preorder_itr.m_pcurrent_node;
+				pend = get_binary_search_tree_preorder_end_node (proot_node);
+
+				if (PREORDER_FLAG != gorder_flag)
+				{
+					gorder_flag = PREORDER_FLAG;
+					PECKER_LOG_("==========preorder=============\n","");
+					count = 0;
+				}
+
+				do
+				{
+					++count;
+					if (null != preorder_itr.m_pcurrent_node)
+					{
+						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+							count,
+							preorder_itr.m_pcurrent_node->m_key,
+							preorder_itr.m_pcurrent_node->m_parent_node,
+							preorder_itr.m_pcurrent_node->m_pleft_node,
+							preorder_itr.m_pcurrent_node->m_pright_node);
+					}
+					else
+					{
+						break;
+					}
+
+					if (PFX_STATUS_OK != preorder_itr.m_last_result)
+					{
+						PECKER_LOG_("error! status = %d\n",preorder_itr.m_last_result);
+						break;
+					}
+
+					if (PREORDER_FIN == preorder_itr.m_last_result)
+					{
+						PECKER_LOG_("finish! status = %d\n",preorder_itr.m_last_result);
+						break;
+					}
+
+					if (null == binary_search_tree_preorder_increase(&preorder_itr,proot_node))
+					{
+						PECKER_LOG_("null! status = %d\n",preorder_itr.m_last_result);
+						break;
+					}
+					//pcur_node = binary_search_tree_posorder_increase (pcur_node,proot_node);
+				}while(1);
+			}
+
+		break;
+	case CMD_TRACOVORDDER:
+		if (0 == strncmp(pstr_chars,"inorder",strlen("inorder")))
+		{
+			const binary_search_tree_node_t* pbegin = get_binary_search_tree_inorder_begin_node (proot_node);
+			const binary_search_tree_node_t* pend = get_binary_search_tree_inorder_end_node (proot_node);
+
+			const binary_search_tree_node_t* pcur_node = pend;
+
+			if (INORDER_FLAG_DEC != gorder_flag)
+			{
+				gorder_flag = INORDER_FLAG_DEC;
+				PECKER_LOG_("==========inorder dec=============\n","");
+				count = 0;
+			}
+
+			do
+			{
+				++count;
+				if (null != pcur_node)
+				{
+					PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+						count,
+						pcur_node->m_key,
+						pcur_node->m_parent_node,
+						pcur_node->m_pleft_node,
+						pcur_node->m_pright_node);
+				}
+				else
+				{
+					break;
+				}
+
+				if (pcur_node == pbegin)
+				{
+					break;
+				}
+
+				pcur_node = binary_search_tree_inorder_decrease (pcur_node,proot_node);
+			}while(1);
+		}
+		else 	if (0 == strncmp(pstr_chars,"posorder",strlen("posorder")))
+		{
+			const binary_search_tree_node_t* pbegin = get_binary_search_tree_reverse_posorder_begin_node (proot_node);
+			const binary_search_tree_node_t* pend = get_binary_search_tree_reverse_posorder_end_node (proot_node);
+
+			const binary_search_tree_node_t* pcur_node = pbegin;
+
+			if (REPOSORDER_FLAG != gorder_flag)
+			{
+				gorder_flag = REPOSORDER_FLAG;
+				PECKER_LOG_("==========reverse posorder=============\n","");
+				count = 0;
+			}
+
+			do
+			{
+				++count;
+				if (null != pcur_node)
+				{
+					PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+						count,
+						pcur_node->m_key,
+						pcur_node->m_parent_node,
+						pcur_node->m_pleft_node,
+						pcur_node->m_pright_node);
+				}
+				else
+				{
+					break;
+				}
+
+				if (pcur_node == pend)
+				{
+					break;
+				}
+
+				pcur_node = binary_search_tree_reverse_posorder_increase (pcur_node,proot_node);
+			}while(1);
+
+
+		}
+		break;
+	default:
+		*cmd_type = CMD_NONE;
+		break;
 	}
-
-	int ibreak;
-	std::cin >> ibreak;
+	return PFX_STATUS_OK;
 }
+
+
 
 
 int bst_test_main()
 {
-
-	bst_file_data_test();
-	return 0;
+	//return file_data_input_for_test_running("test_data\\bst_test_data.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_2.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_3.txt",bst_cmd_operate_func);
+	return file_data_input_for_test_running("test_data\\bst_test_data_4.txt",bst_cmd_operate_func);
 }
 
 

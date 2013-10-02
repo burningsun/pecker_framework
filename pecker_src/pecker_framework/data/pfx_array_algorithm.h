@@ -46,6 +46,149 @@ pfx_result_t delete_base_array(pfx_base_array_t* pdel_array, const IAllocator* P
 
 pfx_result_t resize_base_array(pfx_base_array_t* PARAM_INOUT parray,size_t item_count,pfx_bool_t bnew_buffer,size_t new_resize_step);
 
+PFX_INLINE pfx_result_t clear_base_array(pfx_base_array_t* PARAM_INOUT parray,pfx_bool_t bnew_buffer,size_t new_resize_step);
+
+// 只能取一个item，不安全获取，单线程应用在任何会改变array长度的操作后，都应该重新获取，多线程应用必须加锁
+PFX_INLINE void* get_item_at_base_array(pfx_base_array_t* PARAM_INOUT parray,size_t item_index);
+
+// 只用于c语言的，c++涉及对象构造，会出bug
+PFX_INLINE void* base_array_push_back(pfx_base_array_t* PARAM_INOUT parray,const void* PARAM_IN pitem_obj,pfx_result_t* pstatus);
+
+PFX_INLINE void* base_array_pop_back(pfx_base_array_t* PARAM_INOUT parray,pfx_bool_t bnew_buffer, pfx_result_t* pstatus);
+
+PFX_INLINE void* base_array_push_back_n(pfx_base_array_t* PARAM_INOUT parray,const void* PARAM_IN pitem_obj,size_t item_count, pfx_result_t* pstatus);
+
+PFX_INLINE void* base_array_pop_back_n(pfx_base_array_t* PARAM_INOUT parray,size_t item_count,pfx_bool_t bnew_buffer, size_t* npop_count,pfx_result_t* pstatus);
+
+#pragma pack(push)
+#pragma pack(1)
+typedef struct st_pfx_arraybuffer_block
+{
+	char*	m_pblock_data;
+	size_t	m_pblock_size;
+	char		m_char_begins;
+}pfx_arraybuffer_block_t;
+#pragma pack(pop)
+
+typedef enum enum_aligned_type
+{
+	ALIGNED_1_BYTE = 0, // 1 << 0
+	ALIGNED_2_BYTE, // 1 << 1
+	ALIGNED_4_BYTE, // 1 << 2
+	ALIGNED_8_BYTE, // 1 << 3
+	ALIGNED_16_BYTE,// 1<< 4
+	ALIGNED_32_BYTE,// 1<< 5
+	ALIGNED_64_BYTE,// 1<< 6
+	ALIGNED_128_BYTE,// 1<< 7
+	ALIGNED_256_BYTE,// 1<< 8
+	ALIGNED_512_BYTE,// 1<< 9
+	ALIGNED_1024_BYTE,// 1<< 10
+	ALIGNED_TYPE_COUNT
+}ALIGNED_TYPE_t;
+
+pfx_arraybuffer_block_t* init_arraybuffer_block_by_buffer(	char* PARAM_INOUT pbuffer,
+	size_t buffer_size, ALIGNED_TYPE_t aligned_type,pfx_result_t* PARAM_INOUT pstatus);
+
+pfx_arraybuffer_block_t* new_arraybuffer_block(size_t buffer_size,ALIGNED_TYPE_t aligned_type,
+																						const IAllocator* PARAM_IN parray_item_allocator,
+																						pfx_result_t* PARAM_INOUT pstatus);
+
+pfx_result_t delete_arraybuffer_block(pfx_arraybuffer_block_t* PARAM_INOUT parray_block,
+																const IAllocator* PARAM_IN parray_item_allocator);
+
+
+typedef struct st_pfx_dynamic_linear_array
+{
+	size_t						m_item_size;
+	//size_t						m_buffer_size;
+	size_t						m_buffer_length;
+	size_t						m_auto_allocate_step;
+	const IAllocator*	m_block_allocator;
+	pfx_enum_t				m_aligned_type;
+
+	pfx_base_array_t	m_block_array;
+}pfx_dynamic_linear_array_t;
+
+pfx_dynamic_linear_array_t* init_dynamic_linear_array_by_buffer(size_t item_size,
+	size_t allocate_step,
+	size_t allocate_block_array_step,
+	char* PARAM_INOUT pbuffer,
+	size_t buffer_size,
+	ALIGNED_TYPE_t aligned_type,
+	const IAllocator* PARAM_IN pblock_allocator,
+	const IAllocator* PARAM_IN pblock_array_item_allocator,
+	pfx_result_t* PARAM_INOUT pstatus);
+
+pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN parray_allocator,
+	size_t item_size,
+	size_t default_item_buffer_count,
+	size_t allocate_step,
+	size_t allocate_block_array_step,
+	ALIGNED_TYPE_t aligned_type,
+	const IAllocator* PARAM_IN pblock_allocator,
+	const IAllocator* PARAM_IN pblock_array_item_allocator,
+	pfx_result_t* PARAM_INOUT pstatus);
+
+pfx_result_t delete_dynamic_linear_array(pfx_dynamic_linear_array_t* pdel_array, 
+	const IAllocator* PARAM_IN parray_allocator);
+
+pfx_result_t resize_dynamic_linear_array(pfx_dynamic_linear_array_t* PARAM_INOUT parray,
+	size_t item_count,pfx_bool_t bnew_buffer);
+
+pfx_result_t config_dynamic_linear_block_array_step(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t step);
+
+PFX_INLINE pfx_arraybuffer_block_t** get_dynamic_linear_array_block_pointer(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t block_index);
+
+PFX_INLINE pfx_arraybuffer_block_t* get_dynamic_linear_array_block(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t block_index);
+
+PFX_INLINE size_t get_dynamic_linear_array_block_count(pfx_dynamic_linear_array_t* PARAM_INOUT parray);
+
+PFX_INLINE pfx_result_t clear_dynamic_linear_array(pfx_dynamic_linear_array_t* PARAM_INOUT parray,pfx_bool_t bnew_buffer);
+
+PFX_INLINE void* get_item_at_dynamic_linear_array_direct(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t block_index,size_t item_index);
+
+PFX_INLINE void* get_item_at_dynamic_linear_array(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t block_index,size_t item_index);
+
+PFX_INLINE void* get_item_at_dynamic_linear_array_linear(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t item_index);
+
+PFX_INLINE size_t set_n_items_at_dynamic_linear_array_block(pfx_dynamic_linear_array_t* PARAM_INOUT parray,
+	size_t block_index,size_t item_index,const void* PARAM_IN pitem_buffer,size_t nitem_count);
+
+PFX_INLINE size_t set_n_items_at_dynamic_linear_array_linear(pfx_dynamic_linear_array_t* PARAM_INOUT parray,
+	size_t item_index,const void* PARAM_IN pitem_buffer,size_t nitem_count);
+
+
+// 只用于c语言的，c++涉及对象构造，会出bug
+PFX_INLINE void* dynamic_linear_array_push_back(pfx_dynamic_linear_array_t* PARAM_INOUT parray,const void* PARAM_IN pitem_obj,pfx_result_t* pstatus);
+
+PFX_INLINE void* dynamic_linear_array_pop_back(pfx_dynamic_linear_array_t* PARAM_INOUT parray,pfx_bool_t bnew_buffer, pfx_result_t* pstatus);
+
+PFX_INLINE void*dynamic_linear_array_push_back_n(pfx_dynamic_linear_array_t* PARAM_INOUT parray,const void* PARAM_IN pitem_obj,size_t item_count, pfx_result_t* pstatus);
+
+PFX_INLINE void* dynamic_linear_array_pop_back_n(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t item_count,pfx_bool_t bnew_buffer, size_t* npop_count,pfx_result_t* pstatus);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////
 PFX_INLINE pfx_result_t clear_base_array(pfx_base_array_t* PARAM_INOUT parray,pfx_bool_t bnew_buffer,size_t new_resize_step)
 {
 	return resize_base_array(parray,0,bnew_buffer,new_resize_step);
@@ -116,7 +259,7 @@ PFX_INLINE void* base_array_pop_back(pfx_base_array_t* PARAM_INOUT parray,pfx_bo
 
 		size_t new_size = (parray->m_buffer_length > 0) ?  (parray->m_buffer_length-1) : (0);
 		void* last_item = (parray->m_buffer_length > 0) ? get_item_at_base_array(parray,new_size) : null;
-		
+
 		if (null != last_item)
 		{
 			status = resize_base_array(parray,new_size,bnew_buffer,INVALID_VALUE);
@@ -201,7 +344,7 @@ PFX_INLINE void* base_array_pop_back_n(pfx_base_array_t* PARAM_INOUT parray,size
 
 		size_t new_size = (parray->m_buffer_length > item_count) ?  (parray->m_buffer_length-item_count) : (0);
 		void* last_item = (parray->m_buffer_length > 0) ? get_item_at_base_array(parray,new_size) : null;
-		
+
 		if (npop_count)
 		{
 			*npop_count = (parray->m_buffer_length > item_count) ? item_count: parray->m_buffer_length;
@@ -229,84 +372,7 @@ PFX_INLINE void* base_array_pop_back_n(pfx_base_array_t* PARAM_INOUT parray,size
 		return last_item;
 	}
 }
-
-#pragma pack(push)
-#pragma pack(1)
-typedef struct st_pfx_arraybuffer_block
-{
-	char*	m_pblock_data;
-	size_t	m_pblock_size;
-	char		m_char_begins;
-}pfx_arraybuffer_block_t;
-#pragma pack(pop)
-
-typedef enum enum_aligned_type
-{
-	ALIGNED_1_BYTE = 0, // 1 << 0
-	ALIGNED_2_BYTE, // 1 << 1
-	ALIGNED_4_BYTE, // 1 << 2
-	ALIGNED_8_BYTE, // 1 << 3
-	ALIGNED_16_BYTE,// 1<< 4
-	ALIGNED_32_BYTE,// 1<< 5
-	ALIGNED_64_BYTE,// 1<< 6
-	ALIGNED_128_BYTE,// 1<< 7
-	ALIGNED_256_BYTE,// 1<< 8
-	ALIGNED_512_BYTE,// 1<< 9
-	ALIGNED_1024_BYTE,// 1<< 10
-	ALIGNED_TYPE_COUNT
-}ALIGNED_TYPE_t;
-
-pfx_arraybuffer_block_t* init_arraybuffer_block_by_buffer(	char* PARAM_INOUT pbuffer,
-	size_t buffer_size, ALIGNED_TYPE_t aligned_type,pfx_result_t* PARAM_INOUT pstatus);
-
-pfx_arraybuffer_block_t* new_arraybuffer_block(size_t buffer_size,ALIGNED_TYPE_t aligned_type,
-																						const IAllocator* PARAM_IN parray_item_allocator,
-																						pfx_result_t* PARAM_INOUT pstatus);
-
-pfx_result_t delete_arraybuffer_block(pfx_arraybuffer_block_t* PARAM_INOUT parray_block,
-																const IAllocator* PARAM_IN parray_item_allocator);
-
-
-typedef struct st_pfx_dynamic_linear_array
-{
-	size_t						m_item_size;
-	//size_t						m_buffer_size;
-	size_t						m_buffer_length;
-	size_t						m_auto_allocate_step;
-	const IAllocator*	m_block_allocator;
-	pfx_enum_t				m_aligned_type;
-
-	pfx_base_array_t	m_block_array;
-}pfx_dynamic_linear_array_t;
-
-pfx_dynamic_linear_array_t* init_dynamic_linear_array_by_buffer(size_t item_size,
-	size_t allocate_step,
-	size_t allocate_block_array_step,
-	char* PARAM_INOUT pbuffer,
-	size_t buffer_size,
-	ALIGNED_TYPE_t aligned_type,
-	const IAllocator* PARAM_IN pblock_allocator,
-	const IAllocator* PARAM_IN pblock_array_item_allocator,
-	pfx_result_t* PARAM_INOUT pstatus);
-
-pfx_dynamic_linear_array_t* new_dynamic_linear_array(const IAllocator* PARAM_IN parray_allocator,
-	size_t item_size,
-	size_t default_item_buffer_count,
-	size_t allocate_step,
-	size_t allocate_block_array_step,
-	ALIGNED_TYPE_t aligned_type,
-	const IAllocator* PARAM_IN pblock_allocator,
-	const IAllocator* PARAM_IN pblock_array_item_allocator,
-	pfx_result_t* PARAM_INOUT pstatus);
-
-pfx_result_t delete_dynamic_linear_array(pfx_dynamic_linear_array_t* pdel_array, 
-	const IAllocator* PARAM_IN parray_allocator);
-
-pfx_result_t resize_dynamic_linear_array(pfx_dynamic_linear_array_t* PARAM_INOUT parray,
-	size_t item_count,pfx_bool_t bnew_buffer);
-
-pfx_result_t config_dynamic_linear_block_array_step(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t step);
-
+//////////////////////////////////////////////////////////////////////////
 PFX_INLINE pfx_arraybuffer_block_t** get_dynamic_linear_array_block_pointer(pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t block_index)
 {
 	if (null != parray)
@@ -562,7 +628,7 @@ PFX_INLINE void*dynamic_linear_array_push_back_n(pfx_dynamic_linear_array_t* PAR
 			{
 				last_item = get_item_at_dynamic_linear_array_linear(parray,new_index);
 			}
-			
+
 		}
 
 		if (null != pstatus)
@@ -618,7 +684,6 @@ PFX_INLINE void* dynamic_linear_array_pop_back_n(pfx_dynamic_linear_array_t* PAR
 		return last_item;
 	}
 }
-
 
 PFX_C_EXTERN_END
 
