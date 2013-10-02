@@ -53,6 +53,7 @@
     <ClCompile Include="native\pfx_timetick.cpp" />
     <ClCompile Include="test\pfx_arrayblock_test.cpp" />
     <ClCompile Include="test\pfx_array_test.cpp" />
+    <ClCompile Include="test\pfx_avl_test.cpp" />
     <ClCompile Include="test\pfx_bst_test.cpp" />
     <ClCompile Include="test\pfx_dynamic_linear_array_test.cpp" />
     <ClCompile Include="test\pfx_file_inputdata_cmd.cpp" />

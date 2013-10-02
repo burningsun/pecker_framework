@@ -204,12 +204,32 @@ const binary_search_tree_node_t* binary_search_tree_posorder_increase (const bin
 
 	if (pcurrent_node->m_parent_node->m_pleft_node == pcurrent_node)
 	{
-		if (null == pcurrent_node->m_parent_node->m_pright_node)
-		{
-			return pcurrent_node->m_parent_node;
-		}
-		return min_binary_search_tree_node_unsafe (pcurrent_node->m_parent_node->m_pright_node);
+		const binary_search_tree_node_t* ptemp_node;
+		const binary_search_tree_node_t* ptemp_node_retn;
+		ptemp_node = pcurrent_node->m_parent_node->m_pright_node;
+		ptemp_node_retn = pcurrent_node->m_parent_node;
 
+		while (null != ptemp_node)
+		{
+			ptemp_node_retn = ptemp_node;
+			if (null != ptemp_node->m_pleft_node)
+			{
+				ptemp_node = ptemp_node->m_pleft_node;
+				continue;
+			}
+			else if (null != ptemp_node->m_pright_node)
+			{
+				ptemp_node = ptemp_node->m_pright_node;
+				continue;
+			}
+			else
+			{
+				break;
+			}
+
+		}
+		
+		return ptemp_node_retn;
 	}
 
 	return null;
@@ -276,11 +296,33 @@ const binary_search_tree_node_t* binary_search_tree_reverse_posorder_increase (c
 
 	if (pcurrent_node->m_parent_node->m_pright_node == pcurrent_node)
 	{
-		if (null == pcurrent_node->m_parent_node->m_pleft_node)
+		const binary_search_tree_node_t* ptemp_node;
+		const binary_search_tree_node_t* ptemp_node_retn;
+		ptemp_node = pcurrent_node->m_parent_node->m_pleft_node;
+		ptemp_node_retn = pcurrent_node->m_parent_node;
+
+		while (null != ptemp_node)
 		{
-			return pcurrent_node->m_parent_node;
+			ptemp_node_retn = ptemp_node;
+
+			if (null != ptemp_node->m_pright_node)
+			{
+				ptemp_node = ptemp_node->m_pright_node;
+				continue;
+			}
+			else if (null != ptemp_node->m_pleft_node)
+			{
+				ptemp_node = ptemp_node->m_pleft_node;
+				continue;
+			}
+			else
+			{
+				break;
+			}
+
 		}
-		return  max_binary_search_tree_node_unsafe (pcurrent_node->m_parent_node->m_pleft_node);
+
+		return ptemp_node_retn;
 	}
 
 	return null;

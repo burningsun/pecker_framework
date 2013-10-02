@@ -99,10 +99,22 @@ PFX_INLINE const binary_search_tree_node_t* find_remove_replace_node_form_binary
 	const binary_search_tree_node_t* pnull_node);
 
 // 移除节点
+PFX_INLINE pfx_result_t remove_bst_node_unsafe_ex1 (
+	binary_search_tree_node_t**				PARAM_INOUT pproot_node,
+	binary_search_tree_node_t*				PARAM_INOUT	premove_node,
+	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_lr_node,
+	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_p_node,
+	const binary_search_tree_node_t*	PARAM_IN			pnull_node);
+
+PFX_INLINE pfx_result_t remove_bst_node_unsafe_ex2 (
+	binary_search_tree_node_t**				PARAM_INOUT pproot_node,
+	binary_search_tree_node_t*				PARAM_INOUT	premove_node,
+	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_lr_node,
+	const binary_search_tree_node_t*	PARAM_IN			pnull_node);
+
 PFX_INLINE pfx_result_t remove_bst_node_unsafe (
 	binary_search_tree_node_t**				PARAM_INOUT pproot_node,
 	binary_search_tree_node_t*				PARAM_INOUT	premove_node,
-	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_node,
 	const binary_search_tree_node_t*	PARAM_IN			pnull_node);
 
 // 添加节点
@@ -297,10 +309,18 @@ PFX_INLINE const binary_search_tree_node_t* find_remove_replace_node_form_binary
 		{
 			psub_remove_ref_node = psub_remove_node->m_pleft_node;
 		}
-		else
+		else 
 		{
 			psub_remove_ref_node = psub_remove_node->m_pright_node;
 		}
+		//else if (psub_remove_node->m_pright_node != pnull_node)
+		//{
+		//	psub_remove_ref_node = psub_remove_node->m_pright_node;
+		//}
+		//else
+		//{
+		//	psub_remove_ref_node = psub_remove_node->m_parent_node;
+		//}
 	}
 
 	*ppsub_remove_node = (binary_search_tree_node_t*)psub_remove_node;
@@ -308,10 +328,11 @@ PFX_INLINE const binary_search_tree_node_t* find_remove_replace_node_form_binary
 }
 
 
-PFX_INLINE pfx_result_t remove_bst_node_unsafe (
+PFX_INLINE pfx_result_t remove_bst_node_unsafe_ex1 (
 	binary_search_tree_node_t**				PARAM_INOUT pproot_node,
 	binary_search_tree_node_t*				PARAM_INOUT	premove_node,
-	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_node,
+	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_lr_node,
+	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_node_parent,
 	const binary_search_tree_node_t*	PARAM_IN			pnull_node)
 {
 	binary_search_tree_node_t* proot_node = *pproot_node;
@@ -319,11 +340,48 @@ PFX_INLINE pfx_result_t remove_bst_node_unsafe (
 	binary_search_tree_node_t* psub_remove_node;
 
 	psub_romove_ref_node = (binary_search_tree_node_t*)find_remove_replace_node_form_binary_search_tree_unsafe (premove_node,&psub_remove_node,pnull_node);
-	*pprepalce_ref_node = psub_romove_ref_node;
+	*pprepalce_ref_lr_node = psub_romove_ref_node;
+	if (null != psub_remove_node)
+	{
+		if (premove_node != psub_remove_node->m_parent_node)
+		{
+			*pprepalce_ref_node_parent = psub_remove_node->m_parent_node;
+		}
+		else
+		{
+			*pprepalce_ref_node_parent = null;
+		}
+		
+	}
+	else
+	{
+		*pprepalce_ref_node_parent = null;
+	}
+	
 
 	// 处理替换节点
 	if (psub_remove_node == proot_node) 
 	{
+		if (null != proot_node->m_parent_node)
+		{
+			if (proot_node->m_parent_node->m_pleft_node == proot_node)
+			{
+				proot_node->m_parent_node->m_pleft_node  = psub_romove_ref_node;
+			}
+			else if (proot_node->m_parent_node->m_pright_node == proot_node)
+			{
+				proot_node->m_parent_node->m_pright_node  = psub_romove_ref_node;
+			}
+			else
+			{
+				return PFX_STATUS_MEM_ERR;
+			}
+		}
+		if (null != psub_romove_ref_node)
+		{
+			psub_romove_ref_node->m_parent_node = proot_node->m_parent_node;
+		}
+		
 		*pproot_node = psub_romove_ref_node;
 		init_binary_search_tree_node_nokey_unsafe(premove_node,null,null,null);
 		return PFX_STATUS_OK;
@@ -493,6 +551,27 @@ PFX_INLINE pfx_result_t add_bst_node_unsafe (
 
 	return status;
 	
+}
+
+PFX_INLINE pfx_result_t remove_bst_node_unsafe_ex2 (
+	binary_search_tree_node_t**				PARAM_INOUT pproot_node,
+	binary_search_tree_node_t*				PARAM_INOUT	premove_node,
+	binary_search_tree_node_t**				PARAM_INOUT	pprepalce_ref_lr_node,
+	const binary_search_tree_node_t*	PARAM_IN			pnull_node)
+{
+	binary_search_tree_node_t* tmp;
+
+	return remove_bst_node_unsafe_ex1(pproot_node,premove_node,pprepalce_ref_lr_node,&tmp,pnull_node);
+}
+
+PFX_INLINE pfx_result_t remove_bst_node_unsafe (
+	binary_search_tree_node_t**				PARAM_INOUT pproot_node,
+	binary_search_tree_node_t*				PARAM_INOUT	premove_node,
+	const binary_search_tree_node_t*	PARAM_IN			pnull_node)
+{
+	binary_search_tree_node_t* tmp1;
+	binary_search_tree_node_t* tmp2;
+	return remove_bst_node_unsafe_ex1(pproot_node,premove_node,&tmp1,&tmp2,pnull_node);
 }
 
 PFX_C_EXTERN_END

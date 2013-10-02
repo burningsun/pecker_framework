@@ -106,7 +106,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					pbst_node->m_pleft_node,
 					pbst_node->m_pright_node);
 
-				status = remove_bst_node_unsafe(&proot_node,(binary_search_tree_node_t*)pbst_node,&pbst_ref,null);
+				status = remove_bst_node_unsafe(&proot_node,(binary_search_tree_node_t*)pbst_node,null);
 				if (PFX_STATUS_OK == status)
 				{
 					PECKER_LOG_("remove ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X),pbst_ref = %08X\n",
@@ -423,7 +423,13 @@ int bst_test_main()
 	//return file_data_input_for_test_running("test_data\\bst_test_data.txt",bst_cmd_operate_func);
 	//return file_data_input_for_test_running("test_data\\bst_test_data_2.txt",bst_cmd_operate_func);
 	//return file_data_input_for_test_running("test_data\\bst_test_data_3.txt",bst_cmd_operate_func);
-	return file_data_input_for_test_running("test_data\\bst_test_data_4.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_4.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_5.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_6.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_7.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_8.txt",bst_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_9.txt",bst_cmd_operate_func);
+	return file_data_input_for_test_running("test_data\\bst_test_data_10.txt",bst_cmd_operate_func);
 }
 
 

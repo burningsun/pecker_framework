@@ -16,6 +16,7 @@ extern int string_test_main();
 extern int bst_test_main();
 
 extern void stream_test_main();
+extern int avl_test_main();
 
 #include <stdio.h>
 
@@ -86,6 +87,7 @@ int test_main()
 	//status = arrayblock_test_main();
 	//status =  dynamic_linear_array_test_main();
 	//status = string_test_main();
-	status = bst_test_main();
+	//status = bst_test_main();
+	status = avl_test_main();
 	return status;
 }

@@ -191,6 +191,9 @@
     <ClCompile Include="data\pfx_bst_algorithm.cpp">
       <Filter>data</Filter>
     </ClCompile>
+    <ClCompile Include="test\pfx_avl_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="test_data\bst_test_data.txt">
