@@ -24,14 +24,15 @@ PFX_INLINE_CODE _avl_tree_node_t* avl_rr_rotate (_avl_tree_node_t* PARAM_INOUT p
 	pAvl_node->m_parent_node =  pAvl_rt_node;
 
 
+	update_avl_node_height_unsafe(pAvl_node);
+	update_avl_node_height_unsafe(pAvl_rt_node);
+	//pAvl_node->m_balance_value.m_balance_value.m_height  = 
+	//	calculate_avl_node_height_by_two_leave (pAvl_node->m_pleft_node,
+	//																				pAvl_node->m_pright_node);
 
-	pAvl_node->m_balance_value.m_balance_value.m_height  = 
-		calculate_avl_node_height_by_two_leave (pAvl_node->m_pleft_node,
-																					pAvl_node->m_pright_node);
-
-	pAvl_rt_node->m_balance_value.m_balance_value.m_height  = 
-		calculate_avl_node_height_by_two_leave (pAvl_rt_node->m_pleft_node,
-																					pAvl_rt_node->m_pright_node);
+	//pAvl_rt_node->m_balance_value.m_balance_value.m_height  = 
+	//	calculate_avl_node_height_by_two_leave (pAvl_rt_node->m_pleft_node,
+	//																				pAvl_rt_node->m_pright_node);
 	return pAvl_rt_node;
 }
 //LL型旋转
@@ -49,14 +50,15 @@ PFX_INLINE_CODE _avl_tree_node_t* avl_ll_rotate (_avl_tree_node_t* PARAM_INOUT p
 	pAvl_rt_node->m_parent_node = pAvl_node->m_parent_node;
 	pAvl_node->m_parent_node =  pAvl_rt_node;
 
+	update_avl_node_height_unsafe(pAvl_node);
+	update_avl_node_height_unsafe(pAvl_rt_node);
+	//pAvl_node->m_balance_value.m_balance_value.m_height  = 
+	//	calculate_avl_node_height_by_two_leave (pAvl_node->m_pleft_node,
+	//																				pAvl_node->m_pright_node);
 
-	pAvl_node->m_balance_value.m_balance_value.m_height  = 
-		calculate_avl_node_height_by_two_leave (pAvl_node->m_pleft_node,
-																					pAvl_node->m_pright_node);
-
-	pAvl_rt_node->m_balance_value.m_balance_value.m_height = 
-		calculate_avl_node_height_by_two_leave (pAvl_rt_node->m_pleft_node,
-		pAvl_rt_node->m_pright_node);
+	//pAvl_rt_node->m_balance_value.m_balance_value.m_height = 
+	//	calculate_avl_node_height_by_two_leave (pAvl_rt_node->m_pleft_node,
+	//	pAvl_rt_node->m_pright_node);
 	
 	return pAvl_rt_node;
 }
@@ -161,7 +163,8 @@ PFX_INLINE_CODE pfx_result_t AVL_update_rotate (_avl_tree_node_t** PARAM_INOUT p
 	}
 
 
-	pbegin_node->m_balance_value.m_balance_value.m_height = calculate_avl_node_height(pbegin_node);
+	//pbegin_node->m_balance_value.m_balance_value.m_height = calculate_avl_node_height(pbegin_node);
+	update_avl_node_height_unsafe(pbegin_node);
 
 	do 
 	{
@@ -188,8 +191,10 @@ PFX_INLINE_CODE pfx_result_t AVL_update_rotate (_avl_tree_node_t** PARAM_INOUT p
 		//	break;
 		//}
 
-		height = parent_node->m_balance_value.m_balance_value.m_height;
-		parent_node->m_balance_value.m_balance_value.m_height = calculate_avl_node_height(parent_node);
+		//height = parent_node->m_balance_value.m_balance_value.m_height;
+		//parent_node->m_balance_value.m_balance_value.m_height = calculate_avl_node_height(parent_node);
+		height = get_avl_node_height(parent_node);
+		update_avl_node_height_unsafe(parent_node);
 
 		//if (null != proot_node && 
 		//	proot_node->m_parent_node == parent_node->m_parent_node)
@@ -197,7 +202,13 @@ PFX_INLINE_CODE pfx_result_t AVL_update_rotate (_avl_tree_node_t** PARAM_INOUT p
 		//	break;
 		//}
 
-		if ((parent_node->m_balance_value.m_balance_value.m_height) == height)
+
+
+		//if ((parent_node->m_balance_value.m_balance_value.m_height) == height)
+		//{
+		//	break;
+		//}
+		if (get_avl_node_height(parent_node) == height)
 		{
 			break;
 		}
@@ -271,6 +282,7 @@ const avl_tree_node_t* add_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppavl_
 			}
 			return null;
 		}
+	
 		status = add_bst_node_unsafe( (binary_search_tree_node_t**)ppavl_root_node_ref,(binary_search_tree_node_t*)padd_node,(binary_search_tree_node_t**)&ptemp_node,cmp_method);
 
 		if (PFX_STATUS_OK != status)
@@ -281,6 +293,8 @@ const avl_tree_node_t* add_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppavl_
 			}
 			return ptemp_node;
 		}
+
+		update_avl_node_height_unsafe ((_avl_tree_node_t*)padd_node);
 
 		status = AVL_update_rotate((_avl_tree_node_t**)ppavl_root_node_ref,(_avl_tree_node_t*)padd_node);
 
@@ -305,9 +319,10 @@ avl_tree_node_t* remove_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppavl_root
 	pfx_result_t			status;
 	pfx_s16_t				height;
 	_avl_tree_node_t*	ptemp_node = null;
-	_avl_tree_node_t*	ptemp_node2 = null;
 	avl_tree_node_t*	proot_node;
 	avl_tree_node_t*	parent_node;
+	_avl_tree_node_t* psub_romove_ref_node;
+	_avl_tree_node_t* psub_remove_node;
 
 	if (null == ppavl_root_node_ref || null == premove_node || null == cmp_method)
 	{
@@ -319,13 +334,20 @@ avl_tree_node_t* remove_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppavl_root
 	}
 
 	proot_node = *ppavl_root_node_ref;
-	height = proot_node->m_avl_node.m_balance_value.m_balance_value.m_height;
+	//height = proot_node->m_avl_node.m_balance_value.m_balance_value.m_height;
+	height = get_avl_node_height((_avl_tree_node_t*)proot_node);
 	
-	status = remove_bst_node_unsafe_ex1((binary_search_tree_node_t**)ppavl_root_node_ref,
-																(binary_search_tree_node_t*)premove_node,
-																(binary_search_tree_node_t**)&ptemp_node,
-																(binary_search_tree_node_t**)&ptemp_node2,
-																null);
+
+
+	psub_romove_ref_node = 
+		(_avl_tree_node_t*)find_remove_replace_node_form_binary_search_tree_unsafe 
+		((binary_search_tree_node_t*)premove_node,(binary_search_tree_node_t**)&psub_remove_node,null);
+
+	status = remove_bst_node_unsafe_in ((binary_search_tree_node_t**)ppavl_root_node_ref,
+		(binary_search_tree_node_t*)premove_node,
+		(binary_search_tree_node_t*)psub_remove_node,
+		(binary_search_tree_node_t*)psub_romove_ref_node,
+		null);
 
 
 	if (PFX_STATUS_OK != status)
@@ -347,21 +369,27 @@ avl_tree_node_t* remove_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppavl_root
 		return premove_node;
 	}
 
-
-
+	ptemp_node = psub_romove_ref_node;
 	if (null == ptemp_node)
 	{
-		ptemp_node = ptemp_node2;
+		if (null != psub_remove_node)
+		{
+			if (premove_node != (avl_tree_node_t*)psub_remove_node->m_parent_node)
+			{
+				ptemp_node = (_avl_tree_node_t*)psub_remove_node->m_parent_node;
+			}
+		}
 
 		if (null == ptemp_node)
 		{
-			ptemp_node = (_avl_tree_node_t*)*ppavl_root_node_ref;
+			ptemp_node =  (_avl_tree_node_t*)*ppavl_root_node_ref;
 		}
 	}
 
 	proot_node->m_avl_node.m_balance_value.m_balance_value.m_height = height;
 
-	ptemp_node->m_balance_value.m_balance_value.m_height = calculate_avl_node_height((_avl_tree_node_t*)ptemp_node);
+	//ptemp_node->m_balance_value.m_balance_value.m_height = calculate_avl_node_height((_avl_tree_node_t*)ptemp_node);
+	update_avl_node_height_unsafe(ptemp_node);
 	parent_node = (avl_tree_node_t*)(ptemp_node->m_parent_node);
 
 

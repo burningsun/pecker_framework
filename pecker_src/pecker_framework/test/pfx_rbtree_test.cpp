@@ -11,7 +11,7 @@
 #include "pfx_file_inputdata_cmd.h"
 #include "../native/pfx_stream.h"
 #include "../data/pfx_bst_iterator.h"
-#include "../data/pfx_avl_tree_algorithm.h"
+#include "../data/pfx_redblack_tree_algorithm.h"
 
 #include <fstream>
 #include <string>
@@ -26,13 +26,32 @@
 #define	POSORDER_FLAG		(3)
 #define	REPOSORDER_FLAG	(4)
 
-static avl_tree_node_t* proot_node = null;
+static redblack_tree_node_t* proot_node = null;
 static pfx_flag_t									 gorder_flag = NONE_FLAG_;
 static pfx_index_t								 count = 0;
-static avl_tree_node_t* proot_node_2 = null;
+static redblack_tree_node_t* proot_node_2 = null;
+static const pfx_char* RED_C = pfx_char_type("red");
+static const pfx_char* BLACK_C = pfx_char_type("black");
+static const pfx_char* INVALID = pfx_char_type("invalid");
+
+PFX_INLINE_CODE const pfx_char* get_node_color(const _redblack_tree_node_t* node)
+{
+	if (pfx_true == check_rb_tree_color_is_black(node))
+	{
+		return BLACK_C;
+	}
+	else if (pfx_true == check_rb_tree_color_is_red(node))
+	{
+		return RED_C;
+	}
+	else
+	{
+		return INVALID;
+	}
+}
 
 
-pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_chars,pfx_usize_t nchars_count)
+pfx_result_t rbtree_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_chars,pfx_usize_t nchars_count)
 {
 	pfx_result_t status;
 	pfx_stream_format_t stm_format;
@@ -43,11 +62,11 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 	{
 	case CMD_ADD:
 		{
-			avl_tree_node_t* pbst_node = new avl_tree_node_t;
-			const _avl_tree_node_t* pbst_added_node = null;
+			redblack_tree_node_t* pbst_node = new redblack_tree_node_t;
+			const _redblack_tree_node_t* pbst_added_node = null;
 			pfx_result_t status = PFX_STATUS_OK;
 
-			status = string_a_parse_int(pstr_chars,&stm_format,(pfx_sint_t*)&(((_avl_tree_node_t*)pbst_node) ->m_key),&offset);
+			status = string_a_parse_int(pstr_chars,&stm_format,(pfx_sint_t*)&(((_redblack_tree_node_t*)pbst_node) ->m_key),&offset);
 			if (PFX_STATUS_OK != status)
 			{
 				PECKER_LOG_ ("parse error!!","");
@@ -57,25 +76,27 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 			init_binary_search_tree_node_nokey_unsafe((binary_search_tree_node_t*)pbst_node,null,null,null);
 
 			
-			pbst_added_node =  (_avl_tree_node_t*)add_avl_node_unsafe(&proot_node,pbst_node,cmp_a_and_b_long,&status);
+			pbst_added_node =  (_redblack_tree_node_t*)add_redblack_node_unsafe(&proot_node,pbst_node,cmp_a_and_b_long,&status);
 			if (PFX_STATUS_OK == status)
 			{
-				PECKER_LOG_("add ok! proot_node=%08X,pbst_added_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+				PECKER_LOG_("add ok! proot_node=%08X,pbst_added_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 					proot_node,
 					pbst_added_node->m_key,
 					pbst_added_node->m_parent_node,
 					pbst_added_node->m_pleft_node,
-					pbst_added_node->m_pright_node);
+					pbst_added_node->m_pright_node,
+					get_node_color(pbst_added_node));
 			}
 			else if (PFX_STATUS_UNIQUE == status)
 			{
-				PECKER_LOG_("add UNIQUE! proot_node=%08X, pbst_added_node=%08X,pbst_added_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+				PECKER_LOG_("add UNIQUE! proot_node=%08X, pbst_added_node=%08X,pbst_added_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 					proot_node,
 					pbst_added_node,
 					pbst_added_node->m_key,
 					pbst_added_node->m_parent_node,
 					pbst_added_node->m_pleft_node,
-					pbst_added_node->m_pright_node);
+					pbst_added_node->m_pright_node,
+					get_node_color(pbst_added_node));
 			}
 			else
 			{
@@ -87,7 +108,7 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 	case CMD_DEL:
 		{
 			pfx_long_t key = -1;
-			const _avl_tree_node_t* pbst_node;
+			const _redblack_tree_node_t* pbst_node;
 			
 
 			status = string_a_parse_int(pstr_chars,&stm_format,(pfx_sint_t*)&key,&offset);
@@ -97,28 +118,31 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 				break;
 			}
 
-			pbst_node = (const _avl_tree_node_t*)find_node_form_binary_search_tree(key,(const binary_search_tree_node_t*)proot_node,cmp_a_and_b_long);
+			pbst_node = (const _redblack_tree_node_t*)find_node_form_binary_search_tree(key,(const binary_search_tree_node_t*)proot_node,cmp_a_and_b_long);
 			if (pbst_node)
 			{
 				binary_search_tree_node_t* pbst_ref = null;
 				pfx_result_t status = PFX_STATUS_OK;
 
-				PECKER_LOG_("find ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+				PECKER_LOG_("find ok! proot_node=%08X,pbst_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 					proot_node,pbst_node->m_key,
 					pbst_node->m_parent_node,
 					pbst_node->m_pleft_node,
-					pbst_node->m_pright_node);
+					pbst_node->m_pright_node,
+					get_node_color(pbst_node));
 
-				pbst_node = (_avl_tree_node_t*)remove_avl_node_unsafe(&proot_node,(avl_tree_node_t*)pbst_node,cmp_a_and_b_long,&status);
+				pbst_node = (_redblack_tree_node_t*)remove_redblack_node_unsafe(&proot_node,(redblack_tree_node_t*)pbst_node,cmp_a_and_b_long,&status);
 				//status = remove_bst_node_unsafe(&proot_node,(binary_search_tree_node_t*)pbst_node,&pbst_ref,null);
 				if (PFX_STATUS_OK == status)
 				{
-					PECKER_LOG_("remove ok! proot_node=%08X,pbst_node(key,p,l,r) =  (%ld,%08X,%08X,%08X),pbst_ref = %08X\n",
+					PECKER_LOG_("remove ok! proot_node=%08X,pbst_ref = %08X,pbst_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 						proot_node,pbst_node->m_key,
+						pbst_ref,
 						pbst_node->m_parent_node,
 						pbst_node->m_pleft_node,
 						pbst_node->m_pright_node,
-						pbst_ref);
+						get_node_color(pbst_node));
+
 					delete ((binary_search_tree_node_t*)pbst_node);
 					pbst_node = null;
 				}
@@ -212,12 +236,13 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					++count;
 					if (null != pcur_node)
 					{
-						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+						PECKER_LOG_("%08d pcur_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 							count,
 							pcur_node->m_key,
 							pcur_node->m_parent_node,
 							pcur_node->m_pleft_node,
-							pcur_node->m_pright_node);
+							pcur_node->m_pright_node,
+							get_node_color((_redblack_tree_node_t*)pcur_node));
 					}
 					else
 					{
@@ -253,12 +278,13 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					++count;
 					if (null != pcur_node)
 					{
-						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+						PECKER_LOG_("%08d pcur_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 							count,
 							pcur_node->m_key,
 							pcur_node->m_parent_node,
 							pcur_node->m_pleft_node,
-							pcur_node->m_pright_node);
+							pcur_node->m_pright_node,
+							get_node_color((_redblack_tree_node_t*)pcur_node));
 					}
 					else
 					{
@@ -296,12 +322,13 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					++count;
 					if (null != preorder_itr.m_pcurrent_node)
 					{
-						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+						PECKER_LOG_("%08d pcur_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 							count,
 							preorder_itr.m_pcurrent_node->m_key,
 							preorder_itr.m_pcurrent_node->m_parent_node,
 							preorder_itr.m_pcurrent_node->m_pleft_node,
-							preorder_itr.m_pcurrent_node->m_pright_node);
+							preorder_itr.m_pcurrent_node->m_pright_node,
+							get_node_color((_redblack_tree_node_t*)preorder_itr.m_pcurrent_node));
 					}
 					else
 					{
@@ -350,12 +377,13 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 				++count;
 				if (null != pcur_node)
 				{
-					PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+					PECKER_LOG_("%08d pcur_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 						count,
 						pcur_node->m_key,
 						pcur_node->m_parent_node,
 						pcur_node->m_pleft_node,
-						pcur_node->m_pright_node);
+						pcur_node->m_pright_node,
+						get_node_color((_redblack_tree_node_t*)pcur_node));
 				}
 				else
 				{
@@ -389,12 +417,13 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 				++count;
 				if (null != pcur_node)
 				{
-					PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
+					PECKER_LOG_("%08d pcur_node(key,p,l,r,c) =  (%ld,%08X,%08X,%08X,%s)\n",
 						count,
 						pcur_node->m_key,
 						pcur_node->m_parent_node,
 						pcur_node->m_pleft_node,
-						pcur_node->m_pright_node);
+						pcur_node->m_pright_node,
+						get_node_color((_redblack_tree_node_t*)pcur_node));
 				}
 				else
 				{
@@ -422,18 +451,18 @@ pfx_result_t avl_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 
 
 
-int avl_test_main()
+int rbtree_test_main()
 {
-	//return file_data_input_for_test_running("test_data\\bst_test_data.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_2.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_3.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_4.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_5.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_6.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_7.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_8.txt",avl_cmd_operate_func);
-	return file_data_input_for_test_running("test_data\\bst_test_data_9.txt",avl_cmd_operate_func);
-	//return file_data_input_for_test_running("test_data\\bst_test_data_10.txt",avl_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_2.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_3.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_4.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_5.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_6.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_7.txt",rbtree_cmd_operate_func);
+	return file_data_input_for_test_running("test_data\\bst_test_data_8.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_9.txt",rbtree_cmd_operate_func);
+	//return file_data_input_for_test_running("test_data\\bst_test_data_10.txt",rbtree_cmd_operate_func);
 }
 
 

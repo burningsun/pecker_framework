@@ -29,7 +29,7 @@ typedef union un_avl_tree_balance_bitmask
 
 typedef struct st_avl_tree_node _avl_tree_node_t;
 
-typedef struct st_avl_tree_node
+struct st_avl_tree_node
 {
 	_avl_tree_node_t*						m_parent_node;
 	_avl_tree_node_t*						m_pleft_node;
@@ -58,24 +58,27 @@ typedef enum enumAVLTREE_ROTATE_TYPE
 }AVLTREE_ROTATE_t;
 
 // 取得节点的高度值
-PFX_INLINE pfx_s16_t get_avl_node_height(const _avl_tree_node_t* PARAM_IN pAvl_node);
+PFX_INLINE pfx_s16_t get_avl_node_height (const _avl_tree_node_t* PARAM_IN pAvl_node);
 
 //计算节点的高度值
-PFX_INLINE pfx_s16_t calculate_avl_node_height_by_two_leave(const _avl_tree_node_t* PARAM_IN pAvl_left_node,const _avl_tree_node_t* PARAM_IN pAvl_right_node) ;
+PFX_INLINE pfx_s16_t calculate_avl_node_height_by_two_leave (const _avl_tree_node_t* PARAM_IN pAvl_left_node,const _avl_tree_node_t* PARAM_IN pAvl_right_node) ;
 
-PFX_INLINE pfx_s16_t calculate_avl_node_height(const _avl_tree_node_t* PARAM_IN pAvl_node);
+PFX_INLINE pfx_s16_t calculate_avl_node_height (const _avl_tree_node_t* PARAM_IN pAvl_node);
 
 //计算节点平衡系数
-PFX_INLINE pfx_s16_t calculate_avl_node_balance_val(const _avl_tree_node_t* PARAM_IN pAvl_node);
+PFX_INLINE pfx_s16_t calculate_avl_node_balance_val (const _avl_tree_node_t* PARAM_IN pAvl_node);
+
+//更新节点高度值
+PFX_INLINE void update_avl_node_height_unsafe (_avl_tree_node_t* PARAM_INOUT pAvl_node);
 
 //插入节点
-const avl_tree_node_t* add_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
+const avl_tree_node_t* add_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
 	avl_tree_node_t* PARAM_INOUT pAdd_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);
 
 //移除节点
-avl_tree_node_t* remove_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
+avl_tree_node_t* remove_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
 	avl_tree_node_t* PARAM_INOUT premove_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);
@@ -136,6 +139,11 @@ PFX_INLINE pfx_s16_t calculate_avl_node_balance_val(const _avl_tree_node_t* PARA
 	{
 		return 0;
 	}
+}
+
+PFX_INLINE void update_avl_node_height_unsafe (_avl_tree_node_t* PARAM_INOUT pAvl_node)
+{
+	pAvl_node->m_balance_value.m_balance_value.m_height = (get_avl_node_height(pAvl_node->m_pleft_node) - get_avl_node_height(pAvl_node->m_pright_node));
 }
 
 PFX_C_EXTERN_END

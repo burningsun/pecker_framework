@@ -27,6 +27,7 @@
     <ClInclude Include="data\pfx_list.h" />
     <ClInclude Include="data\pfx_math.h" />
     <ClInclude Include="data\pfx_matrix4.h" />
+    <ClInclude Include="data\pfx_redblack_tree_algorithm.h" />
     <ClInclude Include="data\pfx_stack.h" />
     <ClInclude Include="data\pfx_string.h" />
     <ClInclude Include="data\pfx_vector4.h" />
@@ -45,6 +46,7 @@
     <ClCompile Include="data\pfx_avl_tree_algorithm.cpp" />
     <ClCompile Include="data\pfx_bst_algorithm.cpp" />
     <ClCompile Include="data\pfx_bst_iterator.cpp" />
+    <ClCompile Include="data\pfx_redblack_tree_algorithm.cpp" />
     <ClCompile Include="data\pfx_string.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="native\pfx_allocator.cpp" />
@@ -58,6 +60,7 @@
     <ClCompile Include="test\pfx_dynamic_linear_array_test.cpp" />
     <ClCompile Include="test\pfx_file_inputdata_cmd.cpp" />
     <ClCompile Include="test\pfx_list_test.cpp" />
+    <ClCompile Include="test\pfx_rbtree_test.cpp" />
     <ClCompile Include="test\pfx_stream_test.cpp" />
     <ClCompile Include="test\pfx_string_test.cpp" />
     <ClCompile Include="test\test_main.cpp" />

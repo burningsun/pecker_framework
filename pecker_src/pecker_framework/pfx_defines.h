@@ -171,7 +171,8 @@ typedef unsigned int				pfx_bitfield_t;
 typedef enum enum_bool
 {
 	pfx_false = 0,
-	pfx_true
+	pfx_true,
+	pfx_invalid,
 }pfx_bool_t;
 //#define pfx_true (1)
 //#define pfx_false (0)
