@@ -93,9 +93,6 @@
     <ClInclude Include="data\pfx_stack.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="data\pfx_string.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="data\pfx_vector4.h">
       <Filter>data</Filter>
     </ClInclude>
@@ -135,11 +132,14 @@
     <ClInclude Include="data\pfx_redblack_tree_algorithm.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="data\pfx_share_string.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_string.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="data\pfx_string.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
     <ClCompile Include="native\pfx_allocator.cpp">
       <Filter>native</Filter>
     </ClCompile>
@@ -202,6 +202,12 @@
     </ClCompile>
     <ClCompile Include="test\pfx_rbtree_test.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pfx_share_string.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="data\pfx_string.cpp">
+      <Filter>data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

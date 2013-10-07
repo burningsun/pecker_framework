@@ -87,9 +87,9 @@ int test_main()
 	//status = array_test_main();
 	//status = arrayblock_test_main();
 	//status =  dynamic_linear_array_test_main();
-	//status = string_test_main();
+	status = string_test_main();
 	//status = bst_test_main();
 	//status = avl_test_main();
-	status = rbtree_test_main();
+	//status = rbtree_test_main();
 	return status;
 }

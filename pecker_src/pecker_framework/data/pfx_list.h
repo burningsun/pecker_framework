@@ -173,7 +173,11 @@ PFX_INLINE pfx_bool_t check_is_linked_list_last_node(const linked_list_node_t* P
 
 PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node(const linked_list_node_t* PARAM_IN	pnode)
 {
-	if (pnode && (null == pnode->m_prev_node) && (null == pnode->m_pnext_node))
+	if (null == pnode)
+	{
+		return pfx_invalid;
+	}
+	else if ((null == pnode->m_prev_node) && (null == pnode->m_pnext_node))
 	{
 		return pfx_true;
 	}

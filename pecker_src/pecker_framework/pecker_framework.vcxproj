@@ -28,6 +28,7 @@
     <ClInclude Include="data\pfx_math.h" />
     <ClInclude Include="data\pfx_matrix4.h" />
     <ClInclude Include="data\pfx_redblack_tree_algorithm.h" />
+    <ClInclude Include="data\pfx_share_string.h" />
     <ClInclude Include="data\pfx_stack.h" />
     <ClInclude Include="data\pfx_string.h" />
     <ClInclude Include="data\pfx_vector4.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="data\pfx_bst_algorithm.cpp" />
     <ClCompile Include="data\pfx_bst_iterator.cpp" />
     <ClCompile Include="data\pfx_redblack_tree_algorithm.cpp" />
+    <ClCompile Include="data\pfx_share_string.cpp" />
     <ClCompile Include="data\pfx_string.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="native\pfx_allocator.cpp" />

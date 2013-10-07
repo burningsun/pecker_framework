@@ -255,6 +255,10 @@ typedef union PFX_128bit_DataType
 
 #define RETURN_INVALID_RESULT(condition,return_status) {if (condition) {return (return_status);} };
 
+#define RETURN_INVALID_BY_ACT_RESULT(condition,action_,return_status) {if (condition) {{action_};return (return_status);} };
+
+#define  SET_POINTER_VALUE(ptr_,val_){if (ptr_){*(ptr_) = (val_);};};
+
 #ifdef __cplusplus
 // 位操作
 PFX_INLINE void set_bytes_in_bitfield_mask(pfx_bitfield_t& bitfield32bit,pfx_byte_t bit0to7,pfx_byte_t bit8to15,pfx_byte_t bit16to23,pfx_byte_t bit24to31)
