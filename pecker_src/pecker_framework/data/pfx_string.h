@@ -123,14 +123,17 @@ PFX_INLINE pfx_result_t clear_string(pfx_string_t* PARAM_INOUT pstr,
 // 给字符串后面加入新的字符串
 PFX_INLINE pfx_result_t append_string_by_string(pfx_string_t* PARAM_INOUT pstr,const pfx_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator)
 {
-	if (null == pstr || null == pappend_string)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
-	if (pstr->m_char_size != pappend_string->m_char_size)
-	{
-		return PFX_STATUS_DIFF_TYPE;
-	}
+	//if (null == pstr || null == pappend_string)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
+	//if (pstr->m_char_size != pappend_string->m_char_size)
+	//{
+	//	return PFX_STATUS_DIFF_TYPE;
+	//}
+	RETURN_INVALID_RESULT ((null == pstr || null == pappend_string),PFX_STATUS_INVALID_PARAMS);
+	RETURN_INVALID_RESULT ((pstr->m_char_size != pappend_string->m_char_size),PFX_STATUS_DIFF_TYPE);
+
 	return append_string_by_chars(pstr,pappend_string->m_pthis_string_data,pappend_string->m_string_buffer_length,pchar_allocator);
 }
 

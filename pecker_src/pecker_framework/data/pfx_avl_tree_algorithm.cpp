@@ -273,40 +273,47 @@ const avl_tree_node_t* add_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppavl_
 		avl_tree_node_t*	proot_node;
 		avl_tree_node_t*	padded_parent_node;
 		
+		//if (null == ppavl_root_node_ref || null == padd_node || null == cmp_method)
+		//{
+		//	if (null != pstatus)
+		//	{
+		//		*pstatus = PFX_STATUS_INVALID_PARAMS;
+		//	}
+		//	return null;
+		//}
+		RETURN_INVALID_BY_ACT_RESULT ((null == ppavl_root_node_ref || null == padd_node || null == cmp_method),
+			SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),null);
 	
-		if (null == ppavl_root_node_ref || null == padd_node || null == cmp_method)
-		{
-			if (null != pstatus)
-			{
-				*pstatus = PFX_STATUS_INVALID_PARAMS;
-			}
-			return null;
-		}
-	
-		status = add_bst_node_unsafe( (binary_search_tree_node_t**)ppavl_root_node_ref,(binary_search_tree_node_t*)padd_node,(binary_search_tree_node_t**)&ptemp_node,cmp_method);
+		status = add_bst_node_unsafe( (binary_search_tree_node_t**)ppavl_root_node_ref,
+			(binary_search_tree_node_t*)padd_node,(binary_search_tree_node_t**)&ptemp_node,cmp_method);
 
-		if (PFX_STATUS_OK != status)
-		{
-			if (null != pstatus)
-			{
-				*pstatus = status;
-			}
-			return ptemp_node;
-		}
+		//if (PFX_STATUS_OK != status)
+		//{
+		//	if (null != pstatus)
+		//	{
+		//		*pstatus = status;
+		//	}
+		//	return ptemp_node;
+		//}
+		RETURN_INVALID_BY_ACT_RESULT ((PFX_STATUS_OK != status),
+			SET_POINTER_VALUE(pstatus,status),ptemp_node);
 
 		update_avl_node_height_unsafe ((_avl_tree_node_t*)padd_node);
 
 		status = AVL_update_rotate((_avl_tree_node_t**)ppavl_root_node_ref,(_avl_tree_node_t*)padd_node);
 
-		if (null != pstatus)
-		{
-			*pstatus = status;
-		}
+		//if (null != pstatus)
+		//{
+		//	*pstatus = status;
+		//}
+		SET_POINTER_VALUE(pstatus,status);
 
-		if (PFX_STATUS_OK != status)
-		{
-			return null;
-		}
+		//if (PFX_STATUS_OK != status)
+		//{
+		//	return null;
+		//}
+		RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
+
 		return padd_node;
 }
 
@@ -324,14 +331,16 @@ avl_tree_node_t* remove_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppavl_root
 	_avl_tree_node_t* psub_romove_ref_node;
 	_avl_tree_node_t* psub_remove_node;
 
-	if (null == ppavl_root_node_ref || null == premove_node || null == cmp_method)
-	{
-		if (null != pstatus)
-		{
-			*pstatus = PFX_STATUS_INVALID_PARAMS;
-		}
-		return null;
-	}
+	//if (null == ppavl_root_node_ref || null == premove_node || null == cmp_method)
+	//{
+	//	if (null != pstatus)
+	//	{
+	//		*pstatus = PFX_STATUS_INVALID_PARAMS;
+	//	}
+	//	return null;
+	//}
+	RETURN_INVALID_BY_ACT_RESULT ((null == ppavl_root_node_ref || null == premove_node || null == cmp_method),
+		SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),null);
 
 	proot_node = *ppavl_root_node_ref;
 	//height = proot_node->m_avl_node.m_balance_value.m_balance_value.m_height;
@@ -349,25 +358,29 @@ avl_tree_node_t* remove_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppavl_root
 		(binary_search_tree_node_t*)psub_romove_ref_node,
 		null);
 
-
-	if (PFX_STATUS_OK != status)
-	{
-		if (null != pstatus)
-		{
-			*pstatus = status;
-		}
-		return premove_node;
-	}
+	SET_POINTER_VALUE (pstatus,status);
+	//if (PFX_STATUS_OK != status)
+	//{
+	//	if (null != pstatus)
+	//	{
+	//		*pstatus = status;
+	//	}
+	//	return premove_node;
+	//}
+	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),premove_node);
 
 	proot_node = *ppavl_root_node_ref;
-	if (null == proot_node)
-	{
-		if (null != pstatus)
-		{
-			*pstatus = status;
-		}
-		return premove_node;
-	}
+
+	
+	//if (null == proot_node)
+	//{
+		//if (null != pstatus)
+		//{
+		//	*pstatus = status;
+		//}
+	//	return premove_node;
+	//}
+	RETURN_RESULT ((null == proot_node),premove_node);
 
 	ptemp_node = psub_romove_ref_node;
 	if (null == ptemp_node)
@@ -396,15 +409,17 @@ avl_tree_node_t* remove_avl_node_unsafe(avl_tree_node_t** PARAM_INOUT ppavl_root
 
 	status = AVL_update_rotate((_avl_tree_node_t**)ppavl_root_node_ref,(_avl_tree_node_t*)ptemp_node);
 
-	if (null != pstatus)
-	{
-		*pstatus = status;
-	}
+	//if (null != pstatus)
+	//{
+	//	*pstatus = status;
+	//}
+	SET_POINTER_VALUE (pstatus,status);
+	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
 
-	if (PFX_STATUS_OK != status)
-	{
-		return null;
-	}
+	//if (PFX_STATUS_OK != status)
+	//{
+	//	return null;
+	//}
 	return premove_node;
 
 }

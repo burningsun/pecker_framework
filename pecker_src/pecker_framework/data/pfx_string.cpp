@@ -13,14 +13,17 @@ pfx_string_t* init_string_by_buffer(size_t char_size,size_t min_buffer_size,char
 	pfx_string_t* preturn_string = (pfx_string_t*)(string_obj_buffer);
 	pfx_sint_t min_charbuffer_size = (pfx_sint_t)min_buffer_size - sizeof(pfx_string_t);
 
-	if (min_charbuffer_size < 0||char_size > 0x3FFF||null == string_obj_buffer)
-	{
-		if (pstatus)
-		{
-			*pstatus = PFX_STATUS_INVALID_PARAMS;
-		}
-		return null;
-	}
+	//if (min_charbuffer_size < 0||char_size > 0x3FFF||null == string_obj_buffer)
+	//{
+	//	if (pstatus)
+	//	{
+	//		*pstatus = PFX_STATUS_INVALID_PARAMS;
+	//	}
+	//	return null;
+	//}
+	RETURN_INVALID_BY_ACT_RESULT ((min_charbuffer_size < 0||char_size > 0x3FFF||null == string_obj_buffer),
+		SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),null);
+
 	preturn_string->m_revered = 0;
 	preturn_string->m_using_extern_buffer = 0;
 	preturn_string->m_char_size = char_size;
@@ -36,11 +39,11 @@ pfx_string_t* init_string_by_buffer(size_t char_size,size_t min_buffer_size,char
 		preturn_string->m_pthis_string_data = null;
 	}
 	
-
-	if (pstatus)
-	{
-		*pstatus = PFX_STATUS_OK;
-	}
+	SET_POINTER_VALUE(pstatus,PFX_STATUS_OK);
+	//if (pstatus)
+	//{
+	//	*pstatus = PFX_STATUS_OK;
+	//}
 
 	return preturn_string;
 }
@@ -52,34 +55,44 @@ pfx_string_t* new_string(size_t char_size,size_t min_char_count,const IAllocator
 	size_t allocate_size = char_size * min_char_count;
 	pfx_char_t* allocate_buffer = null;
 
-	if (null == pAllocator || allocate_size > 0xFFFF)
-	{
-		if (pstatus)
-		{
-			*pstatus = PFX_STATUS_INVALID_PARAMS;
-		}
-		return preturn_string;
-	}
+	//if (null == pAllocator || allocate_size > 0xFFFF)
+	//{
+	//	if (pstatus)
+	//	{
+	//		*pstatus = PFX_STATUS_INVALID_PARAMS;
+	//	}
+	//	return preturn_string;
+	//}
+	RETURN_INVALID_BY_ACT_RESULT ( (null == pAllocator || allocate_size > 0xFFFF),
+		SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),preturn_string);
 
 	allocate_size += sizeof(pfx_string_t);
 	allocate_buffer = (pfx_char_t*)(pAllocator->allocate_obj((pfx_long_t)pAllocator,allocate_size));
 
 	preturn_string = init_string_by_buffer(char_size,allocate_size,allocate_buffer,&status);
 
-	if (null != pstatus)
+	//if (null != pstatus)
+	//{
+	//	if (null == allocate_buffer)
+	//	{
+	//		*pstatus = PFX_STATUS_MEM_LOW;
+	//	}
+	//	else if (PFX_STATUS_OK != status)
+	//	{
+	//		*pstatus = status;
+	//	}
+	//	else
+	//	{
+	//		*pstatus = PFX_STATUS_OK;
+	//	}
+	//}
+	if (null == allocate_buffer)
 	{
-		if (null == allocate_buffer)
-		{
-			*pstatus = PFX_STATUS_MEM_LOW;
-		}
-		else if (PFX_STATUS_OK != status)
-		{
-			*pstatus = status;
-		}
-		else
-		{
-			*pstatus = PFX_STATUS_OK;
-		}
+		SET_POINTER_VALUE (pstatus,PFX_STATUS_MEM_LOW);
+	}
+	else
+	{
+		SET_POINTER_VALUE (pstatus,status);
 	}
 	return preturn_string;
 }
@@ -88,10 +101,11 @@ pfx_result_t relese_string_extern_buffer(pfx_string_t* PARAM_INOUT pstr,const IA
 {
 	pfx_result_t status = PFX_STATUS_OK;
 
-	if (null == pstr || null == pAllocator)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
+	//if (null == pstr || null == pAllocator)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
+	RETURN_INVALID_RESULT ((null == pstr || null == pAllocator),PFX_STATUS_INVALID_PARAMS);
 
 	if (pstr->m_using_extern_buffer)
 	{
@@ -129,11 +143,11 @@ pfx_result_t init_string(pfx_string_t* PARAM_INOUT pstr,
 	size_t string_len,
 	const IAllocator* PARAM_IN pchar_allocator)
 {
-	if (null == pstr || string_len < 0)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
-
+	//if (null == pstr || string_len < 0)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
+	RETURN_INVALID_RESULT ( (null == pstr || string_len < 0),PFX_STATUS_INVALID_PARAMS);
 	
 
 	if ((string_len < pstr->m_defualt_buffer_size) && (0 == pstr->m_using_extern_buffer))
@@ -250,10 +264,11 @@ pfx_result_t copy_string(pfx_string_t* PARAM_INOUT pstr_dec,
 
 pfx_result_t swap_string(pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB)
 {
-	if (null == pstrA || null == pstrB)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
+	//if (null == pstrA || null == pstrB)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
+	RETURN_INVALID_RESULT ((null == pstrA || null == pstrB),PFX_STATUS_INVALID_PARAMS);
 
 	if (pstrB->m_using_extern_buffer && pstrA->m_using_extern_buffer)
 	{
@@ -462,11 +477,11 @@ pfx_result_t swap_string_by_allocator(pfx_string_t* PARAM_INOUT pstrA,pfx_string
 
 pfx_result_t resize_string(pfx_string_t* PARAM_INOUT pstr,size_t string_len,pfx_bool_t bnew_allocate, const IAllocator* PARAM_IN pchar_allocator)
 {
-	if (null == pstr || string_len < 0)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
-
+	//if (null == pstr || string_len < 0)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
+	RETURN_INVALID_RESULT ((null == pstr || string_len < 0),PFX_STATUS_INVALID_PARAMS);
 
 
 	if ((string_len < pstr->m_defualt_buffer_size) && (0 == pstr->m_using_extern_buffer))
@@ -571,10 +586,12 @@ pfx_result_t get_sub_string(const pfx_string_t* PARAM_IN porign_string,
 	pfx_string_t* PARAM_INOUT preference_sub_string,size_t ioffset,
 	size_t sub_string_length,const IAllocator* PARAM_IN pchar_allocator)
 {
-	if (null == porign_string || null == preference_sub_string)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
+	//if (null == porign_string || null == preference_sub_string)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
+	RETURN_INVALID_RESULT ((null == porign_string || null == preference_sub_string),
+		PFX_STATUS_INVALID_PARAMS);
 
 	if (ioffset < 0)
 	{
@@ -601,15 +618,17 @@ pfx_result_t append_string_by_chars(pfx_string_t* PARAM_INOUT pstr,
 {
 	pfx_result_t	status;
 	size_t			offset;
-	if (null == pstr)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
+	//if (null == pstr)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
 
-	if (null == str_chars || chars_buffer_size <= 0)
-	{
-		return PFX_STATUS_OK;
-	}
+	//if (null == str_chars || chars_buffer_size <= 0)
+	//{
+	//	return PFX_STATUS_OK;
+	//}
+	RETURN_INVALID_RESULT (null == pstr,PFX_STATUS_INVALID_PARAMS);
+	RETURN_RESULT ((null == str_chars || chars_buffer_size <= 0),PFX_STATUS_OK);
 
 
 	offset = pstr->m_string_buffer_length;

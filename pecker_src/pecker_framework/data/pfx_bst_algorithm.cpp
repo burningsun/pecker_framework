@@ -9,7 +9,7 @@
 #include "pfx_bst_iterator.h"
 #include "../native/pfx_log.h"
 
-#define BST_ALLOCATE_NODE_DEBUG
+//#define BST_ALLOCATE_NODE_DEBUG
 
 // 默认
 // 分配新的二叉树节点的内存
@@ -64,10 +64,12 @@ pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_I
 	binary_search_tree_node_t* ptemp_src_node;
 	binary_search_tree_node_t* pnew_node = new_node_method(pallocator,psrc_root_node);
 
-	if (null == pnew_node)
-	{
-		return PFX_STATUS_MEM_LOW;
-	}
+	//if (null == pnew_node)
+	//{
+	//	return PFX_STATUS_MEM_LOW;
+	//}
+	RETURN_INVALID_RESULT (null == pnew_node,PFX_STATUS_MEM_LOW);
+
 	init_binary_search_tree_node_nokey_unsafe(pnew_node,null,null,null);
 	*ppdec_root_node = pnew_node;
 	ptemp_dec_node = pnew_node;
