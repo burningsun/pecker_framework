@@ -24,8 +24,8 @@ struct st_pfx_share_string_base
 	size_t												m_char_buffer_offset;
 	size_t												m_char_buffer_size;
 
-	unsigned											m_using_internal_buffer : 8;
-	unsigned											m_revered : 8;
+	unsigned											m_using_internal_buffer : 2;
+	unsigned											m_char_size : 14;
 	unsigned											m_interbuffer_defualt_buffer_size : 16;											
 };
 
@@ -72,15 +72,10 @@ PFX_INLINE pfx_result_t delete_share_string(pfx_share_string_t* PARAM_INOUT pstr
 pfx_result_t copy_share_string(pfx_share_string_t* PARAM_INOUT pstr_dec,
 	const pfx_share_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator);
 
-//// 字符串拷贝
-//PFX_INLINE pfx_result_t copy_share_string_to_share_string(pfx_share_string_t* PARAM_INOUT pstr_dec,
-//	const pfx_share_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator);
 
 // 清除字符串buffer中的字符串
 PFX_INLINE pfx_result_t clear_share_string(pfx_share_string_t* PARAM_INOUT pstr,
 	const IAllocator* PARAM_IN pAllocator);
-
-//pfx_result_t swap_share_string(pfx_share_string_t* PARAM_INOUT pstrA,pfx_share_string_t* PARAM_INOUT pstrB);
 
 pfx_share_string_t* get_share_sub_string	(pfx_share_string_t* PARAM_INOUT porign_string,
 															size_t ioffset,size_t sub_string_length,
@@ -90,7 +85,7 @@ pfx_share_string_t* get_share_sub_string	(pfx_share_string_t* PARAM_INOUT porign
 
 // 重新定义共享字符串大小
 pfx_result_t resize_share_string (pfx_share_string_t* PARAM_INOUT pstr,
-	size_t char_size,
+	//size_t char_size,
 	size_t string_len,pfx_bool_t busing_internal_buffer, pfx_bool_t bnew_allocate, 
 	const IAllocator* PARAM_IN pchar_allocator);
 
@@ -105,20 +100,25 @@ PFX_INLINE const pfx_char_t* get_share_string_chars_buffer(const pfx_share_strin
 PFX_INLINE size_t get_share_string_char_buffer_size(const pfx_share_string_t* PARAM_IN pstr);
 
 // 给字符串后面加入新的字符串
+PFX_INLINE pfx_result_t append_share_string_by_string(pfx_share_string_t* PARAM_INOUT pstr,
+	const pfx_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator);
+
+// 给字符串后面加入新的字符串
 PFX_INLINE pfx_result_t append_share_string_by_share_string(pfx_share_string_t* PARAM_INOUT pstr,
 	const pfx_share_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator);
 
+
 // 获取指定位置的字节
-PFX_INLINE char get_share_string_buffer_at(const pfx_share_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus);
+PFX_INLINE pfx_char_t get_share_string_buffer_at(const pfx_share_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus);
 
 // 设置指定位置的字节
-PFX_INLINE pfx_result_t set_string_buffer_at(pfx_string_t* PARAM_INOUT pstr,size_t index,char set_char);
+PFX_INLINE pfx_result_t set_share_string_buffer_at(pfx_share_string_t* PARAM_INOUT pstr,size_t index,char set_char,const IAllocator* PARAM_IN pchar_allocator);
 
 // 设定指定位置的buffer
 PFX_INLINE pfx_result_t set_share_string_buffer_chars_at(pfx_share_string_t* PARAM_INOUT pstr,size_t index,
-	const char* PARAM_INOUT set_chars,size_t set_buffer_size);
+	const char* PARAM_INOUT set_chars,size_t set_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
 
-PFX_INLINE const char* get_share_string_buffer_chars_at(const pfx_share_string_t* PARAM_IN pstr,size_t index);
+PFX_INLINE const pfx_char_t* get_share_string_buffer_chars_at(const pfx_share_string_t* PARAM_IN pstr,size_t index);
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -152,22 +152,98 @@ PFX_INLINE size_t get_share_string_char_buffer_size(const pfx_share_string_t* PA
 		0);
 	return pstr->m_char_buffer_size;
 }
-//PFX_INLINE pfx_result_t copy_share_string_to_share_string(pfx_share_string_t* PARAM_INOUT pstr_dec,
-//	const pfx_share_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator)
-//{
-//	pfx_result_t status = PFX_STATUS_OK;
-//	RETURN_INVALID_RESULT (((null == pstr_dec)||(null == pstr_src)||(null == pchar_allocator)),
-//		PFX_STATUS_INVALID_PARAMS);
-//
-//	if (null == pstr_src->m_reference_string)
-//	{
-//		status = relese_share_string_extern_buffer(pstr_dec);
-//	}
-//	else
-//	{
-//		status = copy_share_string(pstr_dec,pstr_src->m_reference_string,)
-//	}
-//}
+
+
+// 给字符串后面加入新的字符串
+PFX_INLINE pfx_result_t append_share_string_by_string(pfx_share_string_t* PARAM_INOUT pstr,
+	const pfx_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator)
+{
+	RETURN_INVALID_RESULT (null == pstr || null == pchar_allocator,PFX_STATUS_INVALID_PARAMS);
+	RETURN_RESULT (null == pappend_string,PFX_STATUS_OK);
+
+
+	return append_share_string_by_chars(pstr,
+		pappend_string->m_pthis_string_data,
+		pappend_string->m_string_buffer_length,pchar_allocator);
+}
+
+// 给字符串后面加入新的字符串
+PFX_INLINE pfx_result_t append_share_string_by_share_string(pfx_share_string_t* PARAM_INOUT pstr,
+	const pfx_share_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator)
+{
+
+	RETURN_INVALID_RESULT (null == pstr || null == pchar_allocator,PFX_STATUS_INVALID_PARAMS);
+	RETURN_RESULT (null == pappend_string || null == pappend_string->m_reference_string,PFX_STATUS_OK);
+
+	return append_share_string_by_chars(pstr,
+		pappend_string->m_reference_string->m_pthis_string_data,
+		pappend_string->m_reference_string->m_string_buffer_length,pchar_allocator);
+}
+
+// 获取指定位置的字节
+PFX_INLINE pfx_char_t get_share_string_buffer_at(const pfx_share_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus)
+{
+	const pfx_char_t * ptemp_char = null;
+	ptemp_char = get_share_string_chars_buffer(pstr);
+	
+	RETURN_INVALID_BY_ACT_RESULT (null == ptemp_char,SET_POINTER_VALUE (pstatus,PFK_STATUS_NULLITEM),(pfx_char_t)(0xFF));
+	RETURN_INVALID_BY_ACT_RESULT ((index >= pstr->m_char_buffer_size),SET_POINTER_VALUE (pstatus,PFX_STATUS_OVERRANGE),(pfx_char_t)(0xFF));
+
+	return ptemp_char[index];
+}
+
+// 设置指定位置的字节
+PFX_INLINE pfx_result_t set_share_string_buffer_at(pfx_share_string_t* PARAM_INOUT pstr,size_t index,char set_char,
+	const IAllocator* PARAM_IN pchar_allocator)
+{
+	pfx_char_t * ptemp_char = null;
+	pfx_result_t status;
+
+	status = resize_share_string(pstr,pstr->m_char_buffer_size,pfx_true,pfx_false,pchar_allocator);
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+	ptemp_char = (pfx_char_t*)get_share_string_chars_buffer(pstr);
+
+	RETURN_INVALID_RESULT (null == ptemp_char,PFK_STATUS_NULLITEM);
+
+	RETURN_INVALID_RESULT ((index >= pstr->m_char_buffer_size),PFX_STATUS_OVERRANGE);
+
+	ptemp_char[index] = set_char;
+	return PFX_STATUS_OK;
+}
+
+// 设定指定位置的buffer
+PFX_INLINE pfx_result_t set_share_string_buffer_chars_at(pfx_share_string_t* PARAM_INOUT pstr,size_t index,
+	const char* PARAM_INOUT set_chars,size_t set_buffer_size,
+	const IAllocator* PARAM_IN pchar_allocator)
+{
+	pfx_char_t * ptemp_char = null;
+	pfx_result_t status;
+
+	status = resize_share_string(pstr,pstr->m_char_buffer_size,pfx_true,pfx_false,pchar_allocator);
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+	RETURN_INVALID_RESULT (null == pstr,PFX_STATUS_INVALID_PARAMS);
+
+	ptemp_char = (pfx_char_t*)get_share_string_chars_buffer(pstr);
+	
+	RETURN_INVALID_RESULT (null == ptemp_char || index >= pstr->m_char_buffer_size,null);
+
+	if (index + set_buffer_size > pstr->m_char_buffer_size)
+	{
+		set_buffer_size = pstr->m_char_buffer_size - index;
+	}
+	memcpy (ptemp_char+index,set_chars,set_buffer_size);
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE const pfx_char_t* get_share_string_buffer_chars_at(const pfx_share_string_t* PARAM_IN pstr,size_t index)
+{
+	const pfx_char_t * ptemp_char = null;
+	ptemp_char = get_share_string_chars_buffer(pstr);
+	RETURN_INVALID_RESULT (null == ptemp_char || index >= pstr->m_char_buffer_size,null);
+	return (ptemp_char + index);
+}
 
 PFX_C_EXTERN_END
 

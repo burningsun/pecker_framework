@@ -252,6 +252,7 @@ typedef union PFX_128bit_DataType
 	pfx_16bit_t					m_16bit_type[8];
 }pfx_128bit_t;
 
+#define RETURN_RESULT(condition,return_status) {if (condition) {return (return_status);} };
 
 #define RETURN_INVALID_RESULT(condition,return_status) {if (condition) {return (return_status);} };
 

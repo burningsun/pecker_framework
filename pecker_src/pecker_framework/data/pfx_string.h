@@ -80,6 +80,11 @@ pfx_result_t append_string_by_chars(pfx_string_t* PARAM_INOUT pstr,const pfx_cha
 // 给字符串后面加入新的字符串
 PFX_INLINE pfx_result_t append_string_by_string(pfx_string_t* PARAM_INOUT pstr,const pfx_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator);
 
+// 获取字符串的缓冲区
+PFX_INLINE const pfx_char_t* get_string_chars_buffer(const pfx_string_t* PARAM_IN pstr);
+// 获取字符串有效字符串字节数
+PFX_INLINE size_t get_string_chars_length(const pfx_string_t* PARAM_IN pstr);
+
 // 获取指定位置的字节
 PFX_INLINE pfx_char_t get_string_buffer_at_unsafe(const pfx_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus);
 PFX_INLINE pfx_char_t get_string_buffer_at(const pfx_string_t* PARAM_IN pstr,size_t index,pfx_result_t* pstatus);
@@ -231,6 +236,19 @@ PFX_INLINE const pfx_char_t* get_string_buffer_chars_at(const pfx_string_t* PARA
 		}
 	}
 	return preturn_buffer;
+}
+
+// 获取字符串的缓冲区
+PFX_INLINE const pfx_char_t* get_string_chars_buffer(const pfx_string_t* PARAM_IN pstr)
+{
+	RETURN_INVALID_RESULT (null == pstr,null);
+	return pstr->m_pthis_string_data;
+}
+// 获取字符串有效字符串字节数
+PFX_INLINE size_t get_string_chars_length(const pfx_string_t* PARAM_IN pstr)
+{
+	RETURN_INVALID_RESULT (null == pstr,0);
+	return pstr->m_string_buffer_length;
 }
 
 PFX_C_EXTERN_END

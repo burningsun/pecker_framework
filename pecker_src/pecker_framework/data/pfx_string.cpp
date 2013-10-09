@@ -156,7 +156,8 @@ pfx_result_t init_string(pfx_string_t* PARAM_INOUT pstr,
 		{
 			pstr->m_string_buffer_length = 0;
 			// 申请成功后，释放原来的内存，将新内存附加上去
-			if (null != pstr->m_pthis_string_data)
+			if (null != pstr->m_pthis_string_data && 
+				pstr->m_using_extern_buffer)
 			{
 				pchar_allocator->dellocate_obj((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data);
 			}
@@ -183,7 +184,26 @@ pfx_result_t init_string_by_charsbuffer(pfx_string_t* PARAM_INOUT pstr,
 	const pfx_char_t* PARAM_IN pstr_chars,size_t chars_buffer_size,
 	const IAllocator* PARAM_IN pchar_allocator)
 {
-	pfx_result_t status = init_string(pstr,chars_buffer_size,pchar_allocator);
+	pfx_result_t status = PFX_STATUS_OK;
+
+	RETURN_INVALID_RESULT (null == pstr_chars || chars_buffer_size <= 0 || null == pchar_allocator,
+		PFX_STATUS_INVALID_PARAMS);
+
+	RETURN_RESULT (pstr_chars == get_string_chars_buffer(pstr),PFX_STATUS_OK);
+
+	if (pstr_chars > get_string_chars_buffer(pstr) && 
+		pstr_chars < (get_string_chars_buffer(pstr)+get_string_chars_length(pstr)) )
+	{
+		size_t offset = pstr_chars - get_string_chars_buffer(pstr);
+		status = resize_string(pstr,chars_buffer_size,pfx_false,pchar_allocator);
+		pstr_chars = get_string_chars_buffer(pstr) + offset;
+	}
+	else
+	{
+		status = init_string(pstr,chars_buffer_size,pchar_allocator);
+	}
+
+	
 	if (PFX_STATUS_OK == status)
 	{
 		size_t i;
@@ -201,20 +221,26 @@ pfx_result_t copy_string(pfx_string_t* PARAM_INOUT pstr_dec,
 	const pfx_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator)
 {
 	pfx_result_t status;
-	if (null == pstr_src)
-	{
-		return PFX_STATUS_INVALID_PARAMS;
-	}
+	//if (null == pstr_src)
+	//{
+	//	return PFX_STATUS_INVALID_PARAMS;
+	//}
+	RETURN_INVALID_RESULT (null == pstr_src,PFX_STATUS_INVALID_PARAMS);
+
+	RETURN_RESULT (pstr_dec == pstr_src,PFX_STATUS_OK);
+	
 
 	status =  init_string(pstr_dec,pstr_src->m_string_buffer_size,pchar_allocator);
 	if (PFX_STATUS_OK == status)
 	{
-		size_t copy_size = pstr_src->m_string_buffer_size;
-		size_t i;
-		for (i=0; i<copy_size; ++i)
-		{
-			pstr_dec->m_pthis_string_data[i] = pstr_src->m_pthis_string_data[i];
-		}
+		//size_t copy_size = pstr_src->m_string_buffer_size;
+		//size_t i;
+		//for (i=0; i<copy_size; ++i)
+		//{
+		//	pstr_dec->m_pthis_string_data[i] = pstr_src->m_pthis_string_data[i];
+		//}
+		//pstr_dec->m_string_buffer_length = pstr_src->m_string_buffer_length;
+		memcpy (pstr_dec->m_pthis_string_data,pstr_src->m_pthis_string_data,pstr_src->m_string_buffer_length);
 		pstr_dec->m_string_buffer_length = pstr_src->m_string_buffer_length;
 	}
 
@@ -585,12 +611,29 @@ pfx_result_t append_string_by_chars(pfx_string_t* PARAM_INOUT pstr,
 		return PFX_STATUS_OK;
 	}
 
+
 	offset = pstr->m_string_buffer_length;
-	status = resize_string(pstr,pstr->m_string_buffer_length+chars_buffer_size,pfx_false,pchar_allocator);
+
+	if (str_chars >= get_string_chars_buffer(pstr) && 
+		str_chars < (get_string_chars_buffer(pstr)+get_string_chars_length(pstr)) )
+	{
+		size_t offset_ = str_chars - get_string_chars_buffer(pstr);
+		status = resize_string(pstr,pstr->m_string_buffer_length+chars_buffer_size,pfx_false,pchar_allocator);
+		str_chars = get_string_chars_buffer(pstr) + offset_;
+	}
+	else
+	{
+		status = resize_string(pstr,pstr->m_string_buffer_length+chars_buffer_size,pfx_false,pchar_allocator);
+	}
+
+	
 	if (PFX_STATUS_OK == status)
 	{
 		memcpy(pstr->m_pthis_string_data+offset,str_chars,chars_buffer_size);
-		pstr->m_string_buffer_length += chars_buffer_size;
+		if (pstr->m_string_buffer_length < pstr->m_string_buffer_size)
+		{
+			pstr->m_string_buffer_length += chars_buffer_size;
+		}
 	}
 	
 	return status;
