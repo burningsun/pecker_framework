@@ -47,25 +47,25 @@ typedef union un_redblack_tree_node
 #define RED_COLOR_NODE_TYPE		(0x3AAA)
 #define BLACK_COLOR_NODE_TYPE	(0x3BBB)
 
-PFX_INLINE	void  set_rb_tree_color_red_unsafe(_redblack_tree_node_t* PARAM_INOUT pnode);
-PFX_INLINE	void  set_rb_tree_color_black_unsafe(_redblack_tree_node_t* PARAM_INOUT pnode);
-PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_red(const _redblack_tree_node_t* PARAM_INOUT pnode);
-PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_black(const _redblack_tree_node_t* PARAM_INOUT pnode);
-PFX_INLINE	void copy_rb_tree_color_unsafe(_redblack_tree_node_t* PARAM_INOUT pdec_node,const _redblack_tree_node_t* PARAM_IN psrc_node);
+PFX_INLINE	void  set_rb_tree_color_red_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode);
+PFX_INLINE	void  set_rb_tree_color_black_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode);
+PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_red (const _redblack_tree_node_t* PARAM_INOUT pnode);
+PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_black (const _redblack_tree_node_t* PARAM_INOUT pnode);
+PFX_INLINE	void copy_rb_tree_color_unsafe (_redblack_tree_node_t* PARAM_INOUT pdec_node,const _redblack_tree_node_t* PARAM_IN psrc_node);
 
-PFX_INLINE	void rb_tree_sentinel_init_unsafe(_redblack_tree_node_t* PARAM_INOUT pnode);
+PFX_INLINE	void rb_tree_sentinel_init_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode);
 
 //////////////////////////////////////////////////////////////////////////
 
-PFX_INLINE	void  set_rb_tree_color_red_unsafe(_redblack_tree_node_t* PARAM_INOUT pnode)
+PFX_INLINE	void  set_rb_tree_color_red_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode)
 {
 	pnode->m_balance_value.m_balance_value.m_color = RED_COLOR_NODE_TYPE;
 }
-PFX_INLINE	void  set_rb_tree_color_black_unsafe(_redblack_tree_node_t* PARAM_INOUT pnode)
+PFX_INLINE	void  set_rb_tree_color_black_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode)
 {
 	pnode->m_balance_value.m_balance_value.m_color = BLACK_COLOR_NODE_TYPE;
 }
-PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_red(const _redblack_tree_node_t* PARAM_INOUT pnode)
+PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_red (const _redblack_tree_node_t* PARAM_INOUT pnode)
 {
 	if (null == pnode)
 	{
@@ -84,7 +84,7 @@ PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_red(const _redblack_tree_node_t* PA
 		return pfx_invalid;
 	}
 }
-PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_black(const _redblack_tree_node_t* PARAM_INOUT pnode)
+PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_black (const _redblack_tree_node_t* PARAM_INOUT pnode)
 {
 	if (null == pnode)
 	{
@@ -103,12 +103,12 @@ PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_black(const _redblack_tree_node_t* 
 		return pfx_invalid;
 	}
 }
-PFX_INLINE	void copy_rb_tree_color_unsafe(_redblack_tree_node_t* PARAM_INOUT pdec_node,const _redblack_tree_node_t* PARAM_IN psrc_node)
+PFX_INLINE	void copy_rb_tree_color_unsafe (_redblack_tree_node_t* PARAM_INOUT pdec_node,const _redblack_tree_node_t* PARAM_IN psrc_node)
 {
 	pdec_node->m_balance_value.m_balance_value.m_color = psrc_node->m_balance_value.m_balance_value.m_color;
 }
 
-PFX_INLINE	void rb_tree_sentinel_init_unsafe(_redblack_tree_node_t* PARAM_INOUT pnode)
+PFX_INLINE	void rb_tree_sentinel_init_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode)
 {
 	set_rb_tree_color_black_unsafe(pnode);
 }
@@ -117,20 +117,16 @@ PFX_INLINE	void rb_tree_sentinel_init_unsafe(_redblack_tree_node_t* PARAM_INOUT 
 
 
 //插入节点
-const redblack_tree_node_t* add_redblack_node_unsafe(redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
+const redblack_tree_node_t* add_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
 	redblack_tree_node_t* PARAM_INOUT padd_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);
 
 //移除节点
-redblack_tree_node_t* remove_redblack_node_unsafe(redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
+redblack_tree_node_t* remove_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
 	redblack_tree_node_t* PARAM_INOUT premove_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);
-
-
-
-
 
 
 PFX_C_EXTERN_END

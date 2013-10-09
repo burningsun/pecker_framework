@@ -88,7 +88,7 @@ avl_tree_node_t* remove_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_roo
 
 //////////////////////////////////////////////////////////////////////////
 // 取得节点的高度值
-PFX_INLINE pfx_s16_t get_avl_node_height(const _avl_tree_node_t* PARAM_IN pAvl_node)
+PFX_INLINE pfx_s16_t get_avl_node_height (const _avl_tree_node_t* PARAM_IN pAvl_node)
 {
 	if (null == pAvl_node)
 	{
@@ -101,10 +101,10 @@ PFX_INLINE pfx_s16_t get_avl_node_height(const _avl_tree_node_t* PARAM_IN pAvl_n
 }
 
 //计算节点的高度值
-PFX_INLINE pfx_s16_t calculate_avl_node_height_by_two_leave(const _avl_tree_node_t* PARAM_IN pAvl_left_node,const _avl_tree_node_t* PARAM_IN pAvl_right_node) 
+PFX_INLINE pfx_s16_t calculate_avl_node_height_by_two_leave (const _avl_tree_node_t* PARAM_IN pAvl_left_node,const _avl_tree_node_t* PARAM_IN pAvl_right_node) 
 {
-	pfx_s16_t left_height = get_avl_node_height(pAvl_left_node);
-	pfx_s16_t right_height =  get_avl_node_height(pAvl_right_node);
+	pfx_s16_t left_height = get_avl_node_height (pAvl_left_node);
+	pfx_s16_t right_height =  get_avl_node_height (pAvl_right_node);
 
 	if (left_height > right_height)
 	{
@@ -116,7 +116,7 @@ PFX_INLINE pfx_s16_t calculate_avl_node_height_by_two_leave(const _avl_tree_node
 	}
 }
 
-PFX_INLINE pfx_s16_t calculate_avl_node_height(const _avl_tree_node_t* PARAM_IN pAvl_node)
+PFX_INLINE pfx_s16_t calculate_avl_node_height (const _avl_tree_node_t* PARAM_IN pAvl_node)
 {
 	if (null == pAvl_node)
 	{
@@ -124,16 +124,16 @@ PFX_INLINE pfx_s16_t calculate_avl_node_height(const _avl_tree_node_t* PARAM_IN 
 	}
 	else
 	{
-		return calculate_avl_node_height_by_two_leave(pAvl_node->m_pleft_node,pAvl_node->m_pright_node);
+		return calculate_avl_node_height_by_two_leave (pAvl_node->m_pleft_node,pAvl_node->m_pright_node);
 	}
 }
 
 //计算节点平衡系数
-PFX_INLINE pfx_s16_t calculate_avl_node_balance_val(const _avl_tree_node_t* PARAM_IN pAvl_node)
+PFX_INLINE pfx_s16_t calculate_avl_node_balance_val (const _avl_tree_node_t* PARAM_IN pAvl_node)
 {
 	if (null != pAvl_node)
 	{
-		return get_avl_node_height(pAvl_node->m_pleft_node) - get_avl_node_height(pAvl_node->m_pright_node);
+		return get_avl_node_height (pAvl_node->m_pleft_node) - get_avl_node_height (pAvl_node->m_pright_node);
 	}
 	else
 	{
@@ -143,7 +143,7 @@ PFX_INLINE pfx_s16_t calculate_avl_node_balance_val(const _avl_tree_node_t* PARA
 
 PFX_INLINE void update_avl_node_height_unsafe (_avl_tree_node_t* PARAM_INOUT pAvl_node)
 {
-	pAvl_node->m_balance_value.m_balance_value.m_height = (get_avl_node_height(pAvl_node->m_pleft_node) - get_avl_node_height(pAvl_node->m_pright_node));
+	pAvl_node->m_balance_value.m_balance_value.m_height = (get_avl_node_height (pAvl_node->m_pleft_node) - get_avl_node_height (pAvl_node->m_pright_node));
 }
 
 PFX_C_EXTERN_END

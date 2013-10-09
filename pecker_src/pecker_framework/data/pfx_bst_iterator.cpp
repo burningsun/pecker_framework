@@ -15,7 +15,7 @@ const binary_search_tree_node_t* get_binary_search_tree_inorder_begin_node (cons
 {
 	if (null != proot_node)
 	{
-		return min_binary_search_tree_node_unsafe(proot_node);
+		return min_binary_search_tree_node_unsafe (proot_node);
 	}
 	else
 	{
@@ -27,7 +27,7 @@ const binary_search_tree_node_t* get_binary_search_tree_inorder_end_node (const 
 {
 	if (null != proot_node)
 	{
-		return max_binary_search_tree_node_unsafe(proot_node);
+		return max_binary_search_tree_node_unsafe (proot_node);
 	}
 	else
 	{
@@ -47,7 +47,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_increase (const bina
 	{
 		if (null != pcurrent_node->m_pright_node)
 		{
-			return min_binary_search_tree_node_unsafe(pcurrent_node->m_pright_node);
+			return min_binary_search_tree_node_unsafe (pcurrent_node->m_pright_node);
 		}
 		else
 		{
@@ -57,7 +57,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_increase (const bina
 
 	if (null != pcurrent_node->m_pright_node)
 	{
-		return min_binary_search_tree_node_unsafe(pcurrent_node->m_pright_node);
+		return min_binary_search_tree_node_unsafe (pcurrent_node->m_pright_node);
 	}
 
 
@@ -100,7 +100,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_decrease (const bina
 	{
 		if (null != pcurrent_node->m_pleft_node)
 		{
-			return max_binary_search_tree_node_unsafe(pcurrent_node->m_pleft_node);
+			return max_binary_search_tree_node_unsafe (pcurrent_node->m_pleft_node);
 		}
 		else
 		{
@@ -110,7 +110,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_decrease (const bina
 
 	if (null != pcurrent_node->m_pleft_node)
 	{
-		return max_binary_search_tree_node_unsafe(pcurrent_node->m_pleft_node);
+		return max_binary_search_tree_node_unsafe (pcurrent_node->m_pleft_node);
 	}
 
 	if (pcurrent_node->m_parent_node->m_pright_node == pcurrent_node)
@@ -531,7 +531,7 @@ const pfx_preorder_iterator_t* binary_search_tree_preorder_increase (pfx_preorde
 		break;
 	case PREORDER_NEXT_BEGIN:
 		{
-			 get_binary_search_tree_preorder_begin_iterator(proot_node,piterator);
+			 get_binary_search_tree_preorder_begin_iterator (proot_node,piterator);
 		}
 		break;
 	case PREORDER_NEXT_END:

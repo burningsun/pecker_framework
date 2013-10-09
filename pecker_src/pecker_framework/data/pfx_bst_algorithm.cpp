@@ -13,23 +13,23 @@
 
 // 默认
 // 分配新的二叉树节点的内存
-binary_search_tree_node_t* new_bst_node_func_default(const IAllocator* PARAM_IN pallocator,const binary_search_tree_node_t* PARAM_IN pother_node)
+binary_search_tree_node_t* new_bst_node_func_default (const IAllocator* PARAM_IN pallocator,const binary_search_tree_node_t* PARAM_IN pother_node)
 {
-	binary_search_tree_node_t* pnode = (binary_search_tree_node_t*)(pallocator->allocate_obj((pfx_long_t)pallocator,sizeof(binary_search_tree_node_t)));
+	binary_search_tree_node_t* pnode = (binary_search_tree_node_t*)(pallocator->allocate_obj ((pfx_long_t)pallocator,sizeof(binary_search_tree_node_t)));
 	if (null != pnode)
 	{
 		pnode->m_key = pother_node->m_key;
 		pnode->m_mask.m_mask_bits = pother_node->m_mask.m_mask_bits;
 
 #ifdef BST_ALLOCATE_NODE_DEBUG
-		PECKER_LOG_("copy.....other node(key,mask,p,l,r) = (%d,%08X,%08X,%08X,%08X)\n",
+		PECKER_LOG_ ("copy.....other node(key,mask,p,l,r) = (%d,%08X,%08X,%08X,%08X)\n",
 			pother_node->m_key,pother_node->m_mask,pother_node->m_parent_node,pother_node->m_pleft_node,pother_node->m_pright_node);
 #endif
 	}
 #ifdef BST_ALLOCATE_NODE_DEBUG
 	else
 	{
-			PECKER_LOG_("allocate fail!!...... ","");
+			PECKER_LOG_ ("allocate fail!!...... ","");
 	}
 #endif
 	return pnode;
@@ -37,7 +37,7 @@ binary_search_tree_node_t* new_bst_node_func_default(const IAllocator* PARAM_IN 
 
 // 默认
 // 删除二叉树节点所占的内存
-pfx_result_t delete_bst_node_func_default(const IAllocator* PARAM_IN pallocator,binary_search_tree_node_t* PARAM_IN pdel_node)
+pfx_result_t delete_bst_node_func_default (const IAllocator* PARAM_IN pallocator,binary_search_tree_node_t* PARAM_IN pdel_node)
 {
 	if (null != pdel_node)
 	{
@@ -45,7 +45,7 @@ pfx_result_t delete_bst_node_func_default(const IAllocator* PARAM_IN pallocator,
 		PECKER_LOG_("delete.....del node(key,mask,p,l,r) = (%d,%08X,%08X,%08X,%08X)\n",
 			pdel_node->m_key,pdel_node->m_mask,pdel_node->m_parent_node,pdel_node->m_pleft_node,pdel_node->m_pright_node);
 #endif
-		pallocator->dellocate_obj((pfx_long_t)pallocator,pdel_node);
+		pallocator->dellocate_obj ((pfx_long_t)pallocator,pdel_node);
 		return PFX_STATUS_OK;
 	}
 	else
@@ -70,7 +70,7 @@ pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_I
 	//}
 	RETURN_INVALID_RESULT (null == pnew_node,PFX_STATUS_MEM_LOW);
 
-	init_binary_search_tree_node_nokey_unsafe(pnew_node,null,null,null);
+	init_binary_search_tree_node_nokey_unsafe (pnew_node,null,null,null);
 	*ppdec_root_node = pnew_node;
 	ptemp_dec_node = pnew_node;
 	ptemp_src_node = (binary_search_tree_node_t*)psrc_root_node;
@@ -82,7 +82,7 @@ pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_I
 			if (null != ptemp_src_node->m_pleft_node)
 			{
 				pnew_node = new_node_method(pallocator,ptemp_src_node->m_pleft_node);
-				init_binary_search_tree_node_nokey_unsafe(pnew_node,null,null,ptemp_dec_node);
+				init_binary_search_tree_node_nokey_unsafe (pnew_node,null,null,ptemp_dec_node);
 				ptemp_dec_node->m_pleft_node = pnew_node;
 				ptemp_dec_node = pnew_node;
 
@@ -105,7 +105,7 @@ pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_I
 			if (null != ptemp_src_node->m_pright_node)
 			{
 				pnew_node = new_node_method(pallocator,ptemp_src_node->m_pright_node);
-				init_binary_search_tree_node_nokey_unsafe(pnew_node,null,null,ptemp_dec_node);
+				init_binary_search_tree_node_nokey_unsafe (pnew_node,null,null,ptemp_dec_node);
 				ptemp_dec_node->m_pright_node = pnew_node;
 				ptemp_dec_node = pnew_node;
 

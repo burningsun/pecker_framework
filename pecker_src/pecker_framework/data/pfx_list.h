@@ -19,27 +19,27 @@ struct st_linked_list_node
 	linked_list_node_t* m_pnext_node;
 };
 
-PFX_INLINE linked_list_node_t* init_linked_list_node(linked_list_node_t* PARAM_INOUT pnode);
+PFX_INLINE linked_list_node_t* init_linked_list_node (linked_list_node_t* PARAM_INOUT pnode);
 
-PFX_INLINE const linked_list_node_t* find_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode);
+PFX_INLINE const linked_list_node_t* find_linked_list_first_node (const linked_list_node_t* PARAM_IN	pnode);
 
-PFX_INLINE const linked_list_node_t* find_linked_list_last_node(const linked_list_node_t*	PARAM_IN	pnode);
+PFX_INLINE const linked_list_node_t* find_linked_list_last_node (const linked_list_node_t*	PARAM_IN	pnode);
 
-PFX_INLINE const linked_list_node_t* insert_linked_list_node_end(linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add);
+PFX_INLINE const linked_list_node_t* insert_linked_list_node_end (linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add);
 
-PFX_INLINE const linked_list_node_t* insert_linked_list_node_begin(linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add);
+PFX_INLINE const linked_list_node_t* insert_linked_list_node_begin (linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add);
 
-PFX_INLINE linked_list_node_t* remove_linked_list_node(linked_list_node_t* PARAM_INOUT pnode);
+PFX_INLINE linked_list_node_t* remove_linked_list_node (linked_list_node_t* PARAM_INOUT pnode);
 
-PFX_INLINE pfx_bool_t check_is_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode);
+PFX_INLINE pfx_bool_t check_is_linked_list_first_node (const linked_list_node_t* PARAM_IN	pnode);
 
-PFX_INLINE pfx_bool_t check_is_linked_list_last_node(const linked_list_node_t* PARAM_IN	pnode);
+PFX_INLINE pfx_bool_t check_is_linked_list_last_node (const linked_list_node_t* PARAM_IN	pnode);
 
-PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node(const linked_list_node_t* PARAM_IN	pnode);
+PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node (const linked_list_node_t* PARAM_IN	pnode);
 
-PFX_INLINE const linked_list_node_t* get_linked_list_next_node(const linked_list_node_t* PARAM_IN	pnode);
+PFX_INLINE const linked_list_node_t* get_linked_list_next_node (const linked_list_node_t* PARAM_IN	pnode);
 
-PFX_INLINE const linked_list_node_t* get_linked_list_prev_node(const linked_list_node_t* PARAM_IN	pnode);
+PFX_INLINE const linked_list_node_t* get_linked_list_prev_node (const linked_list_node_t* PARAM_IN	pnode);
 
 //////////////////////////////////////////////////////////////////////////
 PFX_INLINE linked_list_node_t* init_linked_list_node(linked_list_node_t* PARAM_INOUT pnode)
@@ -47,7 +47,7 @@ PFX_INLINE linked_list_node_t* init_linked_list_node(linked_list_node_t* PARAM_I
 	memset(pnode,0,sizeof(linked_list_node_t));
 	return pnode;
 }
-PFX_INLINE const linked_list_node_t* find_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE const linked_list_node_t* find_linked_list_first_node (const linked_list_node_t* PARAM_IN	pnode)
 {
 	const linked_list_node_t* pnode_bk = pnode;
 	if (null == pnode)
@@ -60,7 +60,7 @@ PFX_INLINE const linked_list_node_t* find_linked_list_first_node(const linked_li
 	}
 	return pnode;
 }
-PFX_INLINE const linked_list_node_t* find_linked_list_last_node(const linked_list_node_t*	PARAM_IN	pnode)
+PFX_INLINE const linked_list_node_t* find_linked_list_last_node (const linked_list_node_t*	PARAM_IN	pnode)
 {
 	const linked_list_node_t* pnode_bk = pnode;
 	if (null == pnode)
@@ -73,7 +73,7 @@ PFX_INLINE const linked_list_node_t* find_linked_list_last_node(const linked_lis
 	}
 	return pnode;
 }
-PFX_INLINE const linked_list_node_t* insert_linked_list_node_end(linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add)
+PFX_INLINE const linked_list_node_t* insert_linked_list_node_end (linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add)
 {
 	linked_list_node_t* pnode_next;
 
@@ -96,7 +96,7 @@ PFX_INLINE const linked_list_node_t* insert_linked_list_node_end(linked_list_nod
 
 	return pnode_add;
 }
-PFX_INLINE const linked_list_node_t* insert_linked_list_node_begin(linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add)
+PFX_INLINE const linked_list_node_t* insert_linked_list_node_begin (linked_list_node_t* PARAM_INOUT pnode,linked_list_node_t* PARAM_INOUT pnode_add)
 {
 	linked_list_node_t* pnode_pre;
 
@@ -119,7 +119,7 @@ PFX_INLINE const linked_list_node_t* insert_linked_list_node_begin(linked_list_n
 
 	return pnode_add;
 }
-PFX_INLINE linked_list_node_t* remove_linked_list_node(linked_list_node_t* PARAM_INOUT pnode)
+PFX_INLINE linked_list_node_t* remove_linked_list_node (linked_list_node_t* PARAM_INOUT pnode)
 {
 	linked_list_node_t* pnode_next;
 	linked_list_node_t* pnode_pre;
@@ -147,7 +147,7 @@ PFX_INLINE linked_list_node_t* remove_linked_list_node(linked_list_node_t* PARAM
 
 }
 
-PFX_INLINE pfx_bool_t check_is_linked_list_first_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE pfx_bool_t check_is_linked_list_first_node (const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (pnode && (null == pnode->m_prev_node))
 	{
@@ -159,7 +159,7 @@ PFX_INLINE pfx_bool_t check_is_linked_list_first_node(const linked_list_node_t* 
 	}
 }
 
-PFX_INLINE pfx_bool_t check_is_linked_list_last_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE pfx_bool_t check_is_linked_list_last_node (const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (pnode && (null == pnode->m_pnext_node))
 	{
@@ -171,7 +171,7 @@ PFX_INLINE pfx_bool_t check_is_linked_list_last_node(const linked_list_node_t* P
 	}
 }
 
-PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node (const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (null == pnode)
 	{
@@ -187,7 +187,7 @@ PFX_INLINE pfx_bool_t check_is_linked_list_only_one_node(const linked_list_node_
 	}
 }
 
-PFX_INLINE const linked_list_node_t* get_linked_list_next_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE const linked_list_node_t* get_linked_list_next_node (const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (pnode)
 	{
@@ -199,7 +199,7 @@ PFX_INLINE const linked_list_node_t* get_linked_list_next_node(const linked_list
 	}
 }
 
-PFX_INLINE const linked_list_node_t* get_linked_list_prev_node(const linked_list_node_t* PARAM_IN	pnode)
+PFX_INLINE const linked_list_node_t* get_linked_list_prev_node (const linked_list_node_t* PARAM_IN	pnode)
 {
 	if (pnode)
 	{

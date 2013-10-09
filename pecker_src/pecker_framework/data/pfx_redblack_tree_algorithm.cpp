@@ -90,17 +90,11 @@ PFX_INLINE_CODE pfx_result_t rb_tree_add_rotate_fixup (_redblack_tree_node_t ** 
 	while (padd_node != *proot_node && 
 		pfx_true == (is_color_temp = check_rb_tree_color_is_red (padd_node->m_parent_node))) 
 	{
-		//if (null == padd_node->m_parent_node->m_parent_node)
-		//{
-		//	return PFX_STATUS_MEM_ERR;
-		//}
 		RETURN_INVALID_RESULT (null == padd_node->m_parent_node->m_parent_node,PFX_STATUS_MEM_ERR);
 
 		if (padd_node->m_parent_node == padd_node->m_parent_node->m_parent_node->m_pleft_node) 
 		{
 			ptemp_node = padd_node->m_parent_node->m_parent_node->m_pright_node; 
-
-			//if (pfx_true == check_rb_tree_color_is_red(ptemp_node))
 			is_color_temp = check_rb_tree_color_is_red (ptemp_node);
 			RETURN_INVALID_RESULT ((pfx_invalid == is_color_temp),PFX_STATUS_MEM_ERR);
 			if (pfx_true == is_color_temp)
@@ -129,8 +123,6 @@ PFX_INLINE_CODE pfx_result_t rb_tree_add_rotate_fixup (_redblack_tree_node_t ** 
 			ptemp_node = padd_node->m_parent_node->m_parent_node->m_pleft_node;
 			is_color_temp = check_rb_tree_color_is_red (ptemp_node);
 			RETURN_INVALID_RESULT ((pfx_invalid == is_color_temp),PFX_STATUS_MEM_ERR);
-
-			//if (pfx_true == check_rb_tree_color_is_red(ptemp_node))
 			if (pfx_true == is_color_temp)
 			{
 				set_rb_tree_color_black_unsafe (padd_node->m_parent_node);
@@ -165,20 +157,11 @@ PFX_INLINE_CODE pfx_result_t rb_tree_remove_rotate_fixup (_redblack_tree_node_t 
 	pfx_bool_t is_color_temp1 = pfx_false;
 	pfx_bool_t is_color_temp2;
 
-	//if (null == pref_node)
-	//{
-	//	return PFX_STATUS_OK;
-	//}
 	RETURN_INVALID_RESULT ((null == pref_node),PFX_STATUS_OK);
 
 	while (pref_node != *root && 
 		pfx_true == (is_color_temp1 = check_rb_tree_color_is_black (pref_node)) ) 
 	{
-
-		//if (null == pref_node)
-		//{
-		//	return PFX_STATUS_MEM_ERR;
-		//}
 		RETURN_INVALID_RESULT ((null == pref_node),PFX_STATUS_MEM_ERR);
 
 		if (pref_node == pref_node->m_parent_node->m_pleft_node)
@@ -204,8 +187,6 @@ PFX_INLINE_CODE pfx_result_t rb_tree_remove_rotate_fixup (_redblack_tree_node_t 
 
 			RETURN_INVALID_RESULT ((pfx_invalid == is_color_temp1 || pfx_invalid == is_color_temp2) , PFX_STATUS_MEM_ERR);
 
-			//if (check_rb_tree_color_is_black(ptemp_node->m_pleft_node) && 
-			//	check_rb_tree_color_is_black(ptemp_node->m_pright_node))
 			if (pfx_true == is_color_temp1 && pfx_true == is_color_temp2)
 			{
 				set_rb_tree_color_red_unsafe (ptemp_node);
@@ -216,7 +197,6 @@ PFX_INLINE_CODE pfx_result_t rb_tree_remove_rotate_fixup (_redblack_tree_node_t 
 				is_color_temp1 = check_rb_tree_color_is_black (ptemp_node->m_pright_node);
 				RETURN_INVALID_RESULT ((pfx_invalid == is_color_temp1),PFX_STATUS_MEM_ERR);
 
-				//if (check_rb_tree_color_is_black(ptemp_node->m_pright_node))
 				if (pfx_true == is_color_temp1)
 				{
 					set_rb_tree_color_black_unsafe (ptemp_node->m_pleft_node);
@@ -236,7 +216,7 @@ PFX_INLINE_CODE pfx_result_t rb_tree_remove_rotate_fixup (_redblack_tree_node_t 
 		{
 			ptemp_node = pref_node->m_parent_node->m_pleft_node;
 			is_color_temp1 = check_rb_tree_color_is_red (ptemp_node);
-			//if (check_rb_tree_color_is_red(ptemp_node))
+
 			if (pfx_true == is_color_temp1)
 			{
 				set_rb_tree_color_black_unsafe (ptemp_node);
@@ -254,8 +234,6 @@ PFX_INLINE_CODE pfx_result_t rb_tree_remove_rotate_fixup (_redblack_tree_node_t 
 
 			RETURN_INVALID_RESULT ((pfx_invalid == is_color_temp1 || pfx_invalid == is_color_temp2) , PFX_STATUS_MEM_ERR);
 
-			//if (check_rb_tree_color_is_black(ptemp_node->m_pleft_node) &&
-			//	check_rb_tree_color_is_black(ptemp_node->m_pright_node))
 			if (pfx_true == is_color_temp1 && pfx_true == is_color_temp2)
 			{
 				set_rb_tree_color_black_unsafe (ptemp_node);
@@ -265,7 +243,7 @@ PFX_INLINE_CODE pfx_result_t rb_tree_remove_rotate_fixup (_redblack_tree_node_t 
 			{
 				is_color_temp1 = check_rb_tree_color_is_black (ptemp_node->m_pleft_node);
 				RETURN_INVALID_RESULT ((pfx_invalid == is_color_temp1),PFX_STATUS_MEM_ERR);
-				//if (check_rb_tree_color_is_black(ptemp_node->m_pleft_node))
+
 				if (pfx_true == is_color_temp1)
 				{
 					set_rb_tree_color_black_unsafe (ptemp_node->m_pright_node);
@@ -292,7 +270,7 @@ PFX_INLINE_CODE pfx_result_t rb_tree_remove_rotate_fixup (_redblack_tree_node_t 
 }
 
 //插入节点
-const redblack_tree_node_t* add_redblack_node_unsafe(redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
+const redblack_tree_node_t* add_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
 	redblack_tree_node_t* PARAM_INOUT padd_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus)
@@ -303,16 +281,6 @@ const redblack_tree_node_t* add_redblack_node_unsafe(redblack_tree_node_t** PARA
 	redblack_tree_node_t*	proot_node;
 	redblack_tree_node_t*	padded_parent_node;
 
-
-	//if (null == pproot_node_ref || null == padd_node || null == cmp_method)
-	//{
-	//	if (null != pstatus)
-	//	{
-	//		*pstatus = PFX_STATUS_INVALID_PARAMS;
-	//	}
-	//	return null;
-	//}
-
 	RETURN_INVALID_BY_ACT_RESULT ((null == pproot_node_ref || null == padd_node || null == cmp_method),
 		SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),null);
 
@@ -320,30 +288,14 @@ const redblack_tree_node_t* add_redblack_node_unsafe(redblack_tree_node_t** PARA
 	set_rb_tree_color_red_unsafe ((_redblack_tree_node_t*)padd_node);
 	status = add_bst_node_unsafe ((binary_search_tree_node_t**)pproot_node_ref,(binary_search_tree_node_t*)padd_node,(binary_search_tree_node_t**)&ptemp_node,cmp_method);
 
-	//if (PFX_STATUS_OK != status)
-	//{
-	//	if (null != pstatus)
-	//	{
-	//		*pstatus = status;
-	//	}
-	//	return ptemp_node;
-	//}
 	RETURN_INVALID_BY_ACT_RESULT ((PFX_STATUS_OK != status),SET_POINTER_VALUE(pstatus,status),ptemp_node);
 
 	// 平衡变换
 	status = rb_tree_add_rotate_fixup ((_redblack_tree_node_t**)pproot_node_ref,(_redblack_tree_node_t*)padd_node);
 
-	//if (null != pstatus)
-	//{
-	//	*pstatus = status;
-	//}
 	SET_POINTER_VALUE (pstatus,status);
 	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
 
-	//if (PFX_STATUS_OK != status)
-	//{
-	//	return null;
-	//}
 	return padd_node;
 }
 
@@ -360,14 +312,6 @@ redblack_tree_node_t* remove_redblack_node_unsafe(redblack_tree_node_t** PARAM_I
 	_redblack_tree_node_t* psub_romove_ref_node;
 	_redblack_tree_node_t* psub_remove_node;
 
-	//if (null == pproot_node_ref || null == premove_node || null == cmp_method)
-	//{
-	//	if (null != pstatus)
-	//	{
-	//		*pstatus = PFX_STATUS_INVALID_PARAMS;
-	//	}
-	//	return null;
-	//}
 	RETURN_INVALID_BY_ACT_RESULT ((null == pproot_node_ref || null == premove_node || null == cmp_method),
 		SET_POINTER_VALUE (pstatus,PFX_STATUS_INVALID_PARAMS),null);
 
@@ -383,10 +327,7 @@ redblack_tree_node_t* remove_redblack_node_unsafe(redblack_tree_node_t** PARAM_I
 			(binary_search_tree_node_t*)psub_remove_node,
 			(binary_search_tree_node_t*)psub_romove_ref_node,
 			null);
-		//if (null != pstatus)
-		//{
-		//	*pstatus = status;
-		//}
+
 		SET_POINTER_VALUE (pstatus,status);
 
 		if (PFX_STATUS_OK == status)
@@ -413,49 +354,22 @@ redblack_tree_node_t* remove_redblack_node_unsafe(redblack_tree_node_t** PARAM_I
 		copy_rb_tree_color_unsafe (psub_remove_node,(_redblack_tree_node_t*)premove_node);
 	}
 
-	//if (null != pstatus)
-	//{
-	//	*pstatus = status;
-	//}
 	SET_POINTER_VALUE (pstatus,status);
 
-	//if (PFX_STATUS_OK != status)
-	//{
-	//	return null;
-	//}
 	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
 
-	//if (pfx_true == is_red)
-	//{
-	//	return premove_node;
-	//}
 	RETURN_RESULT ((pfx_true == is_red),premove_node);
 
 	proot_node = (_redblack_tree_node_t*)*pproot_node_ref;
-	//if (null == proot_node)
-	//{
-	//	if (null != pstatus)
-	//	{
-	//		*pstatus = status;
-	//	}
-	//	return premove_node;
-	//}
+
 	SET_POINTER_VALUE (pstatus,status);
 
 	RETURN_RESULT ((null == proot_node),premove_node);
 
 	status = rb_tree_remove_rotate_fixup ((_redblack_tree_node_t**)pproot_node_ref,(_redblack_tree_node_t*)psub_romove_ref_node);
 
-	//if (null != pstatus)
-	//{
-	//	*pstatus = status;
-	//}
 	SET_POINTER_VALUE (pstatus,status);
 
-	//if (PFX_STATUS_OK != status)
-	//{
-	//	return null;
-	//}
 	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
 
 	return premove_node;

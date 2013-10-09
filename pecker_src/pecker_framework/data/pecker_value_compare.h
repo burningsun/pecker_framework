@@ -15,24 +15,24 @@ PFX_C_EXTERN_BEGIN
 typedef int (*CMP_A_AND_B)(void* A,void* B) ;
 typedef int (*compare_two_value_func)(pfx_long_t A,pfx_long_t B) ;
 
-PFX_INLINE int cmp_a_and_b_long(pfx_long_t A, pfx_long_t B)
+PFX_INLINE int cmp_a_and_b_long (pfx_long_t A, pfx_long_t B)
 {
 	return (A - B);
 }
 
-PFX_INLINE int cmp_a_and_b_int(int A, int B)
+PFX_INLINE int cmp_a_and_b_int (int A, int B)
 {
 	return (A - B);
 }
-PFX_INLINE int cmp_a_and_b_char(char A, char B)
+PFX_INLINE int cmp_a_and_b_char (char A, char B)
 {
 	return (A - B);
 }
-PFX_INLINE int cmp_a_and_b_wchar(wchar_t A, wchar_t B)
+PFX_INLINE int cmp_a_and_b_wchar (wchar_t A, wchar_t B)
 {
 	return (A - B);
 }
-PFX_INLINE int cmp_a_and_b_short(short A,short B)
+PFX_INLINE int cmp_a_and_b_short (short A,short B)
 {
 	return (A-B);
 }
@@ -47,13 +47,13 @@ PECKER_BEGIN
 template< class compare_value_ext >
 struct pecker_value_compare_extern
 {
-PFX_INLINE int operator()(const compare_value_ext& value1,const compare_value_ext& value2) const
+PFX_INLINE int operator() (const compare_value_ext& value1,const compare_value_ext& value2) const
 {
-	return value1.compare(value2);
+	return value1.compare (value2);
 }
-static PFX_INLINE int compare(const compare_value_ext& value1,const compare_value_ext& value2)
+static PFX_INLINE int compare (const compare_value_ext& value1,const compare_value_ext& value2)
 {
-	return value1.compare(value2);
+	return value1.compare (value2);
 }
 };
 
@@ -62,7 +62,7 @@ template< class classtype >
 struct pecker_value_compare
 {
 PFX_INLINE int operator () (const classtype& value1,const classtype& value2) const;
-static PFX_INLINE int compare(const classtype& value1,const classtype& value2);
+static PFX_INLINE int compare (const classtype& value1,const classtype& value2);
 };
 
 template< class classtype >
@@ -83,7 +83,7 @@ else
 
 }
 template< class classtype >
-int pecker_value_compare<classtype>:: compare(const classtype& value1,const classtype& value2)
+int pecker_value_compare<classtype>:: compare (const classtype& value1,const classtype& value2)
 {
 if (value1 > value2)
 {
@@ -107,7 +107,7 @@ PFX_INLINE int operator () (const char &value1,const char &value2) const
 {
 	return (value1 - value2);
 }
-static PFX_INLINE int compare(const char &value1,const char &value2)
+static PFX_INLINE int compare (const char &value1,const char &value2)
 {
 	//++tst_char_cmp_count;
 	return (value1 - value2);
@@ -122,7 +122,7 @@ PFX_INLINE int operator () (const short &value1,const short &value2) const
 	return (value1 - value2);
 }
 
-static PFX_INLINE int compare(const short &value1,const short &value2)
+static PFX_INLINE int compare (const short &value1,const short &value2)
 {
 	return (value1 - value2);
 }
@@ -136,7 +136,7 @@ PFX_INLINE int operator () (const int &value1,const int &value2) const
 	return (value1 - value2);
 }
 
-static PFX_INLINE int compare(const int &value1,const int &value2)
+static PFX_INLINE int compare (const int &value1,const int &value2)
 {
 	return (value1 - value2);
 }

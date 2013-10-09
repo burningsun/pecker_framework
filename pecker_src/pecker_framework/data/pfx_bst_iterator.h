@@ -47,7 +47,6 @@ const binary_search_tree_node_t* binary_search_tree_reverse_posorder_increase (c
 typedef struct st_preorder_iterator
 {
 	const binary_search_tree_node_t*	m_pcurrent_node;
-	//const binary_search_tree_node_t*	m_plast_sub_root;
 	pfx_enum_t											m_next_node_type;
 	pfx_result_t											m_last_result;
 }pfx_preorder_iterator_t;
