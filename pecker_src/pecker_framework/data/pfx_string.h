@@ -32,6 +32,12 @@ typedef struct st_pfx_string
 	pfx_char_t* m_pthis_string_data;
 }pfx_string_t;
 
+// 直接对结构体赋值
+PFX_INLINE pfx_result_t init_string_direct_unsafe (pfx_string_t* PARAM_INOUT pstr,
+	size_t char_size,
+	pfx_char_t* PARAM_IN  pstring_data,
+	size_t str_len);
+
 // 强制转换一个buffer成为字符串
 pfx_string_t* init_string_by_buffer (size_t char_size,size_t min_buffer_size,pfx_char_t* PARAM_INOUT string_obj_buffer,pfx_result_t* PARAM_INOUT pstatus);
 
@@ -99,6 +105,27 @@ PFX_INLINE const pfx_char_t* get_string_buffer_chars_at (const pfx_string_t* PAR
 
 
 //////////////////////////////////////////////////////////////////////////
+
+PFX_INLINE pfx_result_t init_string_direct_unsafe (pfx_string_t* PARAM_INOUT pstr,
+	size_t char_size,
+	pfx_char_t* PARAM_IN  pstring_data,
+	size_t str_len)
+{
+	RETURN_INVALID_RESULT (null == pstr,PFX_STATUS_INVALID_PARAMS);
+
+	pstr->m_char_size = char_size;
+	pstr->m_pthis_string_data = pstring_data;
+	if (null == pstring_data)
+	{
+		str_len = 0;
+	}
+	pstr->m_string_buffer_length = str_len;
+	pstr->m_string_buffer_size = str_len;
+	pstr->m_using_extern_buffer = 0;
+	pstr->m_revered = 0;
+	pstr->m_defualt_buffer_size = 0;
+	return PFX_STATUS_OK;
+}
 
 // 从内存分配器中删除一个字符串
 PFX_INLINE pfx_result_t delete_string (pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator)

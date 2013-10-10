@@ -7,6 +7,7 @@
 #include "../pfx_defines.h"
 #include "../data/pfx_math.h"
 #include "../native/pfx_log.h"
+#include "../data/pfx_balance_tst_algorithm.h"
 
 extern int list_test_main();
 extern int array_test_main();
@@ -55,7 +56,7 @@ int myscanf(const pfx_char_t* PARAM_IN str_format,...)
 
 }
 
-
+//TENERY_CACHE_NODE(32);
 
 int test_main()
 {
@@ -89,10 +90,10 @@ int test_main()
 	//status = array_test_main();
 	//status = arrayblock_test_main();
 	//status =  dynamic_linear_array_test_main();
-	status = string_test_main();
+	//status = string_test_main();
 	//status = bst_test_main();
 	//status = avl_test_main();
 	//status = rbtree_test_main();
-	//status = share_string_test_main();
+	status = share_string_test_main();
 	return status;
 }

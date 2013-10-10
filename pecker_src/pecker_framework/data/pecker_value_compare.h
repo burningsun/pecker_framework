@@ -14,6 +14,11 @@ PFX_C_EXTERN_BEGIN
 #define  COMPARE_TWO_VALUE(A,B,CMP) CMP(A,B)
 typedef int (*CMP_A_AND_B)(void* A,void* B) ;
 typedef int (*compare_two_value_func)(pfx_long_t A,pfx_long_t B) ;
+typedef int (*compare_two_string_func)(const pfx_char_t* pstr_a,pfx_nsize_t nstr_a_len,
+	const pfx_char_t* pstr_b,pfx_nsize_t nstr_b_len);
+typedef int (*compare_two_string_ex_func)(const pfx_char_t* pstr_a,pfx_nsize_t nstr_a_len,
+	const pfx_char_t* pstr_b,pfx_nsize_t nstr_b_len,pfx_nsize_t* psame_count);
+
 
 PFX_INLINE int cmp_a_and_b_long (pfx_long_t A, pfx_long_t B)
 {
@@ -37,11 +42,177 @@ PFX_INLINE int cmp_a_and_b_short (short A,short B)
 	return (A-B);
 }
 
+PFX_INLINE int cmp_a_and_b_string_a(const pfx_char_t* pstr_a,pfx_nsize_t nstr_a_len,
+	const pfx_char_t* pstr_b,pfx_nsize_t nstr_b_len)
+{
+	pfx_nsize_t min_len = 0;
+	pfx_index_t i;
+	int cmp_result = 0;
+	int len_cmp_result = 0;
+
+	RETURN_RESULT (null == pstr_a && null == pstr_b,0);
+	RETURN_RESULT ((pstr_a == pstr_b),(nstr_a_len - nstr_b_len));
+
+	min_len = (nstr_a_len>nstr_b_len) ? nstr_b_len : nstr_a_len;
+
+	for (i=0;i<min_len;++i)
+	{
+		cmp_result = pstr_a[i] - pstr_b[i];
+		if (0 != cmp_result)
+		{
+			break;
+		}
+	}
+
+	RETURN_RESULT (0 != cmp_result,cmp_result);
+	return (nstr_a_len - nstr_b_len);
+}
+
+PFX_INLINE int cmp_a_and_b_string_a_ex(const pfx_char_t* pstr_a,
+	pfx_nsize_t nstr_a_len,const pfx_char_t* pstr_b,
+	pfx_nsize_t nstr_b_len,pfx_nsize_t* psame_count)
+{
+	pfx_nsize_t min_len = 0;
+	pfx_index_t i;
+	int cmp_result = 0;
+	int len_cmp_result = 0;
+
+	RETURN_RESULT (null == pstr_a && null == pstr_b,0);
+	RETURN_RESULT ((pstr_a == pstr_b),(nstr_a_len - nstr_b_len));
+
+	min_len = (nstr_a_len>nstr_b_len) ? nstr_b_len : nstr_a_len;
+
+	for (i=0;i<min_len;++i)
+	{
+		cmp_result = pstr_a[i] - pstr_b[i];
+		if (0 != cmp_result)
+		{
+			break;
+		}
+	}
+
+	SET_POINTER_VALUE (psame_count,i);
+
+	RETURN_RESULT (0 != cmp_result,cmp_result);
+	return (nstr_a_len - nstr_b_len);
+}
+
+PFX_INLINE int cmp_a_and_b_string_w(const pfx_wchar_t* pstr_a,pfx_nsize_t nstr_a_len,
+	const pfx_wchar_t* pstr_b,pfx_nsize_t nstr_b_len)
+{
+	pfx_nsize_t min_len = 0;
+	pfx_index_t i;
+	int cmp_result = 0;
+	int len_cmp_result = 0;
+
+	RETURN_RESULT (null == pstr_a && null == pstr_b,0);
+	RETURN_RESULT ((pstr_a == pstr_b),(nstr_a_len - nstr_b_len));
+
+	min_len = (nstr_a_len>nstr_b_len) ? nstr_b_len : nstr_a_len;
+
+	for (i=0;i<min_len;++i)
+	{
+		cmp_result = pstr_a[i] - pstr_b[i];
+		if (0 != cmp_result)
+		{
+			break;
+		}
+	}
+
+	RETURN_RESULT (0 != cmp_result,cmp_result);
+	return (nstr_a_len - nstr_b_len);
+}
+
+PFX_INLINE int cmp_a_and_b_string_w_ex(const pfx_wchar_t* pstr_a,
+	pfx_nsize_t nstr_a_len,const pfx_wchar_t* pstr_b,
+	pfx_nsize_t nstr_b_len,pfx_nsize_t* psame_count)
+{
+	pfx_nsize_t min_len = 0;
+	pfx_index_t i;
+	int cmp_result = 0;
+	int len_cmp_result = 0;
+
+	RETURN_RESULT (null == pstr_a && null == pstr_b,0);
+	RETURN_RESULT ((pstr_a == pstr_b),(nstr_a_len - nstr_b_len));
+
+	min_len = (nstr_a_len>nstr_b_len) ? nstr_b_len : nstr_a_len;
+
+	for (i=0;i<min_len;++i)
+	{
+		cmp_result = pstr_a[i] - pstr_b[i];
+		if (0 != cmp_result)
+		{
+			break;
+		}
+	}
+
+	SET_POINTER_VALUE (psame_count,i);
+
+	RETURN_RESULT (0 != cmp_result,cmp_result);
+	return (nstr_a_len - nstr_b_len);
+}
+
 PFX_C_EXTERN_END
 
 #ifdef __cplusplus
 
 PECKER_BEGIN
+
+template< class  compare_type, typename compare_method >
+int cmp_a_and_b_string_a_template(const compare_type* pstr_a,pfx_nsize_t nstr_a_len,
+	const compare_type* pstr_b,pfx_nsize_t nstr_b_len)
+{
+	pfx_nsize_t min_len = 0;
+	pfx_index_t i;
+	int cmp_result = 0;
+	int len_cmp_result = 0;
+
+	RETURN_RESULT (null == pstr_a && null == pstr_b,0);
+	RETURN_RESULT ((pstr_a == pstr_b),(nstr_a_len - nstr_b_len));
+
+	min_len = (nstr_a_len>nstr_b_len) ? nstr_b_len : nstr_a_len;
+
+	for (i=0;i<min_len;++i)
+	{
+		cmp_result = compare_method (pstr_a[i],pstr_b[i]);
+		if (0 != cmp_result)
+		{
+			break;
+		}
+	}
+
+	RETURN_RESULT (0 != cmp_result,cmp_result);
+	return (nstr_a_len - nstr_b_len);
+}
+
+template< class  compare_type, typename compare_method >
+int cmp_a_and_b_string_a_template_ex(const compare_type* pstr_a,pfx_nsize_t nstr_a_len,
+	const compare_type* pstr_b,pfx_nsize_t nstr_b_len,pfx_nsize_t& same_count)
+{
+	pfx_nsize_t min_len = 0;
+	pfx_index_t i;
+	int cmp_result = 0;
+	int len_cmp_result = 0;
+
+	RETURN_RESULT (null == pstr_a && null == pstr_b,0);
+	RETURN_RESULT ((pstr_a == pstr_b),(nstr_a_len - nstr_b_len));
+
+	min_len = (nstr_a_len>nstr_b_len) ? nstr_b_len : nstr_a_len;
+
+	for (i=0;i<min_len;++i)
+	{
+		cmp_result = compare_method (pstr_a[i],pstr_b[i]);
+		if (0 != cmp_result)
+		{
+			break;
+		}
+	}
+	same_count = i;
+
+	RETURN_RESULT (0 != cmp_result,cmp_result);
+	return (nstr_a_len - nstr_b_len);
+}
+
 
 // 带compare方法的类的扩展比较
 template< class compare_value_ext >

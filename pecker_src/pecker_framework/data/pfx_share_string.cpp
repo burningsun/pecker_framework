@@ -195,12 +195,17 @@ pfx_result_t relese_share_string_extern_buffer (pfx_share_string_t* PARAM_INOUT 
 		RETURN_INVALID_RESULT (null == premove,PFX_STATUS_ERROR_);
 		pstr->m_char_buffer_size = 0;
 		pstr->m_char_buffer_offset = 0;
+
+		if (!pstr->m_using_internal_buffer)
+		{
+			pstr->m_reference_string = null;
+		}
 	}
 	return status;
 }
 
 // 字符串拷贝
-pfx_result_t copy_share_string (pfx_share_string_t* PARAM_INOUT pstr_dec,
+pfx_result_t copy_share_string_ (pfx_share_string_t* PARAM_INOUT pstr_dec,
 	const pfx_share_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator)
 {
 	pfx_result_t status = PFX_STATUS_OK;
@@ -364,6 +369,108 @@ pfx_share_string_t* get_share_sub_string (pfx_share_string_t* PARAM_INOUT porign
 	preturn_string->m_char_buffer_size = sub_string_length;
 
 	return preturn_string;
+}
+
+pfx_share_string_t* seprate_share_string (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
+	const IAllocator* PARAM_IN pchar_allocator,pfx_result_t* PARAM_INOUT pstatus)
+{
+	pfx_result_t status = PFX_STATUS_OK;
+	pfx_share_string_t* preturn_string = null;
+
+	RETURN_INVALID_BY_ACT_RESULT ((null == pstr || null == pchar_allocator),
+		SET_POINTER_VALUE (pstatus,PFX_STATUS_INVALID_PARAMS),null);
+
+	if (sparete_index >= pstr->m_char_buffer_size)
+	{
+		SET_POINTER_VALUE (pstatus,PFX_STATUS_OK);
+		return null;
+	}
+
+	preturn_string = get_share_sub_string(pstr,sparete_index,(pstr->m_char_buffer_size - sparete_index),pfx_false,pchar_allocator,&status);
+	
+	if (PFX_STATUS_OK == status)
+	{
+		pstr->m_char_buffer_size = sparete_index;
+	}
+	
+	SET_POINTER_VALUE (pstatus,status);
+	return preturn_string;
+}
+
+pfx_result_t merge_share_string (pfx_share_string_t* PARAM_INOUT pmerge_to_str,const pfx_share_string_t* pstr,
+	const IAllocator* PARAM_IN pchar_allocator)
+{
+	RETURN_INVALID_RESULT ((null == pmerge_to_str || null == pchar_allocator),
+		PFX_STATUS_INVALID_PARAMS);
+
+	RETURN_RESULT ((null == pstr||0 == pstr->m_char_buffer_size),PFX_STATUS_OK);
+
+	if (pmerge_to_str->m_reference_string == pstr->m_reference_string)
+	{
+		if (pmerge_to_str->m_char_buffer_offset + pmerge_to_str->m_char_buffer_size == pstr->m_char_buffer_offset)
+		{
+			pmerge_to_str->m_char_buffer_size += pstr->m_char_buffer_size;
+			return PFX_STATUS_OK;
+		}
+
+		if (pmerge_to_str->m_char_buffer_offset == pstr->m_char_buffer_offset + pstr->m_char_buffer_size)
+		{
+			pmerge_to_str->m_char_buffer_offset = pstr->m_char_buffer_offset;
+			pmerge_to_str->m_char_buffer_size += pstr->m_char_buffer_size;
+			return PFX_STATUS_OK;
+		}
+	}
+
+	return append_share_string_by_share_string(pmerge_to_str,pstr,pchar_allocator);
+
+}
+
+pfx_result_t seprate_share_string_unsafe (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
+	pfx_share_string_t* PARAM_INOUT pstrb,
+	size_t strb_buffer_size)
+{
+	pfx_result_t status = PFX_STATUS_OK;
+	const linked_list_node_t* pnode = null;
+
+	RETURN_INVALID_RESULT ( (null == pstr||null == pstrb),PFX_STATUS_INVALID_PARAMS);
+	
+	init_share_string_by_buffer(pstr->m_char_size,strb_buffer_size,(pfx_char_t*)pstrb,&status);
+
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+	RETURN_INVALID_RESULT ((sparete_index >= pstr->m_char_buffer_size),PFX_STATUS_OVERRANGE);
+
+	pnode = insert_linked_list_node_end (&pstr->m_list_node,&pstrb->m_list_node);
+	pstrb->m_reference_string = pstr->m_reference_string;
+	pstrb->m_char_buffer_offset = pstr->m_char_buffer_offset + sparete_index;
+	pstrb->m_char_buffer_size = pstr->m_char_buffer_size - sparete_index;
+	pstr->m_char_buffer_size = sparete_index;
+
+	return status;
+}
+
+pfx_result_t share_string_bind_new_string (pfx_share_string_t* PARAM_INOUT pstr,
+	pfx_share_string_t* PARAM_INOUT pbind_str,
+	size_t offset,size_t str_size,
+	const IAllocator* PARAM_IN pchar_allocator)
+{
+	RETURN_INVALID_RESULT ((null == pstr ||null == pbind_str || pchar_allocator || 0 == str_size || 
+		null == pbind_str->m_reference_string || pstr == pbind_str || pstr->m_char_size != pbind_str->m_char_size),
+		PFX_STATUS_INVALID_PARAMS);
+
+	RETURN_INVALID_RESULT (offset >= pbind_str->m_char_buffer_size,PFX_STATUS_OVERRANGE);
+	if (str_size + offset > pbind_str->m_char_buffer_size)
+	{
+		str_size = pbind_str->m_char_buffer_size - offset;
+	}
+	
+	clear_share_string(pstr,pchar_allocator);
+	pstr->m_reference_string = pbind_str->m_reference_string;
+	insert_linked_list_node_end(&pbind_str->m_list_node,&pstr->m_list_node);
+	pstr->m_char_buffer_offset = pbind_str->m_char_buffer_size + offset;
+	pstr->m_char_buffer_size = str_size;
+
+	return PFX_STATUS_OK;
 }
 
 // 重新定义共享字符串大小

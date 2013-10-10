@@ -143,6 +143,7 @@ int share_string_test_main()
 	pfx_share_string_t* psub_str2 = null;
 	pfx_share_string_t* psub_str3 = null;
 	pfx_share_string_t* psub_str4 = null;
+	pfx_share_string_t* pseprate_str1 = null;
 
 	const char* pget_chars = null;
 	pfx_share_string_t* pstr = new_share_string(sizeof(pfx_char),MIN_STRING_BUFFER_SIZE,&gDefualt_allocator,&status);
@@ -166,7 +167,7 @@ int share_string_test_main()
 	if (null != pcopy_str1 && PFX_STATUS_OK == status)
 	{
 		pfx_char print_string_format[256];
-		status = copy_share_string(pcopy_str1,pstr,&gDefualt_allocator);
+		status = copy_share_string_(pcopy_str1,pstr,&gDefualt_allocator);
 		pfx_sprintf(print_string_format,pfx_char_type("%%.%ds\n"),get_share_string_char_buffer_size(pcopy_str1) / pcopy_str1->m_char_size);
 		PECKER_LOG_DIRECT(print_string_format,get_share_string_chars_buffer(pcopy_str1));
 
@@ -199,7 +200,7 @@ int share_string_test_main()
 	if (null != pcopy_str2 && PFX_STATUS_OK == status)
 	{
 		pfx_char print_string_format[256];
-		status = copy_share_string(pcopy_str2,pcopy_str1,&gDefualt_allocator);
+		status = copy_share_string_(pcopy_str2,pcopy_str1,&gDefualt_allocator);
 		pfx_sprintf(print_string_format,pfx_char_type("%%.%ds\n"),get_share_string_char_buffer_size(pcopy_str2) / pcopy_str2->m_char_size);
 		PECKER_LOG_DIRECT(print_string_format,get_share_string_chars_buffer(pcopy_str2));
 
@@ -363,6 +364,24 @@ int share_string_test_main()
 		PECKER_LOG_("set_share_string_buffer_chars_at status = %d\n",status);
 	}
 	
+
+	pseprate_str1 = seprate_share_string(pcopy_str1,pcopy_str1->m_char_size * 4,&gDefualt_allocator,&status);
+	if (PFX_STATUS_OK == status)
+	{
+		pfx_char print_string_format[256];
+		pfx_sprintf(print_string_format,pfx_char_type("sp_str1 = %%.%ds , sp_str2 = %%.%ds\n"),
+			get_share_string_char_buffer_size(pcopy_str1) / pcopy_str1->m_char_size,
+			get_share_string_char_buffer_size(pseprate_str1) / pseprate_str1->m_char_size);
+
+		PECKER_LOG_DIRECT(print_string_format,get_share_string_chars_buffer(pcopy_str1),
+			get_share_string_chars_buffer(pseprate_str1));
+
+		PECKER_LOG_("seprate_share_string status = %d\n",status);
+	}
+	else
+	{
+		PECKER_LOG_("seprate_share_string status = %d\n",status);
+	}
 	//delete_share_string(pcopy_str1,&gDefualt_allocator);
 
 	//delete_share_string(psub_str1,&gDefualt_allocator);
@@ -375,6 +394,7 @@ int share_string_test_main()
 	delete_share_string(pcopy_str1,&gDefualt_allocator);
 	delete_share_string(pcopy_str2,&gDefualt_allocator);
 	delete_share_string(pstr,&gDefualt_allocator);
+	delete_share_string(pseprate_str1,&gDefualt_allocator);
 
 	return 0;
 }

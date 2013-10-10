@@ -19,7 +19,8 @@ PFX_C_EXTERN_BEGIN
 typedef struct st_binary_search_tree_node_mask
 {
 	unsigned		m_valid_mask		: 2;		// 合法性判断位，用于假删除
-	unsigned		m_revered_mask	: 14;	// 保留位
+	unsigned		m_using_internal_key_buffer	: 2;	// 使用自带的key，在使用指针意义的key时候有用
+	unsigned		m_revered_mask	: 12;	// 保留位
 	unsigned 	m_balance_mask	: 16;	// 平衡树标志位
 }st_binary_search_tree_node_mask_t;
 

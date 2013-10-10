@@ -45,6 +45,7 @@
   <ItemGroup>
     <ClCompile Include="data\pfx_array_algorithm.cpp" />
     <ClCompile Include="data\pfx_avl_tree_algorithm.cpp" />
+    <ClCompile Include="data\pfx_balance_tst_algorithm.cpp" />
     <ClCompile Include="data\pfx_bst_algorithm.cpp" />
     <ClCompile Include="data\pfx_bst_iterator.cpp" />
     <ClCompile Include="data\pfx_redblack_tree_algorithm.cpp" />
