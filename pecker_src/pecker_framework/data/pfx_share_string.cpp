@@ -449,6 +449,33 @@ pfx_result_t seprate_share_string_unsafe (pfx_share_string_t* PARAM_INOUT pstr,s
 	return status;
 }
 
+pfx_result_t seprate_share_string_unsafe_to_new_begin (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
+	pfx_share_string_t* PARAM_INOUT pbegin_str,
+	size_t strb_buffer_size)
+{
+	pfx_result_t status = PFX_STATUS_OK;
+	const linked_list_node_t* pnode = null;
+
+	RETURN_INVALID_RESULT ( (null == pstr||null == pbegin_str),PFX_STATUS_INVALID_PARAMS);
+
+	init_share_string_by_buffer(pstr->m_char_size,strb_buffer_size,(pfx_char_t*)pbegin_str,&status);
+
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+	RETURN_INVALID_RESULT ((sparete_index >= pstr->m_char_buffer_size),PFX_STATUS_OVERRANGE);
+
+	pnode = insert_linked_list_node_begin (&pstr->m_list_node,&pbegin_str->m_list_node);
+	pbegin_str->m_reference_string = pstr->m_reference_string;
+	
+	pbegin_str->m_char_buffer_offset = pstr->m_char_buffer_offset;
+	pbegin_str->m_char_buffer_size = sparete_index;
+
+	pstr->m_char_buffer_offset = sparete_index +  pstr->m_char_buffer_offset;
+	pstr->m_char_buffer_size = pstr->m_char_buffer_size - sparete_index;
+
+	return status;
+}
+
 pfx_result_t share_string_bind_new_string (pfx_share_string_t* PARAM_INOUT pstr,
 	pfx_share_string_t* PARAM_INOUT pbind_str,
 	size_t offset,size_t str_size,

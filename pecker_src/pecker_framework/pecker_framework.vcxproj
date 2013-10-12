@@ -23,9 +23,11 @@
     <ClInclude Include="data\pfx_bst.h" />
     <ClInclude Include="data\pfx_bst_algorithm.h" />
     <ClInclude Include="data\pfx_bst_iterator.h" />
+    <ClInclude Include="data\pfx_fixed_point.h" />
     <ClInclude Include="data\pfx_iterator.h" />
     <ClInclude Include="data\pfx_list.h" />
     <ClInclude Include="data\pfx_math.h" />
+    <ClInclude Include="data\pfx_math_table.h" />
     <ClInclude Include="data\pfx_matrix4.h" />
     <ClInclude Include="data\pfx_redblack_tree_algorithm.h" />
     <ClInclude Include="data\pfx_share_string.h" />

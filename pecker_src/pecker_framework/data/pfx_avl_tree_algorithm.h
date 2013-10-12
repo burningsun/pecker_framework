@@ -57,6 +57,7 @@ typedef enum enumAVLTREE_ROTATE_TYPE
 	AVLTREE_ROTATE_TYPE_COUNT
 }AVLTREE_ROTATE_t;
 
+PFX_INLINE void init_avl_tree_node_nokey_default (avl_tree_node_t* PARAM_INOUT ptree_node);
 // 取得节点的高度值
 PFX_INLINE pfx_s16_t get_avl_node_height (const _avl_tree_node_t* PARAM_IN pAvl_node);
 
@@ -87,6 +88,12 @@ avl_tree_node_t* remove_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_roo
 
 
 //////////////////////////////////////////////////////////////////////////
+PFX_INLINE void init_avl_tree_node_nokey_default (avl_tree_node_t* PARAM_INOUT ptree_node)
+{
+	init_binary_search_tree_node_nokey_unsafe((binary_search_tree_node_t*)ptree_node,null,null,null);
+	ptree_node->m_avl_node.m_balance_value.m_balance_value.m_height = 0;
+}
+
 // 取得节点的高度值
 PFX_INLINE pfx_s16_t get_avl_node_height (const _avl_tree_node_t* PARAM_IN pAvl_node)
 {

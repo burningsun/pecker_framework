@@ -19,8 +19,7 @@ PFX_C_EXTERN_BEGIN
 typedef struct st_binary_search_tree_node_mask
 {
 	unsigned		m_valid_mask		: 2;		// 合法性判断位，用于假删除
-	unsigned		m_using_internal_key_buffer	: 2;	// 使用自带的key，在使用指针意义的key时候有用
-	unsigned		m_revered_mask	: 12;	// 保留位
+	unsigned		m_revered_mask	: 14;	// 保留位
 	unsigned 	m_balance_mask	: 16;	// 平衡树标志位
 }st_binary_search_tree_node_mask_t;
 
@@ -42,6 +41,14 @@ struct st_binary_search_tree_node
 	pfx_long_t												m_key;					//	 键
 };
 
+//
+PFX_INLINE pfx_bool_t check_binary_search_tree_node_valid (const binary_search_tree_node_t* PARAM_IN pbst_node);
+PFX_INLINE pfx_result_t set_binary_search_tree_node_valid (binary_search_tree_node_t* PARAM_INOUT pbst_node,pfx_bool_t bvalid);
+
+// 
+PFX_INLINE pfx_result_t replace_binary_node_direct_unsafe (binary_search_tree_node_t* PARAM_INOUT pbst_node,
+	binary_search_tree_node_t* PARAM_INOUT preplacenode);
+
 // 分配新的二叉树节点的内存
 typedef binary_search_tree_node_t* (*new_bst_node_func)(const IAllocator* PARAM_IN pallocator,const binary_search_tree_node_t* PARAM_IN pother_node);
 
@@ -56,6 +63,8 @@ PFX_INLINE pfx_bool_t check_binary_search_tree_define_leaf_node_unsafe (const bi
 	const binary_search_tree_node_t* pnull_node);
 
 // 初始化二叉树节点
+PFX_INLINE void init_binary_search_tree_node_nokey_default (binary_search_tree_node_t* PARAM_INOUT ptree_node);
+
 PFX_INLINE void init_binary_search_tree_node_unsafe (binary_search_tree_node_t* PARAM_INOUT ptree_node,
 	binary_search_tree_node_t*  PARAM_IN pleft_node,
 	binary_search_tree_node_t*  PARAM_IN pright_node,
@@ -85,6 +94,12 @@ PFX_INLINE const binary_search_tree_node_t* max_binary_search_tree_define_leaf_n
 // 查找指定键的节点
 PFX_INLINE const binary_search_tree_node_t* find_node_form_binary_search_tree (pfx_long_t find_key,
 	const binary_search_tree_node_t* PARAM_IN proot_node,
+	compare_two_value_func cmp_method);
+
+PFX_INLINE const binary_search_tree_node_t* find_node_form_binary_search_tree_ex (pfx_long_t find_key,
+	const binary_search_tree_node_t* PARAM_IN proot_node,
+	binary_search_tree_node_t** PARAM_INOUT pplast_visit_node,
+	int* PARAM_INOUT plast_cmp_result,
 	compare_two_value_func cmp_method);
 
 // 查找指定键最接近的节点
@@ -128,6 +143,59 @@ pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_I
 pfx_result_t clear_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const IAllocator* PARAM_IN pallocator,delete_bst_node_func delete_node_method);
 
 //////////////////////////////////////////////////////////////////////////
+PFX_INLINE pfx_bool_t check_binary_search_tree_node_valid (const binary_search_tree_node_t* PARAM_IN pbst_node)
+{
+	RETURN_INVALID_RESULT (null == pbst_node,pfx_false);
+	RETURN_RESULT ((pbst_node->m_mask.m_mask.m_valid_mask),pfx_true);
+	return pfx_false;
+}
+
+PFX_INLINE pfx_result_t set_binary_search_tree_node_valid (binary_search_tree_node_t* PARAM_INOUT pbst_node,pfx_bool_t bvalid)
+{
+	RETURN_INVALID_RESULT (null == pbst_node,PFX_STATUS_INVALID_PARAMS);
+	pbst_node->m_mask.m_mask.m_valid_mask = bvalid;
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t replace_binary_node_direct_unsafe (binary_search_tree_node_t* PARAM_INOUT pbst_node,
+	binary_search_tree_node_t* PARAM_INOUT preplacenode)
+{
+	RETURN_INVALID_RESULT (null == pbst_node || null == preplacenode,PFX_STATUS_INVALID_PARAMS);
+	preplacenode->m_mask.m_mask.m_balance_mask = pbst_node->m_mask.m_mask.m_balance_mask;
+	preplacenode->m_mask.m_mask.m_valid_mask = pbst_node->m_mask.m_mask.m_valid_mask;
+	
+	preplacenode->m_parent_node = pbst_node->m_parent_node;
+	preplacenode->m_pleft_node = pbst_node->m_pleft_node;
+	preplacenode->m_pright_node = pbst_node->m_pright_node;
+
+	if (pbst_node->m_parent_node)
+	{
+		if (pbst_node->m_parent_node->m_pleft_node == pbst_node)
+		{
+			pbst_node->m_parent_node->m_pleft_node = preplacenode;
+		}
+		else if (pbst_node->m_parent_node->m_pright_node == pbst_node)
+		{
+			pbst_node->m_parent_node->m_pright_node = preplacenode;
+		}
+		else
+		{
+			return PFX_STATUS_MEM_ERR;
+		}
+	}
+	
+	if (pbst_node->m_pleft_node)
+	{
+		pbst_node->m_pleft_node->m_parent_node = preplacenode;
+	}
+
+	if (pbst_node->m_pright_node)
+	{
+		pbst_node->m_pright_node->m_parent_node = preplacenode;
+	}
+
+	return PFX_STATUS_OK;
+}
 
 PFX_INLINE pfx_bool_t check_binary_search_tree_leaf_node_unsafe (const binary_search_tree_node_t* PARAM_IN pnode)
 {
@@ -146,6 +214,11 @@ PFX_INLINE pfx_bool_t check_binary_search_tree_define_leaf_node_unsafe (const bi
 		return pfx_true;
 	}
 	return pfx_false;
+}
+
+PFX_INLINE void init_binary_search_tree_node_nokey_default (binary_search_tree_node_t* PARAM_INOUT ptree_node)
+{
+	init_binary_search_tree_node_nokey_unsafe(ptree_node,null,null,null);
 }
 
 PFX_INLINE void init_binary_search_tree_node_unsafe (binary_search_tree_node_t* PARAM_INOUT ptree_node,
@@ -232,6 +305,39 @@ PFX_INLINE const binary_search_tree_node_t* find_node_form_binary_search_tree (p
 		
 	}
 	return preturn_node;
+}
+
+PFX_INLINE const binary_search_tree_node_t* find_node_form_binary_search_tree_ex (pfx_long_t find_key,
+	const binary_search_tree_node_t* PARAM_IN proot_node,
+	binary_search_tree_node_t** PARAM_INOUT pplast_visit_node,
+	int* PARAM_INOUT plast_cmp_result,
+	compare_two_value_func cmp_method)
+{
+	binary_search_tree_node_t* plast_visit_node = null;
+	int cmp_result = 0;
+
+	while( null != proot_node )
+	{
+		cmp_result = cmp_method(find_key,(proot_node->m_key));
+		plast_visit_node = (binary_search_tree_node_t*)proot_node;
+
+		if (cmp_result < 0)
+		{
+			proot_node = proot_node->m_pleft_node;
+		}
+		else if (cmp_result > 0)
+		{
+			proot_node = proot_node->m_pright_node;
+		}
+		else
+		{
+			break;
+		}
+
+	}
+	SET_POINTER_VALUE (pplast_visit_node,plast_visit_node);
+	SET_POINTER_VALUE (plast_cmp_result,cmp_result);
+	return proot_node;
 }
 
 PFX_INLINE const binary_search_tree_node_t* find_first_near_node_form_binary_search_tree (pfx_long_t find_key,

@@ -54,6 +54,19 @@ PFX_INLINE	pfx_bool_t	check_rb_tree_color_is_black (const _redblack_tree_node_t*
 PFX_INLINE	void copy_rb_tree_color_unsafe (_redblack_tree_node_t* PARAM_INOUT pdec_node,const _redblack_tree_node_t* PARAM_IN psrc_node);
 
 PFX_INLINE	void rb_tree_sentinel_init_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode);
+PFX_INLINE void init_redblack_tree_node_nokey_default (redblack_tree_node_t* PARAM_INOUT ptree_node);
+
+//插入节点
+const redblack_tree_node_t* add_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
+	redblack_tree_node_t* PARAM_INOUT padd_node,
+	compare_two_value_func cmp_method,
+	pfx_result_t* PARAM_INOUT pstatus);
+
+//移除节点
+redblack_tree_node_t* remove_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
+	redblack_tree_node_t* PARAM_INOUT premove_node,
+	compare_two_value_func cmp_method,
+	pfx_result_t* PARAM_INOUT pstatus);
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -114,19 +127,13 @@ PFX_INLINE	void rb_tree_sentinel_init_unsafe (_redblack_tree_node_t* PARAM_INOUT
 }
 
 
+PFX_INLINE void init_redblack_tree_node_nokey_default (redblack_tree_node_t* PARAM_INOUT ptree_node)
+{
+	init_binary_search_tree_node_nokey_unsafe((binary_search_tree_node_t*)ptree_node,null,null,null);
+	set_rb_tree_color_black_unsafe((_redblack_tree_node_t*)ptree_node);
+}
 
 
-//插入节点
-const redblack_tree_node_t* add_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
-	redblack_tree_node_t* PARAM_INOUT padd_node,
-	compare_two_value_func cmp_method,
-	pfx_result_t* PARAM_INOUT pstatus);
-
-//移除节点
-redblack_tree_node_t* remove_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
-	redblack_tree_node_t* PARAM_INOUT premove_node,
-	compare_two_value_func cmp_method,
-	pfx_result_t* PARAM_INOUT pstatus);
 
 
 PFX_C_EXTERN_END

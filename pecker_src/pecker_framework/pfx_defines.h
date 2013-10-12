@@ -260,6 +260,16 @@ typedef union PFX_128bit_DataType
 
 #define  SET_POINTER_VALUE(ptr_,val_){if (ptr_){*(ptr_) = (val_);};};
 
+PFX_INLINE pfx_usize_t get_32bit_onemask_count (pfx_bitfield_t bitmask)
+{
+	bitmask = (bitmask&0x55555555) + ((bitmask>>1)&0x55555555);     
+	bitmask = (bitmask&0x33333333) + ((bitmask>>2)&0x33333333);
+	bitmask = (bitmask&0x0f0f0f0f) + ((bitmask>>4)&0x0f0f0f0f);     
+	bitmask = (bitmask&0x00ff00ff) + ((bitmask>>8)&0x00ff00ff);     
+	bitmask = (bitmask&0x0000ffff) + ((bitmask>>16)&0x0000ffff);
+	return bitmask;
+}
+
 #ifdef __cplusplus
 // 位操作
 PFX_INLINE void set_bytes_in_bitfield_mask(pfx_bitfield_t& bitfield32bit,pfx_byte_t bit0to7,pfx_byte_t bit8to15,pfx_byte_t bit16to23,pfx_byte_t bit24to31)

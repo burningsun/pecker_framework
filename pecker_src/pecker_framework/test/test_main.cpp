@@ -58,9 +58,34 @@ int myscanf(const pfx_char_t* PARAM_IN str_format,...)
 
 //TENERY_CACHE_NODE(32);
 
+#include "../data/pfx_fixed_point.h"
+
 int test_main()
 {
 	int status = 0;
+
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(1.0f,0.0f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(-1.0f,0.0f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(1.0f/10002.0f,1.0f/10001.f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(0.0f,0.0f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(0.0000012345f,0.0000012346f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(0.1234f,0.1235f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(0.12345678f,0.12345677f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(-0.12345678f,-0.12345677f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(1.1234567f,1.1234568f));
+	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(1234567.0f,1234568.0f));
+
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(0.0f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(1.0f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(-1.0f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(0.1f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(-0.1f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(0.000001f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(-0.000001f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(0.0000001f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(-0.0000001f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(0.00000001f));
+	//PECKER_LOG_ ("zero %d\n",float_cmp_zero(-0.00000001f));
 
 	//pfx_u64_t value_ = pfx_pow_N(2,61);
 	//PECKER_LOG_("%ld\n",value_);

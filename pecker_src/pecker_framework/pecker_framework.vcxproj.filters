@@ -138,6 +138,12 @@
     <ClInclude Include="data\pfx_string.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="data\pfx_fixed_point.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_math_table.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">

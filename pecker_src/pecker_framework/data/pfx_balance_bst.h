@@ -32,6 +32,8 @@ typedef balance_bst_node_t* (*remove_bbst_node_unsafe_func) (balance_bst_node_t*
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);
 
+//默认初始化节点
+typedef void (*init_bbst_node_default_func) (balance_bst_node_t* PARAM_INOUT pnode);
 
 
 // avl tree
@@ -55,6 +57,12 @@ PFX_INLINE balance_bst_node_t* remove_bbst_avl_node_unsafe (balance_bst_node_t**
 		(avl_tree_node_t*)premove_node,cmp_method,pstatus);
 }
 
+PFX_INLINE void init_bbst_avl_node_default_func (balance_bst_node_t* PARAM_INOUT pnode)
+{
+	init_avl_tree_node_nokey_default((avl_tree_node_t*)pnode);
+}
+
+
 // red-black tree
 PFX_INLINE const balance_bst_node_t* add_bbst_redblack_node_unsafe (balance_bst_node_t** PARAM_INOUT ppAvl_root_node_ref,
 	balance_bst_node_t* PARAM_INOUT pAdd_node,
@@ -76,6 +84,10 @@ PFX_INLINE balance_bst_node_t* remove_bbst_redblack_node_unsafe (balance_bst_nod
 		(redblack_tree_node_t*)premove_node,cmp_method,pstatus);
 }
 
+PFX_INLINE void init_bbst_redblack_node_default_func (balance_bst_node_t* PARAM_INOUT pnode)
+{
+	init_redblack_tree_node_nokey_default((redblack_tree_node_t*)pnode);
+}
 
 PFX_C_EXTERN_END
 

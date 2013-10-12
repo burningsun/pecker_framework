@@ -41,6 +41,73 @@ PFX_INLINE const linked_list_node_t* get_linked_list_next_node (const linked_lis
 
 PFX_INLINE const linked_list_node_t* get_linked_list_prev_node (const linked_list_node_t* PARAM_IN	pnode);
 
+#define PFX_INIT_LIST_NODE(NODE) \
+do	\
+{	\
+	if (null == NODE)							\
+	{														\
+		break;											\
+	};														\
+	NODE->m_prev_node = null;		\
+	NODE->m_pnext_node = null;		\
+}while(0);
+
+#define PFX_INSERT_LIST_NODE_END(pnode,pnode_add,pnode_next) \
+	do	\
+	{	\
+		if (null == pnode || null == pnode_add)				\
+		{																				\
+			pnode_add=null;												\
+			break;																	\
+		}																				\
+		pnode_next = pnode->m_pnext_node;				\
+		pnode->m_pnext_node = pnode_add;				\
+		pnode_add->m_prev_node = pnode;					\
+		pnode_add->m_pnext_node = pnode_next;		\
+		if (pnode_next)														\
+		{																				\
+			pnode_next->m_prev_node = pnode_add;	\
+		}																				\
+	}while(0);
+
+#define PFX_INSERT_LIST_NODE_BEGIN(pnode,pnode_add,pnode_pre) \
+	do	\
+	{																					\
+		if (null == pnode || null == pnode_add)				\
+		{																				\
+			pnode_add=null;												\
+			break;																	\
+		}																				\
+		pnode_pre = pnode->m_prev_node;					\
+		pnode->m_prev_node = pnode_add;					\
+		pnode_add->m_pnext_node = pnode;				\
+		pnode_add->m_prev_node = pnode_pre;			\
+		if (pnode_pre)														\
+		{																				\
+			pnode_pre->m_pnext_node = pnode_add;	\
+		}																				\
+	}while(0);
+
+#define PFX_REMOVE_LIST_NODE(pnode,pnode_pre,pnode_next) \
+	do	\
+	{																					\
+		if (null == pnode)													\
+		{																				\
+			break;																	\
+		}																				\
+		pnode_next = pnode->m_pnext_node;				\
+		pnode_pre = pnode->m_prev_node;					\
+		if (pnode_next)														\
+		{																				\
+		pnode_next->m_prev_node = pnode_pre;			\
+		}																				\
+		if (pnode_pre)														\
+		{																				\
+		pnode_pre->m_pnext_node = pnode_next;		\
+		}																				\
+	}while(0);
+
+
 //////////////////////////////////////////////////////////////////////////
 PFX_INLINE linked_list_node_t* init_linked_list_node(linked_list_node_t* PARAM_INOUT pnode)
 {

@@ -100,7 +100,11 @@ pfx_share_string_t* seprate_share_string (pfx_share_string_t* PARAM_INOUT pstr,s
 	const IAllocator* PARAM_IN pchar_allocator,pfx_result_t* PARAM_INOUT pstatus);
 
 pfx_result_t seprate_share_string_unsafe (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
-	pfx_share_string_t* PARAM_INOUT pstrb,
+	pfx_share_string_t* PARAM_INOUT ptail_str,
+	size_t strb_buffer_size);
+
+pfx_result_t seprate_share_string_unsafe_to_new_begin (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
+	pfx_share_string_t* PARAM_INOUT pbegin_str,
 	size_t strb_buffer_size);
 
 pfx_result_t merge_share_string (pfx_share_string_t* PARAM_INOUT pmerge_to_str,const pfx_share_string_t* pstr,
