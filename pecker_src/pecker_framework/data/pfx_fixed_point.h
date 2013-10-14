@@ -11,7 +11,7 @@
 #include "../pfx_defines.h"
 #include "pfx_math_table.h"
 
-#define VEC_FLOAT	pfx_float_t
+
 
 
 #define PFX_FLOAT_2_INTX(f)		( (int) ( (f)*(65536) ) )
@@ -43,6 +43,7 @@
 
 #ifdef PFX_FIXED_POINT_ENABLE 
 // 没有fpu下的兼容模式
+#define VEC_FLOAT	pfx_sint_t
 #define VEC_FLOAT_MUL(a,b)		PFX_INTX_MUL(a,b)
 #define VEC_FLOAT_DIV(a,b)		PFX_INTX_DIV(a,b)
 #define VEC_FLOAT_ABS(a)			PFX_ABS(a)
@@ -52,9 +53,18 @@
 #define pfx_f2vt(f) 					PFX_FLOAT_2_INTX(f)
 #define pfx_vt2f(x) 					PFX_INTX_2_FLOAT(x)
 
+#define ZERO_FLOAT (0)
+#define ONE_FLOAT	(1)
+
 #else
 // 有fpu
 #include <math.h>
+
+#define VEC_FLOAT	pfx_float_t
+
+#define ZERO_FLOAT (0.0f)
+#define ONE_FLOAT	(1.0f)
+
 #define VEC_FLOAT_MUL(a,b)		((VEC_FLOAT)((a)*(b)))
 #define VEC_FLOAT_DIV(a,b)		((VEC_FLOAT)((a)/(b)))
 #define VEC_FLOAT_ABS(a)			((VEC_FLOAT)(fabs(a)))
@@ -143,7 +153,7 @@ PFX_INLINE int float_cmp (pfx_float_t X,pfx_float_t Y)
 	if (X > FLOAT_REF_VALUE || X < (-FLOAT_REF_VALUE))
 	{
 		X = X - Y;
-		if  (X < FLOAT_ERROR_VALUE && X > (-FLOAT_ERROR_VALUE))
+		if  (X <= FLOAT_ERROR_VALUE && X >= (-FLOAT_ERROR_VALUE))
 		{
 			return 0;
 		}

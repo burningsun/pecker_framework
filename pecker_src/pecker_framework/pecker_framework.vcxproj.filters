@@ -144,6 +144,9 @@
     <ClInclude Include="data\pfx_math_table.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="data\pfx_simd_optimization.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">

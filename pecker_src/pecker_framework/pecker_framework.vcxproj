@@ -31,6 +31,7 @@
     <ClInclude Include="data\pfx_matrix4.h" />
     <ClInclude Include="data\pfx_redblack_tree_algorithm.h" />
     <ClInclude Include="data\pfx_share_string.h" />
+    <ClInclude Include="data\pfx_simd_optimization.h" />
     <ClInclude Include="data\pfx_stack.h" />
     <ClInclude Include="data\pfx_string.h" />
     <ClInclude Include="data\pfx_vector4.h" />
