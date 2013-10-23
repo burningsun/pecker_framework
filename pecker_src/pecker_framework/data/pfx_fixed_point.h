@@ -40,6 +40,7 @@
 #define	pfx_acos(x)		((pfx_float_t)acos(x))
 #endif
 
+#define	pfx_sincos_std(r,sin_,cos_) {(sin_)=pfx_sin((r));(cos_)=pfx_cos((r));}
 
 #ifdef PFX_FIXED_POINT_ENABLE 
 // 没有fpu下的兼容模式
@@ -55,6 +56,8 @@
 
 #define ZERO_FLOAT (0)
 #define ONE_FLOAT	(1)
+#define TWO_FLOAT	(2)
+#define HALF_FLOAT	(pfx_f2vt(0.5f))
 
 #else
 // 有fpu
@@ -64,6 +67,8 @@
 
 #define ZERO_FLOAT (0.0f)
 #define ONE_FLOAT	(1.0f)
+#define TWO_FLOAT	(2.0f)
+#define HALF_FLOAT	(0.5f)
 
 #define VEC_FLOAT_MUL(a,b)		((VEC_FLOAT)((a)*(b)))
 #define VEC_FLOAT_DIV(a,b)		((VEC_FLOAT)((a)/(b)))

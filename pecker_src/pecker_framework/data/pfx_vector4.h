@@ -61,6 +61,11 @@ union un_pfx_vector_4
 	st_pfx_vector_4f	m_vec;
 };
 
+#define VECTOR_DATA(VEC,INDEX) ((VEC).m_vec_f[(INDEX)])
+#define PVECTOR_DATA(VEC,INDEX) ((VEC)->m_vec_f[(INDEX)])
+#define VECTOR4_DATA_SUM(VEC) (VECTOR_DATA(VEC,0)+VECTOR_DATA(VEC,1)+VECTOR_DATA(VEC,2)+VECTOR_DATA(VEC,3))
+#define PVECTOR4_DATA_SUM(VEC) (PVECTOR_DATA(VEC,0)+PVECTOR_DATA(VEC,1)+PVECTOR_DATA(VEC,2)+PVECTOR_DATA(VEC,3))
+
 PFX_INLINE void init_vector2_default_unsafe_std (pfx_vector2_t* PARAM_INOUT vec2)
 {
 	memset (vec2,0,sizeof (pfx_vector2_t));
@@ -557,7 +562,7 @@ PFX_INLINE pfx_vector4_t* vector4_sub_ref_unsafe_std (pfx_vector4_t* PARAM_INOUT
 	return vec;
 }
 
-PFX_INLINE pfx_vector4_t vector4_add_unsafe_std (pfx_vector4_t* PARAM_INOUT vec,
+PFX_INLINE pfx_vector4_t vector4_add_unsafe_std (const pfx_vector4_t* PARAM_IN vec,
 	const pfx_vector4_t* PARAM_IN vec_)
 {
 	pfx_vector4_t result_vec;
@@ -568,7 +573,7 @@ PFX_INLINE pfx_vector4_t vector4_add_unsafe_std (pfx_vector4_t* PARAM_INOUT vec,
 	return result_vec;
 }
 
-PFX_INLINE pfx_vector4_t vector4_sub_unsafe_std (pfx_vector4_t* PARAM_INOUT vec,
+PFX_INLINE pfx_vector4_t vector4_sub_unsafe_std (const pfx_vector4_t* PARAM_IN vec,
 	const pfx_vector4_t* PARAM_IN vec_)
 {
 	pfx_vector4_t result_vec;
@@ -601,7 +606,7 @@ PFX_INLINE pfx_vector4_t* vector4_div_float_ref_unsafe_std (pfx_vector4_t* PARAM
 	return vec;
 }
 
-PFX_INLINE pfx_vector4_t vector4_mul_float_unsafe_std (pfx_vector4_t* PARAM_INOUT vec,
+PFX_INLINE pfx_vector4_t vector4_mul_float_unsafe_std (const pfx_vector4_t* PARAM_IN vec,
 	VEC_FLOAT fval)
 {
 	pfx_vector4_t result_vec;
@@ -614,7 +619,7 @@ PFX_INLINE pfx_vector4_t vector4_mul_float_unsafe_std (pfx_vector4_t* PARAM_INOU
 	return result_vec;
 }
 
-PFX_INLINE pfx_vector4_t vector4_div_float_unsafe_std (pfx_vector4_t* PARAM_INOUT vec,
+PFX_INLINE pfx_vector4_t vector4_div_float_unsafe_std (const pfx_vector4_t* PARAM_IN vec,
 	VEC_FLOAT fval)
 {
 	pfx_vector4_t result_vec;

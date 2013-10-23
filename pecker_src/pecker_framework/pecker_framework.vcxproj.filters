@@ -147,6 +147,9 @@
     <ClInclude Include="data\pfx_simd_optimization.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="data\pfx_util.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="data\pfx_balance_tst_algorithm.cpp">
       <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_matrix_test.cpp">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

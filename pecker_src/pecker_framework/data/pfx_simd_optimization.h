@@ -14,6 +14,8 @@
 #ifdef USING_SSE_
 
 #else
+//////////////////////////////////////////////////////////////////////////
+	#define pfx_sincos pfx_sincos_std 
 //////////////////////////////////////////////////////////////////////////////////////
 	#define init_vector2_default_unsafe								init_vector2_default_unsafe_std
 	#define init_vector2_by_float_unsafe							init_vector2_by_float_unsafe_std
