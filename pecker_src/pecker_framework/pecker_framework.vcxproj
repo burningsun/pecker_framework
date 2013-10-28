@@ -44,6 +44,18 @@
     <ClInclude Include="pfx.h" />
     <ClInclude Include="pfx_configs.h" />
     <ClInclude Include="pfx_defines.h" />
+    <ClInclude Include="render\pfx_render.h" />
+    <ClInclude Include="render\render_system\opengles\pfx_view_context_opengles.h" />
+    <ClInclude Include="render\render_system\pfx_framebuffer.h" />
+    <ClInclude Include="render\render_system\pfx_renderbuffer.h" />
+    <ClInclude Include="render\render_system\pfx_rendersystem.h" />
+    <ClInclude Include="render\render_system\pfx_rendertarget.h" />
+    <ClInclude Include="render\render_system\pfx_render_pipeline.h" />
+    <ClInclude Include="render\render_system\pfx_shader_program.h" />
+    <ClInclude Include="render\render_system\pfx_texture.h" />
+    <ClInclude Include="render\render_system\pfx_vertext_index_buffer.h" />
+    <ClInclude Include="render\render_system\pfx_view_context.h" />
+    <ClInclude Include="render\render_util\pfx_load_uncompress_bitmap.h" />
     <ClInclude Include="test\pfx_file_inputdata_cmd.h" />
   </ItemGroup>
   <ItemGroup>

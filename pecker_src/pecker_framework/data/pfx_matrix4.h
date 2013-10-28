@@ -136,12 +136,12 @@ PFX_INLINE void init_to_identity_matrix3_unsafe_std (pfx_marix3_t* PARAM_INOUT m
 	PMATRIX_DATA (mat,M3_10) = ZERO_FLOAT; PMATRIX_DATA (mat,M3_11) = ZERO_FLOAT;  PMATRIX_DATA(mat,M3_12) = ONE_FLOAT;
 }
 
-PFX_INLINE void init_to_identity_matrix4_unsafe_std (pfx_marix3_t* PARAM_INOUT mat)
+PFX_INLINE void init_to_identity_matrix4_unsafe_std (pfx_marix4_t* PARAM_INOUT mat)
 {
 	PMATRIX_DATA (mat,M4_00) = ONE_FLOAT;   PMATRIX_DATA (mat,M4_01) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_02) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_03) = ZERO_FLOAT;
 	PMATRIX_DATA (mat,M4_10) = ZERO_FLOAT;  PMATRIX_DATA (mat,M4_11) = ONE_FLOAT;  PMATRIX_DATA (mat,M4_12) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_13) = ZERO_FLOAT;
 	PMATRIX_DATA (mat,M4_20) = ZERO_FLOAT;  PMATRIX_DATA (mat,M4_21) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_22) = ONE_FLOAT;  PMATRIX_DATA (mat,M4_23) = ZERO_FLOAT;
-	PMATRIX_DATA (mat,M4_10) = ZERO_FLOAT;  PMATRIX_DATA (mat,M4_30) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_32) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_33) = ONE_FLOAT;
+	PMATRIX_DATA (mat,M4_30) = ZERO_FLOAT;  PMATRIX_DATA (mat,M4_31) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_32) = ZERO_FLOAT; PMATRIX_DATA (mat,M4_33) = ONE_FLOAT;
 }
 
 PFX_INLINE pfx_marix2_t* init_matrix2_floats_unsafe_std (pfx_marix2_t* PARAM_INOUT mat,
@@ -670,13 +670,19 @@ PFX_INLINE pfx_marix4_t* matrix4_post_translation_ref_unsafe_std (pfx_marix4_t* 
 	VEC_FLOAT fx,VEC_FLOAT fy,VEC_FLOAT fz)
 {
 	//			col(3) += fx * col(0) + fy * col(1) + fz * col(2);
-	pfx_vector4_t temp;
-	temp = vector4_mul_float_unsafe_std (&matrix4_get_column_unsafe_std (mat,0),fx);
-	vector4_add_ref_unsafe_std (&matrix4_get_column_unsafe_std (mat,3),&temp);
-	temp = vector4_mul_float_unsafe_std (&matrix4_get_column_unsafe_std (mat,1),fy);
-	vector4_add_ref_unsafe_std (&matrix4_get_column_unsafe_std (mat,3),&temp);
-	temp = vector4_mul_float_unsafe_std(&matrix4_get_column_unsafe_std (mat,2),fz);
-	vector4_add_ref_unsafe_std (&matrix4_get_column_unsafe_std (mat,3),&temp);
+	pfx_vector4_t column;
+	column = matrix4_get_column_unsafe_std (mat,0);
+	column = vector4_mul_float_unsafe_std (&column,fx);
+	matrix4_column_add_vector4_std (mat,3,&column);
+
+	column = matrix4_get_column_unsafe_std (mat,1);
+	column = vector4_mul_float_unsafe_std (&column,fy);
+	matrix4_column_add_vector4_std (mat,3,&column);
+
+	column = matrix4_get_column_unsafe_std (mat,2);
+	column = vector4_mul_float_unsafe_std (&column,fz);
+	matrix4_column_add_vector4_std (mat,3,&column);
+
 	return mat;
 }
 PFX_INLINE pfx_marix4_t matrix4_post_translation_unsafe_std (const pfx_marix4_t* PARAM_IN mat,
@@ -1116,7 +1122,6 @@ PFX_INLINE pfx_result_t	matrix4_inverse_unsafe_std (const pfx_marix4_t* PARAM_IN
 //
 //	最后，根据在全选主元过程中所记录的行、列交换的信息进行恢复，恢复的原则如下：在全选主元过程中，先交换的行（列）后进行恢复；原来的行（列）交换用列（行）交换来恢复。
 //
-
 PFX_INLINE pfx_result_t matrix4_inverse_gaussian_elimination_unsafe_std (const pfx_marix4_t* PARAM_IN mat,
 	pfx_marix4_t* PARAM_INOUT inverse_mat)
 {
@@ -1239,11 +1244,11 @@ PFX_INLINE pfx_marix4_t orthogonal_projection_matrix_opengl (VEC_FLOAT left,VEC_
 	if (bRotate)
 	{
 		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (TWO_FLOAT,top_sub_btn);
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (TWO_FLOAT,right_sub_left);
 		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,0,3) = VEC_FLOAT_MUL (right+left,-right_sub_left);
 
-		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (TWO_FLOAT,right_sub_left);
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (TWO_FLOAT,top_sub_btn);
 		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,3) = VEC_FLOAT_MUL (top+bottom,top_sub_btn);
@@ -1284,11 +1289,11 @@ PFX_INLINE pfx_marix4_t orthogonal_projection_matrix_directX (VEC_FLOAT left,VEC
 	if (bRotate)
 	{
 		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (TWO_FLOAT,top_sub_btn);
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (TWO_FLOAT,right_sub_left);
 		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,0,3) = VEC_FLOAT_MUL (right+left,-right_sub_left);
 
-		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (TWO_FLOAT,right_sub_left);
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (TWO_FLOAT,top_sub_btn);
 		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,3) = VEC_FLOAT_MUL (top+bottom,top_sub_btn);
@@ -1330,13 +1335,13 @@ PFX_INLINE pfx_marix4_t perspective_projection_matrix_opengl_by_plane (VEC_FLOAT
 	if (bRotate)
 	{
 		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,top_sub_btn);
-		MATRIX_DATA_ (result,0,2) = VEC_FLOAT_MUL (top+bottom,top_sub_btn);
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,0,2) = VEC_FLOAT_MUL (top+bottom,right_sub_left);
 		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
 
-		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,top_sub_btn);
 		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,1,2) = VEC_FLOAT_MUL (right+left,right_sub_left);
+		MATRIX_DATA_ (result,1,2) = VEC_FLOAT_MUL (right+left,top_sub_btn);
 		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
 	}
 	else
@@ -1387,13 +1392,13 @@ PFX_INLINE pfx_marix4_t perspective_projection_matrix_directX_by_plane (VEC_FLOA
 	if (bRotate)
 	{
 		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,top_sub_btn);
-		MATRIX_DATA_ (result,0,2) = VEC_FLOAT_MUL (top+bottom,top_sub_btn);
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,0,2) = VEC_FLOAT_MUL (top+bottom,right_sub_left);
 		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
 
-		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,top_sub_btn);
 		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,1,2) = VEC_FLOAT_MUL (right+left,right_sub_left);
+		MATRIX_DATA_ (result,1,2) = VEC_FLOAT_MUL (right+left,top_sub_btn);
 		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
 	}
 	else
@@ -1446,11 +1451,11 @@ PFX_INLINE pfx_marix4_t perspective_projection_matrix_opengl (VEC_FLOAT width, V
 	if (bRotate)
 	{
 		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,top_sub_btn);
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,right_sub_left);
 		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
 
-		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,top_sub_btn);
 		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
@@ -1505,11 +1510,11 @@ PFX_INLINE pfx_marix4_t perspective_projection_matrix_directX (VEC_FLOAT width, 
 	if (bRotate)
 	{
 		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
-		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,top_sub_btn);
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,right_sub_left);
 		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
 
-		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,top_sub_btn);
 		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
 		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
@@ -1587,6 +1592,225 @@ PFX_INLINE pfx_marix4_t perspective_projection_matrix_by_angle_of_view (VEC_FLOA
 	}
 
 	return perspective_projection_matrix (height,width,near_plane,far_plane,cs,bRightHanded,bRotate);
+}
+
+PFX_INLINE pfx_marix4_t perspective_projection_matrix_infinite_distance_opengl (VEC_FLOAT width, VEC_FLOAT height,
+	VEC_FLOAT near_plane,
+	pfx_bool_t bRightHanded,
+	pfx_bool_t bRotate)
+{
+	pfx_marix4_t result;
+	VEC_FLOAT right_sub_left = VEC_FLOAT_DIV(ONE_FLOAT,width);
+	VEC_FLOAT top_sub_btn = VEC_FLOAT_DIV(ONE_FLOAT,height);
+	VEC_FLOAT two_near = VEC_FLOAT_MUL (TWO_FLOAT,near_plane);
+	if (bRotate)
+	{
+		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
+
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,top_sub_btn);
+		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
+	}
+	else
+	{
+		MATRIX_DATA_ (result,0,0) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,0,1) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
+
+		MATRIX_DATA_ (result,1,0) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,1) = VEC_FLOAT_MUL (two_near,top_sub_btn);
+		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
+	}
+
+	MATRIX_DATA_ (result,2,0) = ZERO_FLOAT;
+	MATRIX_DATA_ (result,2,1) = ZERO_FLOAT;
+
+	MATRIX_DATA_ (result,2,3) = two_near;
+
+	MATRIX_DATA_ (result,3,0) = ZERO_FLOAT;
+	MATRIX_DATA_ (result,3,1) = ZERO_FLOAT;
+
+	MATRIX_DATA_ (result,3,3) = ZERO_FLOAT;
+
+	if (bRightHanded)
+	{
+		MATRIX_DATA_ (result,2,2) = ONE_FLOAT;
+		MATRIX_DATA_ (result,3,2) = -ONE_FLOAT;
+	}
+	else
+	{
+		MATRIX_DATA_ (result,2,2) = -ONE_FLOAT;
+		MATRIX_DATA_ (result,3,2) = ONE_FLOAT;
+	}
+
+	return result;
+}
+
+PFX_INLINE pfx_marix4_t perspective_projection_matrix_infinite_distance_directX (VEC_FLOAT width, VEC_FLOAT height,
+	VEC_FLOAT near_plane, 
+	pfx_bool_t bRightHanded,
+	pfx_bool_t bRotate)
+{
+	pfx_marix4_t result;
+	VEC_FLOAT right_sub_left = VEC_FLOAT_DIV(ONE_FLOAT,width);
+	VEC_FLOAT top_sub_btn = VEC_FLOAT_DIV(ONE_FLOAT,height);
+	VEC_FLOAT two_near = VEC_FLOAT_MUL (TWO_FLOAT,near_plane);
+	if (bRotate)
+	{
+		MATRIX_DATA_ (result,0,0) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,1) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
+
+		MATRIX_DATA_ (result,1,0) = VEC_FLOAT_MUL (two_near,top_sub_btn);
+		MATRIX_DATA_ (result,1,1) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
+	}
+	else
+	{
+		MATRIX_DATA_ (result,0,0) = VEC_FLOAT_MUL (two_near,right_sub_left);
+		MATRIX_DATA_ (result,0,1) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,0,3) = ZERO_FLOAT;
+
+		MATRIX_DATA_ (result,1,0) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,1) = VEC_FLOAT_MUL (two_near,top_sub_btn);
+		MATRIX_DATA_ (result,1,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,1,3) = ZERO_FLOAT;
+	}
+
+	MATRIX_DATA_ (result,2,0) = ZERO_FLOAT;
+	MATRIX_DATA_ (result,2,1) = ZERO_FLOAT;
+
+	MATRIX_DATA_ (result,2,3) = near_plane;
+
+	MATRIX_DATA_ (result,3,0) = ZERO_FLOAT;
+	MATRIX_DATA_ (result,3,1) = ZERO_FLOAT;
+
+	MATRIX_DATA_ (result,3,3) = ZERO_FLOAT;
+
+	if (bRightHanded)
+	{
+		MATRIX_DATA_ (result,2,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,3,2) = -ONE_FLOAT;
+	}
+	else
+	{
+		MATRIX_DATA_ (result,2,2) = ZERO_FLOAT;
+		MATRIX_DATA_ (result,3,2) = ONE_FLOAT;
+	}
+
+	return result;
+}
+
+PFX_INLINE pfx_marix4_t perspective_projection_matrix_infinite_distance (VEC_FLOAT width, VEC_FLOAT height,
+	VEC_FLOAT near_plane,
+	CLIPSPACE_SYSTEM cs,
+	pfx_bool_t bRightHanded,
+	pfx_bool_t bRotate)
+{
+	pfx_marix4_t mat;
+	if (OPENGL_CLIPSPACE_SYSTEM == cs)
+	{
+		mat = perspective_projection_matrix_infinite_distance_opengl (width,height,near_plane,bRightHanded,bRotate); 
+	}
+	else if (D3DX_CLIPSPACE_SYSTEM == cs)
+	{
+		mat = perspective_projection_matrix_infinite_distance_directX (width,height,near_plane,bRightHanded,bRotate);
+	}
+	return mat;
+}
+
+PFX_INLINE pfx_marix4_t perspective_projection_matrix_infinite_distance_by_angle_of_view (VEC_FLOAT fovy,
+	VEC_FLOAT aspect,VEC_FLOAT near_plane,CLIPSPACE_SYSTEM cs,
+	pfx_bool_t bRightHanded,pfx_bool_t bRotate)
+{
+	VEC_FLOAT height;
+	VEC_FLOAT width;
+	if (bRotate)
+	{
+		height =  VEC_FLOAT_MUL (VEC_FLOAT_MUL(TWO_FLOAT,near_plane),pfx_tan(VEC_FLOAT_DIV(fovy,TWO_FLOAT)));
+		width = VEC_FLOAT_DIV (height,aspect);
+	}
+	else
+	{
+		width =  VEC_FLOAT_MUL (VEC_FLOAT_MUL(TWO_FLOAT,near_plane),pfx_tan(VEC_FLOAT_DIV(fovy,TWO_FLOAT)));
+		height = VEC_FLOAT_DIV (width,aspect);
+	}
+
+	return perspective_projection_matrix_infinite_distance (height,width,near_plane,cs,bRightHanded,bRotate);
+}
+
+//
+PFX_INLINE pfx_marix4_t look_at_view_matrix_unsafe_std (const pfx_vector3_t* vEye,
+	const pfx_vector3_t* vAt,const pfx_vector3_t* vUp,pfx_bool_t bRightHanded)
+{
+	pfx_marix4_t mat_result;
+	pfx_vector3_t vForward;
+	pfx_vector3_t vUpNorm;
+	pfx_vector3_t vSize;
+
+	if (bRightHanded)
+	{
+		vForward = vector3_sub_unsafe_std (vEye,vAt);
+	}
+	else
+	{
+		vForward = vector3_sub_unsafe_std (vAt,vEye);
+	}
+
+	vector3_normalize_ref_unsafe_std (&vForward);
+	vSize = vector3_cross_unsafe_std (vUp,&vForward);
+	vector3_normalize_ref_unsafe_std (&vSize);
+	vUpNorm = vector3_cross_unsafe_std (&vForward,&vSize);
+	vector3_normalize_ref_unsafe_std (&vUpNorm);
+
+	MATRIX_DATA_ (mat_result,0,0) = VECTOR_DATA (vSize,VEC_INDEX_X);
+	MATRIX_DATA_ (mat_result,0,1) = VECTOR_DATA (vSize,VEC_INDEX_Y);
+	MATRIX_DATA_ (mat_result,0,2) = VECTOR_DATA (vSize,VEC_INDEX_Z);
+	MATRIX_DATA_ (mat_result,0,3) = ZERO_FLOAT;
+
+	MATRIX_DATA_ (mat_result,1,0) = VECTOR_DATA (vUpNorm,VEC_INDEX_X);
+	MATRIX_DATA_ (mat_result,1,1) = VECTOR_DATA (vUpNorm,VEC_INDEX_Y);
+	MATRIX_DATA_ (mat_result,1,2) = VECTOR_DATA (vUpNorm,VEC_INDEX_Z);
+	MATRIX_DATA_ (mat_result,1,3) = ZERO_FLOAT;
+
+	MATRIX_DATA_ (mat_result,2,0) = VECTOR_DATA (vForward,VEC_INDEX_X);
+	MATRIX_DATA_ (mat_result,2,1) = VECTOR_DATA (vForward,VEC_INDEX_Y);
+	MATRIX_DATA_ (mat_result,2,2) = VECTOR_DATA (vForward,VEC_INDEX_Z);
+	MATRIX_DATA_ (mat_result,2,3) = ZERO_FLOAT;
+
+	MATRIX_DATA_ (mat_result,3,0) = ZERO_FLOAT;
+	MATRIX_DATA_ (mat_result,3,1) = ZERO_FLOAT;
+	MATRIX_DATA_ (mat_result,3,2) = ZERO_FLOAT;
+	MATRIX_DATA_ (mat_result,3,3) = ONE_FLOAT;
+
+	
+	matrix4_post_translation_ref_unsafe_std (&mat_result,
+		-PVECTOR_DATA(vEye,VEC_INDEX_X),
+		-PVECTOR_DATA(vEye,VEC_INDEX_Y),
+		-PVECTOR_DATA(vEye,VEC_INDEX_Z));
+
+	return mat_result;
+}
+
+PFX_INLINE pfx_marix4_t look_at_view_matrix_lefthand_unsafe_std (const pfx_vector3_t* vEye,
+	const pfx_vector3_t* vAt,const pfx_vector3_t* vUp)
+{
+	return look_at_view_matrix_unsafe_std(vEye,vAt,vUp,pfx_false);
+}
+
+PFX_INLINE pfx_marix4_t look_at_view_matrix_righthand_unsafe_std (const pfx_vector3_t* vEye,
+	const pfx_vector3_t* vAt,const pfx_vector3_t* vUp)
+{
+	return look_at_view_matrix_unsafe_std(vEye,vAt,vUp,pfx_true);
 }
 
 PFX_C_EXTERN_END

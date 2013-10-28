@@ -150,6 +150,42 @@
     <ClInclude Include="data\pfx_util.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="render\render_system\pfx_framebuffer.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_render_pipeline.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_renderbuffer.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_rendersystem.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_rendertarget.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_shader_program.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_texture.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_vertext_index_buffer.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_view_context.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles\pfx_view_context_opengles.h">
+      <Filter>render\render_system\openglex</Filter>
+    </ClInclude>
+    <ClInclude Include="render\pfx_render.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_util\pfx_load_uncompress_bitmap.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">
