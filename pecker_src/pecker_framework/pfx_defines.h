@@ -166,6 +166,7 @@ typedef int								pfx_index_t;
 typedef unsigned char			pfx_byte_t;
 typedef unsigned int				pfx_enum_int_t;
 typedef unsigned int				pfx_bitfield_t;
+typedef unsigned int				pfx_boolean_t;
 //typedef char Bool;
 
 typedef enum enum_bool

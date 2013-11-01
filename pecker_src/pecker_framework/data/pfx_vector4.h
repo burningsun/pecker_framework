@@ -18,6 +18,10 @@ typedef struct st_pfx_vector_2f pfx_vector2f_t;
 typedef struct st_pfx_vector_3f pfx_vector3f_t;
 typedef struct st_pfx_vector_4f pfx_vector4f_t;
 
+typedef struct st_pfx_vector_2i pfx_vector2i_t;
+typedef struct st_pfx_vector_3i pfx_vector3i_t;
+typedef struct st_pfx_vector_4i pfx_vector4i_t;
+
 typedef union un_pfx_vector_2 pfx_vector2_t;
 typedef union un_pfx_vector_3 pfx_vector3_t;
 typedef union un_pfx_vector_4 pfx_vector4_t;
@@ -43,22 +47,46 @@ struct st_pfx_vector_4f
 	VEC_FLOAT	w;
 };
 
+struct st_pfx_vector_2i
+{
+	pfx_sint_t	x;
+	pfx_sint_t	y;
+};
+
+struct st_pfx_vector_3i
+{
+	pfx_sint_t	x;
+	pfx_sint_t	y;
+	pfx_sint_t	z;
+};
+
+struct st_pfx_vector_4i
+{
+	pfx_sint_t	x;
+	pfx_sint_t	y;
+	pfx_sint_t	z;
+	pfx_sint_t	w;
+};
+
 union un_pfx_vector_2
 {
 	VEC_FLOAT				m_vec_f[2];
-	st_pfx_vector_2f	m_vec;
+	pfx_vector2f_t		m_vec;
+	pfx_vector2i_t		m_vec_i;
 };
 
 union un_pfx_vector_3
 {
 	VEC_FLOAT				m_vec_f[3];
-	st_pfx_vector_3f	m_vec;
+	pfx_vector3f_t		m_vec;
+	pfx_vector3i_t		m_vec_i;
 };
 
 union un_pfx_vector_4
 {
 	VEC_FLOAT				m_vec_f[4];
-	st_pfx_vector_4f	m_vec;
+	pfx_vector4f_t		m_vec;
+	pfx_vector4i_t		m_vec_i;
 };
 
 typedef enum enumVECTOR_INDEX

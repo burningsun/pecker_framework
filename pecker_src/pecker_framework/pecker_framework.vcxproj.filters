@@ -186,6 +186,12 @@
     <ClInclude Include="render\render_util\pfx_load_uncompress_bitmap.h">
       <Filter>render\render_util</Filter>
     </ClInclude>
+    <ClInclude Include="render\pfx_render_type.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_rendertevent.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">
@@ -262,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="test\pfx_matrix_test.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\pfx_render_pipeline.cpp">
+      <Filter>render\render_system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

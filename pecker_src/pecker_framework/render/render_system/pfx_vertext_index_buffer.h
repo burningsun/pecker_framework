@@ -12,6 +12,30 @@
 
 PFX_C_EXTERN_BEGIN
 
+typedef enum enumGRAM_DATA_FORMAT
+{
+	PFX_BYTE_FMT = 0,
+	PFX_UNSIGNED_BYTE_FMT,
+	PFX_SHORT_FMT,
+	PFX_UNSIGNED_SHORT_FMT,
+	PFX_FLOAT_FMT,
+	PFX_FIXED_FMT,
+
+	PFX_EXTERN_FMT,
+	VEX_DATA_FORMAT_COUNT
+}GRAM_DATA_FORMAT_t;
+
+typedef struct st_GRAM_ARRAY_BUFFER
+{
+	pfx_bool_t		m_is_normalized;
+	pfx_enum_t	m_data_format; //GRAM_DATA_FORMAT_t
+	pfx_usize_t		m_vertex_item_size;
+	pfx_usize_t		m_buffer_size;
+	pfx_byte_t*	m_vertex_buffer;
+
+}GRAM_ARRAY_BUFFER_t;
+
+
 
 PFX_C_EXTERN_END
 

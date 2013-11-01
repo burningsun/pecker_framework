@@ -45,11 +45,13 @@
     <ClInclude Include="pfx_configs.h" />
     <ClInclude Include="pfx_defines.h" />
     <ClInclude Include="render\pfx_render.h" />
+    <ClInclude Include="render\pfx_render_type.h" />
     <ClInclude Include="render\render_system\opengles\pfx_view_context_opengles.h" />
     <ClInclude Include="render\render_system\pfx_framebuffer.h" />
     <ClInclude Include="render\render_system\pfx_renderbuffer.h" />
     <ClInclude Include="render\render_system\pfx_rendersystem.h" />
     <ClInclude Include="render\render_system\pfx_rendertarget.h" />
+    <ClInclude Include="render\render_system\pfx_rendertevent.h" />
     <ClInclude Include="render\render_system\pfx_render_pipeline.h" />
     <ClInclude Include="render\render_system\pfx_shader_program.h" />
     <ClInclude Include="render\render_system\pfx_texture.h" />
@@ -72,6 +74,7 @@
     <ClCompile Include="native\pfx_file_io.cpp" />
     <ClCompile Include="native\pfx_stream.cpp" />
     <ClCompile Include="native\pfx_timetick.cpp" />
+    <ClCompile Include="render\render_system\pfx_render_pipeline.cpp" />
     <ClCompile Include="test\pfx_arrayblock_test.cpp" />
     <ClCompile Include="test\pfx_array_test.cpp" />
     <ClCompile Include="test\pfx_avl_test.cpp" />
