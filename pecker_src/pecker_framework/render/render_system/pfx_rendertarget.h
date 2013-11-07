@@ -36,13 +36,24 @@ public:
 		return m_target;
 	}
 
-	inline pfx_result_t using_shader_program (Ipfx_shader_program* PARAM_INOUT program_,
-		Ipfx_shader_program_params* PARAM_INOUT program_params_,
+	inline pfx_result_t using_render_params (
+		Ipfx_shader_render_params* PARAM_INOUT program_params_,
 		delete_shader_params_callback del_call_back = null)
 	{
-		RETURN_INVALID_RESULT ((null == program_),PFX_STATUS_INVALID_PARAMS);
-		return insert_shader_program_to_pipeline_unsafe (program_,program_params_,del_call_back);
+		RETURN_INVALID_RESULT ((null == program_params_),PFX_STATUS_INVALID_PARAMS);
+		return insert_shader_program_to_pipeline_unsafe (program_params_,del_call_back);
 	}
+
+	//inline pfx_result_t using_shader_program (Ipfx_shader_program* PARAM_INOUT program_,
+	//	Ipfx_shader_render_params* PARAM_INOUT program_params_,
+	//	delete_shader_params_callback del_call_back = null)
+	//{
+	//	pfx_result_t status;
+	//	RETURN_INVALID_RESULT ((null == program_params_),PFX_STATUS_INVALID_PARAMS);
+	//	status = program_params_->bind_render_program(program_);
+	//	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),PFX_STATUS_FAIL);
+	//	return insert_shader_program_to_pipeline_unsafe (program_params_,del_call_back);
+	//}
 	virtual pfx_result_t bind_render_target () = 0;
 	virtual pfx_result_t unbind_render_target () = 0;
 }

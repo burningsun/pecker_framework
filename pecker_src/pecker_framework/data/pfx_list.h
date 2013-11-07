@@ -41,72 +41,135 @@ PFX_INLINE const linked_list_node_t* get_linked_list_next_node (const linked_lis
 
 PFX_INLINE const linked_list_node_t* get_linked_list_prev_node (const linked_list_node_t* PARAM_IN	pnode);
 
+#define PFX_GET_LIST_PREV(NODE) ((NODE)->m_prev_node)
+#define PFX_GET_LIST_NEXT(NODE) ((NODE)->m_pnext_node)
+
 #define PFX_INIT_LIST_NODE(NODE) \
-do	\
-{	\
-	if (null == NODE)							\
-	{														\
-		break;											\
-	};														\
-	NODE->m_prev_node = null;		\
-	NODE->m_pnext_node = null;		\
+	do	\
+	{	\
+		if (null == (NODE))							\
+		{														\
+			break;											\
+		};														\
+	PFX_GET_LIST_PREV(NODE) = null;				\
+	PFX_GET_LIST_NEXT(NODE) = null;				\
 }while(0);
 
 #define PFX_INSERT_LIST_NODE_END(pnode,pnode_add,pnode_next) \
 	do	\
 	{	\
-		if (null == pnode || null == pnode_add)				\
+		if (null == (pnode) || null == (pnode_add))		\
 		{																				\
-			pnode_add=null;												\
+			(pnode_add)=null;												\
 			break;																	\
 		}																				\
-		pnode_next = pnode->m_pnext_node;				\
-		pnode->m_pnext_node = pnode_add;				\
-		pnode_add->m_prev_node = pnode;					\
-		pnode_add->m_pnext_node = pnode_next;		\
-		if (pnode_next)														\
-		{																				\
-			pnode_next->m_prev_node = pnode_add;	\
-		}																				\
-	}while(0);
+	(pnode_next) = PFX_GET_LIST_NEXT(pnode);						\
+	PFX_GET_LIST_NEXT(pnode) = (pnode_add);						\
+	PFX_GET_LIST_PREV(pnode_add) = (pnode);						\
+	PFX_GET_LIST_NEXT(pnode_add) = (pnode_next);			\
+	if ((pnode_next))													\
+	{																				\
+		PFX_GET_LIST_PREV(pnode_next) = (pnode_add);		\
+	}																				\
+}while(0);
 
 #define PFX_INSERT_LIST_NODE_BEGIN(pnode,pnode_add,pnode_pre) \
 	do	\
 	{																					\
-		if (null == pnode || null == pnode_add)				\
+		if (null == (pnode) || null == (pnode_add))		\
 		{																				\
-			pnode_add=null;												\
+			(pnode_add)=null;												\
 			break;																	\
 		}																				\
-		pnode_pre = pnode->m_prev_node;					\
-		pnode->m_prev_node = pnode_add;					\
-		pnode_add->m_pnext_node = pnode;				\
-		pnode_add->m_prev_node = pnode_pre;			\
-		if (pnode_pre)														\
+		(pnode_pre) = PFX_GET_LIST_PREV(pnode);						\
+		PFX_GET_LIST_PREV(pnode) = (pnode_add);						\
+		PFX_GET_LIST_NEXT(pnode_add) = (pnode);						\
+		PFX_GET_LIST_PREV(pnode_add) = (pnode_pre);				\
+		if ((pnode_pre))														\
 		{																				\
-			pnode_pre->m_pnext_node = pnode_add;	\
+			PFX_GET_LIST_NEXT(pnode_pre) = (pnode_add);			\
 		}																				\
-	}while(0);
+}while(0);
 
 #define PFX_REMOVE_LIST_NODE(pnode,pnode_pre,pnode_next) \
 	do	\
 	{																					\
-		if (null == pnode)													\
+		if (null == (pnode))													\
 		{																				\
 			break;																	\
 		}																				\
-		pnode_next = pnode->m_pnext_node;				\
-		pnode_pre = pnode->m_prev_node;					\
-		if (pnode_next)														\
+		(pnode_next) = PFX_GET_LIST_NEXT(pnode);						\
+		(pnode_pre) = PFX_GET_LIST_PREV(pnode);						\
+		if ((pnode_next))													\
 		{																				\
-		pnode_next->m_prev_node = pnode_pre;			\
+			PFX_GET_LIST_PREV(pnode_next) = (pnode_pre);			\
 		}																				\
-		if (pnode_pre)														\
+		if ((pnode_pre))														\
 		{																				\
-		pnode_pre->m_pnext_node = pnode_next;		\
+			PFX_GET_LIST_NEXT(pnode_pre) = (pnode_next);			\
 		}																				\
-	}while(0);
+}while(0);
 
+#define PFX_INSERT_NODE_TO_LIST_NODE_END(type_name,pnode,pnode_add,pbengin_node,pend_node) \
+	do	\
+{																					\
+	type_name pnode_next;										\
+	if (null == (pnode) || null == (pnode_add))		\
+	{																				\
+		break;																	\
+	}																				\
+	if ((pend_node) == (pnode))										\
+	{																				\
+		(pend_node) = (pnode_add);								\
+	}																				\
+	if (null == (pbengin_node))									\
+	{																				\
+		(pbengin_node) = (pnode_add);						\
+	}																				\
+	PFX_INSERT_LIST_NODE_END(pnode,pnode_add,pnode_next);\
+}while(0);
+
+#define PFX_INSERT_NODE_TO_LIST_NODE_BEGIN(type_name,pnode,pnode_add,pbengin_node,pend_node) \
+	do	\
+{																					\
+	type_name pnode_pre;										\
+	if (null == (pnode) || null == (pnode_add))		\
+	{																				\
+		break;																	\
+	}																				\
+	if ((pbengin_node) == (pnode))							\
+	{																				\
+		(pbengin_node) = (pnode_add);						\
+	}																				\
+	if (null == (pend_node))										\
+	{																				\
+		(pend_node) = (pnode_add);								\
+	}																				\
+	PFX_INSERT_LIST_NODE_BEGIN(pnode,pnode_add,pnode_pre);\
+}while(0);
+
+#define PFX_REMOVE_LIST_NODE_IN_LIST(type_name,pnode,pbengin_node,pend_node) \
+	do	\
+{																					\
+	type_name pnode_pre;										\
+	type_name pnode_next;										\
+	if (null == (pnode) || null == (pbengin_node)	\
+		|| null == (pend_node))									\
+	{																				\
+		break;																	\
+	}																				\
+	if ((pbengin_node) == (pnode))							\
+	{																				\
+		(pbengin_node) = PFX_GET_LIST_PREV(pnode);				\
+	};																				\
+	if ((pend_node) == (pnode))									\
+	{																				\
+		(pend_node) = PFX_GET_LIST_NEXT(pnode);					\
+	};																				\
+	PFX_REMOVE_LIST_NODE(pnode,pnode_pre,pnode_next);\
+}while(0);
+
+#define PFX_CHECK_LIST_IS_EMPTY(LIST_) ((LIST_)?(((LIST_)->m_first) && ((LIST_)->m_last)):1)
 
 //////////////////////////////////////////////////////////////////////////
 PFX_INLINE linked_list_node_t* init_linked_list_node(linked_list_node_t* PARAM_INOUT pnode)

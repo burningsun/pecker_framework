@@ -29,13 +29,13 @@ PFX_Interface Ipfx_message_event
 };
 
 PFX_Interface Ipfx_shader_program;
-PFX_Interface Ipfx_shader_program_params;
+PFX_Interface Ipfx_shader_render_params;
 
 PFX_Interface Ipfx_render_event
 {
 	virtual ~Ipfx_render_event() {;}
 	virtual pfx_result_t on_render (Ipfx_shader_program* PARAM_INOUT shader_,
-		Ipfx_shader_program_params* PARAM_INOUT params_,pfx_unknown_event_object_t pobject) = 0;
+		Ipfx_shader_render_params* PARAM_INOUT params_,pfx_unknown_event_object_t pobject) = 0;
 };
 
 

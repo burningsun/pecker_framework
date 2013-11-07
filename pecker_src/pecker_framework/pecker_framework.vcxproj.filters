@@ -272,6 +272,9 @@
     <ClCompile Include="render\render_system\pfx_render_pipeline.cpp">
       <Filter>render\render_system</Filter>
     </ClCompile>
+    <ClCompile Include="render\pfx_render_type.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="test_data\bst_test_data.txt">

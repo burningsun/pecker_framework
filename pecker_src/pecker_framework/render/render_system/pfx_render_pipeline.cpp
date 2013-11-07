@@ -11,12 +11,11 @@
 
 
 
-pfx_result_t insert_shader_program_to_pipeline_unsafe (Ipfx_shader_program* PARAM_INOUT program_,
-	Ipfx_shader_program_params* PARAM_INOUT params,
-	delete_shader_params_callback del_callback)
-{
-	return PFX_STATUS_OK;
-}
+//pfx_result_t insert_shader_program_to_pipeline_unsafe (Ipfx_shader_render_params* PARAM_INOUT params,
+//	delete_shader_params_callback del_callback)
+//{
+//	return PFX_STATUS_OK;
+//}
 
 pfx_result_t run_pipeline ()
 {
