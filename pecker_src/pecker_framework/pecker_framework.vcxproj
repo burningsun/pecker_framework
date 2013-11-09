@@ -52,6 +52,7 @@
     <ClInclude Include="render\render_system\pfx_rendersystem.h" />
     <ClInclude Include="render\render_system\pfx_rendertarget.h" />
     <ClInclude Include="render\render_system\pfx_rendertevent.h" />
+    <ClInclude Include="render\render_system\pfx_renderdevice.h" />
     <ClInclude Include="render\render_system\pfx_render_pipeline.h" />
     <ClInclude Include="render\render_system\pfx_shader_program.h" />
     <ClInclude Include="render\render_system\pfx_texture.h" />

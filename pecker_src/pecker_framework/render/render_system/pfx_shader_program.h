@@ -13,6 +13,7 @@
 #include "../../data/pfx_string.h"
 #include "pfx_vertext_index_buffer.h"
 #include "pfx_rendertevent.h"
+#include "../pfx_render_type.h"
 
 //typedef void* pfx_unknown_shader_param_object_t;
 //PFX_Interface Ipfx_shader_params_menager
@@ -25,10 +26,14 @@
 //	virtual pfx_result_t bind_shader_params (pfx_result_t frame_number,pfx_unknown_shader_param_object_t shader_params) = 0;
 //};
 
+// shader 渲染参数
+// 主要用于渲染流水线的调用，和逻辑渲染与实际渲染分离用
 PFX_Interface Ipfx_shader_render_params
 {
 	Ipfx_shader_render_params ():m_render_event(null),m_event_obejct(null),m_render_program(null){;}
 	virtual ~Ipfx_shader_render_params(){clear_all_param();}
+
+	// 串行实际渲染操作
 	virtual pfx_result_t lock() = 0;
 	virtual pfx_result_t unlock() = 0;
 
@@ -46,16 +51,128 @@ public:
 	PFX_INLINE pfx_result_t bind_render_program (Ipfx_shader_program* PARAM_INOUT use_render_program_);
 	PFX_INLINE void clear_render_program ();
 protected:
+	// 渲染事件，主要作用是处理实际渲染事件
 	Ipfx_render_event* m_render_event;
+	// shader处理程序，主要作用是使用某个shader处理程序作为该次渲染事件的主要shader处理程序
 	Ipfx_shader_program* m_render_program;
+	// 事件对象，主要作用是绑定该次渲染的参数，如MVP矩阵、镜头等，自由度高，
+	// 该参数作用主要用户逻辑渲染与实际渲染分离用
 	pfx_unknown_event_object_t m_event_obejct;
 };
 
 
-//typedef enum 
+typedef enum enumSHADER_PARAM_TYPE
+{
+	PFXSPT_UNKNOWN_SHADER_PARAM_TYPE = 0,
+	
+	PFXSPT_FLOAT1,
+	PFXSPT_FLOAT2,
+	PFXSPT_FLOAT3,
+	PFXSPT_FLOAT4,
+	PFXSPT_INT1,
+	PFXSPT_INT2,
+	PFXSPT_INT3,
+	PFXSPT_INT4,
+
+	PFXSPT_MATRIX_2X2,
+	PFXSPT_MATRIX_2X3,
+	PFXSPT_MATRIX_2X4,
+	PFXSPT_MATRIX_3X2,
+	PFXSPT_MATRIX_3X3,
+	PFXSPT_MATRIX_3X4,
+	PFXSPT_MATRIX_4X2,
+	PFXSPT_MATRIX_4X3,
+	PFXSPT_MATRIX_4X4,
+
+	PFXSPT_SAMPLER1D,
+	PFXSPT_SAMPLER2D,
+	PFXSPT_SAMPLER3D,
+	PFXSPT_SAMPLERCUBE,
+	PFXSPT_SAMPLER1DSHADOW,
+	PFXSPT_SAMPLER2DSHADOW,
+	PFXSPT_SAMPLER2DARRAY,
+
+	PFXSPT_SHADER_PARAM_TYPE_COUNT
+}PFX_SHADER_PARAM_TYPE_t;
+
+typedef void* pfx_unknown_shader_param_object_t;
+
+typedef enum enumSHADER_TYPE
+{
+	PFXST_VERTEXT_SHADER = 0,
+	PFXST_PIXEL_SHADER,
+	PFXST_SHADER_TYPE_COUNT
+}PFX_SHADER_TYPE_t;
+
+// shader 处理器
+PFX_Interface Ipfx_shader
+{
+	virtual ~Ipfx_shader() {;}
+
+	virtual pfx_long_t create_shader (const pfx_string_t* PARAM_IN str_shader_codes,
+		const char* str_func_enterpoint = "main",
+		const char* str_detials = null) = 0;
+
+	virtual pfx_result_t delete_shader () = 0;
+
+	virtual pfx_long_t get_shader_location () = 0;
+
+	virtual PFX_SHADER_TYPE_t get_type () const = 0;
+};
+
 PFX_Interface Ipfx_shader_program
 {
 	virtual ~Ipfx_shader_program(){;}
+
+	// 配置当前绑定的shader处理器的参数
+	// 顶点参数
+	virtual pfx_long_t get_vertex_attribute_location (PFX_SHADER_PARAM_TYPE_t type_,
+		const pfx_string_t* PARAM_IN attriute_name,
+		pfx_result_t & PARAM_OUT result_) = 0;
+
+	virtual pfx_result_t set_const_vertex_attribute (PFX_SHADER_PARAM_TYPE_t type_,
+		const pfx_string_t* PARAM_IN attriute_name,
+		pfx_unknown_shader_param_object_t object_,
+		pfx_usize_t object_size_) = 0;
+
+	virtual  pfx_result_t set_vertex_pointer (PFX_SHADER_PARAM_TYPE_t type_,
+		const pfx_string_t* PARAM_IN attriute_name,
+		const CONST_GRAM_ARRAY_BUFFER_t& PARAM_IN gram_buffer_) = 0;
+
+	virtual pfx_result_t set_const_vertex_attribute (PFX_SHADER_PARAM_TYPE_t type_,
+		pfx_long_t attriute_name_location,
+		pfx_unknown_shader_param_object_t object_,pfx_usize_t object_size_) = 0;
+
+	virtual  pfx_result_t set_vertex_pointer (PFX_SHADER_PARAM_TYPE_t type_,
+		pfx_long_t attriute_name_location,
+		const CONST_GRAM_ARRAY_BUFFER_t& PARAM_IN gram_buffer_) = 0;
+
+	// UNIFORM 绘图常量参数
+	virtual pfx_long_t get_uniform_location (PFX_SHADER_PARAM_TYPE_t type_,
+		const pfx_string_t* PARAM_IN uniform_name,
+		pfx_result_t & PARAM_OUT result_) = 0;
+
+	virtual pfx_result_t set_uniform (PFX_SHADER_PARAM_TYPE_t type_,
+		const pfx_string_t* PARAM_IN attriute_name, 
+		pfx_unknown_shader_param_object_t object_,
+		pfx_usize_t object_size_) = 0;
+
+	virtual pfx_result_t set_uniform (PFX_SHADER_PARAM_TYPE_t type_,
+		pfx_long_t uniform_name_location,
+		pfx_unknown_shader_param_object_t object_,
+		pfx_usize_t object_size_) = 0;
+
+	// shader 处理程序
+	virtual pfx_result_t create_program (pfx_handle_t device_) = 0;
+	virtual pfx_long_t link_program () = 0;
+	virtual pfx_result_t delete_program () = 0;
+
+	virtual pfx_result_t attach_shader (Ipfx_shader* PARAM_INOUT shader) = 0;
+	
+	
+	virtual pfx_result_t use_program () = 0;
+
+	
 
 	//virtual pfx_result_t set_vertex_attribute (const pfx_string_t* PARAM_IN attriute_name, pfx_sint_t X) = 0;
 	//virtual pfx_result_t set_vertex_attribute (const pfx_string_t* PARAM_IN attriute_name, const pfx_vector2i_t& PARAM_IN vec) = 0;
