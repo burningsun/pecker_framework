@@ -11,10 +11,11 @@
 #include "../../pfx_defines.h"
 #include "../../data/pfx_matrix4.h"
 #include "../../data/pfx_string.h"
-#include "pfx_vertext_index_buffer.h"
+#include "pfx_gram_array_params.h"
 #include "pfx_rendertevent.h"
 #include "../pfx_render_type.h"
 
+PECKER_BEGIN
 //typedef void* pfx_unknown_shader_param_object_t;
 //PFX_Interface Ipfx_shader_params_menager
 //{
@@ -104,6 +105,20 @@ typedef enum enumSHADER_TYPE
 	PFXST_SHADER_TYPE_COUNT
 }PFX_SHADER_TYPE_t;
 
+typedef enum enumPrimitiveMode
+{
+	PFX_PRI_POINTS = 0,
+	PFX_PRI_LINES,
+	PFX_PRI_LINE_STRIP,
+	PFX_PRI_LINE_LOOP,
+	PFX_PRI_TRIANGLES,
+	PFX_PRI_TRIANGLE_STRIP,
+	PFX_PRI_TRIANGLE_FAN,
+
+	PFX_PRIMITIVE_MODE_COUNT
+}PFX_PRIMITIVE_MODE_t;
+
+
 // shader 处理器
 PFX_Interface Ipfx_shader
 {
@@ -126,7 +141,7 @@ PFX_Interface Ipfx_shader_program
 
 	// 配置当前绑定的shader处理器的参数
 	// 顶点参数
-	virtual pfx_long_t get_vertex_attribute_location (PFX_SHADER_PARAM_TYPE_t type_,
+	virtual pfx_long_t get_vertex_attribute_location (//PFX_SHADER_PARAM_TYPE_t type_,
 		const pfx_string_t* PARAM_IN attriute_name,
 		pfx_result_t & PARAM_OUT result_) = 0;
 
@@ -137,7 +152,7 @@ PFX_Interface Ipfx_shader_program
 
 	virtual  pfx_result_t set_vertex_pointer (PFX_SHADER_PARAM_TYPE_t type_,
 		const pfx_string_t* PARAM_IN attriute_name,
-		const CONST_GRAM_ARRAY_BUFFER_t& PARAM_IN gram_buffer_) = 0;
+		const PFX_CONST_GRAM_ARRAY_PARAMS_t& PARAM_IN gram_buffer_) = 0;
 
 	virtual pfx_result_t set_const_vertex_attribute (PFX_SHADER_PARAM_TYPE_t type_,
 		pfx_long_t attriute_name_location,
@@ -145,7 +160,17 @@ PFX_Interface Ipfx_shader_program
 
 	virtual  pfx_result_t set_vertex_pointer (PFX_SHADER_PARAM_TYPE_t type_,
 		pfx_long_t attriute_name_location,
-		const CONST_GRAM_ARRAY_BUFFER_t& PARAM_IN gram_buffer_) = 0;
+		const PFX_CONST_GRAM_ARRAY_PARAMS_t& PARAM_IN gram_buffer_) = 0;
+
+	virtual pfx_result_t enable_vertex_array (pfx_long_t tagVertex) = 0;
+	virtual pfx_result_t disable_vertex_array (pfx_long_t tagVertex) = 0;
+
+	virtual pfx_result_t draw_vertex_array (PFX_PRIMITIVE_MODE_t mode_,
+		pfx_index_t fist_vertex_index,
+		pfx_usize_t primitive_count) = 0;
+
+	virtual pfx_result_t draw_vertex_element_array (PFX_PRIMITIVE_MODE_t mode_,
+		const PFX_CONST_GRAM_ELEMENT_INDICES_PARAMS_t& indices) = 0;
 
 	// UNIFORM 绘图常量参数
 	virtual pfx_long_t get_uniform_location (PFX_SHADER_PARAM_TYPE_t type_,
@@ -323,5 +348,7 @@ PFX_INLINE void Ipfx_shader_render_params::clear_render_program ()
 	m_render_program = null;
 	unlock();
 }
+
+PECKER_END
 
 #endif			//PFX_SHADER_PROGRAM_H_

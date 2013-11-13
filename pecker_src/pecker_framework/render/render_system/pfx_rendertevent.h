@@ -11,6 +11,8 @@
 #include "../../pfx_defines.h"
 #include "../pfx_render_type.h"
 
+PECKER_BEGIN
+
 typedef pfx_handle_t pfx_unknown_event_object_t;
 
 typedef struct pfx_message_event_code pfx_message_event_code_t;
@@ -38,5 +40,6 @@ PFX_Interface Ipfx_render_event
 		Ipfx_shader_render_params* PARAM_INOUT params_,pfx_unknown_event_object_t pobject) = 0;
 };
 
+PECKER_END
 
 #endif			//PFX_RENDEREVENT_H_

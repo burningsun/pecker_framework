@@ -11,7 +11,8 @@
 #include "../pfx_defines.h"
 #include "../data/pfx_list.h"
 
-PFX_C_EXTERN_BEGIN
+
+PECKER_BEGIN
 
 typedef struct st_pfx_color pfx_color_t;
 
@@ -106,6 +107,6 @@ PFX_INLINE pfx_result_t	render_reference_object::new_instance ()
 
 //PFX_INLINE 
 
-PFX_C_EXTERN_END
+PECKER_END
 
 #endif			//PFX_RENDER_TYPE_H_

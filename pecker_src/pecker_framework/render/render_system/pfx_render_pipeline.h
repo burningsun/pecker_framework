@@ -10,17 +10,30 @@
 
 #include "../../pfx_defines.h"
 
+PECKER_BEGIN
+
 PFX_Interface Ipfx_shader_program;
 PFX_Interface Ipfx_shader_render_params;
 
 
-//typedef pfx_result_t (*delete_shader_params_callback) (Ipfx_shader_render_params* PARAM_INOUT params);
+PFX_Interface Ipfx_render_frame
+{
 
-//pfx_result_t insert_shader_program_to_pipeline_unsafe (Ipfx_shader_render_params* PARAM_INOUT params,delete_shader_params_callback del_callback);
+};
 
+PFX_Interface Ipfx_render_frame_list
+{
+
+};
+
+typedef pfx_result_t (*delete_shader_params_callback) (Ipfx_shader_render_params* PARAM_INOUT params);
+
+
+
+pfx_result_t insert_shader_program_to_pipeline (Ipfx_shader_render_params* PARAM_INOUT params,delete_shader_params_callback del_callback);
 
 pfx_result_t run_pipeline ();
 
-
+PECKER_END
 
 #endif			//PFX_UTIL_H_

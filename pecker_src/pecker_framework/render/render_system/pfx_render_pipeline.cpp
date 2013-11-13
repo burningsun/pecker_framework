@@ -10,14 +10,17 @@
 #include "../../data/pfx_list.h"
 
 
+PECKER_BEGIN
 
-//pfx_result_t insert_shader_program_to_pipeline_unsafe (Ipfx_shader_render_params* PARAM_INOUT params,
-//	delete_shader_params_callback del_callback)
-//{
-//	return PFX_STATUS_OK;
-//}
+pfx_result_t insert_shader_program_to_pipeline_unsafe (Ipfx_shader_render_params* PARAM_INOUT params,
+	delete_shader_params_callback del_callback)
+{
+	return PFX_STATUS_OK;
+}
 
 pfx_result_t run_pipeline ()
 {
 	return PFX_STATUS_OK;
 }
+
+PECKER_END

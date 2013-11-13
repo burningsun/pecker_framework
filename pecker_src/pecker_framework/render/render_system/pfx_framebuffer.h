@@ -10,6 +10,10 @@
 
 #include "../../pfx_defines.h"
 
+PECKER_BEGIN
+
+PECKER_END
+
 PFX_C_EXTERN_BEGIN
 
 PFX_C_EXTERN_END

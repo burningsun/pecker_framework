@@ -7,6 +7,7 @@
 
 #include "pfx_render_type.h"
 
+PECKER_BEGIN
 
 render_reference_object::render_reference_object() : m_pnext_node(null),m_prev_node(null)
 {
@@ -63,3 +64,5 @@ render_reference_object::~render_reference_object ()
 		m_prev_node = null;
 	}
 }
+
+PECKER_END

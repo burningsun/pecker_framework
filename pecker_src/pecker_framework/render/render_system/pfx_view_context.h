@@ -13,6 +13,7 @@
 #include "pfx_rendertevent.h"
 #include "pfx_rendertarget.h"
 
+PECKER_BEGIN
 
 PFX_Interface Ipfx_message_event;
 class pfx_windows_context_base
@@ -90,5 +91,7 @@ public:
 //
 //
 //PFX_C_EXTERN_END
+
+PECKER_END
 
 #endif			//PFX_VIEW_CONTEXT_H_

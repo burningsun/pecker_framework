@@ -16,9 +16,13 @@ PFX_C_EXTERN_BEGIN
 
 PFX_C_EXTERN_END
 
+PECKER_BEGIN
+
 PFX_Interface IPfx_render_device
 {
 
 };
+
+PECKER_END
 
 #endif			//PFX_RENDERDEVICE_H_

@@ -10,9 +10,9 @@
 
 #include "../../pfx_defines.h"
 
-PFX_C_EXTERN_BEGIN
+PECKER_BEGIN
 
 
-PFX_C_EXTERN_END
+PECKER_END
 
 #endif			//PFX_TEXTURE_H_

@@ -171,9 +171,6 @@
     <ClInclude Include="render\render_system\pfx_texture.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_system\pfx_vertext_index_buffer.h">
-      <Filter>render\render_system</Filter>
-    </ClInclude>
     <ClInclude Include="render\render_system\pfx_view_context.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
@@ -193,6 +190,12 @@
       <Filter>render\render_system</Filter>
     </ClInclude>
     <ClInclude Include="render\render_system\pfx_renderdevice.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_gpu_array_buffer.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_gram_array_params.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
   </ItemGroup>

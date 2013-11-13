@@ -11,38 +11,35 @@
 #include "../../pfx_defines.h"
 #include "../pfx_render_type.h"
 #include "pfx_render_pipeline.h"
-PFX_C_EXTERN_BEGIN
 
-struct pfx_render_target
+PECKER_BEGIN
+
+PFX_Interface pfx_render_target
 {
 protected:
 	pfx_usize_t		m_width;
 	pfx_usize_t		m_height;
 	pfx_long_t		m_target;
+	//Ipfx_shader_render_params* m_render_params;
 public:
-	pfx_render_target(pfx_usize_t width, pfx_usize_t height):m_width(width),m_height(height){;} 
+	pfx_render_target(pfx_usize_t width, pfx_usize_t height):m_width(width),m_height(height)//,m_render_params(null)
+	{;} 
 	virtual ~pfx_render_target(){;}
 
-	inline pfx_usize_t	get_width () const
-	{
-		return m_width;
-	}
-	inline pfx_usize_t	get_height () const
-	{
-		return m_height;
-	}
-	inline pfx_long_t	get_target () const
-	{
-		return m_target;
-	}
+	PFX_INLINE pfx_usize_t	get_width  () const;
+	PFX_INLINE pfx_usize_t	get_height () const;
+	PFX_INLINE pfx_long_t		get_target () const;
 
-	inline pfx_result_t using_render_params (
-		Ipfx_shader_render_params* PARAM_INOUT program_params_,
-		delete_shader_params_callback del_call_back = null)
-	{
-		RETURN_INVALID_RESULT ((null == program_params_),PFX_STATUS_INVALID_PARAMS);
-		return insert_shader_program_to_pipeline_unsafe (program_params_,del_call_back);
-	}
+	//PFX_INLINE Ipfx_shader_render_params* get_render_params () const;
+
+	//virtual pfx_result_t init_render_params() = 0;
+	//inline pfx_result_t using_render_params (
+	//	Ipfx_shader_render_params* PARAM_INOUT program_params_,
+	//	delete_shader_params_callback del_call_back = null)
+	//{
+	//	RETURN_INVALID_RESULT ((null == program_params_),PFX_STATUS_INVALID_PARAMS);
+	//	return insert_shader_program_to_pipeline (program_params_,del_call_back);
+	//}
 
 	//inline pfx_result_t using_shader_program (Ipfx_shader_program* PARAM_INOUT program_,
 	//	Ipfx_shader_render_params* PARAM_INOUT program_params_,
@@ -54,9 +51,27 @@ public:
 	//	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),PFX_STATUS_FAIL);
 	//	return insert_shader_program_to_pipeline_unsafe (program_params_,del_call_back);
 	//}
-	virtual pfx_result_t bind_render_target () = 0;
-	virtual pfx_result_t unbind_render_target () = 0;
+	virtual pfx_result_t begin_draw (pfx_handle_t PARAM_INOUT params_) = 0;
+	virtual pfx_result_t end_draw () = 0;
 }
+
+PFX_INLINE pfx_usize_t	pfx_render_target::get_width () const
+{
+	return m_width;
+}
+PFX_INLINE pfx_usize_t	pfx_render_target::get_height () const
+{
+	return m_height;
+}
+PFX_INLINE pfx_long_t	pfx_render_target::get_target () const
+{
+	return m_target;
+}
+
+//PFX_INLINE Ipfx_shader_render_params* pfx_render_target::get_render_params () const
+//{
+//	return m_render_params;
+//}
 //typedef struct 	st_pfx_render_target pfx_render_target_t;
 //
 //struct st_pfx_render_target
@@ -70,6 +85,6 @@ public:
 //		pfx_color_t color,pfx_float_t depth_value,pfx_bitfield_t stencil_mask);
 //};
 //
-//PFX_C_EXTERN_END
+PECKER_END
 
 #endif			//PFX_UTIL_H_
