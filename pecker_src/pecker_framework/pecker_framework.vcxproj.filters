@@ -198,6 +198,9 @@
     <ClInclude Include="render\render_system\pfx_gram_array_params.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
+    <ClInclude Include="render\pfx_image.h">
+      <Filter>render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">

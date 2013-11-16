@@ -44,6 +44,7 @@
     <ClInclude Include="pfx.h" />
     <ClInclude Include="pfx_configs.h" />
     <ClInclude Include="pfx_defines.h" />
+    <ClInclude Include="render\pfx_image.h" />
     <ClInclude Include="render\pfx_render.h" />
     <ClInclude Include="render\pfx_render_type.h" />
     <ClInclude Include="render\render_system\opengles\pfx_view_context_opengles.h" />
