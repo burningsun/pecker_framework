@@ -52,8 +52,8 @@ public:
 	//	return insert_shader_program_to_pipeline_unsafe (program_params_,del_call_back);
 	//}
 	virtual pfx_result_t begin_draw (pfx_handle_t PARAM_INOUT params_) = 0;
-	virtual pfx_result_t end_draw () = 0;
-}
+	virtual pfx_result_t end_draw (pfx_boolean_t flag = pfx_false) = 0;
+};
 
 PFX_INLINE pfx_usize_t	pfx_render_target::get_width () const
 {

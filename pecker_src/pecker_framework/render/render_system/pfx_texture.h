@@ -36,7 +36,7 @@ typedef enum enumTEXTURE_SURFACE_TYPE
 	PFX_TEXTURE_CUBE_MAP_NEGATIVE_Y_SURFACE,
 	PFX_TEXTURE_CUBE_MAP_NEGATIVE_Z_SURFACE,
 
-	PFX_TEXTURE_TYPE_COUNT
+	PFX_TEXTURE_SURFACE_TYPE_COUNT
 }PFX_TEXTURE_SURFACE_TYPE_t;
 
 typedef enum enumTEXTURE_PARAMS_NAME
@@ -52,12 +52,12 @@ typedef enum enumTEXTURE_PARAMS_NAME
 typedef enum enumTEXTURE_PARAMS
 {
 	//PFX_TRN_MAG_FILTER
-	PFX_TP_NEAREST = 0
+	PFX_TP_NEAREST = 0,
 	PFX_TP_LINEAR,
 
 	//PFX_TRN_MIN_FILTER
-	PFX_TP_NEAREST,
-	PFX_TP_LINEAR,
+	//PFX_TP_NEAREST,
+	//PFX_TP_LINEAR,
 	PFX_TP_NEAREST_MIPMAP_NEAREST,
 	PFX_TP_NEAREST_MIPMAP_LINEAR,
 	PFX_TP_LINEAR_MIPMAP_NEAREST,
@@ -76,6 +76,8 @@ PFX_Interface Ipfx_texture
 {
 	virtual pfx_result_t init_texture (PFX_TEXTURE_TYPE_t type_) = 0;
 	virtual pfx_result_t dispose_texture () = 0;
+
+	virtual pfx_long_t get_texture () const = 0;
 	
 	//////////////////////////////////////////////////////////////////////////
 	virtual pfx_result_t load_texture_from_memery (PFX_TEXTURE_SURFACE_TYPE_t surface_type_,
@@ -104,13 +106,15 @@ PFX_Interface Ipfx_texture
 		const PFX_CONST_COMPRESSED_IMAGE_t* PARAM_IN image_) = 0;
 	//////////////////////////////////////////////////////////////////////////
 
-	virtual pfx_result_t begin_setting_texture (PFX_TEXTURE_TYPE_t surface_type_ = PFX_TEXTURE_DEFUALT_SURFACE) = 0;
-	virtual pfx_result_t end_setting_texture () = 0;
+	virtual pfx_result_t begin_setting_texture (PFX_TEXTURE_TYPE_t type_ = PFX_TEXTURE_DEFUALT) = 0;
+	virtual pfx_result_t end_setting_texture (pfx_boolean_t flag = pfx_false) = 0;
 
 	virtual pfx_result_t set_texture_params (PFX_TEXTURE_SURFACE_TYPE_t surface_type_,
 		PFX_TEXTURE_PARAMS_NAME_t	params_name,
 		PFX_TEXTURE_PARAMS_t				param_) = 0;
 
+	//////////////////////////////////////////////////////////////////////////
+	//virtual pfx_result_t set_texture_unit (pfx_index_t unit_number) = 0;
 	//////////////////////////////////////////////////////////////////////////
 	virtual ~Ipfx_texture (){;}
 };

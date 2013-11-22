@@ -2,6 +2,8 @@
 #include "native/pfx_log.h"
 #include "native/pfx_timetick.h"
 
+//#include "render/render_system/pfx_framebuffer.h"
+
 extern int test_main();
 
 #include <locale.h>
