@@ -195,7 +195,9 @@ PFX_Interface Ipfx_shader_program
 	virtual pfx_result_t attach_shader (Ipfx_shader* PARAM_INOUT shader) = 0;
 	
 	
-	virtual pfx_result_t use_program () = 0;
+	//virtual pfx_result_t use_program () = 0;
+	virtual pfx_result_t begin_program () = 0;
+	virtual pfx_result_t end_program (pfx_boolean_t flush = pfx_true) = 0;
 
 	
 

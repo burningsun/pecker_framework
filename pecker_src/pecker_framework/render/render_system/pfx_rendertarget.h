@@ -11,8 +11,11 @@
 #include "../../pfx_defines.h"
 #include "../pfx_render_type.h"
 #include "pfx_render_pipeline.h"
+//#include "pfx_renderdevice.h"
 
 PECKER_BEGIN
+
+PFX_Interface Ipfx_render_device;
 
 PFX_Interface pfx_render_target
 {
@@ -20,15 +23,19 @@ protected:
 	pfx_usize_t		m_width;
 	pfx_usize_t		m_height;
 	pfx_long_t		m_target;
+	Ipfx_render_device* m_render_device;
 	//Ipfx_shader_render_params* m_render_params;
 public:
-	pfx_render_target(pfx_usize_t width, pfx_usize_t height):m_width(width),m_height(height)//,m_render_params(null)
+	pfx_render_target(pfx_usize_t width, pfx_usize_t height):m_width(width),m_height(height),m_render_device(null)//,m_render_params(null)
 	{;} 
 	virtual ~pfx_render_target(){;}
 
 	PFX_INLINE pfx_usize_t	get_width  () const;
 	PFX_INLINE pfx_usize_t	get_height () const;
 	PFX_INLINE pfx_long_t		get_target () const;
+
+	PFX_INLINE Ipfx_render_device* get_render_device () const;
+
 
 	//PFX_INLINE Ipfx_shader_render_params* get_render_params () const;
 
@@ -51,8 +58,8 @@ public:
 	//	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),PFX_STATUS_FAIL);
 	//	return insert_shader_program_to_pipeline_unsafe (program_params_,del_call_back);
 	//}
-	virtual pfx_result_t begin_draw (pfx_handle_t PARAM_INOUT params_) = 0;
-	virtual pfx_result_t end_draw (pfx_boolean_t flag = pfx_false) = 0;
+	//virtual pfx_result_t begin_draw (pfx_handle_t PARAM_INOUT params_) = 0;
+	//virtual pfx_result_t end_draw (pfx_boolean_t flag = pfx_false) = 0;
 };
 
 PFX_INLINE pfx_usize_t	pfx_render_target::get_width () const
@@ -66,6 +73,11 @@ PFX_INLINE pfx_usize_t	pfx_render_target::get_height () const
 PFX_INLINE pfx_long_t	pfx_render_target::get_target () const
 {
 	return m_target;
+}
+
+PFX_INLINE Ipfx_render_device* pfx_render_target::get_render_device () const
+{
+	return m_render_device;
 }
 
 //PFX_INLINE Ipfx_shader_render_params* pfx_render_target::get_render_params () const

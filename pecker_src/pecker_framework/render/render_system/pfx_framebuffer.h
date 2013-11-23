@@ -45,6 +45,8 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	virtual pfx_result_t attach_texture (Ipfx_texture* PARAM_INOUT texture,
 		PFX_RENDER_BUFFER_TYPE_t attach_type_,
+		PFX_TEXTURE_SURFACE_TYPE_t attach_texture_surface = PFX_TEXTURE_DEFUALT_SURFACE,
+		pfx_index_t mip_lever = 0,
 		pfx_index_t attach_unit = 0) = 0;
 	//////////////////////////////////////////////////////////////////////////
 
@@ -139,6 +141,15 @@ typedef enum enumBLEND_MODE
 	BLEND_MODE_COUNT
 }PFX_BLEND_MODE_t;
 
+typedef enum enumANTIALIASLING_MODE
+{
+	PFX_AHINT_FASTEST_MODE = 0,	//给出最有效的选择 
+	PFX_AHINT_NICEST_MODE,				//给出最高质量的选择 
+	PFX_AHINT_DONT_CARE_MODE,	//没有选择
+
+	ANTIALIASLING_MODE_COUNT
+}PFX_ANTIALIASLING_MODE_t;
+
 PFX_Interface Ipfx_framebuffer_operation
 {
 	//////////////////////////////////////////////////////////////////////////
@@ -196,8 +207,11 @@ PFX_Interface Ipfx_framebuffer_operation
 	virtual pfx_result_t set_color_function (pfx_bitfield_t color_) = 0;
 
 	virtual pfx_result_t set_sample_coverage (pfx_float_t value_,pfx_boolean_t invert_mask) = 0;
+
+	
 	//////////////////////////////////////////////////////////////////////////
 	virtual pfx_result_t read_image (PFX_IMAGE_t& PARAM_INOUT pixel_) = 0;
+	//virtual pfx_result_t set_pixel_store () = 0;
 	//////////////////////////////////////////////////////////////////////////
 	virtual ~Ipfx_framebuffer_operation() {;};
 };

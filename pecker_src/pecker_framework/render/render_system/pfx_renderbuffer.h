@@ -68,6 +68,10 @@ PFX_Interface Ipfx_color_buffer
 	//virtual pfx_result_t end_setting_color_buffer (pfx_boolean_t flag = pfx_false) = 0;
 	//////////////////////////////////////////////////////////////////////////
 	virtual pfx_long_t get_color_buffer_target () = 0;
+
+	virtual pfx_usize_t get_width () const = 0;
+	virtual pfx_usize_t get_height () const = 0;
+	virtual pfx_result_t get_format (PFX_COLOR_BUFFER_TYPE_t& PARAM_OUT format_) = 0;
 	//////////////////////////////////
 	virtual ~Ipfx_color_buffer() {;};
 };
@@ -83,6 +87,10 @@ PFX_Interface Ipfx_depth_buffer
 	//virtual pfx_result_t end_setting_depth_buffer (pfx_boolean_t flag = pfx_false) = 0;
 	//////////////////////////////////////////////////////////////////////////
 	virtual pfx_long_t get_depth_buffer_target () = 0;
+
+	virtual pfx_usize_t get_width () const = 0;
+	virtual pfx_usize_t get_height () const = 0;
+	virtual pfx_result_t get_format (PFX_DEPTH_BUFFER_TYPE_t& PARAM_OUT format_) = 0;
 	//////////////////////////////////
 	virtual ~Ipfx_depth_buffer() {;};
 };
@@ -98,6 +106,10 @@ PFX_Interface Ipfx_stencil_buffer
 	//virtual pfx_result_t end_setting_stencil_buffer (pfx_boolean_t flag = pfx_false) = 0;
 	//////////////////////////////////////////////////////////////////////////
 	virtual pfx_long_t get_stencil_buffer_target () = 0;
+
+	virtual pfx_usize_t get_width () const = 0;
+	virtual pfx_usize_t get_height () const = 0;
+	virtual pfx_result_t get_format (PFX_STENCIL_BUFFER_TYPE_t& PARAM_OUT format_) = 0;
 	//////////////////////////////////
 	virtual ~Ipfx_stencil_buffer() {;};
 };

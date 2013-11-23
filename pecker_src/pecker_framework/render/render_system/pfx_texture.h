@@ -78,6 +78,7 @@ PFX_Interface Ipfx_texture
 	virtual pfx_result_t dispose_texture () = 0;
 
 	virtual pfx_long_t get_texture () const = 0;
+	virtual PFX_TEXTURE_TYPE_t get_texture_type () const = 0;
 	
 	//////////////////////////////////////////////////////////////////////////
 	virtual pfx_result_t load_texture_from_memery (PFX_TEXTURE_SURFACE_TYPE_t surface_type_,
@@ -106,13 +107,21 @@ PFX_Interface Ipfx_texture
 		const PFX_CONST_COMPRESSED_IMAGE_t* PARAM_IN image_) = 0;
 	//////////////////////////////////////////////////////////////////////////
 
-	virtual pfx_result_t begin_setting_texture (PFX_TEXTURE_TYPE_t type_ = PFX_TEXTURE_DEFUALT) = 0;
-	virtual pfx_result_t end_setting_texture (pfx_boolean_t flag = pfx_false) = 0;
+	virtual pfx_result_t begin_setting_texture (pfx_index_t texture_unit = -1) = 0;
+	virtual pfx_result_t end_setting_texture (pfx_boolean_t texture_unit_recover = pfx_true) = 0;
 
 	virtual pfx_result_t set_texture_params (PFX_TEXTURE_SURFACE_TYPE_t surface_type_,
 		PFX_TEXTURE_PARAMS_NAME_t	params_name,
 		PFX_TEXTURE_PARAMS_t				param_) = 0;
 
+	virtual pfx_result_t get_texture_params (PFX_TEXTURE_SURFACE_TYPE_t surface_type_,
+		PFX_TEXTURE_PARAMS_NAME_t				params_name,
+		PFX_TEXTURE_PARAMS_t& PARAM_OUT param_) = 0;
+
+	virtual pfx_result_t get_texture_info (PFX_TEXTURE_SURFACE_TYPE_t surface_type_, 
+																	PFX_CONST_COMPRESSED_IMAGE_t& image_info_) const = 0;  
+
+	virtual pfx_result_t generate_mipmap () = 0;
 	//////////////////////////////////////////////////////////////////////////
 	//virtual pfx_result_t set_texture_unit (pfx_index_t unit_number) = 0;
 	//////////////////////////////////////////////////////////////////////////
