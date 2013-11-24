@@ -225,10 +225,10 @@ const avl_tree_node_t* add_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppavl_
 	pfx_result_t* PARAM_INOUT pstatus)
 {
 		pfx_result_t			status;
-		pfx_s16_t				height;
+		//pfx_s16_t				height;
 		avl_tree_node_t*	ptemp_node = null;
-		avl_tree_node_t*	proot_node;
-		avl_tree_node_t*	padded_parent_node;
+		//avl_tree_node_t*	proot_node;
+		//avl_tree_node_t*	padded_parent_node;
 		
 		RETURN_INVALID_BY_ACT_RESULT ((null == ppavl_root_node_ref || null == padd_node || null == cmp_method),
 			SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),null);

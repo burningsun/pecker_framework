@@ -15,9 +15,9 @@ PFX_C_EXTERN_BEGIN
 
 // 共享字符串内存的字符串
 
-typedef struct st_pfx_share_string_base pfx_share_string_t;
+typedef struct PFX_DATA_API st_pfx_share_string_base pfx_share_string_t;
 
-struct st_pfx_share_string_base
+struct PFX_DATA_API st_pfx_share_string_base
 {
 	linked_list_node_t							m_list_node;
 	pfx_string_t*									m_reference_string;
@@ -29,9 +29,9 @@ struct st_pfx_share_string_base
 	unsigned											m_interbuffer_defualt_buffer_size : 16;											
 };
 
-typedef struct st_pfx_share_string_extern pfx_share_string_extern_t;
+typedef struct PFX_DATA_API st_pfx_share_string_extern pfx_share_string_extern_t;
 
-struct st_pfx_share_string_extern
+struct PFX_DATA_API st_pfx_share_string_extern
 {
 	pfx_share_string_t	m_share_ref;
 	pfx_string_t				m_string_instance;
@@ -50,28 +50,28 @@ PFX_INLINE pfx_result_t resize_share_string_direct_unsafe_ownoffset (pfx_share_s
 	size_t buffer_size);
 
 // 强制转换一个buffer成为字符串
-pfx_share_string_t* init_share_string_by_buffer (size_t char_size,size_t min_buffer_size,
+PFX_DATA_API pfx_share_string_t*  init_share_string_by_buffer (size_t char_size,size_t min_buffer_size,
 	pfx_char_t* PARAM_INOUT string_obj_buffer,
 	pfx_result_t* PARAM_INOUT pstatus);
 
 // 从内存分配器中新建一个字符串
-pfx_share_string_t* new_share_string (size_t char_size,size_t min_charbuffer_size,
+PFX_DATA_API pfx_share_string_t*  new_share_string (size_t char_size,size_t min_charbuffer_size,
 	const IAllocator* PARAM_IN pAllocator,
 	pfx_result_t* PARAM_INOUT pstatus);
 
 // 初始化字符串
-pfx_result_t init_share_string (pfx_share_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  init_share_string (pfx_share_string_t* PARAM_INOUT pstr,
 	size_t string_len,
 	const IAllocator* PARAM_IN pchar_allocator);
 
 // 使用现有buffer初始化字符串结构体，同时原有buffer转化为字符结构体
-pfx_result_t init_share_string_by_charsbuffer (pfx_share_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  init_share_string_by_charsbuffer (pfx_share_string_t* PARAM_INOUT pstr,
 	const pfx_char_t* PARAM_IN pstr_chars,size_t chars_buffer_size,
 	const IAllocator* PARAM_IN pchar_allocator);
 
 
 // 释放一个字符串占有的额外的内存资源
-pfx_result_t relese_share_string_extern_buffer (pfx_share_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  relese_share_string_extern_buffer (pfx_share_string_t* PARAM_INOUT pstr,
 	const IAllocator* PARAM_IN pAllocator);
 
 
@@ -80,7 +80,7 @@ PFX_INLINE pfx_result_t delete_share_string (pfx_share_string_t* PARAM_INOUT pst
 
 
 // 字符串拷贝
-pfx_result_t copy_share_string_ (pfx_share_string_t* PARAM_INOUT pstr_dec,
+PFX_DATA_API pfx_result_t  copy_share_string_ (pfx_share_string_t* PARAM_INOUT pstr_dec,
 	const pfx_share_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator);
 
 PFX_INLINE pfx_share_string_t* copy_share_string (pfx_share_string_t* PARAM_IN pstr_src,
@@ -90,40 +90,40 @@ PFX_INLINE pfx_share_string_t* copy_share_string (pfx_share_string_t* PARAM_IN p
 PFX_INLINE pfx_result_t clear_share_string (pfx_share_string_t* PARAM_INOUT pstr,
 	const IAllocator* PARAM_IN pAllocator);
 
-pfx_share_string_t* get_share_sub_string (pfx_share_string_t* PARAM_INOUT porign_string,
+PFX_DATA_API pfx_share_string_t*  get_share_sub_string (pfx_share_string_t* PARAM_INOUT porign_string,
 															size_t ioffset,size_t sub_string_length,
 															pfx_bool_t	bnew_buffer,
 															const IAllocator* PARAM_IN pchar_allocator,
 															pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_share_string_t* seprate_share_string (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
+PFX_DATA_API pfx_share_string_t*  seprate_share_string (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
 	const IAllocator* PARAM_IN pchar_allocator,pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_result_t seprate_share_string_unsafe (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
+PFX_DATA_API pfx_result_t  seprate_share_string_unsafe (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
 	pfx_share_string_t* PARAM_INOUT ptail_str,
 	size_t strb_buffer_size);
 
-pfx_result_t seprate_share_string_unsafe_to_new_begin (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
+PFX_DATA_API pfx_result_t  seprate_share_string_unsafe_to_new_begin (pfx_share_string_t* PARAM_INOUT pstr,size_t sparete_index,
 	pfx_share_string_t* PARAM_INOUT pbegin_str,
 	size_t strb_buffer_size);
 
-pfx_result_t merge_share_string (pfx_share_string_t* PARAM_INOUT pmerge_to_str,const pfx_share_string_t* pstr,
+PFX_DATA_API pfx_result_t  merge_share_string (pfx_share_string_t* PARAM_INOUT pmerge_to_str,const pfx_share_string_t* pstr,
 	const IAllocator* PARAM_IN pchar_allocator);
 
-pfx_result_t share_string_bind_new_string (pfx_share_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  share_string_bind_new_string (pfx_share_string_t* PARAM_INOUT pstr,
 	pfx_share_string_t* PARAM_INOUT pbind_str,
 	size_t offset,size_t str_size,
 	const IAllocator* PARAM_IN pchar_allocator);
 
 // 重新定义共享字符串大小
-pfx_result_t resize_share_string (pfx_share_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  resize_share_string (pfx_share_string_t* PARAM_INOUT pstr,
 	//size_t char_size,
 	size_t string_len,pfx_bool_t busing_internal_buffer, pfx_bool_t bnew_allocate, 
 	const IAllocator* PARAM_IN pchar_allocator);
 
 
 // 给字符串后面加入新的字符串
-pfx_result_t append_share_string_by_chars (pfx_share_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  append_share_string_by_chars (pfx_share_string_t* PARAM_INOUT pstr,
 	const char* PARAM_IN str_chars, size_t chars_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
 
 // 获取字符串的缓冲区

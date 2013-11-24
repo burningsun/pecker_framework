@@ -14,7 +14,7 @@ PFX_C_EXTERN_BEGIN
 
 typedef struct st_collection collection_t;
 
-typedef struct st_collection_instance
+typedef struct PFX_DATA_API  st_collection_instance
 {
 	void*	m_last_collect;
 	void*	m_container;
@@ -25,14 +25,14 @@ typedef pfx_result_t (*pop_func)(collection_t* pcollection) ;
 typedef pfx_result_t (*is_full_func)(collection_t* pcollection) ;
 
 
-typedef struct st_collection_method
+typedef struct PFX_DATA_API st_collection_method
 {
 	push_func		m_push;
 	pop_func		m_pop;
 	is_full_func		m_isfull;
 }collection_method_t;
 
-struct st_collection
+struct PFX_DATA_API st_collection
 {
 	collection_method_t		m_method;
 	collection_instance_t	m_instance;

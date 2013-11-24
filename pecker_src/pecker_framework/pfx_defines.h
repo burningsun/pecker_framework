@@ -17,6 +17,46 @@
 #define PFX_INLINE __inline //msvc
 #define PFX_INLINE_CODE PFX_INLINE //有些编译器不支持c/cpp文件内写inline
 
+// msvc
+#define PFX_EXPORT_API __declspec(dllexport) 
+#define PFX_IMPORT_API __declspec(dllimport)
+
+#ifdef PFX_CORE_EXPORT
+#define PFX_CORE_API			PFX_EXPORT_API
+#define PFX_TEMPALE_API	PFX_EXPORT_API
+#else
+#define PFX_CORE_API PFX_IMPORT_API
+#define PFX_CORE_TEMPALE_API
+#endif
+
+#ifdef PFX_DATA_EXPORT
+#define PFX_DATA_API			PFX_EXPORT_API
+#define PFX_DATA_TEMPALE_API	PFX_EXPORT_API
+#else
+#define PFX_DATA_API PFX_IMPORT_API
+#define PFX_DATA_TEMPALE_API
+#endif
+
+#ifdef PFX_NATIVE_EXPORT
+#define PFX_NATIVE_API			PFX_EXPORT_API
+#else
+#define PFX_NATIVE_API PFX_IMPORT_API
+#endif
+
+
+#ifdef PFX_RENDER_SYSTEM_EXPORT
+#define PFX_RENDER_SYSTEM_API PFX_EXPORT_API 
+#else
+#define PFX_RENDER_SYSTEM_API PFX_IMPORT_API
+#endif
+
+
+#ifdef PFX_RENDER_EXPORT
+#define PFX_RENDER_API PFX_EXPORT_API 
+#else
+#define PFX_RENDER_API PFX_IMPORT_API
+#endif
+
 #ifdef _UNICODE
 #define pfx_char wchar_t
 #define pfx_char_type(x) L ## x
@@ -118,7 +158,7 @@ enum PFX_STATUS_CODE
 #define USING_PECKER_SDK
 #endif // __cplusplus
 
-#define FOR_ONE_LOOP_BEGIN {
+#define FOR_ONE_LOOP_BEGIN do{
 #define FOR_ONE_LOOP_END }while(0);
 #define BREAK_LOOP(STATUS_PARAM,ERROR_CODE) {STATUS_PARAM = ERROR_CODE; break;}
 #define BREAK_LOOP_CONDITION(condition_)if (condition_){break;}

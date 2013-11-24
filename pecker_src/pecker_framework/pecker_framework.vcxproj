@@ -47,7 +47,6 @@
     <ClInclude Include="render\pfx_image.h" />
     <ClInclude Include="render\pfx_render.h" />
     <ClInclude Include="render\pfx_render_type.h" />
-    <ClInclude Include="render\render_system\opengles\pfx_view_context_opengles.h" />
     <ClInclude Include="render\render_system\pfx_framebuffer.h" />
     <ClInclude Include="render\render_system\pfx_gpu_array_buffer.h" />
     <ClInclude Include="render\render_system\pfx_renderbuffer.h" />
@@ -64,14 +63,6 @@
     <ClInclude Include="test\pfx_file_inputdata_cmd.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="data\pfx_array_algorithm.cpp" />
-    <ClCompile Include="data\pfx_avl_tree_algorithm.cpp" />
-    <ClCompile Include="data\pfx_balance_tst_algorithm.cpp" />
-    <ClCompile Include="data\pfx_bst_algorithm.cpp" />
-    <ClCompile Include="data\pfx_bst_iterator.cpp" />
-    <ClCompile Include="data\pfx_redblack_tree_algorithm.cpp" />
-    <ClCompile Include="data\pfx_share_string.cpp" />
-    <ClCompile Include="data\pfx_string.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="native\pfx_allocator.cpp" />
     <ClCompile Include="native\pfx_file_io.cpp" />
@@ -126,6 +117,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>
     </LinkIncremental>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -136,17 +128,19 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PFX_CORE_EXPORT;PFX_RENDER_SYSTEM_IMPORT;WIN32;_DEBUG;_CONSOLE;_CRT_NON_CONFORMING_SWPRINTFS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExpandAttributedSource>true</ExpandAttributedSource>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)\depends_lib\OGLES2\Include;$(SolutionDir)\depends_lib\freetype\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\depends_lib\freetype\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Profile>true</Profile>
-      <AdditionalDependencies>$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libEGL.lib;$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libGLESv2.lib;$(SolutionDir)\depends_lib\freetype\windows\freetype2412_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutputPath)pecker_data.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ForceFileOutput>
       </ForceFileOutput>
       <EnableCOMDATFolding>

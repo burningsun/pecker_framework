@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="configs">
+      <UniqueIdentifier>{7343a923-880b-48c4-adb8-58b10d7f3995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{7abf96cb-36c5-48c3-a24c-880aa9111d3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\render_system">
+      <UniqueIdentifier>{476ccbe0-3528-426d-8945-e0f75a79d5cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\render_system\opengles2">
+      <UniqueIdentifier>{627fea62-bee1-4eff-b4bc-4bffa3a52d53}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="render\pfx_image.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_framebuffer.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_gpu_array_buffer.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_gram_array_params.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_renderbuffer.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_renderdevice.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_rendersystem.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_rendertarget.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_rendertevent.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_shader_program.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_texture.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\pfx_view_context.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_framebuffer_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_gpu_array_buffer_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_renderbuffer_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_renderdevice_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_rendertarget_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_shader_program_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_texture_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_system\opengles2\pfx_view_context_opengles.h">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClInclude>
+    <ClInclude Include="pfx.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="pfx_configs.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="pfx_defines.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="render\render_system\opengles2\pfx_framebuffer_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\opengles2\pfx_gpu_array_buffer_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\opengles2\pfx_renderbuffer_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\opengles2\pfx_renderdevice_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\opengles2\pfx_rendertarget_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\opengles2\pfx_shader_program_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\opengles2\pfx_texture_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_system\opengles2\pfx_view_context_opengles.cpp">
+      <Filter>render\render_system\opengles2</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

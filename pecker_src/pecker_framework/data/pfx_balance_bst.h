@@ -13,7 +13,7 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef union un_bbst_node
+typedef union PFX_DATA_API un_bbst_node
 {
 	binary_search_tree_node_t		m_bst_node;
 	avl_tree_node_t						m_avl_node;

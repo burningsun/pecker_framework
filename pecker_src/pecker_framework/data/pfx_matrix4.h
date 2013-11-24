@@ -16,7 +16,7 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef enum enumMATRIX2_INDEX_TYPE
+typedef enum PFX_DATA_API enumMATRIX2_INDEX_TYPE
 {
 	M2_00 = 0,
 	M2_01,
@@ -26,7 +26,7 @@ typedef enum enumMATRIX2_INDEX_TYPE
 	MATRIX2_INDEX_COUNT
 }MATRIX2_INDEX_TYPE_t;
 
-typedef enum enumMATRIX3_INDEX_TYPE
+typedef enum PFX_DATA_API enumMATRIX3_INDEX_TYPE
 {
 	M3_00 = 0,
 	M3_01,
@@ -43,7 +43,7 @@ typedef enum enumMATRIX3_INDEX_TYPE
 	MATRIX3_INDEX_COUNT
 }MATRIX3_INDEX_TYPE_t;
 
-typedef enum enumMATRIX4_INDEX_TYPE
+typedef enum PFX_DATA_API enumMATRIX4_INDEX_TYPE
 {
 	M4_00 = 0,
 	M4_01,
@@ -69,48 +69,48 @@ typedef enum enumMATRIX4_INDEX_TYPE
 }MATRIX4_INDEX_TYPE_t;
 
 
-typedef struct st_pfx_matrix2f pfx_marix2f_t;
-typedef struct st_pfx_matrix3f pfx_marix3f_t;
-typedef struct st_pfx_matrix4f pfx_marix4f_t;
+typedef struct PFX_DATA_API st_pfx_matrix2f pfx_marix2f_t;
+typedef struct PFX_DATA_API st_pfx_matrix3f pfx_marix3f_t;
+typedef struct PFX_DATA_API st_pfx_matrix4f pfx_marix4f_t;
 
-typedef union un_pfx_matrix2 pfx_marix2_t;
-typedef union un_pfx_matrix3 pfx_marix3_t;
-typedef union un_pfx_matrix4 pfx_marix4_t;
+typedef union PFX_DATA_API un_pfx_matrix2 pfx_marix2_t;
+typedef union PFX_DATA_API un_pfx_matrix3 pfx_marix3_t;
+typedef union PFX_DATA_API un_pfx_matrix4 pfx_marix4_t;
 
-struct st_pfx_matrix2f
+struct PFX_DATA_API st_pfx_matrix2f
 {
 	VEC_FLOAT m_mat[4];
 };
 
-struct st_pfx_matrix3f
+struct PFX_DATA_API st_pfx_matrix3f
 {
 	VEC_FLOAT m_mat[9];
 };
 
-struct st_pfx_matrix4f
+struct PFX_DATA_API st_pfx_matrix4f
 {
 	VEC_FLOAT m_mat[16];
 };
 
-union un_pfx_matrix2
+union PFX_DATA_API un_pfx_matrix2
 {
 	st_pfx_matrix2f m_mat;
 	pfx_vector2_t	m_vec[2];
 };
 
-union un_pfx_matrix3
+union PFX_DATA_API un_pfx_matrix3
 {
 	st_pfx_matrix3f m_mat;
 	pfx_vector3_t	m_vec[3];
 };
 
-union un_pfx_matrix4
+union PFX_DATA_API un_pfx_matrix4
 {
 	st_pfx_matrix4f m_mat;
 	pfx_vector4_t	m_vec[4];
 };
 
-typedef enum enumClipspaceSystem
+typedef enum PFX_DATA_API enumClipspaceSystem
 {
 	D3DX_CLIPSPACE_SYSTEM = 0,
 	OPENGL_CLIPSPACE_SYSTEM,

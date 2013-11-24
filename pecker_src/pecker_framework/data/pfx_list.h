@@ -12,8 +12,8 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef	struct st_linked_list_node linked_list_node_t;
-struct st_linked_list_node
+typedef	struct PFX_DATA_API st_linked_list_node linked_list_node_t;
+struct PFX_DATA_API st_linked_list_node
 {
 	linked_list_node_t* m_prev_node;
 	linked_list_node_t* m_pnext_node;

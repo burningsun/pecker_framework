@@ -16,23 +16,23 @@
 PFX_C_EXTERN_BEGIN
 
 // 二叉树内部标记，主要用于平衡树应用
-typedef struct st_binary_search_tree_node_mask
+typedef struct PFX_DATA_API st_binary_search_tree_node_mask
 {
 	unsigned		m_valid_mask		: 2;		// 合法性判断位，用于假删除
 	unsigned		m_revered_mask	: 14;	// 保留位
 	unsigned 	m_balance_mask	: 16;	// 平衡树标志位
 }st_binary_search_tree_node_mask_t;
 
-typedef union un_binary_search_tree_node_mask
+typedef union PFX_DATA_API un_binary_search_tree_node_mask
 {
 	st_binary_search_tree_node_mask_t	m_mask;
 	pfx_bitfield_t												m_mask_bits;
 }binary_search_tree_node_mask_t;
 
 // 二叉树节点基本结构
-typedef struct st_binary_search_tree_node binary_search_tree_node_t;
+typedef struct PFX_DATA_API st_binary_search_tree_node binary_search_tree_node_t;
 
-struct st_binary_search_tree_node
+struct PFX_DATA_API st_binary_search_tree_node
 {
 	binary_search_tree_node_t*				m_parent_node;	// 父节点，主要用于优化遍历，以及可修改型迭代器的应用
 	binary_search_tree_node_t*				m_pleft_node;		// 左子树
@@ -129,18 +129,18 @@ PFX_INLINE pfx_result_t add_bst_node_unsafe (
 
 // 默认
 // 分配新的二叉树节点的内存
-binary_search_tree_node_t* new_bst_node_func_default (const IAllocator* PARAM_IN pallocator,const binary_search_tree_node_t* PARAM_IN pother_node);
+PFX_DATA_API binary_search_tree_node_t*  new_bst_node_func_default (const IAllocator* PARAM_IN pallocator,const binary_search_tree_node_t* PARAM_IN pother_node);
 
 // 默认
 // 删除二叉树节点所占的内存
-pfx_result_t delete_bst_node_func_default (const IAllocator* PARAM_IN pallocator,binary_search_tree_node_t* PARAM_IN pdel_node);
+PFX_DATA_API pfx_result_t  delete_bst_node_func_default (const IAllocator* PARAM_IN pallocator,binary_search_tree_node_t* PARAM_IN pdel_node);
 
 // 复制树
-pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const binary_search_tree_node_t* PARAM_IN psrc_root_node,
+PFX_DATA_API pfx_result_t  copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const binary_search_tree_node_t* PARAM_IN psrc_root_node,
 	const IAllocator* PARAM_IN pallocator,new_bst_node_func new_node_method);
 
 // 删除树
-pfx_result_t clear_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const IAllocator* PARAM_IN pallocator,delete_bst_node_func delete_node_method);
+PFX_DATA_API pfx_result_t  clear_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const IAllocator* PARAM_IN pallocator,delete_bst_node_func delete_node_method);
 
 //////////////////////////////////////////////////////////////////////////
 PFX_INLINE pfx_bool_t check_binary_search_tree_node_valid (const binary_search_tree_node_t* PARAM_IN pbst_node)

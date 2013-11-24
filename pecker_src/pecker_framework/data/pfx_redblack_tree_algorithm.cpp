@@ -276,10 +276,10 @@ const redblack_tree_node_t* add_redblack_node_unsafe (redblack_tree_node_t** PAR
 	pfx_result_t* PARAM_INOUT pstatus)
 {
 	pfx_result_t			status;
-	pfx_s16_t				height;
+	//pfx_s16_t				height;
 	redblack_tree_node_t*	ptemp_node = null;
-	redblack_tree_node_t*	proot_node;
-	redblack_tree_node_t*	padded_parent_node;
+	//redblack_tree_node_t*	proot_node;
+	//redblack_tree_node_t*	padded_parent_node;
 
 	RETURN_INVALID_BY_ACT_RESULT ((null == pproot_node_ref || null == padd_node || null == cmp_method),
 		SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),null);

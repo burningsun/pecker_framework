@@ -16,27 +16,27 @@
 PECKER_BEGIN
 
 PFX_Interface Ipfx_message_event;
-class pfx_windows_context_base
+class  pfx_windows_context_base
 {
 public:
-	pfx_windows_context_base ();
-	virtual ~pfx_windows_context_base ();
+	//pfx_windows_context_base ();
+	virtual ~pfx_windows_context_base (){;};
 public:
-	virtual pfx_result_t init_context ();
-	virtual pfx_result_t resize_context (pfx_usize_t width, pfx_usize_t height);
-	virtual pfx_result_t move_context (pfx_nsize_t x,pfx_nsize_t y);
+	virtual pfx_result_t init_context () = 0;
+	virtual pfx_result_t resize_context (pfx_usize_t width, pfx_usize_t height) = 0;
+	virtual pfx_result_t move_context (pfx_nsize_t x,pfx_nsize_t y) = 0;
 
-	virtual pfx_result_t on_landscape_change (pfx_usize_t width, pfx_usize_t height,pfx_bool_t is_landscape);
-	virtual pfx_result_t on_message_event (Ipfx_message_event* PARAM_INOUT pevent_,pfx_unknown_event_object_t* pobject);
+	virtual pfx_result_t on_landscape_change (pfx_usize_t width, pfx_usize_t height,pfx_bool_t is_landscape) = 0;
+	virtual pfx_result_t on_message_event (Ipfx_message_event* PARAM_INOUT pevent_,pfx_unknown_event_object_t* pobject) = 0;
 	
-	virtual pfx_result_t on_load_datas ();
-	virtual pfx_result_t on_render_init ();
-	virtual pfx_result_t on_render_frame ();
-	virtual pfx_result_t on_swap_render_frame ();
+	virtual pfx_result_t on_load_datas () = 0;
+	virtual pfx_result_t on_render_init () = 0;
+	virtual pfx_result_t on_render_frame () = 0;
+	virtual pfx_result_t on_swap_render_frame () = 0;
 	
-	virtual pfx_result_t on_close ();
-	virtual pfx_result_t on_parse ();
-	virtual pfx_result_t on_exit ();
+	virtual pfx_result_t on_close () = 0;
+	virtual pfx_result_t on_parse () = 0;
+	virtual pfx_result_t on_exit () = 0;
 };
 
 

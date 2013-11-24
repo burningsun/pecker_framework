@@ -14,32 +14,32 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef struct st_pfx_vector_2f pfx_vector2f_t;
-typedef struct st_pfx_vector_3f pfx_vector3f_t;
-typedef struct st_pfx_vector_4f pfx_vector4f_t;
+typedef struct PFX_DATA_API st_pfx_vector_2f pfx_vector2f_t;
+typedef struct PFX_DATA_API st_pfx_vector_3f pfx_vector3f_t;
+typedef struct PFX_DATA_API st_pfx_vector_4f pfx_vector4f_t;
 
-typedef struct st_pfx_vector_2i pfx_vector2i_t;
-typedef struct st_pfx_vector_3i pfx_vector3i_t;
-typedef struct st_pfx_vector_4i pfx_vector4i_t;
+typedef struct PFX_DATA_API st_pfx_vector_2i pfx_vector2i_t;
+typedef struct PFX_DATA_API st_pfx_vector_3i pfx_vector3i_t;
+typedef struct PFX_DATA_API st_pfx_vector_4i pfx_vector4i_t;
 
-typedef union un_pfx_vector_2 pfx_vector2_t;
-typedef union un_pfx_vector_3 pfx_vector3_t;
-typedef union un_pfx_vector_4 pfx_vector4_t;
+typedef union PFX_DATA_API un_pfx_vector_2 pfx_vector2_t;
+typedef union PFX_DATA_API un_pfx_vector_3 pfx_vector3_t;
+typedef union PFX_DATA_API un_pfx_vector_4 pfx_vector4_t;
 
-struct st_pfx_vector_2f
+struct PFX_DATA_API st_pfx_vector_2f
 {
 	VEC_FLOAT	x;
 	VEC_FLOAT	y;
 };
 
-struct st_pfx_vector_3f
+struct PFX_DATA_API st_pfx_vector_3f
 {
 	VEC_FLOAT	x;
 	VEC_FLOAT	y;
 	VEC_FLOAT	z;
 };
 
-struct st_pfx_vector_4f
+struct PFX_DATA_API st_pfx_vector_4f
 {
 	VEC_FLOAT	x;
 	VEC_FLOAT	y;
@@ -47,20 +47,20 @@ struct st_pfx_vector_4f
 	VEC_FLOAT	w;
 };
 
-struct st_pfx_vector_2i
+struct PFX_DATA_API st_pfx_vector_2i
 {
 	pfx_sint_t	x;
 	pfx_sint_t	y;
 };
 
-struct st_pfx_vector_3i
+struct PFX_DATA_API st_pfx_vector_3i
 {
 	pfx_sint_t	x;
 	pfx_sint_t	y;
 	pfx_sint_t	z;
 };
 
-struct st_pfx_vector_4i
+struct PFX_DATA_API st_pfx_vector_4i
 {
 	pfx_sint_t	x;
 	pfx_sint_t	y;
@@ -68,28 +68,28 @@ struct st_pfx_vector_4i
 	pfx_sint_t	w;
 };
 
-union un_pfx_vector_2
+union PFX_DATA_API un_pfx_vector_2
 {
 	VEC_FLOAT				m_vec_f[2];
 	pfx_vector2f_t		m_vec;
 	pfx_vector2i_t		m_vec_i;
 };
 
-union un_pfx_vector_3
+union PFX_DATA_API un_pfx_vector_3
 {
 	VEC_FLOAT				m_vec_f[3];
 	pfx_vector3f_t		m_vec;
 	pfx_vector3i_t		m_vec_i;
 };
 
-union un_pfx_vector_4
+union PFX_DATA_API un_pfx_vector_4
 {
 	VEC_FLOAT				m_vec_f[4];
 	pfx_vector4f_t		m_vec;
 	pfx_vector4i_t		m_vec_i;
 };
 
-typedef enum enumVECTOR_INDEX
+typedef enum PFX_DATA_API enumVECTOR_INDEX
 {
 	VEC_INDEX_X = 0,
 	VEC_INDEX_Y,

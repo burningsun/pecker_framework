@@ -13,7 +13,7 @@
 
 
 
-PFX_C_EXTERN_BEGIN
+
 
 PFX_INLINE_CODE pfx_bool_t check_is_dec_number_a (pfx_char_t input_char)
 {
@@ -105,7 +105,7 @@ PFX_INLINE_CODE pfx_bool_t check_nagtive_number_a(const pfx_char_t*					PARAM_IN
 																								pfx_usize_t															scanf_size,
 																								pfx_index_t*							PARAM_INOUT	pstring_a_offset) 
 {
-	pfx_usize_t i;
+	//pfx_usize_t i;
 	if (scanf_size < 1)
 	{
 		*pstring_a_offset = 0;
@@ -165,7 +165,7 @@ PFX_INLINE_CODE pfx_result_t string_parse_dec_int64 (const pfx_char_t*					PARAM
 	{
 		if (check_is_dec_number_a(pstring_a[i]))
 		{
-			if (i > begin_index && (i-begin_index) > 19)
+			if (i > (pfx_usize_t)begin_index && (i-begin_index) > 19)
 			{
 				status = PFX_STATUS_OVERRANGE;
 				break;
@@ -234,7 +234,7 @@ PFX_INLINE_CODE pfx_result_t string_parse_oct_int64 (const pfx_char_t*					PARAM
 	{
 		if (check_is_oct_number_a(pstring_a[i]))
 		{
-			if ( i > begin_index && (i - begin_index)>21)
+			if ( i > (pfx_usize_t)begin_index && (i - begin_index)>21)
 			{
 				status = PFX_STATUS_OVERRANGE;
 				break;
@@ -311,7 +311,7 @@ PFX_INLINE_CODE pfx_result_t string_parse_hex_int64 (const pfx_char_t*					PARAM
 	{
 		if (check_is_hex_number_a(pstring_a[i]))
 		{
-			if (i > begin_index && (i - begin_index) > 7)
+			if (i > (pfx_usize_t)begin_index && (i - begin_index) > 7)
 			{
 				status = PFX_STATUS_OVERRANGE;
 				break;
@@ -521,7 +521,7 @@ PFX_INLINE_CODE pfx_result_t string_parse_float_extern_pow(const pfx_char_t*				
 	{
 		if (check_is_dec_number_a(pstring_a[i]))
 		{
-			if (parse_s64<=max_pow_size)
+			if ((pfx_usize_t)parse_s64<=max_pow_size)
 			{
 				parse_s64 *= 10;
 				parse_s64 += get_char_dec_oct_number_a(pstring_a[i]);
@@ -667,7 +667,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_dec(pfx_char_t*	PARAM_INOUT		pstr
 																							  pfx_uint_t										integer,
 																							  pfx_usize_t									min_printf_size)
 {
-	pfx_result_t	status;
+	//pfx_result_t	status;
 	pfx_index_t	i;
 	pfx_nsize_t		buffer_size = 0;
 	pfx_index_t	count = nstring_buffer_max_size;
@@ -695,7 +695,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_dec(pfx_char_t*	PARAM_INOUT		pstr
 	}
 
 	count = i;
-	if (i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
+	if ((pfx_usize_t)i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
 	{
 		pfx_index_t copy_1 = min_printf_size - count;
 		pfx_index_t offset_ = min_printf_size-1;
@@ -709,7 +709,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_dec(pfx_char_t*	PARAM_INOUT		pstr
 			pstring_buffer[i] = '0';
 		}
 
-		for (;i<min_printf_size;++i)
+		for (;(pfx_usize_t)i<min_printf_size;++i)
 		{
 			pfx_index_t offset = offset_ - i;
 			pfx_char_t temp = pstring_buffer[offset];	
@@ -741,7 +741,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_oct(pfx_char_t*	PARAM_INOUT		pstr
 	pfx_uint_t										integer,
 	pfx_usize_t									min_printf_size)
 {
-	pfx_result_t	status;
+	//pfx_result_t	status;
 	pfx_index_t	i;
 	pfx_nsize_t		buffer_size = 0;
 	pfx_index_t	count = nstring_buffer_max_size;
@@ -769,7 +769,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_oct(pfx_char_t*	PARAM_INOUT		pstr
 	}
 
 	count = i;
-	if (i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
+	if ((pfx_usize_t)i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
 	{
 		pfx_index_t copy_1 = min_printf_size - count;
 		pfx_index_t offset_ = min_printf_size-1;
@@ -783,7 +783,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_oct(pfx_char_t*	PARAM_INOUT		pstr
 			pstring_buffer[i] = '0';
 		}
 
-		for (;i<min_printf_size;++i)
+		for (;(pfx_usize_t)i<min_printf_size;++i)
 		{
 			pfx_index_t offset = offset_ - i;
 			pfx_char_t temp = pstring_buffer[offset];	
@@ -816,7 +816,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_hex(pfx_char_t*	PARAM_INOUT		pstr
 	pfx_usize_t										min_printf_size,
 	pfx_bool_t										caps_lock)
 {
-	pfx_result_t	status;
+	//pfx_result_t	status;
 	pfx_index_t	i;
 	pfx_nsize_t		buffer_size = 0;
 	pfx_index_t	count = nstring_buffer_max_size;
@@ -857,7 +857,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_hex(pfx_char_t*	PARAM_INOUT		pstr
 	}
 
 	count = i;
-	if (i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
+	if ((pfx_usize_t)i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
 	{
 		pfx_index_t copy_1 = min_printf_size - count;
 		pfx_index_t offset_ = min_printf_size-1;
@@ -871,7 +871,7 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_hex(pfx_char_t*	PARAM_INOUT		pstr
 			pstring_buffer[i] = '0';
 		}
 
-		for (;i<min_printf_size;++i)
+		for (;(pfx_usize_t)i<min_printf_size;++i)
 		{
 			pfx_index_t offset = offset_ - i;
 			pfx_char_t temp = pstring_buffer[offset];	
@@ -903,7 +903,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_dec(pfx_char_t*	PARAM_INOUT		ps
 	pfx_u64_t										integer,
 	pfx_usize_t									min_printf_size)
 {
-	pfx_result_t	status;
+	//pfx_result_t	status;
 	pfx_index_t	i;
 	pfx_nsize_t		buffer_size = 0;
 	pfx_index_t	count = nstring_buffer_max_size;
@@ -931,7 +931,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_dec(pfx_char_t*	PARAM_INOUT		ps
 	}
 
 	count = i;
-	if (i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
+	if ((pfx_usize_t)i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
 	{
 		pfx_index_t copy_1 = min_printf_size - count;
 		pfx_index_t offset_ = min_printf_size-1;
@@ -945,7 +945,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_dec(pfx_char_t*	PARAM_INOUT		ps
 			pstring_buffer[i] = '0';
 		}
 
-		for (;i<min_printf_size;++i)
+		for (;(pfx_usize_t)i<min_printf_size;++i)
 		{
 			pfx_index_t offset = offset_ - i;
 			pfx_char_t temp = pstring_buffer[offset];	
@@ -977,7 +977,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_oct(pfx_char_t*	PARAM_INOUT		ps
 	pfx_u64_t										integer,
 	pfx_usize_t									min_printf_size)
 {
-	pfx_result_t	status;
+	//pfx_result_t	status;
 	pfx_index_t	i;
 	pfx_nsize_t		buffer_size = 0;
 	pfx_index_t	count = nstring_buffer_max_size;
@@ -1005,7 +1005,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_oct(pfx_char_t*	PARAM_INOUT		ps
 	}
 
 	count = i;
-	if (i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
+	if ((pfx_usize_t)i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
 	{
 		pfx_index_t copy_1 = min_printf_size - count;
 		pfx_index_t offset_ = min_printf_size-1;
@@ -1019,7 +1019,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_oct(pfx_char_t*	PARAM_INOUT		ps
 			pstring_buffer[i] = '0';
 		}
 
-		for (;i<min_printf_size;++i)
+		for (;(pfx_usize_t)i<min_printf_size;++i)
 		{
 			pfx_index_t offset = offset_ - i;
 			pfx_char_t temp = pstring_buffer[offset];	
@@ -1052,7 +1052,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_hex(pfx_char_t*	PARAM_INOUT		ps
 	pfx_usize_t										min_printf_size,
 	pfx_bool_t										caps_lock)
 {
-	pfx_result_t	status;
+	//pfx_result_t	status;
 	pfx_index_t	i;
 	pfx_nsize_t		buffer_size = 0;
 	pfx_index_t	count = nstring_buffer_max_size;
@@ -1065,7 +1065,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_hex(pfx_char_t*	PARAM_INOUT		ps
 	for (i=0;i<count;++i)
 	{
 		pfx_u64_t integer_temp	= integer / 16;
-		pfx_uint_t integer_char	=  integer - integer_temp;
+		pfx_uint_t integer_char	=  (pfx_uint_t)(integer - integer_temp);
 		if (integer_char < 10)
 		{
 			pstring_buffer[i] = (pfx_char_t)(integer_char & 0xFF) + '0';
@@ -1093,7 +1093,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_hex(pfx_char_t*	PARAM_INOUT		ps
 	}
 
 	count = i;
-	if (i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
+	if ((pfx_usize_t)i < min_printf_size && min_printf_size != MAX_UNSIGNED_VALUE)
 	{
 		pfx_index_t copy_1 = min_printf_size - count;
 		pfx_index_t offset_ = min_printf_size-1;
@@ -1107,7 +1107,7 @@ PFX_INLINE_CODE pfx_result_t uint64_parse_string_hex(pfx_char_t*	PARAM_INOUT		ps
 			pstring_buffer[i] = '0';
 		}
 
-		for (;i<min_printf_size;++i)
+		for (;(pfx_usize_t)i<min_printf_size;++i)
 		{
 			pfx_index_t offset = offset_ - i;
 			pfx_char_t temp = pstring_buffer[offset];	
@@ -1236,7 +1236,7 @@ pfx_result_t string_a_parse_float (const pfx_char_t*						PARAM_IN			pstring_a,
 	RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
 
 
-	*parse_result = ( (double)left_num  + (double)right_num * pow(10.0,-right_count) ) * pow(10.0,extern_pow);
+	*parse_result = (pfx_float_t)(( (double)left_num  + (double)right_num * pow(10.0,-right_count) ) * pow(10.0,extern_pow));
 	return status;
 }
 
@@ -1657,4 +1657,4 @@ pfx_index_t	pfx_stream_ssprintf	(pfx_char_t*					PARAM_INOUT		pstream_buffer,
 	va_list	args);
 
 
-PFX_C_EXTERN_END
+

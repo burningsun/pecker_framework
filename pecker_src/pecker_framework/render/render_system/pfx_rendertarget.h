@@ -26,7 +26,7 @@ protected:
 	Ipfx_render_device* m_render_device;
 	//Ipfx_shader_render_params* m_render_params;
 public:
-	pfx_render_target(pfx_usize_t width, pfx_usize_t height):m_width(width),m_height(height),m_render_device(null)//,m_render_params(null)
+	pfx_render_target(pfx_usize_t width = 0, pfx_usize_t height = 0):m_width(width),m_height(height),m_render_device(null)//,m_render_params(null)
 	{;} 
 	virtual ~pfx_render_target(){;}
 

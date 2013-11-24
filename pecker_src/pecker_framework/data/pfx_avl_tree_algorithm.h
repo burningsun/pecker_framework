@@ -12,13 +12,13 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef struct st_avl_tree_balance_flag
+typedef struct PFX_DATA_API st_avl_tree_balance_flag
 {
 	pfx_s16_t	m_mask_value;
 	pfx_s16_t	m_height;
 }avl_tree_balance_flag_t;
 
-typedef union un_avl_tree_balance_bitmask
+typedef union PFX_DATA_API un_avl_tree_balance_bitmask
 {
 	avl_tree_balance_flag_t						m_balance_value;
 	binary_search_tree_node_mask_t		m_bst_mask;
@@ -27,9 +27,9 @@ typedef union un_avl_tree_balance_bitmask
 
 }avl_tree_balance_bitmask_t;
 
-typedef struct st_avl_tree_node _avl_tree_node_t;
+typedef struct PFX_DATA_API st_avl_tree_node _avl_tree_node_t;
 
-struct st_avl_tree_node
+struct PFX_DATA_API st_avl_tree_node
 {
 	_avl_tree_node_t*						m_parent_node;
 	_avl_tree_node_t*						m_pleft_node;
@@ -38,14 +38,14 @@ struct st_avl_tree_node
 	pfx_long_t										m_key;
 };
 
-typedef union un_avl_tree_node
+typedef union PFX_DATA_API un_avl_tree_node
 {
 	binary_search_tree_node_t		m_bst_node;
 	_avl_tree_node_t						m_avl_node;
 }avl_tree_node_t;
 
 //AVL旋转类型
-typedef enum enumAVLTREE_ROTATE_TYPE
+typedef enum PFX_DATA_API enumAVLTREE_ROTATE_TYPE
 {
 	AVLTREE_NONE_ROTATE = 0,
 	AVLTREE_ROTATE_ERR,
@@ -73,13 +73,13 @@ PFX_INLINE pfx_s16_t calculate_avl_node_balance_val (const _avl_tree_node_t* PAR
 PFX_INLINE void update_avl_node_height_unsafe (_avl_tree_node_t* PARAM_INOUT pAvl_node);
 
 //插入节点
-const avl_tree_node_t* add_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
+PFX_DATA_API const avl_tree_node_t*  add_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
 	avl_tree_node_t* PARAM_INOUT pAdd_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);
 
 //移除节点
-avl_tree_node_t* remove_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
+PFX_DATA_API avl_tree_node_t*  remove_avl_node_unsafe (avl_tree_node_t** PARAM_INOUT ppAvl_root_node_ref,
 	avl_tree_node_t* PARAM_INOUT premove_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);

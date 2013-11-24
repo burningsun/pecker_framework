@@ -354,7 +354,7 @@ const tenary_tree_node_t* add_tenary_tree_node_unsafe (tenary_tree_node_t** PARA
 			return null;
 		}
 		
-		RETURN_INVALID_BY_ACT_RESULT ((search_str_size < same_size),
+		RETURN_INVALID_BY_ACT_RESULT ((search_str_size < (size_t)same_size),
 			SET_POINTER_VALUE (pstatus,PFX_STATUS_MEM_ERR),null);
 
 		// 最蛋疼的情况,相同字符串数量介于搜索字符串与节点字符串长度之间，
@@ -364,7 +364,7 @@ const tenary_tree_node_t* add_tenary_tree_node_unsafe (tenary_tree_node_t** PARA
 			tenary_tree_node_t* ptemp_node = null;
 			tenary_tree_node_t* pnew_node;
 
-			RETURN_INVALID_BY_ACT_RESULT (same_size > node_str_size || same_size > search_str_size,
+			RETURN_INVALID_BY_ACT_RESULT ((size_t)same_size > node_str_size || (size_t)same_size > search_str_size,
 				SET_POINTER_VALUE (pstatus,PFX_STATUS_MEM_ERR), null);
 
 			pnew_node = new_tenary_tree_node (char_size,ptenary_tree_method);

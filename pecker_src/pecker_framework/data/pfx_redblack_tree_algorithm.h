@@ -12,13 +12,13 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef struct st_redblack_tree_balance_flag
+typedef struct PFX_DATA_API st_redblack_tree_balance_flag
 {
 	pfx_u16_t	m_mask_value;
 	pfx_u16_t	m_color;
 }redblack_tree_balance_flag_t;
 
-typedef union un_redblack_tree_balance_bitmask
+typedef union PFX_DATA_API un_redblack_tree_balance_bitmask
 {
 	redblack_tree_balance_flag_t				m_balance_value;
 	binary_search_tree_node_mask_t		m_bst_mask;
@@ -27,9 +27,9 @@ typedef union un_redblack_tree_balance_bitmask
 
 }redblack_tree_balance_bitmask_t;
 
-typedef struct st_redblack_tree_node _redblack_tree_node_t;
+typedef struct PFX_DATA_API st_redblack_tree_node _redblack_tree_node_t;
 
-struct st_redblack_tree_node
+struct PFX_DATA_API st_redblack_tree_node
 {
 	_redblack_tree_node_t*						m_parent_node;
 	_redblack_tree_node_t*						m_pleft_node;
@@ -38,7 +38,7 @@ struct st_redblack_tree_node
 	pfx_long_t												m_key;
 };
 //
-typedef union un_redblack_tree_node
+typedef union PFX_DATA_API un_redblack_tree_node
 {
 	binary_search_tree_node_t		m_bst_node;
 	_redblack_tree_node_t			m_rb_node;
@@ -57,13 +57,13 @@ PFX_INLINE	void rb_tree_sentinel_init_unsafe (_redblack_tree_node_t* PARAM_INOUT
 PFX_INLINE void init_redblack_tree_node_nokey_default (redblack_tree_node_t* PARAM_INOUT ptree_node);
 
 //插入节点
-const redblack_tree_node_t* add_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
+PFX_DATA_API const redblack_tree_node_t*  add_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
 	redblack_tree_node_t* PARAM_INOUT padd_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);
 
 //移除节点
-redblack_tree_node_t* remove_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
+PFX_DATA_API redblack_tree_node_t*  remove_redblack_node_unsafe (redblack_tree_node_t** PARAM_INOUT pproot_node_ref,
 	redblack_tree_node_t* PARAM_INOUT premove_node,
 	compare_two_value_func cmp_method,
 	pfx_result_t* PARAM_INOUT pstatus);

@@ -56,7 +56,7 @@ PFX_Interface Ipfx_render_device
 
 	virtual pfx_result_t end_draw (pfx_boolean_t flag = pfx_false) = 0;
 
-	virtual pfx_result_t present () = 0;
+	virtual pfx_result_t present (const pfx_handle_t PARAM_IN params_ = null) = 0;
 
 	virtual pfx_result_t antialiasing_hint (pfx_enum_t target_, PFX_ANTIALIASLING_MODE_t mode_) = 0;
 	//////////////////////////////////////////////////////////////////////////
@@ -73,10 +73,17 @@ PFX_Interface Ipfx_render_device
 	//////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////////////////////////////////////////////////
+protected:
+	Ipfx_framebuffer* m_defualt_framebuffer;
 public:
+	Ipfx_render_device() : m_defualt_framebuffer(null) {;}
 	virtual ~Ipfx_render_device() {;};
 };
 
+PFX_INLINE Ipfx_framebuffer*		Ipfx_render_device::get_defualt_framebuffer () const
+{
+	return m_defualt_framebuffer;
+}
 PECKER_END
 
 #endif			//PFX_RENDERDEVICE_H_

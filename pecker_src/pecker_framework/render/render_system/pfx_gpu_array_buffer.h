@@ -115,8 +115,8 @@ PFX_INLINE pfx_result_t Ipfx_gpu_array_buffer::delete_all_buffer()
 	const binary_search_tree_node_t* root_node;
 	const binary_search_tree_node_t* iterator_node;
 
-	RETURN_INVALID_RESULT ((null == program),
-		PFX_STATUS_INVALID_PARAMS);
+	//RETURN_INVALID_RESULT ((null == program),
+	//	PFX_STATUS_INVALID_PARAMS);
 
 	root_node = (const binary_search_tree_node_t*)m_buffer_sets;
 

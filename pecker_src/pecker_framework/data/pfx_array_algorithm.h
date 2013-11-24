@@ -14,7 +14,7 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef struct st_pfx_base_array
+typedef struct PFX_DATA_API st_pfx_base_array
 {
 	unsigned m_using_extern_buffer : 1;
 	unsigned m_defualt_array_size : 31;
@@ -28,23 +28,23 @@ typedef struct st_pfx_base_array
 	void*						m_parray_data;
 }pfx_base_array_t;
 
-pfx_base_array_t* init_base_array_by_buffer (size_t item_size,
+PFX_DATA_API pfx_base_array_t*  init_base_array_by_buffer (size_t item_size,
 	size_t allocate_step,
 	char* PARAM_INOUT pbuffer,
 	size_t buffer_size,
 	const IAllocator* PARAM_IN pitem_allocator,
 	pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_base_array_t* new_base_array (const IAllocator* PARAM_IN parray_allocator,
+PFX_DATA_API pfx_base_array_t*  new_base_array (const IAllocator* PARAM_IN parray_allocator,
 										size_t item_size,
 										size_t default_item_count,
 										size_t allocate_step,
 										const IAllocator* PARAM_IN parray_item_allocator,
 										pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_result_t delete_base_array (pfx_base_array_t* pdel_array, const IAllocator* PARAM_IN parray_allocator);
+PFX_DATA_API pfx_result_t  delete_base_array (pfx_base_array_t* pdel_array, const IAllocator* PARAM_IN parray_allocator);
 
-pfx_result_t resize_base_array (pfx_base_array_t* PARAM_INOUT parray,size_t item_count,pfx_bool_t bnew_buffer,size_t new_resize_step);
+PFX_DATA_API pfx_result_t  resize_base_array (pfx_base_array_t* PARAM_INOUT parray,size_t item_count,pfx_bool_t bnew_buffer,size_t new_resize_step);
 
 PFX_INLINE pfx_result_t clear_base_array (pfx_base_array_t* PARAM_INOUT parray,pfx_bool_t bnew_buffer,size_t new_resize_step);
 
@@ -62,7 +62,7 @@ PFX_INLINE void* base_array_pop_back_n (pfx_base_array_t* PARAM_INOUT parray,siz
 
 #pragma pack(push)
 #pragma pack(1)
-typedef struct st_pfx_arraybuffer_block
+typedef struct PFX_DATA_API st_pfx_arraybuffer_block
 {
 	char*	m_pblock_data;
 	size_t	m_pblock_size;
@@ -70,7 +70,7 @@ typedef struct st_pfx_arraybuffer_block
 }pfx_arraybuffer_block_t;
 #pragma pack(pop)
 
-typedef enum enum_aligned_type
+typedef enum PFX_DATA_API enum_aligned_type
 {
 	ALIGNED_1_BYTE = 0, // 1 << 0
 	ALIGNED_2_BYTE, // 1 << 1
@@ -86,18 +86,18 @@ typedef enum enum_aligned_type
 	ALIGNED_TYPE_COUNT
 }ALIGNED_TYPE_t;
 
-pfx_arraybuffer_block_t* init_arraybuffer_block_by_buffer (	char* PARAM_INOUT pbuffer,
+PFX_DATA_API pfx_arraybuffer_block_t*  init_arraybuffer_block_by_buffer (	char* PARAM_INOUT pbuffer,
 	size_t buffer_size, ALIGNED_TYPE_t aligned_type,pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_arraybuffer_block_t* new_arraybuffer_block (size_t buffer_size,ALIGNED_TYPE_t aligned_type,
+PFX_DATA_API pfx_arraybuffer_block_t*  new_arraybuffer_block (size_t buffer_size,ALIGNED_TYPE_t aligned_type,
 																						const IAllocator* PARAM_IN parray_item_allocator,
 																						pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_result_t delete_arraybuffer_block (pfx_arraybuffer_block_t* PARAM_INOUT parray_block,
+PFX_DATA_API pfx_result_t  delete_arraybuffer_block (pfx_arraybuffer_block_t* PARAM_INOUT parray_block,
 																const IAllocator* PARAM_IN parray_item_allocator);
 
 
-typedef struct st_pfx_dynamic_linear_array
+typedef struct PFX_DATA_API st_pfx_dynamic_linear_array
 {
 	size_t						m_item_size;
 	size_t						m_buffer_length;
@@ -108,7 +108,7 @@ typedef struct st_pfx_dynamic_linear_array
 	pfx_base_array_t	m_block_array;
 }pfx_dynamic_linear_array_t;
 
-pfx_dynamic_linear_array_t* init_dynamic_linear_array_by_buffer (size_t item_size,
+PFX_DATA_API pfx_dynamic_linear_array_t*  init_dynamic_linear_array_by_buffer (size_t item_size,
 	size_t allocate_step,
 	size_t allocate_block_array_step,
 	char* PARAM_INOUT pbuffer,
@@ -118,7 +118,7 @@ pfx_dynamic_linear_array_t* init_dynamic_linear_array_by_buffer (size_t item_siz
 	const IAllocator* PARAM_IN pblock_array_item_allocator,
 	pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_dynamic_linear_array_t* new_dynamic_linear_array (const IAllocator* PARAM_IN parray_allocator,
+PFX_DATA_API pfx_dynamic_linear_array_t*  new_dynamic_linear_array (const IAllocator* PARAM_IN parray_allocator,
 	size_t item_size,
 	size_t default_item_buffer_count,
 	size_t allocate_step,
@@ -128,13 +128,13 @@ pfx_dynamic_linear_array_t* new_dynamic_linear_array (const IAllocator* PARAM_IN
 	const IAllocator* PARAM_IN pblock_array_item_allocator,
 	pfx_result_t* PARAM_INOUT pstatus);
 
-pfx_result_t delete_dynamic_linear_array (pfx_dynamic_linear_array_t* pdel_array, 
+PFX_DATA_API pfx_result_t  delete_dynamic_linear_array (pfx_dynamic_linear_array_t* pdel_array, 
 	const IAllocator* PARAM_IN parray_allocator);
 
-pfx_result_t resize_dynamic_linear_array (pfx_dynamic_linear_array_t* PARAM_INOUT parray,
+PFX_DATA_API pfx_result_t  resize_dynamic_linear_array (pfx_dynamic_linear_array_t* PARAM_INOUT parray,
 	size_t item_count,pfx_bool_t bnew_buffer);
 
-pfx_result_t config_dynamic_linear_block_array_step (pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t step);
+PFX_DATA_API pfx_result_t  config_dynamic_linear_block_array_step (pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t step);
 
 PFX_INLINE pfx_arraybuffer_block_t** get_dynamic_linear_array_block_pointer (pfx_dynamic_linear_array_t* PARAM_INOUT parray,size_t block_index);
 

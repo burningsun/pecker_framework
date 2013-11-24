@@ -19,7 +19,7 @@ PFX_C_EXTERN_BEGIN
 // 字符串使用的IAllocator*必须使用能一次分配一块连续内存的分配器
 
 // 字符串
-typedef struct st_pfx_string
+typedef struct PFX_DATA_API st_pfx_string
 {
 	unsigned m_revered : 1;
 	unsigned m_using_extern_buffer : 1;
@@ -39,28 +39,28 @@ PFX_INLINE pfx_result_t init_string_direct_unsafe (pfx_string_t* PARAM_INOUT pst
 	size_t str_len);
 
 // 强制转换一个buffer成为字符串
-pfx_string_t* init_string_by_buffer (size_t char_size,size_t min_buffer_size,pfx_char_t* PARAM_INOUT string_obj_buffer,pfx_result_t* PARAM_INOUT pstatus);
+PFX_DATA_API pfx_string_t*  init_string_by_buffer (size_t char_size,size_t min_buffer_size,pfx_char_t* PARAM_INOUT string_obj_buffer,pfx_result_t* PARAM_INOUT pstatus);
 
 // 从内存分配器中新建一个字符串
-pfx_string_t* new_string (size_t char_size,size_t min_char_count,const IAllocator* PARAM_IN pAllocator,pfx_result_t* PARAM_INOUT pstatus);
+PFX_DATA_API pfx_string_t*  new_string (size_t char_size,size_t min_char_count,const IAllocator* PARAM_IN pAllocator,pfx_result_t* PARAM_INOUT pstatus);
 
 // 释放一个字符串占有的额外的内存资源
-pfx_result_t relese_string_extern_buffer (pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator);
+PFX_DATA_API pfx_result_t  relese_string_extern_buffer (pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator);
 
 // 从内存分配器中删除一个字符串
 PFX_INLINE pfx_result_t delete_string (pfx_string_t* PARAM_INOUT pstr,const IAllocator* PARAM_IN pAllocator);
 
 // 初始化字符串
-pfx_result_t init_string (pfx_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  init_string (pfx_string_t* PARAM_INOUT pstr,
 	size_t string_len,
 	const IAllocator* PARAM_IN pchar_allocator);
 // 使用现有buffer初始化字符串结构体，同时原有buffer转化为字符结构体
-pfx_result_t init_string_by_charsbuffer (pfx_string_t* PARAM_INOUT pstr,
+PFX_DATA_API pfx_result_t  init_string_by_charsbuffer (pfx_string_t* PARAM_INOUT pstr,
 	const pfx_char_t* PARAM_IN pstr_chars,size_t chars_buffer_size,
 	const IAllocator* PARAM_IN pchar_allocator);
 
 // 字符串拷贝
-pfx_result_t copy_string (pfx_string_t* PARAM_INOUT pstr_dec,
+PFX_DATA_API pfx_result_t  copy_string (pfx_string_t* PARAM_INOUT pstr_dec,
 	const pfx_string_t* PARAM_IN pstr_src,const IAllocator* PARAM_IN pchar_allocator);
 
 // 清除字符串buffer中的字符串
@@ -68,20 +68,20 @@ PFX_INLINE pfx_result_t clear_string (pfx_string_t* PARAM_INOUT pstr,
 const IAllocator* PARAM_IN pAllocator);
 
 // 交换默认大小一样的字符串 
-pfx_result_t swap_string (pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB);
+PFX_DATA_API pfx_result_t  swap_string (pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB);
 
 // 交换默认大小不一样的字符串 
-pfx_result_t swap_string_by_allocator (pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB,
+PFX_DATA_API pfx_result_t  swap_string_by_allocator (pfx_string_t* PARAM_INOUT pstrA,pfx_string_t* PARAM_INOUT pstrB,
 	const IAllocator* PARAM_IN pchar_allocator);
 
 // 重新定义字符串大小
-pfx_result_t resize_string (pfx_string_t* PARAM_INOUT pstr,size_t string_len,pfx_bool_t bnew_allocate, const IAllocator* PARAM_IN pchar_allocator);
+PFX_DATA_API pfx_result_t  resize_string (pfx_string_t* PARAM_INOUT pstr,size_t string_len,pfx_bool_t bnew_allocate, const IAllocator* PARAM_IN pchar_allocator);
 
 // 获取子字符串
-pfx_result_t get_sub_string (const pfx_string_t* PARAM_IN porign_string, pfx_string_t* PARAM_INOUT preference_sub_string,size_t ioffset,size_t sub_string_length,const IAllocator* PARAM_IN pchar_allocator);
+PFX_DATA_API pfx_result_t  get_sub_string (const pfx_string_t* PARAM_IN porign_string, pfx_string_t* PARAM_INOUT preference_sub_string,size_t ioffset,size_t sub_string_length,const IAllocator* PARAM_IN pchar_allocator);
 
 // 给字符串后面加入新的字符串
-pfx_result_t append_string_by_chars (pfx_string_t* PARAM_INOUT pstr,const pfx_char_t* PARAM_IN str_chars, size_t chars_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
+PFX_DATA_API pfx_result_t  append_string_by_chars (pfx_string_t* PARAM_INOUT pstr,const pfx_char_t* PARAM_IN str_chars, size_t chars_buffer_size,const IAllocator* PARAM_IN pchar_allocator);
 
 // 给字符串后面加入新的字符串
 PFX_INLINE pfx_result_t append_string_by_string (pfx_string_t* PARAM_INOUT pstr,const pfx_string_t* PARAM_IN pappend_string, const IAllocator* PARAM_IN pchar_allocator);

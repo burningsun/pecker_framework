@@ -15,7 +15,7 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef struct st_tenary_search_tree_node_mask
+typedef struct PFX_DATA_API st_tenary_search_tree_node_mask
 {
 	unsigned		m_valid_mask		: 2;		// 合法性判断位，用于假删除
 	unsigned		m_cache_size			: 14;	// 附加缓存的大小,最大附加缓存0x3fff
@@ -23,7 +23,7 @@ typedef struct st_tenary_search_tree_node_mask
 }tenary_search_tree_node_mask_t;
 
 // 三叉字符树中的二叉树节点部分
-typedef struct st_tenary_blance_part
+typedef struct PFX_DATA_API st_tenary_blance_part
 {
 	binary_search_tree_node_t*				m_parent_node;	// 父节点，主要用于优化遍历，以及可修改型迭代器的应用
 	binary_search_tree_node_t*				m_pleft_node;		// 左子树
@@ -33,16 +33,16 @@ typedef struct st_tenary_blance_part
 	pfx_share_string_t*								m_pstringkey;		//	 键
 }_tenary_blance_part_t;
 
-typedef union un_tenary_blance_part
+typedef union PFX_DATA_API un_tenary_blance_part
 {
 	_tenary_blance_part_t	m_blance_part;
 	balance_bst_node_t		m_bbst_node;
 }tenary_blance_part;
 
 // 三叉字符树节点
-typedef struct st_tenary_tree_node tenary_tree_node_t;
+typedef struct PFX_DATA_API st_tenary_tree_node tenary_tree_node_t;
 
-struct st_tenary_tree_node
+struct PFX_DATA_API st_tenary_tree_node
 {
 	tenary_blance_part				m_blance_part;				//二叉树部分
 	
@@ -94,7 +94,7 @@ typedef int (*tenery_tree_string_key_cmp_func) (const pfx_share_string_t* pstra,
 typedef int (*tenery_tree_same_string_key_cmp_func) (const pfx_share_string_t* pstra,const pfx_share_string_t* pstrb,pfx_nsize_t* PARAM_INOUT nsame_count);
 
 // 三叉树内部调用方法
-typedef struct st_tenary_tree_internal_method
+typedef struct PFX_DATA_API st_tenary_tree_internal_method
 {
 	size_t																			m_defualt_cache_size;
 	const IAllocator*														m_nodes_allocator;
@@ -140,28 +140,28 @@ PFX_INLINE int tenery_tree_string_key_cmp_for_find_defualt  (pfx_long_t pstra,pf
 
 //////////////////////////////////////////////////////////////////////////
 // 创建一个三叉树节点
-tenary_tree_node_t* new_tenary_tree_node (size_t char_size,
+PFX_DATA_API tenary_tree_node_t*  new_tenary_tree_node (size_t char_size,
 	const tenary_tree_internal_method_t* PARAM_IN ptenary_tree_method);
 
 // 删除三叉树节点的内存空间 (仅删内存，不涉及链表操作)
-pfx_result_t delete_tenary_tree_node (tenary_tree_node_t* PARAM_INOUT pdel_node,
+PFX_DATA_API pfx_result_t  delete_tenary_tree_node (tenary_tree_node_t* PARAM_INOUT pdel_node,
 	const tenary_tree_internal_method_t* PARAM_IN ptenary_tree_method);
 
 //查找结点
-const tenary_tree_node_t* find_node_form_tenary_tree (const tenary_tree_node_t* PARAM_IN proot_node,
+PFX_DATA_API const tenary_tree_node_t*  find_node_form_tenary_tree (const tenary_tree_node_t* PARAM_IN proot_node,
 	const tenary_tree_internal_method_t* PARAM_IN ptenary_tree_method,
 	const pfx_char_t* PARAM_IN pkey_string, 
 	size_t char_size,
 	size_t key_string_buffer_size);
 
-const tenary_tree_node_t* find_first_near_node_form_tenary_tree (const tenary_tree_node_t* PARAM_IN proot_node,
+PFX_DATA_API const tenary_tree_node_t*  find_first_near_node_form_tenary_tree (const tenary_tree_node_t* PARAM_IN proot_node,
 	const tenary_tree_internal_method_t* PARAM_IN ptenary_tree_method,	
 	const pfx_char_t* PARAM_IN pkey_string, 
 	size_t char_size,
 	size_t key_string_buffer_size);
 
 //插入节点
-const tenary_tree_node_t* add_tenary_tree_node_unsafe (tenary_tree_node_t** PARAM_INOUT pproot_node,
+PFX_DATA_API const tenary_tree_node_t*  add_tenary_tree_node_unsafe (tenary_tree_node_t** PARAM_INOUT pproot_node,
 	const tenary_tree_internal_method_t* ptenary_tree_method,
 	const pfx_char_t* PARAM_IN pkey_string, 
 	size_t char_size,
@@ -170,7 +170,7 @@ const tenary_tree_node_t* add_tenary_tree_node_unsafe (tenary_tree_node_t** PARA
 	pfx_result_t* PARAM_INOUT pstatus);
 
 //移除节点
-const tenary_tree_node_t* remove_tenary_tree_node_unsafe (tenary_tree_node_t** PARAM_INOUT pproot_node,
+PFX_DATA_API const tenary_tree_node_t*  remove_tenary_tree_node_unsafe (tenary_tree_node_t** PARAM_INOUT pproot_node,
 	const tenary_tree_internal_method_t* ptenary_tree_method,
 	tenary_tree_node_t* PARAM_INOUT premove_node,	
 	pfx_result_t* PARAM_INOUT pstatus);

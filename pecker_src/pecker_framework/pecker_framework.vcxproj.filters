@@ -34,9 +34,6 @@
     <Filter Include="render\render_system\directx">
       <UniqueIdentifier>{3b344928-16cc-4387-b8b3-d2c6822e9106}</UniqueIdentifier>
     </Filter>
-    <Filter Include="render\render_system\openglex">
-      <UniqueIdentifier>{36365b7d-0e9f-49a1-bb8c-e7199d577a8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="test">
       <UniqueIdentifier>{ed8aea05-9168-41ba-8260-d0a9296a20f2}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="configs">
       <UniqueIdentifier>{8d1cbbb2-3b99-493a-bc7e-40a6024cd519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\render_system\opengles2">
+      <UniqueIdentifier>{36365b7d-0e9f-49a1-bb8c-e7199d577a8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -56,51 +56,6 @@
     </ClInclude>
     <ClInclude Include="native\pfx_timetick.h">
       <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_array.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_array_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_avl_tree.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_avl_tree_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_balance_tenary_tree.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_balance_tst_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_bst_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_bst_iterator.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_iterator.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_list.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_matrix4.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_stack.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_vector4.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_value_compare.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pecker_collection.h">
-      <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="native\pfx_file_io.h">
       <Filter>native</Filter>
@@ -119,36 +74,6 @@
     </ClInclude>
     <ClInclude Include="pfx_defines.h">
       <Filter>configs</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_math.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_balance_bst.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_bst.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_redblack_tree_algorithm.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_share_string.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_string.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_fixed_point.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_math_table.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_simd_optimization.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="data\pfx_util.h">
-      <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="render\render_system\pfx_framebuffer.h">
       <Filter>render\render_system</Filter>
@@ -174,9 +99,6 @@
     <ClInclude Include="render\render_system\pfx_view_context.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_system\opengles\pfx_view_context_opengles.h">
-      <Filter>render\render_system\openglex</Filter>
-    </ClInclude>
     <ClInclude Include="render\pfx_render.h">
       <Filter>render</Filter>
     </ClInclude>
@@ -201,6 +123,81 @@
     <ClInclude Include="render\pfx_image.h">
       <Filter>render</Filter>
     </ClInclude>
+    <ClInclude Include="data\pecker_collection.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pecker_value_compare.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_array.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_array_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_avl_tree.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_avl_tree_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_balance_bst.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_balance_tenary_tree.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_balance_tst_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_bst.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_bst_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_bst_iterator.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_fixed_point.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_iterator.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_list.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_math.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_math_table.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_matrix4.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_redblack_tree_algorithm.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_share_string.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_simd_optimization.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_stack.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_string.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_util.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_vector4.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">
@@ -221,9 +218,6 @@
     <ClCompile Include="test\pfx_string_test.cpp">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="data\pfx_array_algorithm.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
     <ClCompile Include="test\pfx_array_test.cpp">
       <Filter>test</Filter>
     </ClCompile>
@@ -232,12 +226,6 @@
     </ClCompile>
     <ClCompile Include="test\pfx_dynamic_linear_array_test.cpp">
       <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pfx_avl_tree_algorithm.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pfx_bst_iterator.cpp">
-      <Filter>data</Filter>
     </ClCompile>
     <ClCompile Include="test\pfx_bst_test.cpp">
       <Filter>test</Filter>
@@ -254,26 +242,11 @@
     <ClCompile Include="test\pfx_stream_test.cpp">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="data\pfx_bst_algorithm.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
     <ClCompile Include="test\pfx_avl_test.cpp">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="data\pfx_redblack_tree_algorithm.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
     <ClCompile Include="test\pfx_rbtree_test.cpp">
       <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pfx_share_string.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pfx_string.cpp">
-      <Filter>data</Filter>
-    </ClCompile>
-    <ClCompile Include="data\pfx_balance_tst_algorithm.cpp">
-      <Filter>data</Filter>
     </ClCompile>
     <ClCompile Include="test\pfx_matrix_test.cpp">
       <Filter>test</Filter>
