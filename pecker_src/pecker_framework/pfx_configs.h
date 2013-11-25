@@ -25,8 +25,10 @@
 #define OS_VERSION_CONFIG		WINDOW_7_8
 
 #if (OS_CONFIG == OS_WINDOWS)
+//#include <Windows.h>
 #include <WinSock2.h>
 #include <ws2ipdef.h>
+#include <Windows.h>
 #pragma comment(lib,"Ws2_32.lib")
 #define SOCK_LAST_ERROR_CODE WSAGetLastError
 #endif

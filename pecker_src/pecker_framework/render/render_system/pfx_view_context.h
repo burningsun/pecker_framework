@@ -16,6 +16,47 @@
 PECKER_BEGIN
 
 PFX_Interface Ipfx_message_event;
+
+
+typedef struct st_PRESENT_PARAMETERS 
+{
+		pfx_usize_t m_buffer_width;
+		pfx_usize_t m_buffer_height;
+		pfx_usize_t m_buffer_count;
+		pfx_enum_t m_buffer_format;
+
+		// 31 ~ 0
+		// 0~7 sample type 8~15 sample quality
+		pfx_bitfield_t m_multi_sample_mask; 
+
+		pfx_bitfield_t m_swap_effect;
+		
+		// 0 EnableAutoDepthStencil   8~15 AutoDepthStencilFormat
+		pfx_bitfield_t m_auto_mask;
+
+		// 0 Windowed 8~15 FullScreen_RefreshRateInHz 16~23 PresentationInterval
+		pfx_bitfield_t m_screen_mask;
+		//
+		pfx_flag_t		m_flags;
+} PFX_PRESENT_PARAMETERS;
+
+
+typedef struct st_windows_info
+{
+	pfx_nsize_t m_x;
+	pfx_nsize_t m_y;
+	pfx_usize_t m_width;
+	pfx_usize_t m_hight;
+
+	pfx_bitfield_t	m_windows_style;
+	pfx_bitfield_t	m_windows_exstyle;
+	pfx_string_t	m_str_title_name;
+
+	PFX_PRESENT_PARAMETERS	m_present_params;
+
+	pfx_handle_t m_render_params_ex;
+}PFX_WINDOWS_INFO_t;
+
 class  pfx_windows_context_base
 {
 public:
@@ -37,6 +78,8 @@ public:
 	virtual pfx_result_t on_close () = 0;
 	virtual pfx_result_t on_parse () = 0;
 	virtual pfx_result_t on_exit () = 0;
+
+	virtual const PFX_WINDOWS_INFO_t& get_context_info () const;
 };
 
 
