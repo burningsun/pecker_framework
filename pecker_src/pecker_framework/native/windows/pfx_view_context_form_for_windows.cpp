@@ -33,6 +33,19 @@ LRESULT WINAPI CPfx_window_form_for_win :: WndProc(HWND hwnd, UINT message_, WPA
 	return ::DefWindowProc(hwnd, message_, wParam, lParam);
 }
 
+CPfx_window_form_for_win :: CPfx_window_form_for_win () : m_context (null),m_display(null),
+	m_hdc(null),
+	m_hwnd(null),
+	m_pnext_node (null),
+	m_prev_node (null)
+{
+	;
+}
+CPfx_window_form_for_win::~CPfx_window_form_for_win()
+{
+	dispose();
+}
+
 static HWND gMainWnd = null;
 
 pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam)
@@ -173,9 +186,24 @@ pfx_result_t CPfx_window_form_for_win::_render_thread()
 	return PFX_STATUS_OK;
 }
 
+pfx_result_t CPfx_window_form_for_win::attach_display (IPfx_windows_display* PARAM_INOUT display_)
+{
+	RETURN_INVALID_RESULT (null == display_,PFX_STATUS_INVALID_PARAMS);
+	RETURN_INVALID_RESULT (null != m_display,PFX_STATUS_DENIED);
+	m_display = display_;
+	return PFX_STATUS_OK;
+}
+
+pfx_result_t CPfx_window_form_for_win::dettach_display ()
+{
+	//stop render thread
+	m_display = null;
+	return PFX_STATUS_OK;
+}
+
 IPfx_windows_display* CPfx_window_form_for_win::get_display()
 {
-	return null;
+	return m_display;
 }
 
 PECKER_END

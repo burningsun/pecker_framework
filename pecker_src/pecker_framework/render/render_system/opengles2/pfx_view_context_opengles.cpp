@@ -9,27 +9,30 @@
 
 PECKER_BEGIN
 
-pfx_result_t CPfx_window_form_for_win_opengles::_render_thread ()
+CPfx_windows_display_opengles2::CPfx_windows_display_opengles2 () : m_form (null)
+{
+	;
+}
+CPfx_windows_display_opengles2::~CPfx_windows_display_opengles2 ()
+{
+	close_display_device();
+}
+pfx_result_t CPfx_windows_display_opengles2::init_display_device (IPfx_windows_form* PARAM_INOUT windows_form)
+{
+	RETURN_INVALID_RESULT (null == windows_form,PFX_STATUS_INVALID_PARAMS);
+	RETURN_INVALID_RESULT (null != m_form,PFX_STATUS_DENIED);
+	m_form = windows_form;
+	return PFX_STATUS_OK;
+}
+
+pfx_result_t CPfx_windows_display_opengles2::on_swap_back_buffer ()
 {
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t CPfx_window_form_for_win_opengles::init_display_device (IPfx_windows_form* PARAM_INOUT windows_form)
+pfx_result_t CPfx_windows_display_opengles2::close_display_device ()
 {
-	if (this != windows_form)
-	{
-		return PFX_STATUS_DENIED;
-	}
-	return PFX_STATUS_OK;
-}
-
-pfx_result_t CPfx_window_form_for_win_opengles::on_swap_back_buffer ()
-{
-	return PFX_STATUS_OK;
-}
-
-pfx_result_t CPfx_window_form_for_win_opengles::close_display_device ()
-{
+	m_form = null;
 	return PFX_STATUS_OK;
 }
 

@@ -22,15 +22,18 @@ class CPfx_window_form_for_win : public IPfx_windows_form
 	//////////////////////////////////////////////////////////////////////////
 private:
 	HWND m_hwnd;
+	HDC		 m_hdc;
 	HANDLE m_renderthread;
 protected:
 	static LRESULT WINAPI WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 	//////////////////////////////////////////////////////////////////////////
 protected:
 	pfx_windows_context_base* m_context;
+	IPfx_windows_display* m_display;
+
 	CPfx_window_form_for_win* m_prev_node;
 	CPfx_window_form_for_win* m_pnext_node;
-
+	
 protected:
 	pfx_result_t windows_message_process (	pfx_enum_int_t umessage_code,
 	pfx_long_t wParam,
@@ -40,15 +43,40 @@ public:
 public:
 	pfx_result_t attach_context (pfx_windows_context_base* PARAM_INOUT context);
 	pfx_result_t dettach_context ();
+
+	PFX_INLINE pfx_windows_context_base* get_context () const;
 public:
 	pfx_result_t show ();
 	pfx_result_t close ();
 	pfx_result_t dispose ();
-
+public:
+	PFX_INLINE pfx_long_t get_form_handle () const; 
+	PFX_INLINE pfx_long_t get_display_handle () const;
 protected: 
-	virtual pfx_result_t _render_thread ();
-	virtual IPfx_windows_display* get_display ();
+	 pfx_result_t _render_thread ();
+
+	 pfx_result_t attach_display (IPfx_windows_display* PARAM_INOUT display_);
+	 pfx_result_t dettach_display ();
+
+	 IPfx_windows_display* get_display ();
+
+public:
+	CPfx_window_form_for_win();
+	virtual ~CPfx_window_form_for_win();
 };
+
+PFX_INLINE pfx_windows_context_base* CPfx_window_form_for_win::get_context () const
+{
+	return m_context;
+}
+PFX_INLINE pfx_long_t CPfx_window_form_for_win::get_form_handle () const
+{
+	return (pfx_long_t)m_hwnd;
+}
+PFX_INLINE pfx_long_t CPfx_window_form_for_win::get_display_handle () const
+{
+	return (pfx_long_t)m_hdc;
+}
 
 PECKER_END
 

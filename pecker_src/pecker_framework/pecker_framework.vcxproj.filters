@@ -191,6 +191,12 @@
     <ClInclude Include="native\pfx_view_context_form.h">
       <Filter>native</Filter>
     </ClInclude>
+    <ClInclude Include="native\windows\pfx_view_context_form_for_windows.h">
+      <Filter>native\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp">
@@ -211,5 +217,13 @@
     <ClCompile Include="render\pfx_render_type.cpp">
       <Filter>render</Filter>
     </ClCompile>
+    <ClCompile Include="native\windows\pfx_view_context_form_for_windows.cpp">
+      <Filter>native\windows</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

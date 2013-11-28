@@ -42,6 +42,7 @@
     <ClInclude Include="native\pfx_log.h" />
     <ClInclude Include="native\pfx_timetick.h" />
     <ClInclude Include="native\pfx_view_context_form.h" />
+    <ClInclude Include="native\windows\pfx_view_context_form_for_windows.h" />
     <ClInclude Include="pfx.h" />
     <ClInclude Include="pfx_configs.h" />
     <ClInclude Include="pfx_defines.h" />
@@ -61,14 +62,19 @@
     <ClInclude Include="render\render_system\pfx_gram_array_params.h" />
     <ClInclude Include="render\render_system\pfx_view_context.h" />
     <ClInclude Include="render\render_util\pfx_load_uncompress_bitmap.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\pfx_allocator.cpp" />
     <ClCompile Include="native\pfx_file_io.cpp" />
     <ClCompile Include="native\pfx_stream.cpp" />
     <ClCompile Include="native\pfx_timetick.cpp" />
+    <ClCompile Include="native\windows\pfx_view_context_form_for_windows.cpp" />
     <ClCompile Include="render\pfx_render_type.cpp" />
     <ClCompile Include="render\render_system\pfx_render_pipeline.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{76A56045-00A1-411F-B387-19B3FE8A873E}</ProjectGuid>

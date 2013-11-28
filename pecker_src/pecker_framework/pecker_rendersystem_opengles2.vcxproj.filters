@@ -16,9 +16,6 @@
     <Filter Include="native">
       <UniqueIdentifier>{2f2d2b61-fba3-4d93-8034-389fe6b64d79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="native\windows">
-      <UniqueIdentifier>{05fc8439-671b-4989-a294-7c9352e1b07a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="render\pfx_image.h">
@@ -90,9 +87,6 @@
     <ClInclude Include="native\pfx_view_context_form.h">
       <Filter>native</Filter>
     </ClInclude>
-    <ClInclude Include="native\windows\pfx_view_context_form_for_windows.h">
-      <Filter>native\windows</Filter>
-    </ClInclude>
     <ClInclude Include="render\render_system\opengles2\pfx_view_context_opengles.h">
       <Filter>render\render_system\opengles2</Filter>
     </ClInclude>
@@ -118,9 +112,6 @@
     </ClCompile>
     <ClCompile Include="render\render_system\opengles2\pfx_texture_opengles.cpp">
       <Filter>render\render_system\opengles2</Filter>
-    </ClCompile>
-    <ClCompile Include="native\windows\pfx_view_context_form_for_windows.cpp">
-      <Filter>native\windows</Filter>
     </ClCompile>
     <ClCompile Include="render\render_system\opengles2\pfx_view_context_opengles.cpp">
       <Filter>render\render_system\opengles2</Filter>
