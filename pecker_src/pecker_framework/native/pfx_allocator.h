@@ -48,7 +48,7 @@ PFX_INLINE void default_allocator_deallocate_obj(pfx_long_t handle,void* PARAM_I
 }
 
 
-extern const IAllocator gDefualt_allocator;// = {default_allocator_allocate_obj,default_allocator_deallocate_obj}; 
+const IAllocator gDefualt_allocator = {default_allocator_allocate_obj,default_allocator_deallocate_obj}; 
 PFX_C_EXTERN_END
 
 #endif			//PFX_ALLOCATOR_H_

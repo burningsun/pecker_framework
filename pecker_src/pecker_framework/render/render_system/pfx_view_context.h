@@ -40,6 +40,8 @@ typedef struct st_PRESENT_PARAMETERS
 		pfx_flag_t		m_flags;
 } PFX_PRESENT_PARAMETERS;
 
+#define  PFX_FULL_SCREEN_MASK (1)
+
 
 typedef struct st_windows_info
 {
@@ -68,7 +70,7 @@ public:
 	virtual pfx_result_t move_context (pfx_nsize_t x,pfx_nsize_t y) = 0;
 
 	virtual pfx_result_t on_landscape_change (pfx_usize_t width, pfx_usize_t height,pfx_bool_t is_landscape) = 0;
-	virtual pfx_result_t on_message_event (Ipfx_message_event* PARAM_INOUT pevent_,pfx_unknown_event_object_t* pobject) = 0;
+	virtual pfx_result_t on_message_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam) = 0;
 	
 	virtual pfx_result_t on_load_datas () = 0;
 	virtual pfx_result_t on_render_init () = 0;
@@ -79,9 +81,9 @@ public:
 	virtual pfx_result_t on_parse () = 0;
 	virtual pfx_result_t on_exit () = 0;
 
-	virtual const PFX_WINDOWS_INFO_t& get_context_info () const;
+	virtual const PFX_WINDOWS_INFO_t& get_context_info () const = 0;
+	virtual pfx_result_t on_perent_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam) = 0;
 };
-
 
 //PFX_C_EXTERN_BEGIN
 //

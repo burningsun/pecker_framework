@@ -63,6 +63,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="native\pfx_view_context_form.h" />
+    <ClInclude Include="native\windows\pfx_view_context_form_for_windows.h" />
     <ClInclude Include="pfx.h" />
     <ClInclude Include="pfx_configs.h" />
     <ClInclude Include="pfx_defines.h" />
@@ -88,6 +90,7 @@
     <ClInclude Include="render\render_system\pfx_view_context.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="native\windows\pfx_view_context_form_for_windows.cpp" />
     <ClCompile Include="render\render_system\opengles2\pfx_framebuffer_opengles.cpp" />
     <ClCompile Include="render\render_system\opengles2\pfx_gpu_array_buffer_opengles.cpp" />
     <ClCompile Include="render\render_system\opengles2\pfx_renderbuffer_opengles.cpp" />

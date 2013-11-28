@@ -30,16 +30,16 @@ PFX_C_EXTERN_BEGIN
 		pfx_bitfield_t			m_flags;
 	}st_tick_instance_t;
 
-	pfx_result_t	init_timetick(st_tick_instance_t* PARAM_INOUT ptick);
-	pfx_result_t	start_timetick(st_tick_instance_t* PARAM_INOUT ptick);
-	pfx_result_t	stop_timetick(st_tick_instance_t* PARAM_INOUT ptick);
-	pfx_double_t	get_millisecond(st_tick_instance_t* PARAM_INOUT ptick);
+PFX_CORE_API	pfx_result_t	init_timetick(st_tick_instance_t* PARAM_INOUT ptick);
+PFX_CORE_API	pfx_result_t	start_timetick(st_tick_instance_t* PARAM_INOUT ptick);
+PFX_CORE_API	pfx_result_t	stop_timetick(st_tick_instance_t* PARAM_INOUT ptick);
+PFX_CORE_API	pfx_double_t	get_millisecond(st_tick_instance_t* PARAM_INOUT ptick);
 PFX_C_EXTERN_END
 
 #ifdef __cplusplus
 PECKER_BEGIN
 
-class PFX_API pecker_tick
+class PFX_CORE_API pecker_tick
 {
 private:
 	st_tick_instance_t m_tick;

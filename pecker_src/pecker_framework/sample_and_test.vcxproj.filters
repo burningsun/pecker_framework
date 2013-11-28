@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="test">
+      <UniqueIdentifier>{6a56963b-59a5-4db1-a335-69bb9b6e9fbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="testdata">
+      <UniqueIdentifier>{579c1ca9-ab4c-49a3-98fe-32ae0e80a03a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="test\pfx_array_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_arrayblock_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_avl_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_bst_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_dynamic_linear_array_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_file_inputdata_cmd.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_list_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_matrix_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_rbtree_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_stream_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\pfx_string_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\test_main.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="test\pfx_file_inputdata_cmd.h">
+      <Filter>test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test_data\bst_test_data.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_2.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_3.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_4.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_5.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_6.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_7.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_8.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_9.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\bst_test_data_10.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\tst_test_data1.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\tst_test_data2.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\tst_test_data3.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\tst_test_data4.txt">
+      <Filter>testdata</Filter>
+    </None>
+    <None Include="test_data\tst_test_data5.txt">
+      <Filter>testdata</Filter>
+    </None>
+  </ItemGroup>
+</Project>
