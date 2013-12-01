@@ -36,8 +36,9 @@ public:
 	virtual pfx_result_t dispose () = 0;
 
 public:
-	virtual pfx_long_t get_form_handle () const = 0; // hwnd
-	virtual pfx_long_t get_display_handle () const = 0; // hdc
+	virtual pfx_long_t get_native_window () const = 0; // hwnd
+	virtual pfx_long_t get_native_display () const = 0; // hdc
+	virtual pfx_long_t get_native_pixelmap() const = 0;
 protected: 
 	virtual pfx_result_t _render_thread () = 0;
 
@@ -55,7 +56,10 @@ public:
 PFX_Interface IPfx_windows_display
 {
 	virtual pfx_result_t init_display_device (IPfx_windows_form* PARAM_INOUT windows_form) = 0;
-	virtual pfx_result_t on_swap_back_buffer () = 0;
+	virtual pfx_result_t update_frame (const pfx_64bit_t& PARAM_IN escape_tick,
+		pfx_double_t last_frame_tick_interval,
+		pfx_boolean_t& PARAM_INOUT exist_render) = 0;
+	virtual pfx_result_t swap_back_buffer () = 0;
 	virtual pfx_result_t close_display_device () = 0;
 	virtual ~IPfx_windows_display() {;};
 };

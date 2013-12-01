@@ -90,7 +90,7 @@ pfx_result_t CPfx_render_device_opengles2::end_draw (pfx_boolean_t flag /*= pfx_
 	return 0;
 }
 
-pfx_result_t CPfx_render_device_opengles2::present ()
+pfx_result_t CPfx_render_device_opengles2::present (const pfx_handle_t PARAM_IN params_ /* = null */)
 {
 	return 0;
 }

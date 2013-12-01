@@ -44,7 +44,7 @@ public:
 
 	virtual pfx_result_t end_draw (pfx_boolean_t flag = pfx_false);
 
-	virtual pfx_result_t present ();
+	virtual pfx_result_t present (const pfx_handle_t PARAM_IN params_ = null);
 
 	virtual pfx_result_t antialiasing_hint (pfx_enum_t target_, PFX_ANTIALIASLING_MODE_t mode_);
 	//////////////////////////////////////////////////////////////////////////

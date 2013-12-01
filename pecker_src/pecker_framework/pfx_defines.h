@@ -298,7 +298,7 @@ typedef union PFX_128bit_DataType
 
 #define RETURN_INVALID_RESULT(condition,return_status) {if (condition) {return (return_status);} };
 
-#define RETURN_INVALID_BY_ACT_RESULT(condition,action_,return_status) {if (condition) {{action_};return (return_status);} };
+#define RETURN_INVALID_BY_ACT_RESULT(condition,action_,return_status) {if (condition) {{action_;};return (return_status);} };
 
 #define  SET_POINTER_VALUE(ptr_,val_){if (ptr_){*(ptr_) = (val_);};};
 

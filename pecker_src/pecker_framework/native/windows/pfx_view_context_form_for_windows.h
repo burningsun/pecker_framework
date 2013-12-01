@@ -23,9 +23,13 @@ class CPfx_window_form_for_win : public IPfx_windows_form
 private:
 	HWND m_hwnd;
 	HDC		 m_hdc;
-	HANDLE m_renderthread;
+	HANDLE m_render_thread;
+	HANDLE m_load_data_thread;
+	pfx_boolean_t m_is_showed;
 protected:
 	static LRESULT WINAPI WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+	static DWORD WINAPI RenderThreadProc (__in LPVOID lpParameter);
+	static DWORD WINAPI LoadDataThreadProc (__in LPVOID lpParameter);
 	//////////////////////////////////////////////////////////////////////////
 protected:
 	pfx_windows_context_base* m_context;
@@ -50,8 +54,9 @@ public:
 	pfx_result_t close ();
 	pfx_result_t dispose ();
 public:
-	PFX_INLINE pfx_long_t get_form_handle () const; 
-	PFX_INLINE pfx_long_t get_display_handle () const;
+	PFX_INLINE pfx_long_t get_native_window () const; 
+	PFX_INLINE pfx_long_t get_native_display () const;
+	PFX_INLINE pfx_long_t get_native_pixelmap () const;
 protected: 
 	 pfx_result_t _render_thread ();
 
@@ -69,13 +74,17 @@ PFX_INLINE pfx_windows_context_base* CPfx_window_form_for_win::get_context () co
 {
 	return m_context;
 }
-PFX_INLINE pfx_long_t CPfx_window_form_for_win::get_form_handle () const
+PFX_INLINE pfx_long_t CPfx_window_form_for_win::get_native_window () const
 {
 	return (pfx_long_t)m_hwnd;
 }
-PFX_INLINE pfx_long_t CPfx_window_form_for_win::get_display_handle () const
+PFX_INLINE pfx_long_t CPfx_window_form_for_win::get_native_display () const
 {
 	return (pfx_long_t)m_hdc;
+}
+PFX_INLINE pfx_long_t CPfx_window_form_for_win::get_native_pixelmap() const
+{
+	return null;
 }
 
 PECKER_END

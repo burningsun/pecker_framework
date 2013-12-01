@@ -9,6 +9,7 @@
 #define		PFX_RENDERBUFFER_H_
 
 #include "../../pfx_defines.h"
+#include "../pfx_render_type.h"
 
 PECKER_BEGIN
 
@@ -35,6 +36,50 @@ typedef enum enumCOLOR_BUFFER_TYPE
 
 }PFX_COLOR_BUFFER_TYPE_t;
 
+PFX_INLINE PFX_PIXEL_COLOR_FORMAT_t* GET_COLOR_BUFFER_COLOR_SIZE 
+	(PFX_COLOR_BUFFER_TYPE_t type_,PFX_PIXEL_COLOR_FORMAT_t* PARAM_INOUT format_)
+{
+	RETURN_INVALID_RESULT (null == format_,null);
+
+	switch (type_)
+	{
+	case PFX_CBT_RGB565:
+		format_->m_red_size		= 5;
+		format_->m_green_size	= 6;
+		format_->m_blue_size		= 5;
+		format_->m_alpha_size		= 0;
+		break;
+	case PFX_CBT_RGBA4:
+		format_->m_red_size		= 4;
+		format_->m_green_size	= 4;
+		format_->m_blue_size		= 4;
+		format_->m_alpha_size		= 4;
+		break;
+	case PFX_CBT_RGB5_A1:
+		format_->m_red_size		= 5;
+		format_->m_green_size	= 5;
+		format_->m_blue_size		= 5;
+		format_->m_alpha_size		= 1;
+		break;
+	case PFX_CBT_RGB8:
+		format_->m_red_size		= 8;
+		format_->m_green_size	= 8;
+		format_->m_blue_size		= 8;
+		format_->m_alpha_size		= 0;
+		break;
+	case PFX_CBT_RGBA8:
+		format_->m_red_size		= 8;
+		format_->m_green_size	= 8;
+		format_->m_blue_size		= 8;
+		format_->m_alpha_size		= 8;
+		break;
+	default:
+		format_ = null;
+		break;
+	}
+	return format_;
+}
+
 typedef enum enumDEPTH_BUFFER_TYPE
 {
 	PFX_DEPTH_COMPONENT16 = 0,
@@ -46,6 +91,27 @@ typedef enum enumDEPTH_BUFFER_TYPE
 	PFX_DEPTH_BUFFER_TYPE_COUNT
 }PFX_DEPTH_BUFFER_TYPE_t;
 
+PFX_INLINE pfx_usize_t GET_DEPTH_BUFFER_FORMAT_SIZE (PFX_DEPTH_BUFFER_TYPE_t type_)
+{
+	pfx_usize_t size_;
+	switch (type_)
+	{
+	case PFX_DEPTH_COMPONENT16:
+		size_ = 16;
+		break;
+	case PFX_DEPTH_COMPONENT24:
+		size_ = 24;
+		break;
+	case PFX_DEPTH_COMPONENT32:
+		size_ = 32;
+		break;
+	default:
+		size_ = 0;
+		break;
+	}
+	return size_;
+}
+
 typedef enum enumSTENCIL_BUFFER_TYPE
 {
 	PFX_STENCIL_INDEX8 = 0,
@@ -56,6 +122,28 @@ typedef enum enumSTENCIL_BUFFER_TYPE
 
 	PFX_STENCIL_BUFFER_TYPE_COUNT
 }PFX_STENCIL_BUFFER_TYPE_t;
+
+PFX_INLINE pfx_usize_t GET_STENCIL_BUFFER_FORMAT_SIZE ( PFX_STENCIL_BUFFER_TYPE_t type_)
+{
+	pfx_usize_t size_;
+
+	switch (type_)
+	{
+		case PFX_STENCIL_INDEX8:
+			size_ = 8;
+			break;
+		case PFX_STENCIL_INDEX1:
+			size_ = 1;
+			break;
+		case PFX_STENCIL_INDEX4:
+			size_ = 4;
+			break;
+		default:
+			size_ = 0;
+			break;
+	}
+	return size_;
+}
 
 PFX_Interface Ipfx_color_buffer
 {

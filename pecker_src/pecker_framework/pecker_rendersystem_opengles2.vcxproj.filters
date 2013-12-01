@@ -87,7 +87,7 @@
     <ClInclude Include="native\pfx_view_context_form.h">
       <Filter>native</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_system\opengles2\pfx_view_context_opengles.h">
+    <ClInclude Include="render\render_system\opengles2\pfx_windows_display_opengles.h">
       <Filter>render\render_system\opengles2</Filter>
     </ClInclude>
   </ItemGroup>
@@ -113,7 +113,7 @@
     <ClCompile Include="render\render_system\opengles2\pfx_texture_opengles.cpp">
       <Filter>render\render_system\opengles2</Filter>
     </ClCompile>
-    <ClCompile Include="render\render_system\opengles2\pfx_view_context_opengles.cpp">
+    <ClCompile Include="render\render_system\opengles2\pfx_windows_display_opengles.cpp">
       <Filter>render\render_system\opengles2</Filter>
     </ClCompile>
   </ItemGroup>

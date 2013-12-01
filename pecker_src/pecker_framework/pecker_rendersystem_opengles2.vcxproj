@@ -75,7 +75,7 @@
     <ClInclude Include="render\render_system\opengles2\pfx_rendertarget_opengles.h" />
     <ClInclude Include="render\render_system\opengles2\pfx_shader_program_opengles.h" />
     <ClInclude Include="render\render_system\opengles2\pfx_texture_opengles.h" />
-    <ClInclude Include="render\render_system\opengles2\pfx_view_context_opengles.h" />
+    <ClInclude Include="render\render_system\opengles2\pfx_windows_display_opengles.h" />
     <ClInclude Include="render\render_system\pfx_framebuffer.h" />
     <ClInclude Include="render\render_system\pfx_gpu_array_buffer.h" />
     <ClInclude Include="render\render_system\pfx_gram_array_params.h" />
@@ -96,7 +96,7 @@
     <ClCompile Include="render\render_system\opengles2\pfx_rendertarget_opengles.cpp" />
     <ClCompile Include="render\render_system\opengles2\pfx_shader_program_opengles.cpp" />
     <ClCompile Include="render\render_system\opengles2\pfx_texture_opengles.cpp" />
-    <ClCompile Include="render\render_system\opengles2\pfx_view_context_opengles.cpp" />
+    <ClCompile Include="render\render_system\opengles2\pfx_windows_display_opengles.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

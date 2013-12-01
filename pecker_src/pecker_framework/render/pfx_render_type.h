@@ -23,6 +23,14 @@ struct st_pfx_color
 	pfx_float_t m_blue;
 };
 
+typedef struct st_PIXEL_COLOR_FORMAT
+{
+	pfx_u8_t m_red_size;
+	pfx_u8_t m_green_size;
+	pfx_u8_t m_blue_size;
+	pfx_u8_t m_alpha_size;
+}PFX_PIXEL_COLOR_FORMAT_t;
+
 class render_reference_object
 {
 protected:

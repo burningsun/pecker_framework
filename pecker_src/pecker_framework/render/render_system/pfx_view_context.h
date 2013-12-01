@@ -12,6 +12,7 @@
 #include "../../data/pfx_string.h"
 #include "pfx_rendertevent.h"
 #include "pfx_rendertarget.h"
+#include "pfx_renderdevice.h"
 
 PECKER_BEGIN
 
@@ -24,15 +25,14 @@ typedef struct st_PRESENT_PARAMETERS
 		pfx_usize_t m_buffer_height;
 		pfx_usize_t m_buffer_count;
 		pfx_enum_t m_buffer_format;
-
 		// 31 ~ 0
 		// 0~7 sample type 8~15 sample quality
 		pfx_bitfield_t m_multi_sample_mask; 
 
 		pfx_bitfield_t m_swap_effect;
 		
-		// 0 EnableAutoDepthStencil   8~15 AutoDepthStencilFormat
-		pfx_bitfield_t m_auto_mask;
+		// 0~2 conext priority level 7 EnableAutoDepthStencil   8~15 AutoDepthFormat 16~23 AutoStenciFormat 24~32 luminance color bit size
+		pfx_bitfield_t m_renderbuffer_mask;
 
 		// 0 Windowed 8~15 FullScreen_RefreshRateInHz 16~23 PresentationInterval
 		pfx_bitfield_t m_screen_mask;
@@ -41,6 +41,15 @@ typedef struct st_PRESENT_PARAMETERS
 } PFX_PRESENT_PARAMETERS;
 
 #define  PFX_FULL_SCREEN_MASK (1)
+#define PFX_CONTEXT_PRIORITY_LEVEL_VALUE(X) ((X)&0X7)
+
+typedef enum enumCONTEXT_PRIORITY_LEVEL_IMG
+{
+	PFX_CONTEXT_LOW_PREPRIORITY = 0,
+	PFX_CONTEXT_MEDIUM_PREPRIORITY,
+	PFX_CONTEXT_HIGH_PREPRIORITY,
+	PFX_CONTEXT_PRIORITY_LEVEL_IMG_TYPE_COUNT
+}PFX_CONTEXT_PRIORITY_LEVEL_IMG_t;
 
 
 typedef struct st_windows_info
@@ -73,9 +82,18 @@ public:
 	virtual pfx_result_t on_message_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam) = 0;
 	
 	virtual pfx_result_t on_load_datas () = 0;
-	virtual pfx_result_t on_render_init () = 0;
-	virtual pfx_result_t on_render_frame () = 0;
-	virtual pfx_result_t on_swap_render_frame () = 0;
+	virtual pfx_result_t on_release_datas () = 0;
+
+	virtual pfx_result_t on_render_init (Ipfx_render_device*  PARAM_INOUT graphic_device_) = 0;
+	
+	virtual pfx_result_t on_load_render_resource () = 0;
+	virtual pfx_result_t on_render_frame (Ipfx_render_device*  PARAM_INOUT graphic_device_,
+																	const pfx_64bit_t& PARAM_IN escape_tick,
+																	pfx_double_t last_frame_tick_interval,
+																	pfx_boolean_t& PARAM_INOUT exit_render) = 0;
+	virtual pfx_result_t on_release_render_resource () = 0;
+
+	virtual pfx_result_t on_swap_render_frame (Ipfx_render_device*  PARAM_INOUT graphic_device_) = 0;
 	
 	virtual pfx_result_t on_close () = 0;
 	virtual pfx_result_t on_parse () = 0;
