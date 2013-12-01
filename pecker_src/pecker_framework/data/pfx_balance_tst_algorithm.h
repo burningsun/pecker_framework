@@ -86,7 +86,7 @@ typedef TENERY_CACHE_NODE_NAME(256) tenary_tree_node_byte_cache256_t;
 	init_binary_search_tree_node_unsafe((binary_search_tree_node_t*)(NODE),null,null,null,(pfx_long_t)&((NODE)->m_base_node.m_string_key));\
 	init_linked_list_node(&((NODE)->m_key_linked_node)); \
 	init_share_string_by_buffer((CHAR_SIZE),sizeof(st_pfx_share_string_extern) + sizeof ((NODE)->m_cache),(pfx_char_t*)&((NODE)->m_base_node.m_string_key),PSATUS);\
-	(NODE)->m_base_node.m_blance_part.m_blance_part.m_renderbuffer_mask.m_cache_size = sizeof ((NODE)->m_cache);\
+	(NODE)->m_base_node.m_blance_part.m_blance_part.m_mask.m_cache_size = sizeof ((NODE)->m_cache);\
 };
 
 // 比较字符串函数指针类型
