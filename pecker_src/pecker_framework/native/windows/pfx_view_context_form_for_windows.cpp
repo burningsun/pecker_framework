@@ -12,7 +12,9 @@
 
 PECKER_BEGIN
 
-LRESULT WINAPI CPfx_window_form_for_win :: WndProc(HWND hwnd, UINT message_, WPARAM wParam, LPARAM lParam)
+static HWND gMainWnd = null;
+
+LRESULT WINAPI CPfx_window_form_for_win :: WndProc (HWND hwnd, UINT message_, WPARAM wParam, LPARAM lParam)
 {
 	if (NULL == hwnd)
 	{
@@ -65,8 +67,6 @@ CPfx_window_form_for_win::~CPfx_window_form_for_win()
 {
 	dispose();
 }
-
-static HWND gMainWnd = null;
 
 pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam)
 {
@@ -157,6 +157,7 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 			if (gMainWnd == m_hwnd)
 			{
 				m_hwnd = null;
+				gMainWnd = null;
 				::PostQuitMessage(0);
 			}
 
@@ -183,7 +184,6 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 	
 }
 
-
 pfx_result_t CPfx_window_form_for_win::attach_context (pfx_windows_context_base* PARAM_INOUT context)
 {
 	if (null == context)
@@ -198,7 +198,7 @@ pfx_result_t CPfx_window_form_for_win::attach_context (pfx_windows_context_base*
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t CPfx_window_form_for_win::dettach_context()
+pfx_result_t CPfx_window_form_for_win::dettach_context ()
 {
 	//stop render thread
 	if (m_is_showed)
@@ -224,10 +224,119 @@ pfx_result_t CPfx_window_form_for_win :: add_event_process (Ipfx_message_event* 
 	return PFX_STATUS_DENIED;
 }
 
-pfx_result_t CPfx_window_form_for_win::show()
+pfx_result_t CPfx_window_form_for_win::show ()
 {
+	RETURN_INVALID_RESULT (null == m_context || null == m_display,PFX_STATUS_UNINIT);
+	pfx_result_t status_ = PFX_STATUS_OPENED;
+
 	if (!m_is_showed)
 	{
+		wchar_t* titlename = NULL;
+
+		FOR_ONE_LOOP_BEGIN
+		status_ = m_context->init_context ();
+		if (PFX_STATUS_OK != status_)
+		{
+			PECKER_LOG_ERR ("CPfx_window_form_for_win::show",
+				"status_ =  context_->init_context(); status_ = %d",
+				status_);
+			break;
+		}
+
+		if (0 >= get_string_chars_length(&(m_context->get_context_info().m_str_title_name)))
+		{
+			PECKER_LOG_ERR ("CPfx_window_form_for_win::show",
+				"get_string_chars_length(&(m_context->get_context_info().m_str_title_name)) <= 0; %s",
+				"null == titlename");
+			BREAK_LOOP (status_,PFX_STATUS_INVALID_PARAMS);
+		}
+
+		int  unicode_len = ::MultiByteToWideChar( CP_ACP,
+			0,
+			get_string_chars_buffer(&(m_context->get_context_info().m_str_title_name)),
+			get_string_chars_length(&(m_context->get_context_info().m_str_title_name)),
+			NULL,
+			0 );  
+		titlename = new wchar_t[unicode_len+1];
+
+		if (null == titlename)
+		{
+			PECKER_LOG_ERR ("CPfx_window_form_for_win::show",
+				"titlename = new wchar_t[unicode_len+1]; %s",
+				"null == titlename");
+
+			BREAK_LOOP (status_,PFX_STATUS_MEM_LOW);
+		}
+
+		::MultiByteToWideChar( CP_ACP,
+			0,
+			get_string_chars_buffer(&(m_context->get_context_info().m_str_title_name)),
+			get_string_chars_length(&(m_context->get_context_info().m_str_title_name)),
+			(LPWSTR)titlename,
+			unicode_len);  
+
+		titlename[unicode_len] = 0;
+
+
+		WNDCLASS window_class;
+		memset(&window_class, 0, sizeof(WNDCLASS));
+		window_class.lpszClassName = titlename;
+		window_class.lpfnWndProc = WndProc;
+		window_class.style =   m_context->get_context_info().m_windows_style;//CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
+		window_class.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+		window_class.hIcon = ::LoadIcon (NULL,IDI_APPLICATION);
+		window_class.hInstance = ::GetModuleHandle(NULL);
+
+		RECT window_rect;
+		::SetRect(&window_rect, 
+			m_context->get_context_info().m_x,
+			m_context->get_context_info().m_y,
+			m_context->get_context_info().m_x + m_context->get_context_info().m_width,
+			m_context->get_context_info().m_y + m_context->get_context_info().m_hight);
+
+		if (0 == ::RegisterClass(&window_class))
+		{
+			PECKER_LOG_ERR ("CPfx_window_form_for_win::show",
+				"0 == ::RegisterClass(&window_class); error = %d",
+				GetLastError());
+
+			BREAK_LOOP (status_,PFX_STATUS_INVALID_PARAMS);
+		}
+
+		status_ = ::AdjustWindowRect(&window_rect, WS_BORDER | WS_SYSMENU, FALSE);
+
+		if (!status_)
+		{
+			PECKER_LOG_ERR ("CPfx_window_form_for_win::show",
+				"0 == ::AdjustWindowRect(...); error = %d",
+				GetLastError());
+			BREAK_LOOP (status_,PFX_STATUS_INVALID_PARAMS);
+		}
+
+		m_hwnd = ::CreateWindowEx(
+			m_context->get_context_info().m_windows_exstyle,
+			titlename,
+			titlename,
+			WS_BORDER | WS_SYSMENU,
+			window_rect.left,	// x
+			window_rect.top,	// y
+			window_rect.right - window_rect.left,	// width
+			window_rect.bottom - window_rect.top,	// height
+			NULL,
+			NULL,
+			window_class.hInstance,
+			this
+			);
+
+		if (NULL == m_hwnd)
+		{
+			PECKER_LOG_ERR ("CPfx_window_form_for_win::show",
+				"0 == ::CreateWindowEx(...); error = %d",
+				GetLastError());
+			BREAK_LOOP (status_,PFX_STATUS_INVALID_PARAMS);
+		}
+
+
 		DWORD load_thread_id;
 		DWORD render_thread_id;
 		m_load_data_thread = ::CreateThread(NULL,0,CPfx_window_form_for_win::LoadDataThreadProc,this,0,&load_thread_id);
@@ -236,7 +345,7 @@ pfx_result_t CPfx_window_form_for_win::show()
 			PECKER_LOG_ERR ("CPfx_window_form_for_win::show()",
 				"m_load_data_thread = ::CreateThread (...);.... GetLastError = %d",
 				GetLastError());
-			return PFX_STATUS_FAIL;
+			BREAK_LOOP (status_,PFX_STATUS_FAIL);
 		}
 		m_render_thread = ::CreateThread(NULL,0,CPfx_window_form_for_win::RenderThreadProc,this,0,&render_thread_id);
 		if (NULL == m_render_thread)
@@ -244,20 +353,29 @@ pfx_result_t CPfx_window_form_for_win::show()
 			PECKER_LOG_ERR ("CPfx_window_form_for_win::show()",
 				"m_render_thread = ::CreateThread (...);.... GetLastError = %d",
 				GetLastError());
-			return PFX_STATUS_FAIL;
+			BREAK_LOOP (status_,PFX_STATUS_FAIL);
 		}
+		FOR_ONE_LOOP_END
+
+		if (titlename)
+		{
+			delete [] titlename;
+			titlename = null;
+		}
+
+		return status_;
 	}
 	m_is_showed = pfx_true;
-	return PFX_STATUS_OK;
+	return status_;
 }
 
-pfx_result_t CPfx_window_form_for_win::close()
+pfx_result_t CPfx_window_form_for_win::close ()
 {
 	::SendMessage (m_hwnd,WM_CLOSE,2,0);
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t CPfx_window_form_for_win::dispose()
+pfx_result_t CPfx_window_form_for_win::dispose ()
 {
 	close();
 	if (m_context)
@@ -278,7 +396,41 @@ pfx_result_t CPfx_window_form_for_win::dispose()
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t CPfx_window_form_for_win::_render_thread()
+pfx_result_t CPfx_window_form_for_win::blocking_and_loop ()
+{
+	MSG msg;
+	BOOL bRet;
+
+	while( (bRet = ::GetMessage( &msg, NULL, 0, 0 )) != 0)
+	{ 
+		if (bRet == -1)
+		{
+			break;
+		}
+		else
+		{
+			::TranslateMessage(&msg); 
+			::DispatchMessage(&msg); 
+		}
+	} 
+	return PFX_STATUS_OK;
+}
+
+pfx_result_t CPfx_window_form_for_win::run_app ()
+{
+	if (NULL == gMainWnd)
+	{
+		gMainWnd = m_hwnd;
+		return PFX_STATUS_OK;
+	}
+	else
+	{
+		return PFX_STATUS_DENIED;
+	}
+	
+}
+
+pfx_result_t CPfx_window_form_for_win::_render_thread ()
 {
 	RETURN_INVALID_RESULT (null == m_display || null ==  m_context,PFX_STATUS_INVALID_PARAMS);
 	pfx_boolean_t is_exit = pfx_false;
@@ -372,7 +524,7 @@ pfx_result_t CPfx_window_form_for_win::dettach_display ()
 	return PFX_STATUS_OK;
 }
 
-IPfx_windows_display* CPfx_window_form_for_win::get_display()
+IPfx_windows_display* CPfx_window_form_for_win::get_display ()
 {
 	return m_display;
 }

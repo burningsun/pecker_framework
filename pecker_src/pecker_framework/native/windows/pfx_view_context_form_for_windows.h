@@ -53,6 +53,9 @@ public:
 	pfx_result_t show ();
 	pfx_result_t close ();
 	pfx_result_t dispose ();
+	pfx_result_t blocking_and_loop ();
+protected:
+	pfx_result_t run_app ();
 public:
 	PFX_INLINE pfx_long_t get_native_window () const; 
 	PFX_INLINE pfx_long_t get_native_display () const;
@@ -69,6 +72,7 @@ public:
 	CPfx_window_form_for_win();
 	virtual ~CPfx_window_form_for_win();
 };
+
 
 PFX_INLINE pfx_windows_context_base* CPfx_window_form_for_win::get_context () const
 {

@@ -34,7 +34,9 @@ public:
 	virtual pfx_result_t show () = 0;
 	virtual pfx_result_t close () = 0;
 	virtual pfx_result_t dispose () = 0;
-
+	virtual pfx_result_t blocking_and_loop () = 0;
+protected:
+	virtual pfx_result_t run_app () = 0;
 public:
 	virtual pfx_long_t get_native_window () const = 0; // hwnd
 	virtual pfx_long_t get_native_display () const = 0; // hdc
@@ -49,9 +51,17 @@ protected:
 public:
 	static PFX_INLINE pfx_result_t config_windows_form (IPfx_windows_form* PARAM_INOUT form_,
 		IPfx_windows_display* PARAM_INOUT display_);
+
+	static PFX_INLINE pfx_result_t run_windows_program (IPfx_windows_form* PARAM_INOUT form_,
+																pfx_windows_context_base* PARAM_INOUT context_,
+																IPfx_windows_display* PARAM_INOUT display_);
 public:
 	virtual ~IPfx_windows_form() {;};
 }; 
+
+PFX_INLINE pfx_result_t run_windows_program (IPfx_windows_form* PARAM_INOUT form_,
+																pfx_windows_context_base* PARAM_INOUT context_,
+																IPfx_windows_display* PARAM_INOUT display_);
 
 PFX_Interface IPfx_windows_display
 {
@@ -78,6 +88,28 @@ PFX_INLINE pfx_result_t  IPfx_windows_form::config_windows_form (IPfx_windows_fo
 	return status_;
 }
 
+PFX_INLINE pfx_result_t IPfx_windows_form::run_windows_program (IPfx_windows_form* PARAM_INOUT form_,
+																pfx_windows_context_base* PARAM_INOUT context_,
+																IPfx_windows_display* PARAM_INOUT display_)
+{
+		RETURN_INVALID_RESULT (null == form_||null==context_||null == display_,PFX_STATUS_INVALID_PARAMS);
+
+		pfx_result_t status_;
+
+		FOR_ONE_LOOP_BEGIN
+		status_ = IPfx_windows_form::config_windows_form(form_,display_);
+		BREAK_LOOP_CONDITION (status_ != PFX_STATUS_OK);
+		status_ = form_->attach_context(context_);
+		BREAK_LOOP_CONDITION (status_ != PFX_STATUS_OK);
+		status_ = form_->show();
+		BREAK_LOOP_CONDITION (status_ != PFX_STATUS_OK);
+		status_ = form_->run_app();
+		BREAK_LOOP_CONDITION (status_ != PFX_STATUS_OK);
+		status_ = form_->blocking_and_loop();
+		FOR_ONE_LOOP_END
+
+		return status_;
+}
 
 PECKER_END
 

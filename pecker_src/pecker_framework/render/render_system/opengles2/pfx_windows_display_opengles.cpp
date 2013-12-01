@@ -587,8 +587,8 @@ pfx_result_t CPfx_windows_display_opengles2::egl_close()
 
 pfx_result_t CPfx_windows_display_opengles2::init_display_device (IPfx_windows_form* PARAM_INOUT windows_form)
 {
-	RETURN_INVALID_RESULT (null == windows_form,PFX_STATUS_INVALID_PARAMS);
-	RETURN_INVALID_RESULT (null != m_form,PFX_STATUS_DENIED);
+	RETURN_INVALID_RESULT (null == windows_form || null == windows_form->get_context (),PFX_STATUS_INVALID_PARAMS);
+	RETURN_INVALID_RESULT (null != m_form && null != m_form->get_context (),PFX_STATUS_DENIED);
 
 	pfx_result_t status_;
 	pfx_windows_context_base* context_;
@@ -596,15 +596,15 @@ pfx_result_t CPfx_windows_display_opengles2::init_display_device (IPfx_windows_f
 	m_form = windows_form;
 	context_ = m_form->get_context ();
 	
-	status_ =  context_->init_context();
+	//status_ =  context_->init_context();
 	
-	if (PFX_STATUS_OK != status_)
-	{
-		PECKER_LOG_ERR ("CPfx_windows_display_opengles2::init_display_device",
-			"status_ =  context_->init_context(); status_ = %d",
-			status_);
-		return status_;
-	}
+	//if (PFX_STATUS_OK != status_)
+	//{
+	//	PECKER_LOG_ERR ("CPfx_windows_display_opengles2::init_display_device",
+	//		"status_ =  context_->init_context(); status_ = %d",
+	//		status_);
+	//	return status_;
+	//}
 
 	status_ = egl_init();
 
