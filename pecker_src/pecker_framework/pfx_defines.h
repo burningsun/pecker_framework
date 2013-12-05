@@ -215,6 +215,7 @@ typedef enum enum_bool
 	pfx_false = 0,
 	pfx_true,
 	pfx_invalid,
+	pfx_true_val2
 }pfx_bool_t;
 //#define pfx_true (1)
 //#define pfx_false (0)

@@ -6,15 +6,18 @@
  */
 
 
-
+#include <GLES2/gl2.h>
 #include "pfx_framebuffer_opengles.h"
 
 PECKER_BEGIN
 
-
+CPfx_framebuffer_opengles2::CPfx_framebuffer_opengles2()
+{
+	m_framebuffer_operation = &m_defualt_framebuffer_operation_gles2;
+}
 CPfx_framebuffer_opengles2::~CPfx_framebuffer_opengles2()
 {
-	;
+	m_framebuffer_operation = null;
 } 
 
 pfx_result_t CPfx_framebuffer_opengles2::init_framebuffer (PFX_FRAME_BUFFER_TYPE_t type_)
@@ -77,7 +80,8 @@ CPfx_framebuffer_operation_opengles2::~CPfx_framebuffer_operation_opengles2()
 pfx_result_t CPfx_framebuffer_operation_opengles2::set_viewport (pfx_index_t x,pfx_index_t y,
 		pfx_usize_t width,pfx_usize_t height)
 {
-	return 0;
+	glViewport(x,y,width,height);
+	return PFX_STATUS_OK;
 }
 	
 pfx_result_t CPfx_framebuffer_operation_opengles2::set_depthrange(pfx_float_t near_,
@@ -89,16 +93,19 @@ pfx_result_t CPfx_framebuffer_operation_opengles2::set_depthrange(pfx_float_t ne
 
 pfx_result_t CPfx_framebuffer_operation_opengles2::clear_buffer (pfx_bitfield_t mask)
 {
+	glClear(mask);
 	return 0;
 }
 
 pfx_result_t CPfx_framebuffer_operation_opengles2::clear_color (pfx_bitfield_t rgba_)
 {
-	return 0;
+	pfx_color_t COLOR_ = GET_COLOR_T(rgba_);
+	return clear_color(COLOR_);
 }
 pfx_result_t CPfx_framebuffer_operation_opengles2::clear_color (const pfx_color_t& PARAM_IN rgba_)
 {
-	return 0;
+	glClearColor (rgba_.m_red,rgba_.m_green,rgba_.m_blue,rgba_.m_alpha);
+	return PFX_STATUS_OK;
 }
 
 pfx_result_t CPfx_framebuffer_operation_opengles2::clear_depth (pfx_float_t depth_)

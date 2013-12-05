@@ -10,7 +10,20 @@
 
 #include "../../../native/pfx_view_context_form.h"
 #include "pfx_renderdevice_opengles.h"
-#include <EGL/egl.h>
+
+#ifndef EGLContext
+typedef void *EGLContext;
+#endif
+
+#ifndef EGLDisplay
+typedef void *EGLDisplay;
+#endif
+
+#ifndef EGLSurface
+typedef void *EGLSurface;
+#endif
+
+
 
 PFX_C_EXTERN_BEGIN
 
@@ -20,6 +33,9 @@ PFX_C_EXTERN_END
 PECKER_BEGIN
 
 #define MAX_EGL_CONFIGS_BUFFER_SIZE (256)
+
+
+
 
 class PFX_RENDER_SYSTEM_API CPfx_windows_display_opengles2 :
 	public IPfx_windows_display
@@ -33,8 +49,8 @@ protected:
 	EGLContext m_EGL_context;
 	//EGLConfig	m_EGL_config;
 
-	EGLint		m_major_version;
-	EGLint		m_minor_version;
+	pfx_sint_t		m_major_version;
+	pfx_sint_t		m_minor_version;
 protected:
 	pfx_result_t create_graphic_device ();
 	pfx_result_t release_grahic_device ();

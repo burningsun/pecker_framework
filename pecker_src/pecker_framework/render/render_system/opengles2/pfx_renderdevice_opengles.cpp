@@ -6,6 +6,7 @@
  */
 
 #include "pfx_renderdevice_opengles.h"
+//#include "pfx_framebuffer_opengles.h"
 
 PFX_C_EXTERN_BEGIN
 
@@ -15,15 +16,15 @@ PFX_C_EXTERN_END
 
 PECKER_BEGIN
 
-
+//static CPfx_framebuffer_opengles2 gDefualt_frame_buffer;
 CPfx_render_device_opengles2::CPfx_render_device_opengles2()
 {
-	;
+	 m_defualt_framebuffer = &m_defualt_framebuffer_gles2;
 }
 
 CPfx_render_device_opengles2::~CPfx_render_device_opengles2()
 {
-	;
+	m_defualt_framebuffer = null;
 }
 
 Ipfx_framebuffer*				CPfx_render_device_opengles2::new_framebuffer (pfx_result_t&		 PARAM_OUT status_)
@@ -82,7 +83,17 @@ pfx_result_t CPfx_render_device_opengles2::deinit_render_device ()
 pfx_result_t CPfx_render_device_opengles2::begin_draw (Ipfx_framebuffer_operation* & PARAM_OUT operation_,
 		pfx_enum_t mode_/* = 0*/)
 {
-	return 0;
+	Ipfx_framebuffer* framebuffer_ =  get_defualt_framebuffer ();
+	if (framebuffer_)
+	{
+		operation_ = framebuffer_->get_opertation();
+		if (null != operation_)
+		{
+			return PFX_STATUS_OK;
+		}
+	}
+	
+	return PFX_STATUS_ERROR_;
 }
 
 pfx_result_t CPfx_render_device_opengles2::end_draw (pfx_boolean_t flag /*= pfx_false*/)

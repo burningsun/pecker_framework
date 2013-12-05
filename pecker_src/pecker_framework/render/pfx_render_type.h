@@ -21,7 +21,19 @@ struct st_pfx_color
 	pfx_float_t m_red;
 	pfx_float_t m_green;
 	pfx_float_t m_blue;
+	pfx_float_t m_alpha;
 };
+
+#define PFX_RGBA_BITS(R,G,B,A) ((((R)&0xFF)<<24)|(((G)&0xFF)<<16)|(((B)&0xFF)<<8)|((A)&0xFF))
+PFX_INLINE pfx_color_t GET_COLOR_T (pfx_bitfield_t RGBA_)
+{
+	pfx_color_t COLOR_;
+	COLOR_.m_red = (pfx_float_t) ( (RGBA_ & 0xFF000000) >> 24) / (pfx_float_t) (0xFF);
+	COLOR_.m_green = (pfx_float_t) ( (RGBA_ & 0x00FF0000) >> 16) / (pfx_float_t) (0xFF);
+	COLOR_.m_blue = (pfx_float_t) ( (RGBA_ & 0x0000FF00) >> 8) / (pfx_float_t) (0xFF);
+	COLOR_.m_alpha = (pfx_float_t)  (RGBA_ & 0x000000FF)  / (pfx_float_t) (0xFF);
+	return	 COLOR_;
+}
 
 typedef struct st_PIXEL_COLOR_FORMAT
 {

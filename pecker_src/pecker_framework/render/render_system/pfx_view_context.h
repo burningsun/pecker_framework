@@ -13,6 +13,8 @@
 #include "pfx_rendertevent.h"
 #include "pfx_rendertarget.h"
 #include "pfx_renderdevice.h"
+#include "pfx_stream.h"
+//#include "pfx_allocator.h"
 
 PECKER_BEGIN
 
@@ -42,6 +44,9 @@ typedef struct st_PRESENT_PARAMETERS
 
 #define  PFX_FULL_SCREEN_MASK (1)
 #define PFX_CONTEXT_PRIORITY_LEVEL_VALUE(X) ((X)&0X7)
+#define PFX_GET_PRESENTATION_INTERVAL(X) (((X)>>16) & 0xFF)
+#define PFX_AUTO_DEPTH_STENCIL (1<<7)
+
 
 typedef enum enumCONTEXT_PRIORITY_LEVEL_IMG
 {
@@ -73,35 +78,147 @@ class  pfx_windows_context_base
 public:
 	//pfx_windows_context_base ();
 	virtual ~pfx_windows_context_base (){;};
+protected:
+	static pfx_nsize_t m_defualt_window_name_count;
+	virtual PFX_WINDOWS_INFO_t& get_context_info_ref () const = 0;
 public:
-	virtual pfx_result_t init_context () = 0;
-	virtual pfx_result_t resize_context (pfx_usize_t width, pfx_usize_t height) = 0;
-	virtual pfx_result_t move_context (pfx_nsize_t x,pfx_nsize_t y) = 0;
+	PFX_INLINE virtual pfx_result_t init_context ();
 
-	virtual pfx_result_t on_landscape_change (pfx_usize_t width, pfx_usize_t height,pfx_bool_t is_landscape) = 0;
-	virtual pfx_result_t on_message_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam) = 0;
-	
-	virtual pfx_result_t on_load_datas () = 0;
-	virtual pfx_result_t on_release_datas () = 0;
+	PFX_INLINE virtual pfx_result_t resize_context (pfx_usize_t width, pfx_usize_t height);
+	PFX_INLINE virtual pfx_result_t move_context (pfx_nsize_t x,pfx_nsize_t y);
 
-	virtual pfx_result_t on_render_init (Ipfx_render_device*  PARAM_INOUT graphic_device_) = 0;
+	PFX_INLINE virtual pfx_result_t on_landscape_change (pfx_usize_t width, pfx_usize_t height,pfx_bool_t is_landscape);
+	PFX_INLINE virtual pfx_result_t on_message_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam);
 	
-	virtual pfx_result_t on_load_render_resource () = 0;
+	PFX_INLINE virtual pfx_result_t on_load_datas ();
+	PFX_INLINE virtual pfx_result_t on_release_datas ();
+
+	//virtual pfx_result_t on_render_init (Ipfx_render_device*  PARAM_INOUT graphic_device_) = 0;
+	
+	PFX_INLINE virtual pfx_result_t on_load_render_resource ();
 	virtual pfx_result_t on_render_frame (Ipfx_render_device*  PARAM_INOUT graphic_device_,
 																	const pfx_64bit_t& PARAM_IN escape_tick,
 																	pfx_double_t last_frame_tick_interval,
 																	pfx_boolean_t& PARAM_INOUT exit_render) = 0;
-	virtual pfx_result_t on_release_render_resource () = 0;
+	PFX_INLINE virtual pfx_result_t on_release_render_resource ();
 
-	virtual pfx_result_t on_swap_render_frame (Ipfx_render_device*  PARAM_INOUT graphic_device_) = 0;
+	PFX_INLINE virtual pfx_result_t on_swap_render_frame (Ipfx_render_device*  PARAM_INOUT graphic_device_);
 	
+	PFX_INLINE virtual pfx_result_t on_parse ();
+
 	virtual pfx_result_t on_close () = 0;
-	virtual pfx_result_t on_parse () = 0;
 	virtual pfx_result_t on_exit () = 0;
 
-	virtual const PFX_WINDOWS_INFO_t& get_context_info () const = 0;
-	virtual pfx_result_t on_perent_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam) = 0;
+	PFX_INLINE virtual pfx_result_t on_perent_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam);
+
+	PFX_INLINE const PFX_WINDOWS_INFO_t& get_context_info () const;
 };
+pfx_nsize_t pfx_windows_context_base::m_defualt_window_name_count = 0;
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::init_context ()
+{
+	pfx_result_t status_;
+	
+	PFX_WINDOWS_INFO_t& win_info = get_context_info_ref();
+	pfx_char_t str_title_name[30] = "pecker_window_";
+	pfx_nsize_t	title_len = 14;
+	pfx_stream_format_t format_;
+	format_.m_format_type = PFX_DEC_INT_FORMAT;
+	format_.m_minwidth = 0;
+	format_.m_maxwidth = 16;
+	format_.m_begin_index = 0;
+	format_.m_end_index = 15;
+	
+	title_len += sint_parse_string_a (pfx_windows_context_base::m_defualt_window_name_count++,str_title_name+14,15,&format_);
+	str_title_name[title_len] = 0;
+	init_string_direct_unsafe (&win_info.m_str_title_name,1,null,0);
+	status_ = init_string_by_charsbuffer (&win_info.m_str_title_name,str_title_name,title_len+1,&gDefualt_allocator);
+	win_info.m_x = 200;
+	win_info.m_y = 200;
+	win_info.m_width = 800;
+	win_info.m_hight = 600;
+	win_info.m_present_params.m_buffer_format = PFX_CBT_RGBA8;
+	win_info.m_present_params.m_buffer_width = 800;
+	win_info.m_present_params.m_buffer_height = 600;
+	win_info.m_present_params.m_renderbuffer_mask = PFX_CONTEXT_HIGH_PREPRIORITY | 
+																								(((pfx_bitfield_t)PFX_DEPTH_COMPONENT16) << 8) |
+																								(((pfx_bitfield_t)PFX_STENCIL_INDEX8) << 16);
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::resize_context (pfx_usize_t width, pfx_usize_t height)
+{
+	PFX_WINDOWS_INFO_t& info = get_context_info_ref();
+	info.m_width = width;
+	info.m_hight = height;
+	
+	info.m_present_params.m_buffer_height = height;
+	info.m_present_params.m_buffer_width = width;
+
+	return PFX_STATUS_OK;
+}
+PFX_INLINE pfx_result_t pfx_windows_context_base::move_context (pfx_nsize_t x,pfx_nsize_t y)
+{
+	PFX_WINDOWS_INFO_t& info = get_context_info_ref();
+	info.m_x = x;
+	info.m_y = y;
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_landscape_change (pfx_usize_t width, pfx_usize_t height,pfx_bool_t is_landscape)
+{
+//	PFX_WINDOWS_INFO_t& info = get_context_info_ref();
+//	info.m_width = width;
+//	info.m_hight = height;
+//	info.m_present_params.m_buffer_height = height;
+//	info.m_present_params.m_buffer_width = width;
+
+	return PFX_STATUS_OK;
+}
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_message_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam)
+{
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_load_datas ()
+{
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_release_datas ()
+{
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_load_render_resource ()
+{
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_release_render_resource ()
+{
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_swap_render_frame (Ipfx_render_device*  PARAM_INOUT graphic_device_)
+{
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_parse ()
+{
+	return PFX_STATUS_OK;
+}
+
+PFX_INLINE const PFX_WINDOWS_INFO_t& pfx_windows_context_base::get_context_info () const
+{
+	return get_context_info_ref();
+}
+
+PFX_INLINE pfx_result_t pfx_windows_context_base::on_perent_event (pfx_enum_int_t umessage_code, pfx_long_t wParam, pfx_long_t lParam)
+{
+	return PFX_STATUS_OK;
+}
 
 //PFX_C_EXTERN_BEGIN
 //

@@ -677,17 +677,26 @@ PFX_INLINE_CODE pfx_result_t uint_parse_string_dec(pfx_char_t*	PARAM_INOUT		pstr
 		return PFX_STATUS_MEM_LOW;
 	}
 
-	for (i=0;i<count;++i)
+	if (0 == integer)
 	{
-		pfx_uint_t integer_temp = integer / 10;
-		pstring_buffer[i] = (pfx_char_t)((integer - integer_temp) & 0xFF) + '0';
-		integer = integer_temp;
-
-		if (0 == integer)
+		i = 1;
+		pstring_buffer[0] = '0';
+	}
+	else
+	{
+		for (i=0;i<count;++i)
 		{
-			break;
+			pfx_uint_t integer_temp = integer / 10;
+			pstring_buffer[i] = (pfx_char_t)((integer - integer_temp) & 0xFF) + '0';
+			integer = integer_temp;
+
+			if (0 == integer)
+			{
+				break;
+			}
 		}
 	}
+
 
 	if (0 != integer)
 	{

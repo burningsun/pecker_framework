@@ -8,7 +8,9 @@
 #include "pfx_windows_display_opengles.h"
 #include "../../../native/pfx_log.h"
 #include "../pfx_renderbuffer.h"
+#include <EGL/egl.h>
 #include <EGL/eglext.h>
+#include <GLES2/gl2.h>
 
 PECKER_BEGIN
 
@@ -222,7 +224,7 @@ pfx_result_t CPfx_windows_display_opengles2::egl_init()
 	{
 		PECKER_LOG_ERR ("CPfx_windows_display_opengles2::egl_init",
 			"m_EGL_display = eglGetDisplay((EGLNativeDisplayType)(m_form->get_native_display())); %s;",
-			"EGL_NO_DISPLAY == m_EGL_display,try EGL_DEFAULT_DISPLAY....");
+			pfx_char_type("EGL_NO_DISPLAY == m_EGL_display,try EGL_DEFAULT_DISPLAY...."));
 
 		m_EGL_display = eglGetDisplay((EGLNativeDisplayType)EGL_DEFAULT_DISPLAY);
 	}
@@ -232,7 +234,7 @@ pfx_result_t CPfx_windows_display_opengles2::egl_init()
 	{
 		PECKER_LOG_ERR ("CPfx_windows_display_opengles2::egl_init",
 			"try EGL_DEFAULT_DISPLAY to init m_EGL_display; %s;",
-			"EGL_NO_DISPLAY == m_EGL_display, return errors!");
+			pfx_char_type("EGL_NO_DISPLAY == m_EGL_display, return errors!"));
 
 		BREAK_LOOP(status_,PFX_STATUS_FAIL);
 	}
@@ -257,6 +259,7 @@ pfx_result_t CPfx_windows_display_opengles2::egl_init()
 			status_,eglGetError());
 		BREAK_LOOP(status_,PFX_STATUS_FAIL);
 	}
+	status_ = PFX_STATUS_OK;
 	FOR_ONE_LOOP_END
 
 	// 检验异常状态并退出
@@ -364,15 +367,15 @@ pfx_result_t CPfx_windows_display_opengles2::egl_init()
 	if (m_EGL_context)
 	{
 		status_ = eglDestroyContext(m_EGL_display,m_EGL_context);
+
+		if (!status_)
+		{
+			PECKER_LOG_ERR ("CPfx_windows_display_opengles2::egl_init",
+				"status_ = eglDestroyContext(...),status_ = %d,eglGetError = %d",
+				status_,eglGetError());
+		}
 	}
 
-	if (!status_)
-	{
-		PECKER_LOG_ERR ("CPfx_windows_display_opengles2::egl_init",
-			"status_ = eglDestroyContext(...),status_ = %d,eglGetError = %d",
-			status_,eglGetError());
-	}
-	
 	egl_config_stack_size  = 0;
 	if (is_egl_externsion_supported(m_EGL_display,"EGL_IMG_context_priority"))
 	{
@@ -442,14 +445,15 @@ pfx_result_t CPfx_windows_display_opengles2::egl_init()
 
 	status_ = PFX_STATUS_OK;
 
+
+
+	FOR_ONE_LOOP_END
+
 	EGLint width_ = 0;
 	EGLint height_ = 0;
 	eglQuerySurface(m_EGL_display,m_EGL_window,EGL_WIDTH,&width_);
 	eglQuerySurface(m_EGL_display,m_EGL_window,EGL_HEIGHT,&height_);
-
-	m_graphic_device->get_defualt_framebuffer()->get_opertation ()->set_viewport (0,0,width_,height_);
-
-	FOR_ONE_LOOP_END
+	glViewport(0,0,width_,height_);
 
 	return status_;
 }
@@ -502,7 +506,7 @@ pfx_result_t CPfx_windows_display_opengles2::egl_swapbuffer()
 }
 pfx_result_t CPfx_windows_display_opengles2::egl_close()
 {
-	if (EGL_NO_DISPLAY == m_EGL_display && EGL_NO_SURFACE == m_EGL_window)
+	if (EGL_NO_DISPLAY == m_EGL_display || EGL_NO_SURFACE == m_EGL_window)
 	{
 		return PFX_STATUS_OK;
 	}
@@ -610,7 +614,7 @@ pfx_result_t CPfx_windows_display_opengles2::init_display_device (IPfx_windows_f
 
 	if (PFX_STATUS_OK == status_)
 	{
-		status_ = create_graphic_device();
+		status_ = create_graphic_device();		
 	}
 	else
 	{

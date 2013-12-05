@@ -17,7 +17,7 @@ PFX_C_EXTERN_END
 
 PECKER_BEGIN
 
-class CPfx_window_form_for_win : public IPfx_windows_form
+class PFX_CORE_API CPfx_window_form_for_win : public IPfx_windows_form
 {
 	//////////////////////////////////////////////////////////////////////////
 private:
@@ -25,6 +25,7 @@ private:
 	HDC		 m_hdc;
 	HANDLE m_render_thread;
 	HANDLE m_load_data_thread;
+	
 	pfx_boolean_t m_is_showed;
 protected:
 	static LRESULT WINAPI WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -50,6 +51,7 @@ public:
 
 	PFX_INLINE pfx_windows_context_base* get_context () const;
 public:
+	//HINSTANCE test_ins;
 	pfx_result_t show ();
 	pfx_result_t close ();
 	pfx_result_t dispose ();

@@ -39,6 +39,9 @@
     <Filter Include="native\windows">
       <UniqueIdentifier>{10b6fde0-5e25-4a53-9143-3447c8bcf389}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{08372993-06e7-4182-bf8b-17bed1b235c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="native\pfx_allocator.h">

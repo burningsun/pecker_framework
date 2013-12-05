@@ -81,11 +81,11 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 	{
 	case WM_CREATE:
 		{
-			status_ = m_context->init_context();
-			if (NULL == m_hdc)
-			{
-				m_hdc = ::GetDC(m_hwnd);
-			}
+			//status_ = m_context->init_context();
+			//if (NULL == m_hdc)
+			//{
+			//	m_hdc = ::GetDC(m_hwnd);
+			//}
 		}
 		break;
 
@@ -93,7 +93,11 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 		{
 			status_ = m_context->on_close();
 			CPfx_window_form_for_win* pchild_win = PFX_GET_LIST_NEXT (this);
-			::PostMessage (pchild_win->m_hwnd,WM_CLOSE,wParam,lParam);
+			if (null != pchild_win)
+			{
+				::PostMessage (pchild_win->m_hwnd,WM_CLOSE,wParam,lParam);
+			}
+			
 			HANDLE thread_handle_array[2];
 			thread_handle_array[0] = m_load_data_thread;
 			thread_handle_array[1] = m_render_thread;
@@ -114,11 +118,13 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 				m_hdc = NULL;
 			}
 			m_is_showed = pfx_false;
+			::DestroyWindow(m_hwnd);
 		}
 		break;
 	case WM_PAINT:
 		{
 			status_ = m_context->on_message_event(umessage_code,wParam,lParam);
+			//::Sleep(10);
 		}
 		break;
 	case WM_SIZE:
@@ -150,6 +156,7 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 			pfx_nsize_t posy = HIWORD(lParam);
 			status_ = m_context->move_context(posx,posy);
 		}
+		break;
 	case WM_DESTROY:
 		{
 			status_ = m_context->on_exit();
@@ -162,7 +169,11 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 			}
 
 			CPfx_window_form_for_win* pchild_win = PFX_GET_LIST_NEXT (this);
-			::PostMessage (pchild_win->m_hwnd,WM_DESTROY,wParam,lParam);
+			if (null != pchild_win)
+			{
+				::PostMessage (pchild_win->m_hwnd,WM_DESTROY,wParam,lParam);
+			}
+			
 		}
 		break;
 	default:
@@ -173,7 +184,7 @@ pfx_result_t CPfx_window_form_for_win :: windows_message_process (pfx_enum_int_t
 		m_pnext_node->m_context->on_perent_event (umessage_code,wParam,lParam);
 	}
 
-	if (PFX_STATUS_CODE_COUNT != status_)
+	if (PFX_STATUS_CODE_COUNT == status_)
 	{
 		return ::DefWindowProc(m_hwnd, umessage_code, wParam, lParam);
 	}
@@ -282,10 +293,11 @@ pfx_result_t CPfx_window_form_for_win::show ()
 		memset(&window_class, 0, sizeof(WNDCLASS));
 		window_class.lpszClassName = titlename;
 		window_class.lpfnWndProc = WndProc;
-		window_class.style =   m_context->get_context_info().m_windows_style;//CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
+		window_class.style = m_context->get_context_info().m_windows_style;//CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 		window_class.hCursor = ::LoadCursor(NULL, IDC_ARROW);
 		window_class.hIcon = ::LoadIcon (NULL,IDI_APPLICATION);
-		window_class.hInstance = ::GetModuleHandle(NULL);
+		//wchar_t modlename[256] = pfx_char_type("pecker_core.dll");
+		window_class.hInstance =::GetModuleHandle(NULL);
 
 		RECT window_rect;
 		::SetRect(&window_rect, 
@@ -303,6 +315,7 @@ pfx_result_t CPfx_window_form_for_win::show ()
 			BREAK_LOOP (status_,PFX_STATUS_INVALID_PARAMS);
 		}
 
+
 		status_ = ::AdjustWindowRect(&window_rect, WS_BORDER | WS_SYSMENU, FALSE);
 
 		if (!status_)
@@ -312,6 +325,7 @@ pfx_result_t CPfx_window_form_for_win::show ()
 				GetLastError());
 			BREAK_LOOP (status_,PFX_STATUS_INVALID_PARAMS);
 		}
+
 
 		m_hwnd = ::CreateWindowEx(
 			m_context->get_context_info().m_windows_exstyle,
@@ -328,6 +342,7 @@ pfx_result_t CPfx_window_form_for_win::show ()
 			this
 			);
 
+
 		if (NULL == m_hwnd)
 		{
 			PECKER_LOG_ERR ("CPfx_window_form_for_win::show",
@@ -336,17 +351,16 @@ pfx_result_t CPfx_window_form_for_win::show ()
 			BREAK_LOOP (status_,PFX_STATUS_INVALID_PARAMS);
 		}
 
-
-		DWORD load_thread_id;
-		DWORD render_thread_id;
-		m_load_data_thread = ::CreateThread(NULL,0,CPfx_window_form_for_win::LoadDataThreadProc,this,0,&load_thread_id);
-		if (NULL == m_load_data_thread)
+		if (NULL == m_hdc)
 		{
-			PECKER_LOG_ERR ("CPfx_window_form_for_win::show()",
-				"m_load_data_thread = ::CreateThread (...);.... GetLastError = %d",
-				GetLastError());
-			BREAK_LOOP (status_,PFX_STATUS_FAIL);
+			m_hdc = ::GetDC(m_hwnd);
 		}
+		//status_ = GetLastError();
+
+		//status_ = GetLastError();
+		//DWORD load_thread_id;
+		DWORD render_thread_id;
+
 		m_render_thread = ::CreateThread(NULL,0,CPfx_window_form_for_win::RenderThreadProc,this,0,&render_thread_id);
 		if (NULL == m_render_thread)
 		{
@@ -355,6 +369,7 @@ pfx_result_t CPfx_window_form_for_win::show ()
 				GetLastError());
 			BREAK_LOOP (status_,PFX_STATUS_FAIL);
 		}
+		status_ = PFX_STATUS_OK;
 		FOR_ONE_LOOP_END
 
 		if (titlename)
@@ -363,9 +378,14 @@ pfx_result_t CPfx_window_form_for_win::show ()
 			titlename = null;
 		}
 
+		::ShowWindow(m_hwnd,SW_SHOW);
+		::UpdateWindow(m_hwnd);
+		m_is_showed = pfx_true;
+
 		return status_;
 	}
-	m_is_showed = pfx_true;
+
+
 	return status_;
 }
 
@@ -433,62 +453,185 @@ pfx_result_t CPfx_window_form_for_win::run_app ()
 pfx_result_t CPfx_window_form_for_win::_render_thread ()
 {
 	RETURN_INVALID_RESULT (null == m_display || null ==  m_context,PFX_STATUS_INVALID_PARAMS);
-	pfx_boolean_t is_exit = pfx_false;
+	pfx_boolean_t is_exit = pfx_true_val2;
 	pfx_result_t status_;
 	pecker_tick tick_;
 	pfx_64bit_t escape_tick;
-	m_context->init_context ();
-	
-	
+	// 初始化窗体内容
+	//m_context->init_context ();
+	// 初始化绘图显示设备
+	status_ = m_display->init_display_device (this);
+	if (PFX_STATUS_OK == status_)
+	{
+		PECKER_LOG_INFO ("CPfx_window_form_for_win::_render_thread()",
+			"status_ = m_display->init_display_device (this);.... %s",
+			pfx_char_type("PFX_STATUS_OK == status_"));
+	}
+	else
+	{
+		PECKER_LOG_ERR ("CPfx_window_form_for_win::_render_thread()",
+			"status_ = m_display->init_display_device (this);.... status_ = %d",
+			status_);
+		::PostMessage (m_hwnd,WM_CLOSE,0,status_);
+		return status_;
+	}
+
+	// 渲染应用循环
 	while (pfx_true != is_exit)
 	{
 		pfx_double_t last_frame_tick_interval = 0.0;
-		status_ = m_display->init_display_device (this);
+
+		// 当 pfx_true_val2 == is_exit 只需重新加载资源的时候
+		// 用于场景图像给CPU RAM加载硬盘图像数据数据
+		if (pfx_true_val2 == is_exit && NULL == m_load_data_thread)
+		{
+			DWORD load_thread_id;
+			m_load_data_thread = ::CreateThread(NULL,0,
+				CPfx_window_form_for_win::LoadDataThreadProc,this,0,&load_thread_id);
+			if (NULL == m_load_data_thread)
+			{
+				PECKER_LOG_ERR ("CPfx_window_form_for_win::show()",
+					"m_load_data_thread = ::CreateThread (...);.... GetLastError = %d",
+					GetLastError());
+				BREAK_LOOP (status_,PFX_STATUS_FAIL);
+			}
+		}
+		// 当 pfx_true_val2 != is_exit 的时候重新初始化绘图显示设备
+		if (pfx_true_val2 != is_exit)
+		{
+			status_ = m_display->init_display_device (this);
+			if (PFX_STATUS_OK == status_)
+			{
+				PECKER_LOG_INFO ("CPfx_window_form_for_win::_render_thread()",
+					"status_ = m_display->init_display_device (this);.... %s",
+					"PFX_STATUS_OK == status_");
+			}
+			else
+			{
+				PECKER_LOG_ERR ("CPfx_window_form_for_win::_render_thread()",
+					"status_ = m_display->init_display_device (this);.... status_ = %d",
+					status_);
+				::PostMessage (m_hwnd,WM_CLOSE,0,status_);
+				break;
+			}
+		}
+
+
+		escape_tick.m_longlong_type = 0;
+		
+
+		// 将CPU RAM的数据加载到GPU RAM上面
+		status_ = m_context->on_load_render_resource ();
 		if (PFX_STATUS_OK == status_)
 		{
 			PECKER_LOG_INFO ("CPfx_window_form_for_win::_render_thread()",
-				"status_ = m_display->init_display_device (this);.... %s",
-				"PFX_STATUS_OK == status_");
+				"status_ = m_display->on_load_render_resource ();.... %s",
+				pfx_char_type("PFX_STATUS_OK == status_"));
 		}
 		else
 		{
 			PECKER_LOG_ERR ("CPfx_window_form_for_win::_render_thread()",
-				"status_ = m_display->init_display_device (this);.... status_ = %d",
+				"status_ = m_display->on_load_render_resource ();.... status_ = %d",
 				status_);
 			::PostMessage (m_hwnd,WM_CLOSE,0,status_);
 			break;
 		}
-		escape_tick.m_longlong_type = 0;
-		
 
+		is_exit = pfx_false;
+		//pfx_sint_t interval_ = PFX_GET_PRESENTATION_INTERVAL (m_context->get_context_info().m_present_params.m_screen_mask);
+		//interval_ = interval_ / 3;
+		// 渲染图像
 		while (pfx_false == is_exit)
 		{
 			tick_.start();
 			status_ = m_display->update_frame(escape_tick,last_frame_tick_interval,is_exit);
 			status_ = m_display->swap_back_buffer();
 			last_frame_tick_interval = tick_.get_millisecond();
+			//if (last_frame_tick_interval < interval_)
+			//{
+			//	::Sleep(interval_);
+			//}
 			tick_.stop();
 			escape_tick.m_longlong_type += (pfx_long_t)(last_frame_tick_interval);	
 		}
 
-		status_ = m_display->close_display_device();
-
+		// 释放GPU RAM占用的资源数据
+		status_ = m_context->on_release_render_resource ();
 		if (PFX_STATUS_OK == status_)
 		{
 			PECKER_LOG_INFO ("CPfx_window_form_for_win::_render_thread()",
-				"status_ = m_display->close_display_device (this);.... %s",
-				"PFX_STATUS_OK == status_");
+				"status_ = m_display->on_release_render_resource ();.... %s",
+				pfx_char_type("PFX_STATUS_OK == status_"));
 		}
 		else
 		{
 			PECKER_LOG_ERR ("CPfx_window_form_for_win::_render_thread()",
-				"status_ = m_display->close_display_device (this);.... status_ = %d",
+				"status_ = m_display->on_release_render_resource ();.... status_ = %d",
 				status_);
-			::PostMessage (m_hwnd,WM_CLOSE,0,status_);
-			break;
 		}
+
+		// 无限等待加载线程退出，并关闭其线程句柄
+		if (NULL != m_load_data_thread)
+		{
+			::WaitForSingleObject(m_load_data_thread,INFINITE);
+			::CloseHandle(m_load_data_thread);
+			m_load_data_thread = null;
+		}
+
+		if (pfx_true_val2 == is_exit)
+		{
+			m_context->on_release_datas();
+		}
+
+		// 当 pfx_true_val2 != is_exit 的时候关闭当前绘图显示设备
+		if (pfx_true_val2 != is_exit)
+		{
+			status_ = m_display->close_display_device();
+
+			if (PFX_STATUS_OK == status_)
+			{
+				PECKER_LOG_INFO ("CPfx_window_form_for_win::_render_thread()",
+					"status_ = m_display->close_display_device (this);.... %s",
+					pfx_char_type("PFX_STATUS_OK == status_"));
+			}
+			else
+			{
+				PECKER_LOG_ERR ("CPfx_window_form_for_win::_render_thread()",
+					"status_ = m_display->close_display_device (this);.... status_ = %d",
+					status_);
+				::PostMessage (m_hwnd,WM_CLOSE,0,status_);
+				break;
+			}
+		}
+
 	}
+
+	// 无限等待加载线程退出，并关闭其线程句柄
+	if (NULL != m_load_data_thread)
+	{
+		::WaitForSingleObject(m_load_data_thread,INFINITE);
+		::CloseHandle(m_load_data_thread);
+		m_load_data_thread = null;
+	}
+
 	m_context->on_release_datas();
+
+	// 关闭绘图显示设备
+	status_ = m_display->close_display_device();
+
+	if (PFX_STATUS_OK == status_)
+	{
+		PECKER_LOG_INFO ("CPfx_window_form_for_win::_render_thread()",
+			"status_ = m_display->close_display_device (this);.... %s",
+			pfx_char_type("PFX_STATUS_OK == status_"));
+	}
+	else
+	{
+		PECKER_LOG_ERR ("CPfx_window_form_for_win::_render_thread()",
+			"status_ = m_display->close_display_device (this);.... status_ = %d",
+			status_);
+		::PostMessage (m_hwnd,WM_CLOSE,0,status_);
+	}
 
 	return PFX_STATUS_OK;
 }

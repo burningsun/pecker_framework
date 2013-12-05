@@ -9,6 +9,7 @@
 #define		PFX_RENDERDEVICE_OPENGLES2_H_
 
 #include "../pfx_renderdevice.h"
+#include "pfx_framebuffer_opengles.h"
 
 PFX_C_EXTERN_BEGIN
 
@@ -19,7 +20,7 @@ PFX_C_EXTERN_END
 PECKER_BEGIN
 
 
-class PFX_RENDER_SYSTEM_API CPfx_render_device_opengles2 : public Ipfx_render_device
+class PFX_RENDER_SYSTEM_API CPfx_render_device_opengles2 : public  Ipfx_render_device
 {
 public:
 	virtual Ipfx_framebuffer*				new_framebuffer (pfx_result_t&		 PARAM_OUT status_);
@@ -60,6 +61,8 @@ public:
 public:
 	CPfx_render_device_opengles2();
 	virtual ~CPfx_render_device_opengles2();
+private:
+	CPfx_framebuffer_opengles2 m_defualt_framebuffer_gles2;
 };
 
 PECKER_END
