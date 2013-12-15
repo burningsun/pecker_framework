@@ -21,10 +21,12 @@ PFX_C_EXTERN_BEGIN
 // 字符串
 typedef struct PFX_DATA_API st_pfx_string
 {
-	unsigned m_revered : 1;
+	
 	unsigned m_using_extern_buffer : 1;
-	unsigned m_char_size : 14;
-	unsigned m_defualt_buffer_size : 16;
+	unsigned m_defualt_buffer_size : 31;
+
+	unsigned m_revered : 1;
+	unsigned m_char_size : 31;
 
 	size_t m_string_buffer_size;
 	size_t m_string_buffer_length;

@@ -103,7 +103,7 @@ typedef struct PFX_DATA_API st_pfx_dynamic_linear_array
 	size_t						m_buffer_length;
 	size_t						m_auto_allocate_step;
 	const IAllocator*	m_block_allocator;
-	pfx_enum_t				m_aligned_type;
+	pfx_enum_t			m_aligned_type;
 
 	pfx_base_array_t	m_block_array;
 }pfx_dynamic_linear_array_t;

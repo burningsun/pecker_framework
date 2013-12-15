@@ -93,7 +93,20 @@ pfx_result_t CPfx_framebuffer_operation_opengles2::set_depthrange(pfx_float_t ne
 
 pfx_result_t CPfx_framebuffer_operation_opengles2::clear_buffer (pfx_bitfield_t mask)
 {
-	glClear(mask);
+	pfx_bitfield_t glmask = 0;
+	if (mask & PFX_CLEAR_COLOR_BITS_MASK)
+	{
+		glmask |= GL_COLOR_BUFFER_BIT;
+	}
+	if (mask & PFX_CLEAR_DEPHTH_BITS_MASK)
+	{
+		glmask |= GL_DEPTH_BUFFER_BIT;
+	}
+	if (mask |= GL_STENCIL_BUFFER_BIT)
+	{
+		glmask |= GL_STENCIL_BUFFER_BIT;
+	}
+	glClear(glmask);
 	return 0;
 }
 
@@ -110,7 +123,7 @@ pfx_result_t CPfx_framebuffer_operation_opengles2::clear_color (const pfx_color_
 
 pfx_result_t CPfx_framebuffer_operation_opengles2::clear_depth (pfx_float_t depth_)
 {
-	return 0;
+	return PFX_STATUS_OK;
 }
 
 pfx_result_t CPfx_framebuffer_operation_opengles2::clear_stencil (pfx_bitfield_t stencil)

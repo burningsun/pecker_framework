@@ -17,7 +17,7 @@ pfx_share_string_t* init_share_string_by_buffer (size_t char_size,size_t min_buf
 	pfx_sint_t min_charbuffer_size = (pfx_sint_t)min_buffer_size - sizeof(pfx_share_string_extern_t);
 	pfx_result_t status = PFX_STATUS_OK;
 
-	RETURN_INVALID_BY_ACT_RESULT ((min_buffer_size < sizeof(pfx_share_string_t) || char_size > 0x3FFF || null == string_obj_buffer),
+	RETURN_INVALID_BY_ACT_RESULT ((min_buffer_size < sizeof(pfx_share_string_t) || char_size > 0x7FFFFFFF || null == string_obj_buffer),
 		SET_POINTER_VALUE (pstatus,PFX_STATUS_INVALID_VALUE),null);
 
 	RETURN_INVALID_BY_ACT_RESULT ( (null == init_linked_list_node(&preturn_string->m_list_node)),
@@ -36,7 +36,7 @@ pfx_share_string_t* init_share_string_by_buffer (size_t char_size,size_t min_buf
 	else
 	{
 		preturn_string->m_using_internal_buffer = pfx_true;
-		preturn_string->m_interbuffer_defualt_buffer_size =  ((min_charbuffer_size > 0x3FFF) ? 0x3FFF:min_charbuffer_size); ;
+		preturn_string->m_interbuffer_defualt_buffer_size =  ((min_charbuffer_size > 0x7FFFFFFF) ? 0x7FFFFFFF:min_charbuffer_size); ;
 		preturn_string->m_char_buffer_size = 0;
 		preturn_string->m_reference_string = init_string_by_buffer (char_size,sizeof(pfx_share_string_t) + preturn_string->m_interbuffer_defualt_buffer_size ,//min_buffer_size-sizeof(pfx_share_string_t),
 			string_obj_buffer+sizeof(pfx_share_string_t),&status);

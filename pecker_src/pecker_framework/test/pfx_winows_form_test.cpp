@@ -55,7 +55,7 @@ public:
 		if (PFX_STATUS_OK == graphic_device_->begin_draw(operation_))
 		{
 			operation_->clear_color (PFX_RGBA_BITS (200,100,200,255));
-			operation_->clear_buffer (0x00000100|0x00004000);
+			operation_->clear_buffer (PFX_CLEAR_COLOR_BITS_MASK|PFX_CLEAR_DEPHTH_BITS_MASK);
 			graphic_device_->end_draw();
 		}
 		::Sleep(20);

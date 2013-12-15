@@ -150,6 +150,10 @@ typedef enum enumANTIALIASLING_MODE
 	ANTIALIASLING_MODE_COUNT
 }PFX_ANTIALIASLING_MODE_t;
 
+#define	PFX_CLEAR_COLOR_BITS_MASK (1)
+#define	PFX_CLEAR_DEPHTH_BITS_MASK (1<<1)
+#define	PFX_CLEAR_STENCIL_BITS_MASK (1<<2)
+
 PFX_Interface Ipfx_framebuffer_operation
 {
 	//////////////////////////////////////////////////////////////////////////

@@ -24,9 +24,6 @@
     <ClInclude Include="data\pecker_value_compare.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="data\pfx_array.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="data\pfx_array_algorithm.h">
       <Filter>data</Filter>
     </ClInclude>
@@ -91,6 +88,12 @@
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="data\pfx_vector4.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_cstring.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\pfx_carray.h">
       <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>

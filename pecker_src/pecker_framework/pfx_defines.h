@@ -162,6 +162,7 @@ enum PFX_STATUS_CODE
 #define FOR_ONE_LOOP_END }while(0);
 #define BREAK_LOOP(STATUS_PARAM,ERROR_CODE) {STATUS_PARAM = ERROR_CODE; break;}
 #define BREAK_LOOP_CONDITION(condition_)if (condition_){break;}
+#define BREAK_LOOP_CONDITION_ACT(condition_,ACT)if (condition_){{ACT;}break;}
 #define BREAK_LOOP_CONDITION_SETS(condition_,STATUS_PARAM,ERROR_CODE)if (condition_){STATUS_PARAM = ERROR_CODE;break;}
 
 #define PARAM_IN

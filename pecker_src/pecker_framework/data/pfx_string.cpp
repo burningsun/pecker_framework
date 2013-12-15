@@ -13,14 +13,14 @@ pfx_string_t* init_string_by_buffer (size_t char_size,size_t min_buffer_size,cha
 	pfx_string_t* preturn_string = (pfx_string_t*)(string_obj_buffer);
 	pfx_sint_t min_charbuffer_size = (pfx_sint_t)min_buffer_size - sizeof(pfx_string_t);
 
-	RETURN_INVALID_BY_ACT_RESULT ((min_charbuffer_size < 0||char_size > 0x3FFF||null == string_obj_buffer),
+	RETURN_INVALID_BY_ACT_RESULT ((min_charbuffer_size < 0||char_size > 0x7FFFFFFF||null == string_obj_buffer),
 		SET_POINTER_VALUE(pstatus,PFX_STATUS_INVALID_PARAMS),null);
 
 	preturn_string->m_revered = 0;
 	preturn_string->m_using_extern_buffer = 0;
 	preturn_string->m_char_size = char_size;
-	preturn_string->m_defualt_buffer_size = ((min_charbuffer_size > 0x3FFF) ? 0x3FFF:min_charbuffer_size); 
-	preturn_string->m_string_buffer_size =  ((min_charbuffer_size > 0x3FFF) ? 0x3FFF:min_charbuffer_size);
+	preturn_string->m_defualt_buffer_size = ((min_charbuffer_size > 0x7FFFFFFF) ? 0x7FFFFFFF:min_charbuffer_size); 
+	preturn_string->m_string_buffer_size =  ((min_charbuffer_size > 0x7FFFFFFF) ? 0x7FFFFFFF:min_charbuffer_size);
 	preturn_string->m_string_buffer_length = 0;
 	if (preturn_string->m_defualt_buffer_size > 0)
 	{
@@ -120,27 +120,40 @@ pfx_result_t init_string (pfx_string_t* PARAM_INOUT pstr,
 		 {
 			 return PFX_STATUS_INVALID_PARAMS;
 		 }
-		// 先申请一块内存
-		allocate_buffer = (pfx_char_t*)(pchar_allocator->allocate_obj ((pfx_long_t)pchar_allocator,string_len));
-		
-		if (null != allocate_buffer)
-		{
-			pstr->m_string_buffer_length = 0;
-			// 申请成功后，释放原来的内存，将新内存附加上去
-			if (null != pstr->m_pthis_string_data && 
-				pstr->m_using_extern_buffer)
-			{
-				pchar_allocator->dellocate_obj ((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data);
-			}
-			pstr->m_using_extern_buffer = 1;
-			pstr->m_pthis_string_data = allocate_buffer;
-			pstr->m_string_buffer_size = string_len;
-		}
-		else
-		{
-			// 申请内存失败报告缺内存
-			return PFX_STATUS_MEM_LOW;
-		}
+
+		 allocate_buffer = (pfx_char_t*)(pchar_allocator->reallocate_obj ((pfx_long_t)pchar_allocator,
+			 pstr->m_pthis_string_data,
+			 string_len));
+
+		 if (null == allocate_buffer)
+		 {
+			 // 先申请一块内存
+			 allocate_buffer = (pfx_char_t*)(pchar_allocator->allocate_obj ((pfx_long_t)pchar_allocator,string_len));
+
+			 if (null != allocate_buffer)
+			 {
+				 pstr->m_string_buffer_length = 0;
+				 // 申请成功后，释放原来的内存，将新内存附加上去
+				 if (null != pstr->m_pthis_string_data && 
+					 pstr->m_using_extern_buffer)
+				 {
+					 pchar_allocator->dellocate_obj ((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data);
+				 }
+				 pstr->m_using_extern_buffer = 1;
+				 pstr->m_pthis_string_data = allocate_buffer;
+				 pstr->m_string_buffer_size = string_len;
+			 }
+			 else
+			 {
+				 // 申请内存失败报告缺内存
+				 return PFX_STATUS_MEM_LOW;
+			 }
+		 }
+		 else
+		 {
+			 pstr->m_string_buffer_length = 0;
+		 }
+
 	}
 	else 
 	{
@@ -435,35 +448,54 @@ pfx_result_t resize_string (pfx_string_t* PARAM_INOUT pstr,size_t string_len,pfx
 		{
 			return PFX_STATUS_INVALID_PARAMS;
 		}
-		// 先申请一块内存
-		allocate_buffer = (pfx_char_t*)(pchar_allocator->allocate_obj ((pfx_long_t)pchar_allocator,string_len));
 
-		if (null != allocate_buffer)
+		if ((null != pstr->m_pthis_string_data)  && 
+			(pstr->m_using_extern_buffer))
 		{
-			// 将原来的内存拷贝一份上去
-			size_t copy_size = pstr->m_string_buffer_length;
-			if (copy_size > string_len)
-			{
-				copy_size = string_len;
-			}
-			
-			memcpy (allocate_buffer,pstr->m_pthis_string_data,copy_size);
-
-			// 申请成功后，释放原来的内存，将新内存附加上去
-			if ((null != pstr->m_pthis_string_data)  && 
-				(pstr->m_using_extern_buffer))
-			{
-				pchar_allocator->dellocate_obj ((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data);
-			}
-			pstr->m_using_extern_buffer = 1;
-			pstr->m_pthis_string_data = allocate_buffer;
-			pstr->m_string_buffer_size = string_len;
+			allocate_buffer = (pfx_char_t*)(pchar_allocator->reallocate_obj((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data,string_len));
 		}
 		else
 		{
-			// 申请内存失败报告缺内存
-			return PFX_STATUS_MEM_LOW;
+			allocate_buffer = null;
 		}
+
+		if (null == allocate_buffer)
+		{
+			// 先申请一块内存
+			allocate_buffer = (pfx_char_t*)(pchar_allocator->allocate_obj ((pfx_long_t)pchar_allocator,string_len));
+
+			if (null != allocate_buffer)
+			{
+				// 将原来的内存拷贝一份上去
+				size_t copy_size = pstr->m_string_buffer_length;
+				if (copy_size > string_len)
+				{
+					copy_size = string_len;
+				}
+
+				memcpy (allocate_buffer,pstr->m_pthis_string_data,copy_size);
+
+				// 申请成功后，释放原来的内存，将新内存附加上去
+				if ((null != pstr->m_pthis_string_data)  && 
+					(pstr->m_using_extern_buffer))
+				{
+					pchar_allocator->dellocate_obj ((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data);
+				}
+				pstr->m_using_extern_buffer = 1;
+				pstr->m_pthis_string_data = allocate_buffer;
+				pstr->m_string_buffer_size = string_len;
+			}
+			else
+			{
+				// 申请内存失败报告缺内存
+				return PFX_STATUS_MEM_LOW;
+			}
+		}
+		else
+		{
+			pstr->m_string_buffer_size = string_len;
+		}
+	
 	}
 	else if (bnew_allocate)
 	{
@@ -482,35 +514,54 @@ pfx_result_t resize_string (pfx_string_t* PARAM_INOUT pstr,size_t string_len,pfx
 			{
 				return PFX_STATUS_INVALID_PARAMS;
 			}
-			// 先申请一块内存
-			allocate_buffer = (pfx_char_t*)(pchar_allocator->allocate_obj ((pfx_long_t)pchar_allocator,string_len));
 
-			if (null != allocate_buffer)
+			if ((null != pstr->m_pthis_string_data)  && 
+				(pstr->m_using_extern_buffer))
 			{
-				// 将原来的内存拷贝一份上去
-				size_t copy_size = pstr->m_string_buffer_length;
-				if (copy_size > string_len)
-				{
-					copy_size = string_len;
-				}
-
-				memcpy(allocate_buffer,pstr->m_pthis_string_data,copy_size);
-
-				// 申请成功后，释放原来的内存，将新内存附加上去
-				if ((null != pstr->m_pthis_string_data) &&
-					 (pstr->m_using_extern_buffer))
-				{
-					pchar_allocator->dellocate_obj ((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data);
-				}
-				pstr->m_using_extern_buffer = 1;
-				pstr->m_pthis_string_data = allocate_buffer;
-				pstr->m_string_buffer_length = string_len;
+				allocate_buffer = (pfx_char_t*)(pchar_allocator->reallocate_obj((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data,string_len));
 			}
 			else
 			{
-				// 申请内存失败报告缺内存
-				return PFX_STATUS_MEM_LOW;
+				allocate_buffer = null;
 			}
+
+			if (null == allocate_buffer)
+			{
+				// 先申请一块内存
+				allocate_buffer = (pfx_char_t*)(pchar_allocator->allocate_obj ((pfx_long_t)pchar_allocator,string_len));
+
+				if (null != allocate_buffer)
+				{
+					// 将原来的内存拷贝一份上去
+					size_t copy_size = pstr->m_string_buffer_length;
+					if (copy_size > string_len)
+					{
+						copy_size = string_len;
+					}
+
+					memcpy(allocate_buffer,pstr->m_pthis_string_data,copy_size);
+
+					// 申请成功后，释放原来的内存，将新内存附加上去
+					if ((null != pstr->m_pthis_string_data) &&
+						(pstr->m_using_extern_buffer))
+					{
+						pchar_allocator->dellocate_obj ((pfx_long_t)pchar_allocator,pstr->m_pthis_string_data);
+					}
+					pstr->m_using_extern_buffer = 1;
+					pstr->m_pthis_string_data = allocate_buffer;
+					pstr->m_string_buffer_length = string_len;
+				}
+				else
+				{
+					// 申请内存失败报告缺内存
+					return PFX_STATUS_MEM_LOW;
+				}
+			}
+			else
+			{
+				pstr->m_string_buffer_length = string_len;
+			}
+	
 		}
 	}
 	else

@@ -13,7 +13,7 @@
   <ItemGroup>
     <ClInclude Include="data\pecker_collection.h" />
     <ClInclude Include="data\pecker_value_compare.h" />
-    <ClInclude Include="data\pfx_array.h" />
+    <ClInclude Include="data\pfx_carray.h" />
     <ClInclude Include="data\pfx_array_algorithm.h" />
     <ClInclude Include="data\pfx_avl_tree.h" />
     <ClInclude Include="data\pfx_avl_tree_algorithm.h" />
@@ -23,6 +23,7 @@
     <ClInclude Include="data\pfx_bst.h" />
     <ClInclude Include="data\pfx_bst_algorithm.h" />
     <ClInclude Include="data\pfx_bst_iterator.h" />
+    <ClInclude Include="data\pfx_cstring.h" />
     <ClInclude Include="data\pfx_fixed_point.h" />
     <ClInclude Include="data\pfx_iterator.h" />
     <ClInclude Include="data\pfx_list.h" />

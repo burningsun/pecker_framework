@@ -8,9 +8,23 @@
 #include "../data/pfx_string.h"
 #include "../data/pfx_share_string.h"
 #include "../native/pfx_log.h"
+#include "../data/pfx_cstring.h"
 
+USING_PECKER_SDK
 
-
+//const IAllocator allc = {default_allocator_allocate_obj,default_allocator_deallocate_obj}; 
+//const IAllocator* pallc = &allc;
+int cstring_test_main()
+{
+	
+	pfx_cstring<char> cstr;
+	cstr.init_string (100);
+	const pfx_string_t* str = cstr.get_string();
+	const char* char_ = cstr.get_chars(0);
+	char aaa_[1000];
+	init_buffer_with_item_defualt_constactor < pfx_cstring<char> > (aaa_,sizeof(aaa_));
+	return 0;
+}
 
 int string_test_main()
 {
