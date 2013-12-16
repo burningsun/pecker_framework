@@ -30,6 +30,15 @@ typedef union PFX_DATA_API un_binary_search_tree_node_mask
 }binary_search_tree_node_mask_t;
 
 // 二叉树节点基本结构
+typedef struct PFX_DATA_API st_binary_search_tree_base_node binary_search_tree_base_node_t;
+struct PFX_DATA_API st_binary_search_tree_base_node
+{
+	binary_search_tree_base_node_t*				m_parent_node;	// 父节点，主要用于优化遍历，以及可修改型迭代器的应用
+	binary_search_tree_base_node_t*				m_pleft_node;		// 左子树
+	binary_search_tree_base_node_t*				m_pright_node;	// 右子树
+};
+
+
 typedef struct PFX_DATA_API st_binary_search_tree_node binary_search_tree_node_t;
 
 struct PFX_DATA_API st_binary_search_tree_node
@@ -629,6 +638,47 @@ PFX_INLINE pfx_result_t remove_bst_node_unsafe (
 
 	return remove_bst_node_unsafe_in (pproot_node,premove_node,psub_remove_node,psub_romove_ref_node,pnull_node);
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////
+PFX_INLINE const binary_search_tree_base_node_t* min_binary_search_tree_node_unsafe_ (const binary_search_tree_base_node_t* PARAM_IN proot_node)
+{
+	while( null != proot_node->m_pleft_node )
+	{
+		proot_node = proot_node->m_pleft_node;
+	}
+	return proot_node;
+}
+
+PFX_INLINE const binary_search_tree_base_node_t* min_binary_search_tree_define_leaf_node_unsafe_ (const binary_search_tree_base_node_t* PARAM_IN proot_node,
+	const binary_search_tree_base_node_t* pnull_node)
+{
+	while (pnull_node != proot_node->m_pleft_node)
+	{
+		proot_node = proot_node->m_pleft_node;
+	}
+	return proot_node;
+}
+
+PFX_INLINE const binary_search_tree_base_node_t* max_binary_search_tree_node_unsafe_ (const binary_search_tree_base_node_t* PARAM_IN proot_node)
+{
+	while (null != proot_node->m_pright_node)
+	{
+		proot_node = proot_node->m_pright_node;
+	}
+	return proot_node;
+}
+
+PFX_INLINE const binary_search_tree_base_node_t* max_binary_search_tree_define_leaf_node_unsafe_ (const binary_search_tree_base_node_t* PARAM_IN proot_node,
+	const binary_search_tree_base_node_t* pnull_node)
+{
+	while (pnull_node != proot_node->m_pright_node)
+	{
+		proot_node = proot_node->m_pright_node;
+	}
+	return proot_node;
+}
+
 
 PFX_C_EXTERN_END
 

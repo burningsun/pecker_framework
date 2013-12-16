@@ -125,17 +125,17 @@ pfx_result_t copy_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_I
 
 pfx_result_t clear_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_INOUT ppdec_root_node,const IAllocator* PARAM_IN pallocator,delete_bst_node_func delete_node_method)
 {
-	const binary_search_tree_node_t* pbegin;
-	const binary_search_tree_node_t* pend;
+	const binary_search_tree_base_node_t* pbegin;
+	const binary_search_tree_base_node_t* pend;
 	pfx_result_t status = PFX_STATUS_OK;
 
 	binary_search_tree_node_t* pdec_root_node;
 	RETURN_INVALID_RESULT( (null == ppdec_root_node || null == pallocator || null == delete_node_method ),PFX_STATUS_INVALID_PARAMS);
 	pdec_root_node = *ppdec_root_node;
 
-	pbegin = get_binary_search_tree_posorder_begin_node (pdec_root_node);
-	pend = get_binary_search_tree_posorder_end_node (pdec_root_node);
-	const binary_search_tree_node_t* pcur_node = pbegin;
+	pbegin = get_binary_search_tree_posorder_begin_node ((binary_search_tree_base_node_t*)pdec_root_node);
+	pend = get_binary_search_tree_posorder_end_node ((binary_search_tree_base_node_t*)pdec_root_node);
+	const binary_search_tree_base_node_t* pcur_node = pbegin;
 
 	*ppdec_root_node = null;
 	do
@@ -156,7 +156,7 @@ pfx_result_t clear_binary_search_tree_unsafe (binary_search_tree_node_t** PARAM_
 			break;
 		}
 
-		pcur_node = binary_search_tree_posorder_increase (pcur_node,pdec_root_node);
+		pcur_node = binary_search_tree_posorder_increase (pcur_node,(binary_search_tree_base_node_t*)pdec_root_node);
 
 		if (null != pcur_node)
 		{

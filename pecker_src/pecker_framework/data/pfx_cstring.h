@@ -103,6 +103,8 @@ public:
 	pfx_result_t get_at (pfx_index_t index_,char_type_& PARAM_INOUT char_) const;
 	// 设置字符串中的一个字符
 	pfx_result_t set_at (pfx_index_t index_,const char_type_& PARAM_IN char_);
+	//  获取字符串中的一个字符引用
+	char_type_& get_at_reference (pfx_index_t index_,pfx_result_t& PARAM_INOUT status_);
 public:
 	// 初始化字符串大小
 	pfx_result_t init_string (pfx_usize_t chars_count_);
@@ -472,7 +474,7 @@ const char_type_* pfx_cstring	PFX_CSTRING_TEMPLATE_PARAMS ::get_chars (pfx_index
 PFX_CSTRING_TEMPLATE_DEFINES
 pfx_usize_t pfx_cstring	PFX_CSTRING_TEMPLATE_PARAMS ::get_chars_count () const
 {
-	pfx_usize_t chars_count = get_string_chars_length (&(m_string.m_string_header));
+	pfx_usize_t chars_count =m_string.m_string_header.m_string_buffer_length;
 	return (chars_count/sizeof(char_type_));
 }
 
@@ -498,6 +500,16 @@ pfx_result_t pfx_cstring	PFX_CSTRING_TEMPLATE_PARAMS ::set_at (pfx_index_t index
 	RETURN_INVALID_RESULT (if (null == chars_ || index_ < 0 || index_ >= get_chars_count()),PFX_STATUS_OVERRANGE);
 	chars_[index_] = char_;
 	return PFX_STATUS_OK;
+}
+
+PFX_CSTRING_TEMPLATE_DEFINES
+char_type_& pfx_cstring	PFX_CSTRING_TEMPLATE_PARAMS ::get_at_reference (pfx_index_t index_,pfx_result_t& PARAM_INOUT status_)
+{
+	static char_type_ null_item;
+	const char_type_* chars_ = (const char_type_*)(m_string.m_string_header.m_pthis_string_data);
+	RETURN_INVALID_BY_ACT_RESULT (if (null == chars_ || index_ < 0 || index_ >= get_chars_count()),status_ = PFX_STATUS_OVERRANGE,null_item);
+	status_ = PFX_STATUS_OK;
+	return chars_[index_];
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES

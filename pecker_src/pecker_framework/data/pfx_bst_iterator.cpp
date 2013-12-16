@@ -11,11 +11,11 @@
 #include "pfx_bst_iterator.h"
 
 
-const binary_search_tree_node_t* get_binary_search_tree_inorder_begin_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_inorder_begin_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null != proot_node)
 	{
-		return min_binary_search_tree_node_unsafe (proot_node);
+		return min_binary_search_tree_node_unsafe_ (proot_node);
 	}
 	else
 	{
@@ -23,11 +23,11 @@ const binary_search_tree_node_t* get_binary_search_tree_inorder_begin_node (cons
 	}
 }
 
-const binary_search_tree_node_t* get_binary_search_tree_inorder_end_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_inorder_end_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null != proot_node)
 	{
-		return max_binary_search_tree_node_unsafe (proot_node);
+		return max_binary_search_tree_node_unsafe_ (proot_node);
 	}
 	else
 	{
@@ -35,8 +35,8 @@ const binary_search_tree_node_t* get_binary_search_tree_inorder_end_node (const 
 	}
 }
 
-const binary_search_tree_node_t* binary_search_tree_inorder_increase (const binary_search_tree_node_t* PARAM_IN pcurrent_node,
-																																	const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* binary_search_tree_inorder_increase (const binary_search_tree_base_node_t* PARAM_IN pcurrent_node,
+																																	const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null == pcurrent_node || null == proot_node)
 	{
@@ -47,7 +47,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_increase (const bina
 	{
 		if (null != pcurrent_node->m_pright_node)
 		{
-			return min_binary_search_tree_node_unsafe (pcurrent_node->m_pright_node);
+			return min_binary_search_tree_node_unsafe_ (pcurrent_node->m_pright_node);
 		}
 		else
 		{
@@ -57,7 +57,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_increase (const bina
 
 	if (null != pcurrent_node->m_pright_node)
 	{
-		return min_binary_search_tree_node_unsafe (pcurrent_node->m_pright_node);
+		return min_binary_search_tree_node_unsafe_ (pcurrent_node->m_pright_node);
 	}
 
 
@@ -88,8 +88,8 @@ const binary_search_tree_node_t* binary_search_tree_inorder_increase (const bina
 	}
 	return pcurrent_node;
 }
-const binary_search_tree_node_t* binary_search_tree_inorder_decrease (const binary_search_tree_node_t* PARAM_IN pcurrent_node,
-																																	const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* binary_search_tree_inorder_decrease (const binary_search_tree_base_node_t* PARAM_IN pcurrent_node,
+																																	const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null == pcurrent_node || null == proot_node)
 	{
@@ -100,7 +100,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_decrease (const bina
 	{
 		if (null != pcurrent_node->m_pleft_node)
 		{
-			return max_binary_search_tree_node_unsafe (pcurrent_node->m_pleft_node);
+			return max_binary_search_tree_node_unsafe_ (pcurrent_node->m_pleft_node);
 		}
 		else
 		{
@@ -110,7 +110,7 @@ const binary_search_tree_node_t* binary_search_tree_inorder_decrease (const bina
 
 	if (null != pcurrent_node->m_pleft_node)
 	{
-		return max_binary_search_tree_node_unsafe (pcurrent_node->m_pleft_node);
+		return max_binary_search_tree_node_unsafe_ (pcurrent_node->m_pleft_node);
 	}
 
 	if (pcurrent_node->m_parent_node->m_pright_node == pcurrent_node)
@@ -145,11 +145,11 @@ const binary_search_tree_node_t* binary_search_tree_inorder_decrease (const bina
 
 
 
-const binary_search_tree_node_t* get_binary_search_tree_posorder_begin_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_posorder_begin_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null != proot_node)
 	{
-		const binary_search_tree_node_t* ptemp_node = null;
+		const binary_search_tree_base_node_t* ptemp_node = null;
 		
 		while (null != proot_node)
 		{
@@ -179,13 +179,13 @@ const binary_search_tree_node_t* get_binary_search_tree_posorder_begin_node (con
 	}
 }
 
-const binary_search_tree_node_t* get_binary_search_tree_posorder_end_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_posorder_end_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	return proot_node;
 }
 
-const binary_search_tree_node_t* binary_search_tree_posorder_increase (const binary_search_tree_node_t* PARAM_IN pcurrent_node,
-	const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* binary_search_tree_posorder_increase (const binary_search_tree_base_node_t* PARAM_IN pcurrent_node,
+	const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (pcurrent_node == proot_node)
 	{
@@ -204,8 +204,8 @@ const binary_search_tree_node_t* binary_search_tree_posorder_increase (const bin
 
 	if (pcurrent_node->m_parent_node->m_pleft_node == pcurrent_node)
 	{
-		const binary_search_tree_node_t* ptemp_node;
-		const binary_search_tree_node_t* ptemp_node_retn;
+		const binary_search_tree_base_node_t* ptemp_node;
+		const binary_search_tree_base_node_t* ptemp_node_retn;
 		ptemp_node = pcurrent_node->m_parent_node->m_pright_node;
 		ptemp_node_retn = pcurrent_node->m_parent_node;
 
@@ -237,11 +237,11 @@ const binary_search_tree_node_t* binary_search_tree_posorder_increase (const bin
 
 //////////////////////////////////////////////////////////////////////////
 
-const binary_search_tree_node_t* get_binary_search_tree_reverse_posorder_begin_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_reverse_posorder_begin_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null != proot_node)
 	{
-		const binary_search_tree_node_t* ptemp_node = null;
+		const binary_search_tree_base_node_t* ptemp_node = null;
 
 		while (null != proot_node)
 		{
@@ -271,13 +271,13 @@ const binary_search_tree_node_t* get_binary_search_tree_reverse_posorder_begin_n
 	}
 }
 
-const binary_search_tree_node_t* get_binary_search_tree_reverse_posorder_end_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_reverse_posorder_end_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	return proot_node;
 }
 
-const binary_search_tree_node_t* binary_search_tree_reverse_posorder_increase (const binary_search_tree_node_t* PARAM_IN pcurrent_node,
-	const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* binary_search_tree_reverse_posorder_increase (const binary_search_tree_base_node_t* PARAM_IN pcurrent_node,
+	const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (pcurrent_node == proot_node)
 	{
@@ -296,8 +296,8 @@ const binary_search_tree_node_t* binary_search_tree_reverse_posorder_increase (c
 
 	if (pcurrent_node->m_parent_node->m_pright_node == pcurrent_node)
 	{
-		const binary_search_tree_node_t* ptemp_node;
-		const binary_search_tree_node_t* ptemp_node_retn;
+		const binary_search_tree_base_node_t* ptemp_node;
+		const binary_search_tree_base_node_t* ptemp_node_retn;
 		ptemp_node = pcurrent_node->m_parent_node->m_pleft_node;
 		ptemp_node_retn = pcurrent_node->m_parent_node;
 
@@ -330,16 +330,16 @@ const binary_search_tree_node_t* binary_search_tree_reverse_posorder_increase (c
 
 //////////////////////////////////////////////////////////////////////////
 
-const binary_search_tree_node_t* get_binary_search_tree_preorder_begin_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_preorder_begin_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	return proot_node;
 }
 
-const binary_search_tree_node_t* get_binary_search_tree_preorder_end_node (const binary_search_tree_node_t* PARAM_IN proot_node)
+const binary_search_tree_base_node_t* get_binary_search_tree_preorder_end_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null != proot_node)
 	{
-		const binary_search_tree_node_t* ptemp_node = null;
+		const binary_search_tree_base_node_t* ptemp_node = null;
 
 		while (null != proot_node)
 		{
@@ -370,7 +370,7 @@ const binary_search_tree_node_t* get_binary_search_tree_preorder_end_node (const
 
 }
 
-const pfx_preorder_iterator_t* get_binary_search_tree_preorder_begin_iterator (const binary_search_tree_node_t* PARAM_IN proot_node,pfx_preorder_iterator_t* PARAM_INOUT piterator)
+const pfx_preorder_iterator_t* get_binary_search_tree_preorder_begin_iterator (const binary_search_tree_base_node_t* PARAM_IN proot_node,pfx_preorder_iterator_t* PARAM_INOUT piterator)
 {
 	RETURN_INVALID_RESULT((null == piterator),null);
 	piterator->m_pcurrent_node = get_binary_search_tree_preorder_begin_node (proot_node);
@@ -393,7 +393,7 @@ const pfx_preorder_iterator_t* get_binary_search_tree_preorder_begin_iterator (c
 	return piterator;
 }
 
-const pfx_preorder_iterator_t* get_binary_search_tree_preorder_end_iterator(const binary_search_tree_node_t* PARAM_IN proot_node,pfx_preorder_iterator_t* PARAM_INOUT piterator)
+const pfx_preorder_iterator_t* get_binary_search_tree_preorder_end_iterator(const binary_search_tree_base_node_t* PARAM_IN proot_node,pfx_preorder_iterator_t* PARAM_INOUT piterator)
 {
 	RETURN_INVALID_RESULT ((null == piterator),null);
 	piterator->m_pcurrent_node = get_binary_search_tree_preorder_end_node (proot_node);
@@ -402,11 +402,11 @@ const pfx_preorder_iterator_t* get_binary_search_tree_preorder_end_iterator(cons
 	return piterator;
 }
 
-const pfx_preorder_iterator_t* binary_search_tree_preorder_increase (pfx_preorder_iterator_t* PARAM_INOUT piterator,const binary_search_tree_node_t* PARAM_IN proot_node)
+const pfx_preorder_iterator_t* binary_search_tree_preorder_increase (pfx_preorder_iterator_t* PARAM_INOUT piterator,const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	pfx_enum_t back_up_next_type;
 	pfx_enum_t next_type;
-	const binary_search_tree_node_t* pnext_node;
+	const binary_search_tree_base_node_t* pnext_node;
 	pfx_result_t	status = PFX_STATUS_OK;
 
 	RETURN_INVALID_RESULT ((null == piterator || null == proot_node || 
@@ -419,7 +419,7 @@ const pfx_preorder_iterator_t* binary_search_tree_preorder_increase (pfx_preorde
 	{
 	case PREORDER_NEXT_SUB_ROOT_RIGHT:
 		{
-			const binary_search_tree_node_t* pcur_node =  piterator->m_pcurrent_node;
+			const binary_search_tree_base_node_t* pcur_node =  piterator->m_pcurrent_node;
 			do 
 			{
 				pnext_node = pcur_node->m_parent_node;
