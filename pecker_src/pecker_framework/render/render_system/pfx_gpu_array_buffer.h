@@ -110,15 +110,15 @@ protected:
 
 PFX_INLINE pfx_result_t Ipfx_gpu_array_buffer::delete_all_buffer()
 {
-	const binary_search_tree_node_t* begin_node;
-	const binary_search_tree_node_t* end_node;
-	const binary_search_tree_node_t* root_node;
-	const binary_search_tree_node_t* iterator_node;
+	const binary_search_tree_base_node_t* begin_node;
+	const binary_search_tree_base_node_t* end_node;
+	const binary_search_tree_base_node_t* root_node;
+	const binary_search_tree_base_node_t* iterator_node;
 
 	//RETURN_INVALID_RESULT ((null == program),
 	//	PFX_STATUS_INVALID_PARAMS);
 
-	root_node = (const binary_search_tree_node_t*)m_buffer_sets;
+	root_node = (const binary_search_tree_base_node_t*)m_buffer_sets;
 
 	begin_node = get_binary_search_tree_inorder_begin_node (root_node);
 	end_node = get_binary_search_tree_inorder_end_node (root_node);
@@ -127,7 +127,7 @@ PFX_INLINE pfx_result_t Ipfx_gpu_array_buffer::delete_all_buffer()
 	{
 		iterator_node = begin_node;
 		BREAK_LOOP_CONDITION (null == iterator_node);
-		delete_buffer (iterator_node->m_key);
+		delete_buffer (((binary_search_tree_node_t*)iterator_node)->m_key);
 
 		iterator_node = binary_search_tree_inorder_increase (iterator_node,root_node);
 
@@ -217,15 +217,15 @@ PFX_INLINE pfx_result_t Ipfx_gpu_array_buffer::set_array (Ipfx_shader_program* P
 
 PFX_INLINE pfx_result_t Ipfx_gpu_array_buffer::reset_array (Ipfx_shader_program* program,pfx_long_t vertex_location)
 {
-	const binary_search_tree_node_t* begin_node;
-	const binary_search_tree_node_t* end_node;
-	const binary_search_tree_node_t* root_node;
-	const binary_search_tree_node_t* iterator_node;
+	const binary_search_tree_base_node_t* begin_node;
+	const binary_search_tree_base_node_t* end_node;
+	const binary_search_tree_base_node_t* root_node;
+	const binary_search_tree_base_node_t* iterator_node;
 
 	RETURN_INVALID_RESULT ((null == program),
 		PFX_STATUS_INVALID_PARAMS);
 
-	root_node = (const binary_search_tree_node_t*)m_vertex_location_sets;
+	root_node = (const binary_search_tree_base_node_t*)m_vertex_location_sets;
 
 	begin_node = get_binary_search_tree_inorder_begin_node (root_node);
 	end_node = get_binary_search_tree_inorder_end_node (root_node);
@@ -235,7 +235,7 @@ PFX_INLINE pfx_result_t Ipfx_gpu_array_buffer::reset_array (Ipfx_shader_program*
 		iterator_node = begin_node;
 		BREAK_LOOP_CONDITION (null == iterator_node);
 
-		program->disable_vertex_array (iterator_node->m_key);
+		program->disable_vertex_array (((binary_search_tree_node_t*)iterator_node)->m_key);
 
 		iterator_node = binary_search_tree_inorder_increase (iterator_node,root_node);
 

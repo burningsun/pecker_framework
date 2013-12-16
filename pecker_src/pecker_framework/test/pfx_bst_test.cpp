@@ -192,10 +192,10 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 	case CMD_TRAINORDER:
 			if (0 == strncmp(pstr_chars,"inorder",strlen("inorder")))
 			{
-				const binary_search_tree_node_t* pbegin = get_binary_search_tree_inorder_begin_node (proot_node);
-				const binary_search_tree_node_t* pend = get_binary_search_tree_inorder_end_node (proot_node);
+				const binary_search_tree_base_node_t* pbegin = get_binary_search_tree_inorder_begin_node ((const binary_search_tree_base_node_t*)proot_node);
+				const binary_search_tree_base_node_t* pend = get_binary_search_tree_inorder_end_node ((const binary_search_tree_base_node_t*)proot_node);
 
-				const binary_search_tree_node_t* pcur_node = pbegin;
+				const binary_search_tree_base_node_t* pcur_node = pbegin;
 
 				if (INORDER_FLAG_INC != gorder_flag)
 				{
@@ -210,7 +210,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					{
 						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
 							count,
-							pcur_node->m_key,
+							((binary_search_tree_node_t*)pcur_node)->m_key,
 							pcur_node->m_parent_node,
 							pcur_node->m_pleft_node,
 							pcur_node->m_pright_node);
@@ -225,17 +225,17 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 						break;
 					}
 
-					pcur_node = binary_search_tree_inorder_increase (pcur_node,proot_node);
+					pcur_node = binary_search_tree_inorder_increase (pcur_node,(const binary_search_tree_base_node_t*)proot_node);
 				}while(1);
 
 
 			}
 			else 	if (0 == strncmp(pstr_chars,"posorder",strlen("posorder")))
 			{
-				const binary_search_tree_node_t* pbegin = get_binary_search_tree_posorder_begin_node (proot_node);
-				const binary_search_tree_node_t* pend = get_binary_search_tree_posorder_end_node (proot_node);
+				const binary_search_tree_base_node_t* pbegin = get_binary_search_tree_posorder_begin_node ((const binary_search_tree_base_node_t*)proot_node);
+				const binary_search_tree_base_node_t* pend = get_binary_search_tree_posorder_end_node ((const binary_search_tree_base_node_t*)proot_node);
 
-				const binary_search_tree_node_t* pcur_node = pbegin;
+				const binary_search_tree_base_node_t* pcur_node = pbegin;
 
 				if (POSORDER_FLAG != gorder_flag)
 				{
@@ -251,7 +251,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					{
 						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
 							count,
-							pcur_node->m_key,
+							((binary_search_tree_node_t*)pcur_node)->m_key,
 							pcur_node->m_parent_node,
 							pcur_node->m_pleft_node,
 							pcur_node->m_pright_node);
@@ -266,7 +266,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 						break;
 					}
 
-					pcur_node = binary_search_tree_posorder_increase (pcur_node,proot_node);
+					pcur_node = binary_search_tree_posorder_increase (pcur_node,(const binary_search_tree_base_node_t*)proot_node);
 				}while(1);
 
 
@@ -274,11 +274,11 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 			else 	if (0 == strncmp(pstr_chars,"preorder",strlen("preorder")))
 			{
 				pfx_preorder_iterator_t					 preorder_itr;
-				const binary_search_tree_node_t* pbegin;
-				const binary_search_tree_node_t* pend;
-				get_binary_search_tree_preorder_begin_iterator (proot_node,&preorder_itr);
+				const binary_search_tree_base_node_t* pbegin;
+				const binary_search_tree_base_node_t* pend;
+				get_binary_search_tree_preorder_begin_iterator ((const binary_search_tree_base_node_t*)proot_node,&preorder_itr);
 				pbegin = preorder_itr.m_pcurrent_node;
-				pend = get_binary_search_tree_preorder_end_node (proot_node);
+				pend = get_binary_search_tree_preorder_end_node ((const binary_search_tree_base_node_t*)proot_node);
 
 				if (PREORDER_FLAG != gorder_flag)
 				{
@@ -294,7 +294,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					{
 						PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
 							count,
-							preorder_itr.m_pcurrent_node->m_key,
+							((binary_search_tree_node_t*)preorder_itr.m_pcurrent_node)->m_key,
 							preorder_itr.m_pcurrent_node->m_parent_node,
 							preorder_itr.m_pcurrent_node->m_pleft_node,
 							preorder_itr.m_pcurrent_node->m_pright_node);
@@ -316,7 +316,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 						break;
 					}
 
-					if (null == binary_search_tree_preorder_increase(&preorder_itr,proot_node))
+					if (null == binary_search_tree_preorder_increase(&preorder_itr,(const binary_search_tree_base_node_t*)proot_node))
 					{
 						PECKER_LOG_("null! status = %d\n",preorder_itr.m_last_result);
 						break;
@@ -329,10 +329,10 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 	case CMD_TRACOVORDDER:
 		if (0 == strncmp(pstr_chars,"inorder",strlen("inorder")))
 		{
-			const binary_search_tree_node_t* pbegin = get_binary_search_tree_inorder_begin_node (proot_node);
-			const binary_search_tree_node_t* pend = get_binary_search_tree_inorder_end_node (proot_node);
+			const binary_search_tree_base_node_t* pbegin = get_binary_search_tree_inorder_begin_node ((const binary_search_tree_base_node_t*)proot_node);
+			const binary_search_tree_base_node_t* pend = get_binary_search_tree_inorder_end_node ((const binary_search_tree_base_node_t*)proot_node);
 
-			const binary_search_tree_node_t* pcur_node = pend;
+			const binary_search_tree_base_node_t* pcur_node = pend;
 
 			if (INORDER_FLAG_DEC != gorder_flag)
 			{
@@ -348,7 +348,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 				{
 					PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
 						count,
-						pcur_node->m_key,
+						((binary_search_tree_node_t*)pcur_node)->m_key,
 						pcur_node->m_parent_node,
 						pcur_node->m_pleft_node,
 						pcur_node->m_pright_node);
@@ -363,15 +363,15 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					break;
 				}
 
-				pcur_node = binary_search_tree_inorder_decrease (pcur_node,proot_node);
+				pcur_node = binary_search_tree_inorder_decrease (pcur_node,(const binary_search_tree_base_node_t*)proot_node);
 			}while(1);
 		}
 		else 	if (0 == strncmp(pstr_chars,"posorder",strlen("posorder")))
 		{
-			const binary_search_tree_node_t* pbegin = get_binary_search_tree_reverse_posorder_begin_node (proot_node);
-			const binary_search_tree_node_t* pend = get_binary_search_tree_reverse_posorder_end_node (proot_node);
+			const binary_search_tree_base_node_t* pbegin = get_binary_search_tree_reverse_posorder_begin_node ((const binary_search_tree_base_node_t*)proot_node);
+			const binary_search_tree_base_node_t* pend = get_binary_search_tree_reverse_posorder_end_node ((const binary_search_tree_base_node_t*)proot_node);
 
-			const binary_search_tree_node_t* pcur_node = pbegin;
+			const binary_search_tree_base_node_t* pcur_node = pbegin;
 
 			if (REPOSORDER_FLAG != gorder_flag)
 			{
@@ -387,7 +387,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 				{
 					PECKER_LOG_("%08d pcur_node(key,p,l,r) =  (%ld,%08X,%08X,%08X)\n",
 						count,
-						pcur_node->m_key,
+						((binary_search_tree_node_t*)pcur_node)->m_key,
 						pcur_node->m_parent_node,
 						pcur_node->m_pleft_node,
 						pcur_node->m_pright_node);
@@ -402,7 +402,7 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_c
 					break;
 				}
 
-				pcur_node = binary_search_tree_reverse_posorder_increase (pcur_node,proot_node);
+				pcur_node = binary_search_tree_reverse_posorder_increase (pcur_node,(const binary_search_tree_base_node_t*)proot_node);
 			}while(1);
 
 
