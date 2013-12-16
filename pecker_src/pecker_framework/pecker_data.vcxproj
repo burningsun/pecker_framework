@@ -23,6 +23,7 @@
     <ClInclude Include="data\pfx_bst.h" />
     <ClInclude Include="data\pfx_bst_algorithm.h" />
     <ClInclude Include="data\pfx_bst_iterator.h" />
+    <ClInclude Include="data\pfx_cbst.h" />
     <ClInclude Include="data\pfx_cstring.h" />
     <ClInclude Include="data\pfx_fixed_point.h" />
     <ClInclude Include="data\pfx_iterator.h" />

@@ -96,6 +96,9 @@
     <ClInclude Include="data\pfx_carray.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="data\pfx_cbst.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="data\pfx_array_algorithm.cpp">

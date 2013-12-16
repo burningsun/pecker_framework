@@ -88,6 +88,17 @@ PFX_C_EXTERN_END
 #include <new>
 	
 PECKER_BEGIN
+
+PFX_Interface PFX_CORE_API Iallocator_cpp
+{
+	virtual	 void* allocate_obj () = 0;
+	virtual  void	dellocate_obj (void* PARAM_IN del_object) = 0;
+
+	virtual	 void* allocate_objs (size_t size_) = 0;
+	virtual  void	dellocate_objs (void* PARAM_IN del_object) = 0;
+	virtual	 void* reallocate_objs (void* object,size_t size_) = 0;
+};
+
 #define  TEMPLATE_ITEM_DEFINE template < class item_type >
 #define  TEMPLATE_ITEM_PARAMS  < item_type >
 
