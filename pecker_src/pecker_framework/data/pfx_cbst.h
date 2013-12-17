@@ -27,6 +27,9 @@ protected:
 	const node_type_*	m_current_node_ptr;
 	const node_type_*   m_root_node_ptr;
 public:
+	pfx_cbst_iterator ();
+	~pfx_cbst_iterator();
+public:
 	const node_type_* get_current_node () const;
 	const node_type_* get_root_node () const;
 
@@ -78,34 +81,34 @@ class pfx_cbst
 {
 protected:
 	node_type_* m_root_ptr;
-	Iallocator_cpp* m_allocator;
+	//Iallocator_cpp* m_allocator;
 public:
-	pfx_cbst (Iallocator_cpp* allocator = null);
+	pfx_cbst (/*Iallocator_cpp* allocator = null*/);
 	pfx_cbst (const pfx_cbst& other_) throw (pfx_result_t);
-	~pfx_cbst();
+	virtual ~pfx_cbst();
 public:
 	pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
 	pfx_result_t clear ();
 
-	node_type_* new_node ();
-	pfx_result_t release_node (node_type_* PARAM_IN node_ptr);
+	virtual node_type_* new_node () = 0;
+	virtual	pfx_result_t release_node (node_type_* PARAM_IN node_ptr) = 0;
 
+public:
 	pfx_cbst_iterator* begin (pfx_cbst_iterator* PARAM_OUT iterator_) const;
 	pfx_cbst_iterator* end (pfx_cbst_iterator* PARAM_OUT iterator_) const;
 public:
+	pfx_cbst_iterator* find (pfx_cbst_iterator* PARAM_OUT iterator_,
+		const node_type_* PARAM_IN key_node_ptr) const;
+
+public:
 	const node_type_* find (const node_type_* PARAM_IN key_node_ptr) const;
 	node_type_* find_reference (const node_type_* PARAM_IN key_node_ptr);
-
 
 	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
 	node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
 	const node_type_* get_root () const;
-public:
-	pfx_cbst_iterator* find (pfx_cbst_iterator* PARAM_OUT iterator_,
-		const node_type_* PARAM_IN key_node_ptr) const;
-
 public:
 	static PFX_INLINE const node_type_* max_node (const node_type_* root_node_ptr, const node_type_* null_node_ptr = null);
 	static PFX_INLINE const node_type_* min_node (const node_type_* root_node_ptr, const node_type_* null_node_ptr = null);
@@ -147,7 +150,7 @@ template < class node_type_, typename compare_two_node_ >
 class pfx_cavl_tree : public virtual pfx_cbst
 {
 public:
-	pfx_cavl_tree (Iallocator_cpp* allocator = null);
+	pfx_cavl_tree (/*Iallocator_cpp* allocator = null*/);
 	pfx_cavl_tree (const pfx_cavl_tree& other_) throw (pfx_result_t);
 public:
 	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
@@ -180,7 +183,7 @@ template < class node_type_, typename compare_two_node_ >
 class pfx_crb_tree : public virtual pfx_cbst
 {
 public:
-	pfx_crb_tree (Iallocator_cpp* allocator = null);
+	pfx_crb_tree (/*Iallocator_cpp* allocator = null*/);
 	pfx_crb_tree (const pfx_crb_tree& other_) throw (pfx_result_t);
 public:
 	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,

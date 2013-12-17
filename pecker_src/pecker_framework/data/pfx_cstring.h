@@ -86,7 +86,7 @@ protected:
 
 public:
 	pfx_cstring (const IAllocator* allocate_ = null);
-	virtual ~pfx_cstring();
+	~pfx_cstring();
 
 	pfx_cstring (const pfx_cstring& other_) throw (pfx_result_t);
 public:
