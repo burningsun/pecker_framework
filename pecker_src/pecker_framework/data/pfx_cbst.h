@@ -12,6 +12,7 @@
 #include "pfx_avl_tree_algorithm.h"
 #include "pfx_redblack_tree_algorithm.h"
 #include "pfx_bst_iterator.h"
+#include "pecker_value_compare.h"
 
 PECKER_BEGIN
 
@@ -33,8 +34,8 @@ public:
 	const node_type_* get_current_node () const;
 	const node_type_* get_root_node () const;
 
-	pfx_result_t init (const node_type_*	m_current_node_ptr,
-								const node_type_*   m_root_node_ptr);
+	pfx_result_t init (const node_type_*	current_node_ptr,
+								const node_type_*   root_node_ptr);
 
 public:
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin 
@@ -60,8 +61,8 @@ protected:
 	pfx_enum_t				m_next_node_type;
 	pfx_result_t				m_last_result;
 public:
-	pfx_result_t init (const node_type_*	m_current_node_ptr,
-		const node_type_*   m_root_node_ptr);
+	pfx_result_t init (const node_type_*	current_node_ptr,
+		const node_type_*   root_node_ptr);
 public:
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin () const;
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end () const;
@@ -83,7 +84,7 @@ public:
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
 };
 
-template < class node_type_, typename compare_two_node_ >
+template < class node_type_, typename compare_two_node_ = pecker_value_compare< node_type_ > >
 class pfx_cbst
 {
 protected:
@@ -154,7 +155,7 @@ protected:
 	
 };
 
-template < class node_type_, typename compare_two_node_ >
+template < class node_type_, typename compare_two_node_ = pecker_value_compare< node_type_ > >
 class pfx_cavl_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
@@ -205,7 +206,7 @@ protected:
 
 
 
-template < class node_type_, typename compare_two_node_ >
+template < class node_type_, typename compare_two_node_ = pecker_value_compare< node_type_ > >
 class pfx_crb_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
