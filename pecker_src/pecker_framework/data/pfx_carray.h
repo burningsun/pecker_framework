@@ -20,7 +20,7 @@ PECKER_BEGIN
 
 template < class item_type_,  
 const int array_defualt_size_ = ARRAY_DEFUALT_SIZE >
-class pfx_carray_linear : public pfx_cstring < item_type_, array_defualt_size_ > 
+class PFX_TEMPALE_API pfx_carray_linear : public pfx_cstring < item_type_, array_defualt_size_ > 
 {
 public:
 	// 重定义数组大小

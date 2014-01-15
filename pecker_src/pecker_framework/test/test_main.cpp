@@ -21,6 +21,7 @@ extern void stream_test_main();
 extern int avl_test_main();
 extern int rbtree_test_main();
 extern pfx_result_t test_form ();
+extern int clist_test_main();
 
 #include <stdio.h>
 
@@ -64,6 +65,7 @@ int test_main()
 {
 	int status = 0;
 
+	 clist_test_main();
 	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(1.0f,0.0f));
 	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(-1.0f,0.0f));
 	//PECKER_LOG_ ("%d\n",VEC_FLOAT_CMP(1.0f/10002.0f,1.0f/10001.f));

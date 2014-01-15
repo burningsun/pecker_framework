@@ -37,8 +37,15 @@ public:
 								const node_type_*   m_root_node_ptr);
 
 public:
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin () const;
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end () const;
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin 
+		(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
+		set_begin_iterator_ptr) const;
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end 		
+		(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
+		set_end_iterator_ptr) const;
+
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
 
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* next ();
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
@@ -84,14 +91,15 @@ protected:
 	//Iallocator_cpp* m_allocator;
 public:
 	pfx_cbst (/*Iallocator_cpp* allocator = null*/);
-	pfx_cbst (const pfx_cbst& other_) throw (pfx_result_t);
+	pfx_cbst (const pfx_cbst< node_type_, compare_two_node_ > other_ptr) throw (pfx_result_t);
 	virtual ~pfx_cbst();
 public:
 	pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
+	pfx_result_t copy_by_iterator (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
 	pfx_result_t clear ();
 
-	virtual node_type_* new_node () = 0;
-	virtual	pfx_result_t release_node (node_type_* PARAM_IN node_ptr) = 0;
+	virtual node_type_* new_node () {return null;};
+	virtual	pfx_result_t release_node (node_type_* PARAM_IN node_ptr) {return PFX_STATUS_FAIL;};
 
 public:
 	pfx_cbst_iterator* begin (pfx_cbst_iterator* PARAM_OUT iterator_) const;
@@ -147,21 +155,25 @@ protected:
 };
 
 template < class node_type_, typename compare_two_node_ >
-class pfx_cavl_tree : public virtual pfx_cbst
+class pfx_cavl_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
 	pfx_cavl_tree (/*Iallocator_cpp* allocator = null*/);
-	pfx_cavl_tree (const pfx_cavl_tree& other_) throw (pfx_result_t);
+	pfx_cavl_tree (const pfx_cbst< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
+	pfx_cavl_tree (const pfx_cavl_tree < node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 public:
 	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
 	node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
+	pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
+	pfx_result_t copy (const pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
 public:
 	static PFX_INLINE pfx_result_t init_avl_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
 		const node_type_* PARAM_IN left_node_ptr = null,
 		const node_type_* PARAM_IN right_node_ptr = null,
 		const node_type_* PARAM_IN parent_node_ptr = null);
+
 	static PFX_INLINE pfx_nsize_t get_avl_height (const node_type_* PARAM_IN node_ptr);
 	static PFX_INLINE pfx_nsize_t calculate_avl_height (const node_type_* PARAM_IN left_node_ptr,
 		const node_type_* PARAM_IN right_node_ptr);
@@ -177,19 +189,40 @@ public:
 		pfx_result_t& PARAM_OUT status_);
 protected:	
 	static PFX_INLINE void update_avl_height (node_type_* PARAM_IN node_ptr);
+	
+	static PFX_INLINE node_type_* avl_rr_rotate (node_type_* PARAM_INOUT node_ptr);
+	static PFX_INLINE node_type_* avl_ll_rotate (node_type_* PARAM_INOUT node_ptr);
+	static PFX_INLINE node_type_* avl_lr_rotate (node_type_* PARAM_INOUT node_ptr);
+	static PFX_INLINE node_type_* avl_rl_rotate (node_type_* PARAM_INOUT node_ptr);
+
+	static PFX_INLINE AVLTREE_ROTATE_t avl_single_rotate (pfx_nsize_t balance_value,
+		node_type_* PARAM_INOUT node_ptr, node_type_* & PARAM_INOUT parent_ref_node_ptr);
+	
+	static PFX_INLINE pfx_result_t avl_update_rotate (node_type_* & PARAM_INOUT root_node_ptr,
+		node_type_* PARAM_INOUT begin_node_ptr);
+
 };
 
+
+
 template < class node_type_, typename compare_two_node_ >
-class pfx_crb_tree : public virtual pfx_cbst
+class pfx_crb_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
 	pfx_crb_tree (/*Iallocator_cpp* allocator = null*/);
-	pfx_crb_tree (const pfx_crb_tree& other_) throw (pfx_result_t);
+	pfx_crb_tree (const pfx_cbst< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
+	pfx_crb_tree (const pfx_crb_tree< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 public:
+	pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
+	pfx_result_t copy (const pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
+
 	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
 	node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
+
+
+
 public:
 	static PFX_INLINE pfx_result_t init_rb_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
 		const node_type_* PARAM_IN left_node_ptr = null,
@@ -211,9 +244,22 @@ protected:
 	static PFX_INLINE void copy_tree_color (node_type_* PARAM_INOUT pdec_node,
 		const node_type_* PARAM_IN psrc_node);
 
+	static PFX_INLINE  void rbt_left_rotate (node_type_ *& PARAM_INOUT root_node_ptr, 
+		node_type_ *	PARAM_INOUT sentinel_node_ptr,
+		node_type_ *	PARAM_INOUT node_ptr);
+
+	static PFX_INLINE void rbt_right_rotate (node_type_ *& PARAM_INOUT	root_node_ptr, 
+		node_type_ *	PARAM_INOUT	sentinel_node_ptr,
+		node_type_ *	PARAM_INOUT	node_ptr);
+
+	static PFX_INLINE pfx_result_t rbt_add_rotate_fixup (node_type_ *& PARAM_INOUT root_node_ptr,
+		node_type_*  PARAM_INOUT add_node_ptr);
+
+	static PFX_INLINE pfx_result_t rbt_remove_rotate_fixup (node_type_ *& PARAM_INOUT root_ptr,
+		node_type_*  PARAM_INOUT ref_node_ptr);
+
+
 };
-
-
 PECKER_END
 
 #endif			//PFX_CARRAY_H_

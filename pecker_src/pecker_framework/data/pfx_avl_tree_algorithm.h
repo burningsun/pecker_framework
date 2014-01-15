@@ -150,7 +150,8 @@ PFX_INLINE pfx_s16_t calculate_avl_node_balance_val (const _avl_tree_node_t* PAR
 
 PFX_INLINE void update_avl_node_height_unsafe (_avl_tree_node_t* PARAM_INOUT pAvl_node)
 {
-	pAvl_node->m_balance_value.m_balance_value.m_height = (get_avl_node_height (pAvl_node->m_pleft_node) - get_avl_node_height (pAvl_node->m_pright_node));
+	pAvl_node->m_balance_value.m_balance_value.m_height = calculate_avl_node_height (pAvl_node);
+	//pAvl_node->m_balance_value.m_balance_value.m_height = (get_avl_node_height (pAvl_node->m_pleft_node) - get_avl_node_height (pAvl_node->m_pright_node));
 }
 
 PFX_C_EXTERN_END

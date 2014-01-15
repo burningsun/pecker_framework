@@ -7,9 +7,8 @@
 
 #ifndef		PFX_BST_ALGORITHM_H_
 #define		PFX_BST_ALGORITHM_H_
-
-#include "../native/pfx_allocator.h"
 #include "../pfx_defines.h"
+#include "../native/pfx_allocator.h"
 #include "pecker_value_compare.h"
 #include "../native/pfx_allocator.h"
 
@@ -557,6 +556,7 @@ PFX_INLINE pfx_result_t add_bst_node_unsafe (
 	status = PFX_STATUS_OK;
 	do 
 	{
+	//FOR_ONE_LOOP_BEGIN
 		pnode_to_be_add		=	(binary_search_tree_node_t*) find_first_near_node_form_binary_search_tree 
 			(padd_node->m_key,proot_node,cmp_method,&cmp_result);
 
@@ -615,7 +615,7 @@ PFX_INLINE pfx_result_t add_bst_node_unsafe (
 		}
 
 		*ppadded_node = padd_node;
-
+	//FOR_ONE_LOOP_END
 	} while (0);
 
 	return status;

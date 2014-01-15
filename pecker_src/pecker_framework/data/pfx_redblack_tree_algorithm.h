@@ -44,8 +44,8 @@ typedef union PFX_DATA_API un_redblack_tree_node
 	_redblack_tree_node_t			m_rb_node;
 }redblack_tree_node_t;
 
-#define RED_COLOR_NODE_TYPE		(0x3AAA)
-#define BLACK_COLOR_NODE_TYPE	(0x3BBB)
+#define RED_COLOR_NODE_TYPE		(1)
+#define BLACK_COLOR_NODE_TYPE	(0)
 
 PFX_INLINE	void  set_rb_tree_color_red_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode);
 PFX_INLINE	void  set_rb_tree_color_black_unsafe (_redblack_tree_node_t* PARAM_INOUT pnode);

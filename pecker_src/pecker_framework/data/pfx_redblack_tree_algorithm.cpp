@@ -307,7 +307,7 @@ redblack_tree_node_t* remove_redblack_node_unsafe(redblack_tree_node_t** PARAM_I
 {
 	pfx_result_t			status;
 	pfx_bool_t				is_red;
-	_redblack_tree_node_t*	ptemp_node = null;
+	//_redblack_tree_node_t*	ptemp_node = null;
 	_redblack_tree_node_t*	proot_node;
 	_redblack_tree_node_t* psub_romove_ref_node;
 	_redblack_tree_node_t* psub_remove_node;

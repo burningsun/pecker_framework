@@ -7,6 +7,11 @@
 
 #include "../data/pfx_list.h"
 #include "../native/pfx_log.h"
+#include "../data/pfx_clist.h"
+#include "../native/pfx_allocator.h"
+
+USING_PECKER_SDK
+
 
 PFX_C_EXTERN_BEGIN
 
@@ -42,6 +47,91 @@ PFX_C_EXTERN_BEGIN
 
 PFX_C_EXTERN_END
 
+#define CLIST_TEST_NODE pfx_clist_node_base < int >
+#define  CLIST_TEST_ALLOC csimple_cpp_allocator < CLIST_TEST_NODE >
+#define  CLIST_TEST_LIST pfx_clist < CLIST_TEST_NODE,  CLIST_TEST_ALLOC >
+
+int clist_test_main()
+{
+	
+	CLIST_TEST_ALLOC alloc_sim;
+	CLIST_TEST_LIST lstest (&alloc_sim);
+	pfx_result_t status;
+	for (int i=0;i<256;++i)
+	{
+		CLIST_TEST_NODE* allc_node = (CLIST_TEST_NODE*)alloc_sim.allocate_obj();
+		allc_node->get_item_ref() = i;
+		status = lstest.push_back(allc_node);
+		if (PFX_STATUS_OK == status)
+		{
+			PECKER_LOG_("lstest.push_back allc_node->item=%d\n",allc_node->get_item());
+		}
+		else
+		{
+			PECKER_LOG_ERR ("lstest.push_back","status = %d\n",status);
+		}
+	}
+
+	PECKER_LOG_ENDLINE ;
+	PECKER_LOG_ENDLINE ;
+
+	CLIST_TEST_NODE* pop_node = lstest.pop_front();
+	while (pop_node)
+	{
+
+
+		if (pop_node)
+		{
+			PECKER_LOG_("lstest.pop_front allc_node->item=%d\n",pop_node->get_item());
+		}
+		else
+		{
+			PECKER_LOG_ERR ("lstest.pop_front","pop_node = %d\n",pop_node);
+		}
+		alloc_sim.dellocate_obj(pop_node);
+		pop_node = lstest.pop_front();
+	}
+
+	PECKER_LOG_ENDLINE ;
+	PECKER_LOG_ENDLINE ;
+
+	for (int i=0;i<256;++i)
+	{
+		CLIST_TEST_NODE* allc_node = (CLIST_TEST_NODE*)alloc_sim.allocate_obj();
+		allc_node->get_item_ref() = i;
+		status = lstest.push_front(allc_node);
+		if (PFX_STATUS_OK == status)
+		{
+			PECKER_LOG_("lstest.push_front allc_node->item=%d\n",allc_node->get_item());
+		}
+		else
+		{
+			PECKER_LOG_ERR ("lstest.push_front","status = %d\n",status);
+		}
+	}
+
+	PECKER_LOG_ENDLINE ;
+	PECKER_LOG_ENDLINE ;
+
+	pop_node = lstest.pop_back();
+	while (pop_node)
+	{
+		if (pop_node)
+		{
+			PECKER_LOG_("lstest.pop_back allc_node->item=%d\n",pop_node->get_item());
+		}
+		else
+		{
+			PECKER_LOG_ERR ("lstest.pop_back","pop_node = %d\n",pop_node);
+		}
+
+		alloc_sim.dellocate_obj(pop_node);
+		pop_node = lstest.pop_back();
+
+	}
+
+	return 0;
+}
 
 
 int list_test_main()

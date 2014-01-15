@@ -91,6 +91,7 @@ PECKER_BEGIN
 
 PFX_Interface PFX_CORE_API Iallocator_cpp
 {
+	virtual ~Iallocator_cpp() {;}
 	virtual	 void* allocate_obj () = 0;
 	virtual  void	dellocate_obj (void* PARAM_IN del_object) = 0;
 
@@ -101,6 +102,56 @@ PFX_Interface PFX_CORE_API Iallocator_cpp
 
 #define  TEMPLATE_ITEM_DEFINE template < class item_type >
 #define  TEMPLATE_ITEM_PARAMS  < item_type >
+
+TEMPLATE_ITEM_DEFINE
+class PFX_TEMPALE_API csimple_cpp_allocator : public  Iallocator_cpp
+{
+	public:
+	virtual ~csimple_cpp_allocator () {;}
+	void* allocate_obj ();
+	void	dellocate_obj (void* PARAM_IN del_object);
+
+	void* allocate_objs (size_t size_);
+	void	dellocate_objs (void* PARAM_IN del_object);
+	void* reallocate_objs (void* object,size_t size_);
+};
+
+TEMPLATE_ITEM_DEFINE
+void* csimple_cpp_allocator TEMPLATE_ITEM_PARAMS ::allocate_obj ()
+{
+	return new item_type;
+}
+
+TEMPLATE_ITEM_DEFINE
+void csimple_cpp_allocator TEMPLATE_ITEM_PARAMS ::dellocate_obj (void* PARAM_IN del_object)
+{
+	//item_type* del_object = dynamic_cast < item_type* >(del_obj);
+	if (del_object)
+	{
+		delete del_object;
+	}
+}
+
+TEMPLATE_ITEM_DEFINE
+void* csimple_cpp_allocator TEMPLATE_ITEM_PARAMS ::allocate_objs (size_t size_)
+{
+	return new item_type[size_];
+}
+TEMPLATE_ITEM_DEFINE
+void	csimple_cpp_allocator TEMPLATE_ITEM_PARAMS ::dellocate_objs (void* PARAM_IN del_object)
+{
+	//item_type* del_object = dynamic_cast < item_type* >(del_obj);
+	if (del_object)
+	{
+		delete [] del_object;
+	}
+}
+TEMPLATE_ITEM_DEFINE
+void* csimple_cpp_allocator TEMPLATE_ITEM_PARAMS ::reallocate_objs (void* object,size_t size_)
+{
+	return null;
+}
+
 
 TEMPLATE_ITEM_DEFINE
 item_type* init_buffer_with_item_defualt_constactor (void* PARAM_INOUT buffer,pfx_usize_t buffer_size)
@@ -125,14 +176,21 @@ void*	tempalte_extern_allocate_obj_callback	(pfx_long_t handle, size_t size)
 	{
 		return null;
 	}
-
-	void* pobjc = alloc->m_orignal_allocator->allocate_obj((pfx_long_t)&(alloc->m_orignal_allocator),size * sizeof(item_type)+sizeof(size));
+	size_t allocate_size = size;
+	size = size % sizeof (item_type);
+	if (size > 0)
+	{
+		allocate_size = allocate_size - size +  sizeof (item_type);
+	}
+	size = allocate_size / sizeof (item_type);
+	void* pobjc = alloc->m_orignal_allocator->allocate_obj((pfx_long_t)&(alloc->m_orignal_allocator),allocate_size + sizeof(size_t));
 	if (null != pobjc)
 	{
 		size_t* size_ = (size_t*)pobjc;
 		size_[0] = size;
-		pfx_byte_t* alloc_bytes = ((pfx_byte_t*)pobjc) + sizeof (size);
+		pfx_byte_t* alloc_bytes = ((pfx_byte_t*)pobjc) + sizeof (size_t);
 		item_type* item_objs = (item_type*)alloc_bytes;
+		
 		for (pfx_usize_t i=0;i<size;++i)			
 		{																		
 			item_type* item_obj = item_objs + i;		

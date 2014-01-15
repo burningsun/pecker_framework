@@ -26,7 +26,7 @@
 #define PFX_TEMPALE_API	PFX_EXPORT_API
 #else
 #define PFX_CORE_API PFX_IMPORT_API
-#define PFX_CORE_TEMPALE_API
+#define PFX_TEMPALE_API
 #endif
 
 #ifdef PFX_DATA_EXPORT
@@ -159,7 +159,7 @@ enum PFX_STATUS_CODE
 #endif // __cplusplus
 
 #define FOR_ONE_LOOP_BEGIN do{
-#define FOR_ONE_LOOP_END }while(0);
+#define FOR_ONE_LOOP_END ;break;}while(1);
 #define BREAK_LOOP(STATUS_PARAM,ERROR_CODE) {STATUS_PARAM = ERROR_CODE; break;}
 #define BREAK_LOOP_CONDITION(condition_)if (condition_){break;}
 #define BREAK_LOOP_CONDITION_ACT(condition_,ACT)if (condition_){{ACT;}break;}
