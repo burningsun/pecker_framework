@@ -21,6 +21,7 @@ PECKER_BEGIN
 #define PFX_CBST_TEMPLATE_DEFINES template < class node_type_, typename compare_two_node_ >
 #define PFX_CBST_TEMPLATE_PARAMS  < node_type_, compare_two_node_ >
 
+// 搜索二叉树中序遍历
 template < class node_type_ >
 class PFX_TEMPALE_API pfx_cbst_iterator
 {
@@ -50,9 +51,12 @@ public:
 
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* next ();
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
-
+public:
+	static const node_type_* get_inorder_begin_node (const node_type_* root_node_ptr);
+	static const node_type_* get_inorder_end_node (const node_type_* root_node_ptr);
 };
 
+// 搜索二叉树前序遍历
 template < class node_type_ >
 class PFX_TEMPALE_API pfx_preorder_iterator : 
 	public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
@@ -69,9 +73,12 @@ public:
 
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* next ();
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
+public:
+	static const node_type_* get_preorder_begin_node (const node_type_* root_node_ptr);
+	static const node_type_* get_preorder_end_node (const node_type_* root_node_ptr);
 };
 
-
+// 搜索二叉树后序遍历
 template < class node_type_ >
 class PFX_TEMPALE_API pfx_posorder_iterator :
 	public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
@@ -82,6 +89,10 @@ public:
 
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* next ();
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
+public:
+	static const node_type_* get_posorder_begin_node (const node_type_* root_node_ptr);
+	static const node_type_* get_posorder_end_node (const node_type_* root_node_ptr);
+	static const node_type_* get_reverse_posorder_begin_node (const node_type_* root_node_ptr);
 };
 
 template < class node_type_, typename compare_two_node_ = pecker_value_compare< node_type_ > >

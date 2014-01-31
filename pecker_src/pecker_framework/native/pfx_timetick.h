@@ -25,7 +25,7 @@ PFX_C_EXTERN_BEGIN
 	// 计时器，时间单位是毫秒，浮点数。
 	typedef struct st_tick_instance
 	{
-		Time_ticker			m_ticker;
+		Time_ticker				m_ticker;
 		pfx_double_t			m_start_tick;
 		pfx_bitfield_t			m_flags;
 	}st_tick_instance_t;

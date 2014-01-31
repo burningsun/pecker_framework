@@ -142,9 +142,6 @@ const binary_search_tree_base_node_t* binary_search_tree_inorder_decrease (const
 		
 }
 
-
-
-
 const binary_search_tree_base_node_t* get_binary_search_tree_posorder_begin_node (const binary_search_tree_base_node_t* PARAM_IN proot_node)
 {
 	if (null != proot_node)
