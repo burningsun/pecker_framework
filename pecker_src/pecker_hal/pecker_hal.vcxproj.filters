@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="configs">
+      <UniqueIdentifier>{a7457a86-a57f-4d4e-9d74-cfaca27b5463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{b340f1a6-5a5b-4c0d-841f-7df610c5e60c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\pecker_framework\pfx_configs.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_defines.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_hal_info.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="..\pecker_framework\pfx_hal_info.cpp">
+      <Filter>configs</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

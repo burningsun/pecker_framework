@@ -9,8 +9,6 @@
 
 #include "../pfx_defines.h"
 
-PFX_C_EXTERN_BEGIN
-
 #define  COMPARE_TWO_VALUE(A,B,CMP) CMP(A,B)
 typedef int (*CMP_A_AND_B)(void* A,void* B) ;
 typedef int (*compare_two_value_func)(pfx_long_t A,pfx_long_t B) ;
@@ -25,11 +23,11 @@ PFX_INLINE int cmp_a_and_b_long (pfx_long_t A, pfx_long_t B)
 	return (A - B);
 }
 
-PFX_INLINE int cmp_a_and_b_int (int A, int B)
+PFX_INLINE int cmp_a_and_b_int (pfx_sint_t A, pfx_sint_t B)
 {
 	return (A - B);
 }
-PFX_INLINE int cmp_a_and_b_char (char A, char B)
+PFX_INLINE int cmp_a_and_b_char (pfx_char_t A, pfx_char_t B)
 {
 	return (A - B);
 }
@@ -37,7 +35,7 @@ PFX_INLINE int cmp_a_and_b_wchar (wchar_t A, wchar_t B)
 {
 	return (A - B);
 }
-PFX_INLINE int cmp_a_and_b_short (short A,short B)
+PFX_INLINE int cmp_a_and_b_short (pfx_short_t A,pfx_short_t B)
 {
 	return (A-B);
 }
@@ -152,9 +150,6 @@ PFX_INLINE int cmp_a_and_b_string_w_ex(const pfx_wchar_t* pstr_a,
 	return (nstr_a_len - nstr_b_len);
 }
 
-PFX_C_EXTERN_END
-
-#ifdef __cplusplus
 
 PECKER_BEGIN
 
@@ -226,6 +221,38 @@ static PFX_INLINE int compare (const compare_value_ext& value1,const compare_val
 {
 	return value1.compare (value2);
 }
+
+PFX_INLINE int operator() (const compare_value_ext* value1,const compare_value_ext* value2) const
+{
+	if (value1)
+	{
+		return value1->compare (value2);
+	}
+	else if (!value2)
+	{
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
+}
+static PFX_INLINE int compare (const compare_value_ext* value1,const compare_value_ext* value2)
+{
+	if (value1 && value2)
+	{
+		return value1->compare (value2);
+	}
+	else if (!value2)
+	{
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
 };
 
 // 多种基本类型比较
@@ -316,6 +343,6 @@ static PFX_INLINE int compare (const int &value1,const int &value2)
 
 PECKER_END
 
-#endif
+
 
 #endif //PECKER_VALUE_COMPARE_H_

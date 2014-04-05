@@ -9,8 +9,9 @@
 #include <io.h>
 #include <errno.h>
 #include <stdio.h>
+#include "../data/pfx_cstring_codes.h"
+#include "../data/pecker_value_compare.h"
 
-PFX_C_EXTERN_BEGIN
 
 pfx_result_t pfx_check_file_exists (const pfx_char_t*  PARAM_IN pstr_path_name)
 {
@@ -103,19 +104,19 @@ pfx_result_t pfx_seek_file(pfx_file_t* PARAM_INOUT hfile,pfx_long_t offset,pfx_s
 	}
 }
 
-//extern int vfscanf(FILE *stream, const char *format, va_list param);
-
-pfx_result_t pfx_file_scanf(pfx_file_t* PARAM_INOUT hfile,const pfx_char_t* PARAM_IN str_format,...)
-{
-	va_list args_ptr;
-	va_start(args_ptr,str_format);
-	//fscanf ((FILE*)hfile->m_hfile,str_format,args_ptr);
-	//vfscanf ((FILE*)hfile->m_hfile,str_format,args_ptr);
-	//_IO_vfscanf (stdin, format, arg, NULL); 
-	va_end(args_ptr);
-	return PFX_STATUS_OK;
-
-}
+////extern int vfscanf(FILE *stream, const char *format, va_list param);
+//
+//pfx_result_t pfx_file_scanf(pfx_file_t* PARAM_INOUT hfile,const pfx_char_t* PARAM_IN str_format,...)
+//{
+//	va_list args_ptr;
+//	va_start(args_ptr,str_format);
+//	//fscanf ((FILE*)hfile->m_hfile,str_format,args_ptr);
+//	//vfscanf ((FILE*)hfile->m_hfile,str_format,args_ptr);
+//	//_IO_vfscanf (stdin, format, arg, NULL); 
+//	va_end(args_ptr);
+//	return PFX_STATUS_OK;
+//
+//}
 
 pfx_result_t pfx_file_printf(pfx_file_t* PARAM_INOUT hfile,const pfx_char_t* PARAM_IN str_format,...)
 {
@@ -127,9 +128,9 @@ pfx_result_t pfx_file_printf(pfx_file_t* PARAM_INOUT hfile,const pfx_char_t* PAR
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pfx_file_wscanf(pfx_file_t* PARAM_INOUT hfile,const pfx_wchar_t* PARAM_IN str_format,...);
-
-pfx_result_t pfx_file_wprintf(pfx_file_t* PARAM_INOUT hfile,const pfx_wchar_t* PARAM_IN str_format,...);
+//pfx_result_t pfx_file_wscanf(pfx_file_t* PARAM_INOUT hfile,const pfx_wchar_t* PARAM_IN str_format,...);
+//
+//pfx_result_t pfx_file_wprintf(pfx_file_t* PARAM_INOUT hfile,const pfx_wchar_t* PARAM_IN str_format,...);
 
 pfx_sint_t	pfx_test_file_eof(pfx_file_t* PARAM_INOUT hfile)
 {
@@ -220,4 +221,180 @@ pfx_nsize_t pfx_file_set_string_a (pfx_file_t* PARAM_INOUT hfile,
 	return write_size;
 }
 
-PFX_C_EXTERN_END
+
+
+PECKER_BEGIN
+static pfx_cstring < pfx_char_t, pecker_value_compare < pfx_char_t > > gstr_path;
+
+pfx_result_t	pfx_cfile::set_install_apkfile_path (const pfx_char_t* str_path_ptr,pfx_nsize_t path_length)
+{
+	pfx_result_t status;
+	status = gstr_path.init_string(str_path_ptr,path_length+1);
+	if (PFX_STATUS_OK == status)
+	{
+		pfx_char_t null_char = 0;
+		status = gstr_path.set_charbuffer_at (path_length,&null_char,1);
+	}
+	return status;
+}
+const pfx_char_t*	pfx_cfile::get_install_apkfile_path (pfx_nsize_t& path_length)
+{
+	pfx_nsize_t string_len = gstr_path.get_length();
+	path_length = (string_len > 0) ? (string_len -1):0;
+	return gstr_path.get_string ();
+}
+pfx_handle_t	pfx_cfile::get_private_apkfile_manager ()
+{
+	return null;
+}
+pfx_result_t pfx_cfile::is_file_exists (const pfx_char_t* pstr_path,pfx_nsize_t path_length)
+{
+	return pfx_check_file_exists (pstr_path);
+}
+pfx_flag_t pfx_cfile::get_file_rw_mode (const pfx_char_t* pstr_path,pfx_nsize_t path_length)
+{
+	pfx_flag_t rw_mode = 0;
+	if(0 == access(pstr_path,0))
+	{
+		rw_mode |= PF_FILE_EXISTS;
+	}
+	if(0 == access(pstr_path,2))
+	{
+		rw_mode |= PF_FILE_READ_ONLY;
+	}
+	if(0 == access(pstr_path,4))
+	{
+		rw_mode |= PF_FILE_WRITE_ONLY;
+	}
+	if(0 == access(pstr_path,6))
+	{
+		rw_mode |= PF_FILE_RW;
+	}
+	return rw_mode;
+}
+
+
+pfx_cfile::pfx_cfile()
+{
+	m_file.m_hfile = null;
+	m_file.m_file_size = 0;
+}
+
+pfx_cfile::~pfx_cfile()
+{
+	close ();
+}
+
+pfx_result_t pfx_cfile::open(const pfx_char_t* pstr_path,pfx_nsize_t path_length, pfx_flag_t nOpenType)
+{
+	RETURN_INVALID_RESULT (null != m_file.m_hfile,PFX_STATUS_OPENED);
+
+	char str_open_type[20] = "r";
+	int string_length = 1;
+	if(nOpenType & (PFO_OPEN_CREATE | PFO_OPEN_WRITE | PFO_OPEN_READ))
+	{
+		string_length = sprintf(str_open_type,"a+");
+	}
+	else if(nOpenType & (PFO_OPEN_CREATE | PFO_OPEN_WRITE))
+	{
+		string_length = sprintf(str_open_type,"a");
+	}
+	else if(nOpenType & (PFO_OPEN_READ | PFO_OPEN_WRITE))
+	{
+		string_length = sprintf(str_open_type,"w+");
+	}
+	else if(nOpenType & PFO_OPEN_WRITE)
+	{
+		string_length = sprintf(str_open_type,"w");
+		//string_length = 1;
+	}
+
+	if(nOpenType | PFO_OPEN_BINARY)
+	{
+		sprintf(str_open_type+string_length,"b");
+	}
+
+	if(nOpenType | PFO_OPEN_TEXT)
+	{
+		sprintf(str_open_type+string_length,"t");
+	}
+
+	pfx_result_t result_val;
+	result_val = pfx_open_file(&m_file,pstr_path,str_open_type);
+	if (PFX_STATUS_OK == result_val)
+	{
+		pfx_seek_file(&m_file,0,PFX_FILE_SEEK_SET);
+	}
+	return result_val;
+}
+
+pfx_result_t pfx_cfile::close()
+{
+	RETURN_RESULT (null == m_file.m_hfile || 0 == m_file.m_file_size,PFX_STATUS_OK);
+	pfx_result_t result_val;
+	result_val = pfx_close_file(&m_file);
+	if (PFX_STATUS_OK == result_val)
+	{
+		m_file.m_hfile = null;
+		m_file.m_file_size = 0;
+	}
+	return result_val;
+}
+
+pfx_result_t pfx_cfile::read_to_memery (pfx_byte_t* PARAM_INOUT memery_buffer_ptr, 
+	pfx_usize_t memery_buffer_size, 
+	pfx_usize_t& PARAM_INOUT read_buffer_size)
+{
+	pfx_result_t error_code_s;
+	RETURN_INVALID_RESULT (null == memery_buffer_ptr || 0 == memery_buffer_size,PFX_STATUS_INVALID_PARAMS);
+	RETURN_INVALID_RESULT (null == m_file.m_file_size || 0 == m_file.m_file_size,PFX_STATUS_CLOSED);
+	read_buffer_size = fread (memery_buffer_ptr,sizeof (pfx_byte_t),memery_buffer_size,(FILE*)m_file.m_hfile);
+	if (read_buffer_size > 0)
+	{
+		error_code_s = PFX_STATUS_OK;
+	}
+	else
+	{
+		error_code_s = PFX_STATUS_FIN;
+	}
+	return error_code_s;
+
+}
+
+pfx_usize_t pfx_cfile::write_to_file (const pfx_byte_t* memery_buffer_ptr, pfx_usize_t memery_buffer_size,
+	pfx_result_t& PARAM_INOUT error_code_s)
+{
+	RETURN_INVALID_RESULT (null == memery_buffer_ptr || 0 == memery_buffer_size,PFX_STATUS_INVALID_PARAMS);
+	RETURN_INVALID_RESULT (null == m_file.m_file_size || 0 == m_file.m_file_size,PFX_STATUS_CLOSED);
+	memery_buffer_size = fwrite (memery_buffer_ptr,
+		sizeof (pfx_byte_t),memery_buffer_size/sizeof(pfx_byte_t), (FILE*)m_file.m_hfile);
+	error_code_s = PFX_STATUS_OK;
+
+	return memery_buffer_size;
+}
+
+pfx_result_t pfx_cfile::seek(pfx_long_t offset,pfx_sint_t origin)
+{
+	RETURN_INVALID_RESULT (null == m_file.m_file_size || 0 == m_file.m_file_size,PFX_STATUS_CLOSED);
+	return pfx_seek_file (&m_file,offset,origin);
+}
+
+pfx_nsize_t pfx_cfile::get_file_size()
+{
+	return pfx_get_file_size(&m_file);
+}
+
+pfx_sint_t pfx_cfile::test_error ()
+{
+	return pfx_test_file_error (&m_file);
+}
+
+pfx_sint_t pfx_cfile::fflush()
+{
+	return pfx_file_flush (&m_file);
+}
+
+PECKER_END
+
+
+

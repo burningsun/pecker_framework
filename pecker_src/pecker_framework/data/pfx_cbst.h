@@ -8,22 +8,51 @@
 #ifndef		PFX_CBST_H_
 #define		PFX_CBST_H_
 
-#include "pfx_bst_algorithm.h"
-#include "pfx_avl_tree_algorithm.h"
-#include "pfx_redblack_tree_algorithm.h"
-#include "pfx_bst_iterator.h"
 #include "pecker_value_compare.h"
+
+
 
 PECKER_BEGIN
 
 #define PFX_CBST_ITERATOR_TEMPLATE_DEFINES template < class node_type_ >
 #define PFX_CBST_ITERATOR_TEMPLATE_PARAMS  < node_type_ >
-#define PFX_CBST_TEMPLATE_DEFINES template < class node_type_, typename compare_two_node_ >
+#define PFX_CBST_TEMPLATE_DEFINES template < class node_type_, class compare_two_node_ >
 #define PFX_CBST_TEMPLATE_PARAMS  < node_type_, compare_two_node_ >
 
-// 搜索二叉树中序遍历
+typedef enum PFX_DATA_API enum_preorder_iterator_next_node_type
+{
+	PREORDER_NEXT_SUB_ROOT_RIGHT = 0,
+	PREORDER_NEXT_SUB_ROOT_LEFT,
+	PREORDER_NEXT_LEFT,
+	PREORDER_NEXT_RIGHT,
+	PREORDER_NEXT_BEGIN,
+	PREORDER_NEXT_END,
+	PREORDER_FIN,
+
+	enum_preorder_iterator_next_node_type_COUNT
+}pfx_preorder_iterator_next_node_type_t;
+
+
+//AVL旋转类型
+typedef enum PFX_DATA_API enumAVLTREE_ROTATE_TYPE
+{
+	AVLTREE_NONE_ROTATE = 0,
+	AVLTREE_ROTATE_ERR,
+	AVLTREE_NOT_SIMPLE_ROTATE,
+	AVLTREE_LL_ROTATE,
+	AVLTREE_RR_ROTATE,
+	AVLTREE_RL_ROTATE,
+	AVLTREE_LR_ROTATE,
+	AVLTREE_ROTATE_TYPE_COUNT
+}AVLTREE_ROTATE_t;
+
+#define RED_COLOR_NODE_TYPE		(1)
+#define BLACK_COLOR_NODE_TYPE	(0)
+
+
+
 template < class node_type_ >
-class PFX_TEMPALE_API pfx_cbst_iterator
+class PFX_DATA_TEMPALE_API pfx_cbst_iterator
 {
 protected:
 	const node_type_*	m_current_node_ptr;
@@ -35,22 +64,38 @@ public:
 	const node_type_* get_current_node () const;
 	const node_type_* get_root_node () const;
 
-	pfx_result_t init (const node_type_*	current_node_ptr,
+	virtual pfx_result_t init (const node_type_*	current_node_ptr,
 								const node_type_*   root_node_ptr);
 
 public:
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin 
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin 
 		(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
 		set_begin_iterator_ptr) const;
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end 		
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end 		
 		(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
 		set_end_iterator_ptr) const;
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin (){return null;}
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end (){return null;}
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* next ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase () {return null;}
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease () {return null;}
+//public:
+//	static const node_type_* get_inorder_begin_node (const node_type_* root_node_ptr);
+//	static const node_type_* get_inorder_end_node (const node_type_* root_node_ptr);
+};
+
+// 搜索二叉树中序遍历
+template < class node_type_ >
+class PFX_DATA_TEMPALE_API pfx_inorder_iterator :
+		public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
+{
+public:
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
+
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
 public:
 	static const node_type_* get_inorder_begin_node (const node_type_* root_node_ptr);
 	static const node_type_* get_inorder_end_node (const node_type_* root_node_ptr);
@@ -58,7 +103,7 @@ public:
 
 // 搜索二叉树前序遍历
 template < class node_type_ >
-class PFX_TEMPALE_API pfx_preorder_iterator : 
+class PFX_DATA_TEMPALE_API pfx_preorder_iterator : 
 	public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
 {
 protected:
@@ -68,11 +113,11 @@ public:
 	pfx_result_t init (const node_type_*	current_node_ptr,
 		const node_type_*   root_node_ptr);
 public:
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin () const;
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end () const;
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* next ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
 public:
 	static const node_type_* get_preorder_begin_node (const node_type_* root_node_ptr);
 	static const node_type_* get_preorder_end_node (const node_type_* root_node_ptr);
@@ -80,53 +125,55 @@ public:
 
 // 搜索二叉树后序遍历
 template < class node_type_ >
-class PFX_TEMPALE_API pfx_posorder_iterator :
+class PFX_DATA_TEMPALE_API pfx_posorder_iterator :
 	public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
 {
 public:
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin () const;
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end () const;
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* reverse_begin ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* next ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* prev ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
 public:
 	static const node_type_* get_posorder_begin_node (const node_type_* root_node_ptr);
 	static const node_type_* get_posorder_end_node (const node_type_* root_node_ptr);
 	static const node_type_* get_reverse_posorder_begin_node (const node_type_* root_node_ptr);
 };
 
-template < class node_type_, typename compare_two_node_ = pecker_value_compare< node_type_ > >
-class pfx_cbst
+template < class node_type_, class compare_two_node_ = pecker_value_compare_extern< node_type_ > >
+class PFX_DATA_TEMPALE_API pfx_cbst
 {
 protected:
 	node_type_* m_root_ptr;
 	//Iallocator_cpp* m_allocator;
 public:
 	pfx_cbst (/*Iallocator_cpp* allocator = null*/);
-	pfx_cbst (const pfx_cbst< node_type_, compare_two_node_ > other_ptr) throw (pfx_result_t);
+	pfx_cbst (const pfx_cbst< node_type_, compare_two_node_ >* other_ptr) throw (pfx_result_t);
 	virtual ~pfx_cbst();
 public:
-	pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
-	pfx_result_t copy_by_iterator (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
-	pfx_result_t clear ();
+	virtual pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
+	virtual pfx_result_t copy_by_iterator (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
+	virtual pfx_result_t clear ();
 
-	virtual node_type_* new_node () {return null;};
-	virtual	pfx_result_t release_node (node_type_* PARAM_IN node_ptr) {return PFX_STATUS_FAIL;};
+	virtual node_type_* new_node () {return new node_type_;};
+	virtual	pfx_result_t release_node (node_type_* PARAM_IN node_ptr) 
+	{if (node_ptr) {delete node_ptr;return PFX_STATUS_OK;}return PFX_STATUS_INVALID_PARAMS;};
 
 public:
-	pfx_cbst_iterator* begin (pfx_cbst_iterator* PARAM_OUT iterator_) const;
-	pfx_cbst_iterator* end (pfx_cbst_iterator* PARAM_OUT iterator_) const;
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * begin (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_) const;
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * end (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_) const;
 public:
-	pfx_cbst_iterator* find (pfx_cbst_iterator* PARAM_OUT iterator_,
+	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * find (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_,
 		const node_type_* PARAM_IN key_node_ptr) const;
 
 public:
-	const node_type_* find (const node_type_* PARAM_IN key_node_ptr) const;
-	node_type_* find_reference (const node_type_* PARAM_IN key_node_ptr);
+	virtual const node_type_* find (const node_type_* PARAM_IN key_node_ptr) const;
+	virtual node_type_* find_reference (const node_type_* PARAM_IN key_node_ptr);
 
-	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
+	virtual const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
-	node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
+	virtual node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
 	const node_type_* get_root () const;
 public:
@@ -134,16 +181,16 @@ public:
 	static PFX_INLINE const node_type_* min_node (const node_type_* root_node_ptr, const node_type_* null_node_ptr = null);
 
 	static PFX_INLINE pfx_result_t init_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
-		const node_type_* PARAM_IN left_node_ptr = null,
-		const node_type_* PARAM_IN right_node_ptr = null,
-		const node_type_* PARAM_IN parent_node_ptr = null);
+		node_type_* PARAM_IN left_node_ptr = null,
+		node_type_* PARAM_IN right_node_ptr = null,
+		node_type_* PARAM_IN parent_node_ptr = null);
 
 	static const node_type_* find_node (const node_type_* PARAM_IN key_node_ptr,
 		const node_type_* PARAM_IN root_node_ptr);
 
 	static const node_type_* find_near_node  (const node_type_* PARAM_IN key_node_ptr,
 		const node_type_* PARAM_IN root_node_ptr,
-		pfx_result_t& PARAM_INOUT last_cmp_result);
+		int& PARAM_INOUT last_cmp_result);
 
 	static pfx_result_t add_node (node_type_*& PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT add_node_ptr,
@@ -158,7 +205,8 @@ protected:
 		node_type_*& PARAM_OUT sub_remove_node_ptr,
 		const node_type_* PARAM_IN null_node_ptr = null);
 
-	static  const node_type_* remove_node_internal (node_type_*& PARAM_INOUT root_node_ptrptr,
+	//static  node_type_*
+	static pfx_result_t	remove_node_internal (node_type_*& PARAM_INOUT root_node_ptrptr,
 		node_type_* PARAM_INOUT remove_node_ptr,
 		node_type_* PARAM_INOUT sub_remove_node_ptr,
 		node_type_* PARAM_INOUT sub_remove_node_ref_ptr,
@@ -166,8 +214,8 @@ protected:
 	
 };
 
-template < class node_type_, typename compare_two_node_ = pecker_value_compare< node_type_ > >
-class pfx_cavl_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
+template < class node_type_, class compare_two_node_ = pecker_value_compare_extern< node_type_ > >
+class PFX_DATA_TEMPALE_API pfx_cavl_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
 	pfx_cavl_tree (/*Iallocator_cpp* allocator = null*/);
@@ -182,9 +230,9 @@ public:
 	pfx_result_t copy (const pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
 public:
 	static PFX_INLINE pfx_result_t init_avl_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
-		const node_type_* PARAM_IN left_node_ptr = null,
-		const node_type_* PARAM_IN right_node_ptr = null,
-		const node_type_* PARAM_IN parent_node_ptr = null);
+		node_type_* PARAM_IN left_node_ptr = null,
+		node_type_* PARAM_IN right_node_ptr = null,
+		node_type_* PARAM_IN parent_node_ptr = null);
 
 	static PFX_INLINE pfx_nsize_t get_avl_height (const node_type_* PARAM_IN node_ptr);
 	static PFX_INLINE pfx_nsize_t calculate_avl_height (const node_type_* PARAM_IN left_node_ptr,
@@ -217,8 +265,8 @@ protected:
 
 
 
-template < class node_type_, typename compare_two_node_ = pecker_value_compare< node_type_ > >
-class pfx_crb_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
+template < class node_type_, class compare_two_node_ = pecker_value_compare_extern< node_type_ > >
+class PFX_DATA_TEMPALE_API pfx_crb_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
 	pfx_crb_tree (/*Iallocator_cpp* allocator = null*/);
@@ -237,9 +285,9 @@ public:
 
 public:
 	static PFX_INLINE pfx_result_t init_rb_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
-		const node_type_* PARAM_IN left_node_ptr = null,
-		const node_type_* PARAM_IN right_node_ptr = null,
-		const node_type_* PARAM_IN parent_node_ptr = null);
+		node_type_* PARAM_IN left_node_ptr = null,
+		node_type_* PARAM_IN right_node_ptr = null,
+		node_type_* PARAM_IN parent_node_ptr = null);
 
 	static const node_type_* add_rb_node (node_type_*& PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT add_node_ptr,
@@ -274,4 +322,4 @@ protected:
 };
 PECKER_END
 
-#endif			//PFX_CARRAY_H_
+#endif			//PFX_CBST_H_

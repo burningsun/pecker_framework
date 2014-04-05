@@ -1804,13 +1804,13 @@ PFX_INLINE pfx_marix4_t look_at_view_matrix_unsafe_std (const pfx_vector3_t* vEy
 PFX_INLINE pfx_marix4_t look_at_view_matrix_lefthand_unsafe_std (const pfx_vector3_t* vEye,
 	const pfx_vector3_t* vAt,const pfx_vector3_t* vUp)
 {
-	return look_at_view_matrix_unsafe_std(vEye,vAt,vUp,pfx_false);
+	return look_at_view_matrix_unsafe_std(vEye,vAt,vUp,PFX_BOOL_FALSE);
 }
 
 PFX_INLINE pfx_marix4_t look_at_view_matrix_righthand_unsafe_std (const pfx_vector3_t* vEye,
 	const pfx_vector3_t* vAt,const pfx_vector3_t* vUp)
 {
-	return look_at_view_matrix_unsafe_std(vEye,vAt,vUp,pfx_true);
+	return look_at_view_matrix_unsafe_std(vEye,vAt,vUp,PFX_BOOL_TRUE);
 }
 
 PFX_C_EXTERN_END

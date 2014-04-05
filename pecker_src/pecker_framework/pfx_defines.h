@@ -17,6 +17,9 @@
 #define PFX_INLINE __inline //msvc
 #define PFX_INLINE_CODE PFX_INLINE //有些编译器不支持c/cpp文件内写inline
 
+// VC不支持指定类型的异常抛出声明，加上后忽略warning
+#pragma warning (disable:4290)
+
 // msvc
 #define PFX_EXPORT_API __declspec(dllexport) 
 #define PFX_IMPORT_API __declspec(dllimport)
@@ -25,12 +28,12 @@
 #define PFX_CORE_API			PFX_EXPORT_API
 #define PFX_TEMPALE_API	PFX_EXPORT_API
 #else
-#define PFX_CORE_API PFX_IMPORT_API
+#define PFX_CORE_API			PFX_IMPORT_API
 #define PFX_TEMPALE_API
 #endif
 
 #ifdef PFX_DATA_EXPORT
-#define PFX_DATA_API			PFX_EXPORT_API
+#define PFX_DATA_API						PFX_EXPORT_API
 #define PFX_DATA_TEMPALE_API	PFX_EXPORT_API
 #else
 #define PFX_DATA_API PFX_IMPORT_API
@@ -205,18 +208,19 @@ typedef int								pfx_pos_coord_t;
 typedef int								pfx_nsize_t;
 typedef unsigned int				pfx_usize_t;
 typedef int								pfx_index_t;
+typedef unsigned int				pfx_uindex_t;
 typedef unsigned char			pfx_byte_t;
 typedef unsigned int				pfx_enum_int_t;
 typedef unsigned int				pfx_bitfield_t;
 typedef unsigned int				pfx_boolean_t;
-//typedef char Bool;
+//typedef char pfx_boolean_t;
 
 typedef enum enum_bool
 {
-	pfx_false = 0,
-	pfx_true,
-	pfx_invalid,
-	pfx_true_val2
+	PFX_BOOL_FALSE = 0,
+	PFX_BOOL_TRUE,
+	PFX_BOOL_INVALID,
+	PFX_BOOL_TRUE_VAL2
 }pfx_bool_t;
 //#define pfx_true (1)
 //#define pfx_false (0)
@@ -297,6 +301,8 @@ typedef union PFX_128bit_DataType
 }pfx_128bit_t;
 
 #define RETURN_RESULT(condition,return_status) {if (condition) {return (return_status);} };
+
+#define RETURN_BY_ACT_RESULT(condition,action_,return_status) {if (condition) {{action_;};return (return_status);} };
 
 #define RETURN_INVALID_RESULT(condition,return_status) {if (condition) {return (return_status);} };
 
@@ -504,6 +510,11 @@ PFX_INLINE pfx_bitfield_t set_bitfield_mask(pfx_bitfield_t bitfield,pfx_bitfield
 #define BIT_29_MASK_31_to_0		(1 << 29) 
 #define BIT_30_MASK_31_to_0		(1 << 30) 
 #define BIT_31_MASK_31_to_0		(1 << 31) 
+
+typedef struct st_pfx_api_version
+{
+	unsigned int version_code[4];
+}pfx_version_t;
 
 PFX_C_EXTERN_END
 

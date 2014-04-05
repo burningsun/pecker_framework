@@ -105,11 +105,11 @@ PFX_INLINE pfx_sint_t float_equals (pfx_float_t X,pfx_float_t Y)
 		X = X - Y;
 		if  (X > FLOAT_ERROR_VALUE && X < (-FLOAT_ERROR_VALUE))
 		{
-			return pfx_false;
+			return PFX_BOOL_FALSE;
 		}
 		else
 		{
-			return pfx_true;
+			return PFX_BOOL_TRUE;
 		}
 	}
 	else
@@ -137,17 +137,17 @@ PFX_INLINE pfx_sint_t float_equals (pfx_float_t X,pfx_float_t Y)
 		{
 			if ((cmp_mask < FLOAT_ERROR_MASK) && (cmp_mask > (-FLOAT_ERROR_MASK)))
 			{
-				return pfx_true;
+				return PFX_BOOL_TRUE;
 			}
 		}
 
 		if (cmp_mask)
 		{
-			return pfx_false;
+			return PFX_BOOL_FALSE;
 		}
 		else
 		{
-			return pfx_true;
+			return PFX_BOOL_TRUE;
 		}
 	}
 }
