@@ -8,6 +8,7 @@
 #ifndef		PFX_CBST_H_
 #define		PFX_CBST_H_
 
+#include "pfx_iterator.h"
 #include "pecker_value_compare.h"
 
 
@@ -52,7 +53,7 @@ typedef enum PFX_DATA_API enumAVLTREE_ROTATE_TYPE
 
 
 template < class node_type_ >
-class PFX_DATA_TEMPALE_API pfx_cbst_iterator
+class PFX_DATA_TEMPALE_API pfx_cbst_iterator : public pfx_increase_iterator < node_type_ >
 {
 protected:
 	const node_type_*	m_current_node_ptr;
@@ -80,6 +81,9 @@ public:
 
 	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase () {return null;}
 	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease () {return null;}
+public:
+	virtual PFX_INLINE pfx_increase_iterator < node_type_ >*	increase_iterator () { return increase(); }
+	virtual	PFX_INLINE const node_type_*									get_current_element () const { return get_current_node(); }
 //public:
 //	static const node_type_* get_inorder_begin_node (const node_type_* root_node_ptr);
 //	static const node_type_* get_inorder_end_node (const node_type_* root_node_ptr);
@@ -88,14 +92,18 @@ public:
 // 搜索二叉树中序遍历
 template < class node_type_ >
 class PFX_DATA_TEMPALE_API pfx_inorder_iterator :
-		public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
+		public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS,
+		public pfx_decrease_iterator < node_type_ >
 {
 public:
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
 
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
+	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
+public:
+	pfx_decrease_iterator < node_type_ >*	decrease_iterator ();
+	const node_type_*									get_current_element () const;
 public:
 	static const node_type_* get_inorder_begin_node (const node_type_* root_node_ptr);
 	static const node_type_* get_inorder_end_node (const node_type_* root_node_ptr);

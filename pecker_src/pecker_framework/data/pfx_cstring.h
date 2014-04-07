@@ -100,14 +100,14 @@ public:
 																																			IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_INOUT sub_string_ptr)  const = 0;
 
 
-	virtual	 pfx_boolean_t				find_first_string (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size,pfx_uindex_t& find_index) const = 0;
-	virtual	 pfx_boolean_t				find_first_string (const IPfx_string PFX_STRING_TEMPLATE_PARAMS * PARAM_IN sub_string_ptr,pfx_uindex_t & find_index) const = 0;
+	virtual	 pfx_boolean_t			find_first_string (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size,pfx_uindex_t& find_index) const = 0;
+	virtual	 pfx_boolean_t			find_first_string (const IPfx_string PFX_STRING_TEMPLATE_PARAMS * PARAM_IN sub_string_ptr,pfx_uindex_t & find_index) const = 0;
 
-	virtual	 pfx_boolean_t				find_string (pfx_uindex_t begin_index, const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size,pfx_uindex_t& find_index) const = 0;
-	virtual	 pfx_boolean_t				find_string (pfx_uindex_t begin_index, IPfx_string* PARAM_INOUT sub_string_ptr,pfx_uindex_t& find_index) const = 0;
+	virtual	 pfx_boolean_t			find_string (pfx_uindex_t begin_index, const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size,pfx_uindex_t& find_index) const = 0;
+	virtual	 pfx_boolean_t			find_string (pfx_uindex_t begin_index, IPfx_string* PARAM_INOUT sub_string_ptr,pfx_uindex_t& find_index) const = 0;
 
-	virtual	 pfx_boolean_t				find_near_string (pfx_uindex_t begin_index, const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size,pfx_uindex_t& find_index, pfx_usize_t& same_chars_count) const = 0;
-	virtual	 pfx_boolean_t				find_near_string (pfx_uindex_t begin_index, IPfx_string* PARAM_INOUT sub_string_ptr,pfx_uindex_t& find_index, pfx_usize_t& same_chars_count) const = 0;
+	virtual	 pfx_boolean_t			find_near_string (pfx_uindex_t begin_index, const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size,pfx_uindex_t& find_index, pfx_usize_t& same_chars_count) const = 0;
+	virtual	 pfx_boolean_t			find_near_string (pfx_uindex_t begin_index, IPfx_string* PARAM_INOUT sub_string_ptr,pfx_uindex_t& find_index, pfx_usize_t& same_chars_count) const = 0;
 
 	virtual pfx_result_t				init_string (pfx_usize_t size_) = 0;
 	virtual pfx_result_t				init_string (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size) = 0;
@@ -120,9 +120,13 @@ public:
 	virtual pfx_result_t				append_string (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size) = 0;
 	virtual pfx_result_t				append_string (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN append_string_ptr) = 0;
 
+	virtual pfx_result_t				append_front (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size) = 0;
+	virtual pfx_result_t				append_front (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN append_string_ptr) = 0;
+
 	virtual pfx_result_t				clip_string_remain_left (pfx_uindex_t clip_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr) = 0;
 	virtual pfx_result_t				clip_string_remain_right (pfx_uindex_t clip_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr) = 0;
 	virtual	pfx_ulong_t				get_string_type_code () const = 0;
+	virtual pfx_usize_t					get_cache_buffer_size () const = 0;
 
 	//virtual pfx_result_t				copy_string () const = 0;
 	virtual int								compare (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* other_ptr) const = 0;
@@ -164,6 +168,7 @@ public:
 	virtual ~pfx_cstring ();
 public:
 	PFX_INLINE pfx_ulong_t		get_string_type_code () const;
+	PFX_INLINE pfx_usize_t		get_cache_buffer_size () const;
 protected:
 	virtual	pfx_result_t				copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
 																			pfx_boolean_t	bheader_cache_buffer, 
@@ -210,6 +215,9 @@ public:
 
 	pfx_result_t				append_string (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size);
 	pfx_result_t				append_string (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN append_string_ptr);
+
+	pfx_result_t				append_front (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size);
+	pfx_result_t				append_front (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN append_string_ptr);
 
 	pfx_result_t				clip_string_remain_left (pfx_uindex_t clip_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr);
 	pfx_result_t				clip_string_remain_right (pfx_uindex_t clip_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr);

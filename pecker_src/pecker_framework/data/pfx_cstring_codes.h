@@ -198,7 +198,13 @@ PFX_INLINE  pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::delete_string
 PFX_CSTRING_TEMPLATE_DEFINES
 PFX_INLINE pfx_ulong_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::get_string_type_code () const
 {
-	return PFX_CSTRING_CODE;
+	return (PFX_CSTRING_CODE);
+}
+
+PFX_CSTRING_TEMPLATE_DEFINES
+PFX_INLINE pfx_usize_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::get_cache_buffer_size () const
+{
+	return CACHE_BUFFER_SIZE;
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
@@ -1084,7 +1090,7 @@ pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::garbage_collection (Garba
 				// 先移除BUF共享
 				status = remove_referance ();
 
-				if (PFX_STATUS_OK ==  status)
+				if (PFX_STATUS_OK ==  status && new_size > 0)
 				{
 					new_buffer_ptr = new_string_buffer (new_size);
 					RETURN_INVALID_RESULT (null == new_buffer_ptr,PFX_STATUS_MEM_LOW);
@@ -1092,9 +1098,12 @@ pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::garbage_collection (Garba
 			}
 			else
 			{
-				new_buffer_ptr = new_string_buffer (new_size);
-				RETURN_INVALID_RESULT (null == new_buffer_ptr,PFX_STATUS_MEM_LOW);
-				
+				if (new_size > 0)
+				{
+					new_buffer_ptr = new_string_buffer (new_size);
+					RETURN_INVALID_RESULT (null == new_buffer_ptr,PFX_STATUS_MEM_LOW);
+				}
+
 				del_element_ptr = m_extern_string_buffer_ptr;
 			}
 
@@ -1127,7 +1136,8 @@ pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::garbage_collection (Garba
 PFX_CSTRING_TEMPLATE_DEFINES
 pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::append_string (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size_)
 {
-	//const element_*	str_chars_buffer_ptr;
+	RETURN_RESULT (null == str_chars_buffer_ptr || 0 == buffer_size_,PFX_STATUS_OK);
+
 	element_*				del_element_ptr;
 	pfx_usize_t				this_buffer_size;
 	pfx_result_t			status;
@@ -1172,6 +1182,61 @@ pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::append_string (const IPfx
 	if (append_string_ptr)
 	{
 		return append_string (append_string_ptr->get_string (), append_string_ptr->get_length ());
+	}
+	else
+	{
+		return PFX_STATUS_INVALID_PARAMS;
+	}
+}
+
+PFX_CSTRING_TEMPLATE_DEFINES
+pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::append_front (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size_)
+{
+	RETURN_RESULT (null == str_chars_buffer_ptr || 0 == buffer_size_,PFX_STATUS_OK);
+
+	element_*				del_element_ptr;
+	pfx_usize_t				this_buffer_size;
+	pfx_result_t			status;
+	const element_*	str_this_chars_buffer_ptr;
+	str_this_chars_buffer_ptr = get_string ();
+	this_buffer_size = get_length ();
+
+	del_element_ptr = null;
+	status = init_string (this_buffer_size+buffer_size_,del_element_ptr);
+
+	if (PFX_STATUS_OK == status)
+	{
+		pfx_usize_t successed_count;
+		successed_count = set_charbuffer_at (buffer_size_,str_this_chars_buffer_ptr,this_buffer_size);
+		if (successed_count != this_buffer_size)
+		{
+			status = PFX_STATUS_FAIL;
+		}
+		if (PFX_STATUS_OK == status)
+		{
+			successed_count = set_charbuffer_at (0,str_chars_buffer_ptr,buffer_size_);
+			if (successed_count != buffer_size_)
+			{
+				status = PFX_STATUS_FAIL;
+			}
+		}
+
+	}
+	
+
+	if (del_element_ptr)
+	{
+		delete_string_buffer (del_element_ptr);
+	}
+	return status;
+}
+
+PFX_CSTRING_TEMPLATE_DEFINES
+pfx_result_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::append_front (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN append_string_ptr)
+{
+	if (append_string_ptr)
+	{
+		return append_front (append_string_ptr->get_string (), append_string_ptr->get_length ());
 	}
 	else
 	{

@@ -114,5 +114,17 @@
     <ClInclude Include="..\pecker_framework\data\pfx_iterator.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_array.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_dynamic_array.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_array_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_array_iterator_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

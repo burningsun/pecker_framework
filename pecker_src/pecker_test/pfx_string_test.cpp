@@ -131,6 +131,12 @@ pfx_result_t string_test ()
 	PECKER_LOG_DIRECT_A ("%d %d %d",bfind,find_index,same_count);
 	PECKER_LOG_ ("\n");
 
+	string_ptr3->append_front ("987654321",strlen("987654321"));
+	str = string_ptr3->get_string ();
+	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	PECKER_LOG_DIRECT_A (strformat,str);
+	PECKER_LOG_ ("\n");
+
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("test pfx_cshare_string\n");
 
@@ -240,6 +246,12 @@ pfx_result_t string_test ()
 	same_count = 0;
 	bfind = string_ptr3->find_near_string (5,"1235",4,find_index,same_count);
 	PECKER_LOG_DIRECT_A ("%d %d %d",bfind,find_index,same_count);
+	PECKER_LOG_ ("\n");
+
+	string_ptr3->append_front ("987654321",strlen("987654321"));
+	str = string_ptr3->get_string ();
+	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	return PFX_STATUS_OK;

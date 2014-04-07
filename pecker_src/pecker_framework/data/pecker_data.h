@@ -10,6 +10,6 @@
 
 #include "pecker_value_compare.h"
 #include "pfx_binary_search_tree.h"
-#include "pfx_dynamic_array.h"
+//#include "pfx_dynamic_array.h"
 
 #endif			//PFX_PECKER_DATA_H_

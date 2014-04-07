@@ -16,34 +16,35 @@
 PECKER_BEGIN
 
 
-#define PFX_CBST_EX_TEMPLATE_DEFINES template < class node_type_, class compare_two_node_, class node_allocator >
-#define PFX_CBST_EX_TEMPLATE_PARAMS  < node_type_, compare_two_node_,node_allocator >
+#define PFX_CBST_EX_TEMPLATE_DEFINES template < class node_type_, class binary_search_tree, class compare_two_node_, class node_allocator >
+#define PFX_CBST_EX_TEMPLATE_PARAMS  < node_type_, binary_search_tree, compare_two_node_,node_allocator >
+
+template < class node_type_, class binary_search_tree, class compare_two_node_ , class node_allocator >
+class PFX_DATA_TEMPALE_API pfx_binary_search_tree_base : public virtual binary_search_tree
+{
+public:
+	node_type_* new_node ();
+	pfx_result_t release_node (node_type_* PARAM_IN node_ptr);
+};
 
 template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ > >
-class PFX_DATA_TEMPALE_API pfx_binary_search_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
+class PFX_DATA_TEMPALE_API pfx_binary_search_tree : 
+	public pfx_binary_search_tree_base < node_type_,  pfx_cbst < node_type_,  compare_two_node_ >, compare_two_node_, node_allocator >
 {
-public:
-	node_type_* new_node ();
-	pfx_result_t release_node (node_type_* PARAM_IN node_ptr);
 };
 
-template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ >  >
-class PFX_DATA_TEMPALE_API pfx_avl_binary_search_tree : public virtual pfx_cavl_tree < node_type_,  compare_two_node_ >
+template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ > >
+class PFX_DATA_TEMPALE_API pfx_avl_binary_search_tree : 
+	public pfx_binary_search_tree_base < node_type_,  pfx_cavl_tree < node_type_,  compare_two_node_ >, compare_two_node_, node_allocator >
 {
-public:
-	node_type_* new_node ();
-	pfx_result_t release_node (node_type_* PARAM_IN node_ptr);
 };
 
-template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ >  >
-class PFX_DATA_TEMPALE_API pfx_redblack_binary_search_tree : public virtual pfx_crb_tree < node_type_,  compare_two_node_ >
+template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ > >
+class PFX_DATA_TEMPALE_API pfx_redblack_binary_search_tree : 
+	public pfx_binary_search_tree_base < node_type_,  pfx_crb_tree < node_type_,  compare_two_node_ >, compare_two_node_, node_allocator >
 {
-public:
-	node_type_* new_node ();
-	pfx_result_t release_node (node_type_* PARAM_IN node_ptr);
 };
 
-//template < class item_type_, class node_type_, typename >
 
 template < class item_type,class compare_two_value = pecker_value_compare < item_type > >
 class PFX_DATA_TEMPALE_API pfx_cbst_node
@@ -332,34 +333,12 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 PFX_CBST_EX_TEMPLATE_DEFINES
-node_type_* pfx_binary_search_tree PFX_CBST_EX_TEMPLATE_PARAMS :: new_node ()
+node_type_* pfx_binary_search_tree_base PFX_CBST_EX_TEMPLATE_PARAMS :: new_node ()
 {
 	return node_allocator::allocate_object ();
 }
 PFX_CBST_EX_TEMPLATE_DEFINES
-pfx_result_t pfx_binary_search_tree PFX_CBST_EX_TEMPLATE_PARAMS :: release_node (node_type_* PARAM_IN node_ptr)
-{
-	return node_allocator::deallocate_object (node_ptr);
-}
-//////////////////////////////////////////////////////////////////////////
-PFX_CBST_EX_TEMPLATE_DEFINES
-node_type_* pfx_avl_binary_search_tree PFX_CBST_EX_TEMPLATE_PARAMS :: new_node ()
-{
-	return node_allocator::allocate_object ();
-}
-PFX_CBST_EX_TEMPLATE_DEFINES
-pfx_result_t pfx_avl_binary_search_tree PFX_CBST_EX_TEMPLATE_PARAMS :: release_node (node_type_* PARAM_IN node_ptr)
-{
-	return node_allocator::deallocate_object (node_ptr);
-}
-//////////////////////////////////////////////////////////////////////////
-PFX_CBST_EX_TEMPLATE_DEFINES
-node_type_* pfx_redblack_binary_search_tree PFX_CBST_EX_TEMPLATE_PARAMS :: new_node ()
-{
-	return node_allocator::allocate_object ();
-}
-PFX_CBST_EX_TEMPLATE_DEFINES
-pfx_result_t pfx_redblack_binary_search_tree PFX_CBST_EX_TEMPLATE_PARAMS :: release_node (node_type_* PARAM_IN node_ptr)
+pfx_result_t pfx_binary_search_tree_base PFX_CBST_EX_TEMPLATE_PARAMS :: release_node (node_type_* PARAM_IN node_ptr)
 {
 	return node_allocator::deallocate_object (node_ptr);
 }

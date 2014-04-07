@@ -289,6 +289,25 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
+pfx_decrease_iterator < node_type_ >*	pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: decrease_iterator ()
+{
+	if (decrease())
+	{
+		return this;
+	}
+	else
+	{
+		return null;
+	}
+}
+
+PFX_CBST_ITERATOR_TEMPLATE_DEFINES
+const node_type_*									pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: get_current_element () const
+{
+	return get_current_node();
+}
+
+PFX_CBST_ITERATOR_TEMPLATE_DEFINES
 const node_type_* pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: get_inorder_begin_node (const node_type_* root_node_ptr)
 {
 	return pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (root_node_ptr);
