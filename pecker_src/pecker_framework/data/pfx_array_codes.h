@@ -19,7 +19,7 @@ pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::pfx_cons
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::pfx_consecutive_array_base (const pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_TEMPLATE_PARAMS &other_) throw (pfx_result_t)
+pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::pfx_consecutive_array_base (const pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS &other_) throw (pfx_result_t)
 {
 	if (&other_ != this)
 	{
@@ -88,6 +88,11 @@ pfx_boolean_t release_buffer/* = PFX_BOOL_FALSE*/)
 		status = garbage_collection ();
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
+
+	if (new_size > element_count)
+	{
+		status = resize_string (element_count);
+	}
 	
 	status = set_auto_step (allocate_step_size);
 	return status;
@@ -100,14 +105,18 @@ PFX_INLINE pfx_result_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TE
 	pfx_usize_t new_size;
 
 	RETURN_RESULT (is_full() && element_size > size(),PFX_STATUS_FULL);
-	new_size = get_new_buffer_size(element_count,get_auto_step(),get_max_elements_count());
+	new_size = get_new_buffer_size(element_size,get_auto_step(),get_max_elements_count());
 	status = resize_string (new_size);
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	if (release_buffer)
 	{
 		status = garbage_collection ();
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
-
+	if (new_size > element_size)
+	{
+		status = resize_string (element_size);
+	}
 	return status;
 }
 
@@ -465,7 +474,7 @@ PFX_INLINE pfx_result_t	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BAS
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
 	PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-	get_current_auto_step () const
+	get_step_cache_size () const
 {
 	return PFX_DEFUALT_ARRAY_SIZE;
 }
@@ -475,7 +484,7 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 			get_current_auto_step () const
 {
 	pfx_usize_t current_auto_step;
-	const consecutive_array**	array_ptr_ptr;
+	consecutive_array* const*	array_ptr_ptr;
 
 	current_auto_step = 0;
 
@@ -484,7 +493,7 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 		array_ptr_ptr = m_array_array.get_element_at (0);
 		if (array_ptr_ptr)
 		{
-			current_auto_step = array_ptr_ptr->get_max_elements_count ();
+			current_auto_step = (*array_ptr_ptr)->get_max_elements_count ();
 		}
 	}
 
@@ -495,7 +504,7 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 
 	if (0 == current_auto_step)
 	{
-		current_auto_step = get_current_auto_step ();
+		current_auto_step = get_step_cache_size ();
 	}
 
 	if (0 == current_auto_step)
@@ -535,6 +544,109 @@ PFX_INLINE element_*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_T
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
 PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+init_remian_element (pfx_usize_t element_count, pfx_usize_t allocate_step_size /*= 0*/, pfx_boolean_t release_buffer /*= PFX_BOOL_FALSE*/)
+{
+	pfx_result_t status;
+	pfx_usize_t arr_arr_auto_step;
+	pfx_usize_t arr_arr_size;
+	pfx_usize_t old_auto_step;
+	consecutive_array**	array_ptr_ptr;
+
+	RETURN_RESULT (is_full() && element_count > size(),PFX_STATUS_FULL);
+
+	arr_arr_auto_step = 0;
+	arr_arr_size			= 0;
+	old_auto_step		= get_current_auto_step();
+
+	if (0== allocate_step_size)
+	{
+		allocate_step_size = old_auto_step;
+	}
+
+	arr_arr_size = element_count / allocate_step_size + (pfx_usize_t)(element_count % allocate_step_size != 0);
+
+	pfx_usize_t old_size = m_array_array.size ();
+	pfx_usize_t old_buffer_size = m_array_array.get_buffer_size ();
+
+	status = m_array_array.resize (old_buffer_size);
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+	status = m_array_array.resize (arr_arr_size);
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+	pfx_usize_t new_size = m_array_array.size ();
+	pfx_usize_t new_buffer_size = m_array_array.get_buffer_size ();
+
+
+	array_ptr_ptr = m_array_array.get_element_reference_at (0);
+	for (pfx_uindex_t i = old_buffer_size; i<new_buffer_size; ++i)
+	{
+		array_ptr_ptr [i] = null;
+	}
+
+	for (pfx_uindex_t i=old_size; i<new_size; ++i)
+	{
+		if (null == array_ptr_ptr[i])
+		{
+			array_ptr_ptr [i] = new_array_block();
+		}
+		RETURN_INVALID_RESULT (null == array_ptr_ptr[i],PFX_STATUS_MEM_LOW);
+
+		status = array_ptr_ptr [i] -> set_max_elements_count (allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+		//status = array_ptr_ptr [i] -> init (allocate_step_size);
+		status = array_ptr_ptr [i] -> resize (allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+	}
+
+	if (old_auto_step != allocate_step_size)
+	{
+		for (pfx_uindex_t i=0; i<old_size; ++i)
+		{
+			status = array_ptr_ptr [i] -> set_max_elements_count (allocate_step_size);
+			RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+
+			//status = array_ptr_ptr [i] -> init (allocate_step_size);
+			status = array_ptr_ptr [i] -> resize (allocate_step_size);
+			RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+		}
+	}
+
+	if (new_size > 1)
+	{
+		//status = array_ptr_ptr [new_size - 2] -> init (allocate_step_size);
+		//status = array_ptr_ptr [new_size - 1] -> init (element_count % allocate_step_size);
+		status = array_ptr_ptr [new_size - 2] -> resize (allocate_step_size);
+		status = array_ptr_ptr [new_size -1] -> resize (element_count % allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+	}
+	else if (new_size > 0 && element_count != allocate_step_size)
+	{
+		//status = array_ptr_ptr [0] -> init (element_count);
+		status = array_ptr_ptr [0] -> resize (element_count);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+	}
+
+	m_elements_count = element_count;
+	m_auto_size_step = allocate_step_size;
+
+	if (release_buffer)
+	{
+		for (pfx_uindex_t i = new_size; i<old_buffer_size; ++i)
+		{
+			status = delete_array_block(array_ptr_ptr [i]);
+			array_ptr_ptr [i] = null;
+			RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+		}
+		status = m_array_array.resize (arr_arr_size, release_buffer);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+	}
+
+	return status;
+}
+PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
 			init (pfx_usize_t element_count, pfx_usize_t allocate_step_size/* = 0*/, pfx_boolean_t release_buffer/* = PFX_BOOL_FALSE*/)
 {
 	pfx_result_t status;
@@ -558,6 +670,9 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 
 	pfx_usize_t old_size = m_array_array.size ();
 	pfx_usize_t old_buffer_size = m_array_array.get_buffer_size ();
+
+	status = m_array_array.resize (old_buffer_size);
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 
 	status = m_array_array.resize (arr_arr_size);
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
@@ -584,6 +699,7 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 
 		status = array_ptr_ptr [i] -> init (allocate_step_size);
+		//status = array_ptr_ptr [i] -> resize (allocate_step_size);
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
 
@@ -595,13 +711,23 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 			RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 
 			status = array_ptr_ptr [i] -> init (allocate_step_size);
+			//status = array_ptr_ptr [i] -> resize (allocate_step_size);
 			RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 		}
 	}
 
-	if (new_size > 0)
+	if (new_size > 1)
 	{
+		status = array_ptr_ptr [new_size - 2] -> init (allocate_step_size);
 		status = array_ptr_ptr [new_size - 1] -> init (element_count % allocate_step_size);
+		//status = array_ptr_ptr [new_size - 2] -> resize (allocate_step_size);
+		//status = array_ptr_ptr [new_size -1] -> resize (element_count % allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+	}
+	else if (new_size > 0 && element_count != allocate_step_size)
+	{
+		status = array_ptr_ptr [0] -> init (element_count);
+		//status = array_ptr_ptr [0] -> resize (element_count);
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
 
@@ -642,10 +768,13 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 		allocate_step_size = PFX_DEFUALT_ARRAY_SIZE;
 	}
 
-	arr_arr_size = element_count / allocate_step_size + (pfx_usize_t)(element_count % allocate_step_size != 0);
+	arr_arr_size = element_size / allocate_step_size + (pfx_usize_t)(element_size % allocate_step_size != 0);
 
 	pfx_usize_t old_size = m_array_array.size ();
 	pfx_usize_t old_buffer_size = m_array_array.get_buffer_size ();
+	
+	status = m_array_array.resize (old_buffer_size);
+	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 
 	status = m_array_array.resize (arr_arr_size);
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
@@ -675,9 +804,15 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
 
-	if (new_size > 0)
+	if (new_size > 1)
 	{
-		status = array_ptr_ptr [new_size - 1] -> resize (element_count % allocate_step_size,release_buffer);
+		status = array_ptr_ptr [new_size - 2] -> resize (allocate_step_size);
+		status = array_ptr_ptr [new_size - 1] -> resize (element_size % allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+	}
+	else if (new_size > 0 && element_size != allocate_step_size)
+	{
+		status = array_ptr_ptr [0] -> resize (element_size);
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
 
@@ -730,7 +865,7 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 	if (current_step < auto_step)
 	{
 		size_ = size();
-		status = init(size_,auto_step);
+		status = init_remian_element(size_,auto_step);
 		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
 
 		for (pfx_uindex_t i=current_step; i<size_; ++i)
@@ -753,7 +888,7 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 	else if (current_step > auto_step)
 	{
 		size_ = size();
-		status = init(size_,auto_step);
+		status = init_remian_element(size_,auto_step);
 		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
 
 		for (pfx_uindex_t i=size_; i>current_step; ++i)
@@ -855,7 +990,7 @@ PFX_INLINE pfx_result_t	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BAS
 		BREAK_LOOP_CONDITION (0 == other_->size ());
 
 		array_ptr_ptr = m_array_array.get_element_reference_at (0);
-		other_array_ptr_ptr = (consecutive_array**) (other_.m_array_array.get_element_at (0));
+		other_array_ptr_ptr = (consecutive_array**) (other_->m_array_array.get_element_at (0));
 
 		BREAK_LOOP_CONDITION (null == array_ptr_ptr || null == other_array_ptr_ptr);
 
@@ -924,7 +1059,7 @@ PFX_INLINE const element_*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_
 	pfx_uindex_t arr_j;
 	pfx_usize_t		step_size;
 	const element_* elem_ptr;
-	const consecutive_array**	array_ptr_ptr;
+	consecutive_array * const *	array_ptr_ptr;
 	elem_ptr = null;
 	array_ptr_ptr = m_array_array.get_element_at (0);
 	step_size = get_current_auto_step();
@@ -938,12 +1073,12 @@ PFX_INLINE const element_*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_
 		array_ptr = array_ptr_ptr [arr_i];
 		if (array_ptr)
 		{
-			elem_ptr = array_ptr->get_element_at (0);
-			if (elem_ptr)
-			{
-				elem_ptr += arr_j;
-			}
-			
+			//elem_ptr = array_ptr->get_element_at (0);
+			//if (elem_ptr)
+			//{
+			//	elem_ptr += arr_j;
+			//}
+			elem_ptr = array_ptr->get_element_at (arr_j);
 		}
 	}
 	return elem_ptr;
@@ -960,7 +1095,7 @@ PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
 PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
 		set_element_buffers_at (pfx_uindex_t index_, const element_* PARAM_IN elements_ptr, pfx_usize_t element_size)
 {
-	RETURN_RESULT (index_ > m_max_elements_count || null == elements_ptr || 0 == element_size,0);
+	RETURN_RESULT (index_ > m_elements_count || null == elements_ptr || 0 == element_size,0);
 
 	pfx_uindex_t arr_i;
 	pfx_uindex_t arr_j;
@@ -974,6 +1109,7 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 	step_size = get_current_auto_step ();
 	arr_i = index_ / step_size;
 	arr_j = index_ % step_size;
+	total_success_size = 0;
 
 	FOR_ONE_LOOP_BEGIN
 	array_ptr_ptr = (consecutive_array**) m_array_array.get_element_reference_at (arr_i);
@@ -981,16 +1117,16 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 	{
 		consecutive_array* array_ptr;
 		array_ptr = *array_ptr_ptr;
-		BREAK_LOOP (null == array_ptr);
+		BREAK_LOOP_CONDITION (null == array_ptr);
 
 		success_size = array_ptr->set_element_buffers_at (arr_j,elements_ptr,element_size);
 
-		BREAK_LOOP (0 == success_size);
+		BREAK_LOOP_CONDITION (0 == success_size);
 
 		element_size -= success_size;
 		total_success_size += success_size;
 		elements_ptr += success_size;
-		BREAK_LOOP (0 == element_size);
+		BREAK_LOOP_CONDITION (0 == element_size);
 
 		
 		while (arr_i < size())
@@ -1000,16 +1136,16 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 			if (array_ptr_ptr)
 			{
 				array_ptr = *array_ptr_ptr;
-				BREAK_LOOP (null == array_ptr);
+				BREAK_LOOP_CONDITION (null == array_ptr);
 
 				success_size = array_ptr->set_element_buffers_at (0,elements_ptr,element_size);
 
-				BREAK_LOOP (0 == success_size);
+				BREAK_LOOP_CONDITION (0 == success_size);
 
 				element_size -= success_size;
 				total_success_size += success_size;
 				elements_ptr += success_size;
-				BREAK_LOOP (0 == element_size);
+				BREAK_LOOP_CONDITION (0 == element_size);
 			}
 			else
 			{
@@ -1054,6 +1190,79 @@ PFX_INLINE pfx_ulong_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 {
 	return PFX_INCONSECUTIVE_ARRAY_CODE;
 }
+
+PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+pfx_const_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		begin (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const
+{
+	RETURN_INVALID_RESULT (null == iterator_ptr,null);
+	pfx_result_t status;
+	status = iterator_ptr->init(this,0);
+	if (PFX_STATUS_OK == status)
+	{
+		return iterator_ptr;
+	}
+	else
+	{
+		return null;
+	}
+}
+
+PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+pfx_const_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		end (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const
+{
+	RETURN_INVALID_RESULT (null == iterator_ptr,null);
+	RETURN_RESULT (is_empty(),null);
+
+	pfx_result_t status;
+	status = iterator_ptr->init(this,size()-1);
+	if (PFX_STATUS_OK == status)
+	{
+		return iterator_ptr;
+	}
+	else
+	{
+		return null;
+	}
+}
+
+PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+pfx_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		begin (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr)
+{
+	RETURN_INVALID_RESULT (null == iterator_ptr,null);
+	pfx_result_t status;
+	status = iterator_ptr->init(this,0);
+	if (PFX_STATUS_OK == status)
+	{
+		return iterator_ptr;
+	}
+	else
+	{
+		return null;
+	}
+}
+
+PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+pfx_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		end (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr)
+{
+	RETURN_INVALID_RESULT (null == iterator_ptr,null);
+	RETURN_RESULT (is_empty(),null);
+
+	pfx_result_t status;
+	status = iterator_ptr->init(this,size()-1);
+	if (PFX_STATUS_OK == status)
+	{
+		return iterator_ptr;
+	}
+	else
+	{
+		return null;
+	}
+}
+
 
 PECKER_END
 

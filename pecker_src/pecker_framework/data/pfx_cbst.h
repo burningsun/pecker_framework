@@ -230,11 +230,11 @@ public:
 	pfx_cavl_tree (const pfx_cbst< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 	pfx_cavl_tree (const pfx_cavl_tree < node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 public:
-	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
+	virtual const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
-	node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
+	virtual node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
-	pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
+	virtual pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
 	pfx_result_t copy (const pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
 public:
 	static PFX_INLINE pfx_result_t init_avl_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
@@ -281,12 +281,12 @@ public:
 	pfx_crb_tree (const pfx_cbst< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 	pfx_crb_tree (const pfx_crb_tree< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 public:
-	pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
+	virtual pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
 	pfx_result_t copy (const pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
 
-	const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
+	virtual const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
-	node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
+	virtual node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
 
 

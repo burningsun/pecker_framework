@@ -98,7 +98,7 @@ typedef enum enumFILE_ORIGIN
 #define PFO_OPEN_TEXT				(1<<6)
 #define PFO_OPEN_EX_BIT			(1<<7)
 
-class pfx_cfile
+class PFX_NATIVE_API pfx_cfile
 {
 protected:
 	pfx_file_t	m_file;
@@ -127,6 +127,8 @@ public:
 	pfx_sint_t				test_error ();
 
 	pfx_sint_t				fflush ();
+
+	pfx_sint_t				eof ();
 
 	pfx_file_t*				get_handle () const;
 	

@@ -22,7 +22,7 @@ typedef LARGE_INTEGER Time_ticker;
 
 PECKER_BEGIN
 // 计时器，时间单位是毫秒，浮点数。
-class pecker_tick
+class PFX_NATIVE_API pecker_tick
 {
 private:
 	//Time_ticker		m_ticker;

@@ -8,7 +8,7 @@
 #ifndef		PFX_ARRAY_H_
 #define		PFX_ARRAY_H_
 
-#include "pfx_cstring.h"
+#include "pfx_cstring_codes.h"
 #include "pfx_iterator.h"
 
 PECKER_BEGIN
@@ -134,7 +134,7 @@ PFX_Interface IPfx_array
 
 	virtual pfx_ulong_t							get_array_type_code () const = 0;	
 
-	virtual const element_*					get_buffer () const = 0;
+	
 
 	virtual pfx_const_array_iterator < element_ >* begin (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const = 0;
 	virtual pfx_const_array_iterator < element_ >* end (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const = 0;
@@ -142,8 +142,8 @@ PFX_Interface IPfx_array
 	virtual pfx_array_iterator < element_ >* begin (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr) = 0;
 	virtual pfx_array_iterator < element_ >* end (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr) = 0;
 
-
-
+protected:
+	virtual const element_*					get_buffer () const = 0;
 };
 
 template < class element_, class  cstring_ >
@@ -157,7 +157,7 @@ protected:
 	PFX_INLINE		pfx_usize_t get_new_buffer_size (pfx_usize_t new_size, pfx_usize_t auto_size_step, pfx_usize_t max_size); 
 public:
 	pfx_consecutive_array_base ();
-	pfx_consecutive_array_base (const pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_TEMPLATE_PARAMS &other_) throw (pfx_result_t);
+	pfx_consecutive_array_base (const pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS &other_) throw (pfx_result_t);
 	virtual ~pfx_consecutive_array_base();
 public:
 	PFX_INLINE pfx_result_t			init (pfx_usize_t element_count, pfx_usize_t allocate_step_size = 0, 
@@ -195,6 +195,8 @@ public:
 
 	pfx_array_iterator < element_ >* begin (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr);
 	pfx_array_iterator < element_ >* end (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr);
+public:
+
 };
 
 template < class element_,  class elem_compare = pecker_value_compare < element_ >, const unsigned int CACHE_BUFFER_SIZE = PFX_DEFUALT_ARRAY_SIZE >
@@ -231,8 +233,13 @@ protected:
 	virtual PFX_INLINE pfx_result_t				delete_array_block (consecutive_array* PARAM_INOUT array_ptr);
 //	virtual PFX_INLINE pfx_result_t				init_new_array_block (consecutive_array* PARAM_INOUT array_ptr);
 public:
+	PFX_INLINE pfx_result_t			init_remian_element (pfx_usize_t element_count, pfx_usize_t allocate_step_size = 0, 
+		pfx_boolean_t release_buffer = PFX_BOOL_FALSE);
+public:
 	PFX_INLINE pfx_result_t			init (pfx_usize_t element_count, pfx_usize_t allocate_step_size = 0, 
 		pfx_boolean_t release_buffer = PFX_BOOL_FALSE);
+	
+
 
 	PFX_INLINE pfx_result_t			resize (pfx_usize_t element_size, pfx_boolean_t release_buffer = PFX_BOOL_FALSE);
 	PFX_INLINE pfx_result_t			set_max_elements_count (pfx_usize_t max_count = 0);
@@ -240,7 +247,7 @@ public:
 	PFX_INLINE pfx_usize_t			get_max_elements_count () const;
 	PFX_INLINE pfx_usize_t			get_auto_step () const;
 
-	PFX_INLINE pfx_result_t			copy (const IPfx_array PFX_IARRAY_TEMPLATE_PARAMS * PARAM_IN other_ptr)
+	PFX_INLINE pfx_result_t			copy (const IPfx_array PFX_IARRAY_TEMPLATE_PARAMS * PARAM_IN other_ptr);
 	PFX_INLINE pfx_result_t			copy (pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS * PARAM_INOUT other_ptr);
 
 	PFX_INLINE pfx_result_t			push_back (const element_& elem);
@@ -259,6 +266,8 @@ public:
 	PFX_INLINE pfx_boolean_t		is_empty () const;
 
 	PFX_INLINE pfx_ulong_t			get_array_type_code () const;	
+protected:
+	virtual const element_*					get_buffer () const {return null;};
 
 public:
 	pfx_const_array_iterator < element_ >* begin (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const;
@@ -269,20 +278,36 @@ public:
 
 };
 
-#define PFX_CONSECUTIVE_ARRAY(CACHE_BUFFER_SIZE) pfx_consecutive_array < element_, elem_compare, (CACHE_BUFFER_SIZE) >
-#define PFX_CONSECUTIVE_ARRAY_ARRAY(CACHE_BUFFER_SIZE,STEP_CACHE_BUFFER_SIZE) pfx_consecutive_array < PFX_CONSECUTIVE_ARRAY(STEP_CACHE_BUFFER_SIZE)*, pecker_value_compare_extern < PFX_CONSECUTIVE_ARRAY >, (CACHE_BUFFER_SIZE)  >
 
+#define PFX_CONSECUTIVE_ARRAY(CACHE_BUFFER_SIZE) pfx_consecutive_array < element_, elem_compare, (CACHE_BUFFER_SIZE) >
+#define PFX_CONSECUTIVE_ARRAY_ARRAY(CACHE_BUFFER_SIZE,STEP_CACHE_BUFFER_SIZE) pfx_consecutive_array < PFX_CONSECUTIVE_ARRAY(STEP_CACHE_BUFFER_SIZE)*, pecker_value_compare_extern < PFX_CONSECUTIVE_ARRAY(STEP_CACHE_BUFFER_SIZE) >, (CACHE_BUFFER_SIZE)  >
+
+// < element_
+//pfx_consecutive_array < element_, elem_compare, STEP_CACHE_BUFFER_SIZE >,
+
+//pfx_consecutive_array < pfx_consecutive_array < element_, elem_compare, STEP_CACHE_BUFFER_SIZE >*, 
+//pecker_value_compare_extern < pfx_consecutive_array < element_, elem_compare, STEP_CACHE_BUFFER_SIZE > >, 
+//CACHE_BUFFER_SIZE  >
+//>
 template < class element_,  
 	class elem_compare = pecker_value_compare < element_ >, 
 	const unsigned int STEP_CACHE_BUFFER_SIZE = PFX_DEFUALT_ARRAY_AUTO_STEP,
 	const unsigned int CACHE_BUFFER_SIZE = PFX_DEFUALT_ARRAY_SIZE >
-class pfx_inconsecutive_array : public pfx_inconsecutive_array_base < element_,PFX_CONSECUTIVE_ARRAY(STEP_CACHE_BUFFER_SIZE) ,  PFX_CONSECUTIVE_ARRAY_ARRAY(CACHE_BUFFER_SIZE, STEP_CACHE_BUFFER_SIZE) >
-{
+class pfx_inconsecutive_array : 
+	public pfx_inconsecutive_array_base < element_,PFX_CONSECUTIVE_ARRAY(STEP_CACHE_BUFFER_SIZE) ,  PFX_CONSECUTIVE_ARRAY_ARRAY(CACHE_BUFFER_SIZE, STEP_CACHE_BUFFER_SIZE) >
 
+
+	
+{
+public:
+	virtual	PFX_INLINE pfx_usize_t	get_step_cache_size () const
+	{
+		return STEP_CACHE_BUFFER_SIZE;
+	}
 };
 
 #define PFX_CONSECUTIVE_SHARE_ARRAY(CACHE_BUFFER_SIZE) pfx_consecutive_share_array < element_, elem_compare, (CACHE_BUFFER_SIZE) >
-#define PFX_CONSECUTIVE_SHARE_ARRAY_ARRAY(CACHE_BUFFER_SIZE,STEP_CACHE_BUFFER_SIZE) pfx_consecutive_array < PFX_CONSECUTIVE_SHARE_ARRAY(STEP_CACHE_BUFFER_SIZE)*, pecker_value_compare_extern < PFX_CONSECUTIVE_SHARE_ARRAY >, (CACHE_BUFFER_SIZE)  >
+#define PFX_CONSECUTIVE_SHARE_ARRAY_ARRAY(CACHE_BUFFER_SIZE,STEP_CACHE_BUFFER_SIZE) pfx_consecutive_array < PFX_CONSECUTIVE_SHARE_ARRAY(STEP_CACHE_BUFFER_SIZE)*, pecker_value_compare_extern < PFX_CONSECUTIVE_SHARE_ARRAY(STEP_CACHE_BUFFER_SIZE) >, (CACHE_BUFFER_SIZE)  >
 
 template < class element_,  
 class elem_compare = pecker_value_compare < element_ >, 
@@ -290,7 +315,11 @@ class elem_compare = pecker_value_compare < element_ >,
 	const unsigned int CACHE_BUFFER_SIZE = PFX_DEFUALT_ARRAY_SIZE >
 class pfx_inconsecutive_share_array : public pfx_inconsecutive_array_base < element_,PFX_CONSECUTIVE_SHARE_ARRAY(STEP_CACHE_BUFFER_SIZE) ,  PFX_CONSECUTIVE_SHARE_ARRAY_ARRAY(CACHE_BUFFER_SIZE, STEP_CACHE_BUFFER_SIZE) >
 {
-
+	public:
+	virtual	PFX_INLINE pfx_usize_t	get_step_cache_size () const
+	{
+		return STEP_CACHE_BUFFER_SIZE;
+	}
 };
 
 PECKER_END

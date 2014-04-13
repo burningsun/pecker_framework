@@ -17,32 +17,32 @@
 PECKER_BEGIN
 
 // 流读取数据操作接口
-PFX_Interface Ipecker_read_stream
+PFX_Interface PFX_NATIVE_API Ipecker_read_stream
 {
 	virtual ~Ipecker_read_stream (){;}
-	virtual pfx_result_t read_integer (int &read_value) = 0;
-	virtual pfx_result_t read_long (long long &read_value) = 0;
-	virtual pfx_result_t read_char (char &read_value) = 0;
-	virtual pfx_result_t read_float (char &read_value) = 0;
-	virtual pfx_result_t read_double (char &read_value) = 0;
-	virtual int read_chars (char* read_buffer_ptr,int read_buffer_size) = 0;
+	virtual pfx_result_t read_integer (pfx_sint_t &read_value) = 0;
+	virtual pfx_result_t read_long (pfx_s64_t &read_value) = 0;
+	virtual pfx_result_t read_char (pfx_char_t &read_value) = 0;
+	virtual pfx_result_t read_float (pfx_float_t &read_value) = 0;
+	virtual pfx_result_t read_double (pfx_double_t &read_value) = 0;
+	virtual pfx_usize_t read_chars (pfx_char_t* read_buffer_ptr,pfx_usize_t read_buffer_size) = 0;
 };
 // 流写数据操作接口
-PFX_Interface Ipecker_write_stream
+PFX_Interface PFX_NATIVE_API Ipecker_write_stream
 {
 	virtual ~Ipecker_write_stream (){;}
-	virtual pfx_result_t write_integer (int write_value) = 0;
-	virtual pfx_result_t write_unsigned_integer (unsigned int write_value) = 0;
-	virtual pfx_result_t write_long (long long write_value) = 0;
-	virtual pfx_result_t write_unsigned_long (unsigned long long write_value) = 0;
-	virtual pfx_result_t write_char (char write_value) = 0;
-	virtual pfx_result_t write_byte (char write_value) = 0;
-	virtual pfx_result_t write_float (char write_value) = 0;
-	virtual pfx_result_t write_double (char write_value) = 0;
-	virtual int write_chars (char* write_buffer_ptr,int write_buffer_size) = 0;
+	virtual pfx_result_t write_integer (pfx_sint_t write_value) = 0;
+	virtual pfx_result_t write_unsigned_integer (pfx_uint_t write_value) = 0;
+	virtual pfx_result_t write_long (pfx_s64_t write_value) = 0;
+	virtual pfx_result_t write_unsigned_long (pfx_u64_t write_value) = 0;
+	virtual pfx_result_t write_char (pfx_char_t write_value) = 0;
+	virtual pfx_result_t write_byte (pfx_byte_t write_value) = 0;
+	virtual pfx_result_t write_float (pfx_float_t write_value) = 0;
+	virtual pfx_result_t write_double (pfx_double_t write_value) = 0;
+	virtual pfx_usize_t write_chars (pfx_char_t* write_buffer_ptr,pfx_usize_t write_buffer_size) = 0;
 };
 
-class pecker_read_stream_form_memery : public Ipecker_read_stream
+class PFX_NATIVE_API pecker_read_stream_form_memery : public Ipecker_read_stream
 {
 typedef const char* CONST_STREAM_BUFFER_t; 
 private:
@@ -53,17 +53,17 @@ public:
 	pecker_read_stream_form_memery();
 	virtual ~pecker_read_stream_form_memery();
 	pfx_result_t bind_read_buffer(CONST_STREAM_BUFFER_t bind_buffer_ptr,pfx_usize_t bind_size);
-	pfx_result_t read_integer(int &read_value);
-	pfx_result_t read_long(long long &read_value);
-	pfx_result_t read_char(char &read_value);
-	pfx_result_t read_float(char &read_value);
-	pfx_result_t read_double(char &read_value); 
-	int read_chars(char* read_buffer_ptr,int read_buffer_size);
+	pfx_result_t read_integer (pfx_sint_t &read_value);
+	pfx_result_t read_long (pfx_s64_t &read_value);
+	pfx_result_t read_char (pfx_char_t &read_value);
+	pfx_result_t read_float (pfx_float_t &read_value);
+	pfx_result_t read_double (pfx_double_t &read_value);
+	pfx_usize_t	  read_chars (pfx_char_t* read_buffer_ptr,pfx_usize_t read_buffer_size);
 };
 
 
 
-class pecker_write_stream_to_memery : public Ipecker_write_stream
+class PFX_NATIVE_API pecker_write_stream_to_memery : public Ipecker_write_stream
 {
 	typedef char* STREAM_BUFFER_t; 
 private:
@@ -74,15 +74,15 @@ public:
 	pecker_write_stream_to_memery();
 	virtual ~pecker_write_stream_to_memery();
 	pfx_result_t bind_write_buffer(STREAM_BUFFER_t bind_buffer_ptr,pfx_usize_t bind_size);
-	pfx_result_t write_integer(int write_value);
-	pfx_result_t write_unsigned_integer(unsigned int write_value);
-	pfx_result_t write_long(long long write_value);
-	pfx_result_t write_unsigned_long(unsigned long long write_value);
-	pfx_result_t write_char(char write_value);
-	pfx_result_t write_byte(char write_value);
-	pfx_result_t write_float(char write_value);
-	pfx_result_t write_double(char write_value);
-	int write_chars(char* write_buffer_ptr,int write_buffer_size);
+	pfx_result_t write_integer (pfx_sint_t write_value);
+	pfx_result_t write_unsigned_integer (pfx_uint_t write_value);
+	pfx_result_t write_long (pfx_s64_t write_value);
+	pfx_result_t write_unsigned_long (pfx_u64_t write_value);
+	pfx_result_t write_char (pfx_char_t write_value);
+	pfx_result_t write_byte (pfx_byte_t write_value);
+	pfx_result_t write_float (pfx_float_t write_value);
+	pfx_result_t write_double (pfx_double_t write_value);
+	pfx_usize_t  write_chars (pfx_char_t* write_buffer_ptr,pfx_usize_t write_buffer_size);
 };
 
 

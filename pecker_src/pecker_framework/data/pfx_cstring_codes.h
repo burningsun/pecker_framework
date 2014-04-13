@@ -1421,6 +1421,12 @@ pfx_result_t	pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS::copy_header (const p
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
+int	pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS::compare (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* other_ptr) const
+{
+	return pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS::compare(other_ptr);
+}
+
+PFX_CSTRING_TEMPLATE_DEFINES
 int pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS::compare (const pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS & other_) const
 {
 	return compare (&other_);

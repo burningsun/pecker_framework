@@ -331,6 +331,111 @@ public:
 	}
 };
 
+
+template < class item_type, class compare_two_value = pecker_value_compare < item_type > >
+class PFX_DATA_TEMPALE_API pfx_cbalance_bst_node
+{
+protected:
+	pfx_cbalance_bst_node < item_type, compare_two_value >* m_parent_node_ptr;
+	pfx_cbalance_bst_node < item_type, compare_two_value >* m_left_node_ptr;
+	pfx_cbalance_bst_node < item_type, compare_two_value >* m_right_node_ptr;
+	pfx_nsize_t											m_balance_value;
+	item_type											m_item;
+public:
+	pfx_cbalance_bst_node () : m_right_node_ptr (null),m_left_node_ptr(null),m_parent_node_ptr(null),m_balance_value (0)
+	{
+		;
+	}
+	pfx_cbalance_bst_node (const pfx_cbalance_bst_node < item_type, compare_two_value >& other_)
+	{
+		if (&other_ != this)
+		{
+			this->m_right_node_ptr = other_.m_right_node_ptr;
+			this->m_left_node_ptr = other_.m_left_node_ptr;
+			this->m_parent_node_ptr = other_.m_parent_node_ptr;
+			this->m_balance_value = other_.m_height;
+			this->m_item = other_.m_item;
+		}
+	}
+	PFX_INLINE const pfx_cbalance_bst_node < item_type, compare_two_value >* get_left_node () const
+	{
+		return m_left_node_ptr;
+	}
+	PFX_INLINE const pfx_cbalance_bst_node < item_type, compare_two_value >* get_right_node () const
+	{
+		return m_right_node_ptr;
+	}
+	PFX_INLINE const pfx_cbalance_bst_node < item_type, compare_two_value >* get_parent_node () const
+	{
+		return m_parent_node_ptr;
+	}
+	PFX_INLINE pfx_nsize_t get_height () const
+	{
+		return m_balance_value;
+	}
+	PFX_INLINE pfx_flag_t get_color () const
+	{
+		return m_balance_value;
+	}
+	PFX_INLINE const item_type& get_item () const
+	{
+		return m_item;
+	}
+	PFX_INLINE void set_left_node (pfx_cbalance_bst_node < item_type, compare_two_value >* PARAM_IN node_ptr)
+	{
+		m_left_node_ptr = node_ptr;
+	}
+	PFX_INLINE void set_right_node  (pfx_cbalance_bst_node < item_type, compare_two_value >* PARAM_IN node_ptr)
+	{
+		m_right_node_ptr = node_ptr;
+	}
+	PFX_INLINE void set_parent_node (pfx_cbalance_bst_node < item_type, compare_two_value >* PARAM_IN node_ptr)
+	{
+		m_parent_node_ptr = node_ptr;
+	}
+	PFX_INLINE void set_height (pfx_nsize_t height)
+	{
+		m_balance_value = height;
+	}
+	PFX_INLINE void set_color (pfx_flag_t color)
+	{
+		m_balance_value = color;
+	}
+
+	PFX_INLINE item_type& get_item_ref ()
+	{
+		return m_item;
+	}
+	PFX_INLINE pfx_cbalance_bst_node < item_type, compare_two_value >* const & get_left_node_ref () const
+	{
+		return m_left_node_ptr;
+	}
+	PFX_INLINE pfx_cbalance_bst_node < item_type, compare_two_value >* const & get_right_node_ref () const
+	{
+		return m_right_node_ptr;
+	}
+	PFX_INLINE pfx_cbalance_bst_node < item_type, compare_two_value >* const & get_parent_node_ref () const
+	{
+		return m_parent_node_ptr;
+	}
+
+	PFX_INLINE int compare (const pfx_cbalance_bst_node < item_type, compare_two_value >& other_node) const
+	{
+		return compare_two_value :: compare (this->get_item(),other_node.get_item());
+	}
+
+	PFX_INLINE int compare (const pfx_cbalance_bst_node < item_type, compare_two_value >* other_node_ptr) const
+	{
+		if (null == other_node_ptr)
+		{
+			return 1;
+		}
+		else
+		{
+			return compare_two_value :: compare (this->get_item(),other_node_ptr->get_item());
+		}
+	}
+};
 //////////////////////////////////////////////////////////////////////////
 PFX_CBST_EX_TEMPLATE_DEFINES
 node_type_* pfx_binary_search_tree_base PFX_CBST_EX_TEMPLATE_PARAMS :: new_node ()

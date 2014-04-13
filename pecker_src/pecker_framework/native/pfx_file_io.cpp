@@ -384,6 +384,10 @@ pfx_nsize_t pfx_cfile::get_file_size()
 	return pfx_get_file_size(&m_file);
 }
 
+pfx_sint_t	pfx_cfile::eof ()
+{
+	return pfx_test_file_eof(&m_file);
+}
 pfx_sint_t pfx_cfile::test_error ()
 {
 	return pfx_test_file_error (&m_file);

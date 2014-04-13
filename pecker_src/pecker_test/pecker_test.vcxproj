@@ -76,8 +76,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pfx_array_test.cpp" />
     <ClCompile Include="pfx_avl_bst_test.cpp" />
     <ClCompile Include="pfx_block_test.cpp" />
+    <ClCompile Include="pfx_bst_stress_test.cpp" />
     <ClCompile Include="pfx_bst_test.cpp" />
     <ClCompile Include="pfx_file_inputdata_cmd.cpp" />
     <ClCompile Include="pfx_list_test.cpp" />

@@ -137,7 +137,7 @@ class pfx_cstring : public IPfx_string < element_ >
 {
 protected:
 	pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS	m_header;
-	element_																						m_cache_buffer [DEFUALT_CACHE_BUFFER_SIZE];
+	element_																						m_cache_buffer [(0 == CACHE_BUFFER_SIZE ? 1: CACHE_BUFFER_SIZE)];
 	element_*																						m_extern_string_buffer_ptr;
 
 protected:
@@ -253,7 +253,8 @@ public:
 	pfx_cshare_string (const pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS & other_) throw (pfx_result_t);
 	virtual ~pfx_cshare_string ();
 public:
-	int	compare (const pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS & other_) const;
+	PFX_INLINE int	compare (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* other_ptr) const;
+	PFX_INLINE int	compare (const pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS & other_) const;
 };
 PECKER_END
 
