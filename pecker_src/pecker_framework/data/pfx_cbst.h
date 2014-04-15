@@ -255,6 +255,8 @@ public:
 	static node_type_* remove_avl_node (node_type_*& PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
+
+
 protected:	
 	static PFX_INLINE void update_avl_height (node_type_* PARAM_IN node_ptr);
 	
@@ -265,8 +267,9 @@ protected:
 
 	static PFX_INLINE AVLTREE_ROTATE_t avl_single_rotate (pfx_nsize_t balance_value,
 		node_type_* PARAM_INOUT node_ptr, node_type_* & PARAM_INOUT parent_ref_node_ptr);
-	
-	static PFX_INLINE pfx_result_t avl_update_rotate (node_type_* & PARAM_INOUT root_node_ptr,
+	static PFX_INLINE pfx_result_t avl_update_insert_rotate (node_type_* & PARAM_INOUT root_node_ptr,
+		node_type_* PARAM_INOUT begin_node_ptr);
+	static PFX_INLINE pfx_result_t avl_update_fixed (node_type_* & PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT begin_node_ptr);
 
 };

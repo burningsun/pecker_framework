@@ -762,7 +762,10 @@ pfx_boolean_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::find_near_string (pfx_ui
 		i = begin_index;
 		same_count = 0;
 		cmp_count = this_search_elem_size - buffer_size;
-
+		if (0 == cmp_count)
+		{
+			cmp_count = 1;
+		}
 		for (; i<cmp_count; ++i)
 		{
 			for (same_count = 0; same_count < buffer_size; ++same_count)
@@ -1288,11 +1291,20 @@ int	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::compare (const IPfx_string PFX_STR
 	pfx_usize_t compare_count;
 	const element_* this_string_buffer;
 	const element_* other_string_buffer;
+	
+	int this_length;
+	int other_length;
+
 	int cmp_result;
+
 	this_string_buffer = get_string();
 	other_string_buffer = other_ptr->get_string ();
-	compare_count = (get_length() > (other_ptr->get_length ())) ?(other_ptr->get_length()):get_length();
-	cmp_result = get_length() - other_ptr->get_length ();
+
+	this_length = get_length();
+	other_length = other_ptr->get_length ();
+
+	compare_count = (this_length > other_length) ?other_length : this_length;
+	cmp_result = this_length - other_length;
 	for (pfx_uindex_t i=0;i<compare_count;++i)
 	{
 		cmp_result = elem_compare::compare (this_string_buffer[i], other_string_buffer[i]);
@@ -1304,7 +1316,7 @@ int	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::compare (const IPfx_string PFX_STR
 	}
 	if (!cmp_result)
 	{
-		cmp_result = get_length() - other_ptr->get_length ();
+		cmp_result = this_length - other_length;
 	}
 	return cmp_result;
 }

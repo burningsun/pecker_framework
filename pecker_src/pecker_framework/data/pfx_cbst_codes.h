@@ -1029,20 +1029,22 @@ PFX_INLINE AVLTREE_ROTATE_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_rotate (node_type_* & PARAM_INOUT root_node_ptr,
+PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_insert_rotate (node_type_* & PARAM_INOUT root_node_ptr,
 	node_type_* PARAM_INOUT begin_node_ptr)
 {
-	pfx_result_t			status = PFX_STATUS_OK;
-	pfx_nsize_t				height;
-	node_type_*			tmp_root_node_ptr;
-	node_type_*			parent_node;
-	AVLTREE_ROTATE_t rotate_type;
+	pfx_result_t				status = PFX_STATUS_OK;
+	pfx_nsize_t					height;
+	node_type_*				tmp_root_node_ptr;
+	node_type_*				parent_node_ptr;
+	AVLTREE_ROTATE_t	rotate_type;
 
 	tmp_root_node_ptr = root_node_ptr;
 
 	// 当起始节点为根节点的处理流程
 	if (tmp_root_node_ptr == begin_node_ptr)
 	{
+		pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::update_avl_height (begin_node_ptr);
+
 		rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
 			(pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (tmp_root_node_ptr), tmp_root_node_ptr, root_node_ptr);
 
@@ -1059,66 +1061,69 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_rota
 		return status;
 	}
 
+	pfx_nsize_t balance_value;
+	node_type_* parent_parent_node_ptr;
+
 	pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::update_avl_height (begin_node_ptr);
 
+	pfx_nsize_t same_count = 0;
+	// 从第一个节点的跟节点开始翻转
 	do 
 	{
-		parent_node = begin_node_ptr->get_parent_node_ref ();
+		parent_node_ptr = begin_node_ptr->get_parent_node_ref ();
 
 		//一般情况下必须达成 null == parent_node的条件，即轮寻翻转到跟节点的时候
 		//才退出翻转处理流程
-		if (null == parent_node)
+		if (null == parent_node_ptr)
 		{
 			BREAK_LOOP (status,PFX_STATUS_OK);
 		}
 
 		// 节点与他的父节点的指针一样，证明内存已经出错
-		if (begin_node_ptr == parent_node)
+		if (begin_node_ptr == parent_node_ptr)
 		{
 			BREAK_LOOP (status,PFX_STATUS_MEM_ERR);
 		}
 
-		height = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::get_avl_height (parent_node);
-		pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::update_avl_height (parent_node);
+		height = parent_node_ptr->get_height ();
+		pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::update_avl_height (parent_node_ptr);
+		balance_value = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (parent_node_ptr);
 
-		// 发现更新完的高度跟原来的高度一样，表明上面的节点高度并没有发生变化
-		// 退出翻转
-		if (pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::get_avl_height (parent_node) == height)
+		if (height == parent_node_ptr->get_height ())
 		{
 			BREAK_LOOP (status,PFX_STATUS_OK);
 		}
 
-		node_type_* parent_parent_node_ptr = parent_node->get_parent_node_ref ();
-		begin_node_ptr = parent_node;
+		parent_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();		
+		begin_node_ptr = parent_node_ptr;
 
+		node_type_**	reference_node_ptr_ptr = null;
 			// 注：这利用相关节点的关联引用进行操作，在翻转过程中快速替换被关联节点对应的节点指针
-		if (parent_node == tmp_root_node_ptr || null == parent_parent_node_ptr)
+		if (parent_node_ptr == tmp_root_node_ptr || null == parent_parent_node_ptr)
 		{
 			rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
-				(pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (parent_node), parent_node, root_node_ptr);
+				(balance_value, parent_node_ptr, root_node_ptr);
 		}
 		else
 		{
-			if (parent_parent_node_ptr->get_left_node () == parent_node)
+			if (parent_parent_node_ptr->get_left_node () == parent_node_ptr)
 			{
-				node_type_*& temp_node_ptr_ref =  (node_type_*&)(parent_parent_node_ptr->get_left_node_ref ());
+				reference_node_ptr_ptr = (node_type_**)(&parent_parent_node_ptr->get_left_node_ref ());
 				rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
-					(pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (parent_node), parent_node, temp_node_ptr_ref);
+					(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
+
 			}
-			else if (parent_parent_node_ptr->get_right_node () == parent_node)
+			else if (parent_parent_node_ptr->get_right_node () == parent_node_ptr)
 			{
-				node_type_*&  temp_node_ptr_ref = (node_type_*&) (parent_parent_node_ptr->get_right_node_ref ());
+				reference_node_ptr_ptr = (node_type_**)(&parent_parent_node_ptr->get_right_node_ref ());
 				rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
-					(pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (parent_node), parent_node, temp_node_ptr_ref);
+					(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
 			}
 			else
 			{
 				BREAK_LOOP (status,PFX_STATUS_MEM_ERR);
 			}
 		}
-
-		
-
 
 		if (AVLTREE_ROTATE_ERR == rotate_type ||
 			AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
@@ -1128,13 +1133,154 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_rota
 		}
 		else
 		{
-			// 进入下一个节点的轮训
 			status = PFX_STATUS_OK;
 		}
 
+
+
 	} while (1);
 
+
 	return status;
+}
+
+PFX_CBST_TEMPLATE_DEFINES
+PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_fixed (node_type_* & PARAM_INOUT root_node_ptr,
+	node_type_* PARAM_INOUT begin_node_ptr)
+{
+	pfx_result_t				status = PFX_STATUS_OK;
+	pfx_nsize_t					height;
+	node_type_*				tmp_root_node_ptr;
+	node_type_*				parent_node_ptr;
+	AVLTREE_ROTATE_t	rotate_type;
+
+	tmp_root_node_ptr = root_node_ptr;
+
+	// 当起始节点为根节点的处理流程
+	if (tmp_root_node_ptr == begin_node_ptr)
+	{
+		pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::update_avl_height (begin_node_ptr);
+
+		rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
+			(pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (tmp_root_node_ptr), tmp_root_node_ptr, root_node_ptr);
+
+
+		if (AVLTREE_ROTATE_ERR == rotate_type ||
+			AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
+		{
+			status = PFX_STATUS_ERROR_;
+		}
+		else
+		{
+			status = PFX_STATUS_OK;
+		}
+		return status;
+	}
+
+	pfx_nsize_t balance_value;
+	node_type_* parent_parent_node_ptr;
+
+	balance_value = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (begin_node_ptr);
+
+	FOR_ONE_LOOP_BEGIN
+
+		if (2 == balance_value)
+		{
+			begin_node_ptr = begin_node_ptr->get_left_node_ref ();
+		}
+		else if (-2 == balance_value)
+		{
+			begin_node_ptr = begin_node_ptr->get_right_node_ref ();
+		}
+
+		pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::update_avl_height (begin_node_ptr);
+
+		pfx_nsize_t same_count = 0;
+		// 从第一个节点的跟节点开始翻转
+		do 
+		{
+			parent_node_ptr = begin_node_ptr->get_parent_node_ref ();
+
+			//一般情况下必须达成 null == parent_node的条件，即轮寻翻转到跟节点的时候
+			//才退出翻转处理流程
+			if (null == parent_node_ptr)
+			{
+				BREAK_LOOP (status,PFX_STATUS_OK);
+			}
+
+			// 节点与他的父节点的指针一样，证明内存已经出错
+			if (begin_node_ptr == parent_node_ptr)
+			{
+				BREAK_LOOP (status,PFX_STATUS_MEM_ERR);
+			}
+
+			height = parent_node_ptr->get_height ();
+			pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::update_avl_height (parent_node_ptr);
+			balance_value = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::calculate_avl_balance_value (parent_node_ptr);
+
+			// 高度一样，平衡，连续出现2次，则退出
+			if (height == parent_node_ptr->get_height () && balance_value > -2 && balance_value <2)
+			{
+				++same_count; 
+				if (same_count > 1)
+				{
+					BREAK_LOOP (status,PFX_STATUS_OK);
+				}
+			}
+			else
+			{
+				same_count = 0;
+			}
+
+			parent_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();		
+			begin_node_ptr = parent_node_ptr;
+
+			node_type_**	reference_node_ptr_ptr = null;
+			// 注：这利用相关节点的关联引用进行操作，在翻转过程中快速替换被关联节点对应的节点指针
+			if (parent_node_ptr == tmp_root_node_ptr || null == parent_parent_node_ptr)
+			{
+				rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
+					(balance_value, parent_node_ptr, root_node_ptr);
+			}
+			else
+			{
+				if (parent_parent_node_ptr->get_left_node () == parent_node_ptr)
+				{
+					reference_node_ptr_ptr = (node_type_**)(&parent_parent_node_ptr->get_left_node_ref ());
+					rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
+						(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
+
+				}
+				else if (parent_parent_node_ptr->get_right_node () == parent_node_ptr)
+				{
+					reference_node_ptr_ptr = (node_type_**)(&parent_parent_node_ptr->get_right_node_ref ());
+					rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
+						(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
+				}
+				else
+				{
+					BREAK_LOOP (status,PFX_STATUS_MEM_ERR);
+				}
+			}
+
+			if (AVLTREE_ROTATE_ERR == rotate_type ||
+				AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
+			{
+				// 翻转出错，退出流程
+				BREAK_LOOP (status,PFX_STATUS_ERROR_);
+			}
+			else
+			{
+				status = PFX_STATUS_OK;
+			}
+
+
+
+		} while (1);
+
+		FOR_ONE_LOOP_END
+
+			return status;
 }
 
 PFX_CBST_TEMPLATE_DEFINES
@@ -1142,7 +1288,7 @@ const node_type_* pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::add_avl_node (node_ty
 	node_type_* PARAM_INOUT add_node_ptr,
 	pfx_result_t& PARAM_OUT status_)
 {
-	pfx_result_t			status;
+	pfx_result_t	status;
 	node_type_*	temp_node_ptr = null;
 
 	RETURN_INVALID_BY_ACT_RESULT ((null == add_node_ptr),
@@ -1156,7 +1302,7 @@ const node_type_* pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::add_avl_node (node_ty
 
 	pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS :: update_avl_height (add_node_ptr);
 
-	status = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS :: avl_update_rotate (root_node_ptr,add_node_ptr);
+	status = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS :: avl_update_insert_rotate (root_node_ptr,add_node_ptr);
 
 	status_ = status;
 	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
@@ -1170,9 +1316,7 @@ node_type_* pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::remove_avl_node (node_type_
 	pfx_result_t& PARAM_OUT status_)
 {
 	pfx_result_t			status;
-	pfx_s16_t				height;
 	node_type_*	temp_node_ptr = null;
-	//node_type_*	tmp_root_node_ptr;
 	node_type_*	parent_node_ptr;
 	node_type_* sub_romove_ref_node_ptr;
 	node_type_* sub_remove_node_ptr;
@@ -1180,18 +1324,28 @@ node_type_* pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::remove_avl_node (node_type_
 	RETURN_INVALID_BY_ACT_RESULT ((null == remove_node_ptr),
 		status_ = PFX_STATUS_INVALID_PARAMS,null);
 
-	height = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS :: get_avl_height (root_node_ptr);
-
 	sub_romove_ref_node_ptr = 
 		pfx_cbst PFX_CBST_TEMPLATE_PARAMS :: find_remove_replace_node
 		(remove_node_ptr,sub_remove_node_ptr,null);
 
+	if (sub_remove_node_ptr)
+	{
+		parent_node_ptr = sub_remove_node_ptr->get_parent_node_ref();
+	}
+	
 	status = pfx_cbst PFX_CBST_TEMPLATE_PARAMS :: remove_node_internal
 		(root_node_ptr,remove_node_ptr,sub_remove_node_ptr,sub_romove_ref_node_ptr,null);
 
-
 	status_ = status;
-	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),remove_node_ptr);
+
+	if (PFX_STATUS_OK != status)
+	{
+		return remove_node_ptr;
+	}
+	if (sub_remove_node_ptr)
+	{
+		sub_remove_node_ptr->set_height (remove_node_ptr->get_height ());
+	}
 
 	RETURN_RESULT ((null == root_node_ptr),remove_node_ptr);
 
@@ -1200,10 +1354,13 @@ node_type_* pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::remove_avl_node (node_type_
 	{
 		if (null != sub_remove_node_ptr)
 		{
-			parent_node_ptr = sub_remove_node_ptr->get_parent_node_ref();
 			if (remove_node_ptr != parent_node_ptr)
 			{
 				temp_node_ptr = parent_node_ptr;
+			}
+			else
+			{
+				temp_node_ptr = sub_remove_node_ptr;
 			}
 		}
 
@@ -1212,18 +1369,13 @@ node_type_* pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::remove_avl_node (node_type_
 			temp_node_ptr = root_node_ptr;
 		}
 	}
-		
-	root_node_ptr->set_height (height);
-
-	pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS :: update_avl_height (temp_node_ptr);
-
-	parent_node_ptr = (node_type_*)(temp_node_ptr->get_parent_node ());
-
-
-	status = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS :: avl_update_rotate (root_node_ptr,temp_node_ptr);
+	status = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS :: avl_update_fixed (root_node_ptr,temp_node_ptr);
 
 	status_ = status;
-	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
+	if (PFX_STATUS_OK != status)
+	{
+		return null;
+	}
 
 	return remove_node_ptr;
 }

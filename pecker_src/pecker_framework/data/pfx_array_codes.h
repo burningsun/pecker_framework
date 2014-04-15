@@ -618,10 +618,17 @@ init_remian_element (pfx_usize_t element_count, pfx_usize_t allocate_step_size /
 		//status = array_ptr_ptr [new_size - 2] -> init (allocate_step_size);
 		//status = array_ptr_ptr [new_size - 1] -> init (element_count % allocate_step_size);
 		status = array_ptr_ptr [new_size - 2] -> resize (allocate_step_size);
-		status = array_ptr_ptr [new_size -1] -> resize (element_count % allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+		//status = array_ptr_ptr [new_size -1] -> resize (element_count % allocate_step_size);
+		pfx_usize_t tail_size = element_count % allocate_step_size;
+		if (!tail_size)
+		{
+			tail_size = allocate_step_size;
+		}
+		status = array_ptr_ptr [new_size -1] -> resize (tail_size);
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
-	else if (new_size > 0 && element_count != allocate_step_size)
+	else if (new_size > 0 /*&& element_count != allocate_step_size*/)
 	{
 		//status = array_ptr_ptr [0] -> init (element_count);
 		status = array_ptr_ptr [0] -> resize (element_count);
@@ -718,13 +725,22 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 
 	if (new_size > 1)
 	{
+		
 		status = array_ptr_ptr [new_size - 2] -> init (allocate_step_size);
-		status = array_ptr_ptr [new_size - 1] -> init (element_count % allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+		//status = array_ptr_ptr [new_size - 1] -> init (element_count % allocate_step_size);
+		pfx_usize_t tail_size = element_count % allocate_step_size;
+		if (!tail_size)
+		{
+			tail_size = allocate_step_size;
+		}
+		status = array_ptr_ptr [new_size - 1] -> init (tail_size);
+
 		//status = array_ptr_ptr [new_size - 2] -> resize (allocate_step_size);
 		//status = array_ptr_ptr [new_size -1] -> resize (element_count % allocate_step_size);
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
-	else if (new_size > 0 && element_count != allocate_step_size)
+	else if (new_size > 0 /*&& element_count != allocate_step_size*/)
 	{
 		status = array_ptr_ptr [0] -> init (element_count);
 		//status = array_ptr_ptr [0] -> resize (element_count);
@@ -807,10 +823,17 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 	if (new_size > 1)
 	{
 		status = array_ptr_ptr [new_size - 2] -> resize (allocate_step_size);
-		status = array_ptr_ptr [new_size - 1] -> resize (element_size % allocate_step_size);
+		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
+		//status = array_ptr_ptr [new_size - 1] -> resize (element_size % allocate_step_size);
+		pfx_usize_t tail_size = element_size % allocate_step_size;
+		if (!tail_size)
+		{
+			tail_size = allocate_step_size;
+		}
+		status = array_ptr_ptr [new_size - 1] -> resize (tail_size);
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
 	}
-	else if (new_size > 0 && element_size != allocate_step_size)
+	else if (new_size > 0/* && element_size != allocate_step_size*/)
 	{
 		status = array_ptr_ptr [0] -> resize (element_size);
 		RETURN_INVALID_RESULT (PFX_STATUS_OK != status,status);
