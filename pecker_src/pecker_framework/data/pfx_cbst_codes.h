@@ -1711,11 +1711,21 @@ PFX_INLINE pfx_result_t pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_remove_rota
 
 			if (check_color)
 			{
-				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_node_ptr);
+				if (temp_node_ptr)
+				{
+					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_node_ptr);
+				}
+				
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_red (parent_node_ptr);
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_left_rotate (root_node_ptr,null,parent_node_ptr);
 
 				temp_node_ptr = (node_type_*) parent_node_ptr->get_right_node ();
+			}
+
+			if (null == temp_node_ptr)
+			{
+				ref_node_ptr = parent_node_ptr;
+				continue;
 			}
 
 			check_color = pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: is_rbt_color_black 
@@ -1723,6 +1733,7 @@ PFX_INLINE pfx_result_t pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_remove_rota
 
 			check_color_ = pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: is_rbt_color_black 
 				((node_type_*) temp_node_ptr->get_right_node ());
+
 
 			if (check_color && check_color_)
 			{
@@ -1738,7 +1749,11 @@ PFX_INLINE pfx_result_t pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_remove_rota
 				{
 					node_type_* temp_left_node_ptr = temp_node_ptr->get_left_node_ref ();
 
-					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_left_node_ptr);
+					if (temp_left_node_ptr)
+					{
+						pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_left_node_ptr);
+					}
+					
 					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_red (temp_node_ptr);
 					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_right_rotate (root_node_ptr,null,temp_node_ptr);
 
@@ -1749,7 +1764,10 @@ PFX_INLINE pfx_result_t pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_remove_rota
 
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: copy_tree_color (temp_node_ptr,parent_node_ptr);
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (parent_node_ptr);
-				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_right_node_ptr);
+				if (temp_right_node_ptr)
+				{
+					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_right_node_ptr);
+				}
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_right_rotate (root_node_ptr,null,parent_node_ptr);
 
 				ref_node_ptr = root_node_ptr;
@@ -1762,11 +1780,20 @@ PFX_INLINE pfx_result_t pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_remove_rota
 
 			if (check_color)
 			{
-				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_node_ptr);
+				if (temp_node_ptr)
+				{
+					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_node_ptr);
+				}
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_red (parent_node_ptr);
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_right_rotate (root_node_ptr,null,parent_node_ptr);
 
 				temp_node_ptr =  (node_type_*) parent_node_ptr->get_left_node ();
+			}
+
+			if (null == temp_node_ptr)
+			{
+				ref_node_ptr = parent_node_ptr;
+				continue;
 			}
 
 			check_color = pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: is_rbt_color_black 
@@ -1788,8 +1815,10 @@ PFX_INLINE pfx_result_t pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_remove_rota
 				if (check_color)
 				{
 					node_type_* temp_right_node_ptr = temp_node_ptr->get_right_node_ref ();
-
-					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_right_node_ptr);
+					if (temp_right_node_ptr)
+					{
+						pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_right_node_ptr);
+					}
 					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_red (temp_node_ptr);
 					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_left_rotate (root_node_ptr,null,temp_node_ptr);
 
@@ -1800,7 +1829,10 @@ PFX_INLINE pfx_result_t pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_remove_rota
 
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: copy_tree_color (temp_node_ptr,parent_node_ptr);
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (parent_node_ptr);
-				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_left_node_ptr);
+				if (temp_left_node_ptr)
+				{
+					pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: set_rbt_color_black (temp_left_node_ptr);
+				}
 				pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS :: rbt_right_rotate (root_node_ptr,null,parent_node_ptr);
 
 				ref_node_ptr = root_node_ptr;

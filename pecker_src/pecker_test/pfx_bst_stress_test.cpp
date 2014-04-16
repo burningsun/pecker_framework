@@ -174,74 +174,66 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 		{
 			print_bbst_node(iterator_ptr->get_current_node ());
 		}
-		pfx_nsize_t bval = pfx_cavl_tree < bst_string_node_t > ::calculate_avl_balance_value(iterator_ptr->get_current_node()) ;
-		if (bval >= 2 || bval <=-2)
-		{
-			PECKER_LOG_ ("bval error!\n");
-		}
+		//pfx_nsize_t bval = pfx_cavl_tree < bst_string_node_t > ::calculate_avl_balance_value(iterator_ptr->get_current_node()) ;
+		//if (bval >= 2 || bval <=-2)
+		//{
+		//	PECKER_LOG_ ("bval error!\n");
+		//}
 		iterator_ptr = iterator_ptr->increase();
 	} 
 	PECKER_LOG_ ("inorder traval time tick = %lf ms\n",tick_count.get_microsecond());
 	tick_count.stop();
 	pfx_result_t status;
-	//tick_count.start();
-	//pfx_result_t status = bst_ptr->clear();
-	//if (PFX_STATUS_OK != status)
-	//{
-	//	PECKER_LOG_ ("clear node error= %d\n",status);
-	//}
-	//PECKER_LOG_ ("clear node time tick = %lf ms\n",tick_count.get_microsecond());
-	//tick_count.stop();
-	//return;
-	////rev inorder traval
-	//pfx_inorder_iterator < bst_string_node_t > bst_rinorder_iterator;
-	//iterator_ptr = bst_ptr->end (&bst_rinorder_iterator);
 
-	//tick_count.start();
-	//while (iterator_ptr)
-	//{
-	//	if (bshow)
-	//	{
-	//		print_bbst_node(iterator_ptr->get_current_node ());
-	//	}
+	//rev inorder traval
+	pfx_inorder_iterator < bst_string_node_t > bst_rinorder_iterator;
+	iterator_ptr = bst_ptr->end (&bst_rinorder_iterator);
+
+	tick_count.start();
+	while (iterator_ptr)
+	{
+		if (bshow)
+		{
+			print_bbst_node(iterator_ptr->get_current_node ());
+		}
 
 
-	//	iterator_ptr = iterator_ptr->decrease();
-	//} 
-	//PECKER_LOG_ ("rev inorder traval time tick = %lf ms\n",tick_count.get_microsecond());
-	//tick_count.stop();
+		iterator_ptr = iterator_ptr->decrease();
+	} 
+	PECKER_LOG_ ("rev inorder traval time tick = %lf ms\n",tick_count.get_microsecond());
+	tick_count.stop();
 
-	//// preorder traval
-	//pfx_preorder_iterator < bst_string_node_t > bst_preorder_iterator;
-	//iterator_ptr = bst_ptr->begin (&bst_preorder_iterator);
+	// preorder traval
+	pfx_preorder_iterator < bst_string_node_t > bst_preorder_iterator;
+	iterator_ptr = bst_ptr->begin (&bst_preorder_iterator);
 
-	//tick_count.start();
-	//while (iterator_ptr)
-	//{
-	//	if (bshow)
-	//	{
-	//		print_bbst_node(iterator_ptr->get_current_node ());
-	//	}
-	//	iterator_ptr = iterator_ptr->increase();
-	//} 
-	//PECKER_LOG_ ("inorder traval time tick = %lf ms\n",tick_count.get_microsecond());
-	//tick_count.stop();
+	tick_count.start();
+	while (iterator_ptr)
+	{
+		if (bshow)
+		{
+			print_bbst_node(iterator_ptr->get_current_node ());
+		}
+		iterator_ptr = iterator_ptr->increase();
+	} 
+	PECKER_LOG_ ("preorder traval time tick = %lf ms\n",tick_count.get_microsecond());
+	tick_count.stop();
 
-	//// posorder traval
-	//pfx_preorder_iterator < bst_string_node_t > bst_posorder_iterator;
-	//iterator_ptr = bst_ptr->begin (&bst_posorder_iterator);
+	// posorder traval
+	pfx_preorder_iterator < bst_string_node_t > bst_posorder_iterator;
+	iterator_ptr = bst_ptr->begin (&bst_posorder_iterator);
 
-	//tick_count.start();
-	//while (iterator_ptr)
-	//{
-	//	if (bshow)
-	//	{
-	//		print_bbst_node(iterator_ptr->get_current_node ());
-	//	}
-	//	iterator_ptr = iterator_ptr->increase();
-	//} 
-	//PECKER_LOG_ ("inorder traval time tick = %lf ms\n",tick_count.get_microsecond());
-	//tick_count.stop();
+	tick_count.start();
+	while (iterator_ptr)
+	{
+		if (bshow)
+		{
+			print_bbst_node(iterator_ptr->get_current_node ());
+		}
+		iterator_ptr = iterator_ptr->increase();
+	} 
+	PECKER_LOG_ ("posorder traval time tick = %lf ms\n",tick_count.get_microsecond());
+	tick_count.stop();
 
 	// remove
 	itr_ptr = array_ptr->begin (&itr);
@@ -258,9 +250,9 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 			pfx_result_t status = PFX_STATUS_OK;
 
 
-
 #ifdef NODE_ARRAY
 			bst_string_node_t* remove_node_ptr = bst_ptr->find_reference(elem_ptr);
+			//print_bbst_node(remove_node_ptr);
 			if (null == remove_node_ptr)
 			{
 				PECKER_LOG_ ("not find the remove_node_ptr\n");
@@ -285,7 +277,7 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 
 			//pfx_uindex_t sindex = 0;
 			//pfx_usize_t same_count = 0;
-			//if (elem_ptr->find_near_string (0,"appear",6,sindex,same_count) && 0 == sindex && 6 == same_count)
+			//if (GET_ELEM_CONST(elem_ptr)->find_near_string (0,"act4",4,sindex,same_count) && 0 == sindex && 4 == same_count)
 			//{
 			//	elem_ptr = elem_ptr;
 			//}
@@ -467,13 +459,13 @@ int bst_stress_test_main ()
 
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("load file\n");
-	//load_file_to_array ("test_data\\tst_test_data1.txt",strlen("test_data\\tst_test_data1.txt"),&incs_array);
-	load_file_to_array ("test_data\\tst_test_data2.txt",strlen("test_data\\tst_test_data2.txt"),&incs_array);
+	load_file_to_array ("test_data\\tst_test_data1.txt",strlen("test_data\\tst_test_data1.txt"),&incs_array);
+	//load_file_to_array ("test_data\\tst_test_data2.txt",strlen("test_data\\tst_test_data2.txt"),&incs_array);
 
-	//PECKER_LOG_ ("====================");
-	//PECKER_LOG_ ("test bst\n");
-	//pfx_binary_search_tree < bst_string_node_t >  bst_;
-	//stress_test_bst (&incs_array,&bst_,PFX_BOOL_FALSE);
+	PECKER_LOG_ ("====================");
+	PECKER_LOG_ ("test bst\n");
+	pfx_binary_search_tree < bst_string_node_t >  bst_;
+	stress_test_bst (&incs_array,&bst_,PFX_BOOL_FALSE);
 
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test avl-bst\n");
@@ -484,10 +476,10 @@ int bst_stress_test_main ()
 	//stress_test_bst (&incs_array,&avl_bst_,PFX_BOOL_FALSE);
 	//stress_test_bst (&incs_array,&avl_bst_,PFX_BOOL_FALSE);
 
-	//PECKER_LOG_ ("====================");
-	//PECKER_LOG_ ("test rb-bst\n");
-	//pfx_redblack_binary_search_tree < bst_string_node_t >  rb_bst_;
-	//stress_test_bst (&incs_array,&rb_bst_,PFX_BOOL_FALSE);
+	PECKER_LOG_ ("====================");
+	PECKER_LOG_ ("test rb-bst\n");
+	pfx_redblack_binary_search_tree < bst_string_node_t >  rb_bst_;
+	stress_test_bst (&incs_array,&rb_bst_,PFX_BOOL_FALSE);
 
  	return 0;
 }
