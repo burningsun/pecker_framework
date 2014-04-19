@@ -10,7 +10,7 @@
 
 #include "pfx_iterator.h"
 #include "pecker_value_compare.h"
-
+#include "pfx_data_traits.h"
 
 
 PECKER_BEGIN
@@ -55,6 +55,11 @@ typedef enum PFX_DATA_API enumAVLTREE_ROTATE_TYPE
 template < class node_type_ >
 class PFX_DATA_TEMPALE_API pfx_cbst_iterator : public pfx_increase_iterator < node_type_ >
 {
+public:
+	typedef pfx_cbst_iterator < node_type_ > iterator_t;
+	typedef node_type_										element_t;
+	typedef node_type_	&									reference_t;
+	typedef node_type_&									pointer_t;
 protected:
 	const node_type_*	m_current_node_ptr;
 	const node_type_*   m_root_node_ptr;
@@ -96,6 +101,8 @@ class PFX_DATA_TEMPALE_API pfx_inorder_iterator :
 		public pfx_decrease_iterator < node_type_ >
 {
 public:
+	typedef pfx_inorder_iterator < node_type_ > iterator_t;
+public:
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
 
@@ -114,6 +121,8 @@ template < class node_type_ >
 class PFX_DATA_TEMPALE_API pfx_preorder_iterator : 
 	public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
 {
+public:
+	typedef pfx_preorder_iterator < node_type_ > iterator_t;
 protected:
 	pfx_enum_t				m_next_node_type;
 	pfx_result_t				m_last_result;
@@ -137,6 +146,8 @@ class PFX_DATA_TEMPALE_API pfx_posorder_iterator :
 	public virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS
 {
 public:
+	typedef pfx_posorder_iterator < node_type_ > iterator_t;
+public:
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* reverse_begin ();
 	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
@@ -149,14 +160,19 @@ public:
 	static const node_type_* get_reverse_posorder_begin_node (const node_type_* root_node_ptr);
 };
 
+// 普通的搜索二叉树
 template < class node_type_, class compare_two_node_ = pecker_value_compare_extern< node_type_ > >
 class PFX_DATA_TEMPALE_API pfx_cbst
 {
+public:
+	typedef node_type_					node_type_t;
+	typedef node_type_*				node_type_ptr_t;
+	typedef const node_type_*		const_node_type_ptr_t;
+	typedef compare_two_node_	compare_two_node_t;
 protected:
 	node_type_* m_root_ptr;
-	//Iallocator_cpp* m_allocator;
 public:
-	pfx_cbst (/*Iallocator_cpp* allocator = null*/);
+	pfx_cbst ();
 	pfx_cbst (const pfx_cbst< node_type_, compare_two_node_ >* other_ptr) throw (pfx_result_t);
 	virtual ~pfx_cbst();
 public:
@@ -164,8 +180,8 @@ public:
 	virtual pfx_result_t copy_by_iterator (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
 	virtual pfx_result_t clear ();
 
-	virtual node_type_* new_node () {return new node_type_;};
-	virtual	pfx_result_t release_node (node_type_* PARAM_IN node_ptr) 
+	virtual PFX_INLINE node_type_* new_node () {return new node_type_;};
+	virtual	PFX_INLINE pfx_result_t release_node (node_type_* PARAM_IN node_ptr) 
 	{if (node_ptr) {delete node_ptr;return PFX_STATUS_OK;}return PFX_STATUS_INVALID_PARAMS;};
 
 public:
@@ -176,8 +192,11 @@ public:
 		const node_type_* PARAM_IN key_node_ptr) const;
 
 public:
-	virtual const node_type_* find (const node_type_* PARAM_IN key_node_ptr) const;
-	virtual node_type_* find_reference (const node_type_* PARAM_IN key_node_ptr);
+	PFX_INLINE const node_type_* find_by_item (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr) const;
+	PFX_INLINE node_type_* find_reference_by_item (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr);
+
+	PFX_INLINE const node_type_* find (const node_type_* PARAM_IN key_node_ptr) const;
+	PFX_INLINE node_type_* find_reference (const node_type_* PARAM_IN key_node_ptr);
 
 	virtual const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
@@ -200,6 +219,13 @@ public:
 		const node_type_* PARAM_IN root_node_ptr,
 		int& PARAM_INOUT last_cmp_result);
 
+	static const node_type_* find_node_by_item (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr,
+		const node_type_* PARAM_IN root_node_ptr);
+
+	static const node_type_* find_near_node_by_item  (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr,
+		const node_type_* PARAM_IN root_node_ptr,
+		int& PARAM_INOUT last_cmp_result);
+
 	static pfx_result_t add_node (node_type_*& PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT add_node_ptr,
 		node_type_*& PARAM_OUT added_node_ptr);
@@ -208,12 +234,12 @@ public:
 		node_type_* PARAM_INOUT remove_node_ptr,
 		const node_type_* PARAM_IN null_node_ptr = null);
 
+
 protected:
 	static  node_type_* find_remove_replace_node (node_type_* PARAM_IN remove_node_ptr,
 		node_type_*& PARAM_OUT sub_remove_node_ptr,
 		const node_type_* PARAM_IN null_node_ptr = null);
 
-	//static  node_type_*
 	static pfx_result_t	remove_node_internal (node_type_*& PARAM_INOUT root_node_ptrptr,
 		node_type_* PARAM_INOUT remove_node_ptr,
 		node_type_* PARAM_INOUT sub_remove_node_ptr,
@@ -222,6 +248,7 @@ protected:
 	
 };
 
+// AVL树
 template < class node_type_, class compare_two_node_ = pecker_value_compare_extern< node_type_ > >
 class PFX_DATA_TEMPALE_API pfx_cavl_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
@@ -275,12 +302,12 @@ protected:
 };
 
 
-
+//黑红树
 template < class node_type_, class compare_two_node_ = pecker_value_compare_extern< node_type_ > >
 class PFX_DATA_TEMPALE_API pfx_crb_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
-	pfx_crb_tree (/*Iallocator_cpp* allocator = null*/);
+	pfx_crb_tree ();
 	pfx_crb_tree (const pfx_cbst< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 	pfx_crb_tree (const pfx_crb_tree< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
 public:

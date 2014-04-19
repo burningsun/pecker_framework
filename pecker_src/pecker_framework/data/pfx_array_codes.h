@@ -147,7 +147,7 @@ PFX_INLINE pfx_usize_t pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEM
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::copy (const IPfx_array PFX_IARRAY_TEMPLATE_PARAMS * PARAM_IN other_ptr)
+PFX_INLINE pfx_result_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::copy (const IPfx_array < consecutive_array_element > * PARAM_IN other_ptr)
 {
 	pfx_result_t status = PFX_STATUS_OK;
 	RETURN_INVALID_RESULT (null == other_ptr,PFX_STATUS_INVALID_PARAMS);
@@ -210,7 +210,7 @@ PFX_INLINE pfx_result_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TE
 
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::push_back (const element_& elem)
+PFX_INLINE pfx_result_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::push_back (const consecutive_array_element& elem)
 {
 	pfx_result_t status;	
 	FOR_ONE_LOOP_BEGIN
@@ -244,19 +244,20 @@ PFX_INLINE pfx_usize_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEM
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE const element_*	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_element_at (pfx_uindex_t index_) const
+PFX_INLINE const consecutive_array_element*
+			pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_element_at (pfx_uindex_t index_) const
 {
 	return get_charbuffer_at (index_);
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE element_*	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_element_reference_at (pfx_uindex_t index_)
+PFX_INLINE consecutive_array_element*	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_element_reference_at (pfx_uindex_t index_)
 {
-	return (element_*)  get_charbuffer_at (index_);
+	return (consecutive_array_element*)  get_charbuffer_at (index_);
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE pfx_usize_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::set_element_buffers_at (pfx_uindex_t index_, const element_* PARAM_IN elements_ptr, pfx_usize_t element_size)
+PFX_INLINE pfx_usize_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::set_element_buffers_at (pfx_uindex_t index_, const consecutive_array_element* PARAM_IN elements_ptr, pfx_usize_t element_size)
 {
 	return set_charbuffer_at (index_, elements_ptr, element_size);
 }
@@ -293,13 +294,19 @@ PFX_INLINE pfx_ulong_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEM
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE const element_*	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_buffer () const
+PFX_INLINE const consecutive_array_element*	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_buffer () const
 {
 	return get_string ();
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_const_array_iterator < element_ >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::begin (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const
+PFX_INLINE pfx_usize_t	pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::cache_buffer_size ()
+{
+	return cstring_::cache_buffer_size ();
+}
+
+PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+pfx_const_array_iterator < consecutive_array_element >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::begin (pfx_const_array_iterator < consecutive_array_element >* PARAM_INOUT iterator_ptr) const
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	pfx_result_t status;
@@ -315,7 +322,7 @@ pfx_const_array_iterator < element_ >* pfx_consecutive_array_base PFX_CONSECUTIV
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_const_array_iterator < element_ >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::end (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const
+pfx_const_array_iterator < consecutive_array_element >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::end (pfx_const_array_iterator < consecutive_array_element >* PARAM_INOUT iterator_ptr) const
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	RETURN_RESULT (is_empty(),null);
@@ -333,7 +340,7 @@ pfx_const_array_iterator < element_ >* pfx_consecutive_array_base PFX_CONSECUTIV
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_array_iterator < element_ >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::begin (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr)
+pfx_array_iterator < consecutive_array_element >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::begin (pfx_array_iterator < consecutive_array_element >* PARAM_INOUT iterator_ptr)
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	pfx_result_t status;
@@ -349,7 +356,7 @@ pfx_array_iterator < element_ >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRA
 }
 
 PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_array_iterator < element_ >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::end (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr)
+pfx_array_iterator < consecutive_array_element >* pfx_consecutive_array_base PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::end (pfx_array_iterator < consecutive_array_element >* PARAM_INOUT iterator_ptr)
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	RETURN_RESULT (is_empty(),null);
@@ -476,7 +483,19 @@ PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
 	PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
 	get_step_cache_size () const
 {
-	return PFX_DEFUALT_ARRAY_SIZE;
+	return step_buffer_size ();
+}
+
+PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+PFX_INLINE pfx_usize_t		pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::cache_buffer_size ()
+{
+	return consecutive_array_prt_array::cache_buffer_size();
+}
+
+PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
+PFX_INLINE pfx_usize_t		pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::step_buffer_size ()
+{
+	return consecutive_array::cache_buffer_size();
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
@@ -515,11 +534,11 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE element_*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_element_reference_at (pfx_uindex_t index_, pfx_usize_t step_size)
+PFX_INLINE inconsecutive_array_element*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::get_element_reference_at (pfx_uindex_t index_, pfx_usize_t step_size)
 {
 	pfx_uindex_t arr_i;
 	pfx_uindex_t arr_j;
-	element_* elem_ptr;
+	inconsecutive_array_element* elem_ptr;
 	consecutive_array**	array_ptr_ptr;
 	elem_ptr = null;
 	array_ptr_ptr = (consecutive_array**) m_array_array.get_buffer ();
@@ -532,7 +551,7 @@ PFX_INLINE element_*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_T
 		array_ptr = array_ptr_ptr [arr_i];
 		if (array_ptr)
 		{
-			elem_ptr = (element_*) array_ptr->get_buffer ();
+			elem_ptr = (inconsecutive_array_element*) array_ptr->get_buffer ();
 			if (elem_ptr)
 			{
 				elem_ptr += arr_j;
@@ -893,8 +912,8 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 
 		for (pfx_uindex_t i=current_step; i<size_; ++i)
 		{
-			element_* elem_dec_ptr =	get_element_reference_at (i,auto_step);
-			element_* elem_src_ptr = get_element_reference_at(i,current_step);
+			inconsecutive_array_element* elem_dec_ptr =	get_element_reference_at (i,auto_step);
+			inconsecutive_array_element* elem_src_ptr = get_element_reference_at(i,current_step);
 
 			if (elem_dec_ptr && elem_src_ptr)
 			{
@@ -916,8 +935,8 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 
 		for (pfx_uindex_t i=size_; i>current_step; ++i)
 		{
-			element_* elem_dec_ptr =	get_element_reference_at (i,auto_step);
-			element_* elem_src_ptr = get_element_reference_at(i,current_step);
+			inconsecutive_array_element* elem_dec_ptr =	get_element_reference_at (i,auto_step);
+			inconsecutive_array_element* elem_src_ptr = get_element_reference_at(i,current_step);
 
 			if (elem_dec_ptr && elem_src_ptr)
 			{
@@ -952,7 +971,7 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
 PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-			copy (const IPfx_array PFX_IARRAY_TEMPLATE_PARAMS * PARAM_IN other_ptr)
+			copy (const IPfx_array < inconsecutive_array_element > * PARAM_IN other_ptr)
 {
 	pfx_result_t status = PFX_STATUS_OK;
 
@@ -968,8 +987,8 @@ PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_B
 			
 			for (pfx_uindex_t i=0; i<size_;++i)
 			{
-				element_* dec_ptr = get_element_reference_at(i);
-				const element_* src_ptr = get_element_at(i);
+				inconsecutive_array_element* dec_ptr = get_element_reference_at(i);
+				const inconsecutive_array_element* src_ptr = get_element_at(i);
 				if (dec_ptr && src_ptr)
 				{
 					*dec_ptr = *src_ptr;
@@ -1031,7 +1050,7 @@ PFX_INLINE pfx_result_t	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BAS
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
 PFX_INLINE pfx_result_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-		push_back (const element_& elem)
+		push_back (const inconsecutive_array_element& elem)
 {
 	pfx_result_t	status;
 	pfx_usize_t		size_;
@@ -1075,13 +1094,13 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE const element_*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+PFX_INLINE const inconsecutive_array_element*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
 		get_element_at (pfx_uindex_t index_) const
 {
 	pfx_uindex_t arr_i;
 	pfx_uindex_t arr_j;
 	pfx_usize_t		step_size;
-	const element_* elem_ptr;
+	const inconsecutive_array_element* elem_ptr;
 	consecutive_array * const *	array_ptr_ptr;
 	elem_ptr = null;
 	array_ptr_ptr = m_array_array.get_element_at (0);
@@ -1108,15 +1127,15 @@ PFX_INLINE const element_*	pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-PFX_INLINE element_*				pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+PFX_INLINE inconsecutive_array_element*				pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
 		get_element_reference_at (pfx_uindex_t index_)
 {
-	return (element_*)get_element_at(index_);
+	return (inconsecutive_array_element*)get_element_at(index_);
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
 PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-		set_element_buffers_at (pfx_uindex_t index_, const element_* PARAM_IN elements_ptr, pfx_usize_t element_size)
+		set_element_buffers_at (pfx_uindex_t index_, const inconsecutive_array_element* PARAM_IN elements_ptr, pfx_usize_t element_size)
 {
 	RETURN_RESULT (index_ > m_elements_count || null == elements_ptr || 0 == element_size,0);
 
@@ -1126,7 +1145,7 @@ PFX_INLINE pfx_usize_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 	pfx_usize_t success_size;
 	pfx_usize_t total_success_size;
 
-	element_* elem_ptr;
+	inconsecutive_array_element* elem_ptr;
 	consecutive_array**	array_ptr_ptr;
 	elem_ptr = null;
 	step_size = get_current_auto_step ();
@@ -1215,8 +1234,8 @@ PFX_INLINE pfx_ulong_t			pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BA
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_const_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-		begin (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const
+pfx_const_array_iterator < inconsecutive_array_element >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		begin (pfx_const_array_iterator < inconsecutive_array_element >* PARAM_INOUT iterator_ptr) const
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	pfx_result_t status;
@@ -1232,8 +1251,8 @@ pfx_const_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSEC
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_const_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-		end (pfx_const_array_iterator < element_ >* PARAM_INOUT iterator_ptr) const
+pfx_const_array_iterator < inconsecutive_array_element >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		end (pfx_const_array_iterator < inconsecutive_array_element >* PARAM_INOUT iterator_ptr) const
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	RETURN_RESULT (is_empty(),null);
@@ -1251,8 +1270,8 @@ pfx_const_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSEC
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-		begin (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr)
+pfx_array_iterator < inconsecutive_array_element >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		begin (pfx_array_iterator < inconsecutive_array_element >* PARAM_INOUT iterator_ptr)
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	pfx_result_t status;
@@ -1268,8 +1287,8 @@ pfx_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_
 }
 
 PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES
-pfx_array_iterator < element_ >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
-		end (pfx_array_iterator < element_ >* PARAM_INOUT iterator_ptr)
+pfx_array_iterator < inconsecutive_array_element >* pfx_inconsecutive_array_base PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS ::
+		end (pfx_array_iterator < inconsecutive_array_element >* PARAM_INOUT iterator_ptr)
 {
 	RETURN_INVALID_RESULT (null == iterator_ptr,null);
 	RETURN_RESULT (is_empty(),null);

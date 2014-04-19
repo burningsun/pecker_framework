@@ -453,7 +453,8 @@ pfx_result_t load_file_to_array (const pfx_char_t* PARAM_IN str_path_ptr, pfx_ns
 
 int bst_stress_test_main ()
 {
-	pfx_inconsecutive_array < ELEM_t, pecker_value_compare_extern < ELEM_t >, 2000 > incs_array;
+
+	array_type < ELEM_t, pecker_value_compare_extern < ELEM_t >, 2000 >::inconsecutive_array_t incs_array;
 	//pfx_consecutive_array < ELEM_t, pecker_value_compare_extern < ELEM_t > > incs_array;
 	incs_array.init(300000);
 
@@ -464,12 +465,12 @@ int bst_stress_test_main ()
 
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test bst\n");
-	pfx_binary_search_tree < bst_string_node_t >  bst_;
+	pfx_binary_search_tree_type< bst_string_node_t > ::binary_search_tree_t   bst_;
 	stress_test_bst (&incs_array,&bst_,PFX_BOOL_FALSE);
 
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test avl-bst\n");
-	pfx_avl_binary_search_tree < bst_string_node_t >  avl_bst_;
+	pfx_binary_search_tree_type< bst_string_node_t >::avl_binary_search_tree_t   avl_bst_;
 	stress_test_bst (&incs_array,&avl_bst_,PFX_BOOL_FALSE);
 	//stress_test_bst (&incs_array,&avl_bst_,PFX_BOOL_FALSE);
 	//stress_test_bst (&incs_array,&avl_bst_,PFX_BOOL_FALSE);
@@ -478,7 +479,7 @@ int bst_stress_test_main ()
 
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test rb-bst\n");
-	pfx_redblack_binary_search_tree < bst_string_node_t >  rb_bst_;
+	pfx_binary_search_tree_type< bst_string_node_t >::redblack_binary_search_tree_t rb_bst_;
 	stress_test_bst (&incs_array,&rb_bst_,PFX_BOOL_FALSE);
 
  	return 0;

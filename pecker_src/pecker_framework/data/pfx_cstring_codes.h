@@ -202,9 +202,15 @@ PFX_INLINE pfx_ulong_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::get_string_type
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
+PFX_INLINE	 pfx_usize_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::cache_buffer_size ()
+{
+		return CACHE_BUFFER_SIZE;
+}
+
+PFX_CSTRING_TEMPLATE_DEFINES
 PFX_INLINE pfx_usize_t	pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::get_cache_buffer_size () const
 {
-	return CACHE_BUFFER_SIZE;
+	return pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS ::cache_buffer_size ();
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES

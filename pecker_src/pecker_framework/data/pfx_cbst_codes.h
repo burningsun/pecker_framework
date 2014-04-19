@@ -193,8 +193,6 @@ pfx_result_t pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::copy_by_iterator (const pfx_cbs
 PFX_CBST_TEMPLATE_DEFINES
 pfx_result_t pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::clear ()
 {
-	//const node_type_* pbegin;
-	//const node_type_* end_ptr;
 	pfx_result_t status = PFX_STATUS_OK;
 
 	RETURN_RESULT (null == m_root_ptr,status);
@@ -237,21 +235,6 @@ pfx_result_t pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::clear ()
 				status = release_node (del_node_ptr);
 				break;
 			}
-
-			//node_type_* del_node_parent_ptr = (node_type_*)del_node_ptr->get_parent_node ();
-
-			//if (del_node_parent_ptr->get_left_node () == del_node_ptr)
-			//{
-			//	 del_node_parent_ptr->set_left_node ((node_type_*)null);
-			//}
-			//else if (del_node_parent_ptr->get_right_node () == del_node_ptr)
-			//{
-			//	del_node_parent_ptr->set_left_node ((node_type_*)null);
-			//}
-			//else
-			//{
-			//	status = PFX_STATUS_MEM_ERR;
-			//}
 
 			status = release_node (del_node_ptr);
 			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
@@ -300,7 +283,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * pfx_cbst PFX_CBST_TEMPLATE
 
 //public:
 PFX_CBST_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_OUT iterator_,
+PFX_INLINE pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_OUT iterator_,
 		const node_type_* PARAM_IN key_node_ptr) const
 {
 	if (iterator_)
@@ -322,12 +305,23 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_cbst PFX_CBST_TEMPLATE_
 	return iterator_;
 }
 
+PFX_CBST_TEMPLATE_DEFINES
+PFX_INLINE const node_type_* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find_by_item (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr) const
+{
+	return pfx_cbst PFX_CBST_TEMPLATE_PARAMS::find_node_by_item (key_ptr, m_root_ptr);
+}
+
+PFX_CBST_TEMPLATE_DEFINES
+PFX_INLINE node_type_* find_reference_by_item (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr)
+{
+	return  (node_type_*)pfx_cbst PFX_CBST_TEMPLATE_PARAMS::find_node_by_item (key_ptr, m_root_ptr);
+}
 //
 //public:
 PFX_CBST_TEMPLATE_DEFINES
-const node_type_* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find (const node_type_* PARAM_IN key_node_ptr) const
+PFX_INLINE const node_type_* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find (const node_type_* PARAM_IN key_node_ptr) const
 {
-	return pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find_node (key_node_ptr,m_root_ptr);
+	return pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find_node (key_node_ptr, m_root_ptr);
 }
 
 PFX_CBST_TEMPLATE_DEFINES
@@ -488,6 +482,62 @@ const node_type_* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find_near_node  (const nod
 	last_cmp_result = cmp_result;
 	return near_node_ptr;
 }
+
+PFX_CBST_TEMPLATE_DEFINES
+const node_type_* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find_node_by_item (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr,
+	const node_type_* PARAM_IN root_node_ptr)
+{
+	const node_type_* traval_node_ptr = root_node_ptr;
+	while (traval_node_ptr)
+	{
+		int cmp_result = traval_node_ptr->compare (key_ptr);
+		if (cmp_result > 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_left_node ();
+		}
+		else if (cmp_result < 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_right_node ();
+		}
+		else
+		{
+			break;
+		}
+	}
+	return traval_node_ptr;
+}
+
+PFX_CBST_TEMPLATE_DEFINES
+const node_type_* pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::find_near_node_by_item  (const typename bst_node_member_reference_type< node_type_ >::item_type_t* PARAM_IN key_ptr,
+	const node_type_* PARAM_IN root_node_ptr,
+	int& PARAM_INOUT last_cmp_result)
+{
+	const node_type_* near_node_ptr = null;
+	const node_type_* traval_node_ptr = root_node_ptr;
+
+	int cmp_result = 0;
+	while (traval_node_ptr)
+	{
+		cmp_result = traval_node_ptr->compare (key_node_ptr);
+		near_node_ptr = traval_node_ptr;
+
+		if (cmp_result < 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_left_node ();
+		}
+		else if (cmp_result > 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_right_node ();
+		}
+		else
+		{
+			break;
+		}
+	}
+	last_cmp_result = cmp_result;
+	return near_node_ptr;
+}
+
 //
 PFX_CBST_TEMPLATE_DEFINES
 pfx_result_t pfx_cbst PFX_CBST_TEMPLATE_PARAMS ::add_node (node_type_*& PARAM_INOUT root_node_ptr,
@@ -1035,10 +1085,12 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_inse
 	pfx_result_t				status = PFX_STATUS_OK;
 	pfx_nsize_t					height;
 	node_type_*				tmp_root_node_ptr;
+	const node_type_*	tmp_root_parent_node_ptr;
 	node_type_*				parent_node_ptr;
 	AVLTREE_ROTATE_t	rotate_type;
 
 	tmp_root_node_ptr = root_node_ptr;
+	tmp_root_parent_node_ptr = root_node_ptr->get_parent_node ();
 
 	// 当起始节点为根节点的处理流程
 	if (tmp_root_node_ptr == begin_node_ptr)
@@ -1074,7 +1126,7 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_inse
 
 		//一般情况下必须达成 null == parent_node的条件，即轮寻翻转到跟节点的时候
 		//才退出翻转处理流程
-		if (null == parent_node_ptr)
+		if (tmp_root_parent_node_ptr == parent_node_ptr)
 		{
 			BREAK_LOOP (status,PFX_STATUS_OK);
 		}
@@ -1099,7 +1151,7 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_inse
 
 		node_type_**	reference_node_ptr_ptr = null;
 			// 注：这利用相关节点的关联引用进行操作，在翻转过程中快速替换被关联节点对应的节点指针
-		if (parent_node_ptr == tmp_root_node_ptr || null == parent_parent_node_ptr)
+		if (parent_node_ptr == tmp_root_node_ptr || tmp_root_parent_node_ptr == parent_parent_node_ptr)
 		{
 			rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
 				(balance_value, parent_node_ptr, root_node_ptr);
@@ -1151,10 +1203,12 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_fixe
 	pfx_result_t				status = PFX_STATUS_OK;
 	pfx_nsize_t					height;
 	node_type_*				tmp_root_node_ptr;
+	const node_type_*	tmp_root_parent_node_ptr;
 	node_type_*				parent_node_ptr;
 	AVLTREE_ROTATE_t	rotate_type;
 
 	tmp_root_node_ptr = root_node_ptr;
+	tmp_root_parent_node_ptr = root_node_ptr->get_parent_node ();
 
 	// 当起始节点为根节点的处理流程
 	if (tmp_root_node_ptr == begin_node_ptr)
@@ -1203,7 +1257,7 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_fixe
 
 			//一般情况下必须达成 null == parent_node的条件，即轮寻翻转到跟节点的时候
 			//才退出翻转处理流程
-			if (null == parent_node_ptr)
+			if (tmp_root_parent_node_ptr == parent_node_ptr)
 			{
 				BREAK_LOOP (status,PFX_STATUS_OK);
 			}
@@ -1237,7 +1291,7 @@ PFX_INLINE pfx_result_t pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_update_fixe
 
 			node_type_**	reference_node_ptr_ptr = null;
 			// 注：这利用相关节点的关联引用进行操作，在翻转过程中快速替换被关联节点对应的节点指针
-			if (parent_node_ptr == tmp_root_node_ptr || null == parent_parent_node_ptr)
+			if (parent_node_ptr == tmp_root_node_ptr || tmp_root_parent_node_ptr == parent_parent_node_ptr)
 			{
 				rotate_type = pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS ::avl_single_rotate 
 					(balance_value, parent_node_ptr, root_node_ptr);

@@ -22,8 +22,8 @@
 USING_PECKER_SDK
 	
 typedef pfx_cbst_node < pfx_cstring < pfx_char_t >, pecker_value_compare_extern < pfx_cstring < pfx_char_t > > > bst_string_node_t;
-static pfx_binary_search_tree < bst_string_node_t >  bst_strings;
-static pfx_binary_search_tree < bst_string_node_t >  bst_copy_strings;
+static pfx_binary_search_tree_type < bst_string_node_t >::binary_search_tree_t  bst_strings;
+static pfx_binary_search_tree_type < bst_string_node_t >::binary_search_tree_t  bst_copy_strings;
 static bst_string_node_t bst_key_node;
 
 PFX_INLINE_CODE void print_bst_node (const bst_string_node_t* PARAM_IN node_ptr)
@@ -196,6 +196,10 @@ pfx_result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str_ch
 
 int bst_test_main()
 {
+	//bstree_method_tratis < pfx_cbst < bst_string_node_t > >::bst_init_node_leaves bst_method;
+	bst_member_reference_type < pfx_cbst < bst_string_node_t >  >  tree_mem_type;
+	bst_member_reference_type < pfx_cbst < bst_string_node_t >  >::node_type_t aaa;
+	
 	PECKER_LOG_ ("------------------------------bst test--------------------------------\n");
 	PECKER_LOG_ ("*********test_data\\bst_test_data.txt***********\n");
 	bst_strings.clear();

@@ -9,6 +9,8 @@
 #define		PFX_CLIST_H_
 
 #include "../pfx_defines.h"
+#include "pfx_iterator.h"
+#include "pfx_data_traits.h"
 
 PECKER_BEGIN
 #define PFX_LIST_NODE_TEMPLATE_DEFINES template < class item_type >
@@ -19,6 +21,8 @@ PECKER_BEGIN
 template < class item_type >
 class PFX_DATA_TEMPALE_API pfx_clist_node
 {
+public:
+	typedef 	item_type tem_type_t;
 protected:
 	pfx_clist_node < item_type >* m_prev_node_ptr;
 	pfx_clist_node < item_type >* m_netx_node_ptr;
@@ -40,9 +44,15 @@ template < class node_type_ >
 class PFX_DATA_TEMPALE_API pfx_clist_base;
 
 template < class node_type_ >
-class PFX_DATA_TEMPALE_API pfx_list_iterator_base
+class PFX_DATA_TEMPALE_API pfx_list_iterator_base : 
+	public pfx_increase_iterator < node_type_ >, 
+	public pfx_decrease_iterator< node_type_ >
 {
 	friend class pfx_clist_base < node_type_ > ;
+public:
+	typedef node_type_					node_type_t;
+	typedef node_type_*				node_type_ptr_t;
+	typedef const node_type_*		const_node_type_ptr_t;
 private:
 	node_type_* m_item_ptr;
 	const pfx_clist_base < node_type_ >* m_bind_list_ptr;
@@ -51,8 +61,13 @@ public:
 	~pfx_list_iterator_base();
 public:
 	const node_type_* get_item () const;
-	pfx_result_t increase ();
-	pfx_result_t decrease ();
+	pfx_list_iterator_base < node_type_ >* increase ();
+	pfx_list_iterator_base < node_type_ >* decrease ();
+
+	virtual pfx_increase_iterator < node_type_ >*	increase_iterator ();
+	virtual	const node_type_*									get_current_element () const;
+
+	virtual pfx_decrease_iterator < node_type_ >*	decrease_iterator ();
 
 public:
 	const pfx_clist_base < node_type_ >* get_bind_list () const;
@@ -61,6 +76,10 @@ public:
 template < class node_type_ >
 class PFX_DATA_TEMPALE_API pfx_clist_base
 {
+public:
+	typedef node_type_					node_type_t;
+	typedef node_type_*				node_type_ptr_t;
+	typedef const node_type_*		const_node_type_ptr_t;
 protected:
 	node_type_* m_first_node_ptr;
 	node_type_* m_last_node_ptr;
@@ -116,6 +135,8 @@ public:
 template < class node_type_, typename node_allocator_ >
 class pfx_clist : public virtual pfx_clist_base PFX_CLIST_BASE_TEMPLATE_PARAMS
 {
+public:
+	typedef node_allocator_	node_allocator_t;
 private:
 	node_allocator_* m_allocator_ptr;
 public:
@@ -210,35 +231,45 @@ const node_type_* pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::get_it
 	return m_item_ptr;
 }
 PFX_CLIST_BASE_TEMPLATE_DEFINES
-pfx_result_t pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::increase ()
+pfx_list_iterator_base < node_type_ >* pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::increase ()
 {
-	pfx_result_t status;
+	pfx_list_iterator_base < node_type_ >* return_ptr = null;
 	if (m_item_ptr && m_item_ptr->get_next_node ())
 	{
 		m_item_ptr = m_item_ptr->get_next_node_ref ();
-		status = PFX_STATUS_OK;
+		return_ptr = this;
 	}
-	else
-	{
-		status = PFX_STATUS_FIN;
-	}
-	return status;
+	return return_ptr;
 }
 
 PFX_CLIST_BASE_TEMPLATE_DEFINES
-pfx_result_t pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::decrease ()
+pfx_list_iterator_base < node_type_ >*  pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::decrease ()
 {
-	pfx_result_t status;
+	pfx_list_iterator_base < node_type_ >* return_ptr = null;
 	if (m_item_ptr && m_item_ptr->get_prev_node ())
 	{
 		m_item_ptr = m_item_ptr->get_prev_node_ref ();
-		status = PFX_STATUS_OK;
+		return_ptr = this;
 	}
-	else
-	{
-		status = PFX_STATUS_FIN;
-	}
-	return status;
+	return return_ptr;
+}
+
+PFX_CLIST_BASE_TEMPLATE_DEFINES
+pfx_increase_iterator < node_type_ >*	pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::increase_iterator ()
+{
+	return increase();
+}
+
+PFX_CLIST_BASE_TEMPLATE_DEFINES
+const node_type_*	pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::get_current_element () const
+{
+	return get_item();
+}
+
+PFX_CLIST_BASE_TEMPLATE_DEFINES
+pfx_decrease_iterator < node_type_ >*	pfx_list_iterator_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::decrease_iterator ()
+{
+	return decrease();
 }
 
 PFX_CLIST_BASE_TEMPLATE_DEFINES
@@ -453,12 +484,12 @@ node_type_* pfx_clist_base PFX_CLIST_BASE_TEMPLATE_PARAMS ::remove_list_node (pf
 	if (iterator_ptr && iterator_ptr->get_bind_list ())
 	{
 		node_type_* remove_node = remove_list_node(iterator_ptr->m_item_ptr);
-	    pfx_result_t status = iterator_ptr->increase ();
-		if (PFX_STATUS_OK != status)
+		pfx_list_iterator_base < node_type_ >* next_iterator =  iterator_ptr->increase ();
+		if (null == next_iterator)
 		{
-			status = iterator_ptr->decrease ();
+			next_iterator = iterator_ptr->decrease ();
 		}
-		if (PFX_STATUS_OK != status)
+		if (null == next_iterator)
 		{
 			iterator_ptr->m_item_ptr = null;
 		}		

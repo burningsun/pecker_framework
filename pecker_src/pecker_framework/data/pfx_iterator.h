@@ -16,7 +16,6 @@ PECKER_BEGIN
 template < class element_type >
 PFX_Interface pfx_increase_iterator
 {
-	//virtual pfx_increase_iterator < element_type >*	get_increase_iterator () = 0;
 	virtual pfx_increase_iterator < element_type >*	increase_iterator () = 0;
 	virtual	const element_type*									get_current_element () const = 0;
 };
@@ -24,7 +23,6 @@ PFX_Interface pfx_increase_iterator
 template < class element_type >
 PFX_Interface pfx_decrease_iterator
 {
-	//virtual pfx_decrease_iterator < element_type >*	get_decrease_iterator () = 0;
 	virtual pfx_decrease_iterator < element_type >*	decrease_iterator () = 0;
 	virtual	const element_type*									get_current_element () const = 0;
 };

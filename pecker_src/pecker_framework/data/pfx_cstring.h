@@ -12,6 +12,7 @@
 //#include "pfx_block.h"
 #include "pfx_clist.h"
 #include "pecker_value_compare.h"
+#include "pfx_data_traits.h"
 
 PECKER_BEGIN
 
@@ -127,14 +128,22 @@ public:
 	virtual pfx_result_t				clip_string_remain_right (pfx_uindex_t clip_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr) = 0;
 	virtual	pfx_ulong_t				get_string_type_code () const = 0;
 	virtual pfx_usize_t					get_cache_buffer_size () const = 0;
+	
+	
 
 	//virtual pfx_result_t				copy_string () const = 0;
 	virtual int								compare (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* other_ptr) const = 0;
+
+
+	
 };
 
 template < class element_,  class elem_compare = pecker_value_compare < element_ >, const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
 class pfx_cstring : public IPfx_string < element_ >
 {
+public:
+	typedef element_				item_type_t;
+	typedef elem_compare	compare_two_item_t;
 protected:
 	pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS	m_header;
 	element_																						m_cache_buffer [(0 == CACHE_BUFFER_SIZE ? 1: CACHE_BUFFER_SIZE)];
@@ -154,8 +163,6 @@ protected:
 																											pfx_usize_t element_count);
 	virtual PFX_INLINE element_*			new_string_buffer (pfx_usize_t element_count);
 	virtual PFX_INLINE pfx_result_t		delete_string_buffer (element_* PARAM_IN elem_ptr);
-protected:
-	//virtual PFX_INLINE	void enable_reference (pfx_boolean_t bEnable){;};
 public:
 	virtual const IPfx_string PFX_STRING_TEMPLATE_PARAMS* get_prev_node () const {return null;}
 	virtual const IPfx_string PFX_STRING_TEMPLATE_PARAMS* get_next_node () const {return null;}
@@ -224,20 +231,22 @@ public:
 
 	int								compare (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* other_ptr) const;
 	int								compare (const pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS & other_) const;
+
+public:
+	static PFX_INLINE	pfx_usize_t			cache_buffer_size ();
 	
 };
 
 template < class element_,  typename elem_compare = pecker_value_compare < element_ >, const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
 class pfx_cshare_string : public pfx_cstring < element_,  elem_compare, CACHE_BUFFER_SIZE >
 {
+public:
+	typedef element_				item_type_t;
+	typedef elem_compare	compare_two_item_t;
 protected:
 	IPfx_string PFX_STRING_TEMPLATE_PARAMS*	m_prev_string_ptr;
 	IPfx_string PFX_STRING_TEMPLATE_PARAMS*	m_next_string_ptr;
-	//pfx_boolean_t														m_enable_set_reference_string;
-	
-//protected:
-	//PFX_INLINE	 void enable_reference (pfx_boolean_t bEnable);
-
+protected:
 	virtual pfx_result_t	copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
 																pfx_boolean_t	bheader_cache_buffer, 
 																pfx_boolean_t & PARAM_INOUT is_reference);

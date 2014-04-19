@@ -44,8 +44,7 @@ pfx_result_t list_test ()
 	while (iterator_traval.get_item())
 	{
 		print_list_node(iterator_traval.get_item());
-		pfx_result_t status = iterator_traval.increase();
-		if (PFX_STATUS_FIN == status)
+		if (null == iterator_traval.increase())
 		{
 			break;
 		}
@@ -68,8 +67,7 @@ pfx_result_t list_test ()
 	while (iterator_traval.get_item())
 	{
 		print_list_node(iterator_traval.get_item());
-		pfx_result_t status = iterator_traval.increase();
-		if (PFX_STATUS_FIN == status)
+		if (null == iterator_traval.increase())
 		{
 			break;
 		}
@@ -91,8 +89,7 @@ pfx_result_t list_test ()
 	while (iterator_traval.get_item())
 	{
 		print_list_node(iterator_traval.get_item());
-		pfx_result_t status = iterator_traval.increase();
-		if (PFX_STATUS_FIN == status)
+		if (null == iterator_traval.increase())
 		{
 			break;
 		}
@@ -114,8 +111,7 @@ pfx_result_t list_test ()
 	while (iterator_traval.get_item())
 	{
 		print_list_node(iterator_traval.get_item());
-		pfx_result_t status = iterator_traval.increase();
-		if (PFX_STATUS_FIN == status)
+		if (null == iterator_traval.increase())
 		{
 			break;
 		}
@@ -148,8 +144,7 @@ pfx_result_t list_test ()
 	while (iterator_traval.get_item())
 	{
 		print_list_node(iterator_traval.get_item());
-		pfx_result_t status = iterator_traval.increase();
-		if (PFX_STATUS_FIN == status)
+		if (null == iterator_traval.increase())
 		{
 			break;
 		}
@@ -169,8 +164,7 @@ pfx_result_t list_test ()
 	while (iterator_traval.get_item())
 	{
 		print_list_node(iterator_traval.get_item());
-		pfx_result_t status = iterator_traval.increase();
-		if (PFX_STATUS_FIN == status)
+		if (null == iterator_traval.increase())
 		{
 			break;
 		}
@@ -188,8 +182,7 @@ pfx_result_t list_test ()
 	while (iterator_traval.get_item())
 	{
 		print_list_node(iterator_traval.get_item());
-		pfx_result_t status = iterator_traval.increase();
-		if (PFX_STATUS_FIN == status)
+		if (null == iterator_traval.increase())
 		{
 			break;
 		}

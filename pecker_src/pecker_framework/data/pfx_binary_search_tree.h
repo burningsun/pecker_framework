@@ -16,39 +16,34 @@
 PECKER_BEGIN
 
 
-#define PFX_CBST_EX_TEMPLATE_DEFINES template < class node_type_, class binary_search_tree, class compare_two_node_, class node_allocator >
-#define PFX_CBST_EX_TEMPLATE_PARAMS  < node_type_, binary_search_tree, compare_two_node_,node_allocator >
+#define PFX_CBST_EX_TEMPLATE_DEFINES template < class binary_search_tree, class node_allocator >
+#define PFX_CBST_EX_TEMPLATE_PARAMS  < binary_search_tree, node_allocator >
+#define PFX_CBST_EX_TEMPLATE_NODE typename bst_member_reference_type < binary_search_tree >::node_type_t
 
-template < class node_type_, class binary_search_tree, class compare_two_node_ , class node_allocator >
-class PFX_DATA_TEMPALE_API pfx_binary_search_tree_base : public virtual binary_search_tree
+template < class binary_search_tree, class node_allocator >
+class PFX_DATA_TEMPALE_API pfx_binary_search_tree_base : public  binary_search_tree
 {
 public:
-	node_type_* new_node ();
-	pfx_result_t release_node (node_type_* PARAM_IN node_ptr);
+	typedef node_allocator node_allocator_t;
+public:
+	virtual PFX_INLINE PFX_CBST_EX_TEMPLATE_NODE*	new_node ();
+	virtual PFX_INLINE pfx_result_t	release_node (PFX_CBST_EX_TEMPLATE_NODE* PARAM_IN node_ptr);
 };
 
 template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ > >
-class PFX_DATA_TEMPALE_API pfx_binary_search_tree : 
-	public pfx_binary_search_tree_base < node_type_,  pfx_cbst < node_type_,  compare_two_node_ >, compare_two_node_, node_allocator >
+struct pfx_binary_search_tree_type
 {
+	typedef pfx_binary_search_tree_base <  pfx_cbst < node_type_,  compare_two_node_ >,			node_allocator >			binary_search_tree_t;
+	typedef pfx_binary_search_tree_base <  pfx_cavl_tree < node_type_,  compare_two_node_ >,	node_allocator >			avl_binary_search_tree_t;
+	typedef pfx_binary_search_tree_base <  pfx_crb_tree < node_type_,  compare_two_node_ >,		node_allocator >			redblack_binary_search_tree_t;
 };
-
-template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ > >
-class PFX_DATA_TEMPALE_API pfx_avl_binary_search_tree : 
-	public pfx_binary_search_tree_base < node_type_,  pfx_cavl_tree < node_type_,  compare_two_node_ >, compare_two_node_, node_allocator >
-{
-};
-
-template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ > >
-class PFX_DATA_TEMPALE_API pfx_redblack_binary_search_tree : 
-	public pfx_binary_search_tree_base < node_type_,  pfx_crb_tree < node_type_,  compare_two_node_ >, compare_two_node_, node_allocator >
-{
-};
-
 
 template < class item_type,class compare_two_value = pecker_value_compare < item_type > >
 class PFX_DATA_TEMPALE_API pfx_cbst_node
 {
+public:
+	typedef item_type					item_type_t;
+	typedef compare_two_value	compare_two_item_t;
 protected:
 	pfx_cbst_node < item_type, compare_two_value >*	m_parent_node_ptr;
 	pfx_cbst_node < item_type, compare_two_value >*	m_left_node_ptr;
@@ -133,11 +128,25 @@ public:
 			return compare_two_value :: compare (this->get_item(),other_node_ptr->get_item());
 		}
 	}
+	PFX_INLINE int compare (const item_type* PARAM_IN item_ptr) const
+	{
+		if (null == item_ptr)
+		{
+			return 1;
+		}
+		else
+		{
+			return compare_two_value :: compare (this->get_item(),*item_ptr);
+		}
+	}
 };
 
 template < class item_type, class compare_two_value = pecker_value_compare < item_type > >
 class PFX_DATA_TEMPALE_API pfx_cavl_bst_node
 {
+public:
+	typedef item_type					item_type_t;
+	typedef compare_two_value	compare_two_item_t;
 protected:
 	pfx_cavl_bst_node < item_type, compare_two_value >* m_parent_node_ptr;
 	pfx_cavl_bst_node < item_type, compare_two_value >* m_left_node_ptr;
@@ -231,11 +240,25 @@ public:
 			return compare_two_value :: compare (this->get_item(),other_node_ptr->get_item());
 		}
 	}
+	PFX_INLINE int compare (const item_type* PARAM_IN item_ptr) const
+	{
+		if (null == item_ptr)
+		{
+			return 1;
+		}
+		else
+		{
+			return compare_two_value :: compare (this->get_item(),*item_ptr);
+		}
+	}
 };
 
 template < class item_type,  class compare_two_value = pecker_value_compare < item_type > >
 class PFX_DATA_TEMPALE_API pfx_crb_bst_node
 {
+public:
+	typedef item_type					item_type_t;
+	typedef compare_two_value	compare_two_item_t;
 protected:
 	pfx_crb_bst_node < item_type, compare_two_value >*	m_parent_node_ptr;
 	pfx_crb_bst_node < item_type, compare_two_value >*	m_left_node_ptr;
@@ -329,12 +352,25 @@ public:
 			return compare_two_value :: compare (this->get_item(),other_node_ptr->get_item());
 		}
 	}
+	PFX_INLINE int compare (const item_type* PARAM_IN item_ptr) const
+	{
+		if (null == item_ptr)
+		{
+			return 1;
+		}
+		else
+		{
+			return compare_two_value :: compare (this->get_item(),*item_ptr);
+		}
+	}
 };
-
 
 template < class item_type, class compare_two_value = pecker_value_compare < item_type > >
 class PFX_DATA_TEMPALE_API pfx_cbalance_bst_node
 {
+public:
+	typedef item_type					item_type_t;
+	typedef compare_two_value	compare_two_item_t;
 protected:
 	pfx_cbalance_bst_node < item_type, compare_two_value >* m_parent_node_ptr;
 	pfx_cbalance_bst_node < item_type, compare_two_value >* m_left_node_ptr;
@@ -435,15 +471,48 @@ public:
 			return compare_two_value :: compare (this->get_item(),other_node_ptr->get_item());
 		}
 	}
+
+	PFX_INLINE int compare (const item_type* PARAM_IN item_ptr) const
+	{
+		if (null == item_ptr)
+		{
+			return 1;
+		}
+		else
+		{
+			return compare_two_value :: compare (this->get_item(),*item_ptr);
+		}
+	}
 };
+
+template < class item_type, class compare_two_value = pecker_value_compare < item_type >, class node_allocator = pecker_simple_allocator < node_type_ > >
+struct pfx_set
+{
+	typedef pfx_cbst_node < item_type, compare_two_value >			bst_node_t;
+	typedef pfx_cavl_bst_node < item_type, compare_two_value >	avlbst_node_t;
+	typedef pfx_crb_bst_node < item_type, compare_two_value >		rbbst_node_t;
+
+	typedef typename pfx_binary_search_tree_type <  bst_node_t, 
+		pecker_value_compare_extern < bst_node_t >, 
+		node_allocator >::binary_search_tree_t										binary_search_tree_t;
+
+	typedef typename pfx_binary_search_tree_type <  avlbst_node_t, 
+		pecker_value_compare_extern < avlbst_node_t >, 
+		node_allocator >::avl_binary_search_tree_t									avl_binary_search_tree_t;
+
+	typedef typename pfx_binary_search_tree_type <  rbbst_node_t, 
+		pecker_value_compare_extern < rbbst_node_t >, 
+		node_allocator >::redblack_binary_search_tree_t						redblack_binary_search_tree_t;
+};
+
 //////////////////////////////////////////////////////////////////////////
 PFX_CBST_EX_TEMPLATE_DEFINES
-node_type_* pfx_binary_search_tree_base PFX_CBST_EX_TEMPLATE_PARAMS :: new_node ()
+PFX_INLINE PFX_CBST_EX_TEMPLATE_NODE* pfx_binary_search_tree_base PFX_CBST_EX_TEMPLATE_PARAMS :: new_node ()
 {
 	return node_allocator::allocate_object ();
 }
 PFX_CBST_EX_TEMPLATE_DEFINES
-pfx_result_t pfx_binary_search_tree_base PFX_CBST_EX_TEMPLATE_PARAMS :: release_node (node_type_* PARAM_IN node_ptr)
+PFX_INLINE pfx_result_t pfx_binary_search_tree_base PFX_CBST_EX_TEMPLATE_PARAMS :: release_node (PFX_CBST_EX_TEMPLATE_NODE* PARAM_IN node_ptr)
 {
 	return node_allocator::deallocate_object (node_ptr);
 }

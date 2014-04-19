@@ -22,8 +22,8 @@
 USING_PECKER_SDK
 	
 typedef pfx_crb_bst_node < pfx_cstring < pfx_char_t >, pecker_value_compare_extern < pfx_cstring < pfx_char_t > > > bst_string_node_t;
-static pfx_redblack_binary_search_tree < bst_string_node_t >  bst_strings;
-static pfx_redblack_binary_search_tree < bst_string_node_t >  bst_copy_strings;
+static pfx_binary_search_tree_type < bst_string_node_t >::redblack_binary_search_tree_t  bst_strings;
+static pfx_binary_search_tree_type < bst_string_node_t >::redblack_binary_search_tree_t  bst_copy_strings;
 static bst_string_node_t bst_key_node;
 
 PFX_INLINE_CODE void print_rb_bst_node (const bst_string_node_t* PARAM_IN node_ptr)

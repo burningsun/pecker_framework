@@ -100,15 +100,15 @@ int test_array (IPfx_array < int >* PARAM_INOUT array_ptr,
 
 int array_test_main ()
 {
-	pfx_inconsecutive_array < int > incs_array;
-	pfx_inconsecutive_array < int > incs_array_copy;
-	pfx_consecutive_array < int > cs_array;
-	pfx_consecutive_array < int > cs_array_copy;
+	array_type < int >::inconsecutive_array_t		incs_array;
+	array_type < int >::inconsecutive_array_t		incs_array_copy;
+	array_type < int >::consecutive_array_t			cs_array;
+	array_type < int >::consecutive_array_t			cs_array_copy;
 
-	pfx_inconsecutive_share_array < int > incss_array;
-	pfx_inconsecutive_share_array < int > incss_array_copy;
-	pfx_consecutive_share_array < int > css_array;
-	pfx_consecutive_share_array < int > css_array_copy;
+	array_type < int >::inconsecutive_share_array_t incss_array;
+	array_type < int >::inconsecutive_share_array_t incss_array_copy;
+	array_type < int >::consecutive_share_array_t		css_array;
+	array_type < int >::consecutive_share_array_t		css_array_copy;
 
 	PECKER_LOG_("======================\n");
 	PECKER_LOG_ ("pfx_inconsecutive_array < int > pfx_inconsecutive_array < int >\n");
