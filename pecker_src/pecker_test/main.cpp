@@ -13,12 +13,12 @@ extern int array_test_main ();
 extern int bst_stress_test_main ();
 int main ()
 {
-	//list_test();
-	//string_test();
-	//bst_test_main();
-	//avl_bst_test_main();
-	 //rb_bst_test_main();
-	//array_test_main ();
+	list_test();
+	string_test();
+	bst_test_main();
+	avl_bst_test_main();
+	 rb_bst_test_main();
+	array_test_main ();
 	bst_stress_test_main();
 	return 0;
 }

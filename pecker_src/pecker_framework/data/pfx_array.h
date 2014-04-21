@@ -27,9 +27,11 @@ PECKER_BEGIN
 #define PFX_CONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS   < cstring_  >
 #define consecutive_array_element typename string_member_reference_type < cstring_ >::item_type_t
 
-#define PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES	template < class  consecutive_array, class  consecutive_array_array >
-#define PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS	< consecutive_array, consecutive_array_array >
-#define inconsecutive_array_element typename array_member_reference_type < consecutive_array >::item_type_t
+#define PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_DEFINES	template < class  consecutive_array_array >
+#define PFX_INCONSECUTIVE_ARRAY_BASE_TEMPLATE_PARAMS	<consecutive_array_array >
+
+#define inconsecutive_array_block			typename  object_reference_type< typename array_member_reference_type < consecutive_array_array >::item_type_t >::obj_type_t
+#define inconsecutive_array_element	typename  array_member_reference_type< typename array_member_reference_type < consecutive_array_array >::item_type_t > ::item_type_t
 
 #define PFX_CONSECUTIVE_ARRAY_CODE (0XFFFE0000)
 #define PFX_INCONSECUTIVE_ARRAY_CODE (0XFFFE7FFF)
@@ -38,7 +40,7 @@ template < class element_ >
 PFX_Interface IPfx_array;
 
 template < class element_ >
-PFX_Interface IPfx_array_iterator : public pfx_increase_iterator < element_ >, 
+PFX_Interface PFX_DATA_TEMPALE_API IPfx_array_iterator : public pfx_increase_iterator < element_ >, 
 											public pfx_decrease_iterator < element_ >
 {
 	virtual ~IPfx_array_iterator < element_ > () {;}
@@ -55,7 +57,7 @@ PFX_Interface IPfx_array_iterator : public pfx_increase_iterator < element_ >,
 
 
 template < class element_ >
-class pfx_const_array_iterator : public IPfx_array_iterator < element_ >
+class PFX_DATA_TEMPALE_API pfx_const_array_iterator : public IPfx_array_iterator < element_ >
 {
 private:
 	const IPfx_array < element_ >*	m_attach_array_ptr;
@@ -75,7 +77,7 @@ public:
 };
 
 template < class element_ >
-class pfx_array_iterator : public IPfx_array_iterator < element_ >
+class PFX_DATA_TEMPALE_API pfx_array_iterator : public IPfx_array_iterator < element_ >
 {
 private:
 	IPfx_array < element_ >*	m_attach_array_ptr;
@@ -97,7 +99,7 @@ public:
 };
 
 template < class element_ >
-PFX_Interface IPfx_array
+PFX_Interface PFX_DATA_TEMPALE_API IPfx_array
 {
 
 	virtual ~IPfx_array () {;};
@@ -146,7 +148,7 @@ public:
 };
 
 template < class  cstring_ >
-class pfx_consecutive_array_base : public cstring_,
+class PFX_DATA_TEMPALE_API pfx_consecutive_array_base : public cstring_,
 	public IPfx_array < consecutive_array_element >
 {
 public:
@@ -203,8 +205,8 @@ public:
 
 };
 
-template < class  consecutive_array, class  consecutive_array_array >
-class pfx_inconsecutive_array_base : public IPfx_array < inconsecutive_array_element >
+template < class  consecutive_array_array >
+class PFX_DATA_TEMPALE_API pfx_inconsecutive_array_base : public IPfx_array < inconsecutive_array_element >
 {
 public:
 	typedef inconsecutive_array_element item_type_t;
@@ -223,8 +225,8 @@ public:
 	virtual	PFX_INLINE pfx_usize_t				get_step_cache_size () const;									
 	PFX_INLINE pfx_usize_t							get_current_auto_step () const;
 protected:
-	virtual PFX_INLINE consecutive_array* new_array_block ();
-	virtual PFX_INLINE pfx_result_t				delete_array_block (consecutive_array* PARAM_INOUT array_ptr);
+	virtual PFX_INLINE inconsecutive_array_block* new_array_block ();
+	virtual PFX_INLINE pfx_result_t				delete_array_block (inconsecutive_array_block* PARAM_INOUT array_ptr);
 public:
 	PFX_INLINE pfx_result_t			init_remian_element (pfx_usize_t element_count, pfx_usize_t allocate_step_size = 0, 
 		pfx_boolean_t release_buffer = PFX_BOOL_FALSE);
@@ -281,7 +283,7 @@ public:
 template < class element_, 
 	class elem_compare = pecker_value_compare < element_ >, 
 	const unsigned int CACHE_BUFFER_SIZE = PFX_DEFUALT_ARRAY_SIZE >
-struct consecutive_array_type
+struct PFX_DATA_TEMPALE_API consecutive_array_type
 {
 	typedef  pfx_consecutive_array_base < pfx_cstring < element_, elem_compare, CACHE_BUFFER_SIZE > >				consecutive_array_t;
 	typedef  pfx_consecutive_array_base < pfx_cshare_string < element_, elem_compare, CACHE_BUFFER_SIZE > > consecutive_share_array_t;
@@ -289,7 +291,7 @@ struct consecutive_array_type
 
 template < class _consecutive_array_t, 
 	const unsigned int CACHE_BUFFER_SIZE = PFX_DEFUALT_ARRAY_SIZE >
-struct consecutive_array_array_type
+struct PFX_DATA_TEMPALE_API consecutive_array_array_type
 {
 	typedef typename consecutive_array_type<_consecutive_array_t*, 
 		pecker_value_compare_extern < _consecutive_array_t >,
@@ -301,7 +303,7 @@ template < class element_,
 	class elem_compare = pecker_value_compare < element_ >,
 	const unsigned int FIRST_CACHE_BUFFER_SIZE		= PFX_DEFUALT_ARRAY_SIZE,
 	const unsigned int SECOND_CACHE_BUFFER_SIZE	= PFX_DEFUALT_ARRAY_SIZE >
-struct array_type
+struct PFX_DATA_TEMPALE_API array_type
 {
 	typedef typename consecutive_array_type< element_,  
 		elem_compare, 
@@ -325,11 +327,9 @@ struct array_type
 		FIRST_CACHE_BUFFER_SIZE >::consecutive_array_array_t											consecutive_share_array_array_t;
 
 
-	typedef pfx_inconsecutive_array_base< _consecutive_array_t, 
-		consecutive_array_array_t >																							inconsecutive_array_t;
+	typedef pfx_inconsecutive_array_base< consecutive_array_array_t >							inconsecutive_array_t;
 
-	typedef pfx_inconsecutive_array_base < _consecutive_share_array_t, 
-		consecutive_share_array_array_t >																				inconsecutive_share_array_t;
+	typedef pfx_inconsecutive_array_base < consecutive_share_array_array_t >			inconsecutive_share_array_t;
 };
 
 PECKER_END

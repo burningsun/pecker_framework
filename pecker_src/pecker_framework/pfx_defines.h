@@ -179,44 +179,44 @@ enum PFX_STATUS_CODE
 PFX_C_EXTERN_BEGIN
 // 类型定义
 typedef unsigned char			pfx_u8_t;
-typedef unsigned short		pfx_u16_t;
+typedef unsigned short			pfx_u16_t;
 typedef unsigned int				pfx_u32_t;
-typedef unsigned long long pfx_u64_t;
+typedef unsigned long long	pfx_u64_t;
 
 typedef char							pfx_s8_t;
-typedef short							pfx_s16_t;
+typedef short						pfx_s16_t;
 typedef int								pfx_s32_t;
 typedef long long					pfx_s64_t;
 
 typedef float							pfx_float_t;
 typedef double						pfx_double_t;
 
-typedef void*							pfx_handle_t;
-typedef void*							pfx_pvoid_t;
+typedef void*						pfx_handle_t;
+typedef void*						pfx_pvoid_t;
 typedef char							pfx_char_t;
 typedef wchar_t					pfx_wchar_t;
-typedef char*							pfx_charstr_t;
+typedef char*						pfx_charstr_t;
 
-typedef pfx_s32_t					pfx_sint_t;
-typedef pfx_u32_t					pfx_uint_t;
-typedef pfx_s16_t					pfx_short_t;
-typedef pfx_u16_t					pfx_ushort_t;
+typedef pfx_s32_t				pfx_sint_t;
+typedef pfx_u32_t				pfx_uint_t;
+typedef pfx_s16_t				pfx_short_t;
+typedef pfx_u16_t				pfx_ushort_t;
 typedef long							pfx_long_t;
-typedef unsigned long			pfx_ulong_t; 
+typedef unsigned long		pfx_ulong_t; 
 
 typedef long							pfx_address_t;
 typedef long							pfx_result_t;
 typedef long							pfx_flag_t;
-typedef unsigned long			pfx_enum_t;
+typedef unsigned long		pfx_enum_t;
 typedef int								pfx_pos_coord_t;
 typedef int								pfx_nsize_t;
-typedef unsigned int				pfx_usize_t;
+typedef unsigned int			pfx_usize_t;
 typedef int								pfx_index_t;
-typedef unsigned int				pfx_uindex_t;
-typedef unsigned char			pfx_byte_t;
-typedef unsigned int				pfx_enum_int_t;
-typedef unsigned int				pfx_bitfield_t;
-typedef unsigned int				pfx_boolean_t;
+typedef unsigned int			pfx_uindex_t;
+typedef unsigned char		pfx_byte_t;
+typedef unsigned int			pfx_enum_int_t;
+typedef unsigned int			pfx_bitfield_t;
+typedef unsigned int			pfx_boolean_t;
 //typedef char pfx_boolean_t;
 
 typedef enum enum_bool

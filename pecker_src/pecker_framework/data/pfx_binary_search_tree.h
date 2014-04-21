@@ -31,7 +31,7 @@ public:
 };
 
 template < class node_type_, class compare_two_node_ = pecker_value_compare_extern < node_type_ >, class node_allocator = pecker_simple_allocator < node_type_ > >
-struct pfx_binary_search_tree_type
+struct PFX_DATA_TEMPALE_API pfx_binary_search_tree_type
 {
 	typedef pfx_binary_search_tree_base <  pfx_cbst < node_type_,  compare_two_node_ >,			node_allocator >			binary_search_tree_t;
 	typedef pfx_binary_search_tree_base <  pfx_cavl_tree < node_type_,  compare_two_node_ >,	node_allocator >			avl_binary_search_tree_t;
@@ -486,11 +486,11 @@ public:
 };
 
 template < class item_type, class compare_two_value = pecker_value_compare < item_type >, class node_allocator = pecker_simple_allocator < node_type_ > >
-struct pfx_set
+struct PFX_DATA_TEMPALE_API pfx_set
 {
 	typedef pfx_cbst_node < item_type, compare_two_value >			bst_node_t;
 	typedef pfx_cavl_bst_node < item_type, compare_two_value >	avlbst_node_t;
-	typedef pfx_crb_bst_node < item_type, compare_two_value >		rbbst_node_t;
+	typedef pfx_crb_bst_node < item_type, compare_two_value >	rbbst_node_t;
 
 	typedef typename pfx_binary_search_tree_type <  bst_node_t, 
 		pecker_value_compare_extern < bst_node_t >, 

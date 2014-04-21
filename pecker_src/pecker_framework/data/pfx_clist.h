@@ -133,7 +133,7 @@ public:
 #define PFX_CLIST_TEMPLATE_PARAMS  < node_type_, node_allocator_ >
 
 template < class node_type_, typename node_allocator_ >
-class pfx_clist : public virtual pfx_clist_base PFX_CLIST_BASE_TEMPLATE_PARAMS
+class PFX_DATA_TEMPALE_API pfx_clist : public virtual pfx_clist_base PFX_CLIST_BASE_TEMPLATE_PARAMS
 {
 public:
 	typedef node_allocator_	node_allocator_t;

@@ -38,6 +38,7 @@
     <ClInclude Include="..\pecker_framework\data\pfx_math.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_matrix4.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_vector4.h" />
@@ -51,6 +52,9 @@
     <ClInclude Include="..\pecker_framework\pfx_api_info.h" />
     <ClInclude Include="..\pecker_framework\pfx_configs.h" />
     <ClInclude Include="..\pecker_framework\pfx_defines.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_image.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_color.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4D19307-630D-4AE6-A544-B5EAB6E2607B}</ProjectGuid>

@@ -8,18 +8,48 @@
 #define		PFX_DATA_TRATITS_H_
 
 #include "../pfx_defines.h"
+//#include "../native/pecker_allocator.h"
 
 PECKER_BEGIN
+// object
+template < typename obj_type >
+struct PFX_DATA_TEMPALE_API object_reference_type
+{
+	typedef typename	 obj_type	obj_type_t;
+};
+template < typename obj_type >
+struct PFX_DATA_TEMPALE_API object_reference_type < obj_type* >
+{
+	typedef typename	 obj_type	obj_type_t;
+};
+template < typename obj_type >
+struct PFX_DATA_TEMPALE_API object_reference_type < const obj_type* >
+{
+	typedef typename	 obj_type	obj_type_t;
+};
+// share object
+template < typename obj_type>
+struct PFX_DATA_TEMPALE_API share_object_reference_type
+{
+	typedef typename obj_type::allocator_t allocator_t;
+};
+
+template < typename obj_type >
+struct PFX_DATA_TEMPALE_API share_object_reference_type < obj_type* >
+{
+	typedef typename obj_type::allocator_t allocator_t;
+};
+
 
 // string
-template < class string_ >
+template < typename string_ >
 struct PFX_DATA_TEMPALE_API string_member_reference_type
 {
 	typedef typename	 string_::item_type_t						item_type_t;
 	typedef typename	 string_::compare_two_item_t		compare_two_item_t;
 };
 
-template < class string_ >
+template < typename string_ >
 struct PFX_DATA_TEMPALE_API string_ex_member_reference_type
 {
 	typedef typename	 string_::item_type_t						item_type_t;
@@ -45,13 +75,13 @@ struct PFX_DATA_TEMPALE_API array_member_reference_type < const array_* >
 };
 
 //list
-template < class list_node >
+template < typename list_node >
 struct PFX_DATA_TEMPALE_API list_node_member_reference_type
 {
 	typedef typename	 list_node::item_type_t				item_type_t;
 };
 
-template < class list_ >
+template < typename list_ >
 struct PFX_DATA_TEMPALE_API list_member_reference_type
 {
 	typedef typename	 list_::node_type_t						node_type_t;
@@ -59,7 +89,7 @@ struct PFX_DATA_TEMPALE_API list_member_reference_type
 	typedef typename	 list_::const_node_type_ptr_t		const_node_type_ptr_t;
 };
 
-template < class list_ >
+template < typename list_ >
 struct PFX_DATA_TEMPALE_API list_ex_member_reference_type
 {
 	typedef typename	 list_::node_type_t						node_type_t;
@@ -69,14 +99,14 @@ struct PFX_DATA_TEMPALE_API list_ex_member_reference_type
 };
 
 //bst
-template < class binary_search_tree_node >
+template < typename binary_search_tree_node >
 struct PFX_DATA_TEMPALE_API bst_node_member_reference_type
 {
 	typedef typename	 binary_search_tree_node::item_type_t						item_type_t;
 	typedef typename	 binary_search_tree_node::compare_two_item_t		compare_two_item_t;
 };
 
-template < class binary_search_tree >
+template < typename binary_search_tree >
 struct PFX_DATA_TEMPALE_API bst_member_reference_type
 {
 	typedef typename	 binary_search_tree::node_type_t						node_type_t;
@@ -85,7 +115,7 @@ struct PFX_DATA_TEMPALE_API bst_member_reference_type
 	typedef typename	 binary_search_tree::compare_two_node_t		compare_two_node_t;
 };
 
-template < class binary_search_tree >
+template < typename binary_search_tree >
 struct PFX_DATA_TEMPALE_API bst_ex_member_reference_type
 {
 	typedef typename	 binary_search_tree::node_type_t						node_type_t;
@@ -95,7 +125,7 @@ struct PFX_DATA_TEMPALE_API bst_ex_member_reference_type
 	typedef typename	 binary_search_tree::node_allocator_t				node_allocator_t;
 };
 
-template < class binary_search_tree >
+template < typename binary_search_tree >
 struct PFX_DATA_TEMPALE_API bstree_method
 {
 	typedef typename	 binary_search_tree::node_type_t						node_type_t;

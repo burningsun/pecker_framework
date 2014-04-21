@@ -4,6 +4,7 @@
 #include "data/pfx_cbst_iterator_codes.h"
 #include "data/pfx_cbst_codes.h"
 
+#include "render/pfx_color.h"
 #include "pfx_api_info.h"
 #include <stdio.h>
 

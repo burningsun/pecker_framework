@@ -21,7 +21,7 @@ PECKER_BEGIN
 #define PFX_BLOCKHEADER_TEMPLATE_PARAMS  < element_ >
 
 template < class element_ >
-struct pfx_block_header
+struct PFX_DATA_TEMPALE_API pfx_block_header
 {
 	pfx_usize_t		m_element_buffer_size;
 	pfx_usize_t		m_element_count;
@@ -49,7 +49,7 @@ typedef enum enumGarbageCollectionMODE
 }GarbageCollectionMODE_t;
 
 template < class element_ >
-PFX_Interface IPfx_string_header_operate
+PFX_Interface PFX_DATA_TEMPALE_API IPfx_string_header_operate
 {
 virtual ~IPfx_string_header_operate () {;};
 virtual	pfx_result_t				copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
@@ -61,7 +61,7 @@ virtual pfx_result_t				attach_extern_string_buffer (element_* PARAM_IN elem_ptr
 };
 
 template < class element_ >
-PFX_Interface IPfx_string : public IPfx_string_header_operate < element_ >
+PFX_Interface PFX_DATA_TEMPALE_API IPfx_string : public IPfx_string_header_operate < element_ >
 {
 	virtual ~IPfx_string () {;};
 protected:
@@ -81,11 +81,11 @@ public:
 public:
 	//virtual	pfx_result_t				swap_string (IPfx_string* PARAM_INOUT other_string_ptr) = 0;
 	virtual const element_*		get_string () const = 0;
-	virtual pfx_usize_t					get_length () const = 0;
-	virtual pfx_usize_t					get_string_buffer_size () const = 0;
+	virtual pfx_usize_t				get_length () const = 0;
+	virtual pfx_usize_t				get_string_buffer_size () const = 0;
 
 	virtual const element_*		get_charbuffer_at (pfx_uindex_t index_) const = 0;
-	virtual pfx_usize_t					set_charbuffer_at (pfx_uindex_t index_, const element_* PARAM_IN char_buffer, pfx_usize_t buf_size) = 0;
+	virtual pfx_usize_t				set_charbuffer_at (pfx_uindex_t index_, const element_* PARAM_IN char_buffer, pfx_usize_t buf_size) = 0;
 	
 	virtual  const element_*		sub_string_buffer (pfx_uindex_t index_) const = 0;
 
@@ -127,7 +127,7 @@ public:
 	virtual pfx_result_t				clip_string_remain_left (pfx_uindex_t clip_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr) = 0;
 	virtual pfx_result_t				clip_string_remain_right (pfx_uindex_t clip_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr) = 0;
 	virtual	pfx_ulong_t				get_string_type_code () const = 0;
-	virtual pfx_usize_t					get_cache_buffer_size () const = 0;
+	virtual pfx_usize_t				get_cache_buffer_size () const = 0;
 	
 	
 
@@ -139,11 +139,11 @@ public:
 };
 
 template < class element_,  class elem_compare = pecker_value_compare < element_ >, const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
-class pfx_cstring : public IPfx_string < element_ >
+class PFX_DATA_TEMPALE_API pfx_cstring : public IPfx_string < element_ >
 {
 public:
 	typedef element_				item_type_t;
-	typedef elem_compare	compare_two_item_t;
+	typedef elem_compare		compare_two_item_t;
 protected:
 	pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS	m_header;
 	element_																						m_cache_buffer [(0 == CACHE_BUFFER_SIZE ? 1: CACHE_BUFFER_SIZE)];
@@ -151,7 +151,7 @@ protected:
 
 protected:
 	PFX_INLINE pfx_result_t			reset_header ();
-	PFX_INLINE element_*				resize_new_stringbuffer (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
+	PFX_INLINE element_*			resize_new_stringbuffer (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
 																									pfx_usize_t elememt_size, 
 																									pfx_result_t& PARAM_INOUT status_); 
 	pfx_result_t								attach_extern_string_buffer (element_* PARAM_IN elem_ptr);
@@ -187,7 +187,7 @@ public:
 	PFX_INLINE pfx_usize_t				get_string_buffer_size () const;
 
 	const element_*		get_charbuffer_at (pfx_uindex_t index_) const;
-	pfx_usize_t					set_charbuffer_at (pfx_uindex_t index_, const element_* PARAM_IN char_buffer, pfx_usize_t buf_size);
+	pfx_usize_t				set_charbuffer_at (pfx_uindex_t index_, const element_* PARAM_IN char_buffer, pfx_usize_t buf_size);
 
 	const element_*		sub_string_buffer (pfx_uindex_t index_) const;
 
@@ -238,7 +238,7 @@ public:
 };
 
 template < class element_,  typename elem_compare = pecker_value_compare < element_ >, const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
-class pfx_cshare_string : public pfx_cstring < element_,  elem_compare, CACHE_BUFFER_SIZE >
+class PFX_DATA_TEMPALE_API pfx_cshare_string : public pfx_cstring < element_,  elem_compare, CACHE_BUFFER_SIZE >
 {
 public:
 	typedef element_				item_type_t;
