@@ -27,7 +27,7 @@ pfx_result_t list_test ()
 	pfx_clist_base < int_list_node > * int_list_ptr;
 	int_list_allocator simple_allocator;
 	pfx_list_iterator_base < int_list_node > iterator_traval;
-	pfx_clist < int_list_node, int_list_allocator > int_list (&simple_allocator);
+	pfx_clist < int_list_node, int_list_allocator > int_list ;//(&simple_allocator);
 	int_list_ptr = &int_list;
 
 	//////////////////////////////////////////////////////////////////////////

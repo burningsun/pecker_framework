@@ -7,11 +7,14 @@
 #include <stdio.h>
 #include "../pecker_framework/data/pfx_cstring_codes.h"
 #include "../pecker_framework/native/pfx_log.h"
-
+#include "../pecker_framework/data/pfx_share_object.h"
+//#include "../pecker_framework/native/pecker_allocator.h"
 USING_PECKER_SDK
 
 pfx_result_t string_test ()
 {
+	//pfx_share_object_base< pecker_simple_allocator < pfx_sint_t > > obj;
+
 	IPfx_string< pfx_char_t >* string_ptr1;
 	IPfx_string< pfx_char_t >* string_ptr2;
 	IPfx_string< pfx_char_t >* string_ptr3;

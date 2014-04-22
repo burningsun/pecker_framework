@@ -255,7 +255,7 @@ typedef union PFX_32bit_DataType
 {
 	pfx_sint_t									m_int_type;
 	pfx_uint_t									m_uint_type;
-	pfx_float_t									m_float_type;
+	pfx_float_t								m_float_type;
 	pfx_long_t									m_long_type;
 	pfx_ulong_t								m_ulong_type;
 	pfx_short_t								m_short_type[2];
@@ -263,7 +263,7 @@ typedef union PFX_32bit_DataType
 	pfx_char_t									m_char_type[4];
 	pfx_byte_t									m_uchar_type[4];
 	pfx_16bit_t								m_16bit_type[2];
-	pfx_float_struct_t						m_float_st_type;
+	pfx_float_struct_t					m_float_st_type;
 }pfx_32_bit_t;
 
 typedef union PFX_64bit_DataType
@@ -273,7 +273,7 @@ typedef union PFX_64bit_DataType
 	double							m_double_type;
 	pfx_sint_t						m_int_type[2];
 	pfx_uint_t						m_uint_type[2];
-	pfx_float_t						m_float_type[2];
+	pfx_float_t					m_float_type[2];
 	pfx_long_t						m_long_type[2];
 	pfx_ulong_t					m_ulong_type[2];
 	pfx_short_t					m_short_type[4];
@@ -282,7 +282,7 @@ typedef union PFX_64bit_DataType
 	pfx_byte_t						m_uchar_type[8];
 	pfx_32_bit_t					m_32bit_type[2];
 	pfx_16bit_t					m_16bit_type[4];
-	pfx_double_struct_t		m_double_st_type;
+	pfx_double_struct_t	m_double_st_type;
 }pfx_64bit_t;
 
 typedef union PFX_128bit_DataType
@@ -292,7 +292,7 @@ typedef union PFX_128bit_DataType
 	double							m_double_type[2];
 	pfx_sint_t						m_int_type[4];
 	pfx_uint_t						m_uint_type[4];
-	pfx_float_t						m_float_type[4];
+	pfx_float_t					m_float_type[4];
 	pfx_long_t						m_long_type[4];
 	pfx_ulong_t					m_ulong_type[4];
 	pfx_short_t					m_short_type[8];

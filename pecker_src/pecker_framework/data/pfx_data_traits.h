@@ -8,36 +8,87 @@
 #define		PFX_DATA_TRATITS_H_
 
 #include "../pfx_defines.h"
-//#include "../native/pecker_allocator.h"
-
 PECKER_BEGIN
 // object
 template < typename obj_type >
 struct PFX_DATA_TEMPALE_API object_reference_type
 {
-	typedef typename	 obj_type	obj_type_t;
+	typedef typename	 obj_type								obj_type_t;
+	//typedef DEFUALT_ALLOCATOR ( obj_type )		allocator_t;
 };
 template < typename obj_type >
 struct PFX_DATA_TEMPALE_API object_reference_type < obj_type* >
 {
-	typedef typename	 obj_type	obj_type_t;
+	typedef typename	 obj_type								obj_type_t;
+
+	//typedef DEFUALT_ALLOCATOR ( obj_type )		allocator_t;
 };
 template < typename obj_type >
 struct PFX_DATA_TEMPALE_API object_reference_type < const obj_type* >
 {
-	typedef typename	 obj_type	obj_type_t;
-};
-// share object
-template < typename obj_type>
-struct PFX_DATA_TEMPALE_API share_object_reference_type
-{
-	typedef typename obj_type::allocator_t allocator_t;
+	typedef typename	 obj_type								obj_type_t;
+
+	//typedef DEFUALT_ALLOCATOR ( obj_type )		allocator_t;
 };
 
-template < typename obj_type >
-struct PFX_DATA_TEMPALE_API share_object_reference_type < obj_type* >
+// allocatable object
+template < class alloc_object >
+struct allocatable_object_type
 {
-	typedef typename obj_type::allocator_t allocator_t;
+	typedef typename alloc_object::allocator_t	allocator_t;
+	typedef typename alloc_object::element_t	element_t;
+};
+
+template < class alloc_object >
+struct allocatable_handle_object_type
+{
+	typedef typename alloc_object::allocator_t	allocator_t;
+	typedef typename alloc_object::element_t	element_t;
+	typedef typename alloc_object::handle_t		handle_t;
+};
+template < class alloc_object >
+struct allocatable_handle_object_type < alloc_object* >
+{
+	typedef typename alloc_object::allocator_t	allocator_t;
+	typedef typename alloc_object::element_t	element_t;
+	typedef typename alloc_object::handle_t		handle_t;
+};
+template < class alloc_object >
+struct allocatable_handle_object_type < const alloc_object* >
+{
+	typedef typename alloc_object::allocator_t	allocator_t;
+	typedef typename alloc_object::element_t	element_t;
+	typedef typename alloc_object::handle_t		handle_t;
+};
+
+template < class allocator_ >
+struct allocator_method
+{
+	typedef typename allocatable_object_type < allocator_ >::allocator_t	allocator_t;
+	typedef typename allocatable_object_type < allocator_ >::element_t	element_t;
+
+	static PFX_INLINE element_t* allocate_object ()
+	{
+		return allocator_t::allocate_object();
+	}
+	static PFX_INLINE pfx_result_t deallocate_object(element_t*&  PARAM_INOUT del_element_ptr)
+	{
+		return allocator_t::deallocate_object(del_element_ptr);
+	}
+
+	static PFX_INLINE element_t* reallocate_objects (element_t* PARAM_INOUT del_element_ptr,pfx_usize_t new_count)
+	{
+		return  allocator_t::reallocate_objects(del_element_ptr,new_count);
+	}
+
+	static PFX_INLINE element_t* allocate_objects (pfx_usize_t count)
+	{
+		return allocator_t::allocate_objects(count);
+	}
+	static PFX_INLINE pfx_result_t deallocate_objects(element_t*&  PARAM_INOUT del_element_ptr)
+	{
+		return deallocate_objects(del_element_ptr);
+	}
 };
 
 
