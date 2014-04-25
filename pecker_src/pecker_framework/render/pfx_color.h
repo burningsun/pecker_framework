@@ -12,16 +12,28 @@
 
 PECKER_BEGIN
 
-typedef enum enumCOLOR_VALUE_TYPE
+typedef enum enumINTERNAL_COLOR_FORMAT_TYPE
+{
+	PFX_RGBA_FMT,
+	PFX_RGB_FMT,
+
+	PFX_ALPHA_FMT,
+	PFX_LUMINANCE_FMT,
+	PFX_LUMINANCE_ALPHA_FMT,
+
+	PFX_UNKNOWN_COLOR_INFMT,
+	INTERNAL_COLOR_FORMAT_TYPE_t
+}PFX_INTERNAL_COLOR_FORMAT_TYPE_t;
+
+typedef enum enumCOLOR_FORMAT_TYPE
 {
 	PFX_RGBA_FLOAT_FMT = 0,
-	PFX_RGB_FLOAT_FMT,
-	
 	PFX_RGBA8_FMT,
-	PFX_RGB8_FMT,
-
 	PFX_RGBA_4444_FMT,
 	PFX_RGBA_5551_FMT,
+
+	PFX_RGB_FLOAT_FMT,
+	PFX_RGB8_FMT,
 	PFX_RGB_565_FMT,
 
 	PFX_ALPHA_8_FMT,
@@ -29,8 +41,70 @@ typedef enum enumCOLOR_VALUE_TYPE
 	PFX_LUMINANCE_ALPHA_88_FMT,
 
 	PFX_UNKNOW_COLOR_FMT,
-	PFX_COLOR_VALUE_TYPE_COUNT
+	PFX_COLOR_FORMAT_COUNT
 }PFX_COLOR_FORMAT_TYPE_t;
+
+template < const pfx_enum_int_t color_format >
+struct PFX_DATA_TEMPALE_API color_internal_format
+{
+	static  PFX_INLINE pfx_enum_int_t get_internal_format ()
+	{
+		return PFX_UNKNOWN_COLOR_INFMT;
+	}
+};
+#define COLOR_INTERNAL_FORMAT_TRAITS(FORMAT,INTERANL_FORMAT) \
+template <  >\
+struct PFX_DATA_TEMPALE_API color_internal_format < FORMAT >\
+{\
+	static  PFX_INLINE pfx_enum_int_t get_internal_format ()\
+	{\
+		return INTERANL_FORMAT;\
+	}\
+};
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_FLOAT_FMT, PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA8_FMT, PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_4444_FMT, PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_5551_FMT, PFX_RGBA_FMT)
+
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB_FLOAT_FMT,PFX_RGB_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB8_FMT,PFX_RGB_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB_565_FMT,PFX_RGB_FMT)
+
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_ALPHA_8_FMT, PFX_ALPHA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_LUMINANCE_8_FMT, PFX_LUMINANCE_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_LUMINANCE_ALPHA_88_FMT, PFX_LUMINANCE_ALPHA_FMT)
+
+//PFX_INLINE pfx_enum_int_t get_internal_format (pfx_enum_int_t color_format)
+//{
+//	pfx_enum_int_t retn_format;
+//	switch (color_format)
+//	{
+//		case PFX_RGBA_FLOAT_FMT:
+//		case PFX_RGBA8_FMT:
+//		case PFX_RGBA_4444_FMT:
+//		case PFX_RGBA_5551_FMT:
+//			retn_format = PFX_RGBA_FMT;
+//			break;
+//		case PFX_RGB_FLOAT_FMT:
+//		case PFX_RGB8_FMT:
+//		case PFX_RGB_565_FMT:
+//			retn_format = PFX_RGB_FMT;
+//			break;
+//		case PFX_ALPHA_8_FMT:
+//			retn_format = PFX_ALPHA_FMT;
+//			break;
+//		case PFX_LUMINANCE_8_FMT:
+//			retn_format = PFX_LUMINANCE_FMT;
+//			break;
+//		case PFX_LUMINANCE_ALPHA_88_FMT:
+//			retn_format = PFX_LUMINANCE_ALPHA_FMT;
+//			break;
+//		default:
+//			retn_format = PFX_UNKNOW_COLOR_INFMT;
+//			break;
+//	}
+//	return retn_format;
+//}
 
 typedef pfx_bitfield_t		pfx_bits_color;
 typedef pfx_u16_t			pfx_16bits_color;
@@ -185,6 +259,15 @@ template <  >
 struct color_value_reference < PFX_LUMINANCE_ALPHA_88_FMT >
 {
 	typedef pfx_LUMINANCE_ALPHA_88_color	color_value;
+};
+
+template< const pfx_enum_int_t  color_format >
+struct color_format_size
+{
+	static PFX_INLINE  pfx_nsize_t SIZE()
+	{
+		return sizeof (typename color_value_reference < color_format >::color_value);
+	}
 };
 
 // 颜色类

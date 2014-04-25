@@ -9,103 +9,54 @@
 #define		PFX_IMAGE_H_
 
 #include "../../pfx_defines.h"
-#include "../pfx_render_type.h"
+#include "../pfx_color.h"
 
 PECKER_BEGIN
 
-typedef enum enumIMAGE_STORAGE_FORMAT
+typedef enum enumPFX_IMG_COMPRESSION_FORAMT
 {
-	PFX_IMG_FMT_UNKOWN = -1,
-	PFX_IMG_FMT_RGBA = 0,
-	PFX_IMG_FMT_RGB,
-	PFX_IMG_FMT_LUMINANCE_ALPHA,
-	PFX_IMG_FMT_LUMINANCE,
-	PFX_IMG_FMT_ALPHA,
+	PFX_IMG_UNCOMPRESS_FMT = 0,
+	PFX_IMG_PVR_FMT,
+	PFX_IMG_DDS_FMT,
+	PFX_IMG_PNG_FMT,
+	PFX_IMG_JPG_FMT,
+	PFX_IMG_UNKOWN_FMT,
+	PFX_PFX_IMG_CPS_FMT_COUNT
+}PFX_IMG_COMPRESSION_FORAMT_t;
 
-	PFX_IMAGE_STORAGE_FORMAT_COUNT
-}PFX_IMAGE_STORAGE_FORMAT_t;
-
-typedef enum enumIMAGE_PIXEL_FORMAT
+typedef struct image_bits
 {
-	PFX_IMG_PXL_UNKOWN = -1,
-	PFX_IMG_PXL_FMT_8888 = 0,
-	PFX_IMG_PXL_FMT_4444,
-	PFX_IMG_PXL_FMT_5551,
-	PFX_IMG_PXL_FMT_5650,
+	pfx_byte_t*										m_bits_ptr;
+	pfx_usize_t										m_bytes_count;
+	PFX_COLOR_FORMAT_TYPE_t		m_color_format;
+	pfx_enum_int_t								m_compression_format;
+}image_bits_t;
 
-	PFX_IMAGE_PIXEL_FORMAT_COUNT
-}PFX_IMAGE_PIXEL_FORMAT_t;
-
-
-
-PFX_INLINE  PFX_PIXEL_COLOR_FORMAT_t* GET_IMAGE_PIXEL_FORMAT_COLOR_SIZE (PFX_IMAGE_PIXEL_FORMAT_t format_,
-	PFX_PIXEL_COLOR_FORMAT_t* PARAM_INOUT retn_format)
+template < pfx_enum_int_t image_compression_format >
+struct PFX_Image
 {
-	RETURN_INVALID_RESULT (null == retn_format,null);
-	switch (format_)
+	static PFX_INLINE pfx_result_t load_image_form_memery (pfx_byte_t* PARAM_IN bits_ptr,
+		image_bits_t& PARAM_INOUT image_bits_, pfx_boolean_t to_decompress)
 	{
-	case PFX_IMG_PXL_FMT_8888:
-		retn_format->m_red_size		= 8;
-		retn_format->m_green_size	= 8;
-		retn_format->m_blue_size		= 8;
-		retn_format->m_alpha_size		= 8;
-		break;
-	case PFX_IMG_PXL_FMT_4444:
-		retn_format->m_red_size		= 4;
-		retn_format->m_green_size	= 4;
-		retn_format->m_blue_size		= 4;
-		retn_format->m_alpha_size		= 4;
-		break;
-	case PFX_IMG_PXL_FMT_5551:
-		retn_format->m_red_size		= 5;
-		retn_format->m_green_size	= 5;
-		retn_format->m_blue_size		= 5;
-		retn_format->m_alpha_size		= 1;
-		break;
-	case PFX_IMG_PXL_FMT_5650:
-		retn_format->m_red_size		= 5;
-		retn_format->m_green_size	= 6;
-		retn_format->m_blue_size		= 5;
-		retn_format->m_alpha_size		= 0;
-		break;
-	default:
-		retn_format = null;
-		break;
+		return PFX_STATUS_DENIED;
 	}
-	return retn_format;
-}
-
-typedef struct st_image_
-{
-	PFX_IMAGE_STORAGE_FORMAT_t m_strorage_format;
-	PFX_IMAGE_PIXEL_FORMAT_t		m_pixel_format;
-	pfx_usize_t											m_width;
-	pfx_usize_t											m_height;
-	pfx_usize_t											m_image_size;
-	void*													m_pixel_data;												
-}PFX_IMAGE_t;
-
-typedef struct st_const_image_
-{
-	PFX_IMAGE_STORAGE_FORMAT_t m_strorage_format;
-	PFX_IMAGE_PIXEL_FORMAT_t		m_pixel_format;
-	pfx_usize_t											m_width;
-	pfx_usize_t											m_height;
-	pfx_usize_t											m_image_size;
-	const void*										m_pixel_data;												
-}PFX_CONST_IMAGE_t;
-
-typedef struct st_compressed_image_
-{
-	pfx_flag_t			m_image_compress_type;	
-	PFX_IMAGE_t	m_image_data;
-}PFX_COMPRESSED_IMAGE_t;
-
-typedef struct st_const_compressed_image_
-{
-	pfx_flag_t						m_image_compress_type;	
-	PFX_CONST_IMAGE_t	m_image_data;
-}PFX_CONST_COMPRESSED_IMAGE_t;
+	static PFX_INLINE pfx_result_t load_image_form_resource_table (const pfx_char_t* PARAM_IN str_image_name,
+		pfx_usize_t image_name_length,image_bits_t& PARAM_INOUT image_bits_, 
+		pfx_boolean_t to_decompress)
+	{
+		return PFX_STATUS_DENIED; 
+	}
+	static PFX_INLINE pfx_result_t load_image_form_file (const pfx_char_t* PARAM_IN str_image_file_path,
+		pfx_usize_t file_path_length,image_bits_t& PARAM_INOUT image_bits_, 
+		pfx_boolean_t to_decompress)
+	{
+		return PFX_STATUS_DENIED; 
+	}
+	static PFX_INLINE pfx_result_t release_image (image_bits_t& PARAM_INOUT image_bits_)
+	{
+		return PFX_STATUS_DENIED; 
+	}
+};
 
 PECKER_END
 

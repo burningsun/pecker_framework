@@ -31,11 +31,11 @@
     <Filter Include="render">
       <UniqueIdentifier>{64c274fe-06e8-492e-88b5-a817d97e30bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="render\render_util">
-      <UniqueIdentifier>{c780a2ff-8078-4380-9fae-ef5ef789c5ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="render\render_system">
       <UniqueIdentifier>{ab99c53d-50d2-4047-a3aa-b1d5e8ed6c04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\render_util">
+      <UniqueIdentifier>{c780a2ff-8078-4380-9fae-ef5ef789c5ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +135,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_data_traits.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\render\pfx_image.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h">
       <Filter>render</Filter>
     </ClInclude>
@@ -146,6 +143,24 @@
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h">
       <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_texture.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_region.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_image.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_framebuffer_object.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_buffer_object.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_render_defs.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

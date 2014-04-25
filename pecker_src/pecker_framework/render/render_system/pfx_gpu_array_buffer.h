@@ -9,9 +9,7 @@
 #define		PFX_GPU_ARRAY_BUFFER_H_
 
 #include "../../pfx_defines.h"
-#include "../../data/pfx_balance_bst.h"
-#include "../../data/pfx_bst_iterator.h"
-#include "pfx_shader_program.h"
+
 
 PECKER_BEGIN
 
