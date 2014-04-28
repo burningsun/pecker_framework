@@ -86,6 +86,7 @@
     <ClCompile Include="pfx_list_test.cpp" />
     <ClCompile Include="pfx_rb_bst_test.cpp" />
     <ClCompile Include="pfx_string_test.cpp" />
+    <ClCompile Include="pfx_vector_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pfx_file_inputdata_cmd.h" />

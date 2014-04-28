@@ -162,5 +162,14 @@
     <ClInclude Include="..\pecker_framework\render\pfx_render_defs.h">
       <Filter>render</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_vector.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_vector_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_matrix.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

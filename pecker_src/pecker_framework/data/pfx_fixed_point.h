@@ -22,10 +22,14 @@
 
 
 
-#define COS_TABLE(x)	(pfx_cos_val[(PVRTXMUL(((PVRTXDIV((x)<0? -(x):(x), PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))])
-#define SIN_TABLE(x)	(pfx_sin_val[(PVRTXMUL(((PVRTXDIV((x)<0 ? PVRT_PIx-(x):(x), PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))])
-#define TAN_TABLE(x)	( (x)<0 ? -pfx_tan_val[(PVRTXMUL(((PVRTXDIV(-(x), PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))] : pfx_tan_val[(PVRTXMUL(((PVRTXDIV(x, PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))] )
-#define ACOS_TABLE(x)	(pfx_acos_val[PVRTXMUL(((((x) + PVRTF2X(1.0f))>>1) & 0x0000FFFF), (NUM_ENTRIES-1))])
+#define COS_TABLE(x)	x
+//(pfx_cos_val[(PVRTXMUL(((PVRTXDIV((x)<0? -(x):(x), PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))])
+#define SIN_TABLE(x)	x
+//(pfx_sin_val[(PVRTXMUL(((PVRTXDIV((x)<0 ? PVRT_PIx-(x):(x), PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))])
+#define TAN_TABLE(x) x
+//( (x)<0 ? -pfx_tan_val[(PVRTXMUL(((PVRTXDIV(-(x), PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))] : pfx_tan_val[(PVRTXMUL(((PVRTXDIV(x, PVRT_TWO_PIx)) & 0x0000FFFF), (NUM_ENTRIES-1)))] )
+#define ACOS_TABLE(x) x	
+//(pfx_acos_val[PVRTXMUL(((((x) + PVRTF2X(1.0f))>>1) & 0x0000FFFF), (NUM_ENTRIES-1))])
 
 #ifdef USE_TRIGONOMETRIC_LOOKUP_TABLES
 #define	pfx_cos(x)		PFX_INTX_2_FLOAT(COS_TABLE(PFX_FLOAT_2_INTX(x)))

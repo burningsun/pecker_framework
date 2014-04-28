@@ -139,7 +139,9 @@ enum PFX_STATUS_CODE
 #endif
 #define INVALID_VALUE	(-1)
 #define MAX_UNSIGNED_VALUE (-1)
-#define PECKER_PI 3.141592653
+#define PECKER_PI (3.141592653)
+#define PECKER_TWO_PI (6.283185306)
+
 
 #ifdef __cplusplus
 #define	PFX_C_EXTERN_BEGIN extern "C" {

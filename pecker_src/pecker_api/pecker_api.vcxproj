@@ -37,12 +37,15 @@
     <ClInclude Include="..\pecker_framework\data\pfx_iterator.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_matrix.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_matrix4.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_region.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_vector.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_vector4.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_vector_codes.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_allocator.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_stream.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_system.h" />
