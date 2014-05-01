@@ -37,7 +37,7 @@ PFX_INLINE pfx_boolean_t dimension_value_operations < float >::
 	pfx_s32_t iX, iY;
 	iX = (fX>0) ? ((pfx_s32_t&)fX)  : ( (pfx_s32_t&) fX - 0x80000000 );
 	iY = (fY>0) ? ((pfx_s32_t&)fY)  : ( (pfx_s32_t&) fY - 0x80000000 );
-	retn_val =  (pfx_boolean_t)((bool)((dimension_value_operations < float >::abs(iX-iY))<delta));
+	retn_val =  (pfx_boolean_t)(bool)((dimension_value_operations < pfx_s32_t >::abs(iX-iY))< (pfx_s32_t)delta);
 #else
 	
 	retn_val =  (pfx_boolean_t)(fX == fY);
@@ -427,6 +427,11 @@ PFX_INLINE pfx_usize_t	pfx_vector VERCOTOR_TEMPLATE_PARAMS::get_dimensional_coun
 {
 	return dimensional_count;
 }
+VERCOTOR_TEMPLATE_DEFS
+PFX_INLINE pfx_usize_t	pfx_vector VERCOTOR_TEMPLATE_PARAMS::vector_dimensional_count ()
+{
+	return dimensional_count;
+}
 
 VERCOTOR_TEMPLATE_DEFS
 PFX_INLINE const DIM_VALUE_TYPE&	pfx_vector VERCOTOR_TEMPLATE_PARAMS::get (pfx_uindex_t dimensional) const
@@ -547,9 +552,17 @@ PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS & pfx_vector VERCOTOR_TEMPLATE_PA
 	pfx_vector VERCOTOR_TEMPLATE_PARAMS::div_replace (m_dim,b);
 	return *this;
 }
-
 VERCOTOR_TEMPLATE_DEFS
-st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
+PFX_INLINE void	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
+set_all (st_pfx_vector < dimension_value_t, dimensional_count >& vec, dimension_value_t dim_set)
+{
+	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
+	{
+		vec.m_value[i] = dim_set;
+	}
+}
+VERCOTOR_TEMPLATE_DEFS
+PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
 sets(st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec, 
 	const DIM_VALUE_TYPE* dim_ptr,
 	pfx_usize_t dim_count)
@@ -776,7 +789,7 @@ VERCOTOR_TEMPLATE_DEFS
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
-		dimension_value_operations::mul_replace (vec_a.m_value[i],vec_b);
+		dimension_value_operations::mul_replace (vec_a.m_value[i],val_b);
 	}
 	return vec_a;
 }
@@ -798,7 +811,7 @@ VERCOTOR_TEMPLATE_DEFS
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
-		dimension_value_operations::div_replace (vec_a.m_value[i],vec_b);
+		dimension_value_operations::div_replace (vec_a.m_value[i],val_b);
 	}
 	return vec_a;
 }

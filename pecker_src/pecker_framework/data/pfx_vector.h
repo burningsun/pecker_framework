@@ -160,7 +160,9 @@ public:
 
 
 public:
-	static st_pfx_vector < dimension_value_t, dimensional_count >& sets(st_pfx_vector < dimension_value_t, dimensional_count >& vec, 
+	static PFX_INLINE pfx_usize_t		vector_dimensional_count ();
+	static PFX_INLINE void	set_all (st_pfx_vector < dimension_value_t, dimensional_count >& vec, dimension_value_t dim_set);
+	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& sets(st_pfx_vector < dimension_value_t, dimensional_count >& vec, 
 		const dimension_value_t* dim_ptr,
 		pfx_usize_t dim_count);
 

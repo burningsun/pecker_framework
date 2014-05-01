@@ -171,5 +171,8 @@
     <ClInclude Include="..\pecker_framework\data\pfx_matrix.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_matrix_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
