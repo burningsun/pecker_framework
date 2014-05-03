@@ -14,14 +14,18 @@
 PECKER_BEGIN
 
 #define DIMENSION_VAL_OP_TEMPLATE_DEFS template < class dimension_value >
-#define DIMENSION_VAL_OP_TEMPLATE_PARAMS < dimension_value >
+//#define DIMENSION_VAL_OP_TEMPLATE_PARAMS < dimension_value >
+#define DIM_OP_TEMPLATE dimension_value_operations < dimension_value >
 
 #define VERCOTOR_TEMPLATE_DEFS	template < class dimension_value_operations, const pfx_usize_t	dimensional_count, const pfx_enum_int_t optional_type >
-#define VERCOTOR_TEMPLATE_PARAMS < dimension_value_operations, dimensional_count, optional_type >
-#define DIM_VALUE_TYPE typename dimension_value_operations::dimension_value_t
+//#define VERCOTOR_TEMPLATE_PARAMS < dimension_value_operations, dimensional_count, optional_type >
+#define TMPLATE_CVEC  pfx_vector < dimension_value_operations, dimensional_count, optional_type >
+#define TYPE_CVEC typename TMPLATE_CVEC
+//#define DIM_VALUE_TYPE typename dimension_value_operations::dimension_value_t
+
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE pfx_boolean_t dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE pfx_boolean_t DIM_OP_TEMPLATE::
 	equals (dimension_value X, dimension_value Y, pfx_u32_t delta)
 {
 	return (pfx_boolean_t)((bool)(X == Y));
@@ -76,7 +80,7 @@ PFX_INLINE pfx_boolean_t dimension_value_operations < double >::
 	retn_val =  (pfx_boolean_t)(fX == fY);
 	FOR_ONE_LOOP_BEGIN
 
-		BREAK_LOOP_CONDITION (retn_val);
+	BREAK_LOOP_CONDITION (retn_val);
 
 
 	const double delta_abs = ((double)delta) / ((double)2251799813685248);
@@ -100,7 +104,7 @@ PFX_INLINE pfx_boolean_t dimension_value_operations < double >::
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value DIM_OP_TEMPLATE::
 	abs (dimension_value val)
 {
 	if (val < 0)
@@ -111,14 +115,14 @@ PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value DIM_OP_TEMPLATE::
 	add (dimension_value a,dimension_value b)
 {
 	return (a + b);
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value& DIM_OP_TEMPLATE::
 	add_replace (dimension_value& a,dimension_value b)
 {
 	a+=b;
@@ -126,14 +130,14 @@ PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value DIM_OP_TEMPLATE::
 	sub (dimension_value a,dimension_value b)
 {
 	return (a-b);
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value& DIM_OP_TEMPLATE::
 	sub_replace (dimension_value& a,dimension_value b)
 {
 	a -= b;
@@ -141,14 +145,14 @@ PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value DIM_OP_TEMPLATE::
 	mul (dimension_value a,dimension_value b)
 {
 	return (a * b);
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value& DIM_OP_TEMPLATE::
 	mul_replace (dimension_value& a,dimension_value b)
 {
 	a *= b;
@@ -156,14 +160,14 @@ PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value DIM_OP_TEMPLATE::
 	div (dimension_value a,dimension_value b)
 {
 	return (a / b);
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::
+PFX_INLINE dimension_value& DIM_OP_TEMPLATE::
 	div_replace (dimension_value& a,dimension_value b)
 {
 	a /= b;
@@ -171,7 +175,7 @@ PFX_INLINE dimension_value& dimension_value_operations DIMENSION_VAL_OP_TEMPLATE
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::sin (dimension_value rad)
+PFX_INLINE dimension_value DIM_OP_TEMPLATE::sin (dimension_value rad)
 {
 	return rad;
 }
@@ -193,7 +197,7 @@ PFX_INLINE int dimension_value_operations< int > ::sin(int rad)
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-	PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::cos (dimension_value rad)
+	PFX_INLINE dimension_value DIM_OP_TEMPLATE::cos (dimension_value rad)
 {
 	return rad;
 }
@@ -215,7 +219,7 @@ PFX_INLINE int dimension_value_operations< int > ::cos(int rad)
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-	PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS::tan (dimension_value rad)
+	PFX_INLINE dimension_value DIM_OP_TEMPLATE::tan (dimension_value rad)
 {
 	return rad;
 }
@@ -237,7 +241,7 @@ PFX_INLINE int dimension_value_operations< int > ::tan(int rad)
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-	PFX_INLINE void dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS ::
+	PFX_INLINE void DIM_OP_TEMPLATE ::
 	sincos (dimension_value rad,
 			dimension_value& sin_val,
 			dimension_value &cos_val)
@@ -271,7 +275,7 @@ PFX_INLINE void dimension_value_operations< int > ::sincos (int rad,
 }
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
-PFX_INLINE dimension_value dimension_value_operations DIMENSION_VAL_OP_TEMPLATE_PARAMS ::
+PFX_INLINE dimension_value DIM_OP_TEMPLATE ::
 sqrt (dimension_value val)
 {
 	return val;
@@ -387,13 +391,13 @@ template < class vector_type,
 
 //	DIM_VALUE_TYPE
 VERCOTOR_TEMPLATE_DEFS
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::pfx_vector () 
+	TMPLATE_CVEC::pfx_vector () 
 {
 	memset (&m_dim,0,sizeof (m_dim));
 }
 
 VERCOTOR_TEMPLATE_DEFS
-pfx_vector VERCOTOR_TEMPLATE_PARAMS::pfx_vector(dimension_value_t dim_set)
+TMPLATE_CVEC::pfx_vector(dimension_value_t dim_set)
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
@@ -402,7 +406,8 @@ pfx_vector VERCOTOR_TEMPLATE_PARAMS::pfx_vector(dimension_value_t dim_set)
 }
 
 VERCOTOR_TEMPLATE_DEFS
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::pfx_vector (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& dim)
+	TMPLATE_CVEC::pfx_vector (const  TYPE_CVEC::vector_t& dim) 
+	//(const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& dim)
 {
 	if (&dim != &m_dim)
 	{
@@ -410,7 +415,8 @@ VERCOTOR_TEMPLATE_DEFS
 	}
 }
 VERCOTOR_TEMPLATE_DEFS
-pfx_vector VERCOTOR_TEMPLATE_PARAMS::pfx_vector (const pfx_vector < dimension_value_operations, dimensional_count, optional_type >& other_)
+TMPLATE_CVEC::pfx_vector (const TYPE_CVEC &other_)
+//(const pfx_vector < dimension_value_operations, dimensional_count, optional_type >& other_)
 {
 	if (&other_ != this)
 	{
@@ -418,23 +424,23 @@ pfx_vector VERCOTOR_TEMPLATE_PARAMS::pfx_vector (const pfx_vector < dimension_va
 	}
 }
 VERCOTOR_TEMPLATE_DEFS
-pfx_vector VERCOTOR_TEMPLATE_PARAMS::~pfx_vector()
+TMPLATE_CVEC::~pfx_vector()
 {
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_usize_t	pfx_vector VERCOTOR_TEMPLATE_PARAMS::get_dimensional_count () const
+PFX_INLINE pfx_usize_t	TMPLATE_CVEC::get_dimensional_count () const
 {
 	return dimensional_count;
 }
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_usize_t	pfx_vector VERCOTOR_TEMPLATE_PARAMS::vector_dimensional_count ()
+PFX_INLINE pfx_usize_t	TMPLATE_CVEC::vector_dimensional_count ()
 {
 	return dimensional_count;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE const DIM_VALUE_TYPE&	pfx_vector VERCOTOR_TEMPLATE_PARAMS::get (pfx_uindex_t dimensional) const
+PFX_INLINE const TYPE_CVEC::dimension_value_t&	TMPLATE_CVEC::get (pfx_uindex_t dimensional) const
 {
 	if (dimensional < dimensional_count)
 	{
@@ -442,12 +448,12 @@ PFX_INLINE const DIM_VALUE_TYPE&	pfx_vector VERCOTOR_TEMPLATE_PARAMS::get (pfx_u
 	}
 	else
 	{
-		return pfx_vector VERCOTOR_TEMPLATE_PARAMS::default_dimension_value ();
+		return TMPLATE_CVEC::default_dimension_value ();
 	}
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE&	pfx_vector VERCOTOR_TEMPLATE_PARAMS::
+PFX_INLINE TYPE_CVEC::dimension_value_t&	TMPLATE_CVEC::
 	reference (pfx_uindex_t dimensional)
 {
 	if (dimensional < dimensional_count)
@@ -456,12 +462,12 @@ PFX_INLINE DIM_VALUE_TYPE&	pfx_vector VERCOTOR_TEMPLATE_PARAMS::
 	}
 	else
 	{
-		return pfx_vector VERCOTOR_TEMPLATE_PARAMS::default_dimension_value ();
+		return TMPLATE_CVEC::default_dimension_value ();
 	}
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE void	pfx_vector VERCOTOR_TEMPLATE_PARAMS::set_all (dimension_value_t dim_set)
+PFX_INLINE void	TMPLATE_CVEC::set_all (TYPE_CVEC::dimension_value_t dim_set)
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
@@ -470,91 +476,92 @@ PFX_INLINE void	pfx_vector VERCOTOR_TEMPLATE_PARAMS::set_all (dimension_value_t 
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS & pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
+PFX_INLINE TMPLATE_CVEC & TMPLATE_CVEC ::
 	sets(const dimension_value_t* dim_ptr,
 	pfx_usize_t dim_count)
 {
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::sets (&m_dim,dim_ptr,dim_count);
+	TMPLATE_CVEC ::sets (&m_dim,dim_ptr,dim_count);
 	return *this;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS& pfx_vector VERCOTOR_TEMPLATE_PARAMS::
+PFX_INLINE TMPLATE_CVEC& TMPLATE_CVEC::
 normalize_repalce ()
 {
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::normalize_replace (m_dim.m_value);
+	TMPLATE_CVEC::normalize_replace (m_dim.m_value);
 	return *this;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_boolean_t pfx_vector VERCOTOR_TEMPLATE_PARAMS::
-	equals (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& other_, 
+PFX_INLINE pfx_boolean_t TMPLATE_CVEC::
+	equals (//const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& other_, 
+	const TYPE_CVEC::vector_t & other_,
 	pfx_u32_t delta)
 {
-	return pfx_vector VERCOTOR_TEMPLATE_PARAMS::equals (m_dim, other_,delta);
+	return TMPLATE_CVEC::equals (m_dim, other_,delta);
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE pfx_vector VERCOTOR_TEMPLATE_PARAMS::cacluate_vector_size () const
+PFX_INLINE TYPE_CVEC::dimension_value_t TMPLATE_CVEC::cacluate_vector_size () const
 {
-	return pfx_vector VERCOTOR_TEMPLATE_PARAMS::cacluate_vector_size (m_dim);
+	return TMPLATE_CVEC::cacluate_vector_size (m_dim);
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE pfx_vector VERCOTOR_TEMPLATE_PARAMS::cacluate_vector_size_square () const
+PFX_INLINE TYPE_CVEC::dimension_value_t TMPLATE_CVEC::cacluate_vector_size_square () const
 {
-	return pfx_vector VERCOTOR_TEMPLATE_PARAMS::cacluate_vector_size_square (m_dim);
+	return TMPLATE_CVEC::cacluate_vector_size_square (m_dim);
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	dot (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& other_)
+PFX_INLINE TYPE_CVEC::dimension_value_t TMPLATE_CVEC ::
+	dot (const TYPE_CVEC::vector_t& other_)
 {
-	return pfx_vector VERCOTOR_TEMPLATE_PARAMS::dot (m_dim);
+	return TMPLATE_CVEC::dot (m_dim);
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-cross_replace (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& other_)
+PFX_INLINE TMPLATE_CVEC& TMPLATE_CVEC ::
+cross_replace (const TYPE_CVEC::vector_t & other_)
 {
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::cross_replace (m_dim,other_);
+	TMPLATE_CVEC::cross_replace (m_dim,other_);
 	return *this;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-add_replace (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& a)
+PFX_INLINE TMPLATE_CVEC& TMPLATE_CVEC ::
+add_replace (const TYPE_CVEC::vector_t & a)
 {
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::add_replace (m_dim,a);
+	TMPLATE_CVEC::add_replace (m_dim,a);
 	return *this;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	sub_replace (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& a)
+PFX_INLINE TMPLATE_CVEC& TMPLATE_CVEC ::
+	sub_replace (const TYPE_CVEC::vector_t & a)
 {
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::sub_replace (m_dim,a);
+	TMPLATE_CVEC::sub_replace (m_dim,a);
 	return *this;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS & pfx_vector VERCOTOR_TEMPLATE_PARAMS ::mul_replace 
-	(DIM_VALUE_TYPE b)
+PFX_INLINE TMPLATE_CVEC & TMPLATE_CVEC ::mul_replace 
+	(TYPE_CVEC::dimension_value_t b)
 {
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::mul_replace (m_dim,b);
+	TMPLATE_CVEC::mul_replace (m_dim,b);
 	return *this;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_vector VERCOTOR_TEMPLATE_PARAMS & pfx_vector VERCOTOR_TEMPLATE_PARAMS ::div_replace 
-	(DIM_VALUE_TYPE b)
+PFX_INLINE TMPLATE_CVEC & TMPLATE_CVEC ::div_replace 
+	(TYPE_CVEC::dimension_value_t b)
 {
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS::div_replace (m_dim,b);
+	TMPLATE_CVEC::div_replace (m_dim,b);
 	return *this;
 }
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE void	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-set_all (st_pfx_vector < dimension_value_t, dimensional_count >& vec, dimension_value_t dim_set)
+PFX_INLINE void	TMPLATE_CVEC ::
+set_all (TYPE_CVEC::vector_t& vec, TYPE_CVEC::dimension_value_t dim_set)
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
@@ -562,9 +569,9 @@ set_all (st_pfx_vector < dimension_value_t, dimensional_count >& vec, dimension_
 	}
 }
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-sets(st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec, 
-	const DIM_VALUE_TYPE* dim_ptr,
+PFX_INLINE TYPE_CVEC::vector_t& TMPLATE_CVEC ::
+sets(TYPE_CVEC::vector_t& vec, 
+	const TYPE_CVEC::dimension_value_t* dim_ptr,
 	pfx_usize_t dim_count)
 {
 	if (dim_count > dimensional_count)
@@ -579,36 +586,36 @@ sets(st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec,
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::default_dimension_value ()
+PFX_INLINE TYPE_CVEC::dimension_value_t& TMPLATE_CVEC ::default_dimension_value ()
 {
-	static DIM_VALUE_TYPE defualt_dim_val;
+	static TYPE_CVEC::dimension_value_t defualt_dim_val;
 	return defualt_dim_val;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_boolean_t pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	check_default_dimension_value (const DIM_VALUE_TYPE& value_)
+PFX_INLINE pfx_boolean_t TMPLATE_CVEC ::
+	check_default_dimension_value (const TYPE_CVEC::dimension_value_t& value_)
 {
-	DIM_VALUE_TYPE& defualt_val = default_dimension_value();
+	TYPE_CVEC::dimension_value_t& defualt_val = default_dimension_value();
 	return (pfx_boolean_t)((bool)(&defualt_val == &value_));
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-cacluate_vector_size  (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec)
+PFX_INLINE TYPE_CVEC::dimension_value_t TMPLATE_CVEC ::
+cacluate_vector_size  (const TYPE_CVEC::vector_t& vec)
 {
 	return dimension_value_operations::sqrt
-		(pfx_vector VERCOTOR_TEMPLATE_PARAMS ::cacluate_vector_size_square (vec));
+		(TMPLATE_CVEC ::cacluate_vector_size_square (vec));
 }
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-cacluate_vector_size_square (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec)
+PFX_INLINE TYPE_CVEC::dimension_value_t TYPE_CVEC ::
+cacluate_vector_size_square (const TYPE_CVEC::vector_t& vec)
 {
-	DIM_VALUE_TYPE return_val;
+	TYPE_CVEC::dimension_value_t return_val;
 	return_val = dimension_value_operations::mul (vec.m_value[0],vec.m_value[0]);
 	for (pfx_usize_t i=1;i<dimensional_count;++i)
 	{
-		DIM_VALUE_TYPE temp;
+		TYPE_CVEC::dimension_value_t temp;
 		temp = dimension_value_operations::mul (vec.m_value[i],vec.m_value[i]);
 		dimension_value_operations::add_replace(return_val,temp); 
 	}
@@ -616,16 +623,16 @@ cacluate_vector_size_square (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_c
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE DIM_VALUE_TYPE pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-dot (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& a,
-const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& b)
+PFX_INLINE TYPE_CVEC::dimension_value_t TYPE_CVEC ::
+dot (const TYPE_CVEC::vector_t& a,
+const TYPE_CVEC::vector_t& b)
 {
-	DIM_VALUE_TYPE return_val;
+	TYPE_CVEC::dimension_value_t return_val;
 	return_val = dimension_value_operations::mul (a.m_value[0],b.m_value[0]);
 
 	for (pfx_usize_t i=1;i<dimensional_count;++i)
 	{
-		DIM_VALUE_TYPE temp;
+		TYPE_CVEC::dimension_value_t temp;
 		temp = dimension_value_operations::mul (a.m_value[i],b.m_value[i]);
 		dimension_value_operations::add_replace(return_val,temp); 
 	}
@@ -634,9 +641,9 @@ const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& b)
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE pfx_boolean_t pfx_vector VERCOTOR_TEMPLATE_PARAMS ::equals 
-	(const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a,
-		const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b, 
+PFX_INLINE pfx_boolean_t TMPLATE_CVEC ::equals 
+	(const TYPE_CVEC::vector_t& vec_a,
+		const TYPE_CVEC::vector_t& vec_b, 
 		pfx_u32_t delta)
 {
 	pfx_boolean_t result_ = PFX_BOOL_FALSE;
@@ -652,37 +659,37 @@ PFX_INLINE pfx_boolean_t pfx_vector VERCOTOR_TEMPLATE_PARAMS ::equals
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-normalize (st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& to_normalize)
+PFX_INLINE TYPE_CVEC::vector_t TMPLATE_CVEC ::
+normalize (TYPE_CVEC::vector_t& to_normalize)
 {
-	st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > retn_vec = to_normalize;
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::normalize_repalce(retn);
+	TYPE_CVEC::vector_t retn_vec = to_normalize;
+	TMPLATE_CVEC ::normalize_repalce(retn);
 	return retn_vec;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-normalize_replace (st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& to_normalize)
+PFX_INLINE TYPE_CVEC::vector_t& TMPLATE_CVEC ::
+normalize_replace (TYPE_CVEC::vector_t& to_normalize)
 {
-	DIM_VALUE_TYPE vec_size = pfx_vector VERCOTOR_TEMPLATE_PARAMS ::cacluate_vector_size (to_normalize);
-	return pfx_vector VERCOTOR_TEMPLATE_PARAMS ::div_replace (to_normalize,vec_size);
+	TYPE_CVEC::dimension_value_t vec_size = TMPLATE_CVEC ::cacluate_vector_size (to_normalize);
+	return TMPLATE_CVEC ::div_replace (to_normalize,vec_size);
 }
 //
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-cross (const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a,
-	const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b)
+PFX_INLINE TYPE_CVEC::vector_t TMPLATE_CVEC ::
+cross (const TYPE_CVEC::vector_t& vec_a,
+	const TYPE_CVEC::vector_t& vec_b)
 {
 	
-	typedef pfx_vector VERCOTOR_TEMPLATE_PARAMS vec_t;
+	//typedef TMPLATE_CVEC vec_t;
 
 	if (3 <= dimensional_count)
 	{
-		st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > res_vec;
-		((st_pfx_vector <typename vec_t::dimension_value_t, 3>*)&res_vec)[0]
-		= cross_vec3_unsafe < vec_t, optional_type > (
-			(const st_pfx_vector < vec_t::dimension_value_t, 3>*)&vec_a,
-			(const st_pfx_vector < vec_t::dimension_value_t, 3>*)&vec_b);
+		TYPE_CVEC::vector_t res_vec;
+		((st_pfx_vector < TYPE_CVEC::dimension_value_t, 3>*)&res_vec)[0]
+		= cross_vec3_unsafe < TYPE_CVEC, optional_type > (
+			(const st_pfx_vector < TYPE_CVEC::dimension_value_t, 3>*)&vec_a,
+			(const st_pfx_vector < TYPE_CVEC::dimension_value_t, 3>*)&vec_b);
 
 		return res_vec;
 	}
@@ -720,28 +727,28 @@ PFX_INLINE st_pfx_vector < double, 3 > pfx_vector <dimension_value_operations < 
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	cross_replace (st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a,
-	const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b)
+PFX_INLINE TYPE_CVEC::vector_t& TMPLATE_CVEC ::
+	cross_replace (TYPE_CVEC::vector_t& vec_a,
+	const TYPE_CVEC::vector_t& vec_b)
 {
-	vec_a = pfx_vector VERCOTOR_TEMPLATE_PARAMS ::cross (vec_a,vec_b);
+	vec_a = TMPLATE_CVEC ::cross (vec_a,vec_b);
 	return vec_a;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	add(const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-			const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b)
+PFX_INLINE TYPE_CVEC::vector_t TMPLATE_CVEC ::
+	add(const TYPE_CVEC::vector_t& vec_a, 
+			const TYPE_CVEC::vector_t& vec_b)
 {
-	st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > res_vec = vec_a;
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::add_replace (vec_a,vec_b);
+	TYPE_CVEC::vector_t res_vec = vec_a;
+	TMPLATE_CVEC ::add_replace (vec_a,vec_b);
 	return res_vec;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-add_replace (st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b)
+PFX_INLINE TYPE_CVEC::vector_t& TMPLATE_CVEC ::
+add_replace (TYPE_CVEC::vector_t& vec_a, 
+const TYPE_CVEC::vector_t& vec_b)
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
@@ -751,19 +758,19 @@ const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b)
 }
 
 VERCOTOR_TEMPLATE_DEFS
-	PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	sub(const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-	const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b)
+	PFX_INLINE TYPE_CVEC::vector_t TMPLATE_CVEC ::
+	sub(const TYPE_CVEC::vector_t& vec_a, 
+	const TYPE_CVEC::vector_t& vec_b)
 {
-	st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > res_vec = vec_a;
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::sub_replace (vec_a,vec_b);
+	TYPE_CVEC::vector_t res_vec = vec_a;
+	TMPLATE_CVEC ::sub_replace (vec_a,vec_b);
 	return res_vec;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-	PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	sub_replace (st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-	const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_b)
+	PFX_INLINE TYPE_CVEC::vector_t& TMPLATE_CVEC ::
+	sub_replace (TYPE_CVEC::vector_t& vec_a, 
+	const TYPE_CVEC::vector_t& vec_b)
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
@@ -773,19 +780,19 @@ VERCOTOR_TEMPLATE_DEFS
 }
 
 VERCOTOR_TEMPLATE_DEFS
-	PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	mul(const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-	DIM_VALUE_TYPE val_b)
+	PFX_INLINE TYPE_CVEC::vector_t TMPLATE_CVEC ::
+	mul(const TYPE_CVEC::vector_t& vec_a, 
+	TYPE_CVEC::dimension_value_t val_b)
 {
-	st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > res_vec = vec_a;
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::mul_replace (vec_a,val_b);
+	TYPE_CVEC::vector_t res_vec = vec_a;
+	TMPLATE_CVEC ::mul_replace (vec_a,val_b);
 	return res_vec;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-	PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	mul_replace (st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-	DIM_VALUE_TYPE val_b)
+	PFX_INLINE TYPE_CVEC::vector_t& TMPLATE_CVEC ::
+	mul_replace (TYPE_CVEC::vector_t& vec_a, 
+	TYPE_CVEC::dimension_value_t val_b)
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{
@@ -795,19 +802,19 @@ VERCOTOR_TEMPLATE_DEFS
 }
 
 VERCOTOR_TEMPLATE_DEFS
-	PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	div(const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-	DIM_VALUE_TYPE val_b)
+	PFX_INLINE TYPE_CVEC::vector_t TMPLATE_CVEC ::
+	div(const TYPE_CVEC::vector_t& vec_a, 
+	TYPE_CVEC::dimension_value_t val_b)
 {
-	st_pfx_vector < DIM_VALUE_TYPE, dimensional_count > res_vec = vec_a;
-	pfx_vector VERCOTOR_TEMPLATE_PARAMS ::div_replace (vec_a,val_b);
+	TYPE_CVEC::vector_t res_vec = vec_a;
+	TMPLATE_CVEC ::div_replace (vec_a,val_b);
 	return res_vec;
 }
 
 VERCOTOR_TEMPLATE_DEFS
-	PFX_INLINE st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& pfx_vector VERCOTOR_TEMPLATE_PARAMS ::
-	div_replace (st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& vec_a, 
-	DIM_VALUE_TYPE val_b)
+	PFX_INLINE TYPE_CVEC::vector_t& TMPLATE_CVEC ::
+	div_replace (TYPE_CVEC::vector_t& vec_a, 
+	TYPE_CVEC::dimension_value_t val_b)
 {
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)
 	{

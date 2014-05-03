@@ -1085,7 +1085,7 @@ PFX_INLINE pfx_result_t	matrix4_inverse_unsafe_std (const pfx_marix4_t* PARAM_IN
 	PMATRIX_DATA(inverse_mat,M4_12) = VEC_FLOAT_DIV (MATRIX4_MUL_SUBS_ITEM(mat,M4_02,M4_10,M4_00,M4_12),det_1);
 	PMATRIX_DATA(inverse_mat,M4_22) = VEC_FLOAT_DIV (MATRIX4_MUL_SUBS_ITEM(mat,M4_00,M4_11,M4_01,M4_10),det_1);
 	
-	// MAT - C * inverse(A)
+	// -  inverse(A) * C * 1(^-1)
 	PMATRIX_DATA(inverse_mat,M4_03) =
 		VEC_FLOAT_MUL (PMATRIX_DATA(mat,M4_13),PMATRIX_DATA(inverse_mat,M4_01)) +
 		VEC_FLOAT_MUL (PMATRIX_DATA(mat,M4_23),PMATRIX_DATA(inverse_mat,M4_02))  - 

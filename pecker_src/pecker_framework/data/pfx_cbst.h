@@ -59,7 +59,8 @@ public:
 	typedef pfx_cbst_iterator < node_type_ > iterator_t;
 	typedef node_type_										element_t;
 	typedef node_type_	&									reference_t;
-	typedef node_type_&									pointer_t;
+	typedef node_type_&										pointer_t;
+	typedef typename pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS bst_interator_t;
 protected:
 	const node_type_*	m_current_node_ptr;
 	const node_type_*   m_root_node_ptr;
@@ -74,18 +75,18 @@ public:
 								const node_type_*   root_node_ptr);
 
 public:
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin 
-		(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
+	virtual bst_interator_t* begin 
+		(bst_interator_t* PARAM_INOUT 
 		set_begin_iterator_ptr) const;
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end 		
-		(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
+	virtual bst_interator_t* end 		
+		(bst_interator_t* PARAM_INOUT 
 		set_end_iterator_ptr) const;
 
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin (){return null;}
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end (){return null;}
+	virtual bst_interator_t* begin (){return null;}
+	virtual bst_interator_t* end (){return null;}
 
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase () {return null;}
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease () {return null;}
+	virtual bst_interator_t* increase () {return null;}
+	virtual bst_interator_t* decrease () {return null;}
 public:
 	virtual PFX_INLINE pfx_increase_iterator < node_type_ >*	increase_iterator () { return increase(); }
 	virtual	PFX_INLINE const node_type_*									get_current_element () const { return get_current_node(); }
@@ -102,12 +103,13 @@ class PFX_DATA_TEMPALE_API pfx_inorder_iterator :
 {
 public:
 	typedef pfx_inorder_iterator < node_type_ > iterator_t;
+	typedef typename pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS bst_interator_t;
 public:
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
+	bst_interator_t* begin ();
+	bst_interator_t* end ();
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
+	bst_interator_t* increase ();
+	bst_interator_t* decrease ();
 public:
 	pfx_decrease_iterator < node_type_ >*	decrease_iterator ();
 	const node_type_*									get_current_element () const;
@@ -123,6 +125,7 @@ class PFX_DATA_TEMPALE_API pfx_preorder_iterator :
 {
 public:
 	typedef pfx_preorder_iterator < node_type_ > iterator_t;
+	typedef typename pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS bst_interator_t;
 protected:
 	pfx_enum_t				m_next_node_type;
 	pfx_result_t				m_last_result;
@@ -130,11 +133,11 @@ public:
 	pfx_result_t init (const node_type_*	current_node_ptr,
 		const node_type_*   root_node_ptr);
 public:
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
+	bst_interator_t* begin ();
+	bst_interator_t* end ();
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
+	bst_interator_t* increase ();
+	bst_interator_t* decrease ();
 public:
 	static const node_type_* get_preorder_begin_node (const node_type_* root_node_ptr);
 	static const node_type_* get_preorder_end_node (const node_type_* root_node_ptr);
@@ -147,13 +150,14 @@ class PFX_DATA_TEMPALE_API pfx_posorder_iterator :
 {
 public:
 	typedef pfx_posorder_iterator < node_type_ > iterator_t;
+	typedef typename pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS bst_interator_t;
 public:
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* begin ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* reverse_begin ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* end ();
+	bst_interator_t* begin ();
+	bst_interator_t* reverse_begin ();
+	bst_interator_t* end ();
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* increase ();
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* decrease ();
+	bst_interator_t* increase ();
+	bst_interator_t* decrease ();
 public:
 	static const node_type_* get_posorder_begin_node (const node_type_* root_node_ptr);
 	static const node_type_* get_posorder_end_node (const node_type_* root_node_ptr);
@@ -166,9 +170,11 @@ class PFX_DATA_TEMPALE_API pfx_cbst
 {
 public:
 	typedef node_type_					node_type_t;
-	typedef node_type_*				node_type_ptr_t;
+	typedef node_type_*					node_type_ptr_t;
 	typedef const node_type_*		const_node_type_ptr_t;
 	typedef compare_two_node_	compare_two_node_t;
+	typedef typename pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS bst_interator_t;
+	typedef typename pfx_cbst PFX_CBST_TEMPLATE_PARAMS		cbst_t;
 protected:
 	node_type_* m_root_ptr;
 public:
@@ -176,8 +182,8 @@ public:
 	pfx_cbst (const pfx_cbst< node_type_, compare_two_node_ >* other_ptr) throw (pfx_result_t);
 	virtual ~pfx_cbst();
 public:
-	virtual pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
-	virtual pfx_result_t copy_by_iterator (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst);
+	virtual pfx_result_t copy (const cbst_t* PARAM_IN other_bst);
+	virtual pfx_result_t copy_by_iterator (const cbst_t* PARAM_IN other_bst);
 	virtual pfx_result_t clear ();
 
 	virtual PFX_INLINE node_type_* new_node () {return new node_type_;};
@@ -185,10 +191,10 @@ public:
 	{if (node_ptr) {delete node_ptr;return PFX_STATUS_OK;}return PFX_STATUS_INVALID_PARAMS;};
 
 public:
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * begin (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_) const;
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * end (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_) const;
+	virtual bst_interator_t * begin (bst_interator_t* PARAM_OUT iterator_) const;
+	virtual bst_interator_t * end (bst_interator_t * PARAM_OUT iterator_) const;
 public:
-	virtual pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * find (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_,
+	virtual bst_interator_t * find (bst_interator_t * PARAM_OUT iterator_,
 		const node_type_* PARAM_IN key_node_ptr) const;
 
 public:
@@ -253,16 +259,18 @@ template < class node_type_, class compare_two_node_ = pecker_value_compare_exte
 class PFX_DATA_TEMPALE_API pfx_cavl_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
+	typedef typename pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS cavl_bst_t;
+public:
 	pfx_cavl_tree (/*Iallocator_cpp* allocator = null*/);
-	pfx_cavl_tree (const pfx_cbst< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
-	pfx_cavl_tree (const pfx_cavl_tree < node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
+	pfx_cavl_tree (const cbst_t* PARAM_IN other_ptr) throw (pfx_result_t);
+	pfx_cavl_tree (const cavl_bst_t* PARAM_IN other_ptr) throw (pfx_result_t);
 public:
 	virtual const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
 	virtual node_type_* remove (node_type_* PARAM_INOUT remove_node_ptr,
 		pfx_result_t& PARAM_OUT status_);
-	virtual pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
-	pfx_result_t copy (const pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
+	virtual pfx_result_t copy (const cbst_t* PARAM_IN other_bst_ptr);
+	pfx_result_t copy (const cavl_bst_t * PARAM_IN other_bst_ptr);
 public:
 	static PFX_INLINE pfx_result_t init_avl_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
 		node_type_* PARAM_IN left_node_ptr = null,
@@ -307,12 +315,14 @@ template < class node_type_, class compare_two_node_ = pecker_value_compare_exte
 class PFX_DATA_TEMPALE_API pfx_crb_tree : public virtual pfx_cbst < node_type_,  compare_two_node_ >
 {
 public:
-	pfx_crb_tree ();
-	pfx_crb_tree (const pfx_cbst< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
-	pfx_crb_tree (const pfx_crb_tree< node_type_,  compare_two_node_ >* PARAM_IN other_ptr) throw (pfx_result_t);
+	typedef typename pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS crb_bst_t;
 public:
-	virtual pfx_result_t copy (const pfx_cbst PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
-	pfx_result_t copy (const pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS * PARAM_IN other_bst_ptr);
+	pfx_crb_tree ();
+	pfx_crb_tree (const cbst_t* PARAM_IN other_ptr) throw (pfx_result_t);
+	pfx_crb_tree (const crb_bst_t* PARAM_IN other_ptr) throw (pfx_result_t);
+public:
+	virtual pfx_result_t copy (const cbst_t* PARAM_IN other_bst_ptr);
+	pfx_result_t copy (const crb_bst_t * PARAM_IN other_bst_ptr);
 
 	virtual const node_type_* add (node_type_* PARAM_INOUT add_node_ptr,
 		pfx_result_t& PARAM_OUT status_);

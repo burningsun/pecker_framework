@@ -89,10 +89,10 @@ struct st_pfx_vector
 };
 
 template < class vector_type,
-	const pfx_enum_int_t optional_type >
-	PFX_INLINE st_pfx_vector <typename vector_type::dimension_value_t, 3>
-	cross_vec3_unsafe (const st_pfx_vector <typename vector_type::dimension_value_t, 3>* vec_a,
-	const st_pfx_vector <typename vector_type::dimension_value_t, 3>* vec_b);
+const pfx_enum_int_t optional_type >
+PFX_INLINE st_pfx_vector <typename vector_type::dimension_value_t, 3>
+cross_vec3_unsafe (const st_pfx_vector <typename vector_type::dimension_value_t, 3>* vec_a,
+const st_pfx_vector <typename vector_type::dimension_value_t, 3>* vec_b);
 
 template < class vector_type,
 	const pfx_enum_int_t optional_type >
@@ -118,105 +118,85 @@ class PFX_DATA_TEMPALE_API pfx_vector
 public:
 	typedef typename dimension_value_operations::dimension_value_t	dimension_value_t;
 	typedef typename dimension_value_operations											dimension_value_operations_t;
+	typedef typename st_pfx_vector < dimension_value_t, dimensional_count >											vector_t;
+	typedef typename pfx_vector < dimension_value_operations, dimensional_count, optional_type >	cvector_t;
 public:
-	st_pfx_vector < dimension_value_t, dimensional_count > m_dim;
+	vector_t m_dim;
 public:
 	pfx_vector ();
 	pfx_vector (dimension_value_t dim_set);
-	pfx_vector (const st_pfx_vector < dimension_value_t, dimensional_count >& dim);
-	pfx_vector (const pfx_vector < dimension_value_operations, dimensional_count, optional_type >& other_);
+	pfx_vector (const vector_t& dim);
+	pfx_vector (const cvector_t& other_);
 	~pfx_vector();
 public:	
 	PFX_INLINE pfx_usize_t								get_dimensional_count () const;
 	PFX_INLINE const dimension_value_t&	get (pfx_uindex_t dimensional) const;
 	PFX_INLINE dimension_value_t&				reference (pfx_uindex_t dimensional);
 	PFX_INLINE void											set_all (dimension_value_t dim_set);
-	PFX_INLINE pfx_vector < dimension_value_operations, dimensional_count, optional_type >& sets(const dimension_value_t* dim_ptr,
-			pfx_usize_t dim_count);
+	PFX_INLINE cvector_t&								sets(const dimension_value_t* dim_ptr,pfx_usize_t dim_count);
 
-	PFX_INLINE pfx_vector < dimension_value_operations, dimensional_count, optional_type >& normalize_repalce ();
+	PFX_INLINE cvector_t&								normalize_repalce ();
 
-	PFX_INLINE pfx_boolean_t equals (const st_pfx_vector < dimension_value_t, dimensional_count >& other_, 
-		pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+	PFX_INLINE pfx_boolean_t						equals (const vector_t& other_, 
+																				pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
-	PFX_INLINE dimension_value_t cacluate_vector_size () const;
-	PFX_INLINE dimension_value_t cacluate_vector_size_square () const;
-	PFX_INLINE dimension_value_t dot (const st_pfx_vector < dimension_value_t, dimensional_count >& other_);
+	PFX_INLINE dimension_value_t				cacluate_vector_size () const;
+	PFX_INLINE dimension_value_t				cacluate_vector_size_square () const;
+	PFX_INLINE dimension_value_t				dot (const vector_t& other_);
 	
-	PFX_INLINE pfx_vector < dimension_value_operations, dimensional_count, optional_type >& cross_replace 
-		(const st_pfx_vector < dimension_value_t, dimensional_count >& other_);
+	PFX_INLINE cvector_t&								cross_replace (const vector_t& other_);
 
-	PFX_INLINE pfx_vector < dimension_value_operations, dimensional_count, optional_type >& add_replace 
-		(const st_pfx_vector < dimension_value_t, dimensional_count >& a);
+	PFX_INLINE cvector_t&								add_replace (const vector_t& a);
 
-	PFX_INLINE pfx_vector < dimension_value_operations, dimensional_count, optional_type >& sub_replace 
-		(const st_pfx_vector < dimension_value_t, dimensional_count >& a);
+	PFX_INLINE cvector_t&								sub_replace (const vector_t& a);
 
-	PFX_INLINE pfx_vector < dimension_value_operations, dimensional_count, optional_type >& mul_replace 
-		(dimension_value_t b);
+	PFX_INLINE cvector_t&								mul_replace (dimension_value_t b);
 
-	PFX_INLINE pfx_vector < dimension_value_operations, dimensional_count, optional_type >& div_replace 
-		(dimension_value_t b);
+	PFX_INLINE cvector_t&								div_replace (dimension_value_t b);
 
 
 public:
-	static PFX_INLINE pfx_usize_t		vector_dimensional_count ();
-	static PFX_INLINE void	set_all (st_pfx_vector < dimension_value_t, dimensional_count >& vec, dimension_value_t dim_set);
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& sets(st_pfx_vector < dimension_value_t, dimensional_count >& vec, 
-		const dimension_value_t* dim_ptr,
-		pfx_usize_t dim_count);
+	static PFX_INLINE pfx_usize_t					vector_dimensional_count ();
+
+	static PFX_INLINE void								set_all (vector_t& vec, dimension_value_t dim_set);
+
+	static PFX_INLINE vector_t&						sets(vector_t& vec, const dimension_value_t* dim_ptr,pfx_usize_t dim_count);
 
 	static PFX_INLINE dimension_value_t& default_dimension_value ();
 
-	static PFX_INLINE pfx_boolean_t check_default_dimension_value (const dimension_value_t& value_);
+	static PFX_INLINE pfx_boolean_t				check_default_dimension_value (const dimension_value_t& value_);
 
-	static PFX_INLINE dimension_value_t cacluate_vector_size  (const st_pfx_vector < dimension_value_t, dimensional_count >& vec);
+	static PFX_INLINE dimension_value_t		cacluate_vector_size  (const vector_t& vec);
 
-	static PFX_INLINE dimension_value_t cacluate_vector_size_square (const st_pfx_vector < dimension_value_t, dimensional_count >& vec);
+	static PFX_INLINE dimension_value_t		cacluate_vector_size_square (const vector_t& vec);
 
-	static PFX_INLINE dimension_value_t dot (const st_pfx_vector < dimension_value_t, dimensional_count >& a,const st_pfx_vector < dimension_value_t, dimensional_count >& b);
+	static PFX_INLINE dimension_value_t		dot (const vector_t& a, const vector_t& b);
 
-	PFX_INLINE pfx_boolean_t equals (const st_pfx_vector < dimension_value_t, dimensional_count >& vec_a,
-		const st_pfx_vector < dimension_value_t, dimensional_count >& vec_b, 
-		pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+	static PFX_INLINE pfx_boolean_t				equals (const vector_t& vec_a, const vector_t& vec_b, pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count > normalize
-		(st_pfx_vector < dimension_value_t, dimensional_count >& to_normalize);
+	static PFX_INLINE vector_t							normalize (vector_t& to_normalize);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& normalize_replace 
-		(st_pfx_vector < dimension_value_t, dimensional_count >& to_normalize);
+	static PFX_INLINE vector_t&						normalize_replace (vector_t& to_normalize);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count > cross
-		(const st_pfx_vector < dimension_value_t, dimensional_count >& vec_a,
-		const st_pfx_vector < dimension_value_t, dimensional_count >& vec_b);
+	static PFX_INLINE vector_t							cross (const vector_t& vec_a, const vector_t& vec_b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& cross_replace
-		(st_pfx_vector < dimension_value_t, dimensional_count >& vec_a,
-		const st_pfx_vector < dimension_value_t, dimensional_count >& vec_b);
+	static PFX_INLINE vector_t&						cross_replace (vector_t& vec_a, const vector_t& vec_b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count > add
-		(const st_pfx_vector < dimension_value_t, dimensional_count >& a, const st_pfx_vector < dimension_value_t, dimensional_count >& b);
+	static PFX_INLINE vector_t							add (const vector_t& a, const vector_t& b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& add_replace
-		(st_pfx_vector < dimension_value_t, dimensional_count >& a, const st_pfx_vector < dimension_value_t, dimensional_count >& b);
+	static PFX_INLINE vector_t&						add_replace (vector_t& a, const vector_t& b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count > sub
-		(const st_pfx_vector < dimension_value_t, dimensional_count >&a, const st_pfx_vector < dimension_value_t, dimensional_count >& b);
+	static PFX_INLINE vector_t							sub (const vector_t&a, const vector_t& b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& sub_replace 
-		(st_pfx_vector < dimension_value_t, dimensional_count >& a, const st_pfx_vector < dimension_value_t, dimensional_count >& b);
+	static PFX_INLINE vector_t&						sub_replace (vector_t& a, const vector_t& b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count > mul
-		(const st_pfx_vector < dimension_value_t, dimensional_count >& a, dimension_value_t b);
+	static PFX_INLINE vector_t							mul(const vector_t& a, dimension_value_t b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& mul_replace 
-		(st_pfx_vector < dimension_value_t, dimensional_count >& a, dimension_value_t b);
+	static PFX_INLINE vector_t&						mul_replace (vector_t& a, dimension_value_t b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count > div
-		(const st_pfx_vector < dimension_value_t, dimensional_count >& a,dimension_value_t b);
+	static PFX_INLINE vector_t							div (const vector_t& a,dimension_value_t b);
 
-	static PFX_INLINE st_pfx_vector < dimension_value_t, dimensional_count >& div_replace
-		(st_pfx_vector < dimension_value_t, dimensional_count >& a,dimension_value_t b);
+	static PFX_INLINE vector_t&						div_replace (vector_t& a,dimension_value_t b);
 };
 
 
