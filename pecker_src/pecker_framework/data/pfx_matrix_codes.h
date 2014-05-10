@@ -278,6 +278,33 @@ protected:
 	}
 };
 
+template < class dimension_value, const pfx_usize_t dimension_count >
+class coppersmith_winograd_buffer
+{
+public:
+	typedef dimension_value dimension_value_t;
+	typedef coppersmith_winograd_buffer < dimension_value, dimension_count > cwcache_t;
+	typedef struct
+	{
+		dimension_value_t* mat_value_ptr;
+		pfx_usize_t				  mat_count;
+	}mat_table_t;
+protected:
+	dimension_value_t m_static_cache [(MIP_BUFFER_SIZE_31(dimension_count,1,8)>MAX_CWCACHE_SIZE)?(MAX_CWCACHE_SIZE):MIP_BUFFER_SIZE_31(dimension_count,1,8)];
+	mat_table_t				m_mat_table [FIRST_BITINDEX_31(dimension_count,0)];
+public:
+	static PFX_INLINE const pfx_usize_t get_static_cache_info ()
+	{
+		const pfx_usize_t retn_size = (MIP_BUFFER_SIZE_31(dimension_count,1,8)>MAX_CWCACHE_SIZE)?(MAX_CWCACHE_SIZE):MIP_BUFFER_SIZE_31(dimension_count,1,8);
+		return retn_size;
+	}
+	static PFX_INLINE const pfx_usize_t get_table_count ()
+	{
+		const pfx_usize_t retn_size = FIRST_BITINDEX_31(dimension_count,0);
+		return retn_size;
+	}
+};
+
 #define PFX_SQUARE_MATRIX_TEMPLATE_DEFS \
 	template < class dimension_value_operations, \
 	const pfx_usize_t			dimension_count, \

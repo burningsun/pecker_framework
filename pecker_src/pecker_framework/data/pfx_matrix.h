@@ -36,6 +36,10 @@ union un_pfx_matrix_square
 template < class dimension_value_operations, const pfx_usize_t dimension_count, const pfx_enum_int_t optional_type >
 struct pfx_matrix_square_ex;
 
+#define MAX_CWCACHE_SIZE (256)
+template < class dimension_value, const pfx_usize_t dimension_count >
+class coppersmith_winograd_buffer;
+
 typedef enum enumMATRIX_DIM_NAME
 {
 	MAT_DIM_1 = 0,
@@ -60,6 +64,7 @@ public:
 	typedef typename un_pfx_matrix_square < dimension_value_t, dimension_count >		matrix_t;
 	typedef typename pfx_matrix_square_ex < dimension_value_operations, dimension_count, optional_type > 		matrix_ex_t;
 	typedef pfx_square_matrix < dimension_value_operations, dimension_count, optional_type > cmatrix_t;
+	typedef typename coppersmith_winograd_buffer < dimension_value_t, dimension_count > cwcache_t;
 
 	matrix_t m_mat;
 public:
@@ -150,7 +155,10 @@ public:
 	// 使用高斯消元法求逆
 	static PFX_INLINE matrix_ex_t* inverse_matrix_gaussian_elimination (matrix_ex_t& PARAM_INOUT gaussian_mat,
 		matrix_ex_t& PARAM_OUT inverse_mat,pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
-
+public:
+	static PFX_INLINE cwcache_t* create_coppersmith_winograd_buffer ();
+	static PFX_INLINE void release_coppersmith_winograd_buffer (cwcache_t* PARAM_INOUT buffer_ptr);
+	static PFX_INLINE matrix_t& coppersmith_winograd_mul (matrix_t& mat_replace, const matrix_t&, cwcache_t& cwcache_);
 public:
 	static PFX_INLINE matrix_t& matrix_mul_value (const matrix_t& mat, dimension_value_t val,
 		matrix_t& res_mat); 

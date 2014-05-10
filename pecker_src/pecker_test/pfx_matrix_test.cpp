@@ -89,6 +89,18 @@ void print_mat_alg (const mat_t* mat_ptr,pfx_usize_t x,pfx_usize_t y)
 };
 void matrix_test ()
 {
+	
+
+
+
+
+	//pfx_uindex_t aa = MIP_BUFFER_SIZE_01(8,0,8);
+	//pfx_uindex_t bb = MIP_BUFFER_SIZE_01(4,aa,8);
+	//pfx_uindex_t cc = MIP_BUFFER_SIZE_01(2,bb,8);
+	//pfx_uindex_t dd = MIP_BUFFER_SIZE_01(2,dd,8);
+	pfx_uindex_t aa = MIP_BUFFER_SIZE_31(8,0,8);
+	aa = aa;
+
 	typedef	pfx_vector < dimension_value_operations < float >, 2 > vec2_t;
 	typedef pfx_square_matrix < dimension_value_operations < float >, 2 > mat2x2_t;
 

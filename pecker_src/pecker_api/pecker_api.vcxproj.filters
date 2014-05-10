@@ -87,13 +87,7 @@
     <ClInclude Include="..\pecker_framework\data\pfx_fixed_point.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_matrix4.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_vector4.h">
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\native\pecker_stream.h">
@@ -162,16 +156,16 @@
     <ClInclude Include="..\pecker_framework\render\pfx_render_defs.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_vector.h">
+    <ClInclude Include="..\pecker_framework\data\pfx_cvector_alg.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_vector_codes.h">
+    <ClInclude Include="..\pecker_framework\data\pfx_cvector.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_matrix.h">
+    <ClInclude Include="..\pecker_framework\data\pfx_cmatrix.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_matrix_codes.h">
+    <ClInclude Include="..\pecker_framework\data\pfx_cvector_alg_codes.h">
       <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>
