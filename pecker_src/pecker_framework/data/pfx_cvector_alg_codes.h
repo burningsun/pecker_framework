@@ -795,6 +795,129 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::Indentify_matrix (pfx_usize_t dim_count,
+	PFX_SMAT_ALG_TYPE::matrix_t& __mat, dim_t val, dim_t null_val)
+{
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		for (pfx_uindex_t j=0; j<i; ++j)
+		{
+			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+		}
+
+		vec_alg_t::matrix_at (__mat, i, i) = val;
+
+		for (pfx_uindex_t j=i+1; j<dim_count; ++j)
+		{
+			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+		}
+	}
+	return __mat;
+}
+
+PFX_SMAT_ALG_TEMPLATE_DEFINES
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::Indentify_matrix (pfx_usize_t dim_count,
+	PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat, dim_t val)
+{
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		for (pfx_uindex_t j=0; j<i; ++j)
+		{
+			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+		}
+
+		vec_alg_t::matrix_at (__mat, i, i) = val;
+
+		for (pfx_uindex_t j=i+1; j<dim_count; ++j)
+		{
+			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+		}
+	}
+	return __mat;
+}
+
+PFX_SMAT_ALG_TEMPLATE_DEFINES
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::transpose_matrix (pfx_usize_t dim_count,
+	const PFX_SMAT_ALG_TYPE::matrix_t& __mat, 
+	PFX_SMAT_ALG_TYPE::matrix_t& __mat_reslut, dim_t val)
+{
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+	if (&mat != &__mat_reslut)
+	{
+		for (pfx_uindex_t i=0; i<dimension_count; ++i)
+		{
+			for (pfx_uindex_t j=0; j<dimension_count; ++j)
+			{
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+			}
+		}
+	}
+	else
+	{
+		for (pfx_uindex_t i=0; i<dimension_count; ++i)
+		{
+			pfx_uindex_t j=i+1;
+			for (; j<dimension_count; ++j)
+			{
+				dim_t tmpval = vec_alg_t::matrix_at (__mat_reslut, i, j);
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+				vec_alg_t::matrix_at (__mat_reslut, j, i) = tmpval;
+			}
+		}
+	}
+	return __mat_reslut;
+}
+
+PFX_SMAT_ALG_TEMPLATE_DEFINES
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::transpose_matrix (pfx_usize_t dim_count,
+	const PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat, 
+	PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat_reslut, dim_t val)
+{
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+	if (&mat != &__mat_reslut)
+	{
+		for (pfx_uindex_t i=0; i<dimension_count; ++i)
+		{
+			for (pfx_uindex_t j=0; j<dimension_count; ++j)
+			{
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+			}
+		}
+	}
+	else
+	{
+		for (pfx_uindex_t i=0; i<dimension_count; ++i)
+		{
+			pfx_uindex_t j=i+1;
+			for (; j<dimension_count; ++j)
+			{
+				dim_t tmpval = vec_alg_t::matrix_at (__mat_reslut, i, j);
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+				vec_alg_t::matrix_at (__mat_reslut, j, i) = tmpval;
+			}
+		}
+	}
+	return __mat_reslut;
+}
+
+
+PFX_SMAT_ALG_TEMPLATE_DEFINES
 static PFX_INLINE PFX_SMAT_ALG_TYPE::vector_t& PFX_SMAT_ALG::vector4_mul
 (const PFX_SMAT_ALG_TYPE::vector_t& __mat_a, 
 const PFX_SMAT_ALG_TYPE::matrix_t& __mat_b,  
@@ -808,20 +931,15 @@ PFX_SMAT_ALG_TYPE::vector_t* PARAM_INOUT __tempbuffer,
 
 	if (__tempbuffer)
 	{
-		*__tempbuffer = *matrix_at(__mat_b,0);
-		vec_alg_t::vector_mul (*__tempbuffer, vec_alg_t::vector_at (__mat_a, 0));
-		__mat_result = *__tempbuffer;
+		vec_alg_t::vector_mul (*matrix_at(__mat_b,0), vec_alg_t::vector_at (__mat_a, 0), __mat_result);
 
-		*__tempbuffer = *matrix_at(__mat_b,1);
-		vec_alg_t::vector_mul (*__tempbuffer, vec_alg_t::vector_at (__mat_a, 1));
+		vec_alg_t::vector_mul (*matrix_at(__mat_b,1), vec_alg_t::vector_at (__mat_a, 1), *__tempbuffer);
 		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
 
-		*__tempbuffer = *matrix_at(__mat_b,2);
-		vec_alg_t::vector_mul (*__tempbuffer, vec_alg_t::vector_at (__mat_a, 2));
+		vec_alg_t::vector_mul (*matrix_at(__mat_b,2), vec_alg_t::vector_at (__mat_a, 2), *__tempbuffer);
 		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
 
-		*__tempbuffer = *matrix_at(__mat_b,3);
-		vec_alg_t::vector_mul (*__tempbuffer, vec_alg_t::vector_at (__mat_a, 3));
+		vec_alg_t::vector_mul (*matrix_at(__mat_b,3), vec_alg_t::vector_at (__mat_a, 3), *__tempbuffer);
 		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
 	}
 	else
@@ -1242,84 +1360,286 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::swap_line (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	pfx_uindex_t i, pfx_uindex_t j)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	vector_t* swap_ptr;
+	swap_ptr = vec_alg_t::matrix_at(__matrix, i);
+	vec_alg_t::matrix_at(__matrix, i) = vec_alg_t::matrix_at(__matrix, j);
+	vec_alg_t::matrix_at(__matrix, j) = swap_ptr;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::clear_oneline 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	pfx_uindex_t test_line, pfx_uindex_t clear_line, 
-	pfx_uindex_t line_index)
+	pfx_uindex_t line_index, pfx_usize_t dim_count)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	dim_t mul_factor;
+	mul_factor = dim_alg_t::div (vec_alg_t::matrix_at (__matrix, test_line, line_index), 
+		vec_alg_t::matrix_at (__matrix, clear_line, line_index));
+
+	for (pfx_uindex_t i=line_index; i<dim_count; ++i)
+	{
+		dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, test_line, i), mul_factor);
+		dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), vec_alg_t::matrix_at (__matrix, test_line, i));
+	}
+	return mul_factor;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::clear_oneline_same 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	pfx_uindex_t test_line, 
-	pfx_uindex_t clear_line, PFX_SMAT_ALG_TYPE::dim_t mul_factor)
+	pfx_uindex_t clear_line, PFX_SMAT_ALG_TYPE::dim_t mul_factor,
+	pfx_usize_t dim_count)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), mul_factor);
+		dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i),
+			vec_alg_t::matrix_at (__matrix, test_line, i));
+	}
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::restore_oneline 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	pfx_uindex_t restore_line,pfx_uindex_t line_index,
-	PFX_SMAT_ALG_TYPE::dim_t mul_factor)
+	PFX_SMAT_ALG_TYPE::dim_t mul_factor,
+	pfx_usize_t dim_count)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	for (pfx_uindex_t i=line_index; i<dim_count; ++i)
+	{
+		dim_alg_t::div_replace(vec_alg_t::matrix_at (__matrix, restore_line, i), mul_factor); 
+	}
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE pfx_usize_t PFX_SMAT_ALG::rev_clear_oneline 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
-	pfx_uindex_t clear_line,		
-	PFX_SMAT_ALG_TYPE::dim_t* mul_factor, pfx_u32_t delta)
+	pfx_uindex_t clear_line,	
+	pfx_usize_t	 dim_count,
+	PFX_SMAT_ALG_TYPE::clr_mul_factor_t* mul_factor, pfx_u32_t delta)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+	pfx_uindex_t fac_count = 0;
+	pfx_uindex_t itr = 0;
+	for (pfx_uindex_t i=dim_count-1; i>clear_line; --i)
+	{
+		if (dim_alg_t::equals(vec_alg_t::matrix_at (__matrix, clear_line, i), 0, delta))
+		{
+			continue;
+		}
+		mul_factor[itr].m_factor = dim_alg_t::div(vec_alg_t::matrix_at (__matrix, i, i),
+			vec_alg_t::matrix_at (__matrix, clear_line, i));
 
+		mul_factor[itr].m_index = i;
+
+		for (pfx_uindex_t j=clear_line; j<dim_count; ++j)
+		{
+			dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, j), mul_factor[itr].m_factor);
+		}
+		dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i),
+			vec_alg_t::matrix_at (__matrix, i, i));
+		++itr;
+	}
+	mul_factor[itr].m_index = INVALID_VALUE;
+	return itr;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::rev_clear_oneline_same 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	pfx_uindex_t clear_line,
-	const PFX_SMAT_ALG_TYPE::dim_t* PARAM_IN mul_factor)
+	pfx_usize_t dim_count, 
+	const PFX_SMAT_ALG_TYPE::clr_mul_factor_t* PARAM_IN mul_factor)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	pfx_uindex_t fac_count = 0;
+	pfx_uindex_t itr = 0;
+	for (pfx_uindex_t i = clear_line; i<dim_count; ++i)
+	{
+		if (INVALID_VALUE == mul_factor[itr].m_index)
+		{
+			break;
+		}
+
+		for (pfx_uindex_t j=0; j<dim_count; ++j)
+		{
+			dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, j),
+				mul_factor[itr].m_factor);
+
+			dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, j),
+				vec_alg_t::matrix_at (__matrix, mul_factor[itr].m_index, j));
+		}
+
+		++itr;
+	}
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::restore_oneline 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	pfx_uindex_t restore_line, pfx_uindex_t line_index,
-	PFX_SMAT_ALG_TYPE::dim_t mul_factor, pfx_uindex_t except_j)
+	PFX_SMAT_ALG_TYPE::dim_t mul_factor, 
+	pfx_usize_t dim_count, 
+	pfx_uindex_t except_j)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	if (except_j > line_index)
+	{
+		for (pfx_uindex_t i=line_index; i<except_j; ++i)
+		{
+			dim_alg_t::div_replace(vec_alg_t::matrix_at (__matrix, restore_line, i), mul_factor);
+		}
+
+		for (pfx_uindex_t i=except_j+1; i<dim_count; ++i)
+		{
+			dim_alg_t::div_replace(vec_alg_t::matrix_at (__matrix, restore_line, i), mul_factor);
+		}
+	}
+	else
+	{		
+		if (except_j == line_index)
+		{
+			++line_index;
+		}
+		for (pfx_uindex_t i=line_index; i<dim_count; ++i)
+		{
+			dim_alg_t::div_replace(vec_alg_t::matrix_at (__matrix, restore_line, i), mul_factor);
+		}
+	}
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::
 clear_oneline (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	pfx_uindex_t test_line, pfx_uindex_t clear_line,
-	pfx_uindex_t line_index, pfx_uindex_t except_j)
+	pfx_uindex_t line_index, pfx_usize_t dim_count,
+	pfx_uindex_t except_j)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	dim_t mul_factor;
+	mul_factor = dim_alg_t::div(vec_alg_t::matrix_at (__matrix, test_line, line_index), 
+		vec_alg_t::matrix_at (__matrix, clear_line, line_index));
+
+	if (except_j > line_index)
+	{
+		for (pfx_uindex_t i=line_index; i<except_j; ++i)
+		{
+			dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), mul_factor);
+			dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), 
+				vec_alg_t::matrix_at (__matrix, test_line, i));
+		}
+		for (pfx_uindex_t i=except_j+1; i<dim_count; ++i)
+		{
+			dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), mul_factor);
+			dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), 
+				vec_alg_t::matrix_at (__matrix, test_line, i));
+		}
+	}
+	else
+	{		
+		if (except_j == line_index)
+		{
+			++line_index;
+		}
+		for (pfx_uindex_t i=line_index; i<dim_count; ++i)
+		{
+			dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), mul_factor);
+			dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), 
+				vec_alg_t::matrix_at (__matrix, test_line, i));
+		}
+	}
+
+	return mul_factor;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::clear_oneline_same 
-(PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  pfx_uindex_t test_line)
+(PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  pfx_uindex_t test_line, 
+pfx_usize_t dim_count)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	for (pfx_uindex_t i=0; i<except_j; ++i)
+	{
+		dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), mul_factor);
+		dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i),
+			vec_alg_t::matrix_at (__matrix, test_line, i));
+	}
+	for (pfx_uindex_t i=except_j+1; i<dim_count; ++i)
+	{
+		dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), mul_factor);
+		dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i),
+			vec_alg_t::matrix_at (__matrix, test_line, i));
+	}
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE pfx_uindex_t PFX_SMAT_ALG::find_test_line 
-(PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  pfx_uindex_t line_index)
+(PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  pfx_uindex_t line_index,
+pfx_usize_t dim_count)
 {
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::vector_t		vector_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
+	pfx_uindex_t res_index = line_index;
+	dim_t max_abs = 0;
+
+	for (pfx_uindex_t i = line_index; i<dim_count; ++i)
+	{
+		if (null == vec_alg_t::matrix_at(__matrix,i))
+		{
+			continue;
+		}
+		dim_t tmp_abs = dim_alg_t::abs(vec_alg_t::matrix_at(__matrix,i,line_index));
+		if ( max_abs < tmp_abs)
+		{
+			res_index = i;
+			max_abs = tmp_abs;
+		}
+	}
+
+	return res_index;
 }
 
 
@@ -1654,7 +1974,45 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_det
 	pfx_usize_t dim_count,
 	pfx_u32_t delta)
 {
-	return 0;
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+	dim_t  det = 1;
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		pfx_uindex_t j;
+		// 找出主元最大的行，并选为主元行
+		j = find_test_line (__mat_replace, i, dim_count);
+		if (i != j)
+		{
+			swap_line(__mat_replace, i, j);
+			det = -det;
+		}
+		// 判断是否可逆，不可逆的方阵，行列式的值必为0
+		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, i), 0, delta))
+		{
+			det = 0;
+			break;
+		}
+		//叠加值
+		dim_alg_t::mul_replace(det, vec_alg_t::matrix_at(__mat_replace, i, i));
+
+		if (i < dim_count-1)
+		{
+			// 消元并恢复
+			for (pfx_uindex_t k=i+1; k< dim_count;++k)
+			{
+				if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, k, i), 0, delta))
+				{
+					continue;
+				}
+				dim_t  mul_factor = clear_oneline(__mat_replace, i, k, i, dim_count);
+				restore_oneline (__mat_replace, k, i, mul_factor, dim_count);
+			}
+		}
+	} 
+	return det;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
@@ -1664,7 +2022,63 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_algebraic_cofactor_det
 	pfx_usize_t x, pfx_usize_t y,
 	pfx_u32_t delta)
 {
-	return 0;
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+	dim_t  det = 1;
+	vec_alg_t::matrix_at (__mat_replace, x) = null;
+	pfx_uindex_t j_itr = 0;
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		if (i == x)
+		{
+			continue;
+		}
+		pfx_uindex_t j;
+		// 选取主元最大的一行
+		j = find_test_line (__mat_replace, i, dim_count);
+		if (i != j)
+		{
+			// 交换行
+			swap_line (__mat_replace, i, j);
+			det = -det;
+		}
+		if (y == j_itr)
+		{
+			++j_itr;
+		}
+		// 当主元为0的时候，行列式的值必为0，是不可逆方阵
+		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, j_itr), 0, delta))
+		{
+			det = 0;
+			break;
+		}
+		// 跌成行列式的值
+		dim_alg_t::mul_replace(det, vec_alg_t::matrix_at(__mat_replace, i, j_itr));
+
+		// 除主元行外消除主元列位置的其他行的值
+		if (i < dim_count-1)
+		{
+			for (pfx_uindex_t k=i+1; k< dim_count;++k)
+			{
+				if (vec_alg_t::matrix_at(__mat_replace, k))
+				{
+					if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, k, j_itr), 0, delta))
+					{
+						continue;
+					}
+					// 消除变换
+					dim_t  mul_factor = clear_oneline (__mat_replace, i, k, j_itr, dim_count, y);
+					// 恢复变换
+					restore_oneline (__mat_replace, k, j_itr, mul_factor, dim_count, y);
+				}
+
+			}
+		}
+		++j_itr;
+	} 
+	return det;
 }
 //
 // 求秩 （方阵）
@@ -1672,23 +2086,49 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE pfx_usize_t PFX_SMAT_ALG::matrix_rank (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_replace, 
 	pfx_usize_t dim_count, pfx_u32_t delta)
 {
-	return 0;
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+	pfx_usize_t rank = 0;
+
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		pfx_uindex_t j;
+		j = find_test_line (__mat_replace, i, dim_count);
+		if (i != j)
+		{
+			swap_line_unsafe(__mat_replace, i, j);
+		}
+		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, i), 0, delta))
+		{
+			break;
+		}
+		++rank;
+
+		if (i < dim_count-1)
+		{
+			for (pfx_uindex_t k=i+1; k< dim_count;++k)
+			{
+				if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, k, i), 0, delta))
+				{
+					continue;
+				}
+				clear_oneline (__mat_replace, i, k, i, dim_count);
+			}
+		}
+	} 
+	return rank;
 }
 
-PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE pfx_usize_t PFX_SMAT_ALG::matrix_rank (PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat_replace, 
-	pfx_usize_t dim_count, pfx_u32_t delta)
-{
-	return 0;
-}
-// 求行列式的值和行列式的代数余子式的值
-// 全主元高斯消元法
+//求逆矩阵
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix_for_3d 
 (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_a, 
 	PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_inverse,
 	pfx_u32_t delta)
 {
+	// 分块求逆法，只供特殊结构的矩阵使用
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
@@ -1812,6 +2252,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 	return __mat_inverse;
 }
 
+// 高斯消元法求逆
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_replace,
@@ -1819,7 +2260,87 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix
 	PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_inverse,
 	pfx_u32_t delta)
 {
-	return __mat_inverse;
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+	// A * inverse(A) = E
+	// 原理：
+	// (A | E) ------初等变换-----> (E | A^(-1))
+	if (0 == dim_count)
+	{
+		return null;
+	}
+	if (1 == dim_count)
+	{
+		dim_t tmp = vec_alg_t::matrix_at (__mat_replace, 0, 0);
+		if (dim_alg_t::equals(tmp, 0, delta))
+		{
+			return null;
+		}
+		else
+		{
+			vec_alg_t::matrix_at (__mat_inverse, 0, 0) = tmp;
+			return &__mat_inverse;
+		}
+	}
+	pfx_usize_t rank = 0;
+	// 单位化
+	Indentify_matrix(dim_count, __mat_inverse, 1, 0);
+
+	// 第一步，先将原矩阵按高斯消元法三角化, 单位阵做一样的操作
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		pfx_uindex_t j;
+		j = find_test_line (__mat_replace, i, dim_count);
+		if (i != j)
+		{
+			swap_line(__mat_replace, i, j);
+			swap_line(__mat_inverse, i, j);
+		}
+		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, i), 0, delta))
+		{
+			break;
+		}
+		++rank;
+
+		if (i < dim_count-1)
+		{
+			for (pfx_uindex_t k=i+1; k< dim_count;++k)
+			{
+				if (dim_alg_t::equals (vec_alg_t::matrix_at(__mat_replace, k, i), 0, delta))
+				{
+					continue;
+				}
+				dim_t  mul_factor = clear_oneline (__mat_replace, i, k, i, dim_count);
+				clear_oneline_same (__mat_inverse, i, k, mul_factor, dim_count);
+			}
+		}
+	} 
+	// 方阵的秩不满，矩阵不可逆
+	RETURN_INVALID_RESULT (dim_count != rank,null);
+
+	// 第二步，将三角阵转为对角线
+	TYPE_CMAT::matrix_ex_t::clear_mul_factor_t mul_factor[dim_count+1];
+	if (dim_count > 2)
+	{
+		for (pfx_uindex_t i=(dim_count-2); i>0; --i)
+		{
+			rev_clear_oneline (__mat_replace, i, dim_count, mul_factor, delta);
+			rev_clear_oneline_same (__mat_inverse, i, dim_count, mul_factor);
+		}
+	}
+	rev_clear_oneline (__mat_replace, 0, dim_count, mul_factor, delta);
+	rev_clear_oneline_same (__mat_inverse, 0, dim_count, mul_factor);
+
+	// 第三步,单位化
+	for (pfx_uindex_t i=0; i<dim_count; ++i)
+	{
+		TYPE_CMAT::cvector_t::div_replace 
+		vec_alg_t::vector_div	(*vec_alg_t::matrix_at(__mat_inverse,i), 
+		vec_alg_t::matrix_at(__mat_replace, i, i), *vec_alg_t::matrix_at(__mat_inverse,i));
+	}
+	return &__mat_inverse;
 }
 //
 

@@ -223,6 +223,14 @@ struct square_matrix_base_op_alg
 	typedef typename square_matrix_type::matrix_t			matrix_t;
 	typedef typename square_matrix_type::matrix_ex_t		matrix_ex_t;
 	
+	typedef class clr_mul_factor
+	{
+		friend class square_matrix_base_op_alg < square_matrix_type, optional_type >;
+	protected:
+		dim_t							m_factor;
+		pfx_uindex_t			m_index;
+	}clr_mul_factor_t;
+
 	typedef class cw_buffer
 	{
 		friend class square_matrix_base_op_alg < square_matrix_type, optional_type >;
@@ -242,6 +250,21 @@ protected:
 public:
 
 	static PFX_INLINE pfx_usize_t get_dim_count ();
+
+	static PFX_INLINE matrix_t& Indentify_matrix (pfx_usize_t dim_count,
+		matrix_t& __mat, dim_t val, dim_t null_val);
+
+	static PFX_INLINE matrix_ex_t& Indentify_matrix (pfx_usize_t dim_count,
+		matrix_ex_t& __mat, dim_t val, dim_t null_val);
+
+	static PFX_INLINE matrix_t& transpose_matrix (pfx_usize_t dim_count,
+		const matrix_t& __mat, 
+		matrix_t& __mat_reslut, dim_t val);
+
+	static PFX_INLINE matrix_ex_t& transpose_matrix (pfx_usize_t dim_count,
+		const matrix_ex_t& __mat, 
+		matrix_ex_t& __mat_reslut, dim_t val);
+
 
 	// 方阵乘法
 	static PFX_INLINE vector_t& vector4_mul(const vector_t& __mat_a, const matrix_t& __mat_b,  
@@ -290,38 +313,45 @@ public:
 
 	PFX_INLINE dim_t clear_oneline (matrix_ex_t& PARAM_INOUT __matrix,  
 																	pfx_uindex_t test_line, pfx_uindex_t clear_line, 
-																	pfx_uindex_t line_index);
+																	pfx_uindex_t line_index, pfx_usize_t dim_count);
 
 	PFX_INLINE void clear_oneline_same (matrix_ex_t& PARAM_INOUT __matrix,  
 																						pfx_uindex_t test_line, 
-																						pfx_uindex_t clear_line, dim_t mul_factor);
+																						pfx_uindex_t clear_line, dim_t mul_factor, 
+																						pfx_usize_t dim_count);
 
 	PFX_INLINE void restore_oneline (matrix_ex_t& PARAM_INOUT __matrix,  
 																				pfx_uindex_t restore_line,pfx_uindex_t line_index,
-																				dim_t mul_factor);
+																				dim_t mul_factor, pfx_usize_t dim_count);
 
 	PFX_INLINE pfx_usize_t rev_clear_oneline (matrix_ex_t& PARAM_INOUT __matrix,  
-																				pfx_uindex_t clear_line,		
-																				dim_t* mul_factor, pfx_u32_t delta);
+																				pfx_uindex_t clear_line,	
+																				pfx_usize_t dim_count, 
+																				clr_mul_factor_t* mul_factor, pfx_u32_t delta);
 
 	PFX_INLINE void rev_clear_oneline_same (matrix_ex_t& PARAM_INOUT __matrix,  
 																				pfx_uindex_t clear_line,
-																				const dim_t* PARAM_IN mul_factor);
+																				pfx_usize_t dim_count, 
+																				const clr_mul_factor_t* PARAM_IN mul_factor);
 
 
 	PFX_INLINE void restore_oneline (matrix_ex_t& PARAM_INOUT __matrix,  
 																				pfx_uindex_t restore_line, pfx_uindex_t line_index,
-																				dim_t mul_factor, pfx_uindex_t except_j);
+																				dim_t mul_factor, pfx_usize_t dim_count,
+																				pfx_uindex_t except_j);
 
 
 	PFX_INLINE dim_t clear_oneline (matrix_ex_t& PARAM_INOUT __matrix,  
 																				pfx_uindex_t test_line, pfx_uindex_t clear_line,
-																				pfx_uindex_t line_index, pfx_uindex_t except_j);
+																				pfx_uindex_t line_index, pfx_usize_t dim_count,
+																				pfx_uindex_t except_j);
 
 
-	PFX_INLINE void clear_oneline_same (matrix_ex_t& PARAM_INOUT __matrix,  pfx_uindex_t test_line);
+	PFX_INLINE void clear_oneline_same (matrix_ex_t& PARAM_INOUT __matrix,  
+																		pfx_uindex_t test_line, pfx_usize_t dim_count);
 
-	PFX_INLINE pfx_uindex_t find_test_line (matrix_ex_t& PARAM_INOUT __matrix,  pfx_uindex_t line_index);
+	PFX_INLINE pfx_uindex_t find_test_line (matrix_ex_t& PARAM_INOUT __matrix,  
+																		pfx_uindex_t line_index, pfx_usize_t dim_count);
 
 public:
 	// 求行列式的值和行列式
@@ -355,8 +385,6 @@ public:
 	static PFX_INLINE pfx_usize_t matrix_rank (matrix_ex_t& PARAM_INOUT __mat_replace, 
 		pfx_usize_t dim_count, pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
-	static PFX_INLINE pfx_usize_t matrix_rank (matrix_t& PARAM_INOUT __mat_replace, 
-		pfx_usize_t dim_count, pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
 	// 求行列式的值和行列式的代数余子式的值
 	// 全主元高斯消元法
 	static PFX_INLINE matrix_ex_t* inverse_matrix_for_3d (const matrix_ex_t& PARAM_INOUT __mat_a, 
