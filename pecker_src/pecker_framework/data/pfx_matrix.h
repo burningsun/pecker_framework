@@ -105,18 +105,18 @@ public:
 	PFX_INLINE  cmatrix_t& div_repalce (dimension_value_t val);
 public:
 	// 行列式的值
-	PFX_INLINE dimension_value_t determinant (pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+	PFX_INLINE dimension_value_t determinant (u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	// 行列式的代数余子式值
 	PFX_INLINE dimension_value_t algebraic_cofactor_determinant (pfx_uindex_t x,pfx_uindex_t y);
 
 	// 使用高斯消元法求秩
-	PFX_INLINE pfx_usize_t rank_gaussian (pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL) const;
+	PFX_INLINE pfx_usize_t rank_gaussian (u32_t delta = MID_PRECISION_QUALIFER_VAL) const;
 
 	PFX_INLINE cmatrix_t* inverse_matrix (cmatrix_t& PARAM_OUT mat) const;
 	// 使用高斯消元法求逆
 	PFX_INLINE cmatrix_t* inverse_matrix_gaussian_elimination (cmatrix_t& PARAM_OUT mat,
-		pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL) const;
+		u32_t delta = MID_PRECISION_QUALIFER_VAL) const;
 
 protected:
 	static PFX_INLINE dimension_value_t& transpose_matrix_value (matrix_t& mat,pfx_uindex_t x,pfx_uindex_t y);
@@ -131,30 +131,30 @@ public:
 
 	// 矩阵行列式的值
 	static PFX_INLINE dimension_value_t determinant_gaussian_unsafe 
-		(matrix_ex_t& gaussian_mat, pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+		(matrix_ex_t& gaussian_mat, u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	static PFX_INLINE dimension_value_t determinant (const matrix_t& mat, 
-		pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+		u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	static PFX_INLINE dimension_value_t algebraic_cofactor_determinant_gaussian_unsafe 
 		(matrix_ex_t& gaussian_mat,
-		pfx_uindex_t x,pfx_uindex_t y,pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+		pfx_uindex_t x,pfx_uindex_t y,u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	static PFX_INLINE dimension_value_t algebraic_cofactor_determinant 
 		(const matrix_t& mat,
-		pfx_uindex_t x,pfx_uindex_t y,pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+		pfx_uindex_t x,pfx_uindex_t y,u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	// 使用高斯消元法求秩
 	static PFX_INLINE pfx_usize_t rank_gaussian (const  matrix_t& PARAM_IN mat,
-		matrix_t& PARAM_OUT result_mat, pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL) ;
+		matrix_t& PARAM_OUT result_mat, u32_t delta = MID_PRECISION_QUALIFER_VAL) ;
 
 	// 矩阵求逆
 	static PFX_INLINE matrix_t* inverse_matrix (matrix_ex_t& PARAM_INOUT mat,
-		matrix_ex_t& PARAM_OUT inverse_mat,pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+		matrix_ex_t& PARAM_OUT inverse_mat,u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	// 使用高斯消元法求逆
 	static PFX_INLINE matrix_ex_t* inverse_matrix_gaussian_elimination (matrix_ex_t& PARAM_INOUT gaussian_mat,
-		matrix_ex_t& PARAM_OUT inverse_mat,pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+		matrix_ex_t& PARAM_OUT inverse_mat,u32_t delta = MID_PRECISION_QUALIFER_VAL);
 public:
 	static PFX_INLINE cwcache_t* create_coppersmith_winograd_buffer ();
 	static PFX_INLINE void release_coppersmith_winograd_buffer (cwcache_t* PARAM_INOUT buffer_ptr);

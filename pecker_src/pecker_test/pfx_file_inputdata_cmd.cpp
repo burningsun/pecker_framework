@@ -10,10 +10,10 @@
 
 #include "../pecker_framework/native/pfx_file_io.h"
 
-pfx_result_t file_data_input_for_test_running(const pfx_char_t* pfile_name,cmd_operate_func cmd_operate_method)
+result_t file_data_input_for_test_running(const char_t* pfile_name,cmd_operate_func cmd_operate_method)
 {
-	pfx_file_t hfile;
-	pfx_result_t status = PFX_STATUS_OK;
+	file_t hfile;
+	result_t status = PFX_STATUS_OK;
 	CMD_INOUT_t cmdType = CMD_NONE;
 
 	RETURN_INVALID_RESULT((null == pfile_name || null == cmd_operate_method),PFX_STATUS_INVALID_PARAMS);
@@ -26,9 +26,9 @@ pfx_result_t file_data_input_for_test_running(const pfx_char_t* pfile_name,cmd_o
 	
 	while(1)
 	{
-		const pfx_usize_t MAX_STRING_SIZE = 256;
-		pfx_char_t pstr_buffer[MAX_STRING_SIZE];
-		pfx_nsize_t nstr_size = 0;
+		const usize__t MAX_STRING_SIZE = 256;
+		char_t pstr_buffer[MAX_STRING_SIZE];
+		nsize__t nstr_size = 0;
 
 		if (pfx_test_file_eof(&hfile))
 			break;

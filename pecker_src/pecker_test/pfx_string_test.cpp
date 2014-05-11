@@ -11,13 +11,13 @@
 //#include "../pecker_framework/native/pecker_allocator.h"
 USING_PECKER_SDK
 
-pfx_result_t string_test ()
+result_t string_test ()
 {
 	//pfx_share_object_base< pecker_simple_allocator < pfx_sint_t > > obj;
 
-	IPfx_string< pfx_char_t >* string_ptr1;
-	IPfx_string< pfx_char_t >* string_ptr2;
-	IPfx_string< pfx_char_t >* string_ptr3;
+	IPfx_string< char_t >* string_ptr1;
+	IPfx_string< char_t >* string_ptr2;
+	IPfx_string< char_t >* string_ptr3;
 
 	string_ptr1 = null;
 	string_ptr2 = null;
@@ -25,9 +25,9 @@ pfx_result_t string_test ()
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("test pfx_cstring\n");
 
-	pfx_cstring < pfx_char_t > cstring1;
-	pfx_cstring < pfx_char_t > cstring2;
-	pfx_cstring < pfx_char_t > cstring3;
+	cstring < char_t > cstring1;
+	cstring < char_t > cstring2;
+	cstring < char_t > cstring3;
 	
 	string_ptr1 = &cstring1;
 	string_ptr2 = &cstring2;
@@ -41,8 +41,8 @@ pfx_result_t string_test ()
 	string_ptr3->append_string (" ",1);
 	string_ptr3->append_string (string_ptr2);
 	
-	const pfx_char_t* str = string_ptr3->get_string ();
-	pfx_char_t strformat[20];
+	const char_t* str = string_ptr3->get_string ();
+	char_t strformat[20];
 	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
@@ -119,8 +119,8 @@ pfx_result_t string_test ()
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
-	pfx_uindex_t find_index = 0;
-	pfx_boolean_t bfind = PFX_BOOL_FALSE;
+	uindex_t find_index = 0;
+	boolean_t bfind = PFX_BOOL_FALSE;
 	bfind = string_ptr3->find_first_string ("123",3,find_index);
 	PECKER_LOG_DIRECT_A ("%d %d",bfind,find_index);
 	PECKER_LOG_ ("\n");
@@ -129,7 +129,7 @@ pfx_result_t string_test ()
 	PECKER_LOG_DIRECT_A ("%d %d",bfind,find_index);
 	PECKER_LOG_ ("\n");
 
-	pfx_usize_t same_count = 0;
+	usize__t same_count = 0;
 	bfind = string_ptr3->find_near_string (5,"1235",4,find_index,same_count);
 	PECKER_LOG_DIRECT_A ("%d %d %d",bfind,find_index,same_count);
 	PECKER_LOG_ ("\n");
@@ -143,9 +143,9 @@ pfx_result_t string_test ()
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("test pfx_cshare_string\n");
 
-	pfx_cshare_string < pfx_char_t > csstring1;
-	pfx_cshare_string < pfx_char_t > csstring2;
-	pfx_cshare_string < pfx_char_t > csstring3;
+	cshare_string < char_t > csstring1;
+	cshare_string < char_t > csstring2;
+	cshare_string < char_t > csstring3;
 
 	string_ptr1 = &csstring1;
 	string_ptr2 = &csstring2;

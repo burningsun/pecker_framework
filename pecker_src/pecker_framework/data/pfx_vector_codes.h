@@ -26,7 +26,7 @@ PECKER_BEGIN
 
 DIMENSION_VAL_OP_TEMPLATE_DEFS
 PFX_INLINE pfx_boolean_t DIM_OP_TEMPLATE::
-	equals (dimension_value X, dimension_value Y, pfx_u32_t delta)
+	equals (dimension_value X, dimension_value Y, u32_t delta)
 {
 	return (pfx_boolean_t)((bool)(X == Y));
 }
@@ -34,7 +34,7 @@ PFX_INLINE pfx_boolean_t DIM_OP_TEMPLATE::
 // float 特例化
 template <>
 PFX_INLINE pfx_boolean_t dimension_value_operations < float >::
-	equals (float fX, float fY, pfx_u32_t delta)
+	equals (float fX, float fY, u32_t delta)
 {
 	pfx_boolean_t retn_val;
 #ifndef NOT_IEEE754_FLOAT
@@ -73,7 +73,7 @@ PFX_INLINE pfx_boolean_t dimension_value_operations < float >::
 // double 特例化
 template <>
 PFX_INLINE pfx_boolean_t dimension_value_operations < double >::
-	equals (double fX, double fY, pfx_u32_t delta)
+	equals (double fX, double fY, u32_t delta)
 {
 	pfx_boolean_t retn_val;
 
@@ -496,7 +496,7 @@ VERCOTOR_TEMPLATE_DEFS
 PFX_INLINE pfx_boolean_t TMPLATE_CVEC::
 	equals (//const st_pfx_vector < DIM_VALUE_TYPE, dimensional_count >& other_, 
 	const TYPE_CVEC::vector_t & other_,
-	pfx_u32_t delta)
+	u32_t delta)
 {
 	return TMPLATE_CVEC::equals (m_dim, other_,delta);
 }
@@ -644,7 +644,7 @@ VERCOTOR_TEMPLATE_DEFS
 PFX_INLINE pfx_boolean_t TMPLATE_CVEC ::equals 
 	(const TYPE_CVEC::vector_t& vec_a,
 		const TYPE_CVEC::vector_t& vec_b, 
-		pfx_u32_t delta)
+		u32_t delta)
 {
 	pfx_boolean_t result_ = PFX_BOOL_FALSE;
 	for (pfx_uindex_t i=0; i<dimensional_count; ++i)

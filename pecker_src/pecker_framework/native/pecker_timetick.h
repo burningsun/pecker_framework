@@ -26,14 +26,14 @@ class PFX_NATIVE_API pecker_tick
 {
 private:
 	//Time_ticker		m_ticker;
-	pfx_double_t	m_start_tick;
+	double_t	m_start_tick;
 public:
 	pecker_tick();
 	~pecker_tick();
-	pfx_result_t init();
-	pfx_result_t start();
-	pfx_double_t get_microsecond();
-	pfx_result_t stop();
+	result_t init();
+	result_t start();
+	double_t get_microsecond();
+	result_t stop();
 };
 PECKER_END
 

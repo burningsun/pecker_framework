@@ -11,23 +11,23 @@
 
 #define  COMPARE_TWO_VALUE(A,B,CMP) CMP(A,B)
 typedef int (*CMP_A_AND_B)(void* A,void* B) ;
-typedef int (*compare_two_value_func)(pfx_long_t A,pfx_long_t B) ;
-typedef int (*compare_two_string_func)(const pfx_char_t* pstr_a,pfx_nsize_t nstr_a_len,
-	const pfx_char_t* pstr_b,pfx_nsize_t nstr_b_len);
-typedef int (*compare_two_string_ex_func)(const pfx_char_t* pstr_a,pfx_nsize_t nstr_a_len,
-	const pfx_char_t* pstr_b,pfx_nsize_t nstr_b_len,pfx_nsize_t* psame_count);
+typedef int (*compare_two_value_func)(long_t A,long_t B) ;
+typedef int (*compare_two_string_func)(const char_t* pstr_a,nsize__t nstr_a_len,
+	const char_t* pstr_b,nsize__t nstr_b_len);
+typedef int (*compare_two_string_ex_func)(const char_t* pstr_a,nsize__t nstr_a_len,
+	const char_t* pstr_b,nsize__t nstr_b_len,nsize__t* psame_count);
 
 
-PFX_INLINE int cmp_a_and_b_long (pfx_long_t A, pfx_long_t B)
+PFX_INLINE int cmp_a_and_b_long (long_t A, long_t B)
 {
 	return (A - B);
 }
 
-PFX_INLINE int cmp_a_and_b_int (pfx_sint_t A, pfx_sint_t B)
+PFX_INLINE int cmp_a_and_b_int (sint_t A, sint_t B)
 {
 	return (A - B);
 }
-PFX_INLINE int cmp_a_and_b_char (pfx_char_t A, pfx_char_t B)
+PFX_INLINE int cmp_a_and_b_char (char_t A, char_t B)
 {
 	return (A - B);
 }
@@ -35,16 +35,16 @@ PFX_INLINE int cmp_a_and_b_wchar (wchar_t A, wchar_t B)
 {
 	return (A - B);
 }
-PFX_INLINE int cmp_a_and_b_short (pfx_short_t A,pfx_short_t B)
+PFX_INLINE int cmp_a_and_b_short (short_t A,short_t B)
 {
 	return (A-B);
 }
 
-PFX_INLINE int cmp_a_and_b_string_a(const pfx_char_t* pstr_a,pfx_nsize_t nstr_a_len,
-	const pfx_char_t* pstr_b,pfx_nsize_t nstr_b_len)
+PFX_INLINE int cmp_a_and_b_string_a(const char_t* pstr_a,nsize__t nstr_a_len,
+	const char_t* pstr_b,nsize__t nstr_b_len)
 {
-	pfx_nsize_t min_len = 0;
-	pfx_index_t i;
+	nsize__t min_len = 0;
+	index_t i;
 	int cmp_result = 0;
 	int len_cmp_result = 0;
 
@@ -66,12 +66,12 @@ PFX_INLINE int cmp_a_and_b_string_a(const pfx_char_t* pstr_a,pfx_nsize_t nstr_a_
 	return (nstr_a_len - nstr_b_len);
 }
 
-PFX_INLINE int cmp_a_and_b_string_a_ex(const pfx_char_t* pstr_a,
-	pfx_nsize_t nstr_a_len,const pfx_char_t* pstr_b,
-	pfx_nsize_t nstr_b_len,pfx_nsize_t* psame_count)
+PFX_INLINE int cmp_a_and_b_string_a_ex(const char_t* pstr_a,
+	nsize__t nstr_a_len,const char_t* pstr_b,
+	nsize__t nstr_b_len,nsize__t* psame_count)
 {
-	pfx_nsize_t min_len = 0;
-	pfx_index_t i;
+	nsize__t min_len = 0;
+	index_t i;
 	int cmp_result = 0;
 	int len_cmp_result = 0;
 
@@ -95,11 +95,11 @@ PFX_INLINE int cmp_a_and_b_string_a_ex(const pfx_char_t* pstr_a,
 	return (nstr_a_len - nstr_b_len);
 }
 
-PFX_INLINE int cmp_a_and_b_string_w(const pfx_wchar_t* pstr_a,pfx_nsize_t nstr_a_len,
-	const pfx_wchar_t* pstr_b,pfx_nsize_t nstr_b_len)
+PFX_INLINE int cmp_a_and_b_string_w(const widechar_t* pstr_a,nsize__t nstr_a_len,
+	const widechar_t* pstr_b,nsize__t nstr_b_len)
 {
-	pfx_nsize_t min_len = 0;
-	pfx_index_t i;
+	nsize__t min_len = 0;
+	index_t i;
 	int cmp_result = 0;
 	int len_cmp_result = 0;
 
@@ -121,12 +121,12 @@ PFX_INLINE int cmp_a_and_b_string_w(const pfx_wchar_t* pstr_a,pfx_nsize_t nstr_a
 	return (nstr_a_len - nstr_b_len);
 }
 
-PFX_INLINE int cmp_a_and_b_string_w_ex(const pfx_wchar_t* pstr_a,
-	pfx_nsize_t nstr_a_len,const pfx_wchar_t* pstr_b,
-	pfx_nsize_t nstr_b_len,pfx_nsize_t* psame_count)
+PFX_INLINE int cmp_a_and_b_string_w_ex(const widechar_t* pstr_a,
+	nsize__t nstr_a_len,const widechar_t* pstr_b,
+	nsize__t nstr_b_len,nsize__t* psame_count)
 {
-	pfx_nsize_t min_len = 0;
-	pfx_index_t i;
+	nsize__t min_len = 0;
+	index_t i;
 	int cmp_result = 0;
 	int len_cmp_result = 0;
 
@@ -154,11 +154,11 @@ PFX_INLINE int cmp_a_and_b_string_w_ex(const pfx_wchar_t* pstr_a,
 PECKER_BEGIN
 
 template< class  compare_type, typename compare_method >
-PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template(const compare_type* pstr_a,pfx_nsize_t nstr_a_len,
-	const compare_type* pstr_b,pfx_nsize_t nstr_b_len)
+PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template(const compare_type* pstr_a,nsize__t nstr_a_len,
+	const compare_type* pstr_b,nsize__t nstr_b_len)
 {
-	pfx_nsize_t min_len = 0;
-	pfx_index_t i;
+	nsize__t min_len = 0;
+	index_t i;
 	int cmp_result = 0;
 	int len_cmp_result = 0;
 
@@ -181,11 +181,11 @@ PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template(const compare_type* pstr
 }
 
 template< class  compare_type, typename compare_method >
-PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template_ex(const compare_type* pstr_a,pfx_nsize_t nstr_a_len,
-	const compare_type* pstr_b,pfx_nsize_t nstr_b_len,pfx_nsize_t& same_count)
+PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template_ex(const compare_type* pstr_a,nsize__t nstr_a_len,
+	const compare_type* pstr_b,nsize__t nstr_b_len,nsize__t& same_count)
 {
-	pfx_nsize_t min_len = 0;
-	pfx_index_t i;
+	nsize__t min_len = 0;
+	index_t i;
 	int cmp_result = 0;
 	int len_cmp_result = 0;
 

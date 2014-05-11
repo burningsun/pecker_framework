@@ -13,7 +13,7 @@
 PECKER_BEGIN
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::pfx_const_array_iterator () : 
+const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::const_array_iterator () : 
 					m_attach_array_ptr (null),
 					m_index (0)
 {
@@ -21,14 +21,14 @@ pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::pfx_const_array_i
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::~pfx_const_array_iterator ()
+const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::~const_array_iterator ()
 {
 	m_attach_array_ptr = null;
 	m_index = 0;
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-pfx_result_t pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::init (const IPfx_array < element_ >* attach_array_ptr, pfx_uindex_t current_index)
+result_t const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::init (const IPfx_array < element_ >* attach_array_ptr, uindex_t current_index)
 {
 	const element_*	element_ptr;
 	RETURN_INVALID_RESULT (null == attach_array_ptr,PFX_STATUS_INVALID_PARAMS);
@@ -40,9 +40,9 @@ pfx_result_t pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::init
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-IPfx_array_iterator < element_ >*		pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase ()
+IPfx_array_iterator < element_ >*		const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase ()
 {
-	pfx_uindex_t			next_index;
+	uindex_t			next_index;
 	const element_*	next_element_ptr;
 	RETURN_RESULT (null == m_attach_array_ptr,null);
 	next_index = m_index + 1;
@@ -53,9 +53,9 @@ IPfx_array_iterator < element_ >*		pfx_const_array_iterator PFX_IARRAY_ITERATOR_
 };
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-IPfx_array_iterator < element_ >*		pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease ()
+IPfx_array_iterator < element_ >*		const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease ()
 {
-	pfx_uindex_t			next_index;
+	uindex_t			next_index;
 	const element_*	next_element_ptr;
 	RETURN_RESULT (null == m_attach_array_ptr || 0 == m_index,null);
 	next_index = m_index - 1;
@@ -66,26 +66,26 @@ IPfx_array_iterator < element_ >*		pfx_const_array_iterator PFX_IARRAY_ITERATOR_
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-pfx_increase_iterator < element_ >*	pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase_iterator ()
+IPfx_increase_iterator < element_ >*	const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase_iterator ()
 {
 	return increase ();
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-pfx_decrease_iterator < element_ >* pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease_iterator ()
+IPfx_decrease_iterator < element_ >* const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease_iterator ()
 {
 	return decrease ();
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-const element_*							pfx_const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::get_current_element () const
+const element_*							const_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::get_current_element () const
 {
 	RETURN_RESULT (null == m_attach_array_ptr,null);
 	return m_attach_array_ptr->get_element_at (m_index);
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-	pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::pfx_array_iterator () : 
+	array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::array_iterator () : 
 m_attach_array_ptr (null),
 	m_index (0)
 {
@@ -93,7 +93,7 @@ m_attach_array_ptr (null),
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-	pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::~pfx_array_iterator ()
+	array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::~array_iterator ()
 {
 	m_attach_array_ptr = null;
 	m_index = 0;
@@ -102,7 +102,7 @@ PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
 
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-pfx_result_t pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::init (const IPfx_array < element_ >* attach_array_ptr, pfx_uindex_t current_index)
+result_t array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::init (const IPfx_array < element_ >* attach_array_ptr, uindex_t current_index)
 {
 	const element_*	element_ptr;
 	RETURN_INVALID_RESULT (null == attach_array_ptr,PFX_STATUS_INVALID_PARAMS);
@@ -114,9 +114,9 @@ pfx_result_t pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::init (cons
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-IPfx_array_iterator < element_ >*		pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase ()
+IPfx_array_iterator < element_ >*		array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase ()
 {
-	pfx_uindex_t			next_index;
+	uindex_t			next_index;
 	const element_*	next_element_ptr;
 	RETURN_RESULT (null == m_attach_array_ptr,null);
 	next_index = m_index + 1;
@@ -127,9 +127,9 @@ IPfx_array_iterator < element_ >*		pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLA
 };
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-	IPfx_array_iterator < element_ >*		pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease ()
+	IPfx_array_iterator < element_ >*		array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease ()
 {
-	pfx_uindex_t			next_index;
+	uindex_t			next_index;
 	const element_*	next_element_ptr;
 	RETURN_RESULT (null == m_attach_array_ptr || 0 == m_index,null);
 	next_index = m_index - 1;
@@ -140,26 +140,26 @@ PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-	pfx_increase_iterator < element_ >*	pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase_iterator ()
+	IPfx_increase_iterator < element_ >*	array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::increase_iterator ()
 {
 	return increase ();
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-	pfx_decrease_iterator < element_ >* pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease_iterator ()
+	IPfx_decrease_iterator < element_ >* array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::decrease_iterator ()
 {
 	return decrease ();
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-const element_*							pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::get_current_element () const
+const element_*							array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::get_current_element () const
 {
 	RETURN_RESULT (null == m_attach_array_ptr,null);
 	return m_attach_array_ptr->get_element_at (m_index);
 }
 
 PFX_IARRAY_ITERATOR_TEMPLATE_DEFINES
-element_*							pfx_array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::get_current_element_reference ()
+element_*							array_iterator PFX_IARRAY_ITERATOR_TEMPLATE_PARAMS ::get_current_element_reference ()
 {
 	RETURN_RESULT (null == m_attach_array_ptr,null);
 	return m_attach_array_ptr->get_element_reference_at (m_index);

@@ -83,47 +83,47 @@ typedef struct texture_bits
 	image_bits_t										m_image_bits;
 		
 	PFX_COLOR_FORMAT_TYPE_t		m_texture_color_format;
-	rectangle_region < pfx_usize_t >	m_texture_region;
-	pfx_boolean_t									m_enable_active;
+	rectangle_region < usize__t >	m_texture_region;
+	boolean_t									m_enable_active;
 }texture_bits_t;
 
 typedef struct texture_param
 {
-	pfx_enum_int_t	m_name;
-	pfx_enum_int_t	m_param_value;
+	enum_int_t	m_name;
+	enum_int_t	m_param_value;
 }texture_param_t;
 
 PFX_Interface Ipfx_update_texture_layer_usermode
 {
-	virtual pfx_result_t update_texture_layer (texture_bits_t* PARAM_INOUT lock_bits_ptr) = 0;
+	virtual result_t update_texture_layer (texture_bits_t* PARAM_INOUT lock_bits_ptr) = 0;
 };
 
 
 PFX_Interface Ipfx_texture_layer
 {
 	virtual PFX_TEXTURE_TYPE_t	get_texture_layer_type () const = 0;
-	virtual pfx_enum_int_t				get_render_system_type () const = 0;
+	virtual enum_int_t				get_render_system_type () const = 0;
 	//
-	virtual pfx_result_t lock_texture (texture_bits_t* & PARAM_INOUT lock_bits_ptr) = 0;
-	virtual pfx_result_t unlock_texture () = 0;
+	virtual result_t lock_texture (texture_bits_t* & PARAM_INOUT lock_bits_ptr) = 0;
+	virtual result_t unlock_texture () = 0;
 
 	// 使用 lock_and_unlock_texture 等价于lock_texture和unlock_texture配合使用
-	virtual pfx_result_t update_texture (Ipfx_update_texture_layer_usermode* PARAM_IN usermode_settings_ptr) = 0;
+	virtual result_t update_texture (Ipfx_update_texture_layer_usermode* PARAM_IN usermode_settings_ptr) = 0;
 
-	virtual pfx_uindex_t	get_layer_level () const = 0;
+	virtual uindex_t	get_layer_level () const = 0;
 	//
-	virtual pfx_result_t bind_texture () = 0;
+	virtual result_t bind_texture () = 0;
 	virtual const PFX_Interface IPfx_texture* get_texture () const = 0;
 };
 
 PFX_Interface IPfx_texture
 {
 	virtual PFX_TEXTURE_TYPE_t	get_texture_type () const = 0;
-	virtual pfx_enum_int_t				get_render_system_type () const = 0;
+	virtual enum_int_t				get_render_system_type () const = 0;
 
-	virtual pfx_result_t attach_texture_layer (Ipfx_texture_layer* PARAM_IN texture_layer_ptr) = 0;
-	virtual pfx_result_t bind_texture () = 0;
-	virtual Ipfx_texture_layer* get_texture_layer (pfx_uindex_t mipLevel) = 0;
+	virtual result_t attach_texture_layer (Ipfx_texture_layer* PARAM_IN texture_layer_ptr) = 0;
+	virtual result_t bind_texture () = 0;
+	virtual Ipfx_texture_layer* get_texture_layer (uindex_t mipLevel) = 0;
 };
 
 template < typename  texture_operate_type >
@@ -146,11 +146,11 @@ struct PFX_TextureOperation
 	//	return PFX_STATUS_INVALID_PARAMS;
 	//}
 
-	static PFX_INLINE pfx_result_t active_texture_params (render_device_t device, const texture_param_t* PARAM_INOUT texture_params,pfx_usize_t params_count)
+	static PFX_INLINE result_t active_texture_params (render_device_t device, const texture_param_t* PARAM_INOUT texture_params,usize__t params_count)
 	{
 		return PFX_STATUS_DENIED;
 	}
-	static PFX_INLINE pfx_result_t active_texture_unit (render_device_t device, pfx_uindex_t unit_index)
+	static PFX_INLINE result_t active_texture_unit (render_device_t device, uindex_t unit_index)
 	{
 		return PFX_STATUS_DENIED;
 	}
@@ -168,17 +168,17 @@ struct PFX_TextureLayer
 	{
 		return null;
 	}
-	static PFX_INLINE pfx_result_t release_texture (texture_type* PARAM_INOUT texture_ptr)
+	static PFX_INLINE result_t release_texture (texture_type* PARAM_INOUT texture_ptr)
 	{
 		return PFX_STATUS_DENIED;
 	}
 
 	static PFX_INLINE texture_layer_t* create_texture_layer (texture_type* PARAM_INOUT texture_ptr,
-		pfx_usize_t nMipLevel,const texture_bits_t* PARAM_IN texture_bits_,const extern_params_t* PARAM_IN  extern_params_)
+		usize__t nMipLevel,const texture_bits_t* PARAM_IN texture_bits_,const extern_params_t* PARAM_IN  extern_params_)
 	{
 		return null;
 	}
-	static PFX_INLINE pfx_result_t release_texture_layer (texture_layer_t* PARAM_INOUT texture_ptr)
+	static PFX_INLINE result_t release_texture_layer (texture_layer_t* PARAM_INOUT texture_ptr)
 	{
 		return null;
 	}

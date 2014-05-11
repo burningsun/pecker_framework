@@ -26,12 +26,12 @@ struct pecker_simple_allocator
 	typedef typename	element_*								 handle_t;
 
 	static PFX_INLINE element_* allocate_object ();
-	static PFX_INLINE pfx_result_t deallocate_object(element_*&  PARAM_INOUT del_element_ptr);
+	static PFX_INLINE result_t deallocate_object(element_*&  PARAM_INOUT del_element_ptr);
 
-	static PFX_INLINE element_* reallocate_objects (element_* PARAM_INOUT del_element_ptr,pfx_usize_t new_count);
+	static PFX_INLINE element_* reallocate_objects (element_* PARAM_INOUT del_element_ptr,usize__t new_count);
 	
-	static PFX_INLINE element_* allocate_objects (pfx_usize_t count);
-	static PFX_INLINE pfx_result_t deallocate_objects(element_*&  PARAM_INOUT del_element_ptr);
+	static PFX_INLINE element_* allocate_objects (usize__t count);
+	static PFX_INLINE result_t deallocate_objects(element_*&  PARAM_INOUT del_element_ptr);
 };
 //////////////////////////////////////////////////////////////////////////
 PFX_ALLOCATOR_TEMPLATE_DEFINES
@@ -41,10 +41,10 @@ PFX_INLINE element_* pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::allo
 }
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deallocate_object 
+PFX_INLINE result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deallocate_object 
 																			(element_*& PARAM_INOUT del_element_ptr)
 {
-	pfx_result_t status;
+	result_t status;
 	if (del_element_ptr)
 	{
 		delete del_element_ptr;
@@ -60,22 +60,22 @@ PFX_INLINE pfx_result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::d
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
 PFX_INLINE element_* pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::reallocate_objects 
-																(element_* PARAM_INOUT del_element_ptr,pfx_usize_t new_count)
+																(element_* PARAM_INOUT del_element_ptr,usize__t new_count)
 {
 	return null;
 }
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE element_* pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::allocate_objects (pfx_usize_t count)
+PFX_INLINE element_* pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::allocate_objects (usize__t count)
 {
 	return new element_[count];
 }
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deallocate_objects 
+PFX_INLINE result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deallocate_objects 
 																											(element_*& PARAM_INOUT del_element_ptr)
 {
-	pfx_result_t status;
+	result_t status;
 	if (del_element_ptr)
 	{
 		delete [] del_element_ptr;

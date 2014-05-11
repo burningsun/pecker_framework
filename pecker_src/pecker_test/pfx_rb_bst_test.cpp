@@ -21,7 +21,7 @@
 //static avl_tree_node_t* proot_node_2 = null;
 USING_PECKER_SDK
 	
-typedef pfx_crb_bst_node < pfx_cstring < pfx_char_t >, pecker_value_compare_extern < pfx_cstring < pfx_char_t > > > bst_string_node_t;
+typedef crb_bst_node < cstring < char_t >, pecker_value_compare_extern < cstring < char_t > > > bst_string_node_t;
 static pfx_binary_search_tree_type < bst_string_node_t >::redblack_binary_search_tree_t  bst_strings;
 static pfx_binary_search_tree_type < bst_string_node_t >::redblack_binary_search_tree_t  bst_copy_strings;
 static bst_string_node_t bst_key_node;
@@ -30,10 +30,10 @@ PFX_INLINE_CODE void print_rb_bst_node (const bst_string_node_t* PARAM_IN node_p
 {
 	if (node_ptr)
 	{
-		const pfx_cstring < pfx_char_t >& string_ref = node_ptr->get_item();
-		const pfx_char_t* str_ptr = string_ref.get_string ();
-		pfx_char_t strformat[200];
-		const pfx_char_t* str_color = "unknow color";
+		const cstring < char_t >& string_ref = node_ptr->get_item();
+		const char_t* str_ptr = string_ref.get_string ();
+		char_t strformat[200];
+		const char_t* str_color = "unknow color";
 		if (RED_COLOR_NODE_TYPE == node_ptr->get_color())
 		{
 			str_color = "red";
@@ -46,10 +46,10 @@ PFX_INLINE_CODE void print_rb_bst_node (const bst_string_node_t* PARAM_IN node_p
 		if (str_ptr)
 		{
 			sprintf (strformat,"THIS(%08X) <%%.%ds> L(%08X) R(%08X) P(%08X) COLOR(%s)",
-				(pfx_ulong_t)node_ptr, string_ref.get_length(),
-				(pfx_ulong_t)node_ptr->get_left_node(),
-				(pfx_ulong_t)node_ptr->get_right_node(),
-				(pfx_ulong_t)node_ptr->get_parent_node(),
+				(ulong_t)node_ptr, string_ref.get_length(),
+				(ulong_t)node_ptr->get_left_node(),
+				(ulong_t)node_ptr->get_right_node(),
+				(ulong_t)node_ptr->get_parent_node(),
 				str_color);
 
 			PECKER_LOG_DIRECT_A (strformat,str_ptr);
@@ -57,10 +57,10 @@ PFX_INLINE_CODE void print_rb_bst_node (const bst_string_node_t* PARAM_IN node_p
 		else
 		{
 			sprintf (strformat,"THIS(%08X) <null> L(%08X) R(%08X) P(%08X) COLOR(%s)",
-				(pfx_ulong_t)node_ptr, string_ref.get_length(),
-				(pfx_ulong_t)node_ptr->get_left_node(),
-				(pfx_ulong_t)node_ptr->get_right_node(),
-				(pfx_ulong_t)node_ptr->get_parent_node(),
+				(ulong_t)node_ptr, string_ref.get_length(),
+				(ulong_t)node_ptr->get_left_node(),
+				(ulong_t)node_ptr->get_right_node(),
+				(ulong_t)node_ptr->get_parent_node(),
 				str_color);
 			PECKER_LOG_DIRECT_A (strformat);
 		}
@@ -74,7 +74,7 @@ PFX_INLINE_CODE void print_rb_bst_node (const bst_string_node_t* PARAM_IN node_p
 	PECKER_LOG_ ("\n");
 }
 
-pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str_chars_ptr,pfx_usize_t nchars_count)
+result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,usize__t nchars_count)
 {
 	switch (*cmd_type)
 	{
@@ -88,14 +88,14 @@ pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str
 			nchars_count = nchars_count > 0 ? (nchars_count - 1) : nchars_count;
 			bst_string_node_t* new_node_ptr =  bst_strings.new_node();
 			new_node_ptr->get_item_ref().init_string(str_chars_ptr,nchars_count);
-			pfx_result_t status = PFX_STATUS_ERROR_;
+			result_t status = PFX_STATUS_ERROR_;
 			const bst_string_node_t* added_node_ptr = bst_strings.add (new_node_ptr,status);
 			print_rb_bst_node(added_node_ptr);
 		}
 		break;
 	case CMD_DEL:
 		{
-			pfx_result_t status = PFX_STATUS_ERROR_;
+			result_t status = PFX_STATUS_ERROR_;
 			nchars_count = nchars_count > 0 ? (nchars_count - 1) : nchars_count;
 			bst_key_node.get_item_ref().init_string(str_chars_ptr,nchars_count);
 			bst_string_node_t* remove_node_ptr = bst_strings.find_reference(&bst_key_node);
@@ -120,12 +120,12 @@ pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str
 		break;
 	case CMD_COPY:
 		{
-			pfx_result_t status = bst_copy_strings.copy(&bst_strings);
+			result_t status = bst_copy_strings.copy(&bst_strings);
 		}
 		break;
 	case CMD_CLR:
 		{
-			pfx_result_t status =bst_copy_strings.clear();
+			result_t status =bst_copy_strings.clear();
 		}
 		*cmd_type = CMD_NONE;
 		break;
@@ -135,8 +135,8 @@ pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str
 			PECKER_LOG_("============\n");
 			if (0 == strncmp(str_chars_ptr,"inorder",strlen("inorder")))
 			{
-				pfx_inorder_iterator < bst_string_node_t > bst_iterator;
-				pfx_cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
+				bst_inorder_iterator < bst_string_node_t > bst_iterator;
+				cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
 				while (iterator_ptr)
 				{
 
@@ -147,8 +147,8 @@ pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str
 			}
 			else 	if (0 == strncmp(str_chars_ptr,"posorder",strlen("posorder")))
 			{
-				pfx_posorder_iterator < bst_string_node_t > bst_iterator;
-				pfx_cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
+				bst_posorder_iterator < bst_string_node_t > bst_iterator;
+				cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
 
 				while (iterator_ptr)
 				{
@@ -158,8 +158,8 @@ pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str
 			}
 			else 	if (0 == strncmp(str_chars_ptr,"preorder",strlen("preorder")))
 			{
-				pfx_preorder_iterator < bst_string_node_t > bst_iterator;
-				pfx_cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
+				bst_preorder_iterator < bst_string_node_t > bst_iterator;
+				cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
 
 				while (iterator_ptr)
 				{
@@ -175,8 +175,8 @@ pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str
 		PECKER_LOG_("============\n");
 		if (0 == strncmp(str_chars_ptr,"inorder",strlen("inorder")))
 		{
-			pfx_cbst_iterator < bst_string_node_t > bst_iterator;
-			pfx_cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.end (&bst_iterator);
+			cbst_iterator < bst_string_node_t > bst_iterator;
+			cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.end (&bst_iterator);
 
 			while (iterator_ptr) 
 			{
@@ -186,8 +186,8 @@ pfx_result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const pfx_char_t* str
 		}
 		else 	if (0 == strncmp(str_chars_ptr,"posorder",strlen("posorder")))
 		{
-			pfx_posorder_iterator < bst_string_node_t > bst_iterator;
-			pfx_cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.end (&bst_iterator);
+			bst_posorder_iterator < bst_string_node_t > bst_iterator;
+			cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.end (&bst_iterator);
 			iterator_ptr = bst_iterator.reverse_begin ();
 
 			while (iterator_ptr)

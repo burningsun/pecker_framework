@@ -71,21 +71,21 @@ struct allocator_method
 	{
 		return allocator_t::allocate_object();
 	}
-	static PFX_INLINE pfx_result_t deallocate_object(element_t*&  PARAM_INOUT del_element_ptr)
+	static PFX_INLINE result_t deallocate_object(element_t*&  PARAM_INOUT del_element_ptr)
 	{
 		return allocator_t::deallocate_object(del_element_ptr);
 	}
 
-	static PFX_INLINE element_t* reallocate_objects (element_t* PARAM_INOUT del_element_ptr,pfx_usize_t new_count)
+	static PFX_INLINE element_t* reallocate_objects (element_t* PARAM_INOUT del_element_ptr,usize__t new_count)
 	{
 		return  allocator_t::reallocate_objects(del_element_ptr,new_count);
 	}
 
-	static PFX_INLINE element_t* allocate_objects (pfx_usize_t count)
+	static PFX_INLINE element_t* allocate_objects (usize__t count)
 	{
 		return allocator_t::allocate_objects(count);
 	}
-	static PFX_INLINE pfx_result_t deallocate_objects(element_t*&  PARAM_INOUT del_element_ptr)
+	static PFX_INLINE result_t deallocate_objects(element_t*&  PARAM_INOUT del_element_ptr)
 	{
 		return deallocate_objects(del_element_ptr);
 	}
@@ -184,7 +184,7 @@ struct PFX_DATA_TEMPALE_API bstree_method
 	typedef typename	 binary_search_tree::const_node_type_ptr_t	const_node_type_ptr_t;
 	typedef typename	 binary_search_tree::compare_two_node_t		compare_two_node_t;
 
-	static PFX_INLINE pfx_result_t init_node_leaves (node_type_t* PARAM_INOUT tree_node_ptr,
+	static PFX_INLINE result_t init_node_leaves (node_type_t* PARAM_INOUT tree_node_ptr,
 		node_type_t* PARAM_IN left_node_ptr = null,
 		node_type_t* PARAM_IN right_node_ptr = null,
 		node_type_t* PARAM_IN parent_node_ptr = null)
@@ -192,14 +192,14 @@ struct PFX_DATA_TEMPALE_API bstree_method
 		return binary_search_tree::init_node_leaves (tree_node_ptr, left_node_ptr, right_node_ptr, parent_node_ptr);
 	}
 
-	static PFX_INLINE pfx_result_t add_node (node_type_t*& PARAM_INOUT root_node_ptr,
+	static PFX_INLINE result_t add_node (node_type_t*& PARAM_INOUT root_node_ptr,
 		node_type_t* PARAM_INOUT add_node_ptr,
 		node_type_t*& PARAM_OUT added_node_ptr)
 	{
 		return binary_search_tree::add_node (root_node_ptr, add_node_ptr, added_node_ptr);
 	}
 
-	static PFX_INLINE pfx_result_t remove_node (node_type_t*& PARAM_INOUT root_node_ptr,
+	static PFX_INLINE result_t remove_node (node_type_t*& PARAM_INOUT root_node_ptr,
 		node_type_t* PARAM_INOUT remove_node_ptr,
 		const node_type_t* PARAM_IN null_node_ptr = null)
 	{
@@ -242,7 +242,7 @@ struct PFX_DATA_TEMPALE_API avltree_method
 	typedef typename	 binary_search_tree::const_node_type_ptr_t	const_node_type_ptr_t;
 	typedef typename	 binary_search_tree::compare_two_node_t		compare_two_node_t;
 
-	static PFX_INLINE pfx_result_t init_node_leaves (node_type_t* PARAM_INOUT tree_node_ptr,
+	static PFX_INLINE result_t init_node_leaves (node_type_t* PARAM_INOUT tree_node_ptr,
 		node_type_t* PARAM_IN left_node_ptr = null,
 		node_type_t* PARAM_IN right_node_ptr = null,
 		node_type_t* PARAM_IN parent_node_ptr = null)
@@ -250,14 +250,14 @@ struct PFX_DATA_TEMPALE_API avltree_method
 		return binary_search_tree::init_avl_node_leaves (tree_node_ptr, left_node_ptr, right_node_ptr, parent_node_ptr);
 	}
 
-	static PFX_INLINE pfx_result_t add_node (node_type_t*& PARAM_INOUT root_node_ptr,
+	static PFX_INLINE result_t add_node (node_type_t*& PARAM_INOUT root_node_ptr,
 		node_type_t* PARAM_INOUT add_node_ptr,
 		node_type_t*& PARAM_OUT added_node_ptr)
 	{
 		return binary_search_tree::add_avl_node (root_node_ptr, add_node_ptr, added_node_ptr);
 	}
 
-	static PFX_INLINE pfx_result_t remove_node (node_type_t*& PARAM_INOUT root_node_ptr,
+	static PFX_INLINE result_t remove_node (node_type_t*& PARAM_INOUT root_node_ptr,
 		node_type_t* PARAM_INOUT remove_node_ptr,
 		const node_type_t* PARAM_IN null_node_ptr = null)
 	{
@@ -300,7 +300,7 @@ struct PFX_DATA_TEMPALE_API rbtree_method
 	typedef typename	 binary_search_tree::const_node_type_ptr_t	const_node_type_ptr_t;
 	typedef typename	 binary_search_tree::compare_two_node_t		compare_two_node_t;
 
-	static PFX_INLINE pfx_result_t init_node_leaves (node_type_t* PARAM_INOUT tree_node_ptr,
+	static PFX_INLINE result_t init_node_leaves (node_type_t* PARAM_INOUT tree_node_ptr,
 		node_type_t* PARAM_IN left_node_ptr = null,
 		node_type_t* PARAM_IN right_node_ptr = null,
 		node_type_t* PARAM_IN parent_node_ptr = null)
@@ -308,14 +308,14 @@ struct PFX_DATA_TEMPALE_API rbtree_method
 		return binary_search_tree::init_rb_node_leaves (tree_node_ptr, left_node_ptr, right_node_ptr, parent_node_ptr);
 	}
 
-	static PFX_INLINE pfx_result_t add_node (node_type_t*& PARAM_INOUT root_node_ptr,
+	static PFX_INLINE result_t add_node (node_type_t*& PARAM_INOUT root_node_ptr,
 		node_type_t* PARAM_INOUT add_node_ptr,
 		node_type_t*& PARAM_OUT added_node_ptr)
 	{
 		return binary_search_tree::add_rb_node (root_node_ptr, add_node_ptr, added_node_ptr);
 	}
 
-	static PFX_INLINE pfx_result_t remove_node (node_type_t*& PARAM_INOUT root_node_ptr,
+	static PFX_INLINE result_t remove_node (node_type_t*& PARAM_INOUT root_node_ptr,
 		node_type_t* PARAM_INOUT remove_node_ptr,
 		const node_type_t* PARAM_IN null_node_ptr = null)
 	{

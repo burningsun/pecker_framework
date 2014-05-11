@@ -10,7 +10,7 @@
 #include "../pecker_framework/native/pecker_allocator.h"
 
 USING_PECKER_SDK
-typedef pfx_clist_node < pfx_sint_t > int_list_node;
+typedef clist_node < sint_t > int_list_node;
 typedef pecker_simple_allocator < int_list_node > int_list_allocator;
 
 PFX_INLINE_CODE void print_list_node (const int_list_node* PARAM_IN node_ptr)
@@ -21,19 +21,19 @@ PFX_INLINE_CODE void print_list_node (const int_list_node* PARAM_IN node_ptr)
 	}
 }
 
-pfx_result_t list_test ()
+result_t list_test ()
 {
 
-	pfx_clist_base < int_list_node > * int_list_ptr;
+	clist_base < int_list_node > * int_list_ptr;
 	int_list_allocator simple_allocator;
-	pfx_list_iterator_base < int_list_node > iterator_traval;
+	clist_iterator_base < int_list_node > iterator_traval;
 	pfx_clist < int_list_node, int_list_allocator > int_list ;//(&simple_allocator);
 	int_list_ptr = &int_list;
 
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test push back\n");
 
-	for (pfx_index_t i=0; i<5;++i)
+	for (index_t i=0; i<5;++i)
 	{
 		int_list_node* new_node_ptr = int_list_ptr->new_node();
 		new_node_ptr->get_item_ref() = 10 + i;
@@ -55,7 +55,7 @@ pfx_result_t list_test ()
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test push front\n");
 
-	for (pfx_index_t i=0; i<5;++i)
+	for (index_t i=0; i<5;++i)
 	{
 		int_list_node* new_node_ptr = int_list_ptr->new_node();
 		new_node_ptr->get_item_ref() = 10 + i;
@@ -78,7 +78,7 @@ pfx_result_t list_test ()
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test pop back\n");
 
-	for (pfx_index_t i=0; i<3;++i)
+	for (index_t i=0; i<3;++i)
 	{
 		int_list_node* pop_node_ptr = int_list_ptr->pop_back();
 		int_list_ptr->release_node(pop_node_ptr);
@@ -100,7 +100,7 @@ pfx_result_t list_test ()
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test pop front\n");
 
-	for (pfx_index_t i=0; i<3;++i)
+	for (index_t i=0; i<3;++i)
 	{
 		int_list_node* pop_node_ptr = int_list_ptr->pop_front();
 		int_list_ptr->release_node(pop_node_ptr);
@@ -122,10 +122,10 @@ pfx_result_t list_test ()
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test iterator increase\n");
 
-	pfx_list_iterator_base < int_list_node > iterator_;
+	clist_iterator_base < int_list_node > iterator_;
 	int_list_ptr->begin(&iterator_);
 
-	for (pfx_index_t i=0; i<2;++i)
+	for (index_t i=0; i<2;++i)
 	{
 		iterator_.increase();
 	}

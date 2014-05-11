@@ -26,33 +26,33 @@ typedef enum enumPFX_IMG_COMPRESSION_FORAMT
 
 typedef struct image_bits
 {
-	pfx_byte_t*										m_bits_ptr;
-	pfx_usize_t										m_bytes_count;
+	byte_t*										m_bits_ptr;
+	usize__t										m_bytes_count;
 	PFX_COLOR_FORMAT_TYPE_t		m_color_format;
-	pfx_enum_int_t								m_compression_format;
+	enum_int_t								m_compression_format;
 }image_bits_t;
 
-template < pfx_enum_int_t image_compression_format >
+template < enum_int_t image_compression_format >
 struct PFX_Image
 {
-	static PFX_INLINE pfx_result_t load_image_form_memery (pfx_byte_t* PARAM_IN bits_ptr,
-		image_bits_t& PARAM_INOUT image_bits_, pfx_boolean_t to_decompress)
+	static PFX_INLINE result_t load_image_form_memery (byte_t* PARAM_IN bits_ptr,
+		image_bits_t& PARAM_INOUT image_bits_, boolean_t to_decompress)
 	{
 		return PFX_STATUS_DENIED;
 	}
-	static PFX_INLINE pfx_result_t load_image_form_resource_table (const pfx_char_t* PARAM_IN str_image_name,
-		pfx_usize_t image_name_length,image_bits_t& PARAM_INOUT image_bits_, 
-		pfx_boolean_t to_decompress)
+	static PFX_INLINE result_t load_image_form_resource_table (const char_t* PARAM_IN str_image_name,
+		usize__t image_name_length,image_bits_t& PARAM_INOUT image_bits_, 
+		boolean_t to_decompress)
 	{
 		return PFX_STATUS_DENIED; 
 	}
-	static PFX_INLINE pfx_result_t load_image_form_file (const pfx_char_t* PARAM_IN str_image_file_path,
-		pfx_usize_t file_path_length,image_bits_t& PARAM_INOUT image_bits_, 
-		pfx_boolean_t to_decompress)
+	static PFX_INLINE result_t load_image_form_file (const char_t* PARAM_IN str_image_file_path,
+		usize__t file_path_length,image_bits_t& PARAM_INOUT image_bits_, 
+		boolean_t to_decompress)
 	{
 		return PFX_STATUS_DENIED; 
 	}
-	static PFX_INLINE pfx_result_t release_image (image_bits_t& PARAM_INOUT image_bits_)
+	static PFX_INLINE result_t release_image (image_bits_t& PARAM_INOUT image_bits_)
 	{
 		return PFX_STATUS_DENIED; 
 	}

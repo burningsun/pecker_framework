@@ -11,36 +11,47 @@
 #include "pfx_cbst.h"
 
 PECKER_BEGIN
+#define  CBST_ITR cbst_iterator< node_type_ >
+#define  CBST_ITR_TYPE typename cbst_iterator< node_type_ >
+
+#define  CBST_IN_ITR bst_inorder_iterator< node_type_ >
+#define  CBST_IN_ITR_TYPE typename bst_inorder_iterator< node_type_ >
+
+#define  CBST_PRE_ITR bst_preorder_iterator< node_type_ >
+#define  CBST_PRE_TYPE typename bst_preorder_iterator< node_type_ >
+
+#define  CBST_POS_ITR bst_posorder_iterator< node_type_ >
+#define  CBST_POS_TYPE typename bst_posorder_iterator< node_type_ >
 
 // 搜索二叉树中序遍历
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: pfx_cbst_iterator () : m_current_node_ptr (null), 
+CBST_ITR :: cbst_iterator () : m_current_node_ptr (null), 
 																																				m_root_node_ptr (null)
 {
 
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: ~pfx_cbst_iterator()
+CBST_ITR :: ~cbst_iterator()
 {
 	m_current_node_ptr	= null;
 	m_root_node_ptr			= null;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_* pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: get_current_node () const
+const node_type_* CBST_ITR :: get_current_node () const
 {
 	return m_current_node_ptr;
 }
 	
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_* pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: get_root_node () const
+const node_type_* CBST_ITR :: get_root_node () const
 {
 	return m_root_node_ptr;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_result_t pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (const node_type_*	current_node_ptr,
+result_t CBST_ITR :: init (const node_type_*	current_node_ptr,
 		const node_type_*   root_node_ptr)
 {
 	RETURN_INVALID_RESULT ((null == root_node_ptr),PFX_STATUS_INVALID_PARAMS);
@@ -50,22 +61,22 @@ pfx_result_t pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (const 
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: begin 
-		(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
+CBST_ITR* CBST_ITR :: begin 
+		(CBST_ITR* PARAM_INOUT 
 		set_begin_iterator_ptr) const
 {
 	if (set_begin_iterator_ptr)
 	{
 		//const node_type_* min_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (m_root_node_ptr);
-		pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS		tmp_itr						= *this;
-		pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*	tmp_begin_itr_ptr	= tmp_itr.begin();
+		CBST_ITR		tmp_itr						= *this;
+		CBST_ITR*	tmp_begin_itr_ptr	= tmp_itr.begin();
 
 		if (null == tmp_begin_itr_ptr)
 		{
 			return null;
 		}
 
-		pfx_result_t status_ = set_begin_iterator_ptr->init (tmp_begin_itr_ptr->get_current_node (),
+		result_t status_ = set_begin_iterator_ptr->init (tmp_begin_itr_ptr->get_current_node (),
 			tmp_begin_itr_ptr->get_root_node());
 
 		if (PFX_STATUS_OK == status_)
@@ -85,22 +96,22 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_cbst_iterator PFX_CBST_
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: end 		
-	(pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_INOUT 
+CBST_ITR* CBST_ITR :: end 		
+	(CBST_ITR* PARAM_INOUT 
 	set_end_iterator_ptr) const
 {
 	if (set_end_iterator_ptr)
 	{
 		//const node_type_* max_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (m_root_node_ptr);
-		pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS		tmp_itr					= *this;
-		pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*	tmp_end_itr_ptr	= tmp_itr.end ();
+		CBST_ITR		tmp_itr					= *this;
+		CBST_ITR*	tmp_end_itr_ptr	= tmp_itr.end ();
 
 		if (null == tmp_end_itr_ptr)
 		{
 			return null;
 		}
 
-		pfx_result_t status_ = set_end_iterator_ptr->init (tmp_end_itr_ptr->get_current_node (),tmp_end_itr_ptr->get_root_node());
+		result_t status_ = set_end_iterator_ptr->init (tmp_end_itr_ptr->get_current_node (),tmp_end_itr_ptr->get_root_node());
 
 		if (PFX_STATUS_OK == status_)
 		{
@@ -118,11 +129,11 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_cbst_iterator PFX_CBST_
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: begin ()
+CBST_ITR* CBST_IN_ITR :: begin ()
 {
 	if (m_root_node_ptr)
 	{
-		m_current_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (m_root_node_ptr);
+		m_current_node_ptr = cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (m_root_node_ptr);
 		return this;
 	}
 	else
@@ -132,11 +143,11 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: end ()
+CBST_ITR* CBST_IN_ITR :: end ()
 {
 	if (m_root_node_ptr)
 	{
-		m_current_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (m_root_node_ptr);
+		m_current_node_ptr = cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (m_root_node_ptr);
 		return this;
 	}
 	else
@@ -146,7 +157,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::increase ()
+CBST_ITR* CBST_IN_ITR ::increase ()
 {
 	if (null == m_current_node_ptr || null == m_root_node_ptr)
 	{
@@ -155,7 +166,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 
 	const node_type_* right_node_ptr;
 	const node_type_* parent_node_ptr;
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* iterator_return_ptr;
+	CBST_ITR* iterator_return_ptr;
 
 	right_node_ptr = m_current_node_ptr->get_right_node ();
 
@@ -163,7 +174,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 	{
 		if (null != right_node_ptr)
 		{
-			m_current_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (right_node_ptr);
+			m_current_node_ptr = cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (right_node_ptr);
 			return this;
 		}
 		else
@@ -174,7 +185,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 
 	if (null != right_node_ptr)
 	{
-		m_current_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (right_node_ptr);
+		m_current_node_ptr = cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (right_node_ptr);
 		return this;
 	}
 
@@ -219,7 +230,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::decrease ()
+CBST_ITR* CBST_IN_ITR ::decrease ()
 {
 	if (null == m_current_node_ptr || null == m_root_node_ptr)
 	{
@@ -228,7 +239,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 
 	const node_type_* left_node_ptr;
 	const node_type_* parent_node_ptr;
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* iterator_return_ptr;
+	CBST_ITR* iterator_return_ptr;
 
 	left_node_ptr = m_current_node_ptr->get_left_node ();
 
@@ -236,7 +247,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 	{
 		if (null != left_node_ptr)
 		{
-			m_current_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (left_node_ptr);
+			m_current_node_ptr = cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (left_node_ptr);
 			return  this;
 		}
 		else
@@ -247,7 +258,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 
 	if (null != left_node_ptr)
 	{
-		m_current_node_ptr = pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (left_node_ptr);
+		m_current_node_ptr = cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (left_node_ptr);
 		return this;
 	}
 
@@ -289,7 +300,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_inorder_iterator PFX_CB
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_decrease_iterator < node_type_ >*	pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: decrease_iterator ()
+IPfx_decrease_iterator < node_type_ >*	CBST_IN_ITR :: decrease_iterator ()
 {
 	if (decrease())
 	{
@@ -302,41 +313,41 @@ pfx_decrease_iterator < node_type_ >*	pfx_inorder_iterator PFX_CBST_ITERATOR_TEM
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_*									pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: get_current_element () const
+const node_type_*									CBST_IN_ITR :: get_current_element () const
 {
 	return get_current_node();
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_* pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: get_inorder_begin_node (const node_type_* root_node_ptr)
+const node_type_* CBST_IN_ITR :: get_inorder_begin_node (const node_type_* root_node_ptr)
 {
-	return pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (root_node_ptr);
+	return cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: min_node (root_node_ptr);
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_* pfx_inorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: get_inorder_end_node (const node_type_* root_node_ptr)
+const node_type_* CBST_IN_ITR :: get_inorder_end_node (const node_type_* root_node_ptr)
 {
-	return pfx_cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (m_root_node_ptr);
+	return cbst PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: max_node (m_root_node_ptr);
 }
 
 // 搜索二叉树前序遍历
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_result_t pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (const node_type_*	current_node_ptr,
+result_t CBST_PRE_ITR :: init (const node_type_*	current_node_ptr,
 	const node_type_*   root_node_ptr)
 {
 	const node_type_* begin_node_ptr;
 	const node_type_* end_node_ptr;
 
-	pfx_result_t status_;
+	result_t status_;
 	
-	status_ = pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (current_node_ptr,root_node_ptr);
+	status_ = CBST_ITR :: init (current_node_ptr,root_node_ptr);
 	RETURN_INVALID_RESULT((PFX_STATUS_OK != status_),status_);
 
 	m_last_result = PFX_STATUS_OK;
 	begin_node_ptr = root_node_ptr;
 
 	// 找出前序遍历最后一个值
-	end_node_ptr = pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_preorder_end_node (root_node_ptr);
+	end_node_ptr = CBST_PRE_ITR ::get_preorder_end_node (root_node_ptr);
 
 	// 初始化m_next_node_type
 	if (null == m_current_node_ptr)
@@ -370,12 +381,12 @@ pfx_result_t pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (co
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::begin ()
+CBST_ITR* CBST_PRE_ITR ::begin ()
 {
 
-	pfx_result_t status_;
+	result_t status_;
 
-	status_ =  pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (m_root_node_ptr,m_root_node_ptr);
+	status_ =  CBST_ITR :: init (m_root_node_ptr,m_root_node_ptr);
 
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status_,null);
 
@@ -401,15 +412,15 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_preorder_iterator PFX_C
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::end () 
+CBST_ITR* CBST_PRE_ITR ::end () 
 {
 	const node_type_* end_node_ptr;
 
-	pfx_result_t status_;
+	result_t status_;
 	m_last_result		= PFX_STATUS_OK;
 	// 找出前序遍历最后一个值
-	end_node_ptr	= pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_preorder_end_node (m_root_node_ptr);
-	status_				= pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (end_node_ptr,m_root_node_ptr);
+	end_node_ptr	= CBST_PRE_ITR ::get_preorder_end_node (m_root_node_ptr);
+	status_				= CBST_ITR :: init (end_node_ptr,m_root_node_ptr);
 	RETURN_INVALID_RESULT((PFX_STATUS_OK != status_),null);
 
 	m_last_result = PFX_STATUS_OK;
@@ -419,12 +430,12 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_preorder_iterator PFX_C
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::increase ()
+CBST_ITR* CBST_PRE_ITR ::increase ()
 {
-	pfx_enum_t				back_up_next_type;
-	pfx_enum_t				next_type;
+	enum_t				back_up_next_type;
+	enum_t				next_type;
 	const node_type_*	next_node_ptr;
-	pfx_result_t				status = PFX_STATUS_OK;
+	result_t				status = PFX_STATUS_OK;
 
 	RETURN_INVALID_RESULT ((null == m_root_node_ptr ||
 		null == m_current_node_ptr ||
@@ -582,19 +593,19 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_preorder_iterator PFX_C
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::decrease ()
+CBST_ITR* CBST_PRE_ITR ::decrease ()
 {
 	return null;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_* pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_preorder_begin_node (const node_type_* root_node_ptr)
+const node_type_* CBST_PRE_ITR ::get_preorder_begin_node (const node_type_* root_node_ptr)
 {
 	return root_node_ptr;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_* pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_preorder_end_node (const node_type_* root_node_ptr)
+const node_type_* CBST_PRE_ITR ::get_preorder_end_node (const node_type_* root_node_ptr)
 {
 	const node_type_* temp_node_ptr;
 	const node_type_* end_node_ptr;
@@ -629,35 +640,35 @@ const node_type_* pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_
 
 // 搜索二叉树后序遍历
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::begin ()
+CBST_ITR* CBST_POS_ITR ::begin ()
 {
 	const node_type_*	begin_node_ptr;
-	pfx_result_t				status_;
+	result_t				status_;
 	// 找出前序遍历最后一个值
-	begin_node_ptr	= pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_posorder_begin_node (m_root_node_ptr);
-	status_				= pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (begin_node_ptr,m_root_node_ptr);
+	begin_node_ptr	= CBST_POS_ITR ::get_posorder_begin_node (m_root_node_ptr);
+	status_				= CBST_ITR :: init (begin_node_ptr,m_root_node_ptr);
 	RETURN_INVALID_RESULT((PFX_STATUS_OK != status_),null);
 	return this;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::reverse_begin ()
+CBST_ITR* CBST_POS_ITR ::reverse_begin ()
 {
 	const node_type_*	begin_node_ptr;
-	pfx_result_t				status_;
+	result_t				status_;
 	// 找出前序遍历最后一个值
-	begin_node_ptr	= pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_reverse_posorder_begin_node (m_root_node_ptr);
-	status_				= pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (begin_node_ptr,m_root_node_ptr);
+	begin_node_ptr	= CBST_POS_ITR ::get_reverse_posorder_begin_node (m_root_node_ptr);
+	status_				= CBST_ITR :: init (begin_node_ptr,m_root_node_ptr);
 	RETURN_INVALID_RESULT((PFX_STATUS_OK != status_),null);
 	return this;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::end ()
+CBST_ITR* CBST_POS_ITR ::end ()
 {
-	pfx_result_t status_;
+	result_t status_;
 
-	status_ =  pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (m_root_node_ptr,m_root_node_ptr);
+	status_ =  CBST_ITR :: init (m_root_node_ptr,m_root_node_ptr);
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status_,null);
 	return this;
 }
@@ -665,9 +676,9 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_C
 
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::increase ()
+CBST_ITR* CBST_POS_ITR ::increase ()
 {
-	pfx_result_t status_;
+	result_t status_;
 	const node_type_* tmp_parent_node_ptr;
 	const node_type_* tmp_r_node_ptr;
 	const node_type_* tmp_l_node_ptr;
@@ -699,7 +710,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_C
 	{		
 		if (tmp_r_node_ptr)
 		{
-			temp_node_next_ptr = pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_posorder_begin_node (tmp_r_node_ptr);
+			temp_node_next_ptr = CBST_POS_ITR ::get_posorder_begin_node (tmp_r_node_ptr);
 		}
 		else
 		{
@@ -710,16 +721,16 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_C
 	FOR_ONE_LOOP_END
 
 
-	status_ =  pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (temp_node_next_ptr,m_root_node_ptr);
+	status_ =  CBST_ITR :: init (temp_node_next_ptr,m_root_node_ptr);
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status_,null);
 
 	return this;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::decrease ()
+CBST_ITR* CBST_POS_ITR ::decrease ()
 {
-	pfx_result_t status_;
+	result_t status_;
 	const node_type_* tmp_parent_node_ptr;
 	const node_type_* tmp_l_node_ptr;
 	const node_type_* tmp_r_node_ptr;
@@ -751,7 +762,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_C
 	{		
 		if (tmp_l_node_ptr)
 		{
-			temp_node_next_ptr = pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_reverse_posorder_begin_node (tmp_l_node_ptr);
+			temp_node_next_ptr = CBST_POS_ITR ::get_reverse_posorder_begin_node (tmp_l_node_ptr);
 		}
 		else
 		{
@@ -762,14 +773,14 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* pfx_posorder_iterator PFX_C
 	FOR_ONE_LOOP_END
 
 
-	status_ =  pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS :: init (temp_node_next_ptr,m_root_node_ptr);
+	status_ =  CBST_ITR :: init (temp_node_next_ptr,m_root_node_ptr);
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status_,null);
 
 	return this;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-	const node_type_* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_posorder_begin_node (const node_type_* root_node_ptr)
+	const node_type_* CBST_POS_ITR ::get_posorder_begin_node (const node_type_* root_node_ptr)
 {
 	const node_type_* begin_node_ptr;
 	const node_type_* tmp_node_ptr;
@@ -802,13 +813,13 @@ PFX_CBST_ITERATOR_TEMPLATE_DEFINES
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-	const node_type_* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_posorder_end_node (const node_type_* root_node_ptr)
+	const node_type_* CBST_POS_ITR ::get_posorder_end_node (const node_type_* root_node_ptr)
 {
 		return root_node_ptr;
 }
 
 PFX_CBST_ITERATOR_TEMPLATE_DEFINES
-const node_type_* pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS ::get_reverse_posorder_begin_node (const node_type_* root_node_ptr)
+const node_type_* CBST_POS_ITR ::get_reverse_posorder_begin_node (const node_type_* root_node_ptr)
 {
 	const node_type_* begin_node_ptr;
 	const node_type_* tmp_node_ptr;

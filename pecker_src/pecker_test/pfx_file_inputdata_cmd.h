@@ -26,7 +26,7 @@ typedef enum
 	CMD_COUNT,
 }CMD_INOUT_t;
 
-typedef pfx_result_t	(*cmd_operate_func)(CMD_INOUT_t* cmd_type,const pfx_char_t* pstr_chars,pfx_usize_t nchars_count);
+typedef result_t	(*cmd_operate_func)(CMD_INOUT_t* cmd_type,const char_t* pstr_chars,usize__t nchars_count);
 
-pfx_result_t file_data_input_for_test_running(const pfx_char_t* pfile_name,cmd_operate_func cmd_operate_method);
+result_t file_data_input_for_test_running(const char_t* pfile_name,cmd_operate_func cmd_operate_method);
 

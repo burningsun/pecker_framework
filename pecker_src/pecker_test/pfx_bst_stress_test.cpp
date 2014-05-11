@@ -19,7 +19,7 @@ USING_PECKER_SDK
 
 
 
-typedef pfx_cbalance_bst_node < pfx_cstring < pfx_char_t >, pecker_value_compare_extern < pfx_cstring < pfx_char_t > > > bst_string_node_t;
+typedef cbalance_bst_node < cstring < char_t >, pecker_value_compare_extern < cstring < char_t > > > bst_string_node_t;
 //static pfx_binary_search_tree < bst_string_node_t >  bst_strings;
 //static pfx_binary_search_tree < bst_string_node_t >  bst_copy_strings;
 //static bst_string_node_t bst_key_node;
@@ -31,34 +31,34 @@ typedef bst_string_node_t ELEM_t;
 #else
 #define  GET_ELEM_CONST(X) (X)
 #define GET_ELEM(X) (X)
-typedef  pfx_cstring < pfx_char_t > ELEM_t;
+typedef  cstring < char_t > ELEM_t;
 #endif
 
 PFX_INLINE_CODE void print_bbst_node (const bst_string_node_t* PARAM_IN node_ptr)
 {
 	if (node_ptr)
 	{
-		const pfx_cstring < pfx_char_t >& string_ref = node_ptr->get_item();
-		const pfx_char_t* str_ptr = string_ref.get_string ();
-		pfx_char_t strformat[200];
+		const cstring < char_t >& string_ref = node_ptr->get_item();
+		const char_t* str_ptr = string_ref.get_string ();
+		char_t strformat[200];
 		if (str_ptr)
 		{
 			sprintf (strformat,"THIS(%08X) <%%.%ds> L(%08X) R(%08X) P(%08X) BVAL(%d)",
-				(pfx_ulong_t)node_ptr, string_ref.get_length(),
-				(pfx_ulong_t)node_ptr->get_left_node(),
-				(pfx_ulong_t)node_ptr->get_right_node(),
-				(pfx_ulong_t)node_ptr->get_parent_node(),
-				(pfx_ulong_t)node_ptr->get_height());
+				(ulong_t)node_ptr, string_ref.get_length(),
+				(ulong_t)node_ptr->get_left_node(),
+				(ulong_t)node_ptr->get_right_node(),
+				(ulong_t)node_ptr->get_parent_node(),
+				(ulong_t)node_ptr->get_height());
 			PECKER_LOG_DIRECT_A (strformat,str_ptr);
 		}
 		else
 		{
 			sprintf (strformat,"THIS(%08X) <null> L(%08X) R(%08X) P(%08X) BVAL(%d)",
-				(pfx_ulong_t)node_ptr, string_ref.get_length(),
-				(pfx_ulong_t)node_ptr->get_left_node(),
-				(pfx_ulong_t)node_ptr->get_right_node(),
-				(pfx_ulong_t)node_ptr->get_parent_node(),
-				(pfx_ulong_t)node_ptr->get_height());
+				(ulong_t)node_ptr, string_ref.get_length(),
+				(ulong_t)node_ptr->get_left_node(),
+				(ulong_t)node_ptr->get_right_node(),
+				(ulong_t)node_ptr->get_parent_node(),
+				(ulong_t)node_ptr->get_height());
 			PECKER_LOG_DIRECT_A (strformat);
 		}
 
@@ -73,10 +73,10 @@ PFX_INLINE_CODE void print_bbst_node (const bst_string_node_t* PARAM_IN node_ptr
 
 
 void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr, 
-									pfx_cbst < bst_string_node_t >* PARAM_INOUT bst_ptr, pfx_boolean_t bshow)
+									cbst < bst_string_node_t >* PARAM_INOUT bst_ptr, boolean_t bshow)
 {
 	bst_string_node_t bst_key_node;
-	pfx_const_array_iterator < ELEM_t > itr;
+	const_array_iterator < ELEM_t > itr;
 	pecker_tick tick_count;
 	IPfx_array_iterator < ELEM_t >* itr_ptr = null;
 	
@@ -93,7 +93,7 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 		if (elem_ptr)
 		{
 			bst_string_node_t* bst_node;
-			pfx_result_t status;
+			result_t status;
 			const bst_string_node_t* const_bst_node;
 			status = PFX_STATUS_OK;
 			bst_node = bst_ptr->new_node();
@@ -134,7 +134,7 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 		if (elem_ptr)
 		{
 			const bst_string_node_t* const_bst_node;
-			pfx_result_t status = PFX_STATUS_OK;
+			result_t status = PFX_STATUS_OK;
 
 
 
@@ -164,8 +164,8 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 	tick_count.stop();
 	}
 	// inorder traval
-	pfx_inorder_iterator < bst_string_node_t > bst_inorder_iterator;
-	pfx_cbst_iterator < bst_string_node_t >* iterator_ptr = bst_ptr->begin (&bst_inorder_iterator);
+	bst_inorder_iterator < bst_string_node_t > bst_inorder_itr;
+	cbst_iterator < bst_string_node_t >* iterator_ptr = bst_ptr->begin (&bst_inorder_itr);
 
 	tick_count.start();
 	while (iterator_ptr)
@@ -183,10 +183,10 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 	} 
 	PECKER_LOG_ ("inorder traval time tick = %lf ms\n",tick_count.get_microsecond());
 	tick_count.stop();
-	pfx_result_t status;
+	result_t status;
 
 	//rev inorder traval
-	pfx_inorder_iterator < bst_string_node_t > bst_rinorder_iterator;
+	bst_inorder_iterator < bst_string_node_t > bst_rinorder_iterator;
 	iterator_ptr = bst_ptr->end (&bst_rinorder_iterator);
 
 	tick_count.start();
@@ -204,8 +204,8 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 	tick_count.stop();
 
 	// preorder traval
-	pfx_preorder_iterator < bst_string_node_t > bst_preorder_iterator;
-	iterator_ptr = bst_ptr->begin (&bst_preorder_iterator);
+	bst_preorder_iterator < bst_string_node_t > bst_preorder_itr;
+	iterator_ptr = bst_ptr->begin (&bst_preorder_itr);
 
 	tick_count.start();
 	while (iterator_ptr)
@@ -220,8 +220,8 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 	tick_count.stop();
 
 	// posorder traval
-	pfx_preorder_iterator < bst_string_node_t > bst_posorder_iterator;
-	iterator_ptr = bst_ptr->begin (&bst_posorder_iterator);
+	bst_preorder_iterator < bst_string_node_t > bst_posorder_itr;
+	iterator_ptr = bst_ptr->begin (&bst_posorder_itr);
 
 	tick_count.start();
 	while (iterator_ptr)
@@ -247,7 +247,7 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 		if (elem_ptr)
 		{
 			bst_string_node_t* bst_node;
-			pfx_result_t status = PFX_STATUS_OK;
+			result_t status = PFX_STATUS_OK;
 
 
 #ifdef NODE_ARRAY
@@ -284,7 +284,7 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 
 			bst_node = bst_ptr->remove(remove_node_ptr,status);
 
-			iterator_ptr = bst_ptr->begin (&bst_inorder_iterator);
+			iterator_ptr = bst_ptr->begin (&bst_inorder_itr);
 
 			//tick_count.start();
 			//while (iterator_ptr)
@@ -339,7 +339,7 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 		if (elem_ptr)
 		{
 			bst_string_node_t* bst_node;
-			pfx_result_t status;
+			result_t status;
 			const bst_string_node_t* const_bst_node;
 			status = PFX_STATUS_OK;
 			bst_node = bst_ptr->new_node();
@@ -378,17 +378,17 @@ void stress_test_bst (const IPfx_array < ELEM_t >* PARAM_IN array_ptr,
 
 }
 
-pfx_result_t load_file_to_array (const pfx_char_t* PARAM_IN str_path_ptr, pfx_nsize_t path_len,
+result_t load_file_to_array (const char_t* PARAM_IN str_path_ptr, nsize__t path_len,
 											IPfx_array < ELEM_t >* PARAM_INOUT array_ptr)
 {
-	pfx_cfile file;
-	pfx_result_t status;
+	pecker_file file;
+	result_t status;
 	pecker_read_stream_form_memery read_stream;
-	pfx_char_t* file_buffer_ptr;
+	char_t* file_buffer_ptr;
 	pecker_tick tick_count;
 
 	array_ptr->clear ();
-	status = pfx_cfile::is_file_exists (str_path_ptr, path_len);
+	status = pecker_file::is_file_exists (str_path_ptr, path_len);
 	RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
 
 	status = file.open(str_path_ptr,path_len,PFO_OPEN_READ);
@@ -398,9 +398,9 @@ pfx_result_t load_file_to_array (const pfx_char_t* PARAM_IN str_path_ptr, pfx_ns
 	tick_count.start();
 	if (file.get_file_size() > 0)
 	{
-		pfx_usize_t read_size = 0;
-		file_buffer_ptr = new pfx_char_t [file.get_file_size()];
-		file.read_to_memery((pfx_byte_t*)file_buffer_ptr,file.get_file_size(),read_size);
+		usize__t read_size = 0;
+		file_buffer_ptr = new char_t [file.get_file_size()];
+		file.read_to_memery((byte_t*)file_buffer_ptr,file.get_file_size(),read_size);
 		read_stream.bind_read_buffer(file_buffer_ptr,read_size);
 	}
 	PECKER_LOG_ ("load file tick = %lf ms\n",tick_count.get_microsecond());
@@ -408,18 +408,18 @@ pfx_result_t load_file_to_array (const pfx_char_t* PARAM_IN str_path_ptr, pfx_ns
 
 	tick_count.start();
 
-	pfx_char_t string_buffer[4096];
+	char_t string_buffer[4096];
 	while (1)
 	{
 
-		pfx_usize_t read_size = read_stream.read_chars (string_buffer,sizeof (string_buffer));
+		usize__t read_size = read_stream.read_chars (string_buffer,sizeof (string_buffer));
 		if (0 == read_size)
 		{
 			break;
 		}
 
 		ELEM_t * strtemp_ptr;
-		pfx_usize_t old_array_size = array_ptr->size ();
+		usize__t old_array_size = array_ptr->size ();
 		//if (old_array_size == 16)
 		//{
 		//	old_array_size = 16;

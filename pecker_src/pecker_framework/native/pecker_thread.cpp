@@ -34,7 +34,7 @@ pecker_critical_section::~pecker_critical_section()
 #endif
 }
 
-pfx_result_t pecker_critical_section::enter_critical_section()
+result_t pecker_critical_section::enter_critical_section()
 {
 #if (OS_CONFIG == OS_ANDROID)
 
@@ -46,7 +46,7 @@ pfx_result_t pecker_critical_section::enter_critical_section()
 #endif
 	return PFX_STATUS_OK;
 }
-pfx_result_t pecker_critical_section::leave_critical_section()
+result_t pecker_critical_section::leave_critical_section()
 {
 #if (OS_CONFIG == OS_ANDROID)
 
@@ -78,17 +78,17 @@ pecker_critical_lock::~pecker_critical_lock()
 	unlock();
 }
 
-pfx_result_t pecker_critical_lock::lock(pecker_critical_section* pcritical_section)
+result_t pecker_critical_lock::lock(pecker_critical_section* pcritical_section)
 {
 	if (null != pcritical_section)
 	{
-		pfx_result_t pfx_result_t = pcritical_section->enter_critical_section();
+		result_t pfx_result_t = pcritical_section->enter_critical_section();
 		m_bind_critial_section_ptr = pcritical_section;
 	}
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_critical_lock::unlock()
+result_t pecker_critical_lock::unlock()
 {
 	if (null != m_bind_critial_section_ptr)
 	{
@@ -111,10 +111,10 @@ pecker_thread_base::pecker_thread_base():m_thread_id(0)
 
 pecker_thread_base::~pecker_thread_base()
 {
-	pfx_result_t join_result = this->join_thread(1000);
+	result_t join_result = this->join_thread(1000);
 	if (PFX_STATUS_OK != join_result)
 	{
-		pfx_ulong_t exit_code;
+		ulong_t exit_code;
 		if (PFX_STATUS_OK == get_thread_exit_code(exit_code))
 		{
 			terminate_thread(exit_code);
@@ -123,21 +123,21 @@ pecker_thread_base::~pecker_thread_base()
 }
 
 
-void pecker_thread_base::exit_current_thread(pfx_ulong_t exit_code)
+void pecker_thread_base::exit_current_thread(ulong_t exit_code)
 {
 #if (OS_CONFIG == OS_WINDOWS)
 	::ExitThread(exit_code);
 #endif
 }
 
-void pecker_thread_base::sleep(pfx_ulong_t wait_milisec_time)
+void pecker_thread_base::sleep(ulong_t wait_milisec_time)
 {
 #if (OS_CONFIG == OS_WINDOWS)
 	::Sleep(wait_milisec_time);
 #endif
 }
 
-pfx_ulong_t pecker_thread_base::get_current_thread_id()
+ulong_t pecker_thread_base::get_current_thread_id()
 {
 #if (OS_CONFIG == OS_WINDOWS)
 	return ::GetCurrentThreadId();
@@ -145,9 +145,9 @@ pfx_ulong_t pecker_thread_base::get_current_thread_id()
 	return 0;
 }
 
-pfx_result_t pecker_thread_base::start_thread(pecker_thread_proc_callback thread_proc_ptr, pfx_pvoid_t proc_params_ptr,  thread_attributes* attribute_ptr /* = null */, pfx_nsize_t thread_stack_size /* = 0 */, pfx_flag_t thread_creation_flag /* = 0 */)
+result_t pecker_thread_base::start_thread(pecker_thread_proc_callback thread_proc_ptr, pvoid_t proc_params_ptr,  thread_attributes* attribute_ptr /* = null */, nsize__t thread_stack_size /* = 0 */, flag_t thread_creation_flag /* = 0 */)
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	if (NULL == m_hthread)
 	{
@@ -183,9 +183,9 @@ DWORD WINAPI pecker_runable_thread_function( LPVOID lpParam )
 }
 #endif
 
-pfx_result_t pecker_thread_base::start_thread(Ipecker_runable* target_ptr,  thread_attributes* attribute_ptr /* = null */, pfx_nsize_t thread_stack_size /* = 0 */, pfx_flag_t thread_creation_flag /* = 0 */)
+result_t pecker_thread_base::start_thread(Ipecker_runable* target_ptr,  thread_attributes* attribute_ptr /* = null */, nsize__t thread_stack_size /* = 0 */, flag_t thread_creation_flag /* = 0 */)
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	if (NULL == m_hthread)
 	{
@@ -208,9 +208,9 @@ pfx_result_t pecker_thread_base::start_thread(Ipecker_runable* target_ptr,  thre
 	return result_value;
 }
 
-pfx_result_t pecker_thread_base::join_thread(pfx_ulong_t wait_milisec_time /* = 0 */)
+result_t pecker_thread_base::join_thread(ulong_t wait_milisec_time /* = 0 */)
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	DWORD wait_result = ::WaitForSingleObject(m_hthread,wait_milisec_time);
 	switch(wait_result)
@@ -243,9 +243,9 @@ pfx_result_t pecker_thread_base::join_thread(pfx_ulong_t wait_milisec_time /* = 
 	return result_value;
 }
 
-pfx_result_t pecker_thread_base::terminate_thread(pfx_ulong_t exit_code)
+result_t pecker_thread_base::terminate_thread(ulong_t exit_code)
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	if (::TerminateThread(m_hthread,exit_code))
 	{
@@ -262,9 +262,9 @@ pfx_result_t pecker_thread_base::terminate_thread(pfx_ulong_t exit_code)
 	return result_value;
 }
 
-pfx_result_t pecker_thread_base::pause_thread()
+result_t pecker_thread_base::pause_thread()
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	if (-1 != ::SuspendThread(m_hthread))
 	{
@@ -278,9 +278,9 @@ pfx_result_t pecker_thread_base::pause_thread()
 	return result_value;
 }
 
-pfx_result_t pecker_thread_base::resume_thread()
+result_t pecker_thread_base::resume_thread()
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	if (-1 != ::ResumeThread(m_hthread))
 	{
@@ -294,27 +294,27 @@ pfx_result_t pecker_thread_base::resume_thread()
 	return result_value;
 }
 
-pfx_sint_t pecker_thread_base::get_thread_priority() const
+sint_t pecker_thread_base::get_thread_priority() const
 {
-	pfx_sint_t priority_value;
+	sint_t priority_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	priority_value = ::GetThreadPriority(m_hthread);
 #endif
 	return priority_value;
 }
 
-pfx_boolean_t pecker_thread_base::set_thread_priority(pfx_sint_t npriority)
+boolean_t pecker_thread_base::set_thread_priority(sint_t npriority)
 {
-	pfx_boolean_t result_value;
+	boolean_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	result_value = ::SetThreadPriority(m_hthread,npriority);
 #endif
 	return result_value;
 }
 
-pfx_boolean_t pecker_thread_base::is_running() const
+boolean_t pecker_thread_base::is_running() const
 {
-	pfx_boolean_t return_value = PFX_BOOL_FALSE;
+	boolean_t return_value = PFX_BOOL_FALSE;
 #if (OS_CONFIG == OS_WINDOWS)
 	DWORD exit_code;
 	if (::GetExitCodeThread(m_hthread,&exit_code))
@@ -331,9 +331,9 @@ pfx_boolean_t pecker_thread_base::is_running() const
 #endif
 	return return_value;
 }
-pfx_result_t pecker_thread_base::get_thread_exit_code(pfx_ulong_t &exit_code) const
+result_t pecker_thread_base::get_thread_exit_code(ulong_t &exit_code) const
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	if (::GetExitCodeThread(m_hthread,&exit_code))
 	{
@@ -347,9 +347,9 @@ pfx_result_t pecker_thread_base::get_thread_exit_code(pfx_ulong_t &exit_code) co
 	return result_value;
 }
 
-pfx_result_t pecker_thread_base::set_thread_affinity_mask(pfx_ulong_t cpu_mask)
+result_t pecker_thread_base::set_thread_affinity_mask(ulong_t cpu_mask)
 {
-	pfx_result_t result_value;
+	result_t result_value;
 #if (OS_CONFIG == OS_WINDOWS)
 	if (0 != ::SetThreadAffinityMask(m_hthread,cpu_mask))
 	{
@@ -363,7 +363,7 @@ pfx_result_t pecker_thread_base::set_thread_affinity_mask(pfx_ulong_t cpu_mask)
 	return result_value;
 }
 
-pfx_ulong_t pecker_thread_base::get_thread_id() const
+ulong_t pecker_thread_base::get_thread_id() const
 {
 	return m_thread_id;
 }
@@ -385,7 +385,7 @@ pecker_thread_proc_target::~pecker_thread_proc_target()
 	m_params_ptr = null;
 }
 
-pfx_result_t pecker_thread_proc_target::init(pecker_thread_proc_callback target_proc_ptr,pfx_pvoid_t params_ptr)
+result_t pecker_thread_proc_target::init(pecker_thread_proc_callback target_proc_ptr,pvoid_t params_ptr)
 {
 	if (null != target_proc_ptr)
 	{
@@ -411,9 +411,9 @@ pecker_thread_target::~pecker_thread_target()
 	m_target_ptr = null;
 }
 
-pfx_result_t pecker_thread_target::init(pecker_thread_proc_callback target_proc_ptr,pfx_pvoid_t params_ptr)
+result_t pecker_thread_target::init(pecker_thread_proc_callback target_proc_ptr,pvoid_t params_ptr)
 {
-	pfx_result_t init_result =  m_proc_target.init(target_proc_ptr,params_ptr);
+	result_t init_result =  m_proc_target.init(target_proc_ptr,params_ptr);
 	if (PFX_STATUS_OK == init_result)
 	{
 		m_target_ptr = &m_proc_target;
@@ -421,7 +421,7 @@ pfx_result_t pecker_thread_target::init(pecker_thread_proc_callback target_proc_
 	return init_result; 
 }
 
-pfx_result_t pecker_thread_target::init(Ipecker_runable* target_ptr)
+result_t pecker_thread_target::init(Ipecker_runable* target_ptr)
 {
 	if (null != target_ptr)
 	{
@@ -451,7 +451,7 @@ pecker_thread::~pecker_thread()
 	m_thread_creation_flag = 0;
 }
 
-pfx_result_t pecker_thread::init_thread_info(const thread_attributes* attribute_ptr /* = null */, pfx_nsize_t thread_stack_size /* = 0 */, pfx_flag_t thread_creation_flag /* = 0 */)
+result_t pecker_thread::init_thread_info(const thread_attributes* attribute_ptr /* = null */, nsize__t thread_stack_size /* = 0 */, flag_t thread_creation_flag /* = 0 */)
 {
 	if (null != attribute_ptr)
 	{
@@ -468,20 +468,20 @@ pfx_result_t pecker_thread::init_thread_info(const thread_attributes* attribute_
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pecker_thread::init_thread_target(pecker_thread_proc_callback thread_proc_ptr,
-	pfx_pvoid_t proc_params_ptr)
+result_t pecker_thread::init_thread_target(pecker_thread_proc_callback thread_proc_ptr,
+	pvoid_t proc_params_ptr)
 {
 	return m_thread_target.init(thread_proc_ptr,proc_params_ptr);
 }
 
-pfx_result_t pecker_thread::init_thread_target(Ipecker_runable* target_ptr)
+result_t pecker_thread::init_thread_target(Ipecker_runable* target_ptr)
 {
 	return m_thread_target.init(target_ptr);
 }
 
-pfx_result_t pecker_thread::init_thread(Ipecker_runable* target_ptr,const thread_attributes* attribute_ptr /* = null */, pfx_nsize_t thread_stack_size /* = 0 */, pfx_flag_t thread_creation_flag /* = 0 */)
+result_t pecker_thread::init_thread(Ipecker_runable* target_ptr,const thread_attributes* attribute_ptr /* = null */, nsize__t thread_stack_size /* = 0 */, flag_t thread_creation_flag /* = 0 */)
 {
-	pfx_result_t init_result = m_thread_target.init(target_ptr);
+	result_t init_result = m_thread_target.init(target_ptr);
 	if (PFX_STATUS_OK == init_result)
 	{
 		 if (null != attribute_ptr)
@@ -499,9 +499,9 @@ pfx_result_t pecker_thread::init_thread(Ipecker_runable* target_ptr,const thread
 	return init_result;
 }
 
-pfx_result_t pecker_thread::init_thread(pecker_thread_proc_callback thread_proc_ptr, pfx_pvoid_t proc_params_ptr, const thread_attributes* attribute_ptr /* = null */, pfx_nsize_t thread_stack_size /* = 0 */, pfx_flag_t thread_creation_flag /* = 0 */)
+result_t pecker_thread::init_thread(pecker_thread_proc_callback thread_proc_ptr, pvoid_t proc_params_ptr, const thread_attributes* attribute_ptr /* = null */, nsize__t thread_stack_size /* = 0 */, flag_t thread_creation_flag /* = 0 */)
 {
-	pfx_result_t init_result = m_thread_target.init(thread_proc_ptr,proc_params_ptr);
+	result_t init_result = m_thread_target.init(thread_proc_ptr,proc_params_ptr);
 	if (PFX_STATUS_OK == init_result)
 	{
 		if (null != attribute_ptr)
@@ -519,7 +519,7 @@ pfx_result_t pecker_thread::init_thread(pecker_thread_proc_callback thread_proc_
 	return init_result;
 }
 
-pfx_result_t pecker_thread::start_thread(pecker_thread_proc_callback thread_proc_ptr, pfx_pvoid_t proc_params_ptr, thread_attributes* attribute_ptr /* = null */, pfx_nsize_t thread_stack_size /* = 0 */, pfx_flag_t thread_creation_flag /* = 0 */)
+result_t pecker_thread::start_thread(pecker_thread_proc_callback thread_proc_ptr, pvoid_t proc_params_ptr, thread_attributes* attribute_ptr /* = null */, nsize__t thread_stack_size /* = 0 */, flag_t thread_creation_flag /* = 0 */)
 {
 	if (PFX_STATUS_OK == init_thread(thread_proc_ptr,proc_params_ptr,attribute_ptr,thread_stack_size,thread_creation_flag))
 	{
@@ -528,9 +528,9 @@ pfx_result_t pecker_thread::start_thread(pecker_thread_proc_callback thread_proc
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_thread::start_thread(Ipecker_runable* target_ptr,thread_attributes* attribute_ptr /*= null*/,
-	pfx_nsize_t thread_stack_size /*= 0*/,
-	pfx_flag_t thread_creation_flag /*= 0*/)
+result_t pecker_thread::start_thread(Ipecker_runable* target_ptr,thread_attributes* attribute_ptr /*= null*/,
+	nsize__t thread_stack_size /*= 0*/,
+	flag_t thread_creation_flag /*= 0*/)
 {
 	if (PFX_STATUS_OK == init_thread(target_ptr,attribute_ptr,thread_stack_size,thread_creation_flag))
 	{
@@ -539,7 +539,7 @@ pfx_result_t pecker_thread::start_thread(Ipecker_runable* target_ptr,thread_attr
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_thread::start_thread()
+result_t pecker_thread::start_thread()
 {
 	return pecker_thread_base::start_thread(&m_thread_target,m_thread_attr_ptr,m_thread_stack_size,m_thread_creation_flag); 
 }

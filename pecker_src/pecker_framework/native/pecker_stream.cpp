@@ -23,7 +23,7 @@ pecker_read_stream_form_memery::~pecker_read_stream_form_memery()
 	m_bind_read_buffer_ptr = null;
 	m_bind_read_size = 0;
 }
-pfx_result_t pecker_read_stream_form_memery::bind_read_buffer(CONST_STREAM_BUFFER_t bind_buffer_ptr,pfx_usize_t bind_size)
+result_t pecker_read_stream_form_memery::bind_read_buffer(CONST_STREAM_BUFFER_t bind_buffer_ptr,usize__t bind_size)
 {
 	if (null == bind_buffer_ptr || bind_size <= 0)
 	{
@@ -37,7 +37,7 @@ pfx_result_t pecker_read_stream_form_memery::bind_read_buffer(CONST_STREAM_BUFFE
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pecker_read_stream_form_memery::read_integer (pfx_sint_t &read_value)
+result_t pecker_read_stream_form_memery::read_integer (sint_t &read_value)
 {
 	if (null == m_bind_read_buffer_ptr || 0 == m_bind_read_size)
 	{
@@ -60,7 +60,7 @@ pfx_result_t pecker_read_stream_form_memery::read_integer (pfx_sint_t &read_valu
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pecker_read_stream_form_memery::read_long (pfx_s64_t &read_value)
+result_t pecker_read_stream_form_memery::read_long (s64_t &read_value)
 {
 	if (null == m_bind_read_buffer_ptr || 0 == m_bind_read_size)
 	{
@@ -83,7 +83,7 @@ pfx_result_t pecker_read_stream_form_memery::read_long (pfx_s64_t &read_value)
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pecker_read_stream_form_memery::read_char (pfx_char_t &read_value)
+result_t pecker_read_stream_form_memery::read_char (char_t &read_value)
 {
 	if (null == m_bind_read_buffer_ptr || 0 == m_bind_read_size)
 	{
@@ -119,7 +119,7 @@ pfx_result_t pecker_read_stream_form_memery::read_char (pfx_char_t &read_value)
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pecker_read_stream_form_memery::read_float (pfx_float_t &read_value)
+result_t pecker_read_stream_form_memery::read_float (float_t &read_value)
 {
 	if (null == m_bind_read_buffer_ptr || 0 == m_bind_read_size)
 	{
@@ -142,7 +142,7 @@ pfx_result_t pecker_read_stream_form_memery::read_float (pfx_float_t &read_value
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pecker_read_stream_form_memery::read_double (pfx_double_t &read_value)
+result_t pecker_read_stream_form_memery::read_double (double_t &read_value)
 {
 	if (null == m_bind_read_buffer_ptr || 0 == m_bind_read_size)
 	{
@@ -166,7 +166,7 @@ pfx_result_t pecker_read_stream_form_memery::read_double (pfx_double_t &read_val
 	return PFX_STATUS_OK;
 }
 
-pfx_usize_t pecker_read_stream_form_memery::read_chars (pfx_char_t* read_buffer_ptr,pfx_usize_t read_buffer_size)
+usize__t pecker_read_stream_form_memery::read_chars (char_t* read_buffer_ptr,usize__t read_buffer_size)
 {
 	if (null == m_bind_read_buffer_ptr || 0 == m_bind_read_size)
 	{
@@ -220,7 +220,7 @@ pecker_write_stream_to_memery::~pecker_write_stream_to_memery()
 	m_bind_write_size = null;
 }
 
-pfx_result_t pecker_write_stream_to_memery::bind_write_buffer( STREAM_BUFFER_t bind_buffer_ptr,pfx_usize_t bind_size)
+result_t pecker_write_stream_to_memery::bind_write_buffer( STREAM_BUFFER_t bind_buffer_ptr,usize__t bind_size)
 {
 	if (null == bind_buffer_ptr || bind_size <= 0)
 	{
@@ -236,7 +236,7 @@ pfx_result_t pecker_write_stream_to_memery::bind_write_buffer( STREAM_BUFFER_t b
 	return PFX_STATUS_OK;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_integer (pfx_sint_t write_value)
+result_t pecker_write_stream_to_memery::write_integer (sint_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -257,7 +257,7 @@ pfx_result_t pecker_write_stream_to_memery::write_integer (pfx_sint_t write_valu
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_unsigned_integer (pfx_uint_t write_value)
+result_t pecker_write_stream_to_memery::write_unsigned_integer (uint_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -278,7 +278,7 @@ pfx_result_t pecker_write_stream_to_memery::write_unsigned_integer (pfx_uint_t w
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_long (pfx_s64_t write_value)
+result_t pecker_write_stream_to_memery::write_long (s64_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -298,7 +298,7 @@ pfx_result_t pecker_write_stream_to_memery::write_long (pfx_s64_t write_value)
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_unsigned_long (pfx_u64_t write_value)
+result_t pecker_write_stream_to_memery::write_unsigned_long (u64_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -318,7 +318,7 @@ pfx_result_t pecker_write_stream_to_memery::write_unsigned_long (pfx_u64_t write
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_char (pfx_char_t write_value)
+result_t pecker_write_stream_to_memery::write_char (char_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -339,7 +339,7 @@ pfx_result_t pecker_write_stream_to_memery::write_char (pfx_char_t write_value)
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_byte (pfx_byte_t write_value)
+result_t pecker_write_stream_to_memery::write_byte (byte_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -361,7 +361,7 @@ pfx_result_t pecker_write_stream_to_memery::write_byte (pfx_byte_t write_value)
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_float (pfx_float_t write_value)
+result_t pecker_write_stream_to_memery::write_float (float_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -382,7 +382,7 @@ pfx_result_t pecker_write_stream_to_memery::write_float (pfx_float_t write_value
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_result_t pecker_write_stream_to_memery::write_double (pfx_double_t write_value)
+result_t pecker_write_stream_to_memery::write_double (double_t write_value)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);
@@ -402,7 +402,7 @@ pfx_result_t pecker_write_stream_to_memery::write_double (pfx_double_t write_val
 	return PFX_STATUS_ERROR_;
 }
 
-pfx_usize_t pecker_write_stream_to_memery::write_chars (pfx_char_t* write_buffer_ptr,pfx_usize_t write_buffer_size)
+usize__t pecker_write_stream_to_memery::write_chars (char_t* write_buffer_ptr,usize__t write_buffer_size)
 {
 	pecker_critical_lock cs_lock;
 	cs_lock.lock(&m_critical_section);

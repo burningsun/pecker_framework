@@ -14,7 +14,7 @@ USING_PECKER_SDK
 void print_array (const IPfx_array < int >* PARAM_IN array_ptr)
 {
 	//class pfx_const_array_iterator : public IPfx_array_iterator < element_ >
-	pfx_const_array_iterator < int > itr;
+	const_array_iterator < int > itr;
 	IPfx_array_iterator < int >* itr_ptr = null;
 	itr_ptr = array_ptr->begin (&itr);
 
@@ -66,18 +66,18 @@ int test_array (IPfx_array < int >* PARAM_INOUT array_ptr,
 	print_array(array_ptr);
 	array_ptr->resize (20);
 	array_ptr->resize (16);
-	for (pfx_uindex_t i=16; i<20; ++i)
+	for (uindex_t i=16; i<20; ++i)
 	{
 		array_ptr->push_back (temp_buffer[i]);
 	}
 	print_array(array_ptr);
-	for (pfx_uindex_t i=0; i<20; ++i)
+	for (uindex_t i=0; i<20; ++i)
 	{
 		array_ptr->pop_back ();
 	}
 	print_array(array_ptr);
 	
-	for (pfx_uindex_t i=0; i<20; ++i)
+	for (uindex_t i=0; i<20; ++i)
 	{
 		array_ptr->push_back (temp_buffer[i]);
 	}

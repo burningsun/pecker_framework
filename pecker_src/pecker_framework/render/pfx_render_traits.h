@@ -18,19 +18,19 @@ struct color_reference_type
 	typedef typename color_value_type::value_type value_type;
 };
 template <>
-struct color_reference_type < pfx_bitfield_t >
+struct color_reference_type < bitfield_t >
 {
-	typedef pfx_u8_t value_type;
+	typedef u8_t value_type;
 };
 template <>
-struct color_reference_type < pfx_u16_t >
+struct color_reference_type < u16_t >
 {
-	typedef pfx_u16_t value_type;
+	typedef u16_t value_type;
 };
 template <>
-struct color_reference_type < pfx_u8_t >
+struct color_reference_type < u8_t >
 {
-	typedef pfx_u8_t value_type;
+	typedef u8_t value_type;
 };
 
 PECKER_END

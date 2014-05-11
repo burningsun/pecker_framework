@@ -38,17 +38,17 @@
 #define	pfx_acos(x)		PFX_INTX_2_FLOAT(ACOS_TABLE(PFX_FLOAT_2_INTX(x)))
 #else
 #include <math.h>
-#define	pfx_cos(x)		((pfx_float_t)cos(x))
-#define	pfx_sin(x)		((pfx_float_t)sin(x))
-#define	pfx_tan(x)		((pfx_float_t)tan(x))
-#define	pfx_acos(x)		((pfx_float_t)acos(x))
+#define	pfx_cos(x)		((float_t)cos(x))
+#define	pfx_sin(x)		((float_t)sin(x))
+#define	pfx_tan(x)		((float_t)tan(x))
+#define	pfx_acos(x)		((float_t)acos(x))
 #endif
 
 #define	pfx_sincos_std(r,sin_,cos_) {(sin_)=pfx_sin((r));(cos_)=pfx_cos((r));}
 
 #ifdef PFX_FIXED_POINT_ENABLE 
 // 没有fpu下的兼容模式
-#define VEC_FLOAT	pfx_sint_t
+#define VEC_FLOAT	sint_t
 #define VEC_FLOAT_MUL(a,b)		PFX_INTX_MUL(a,b)
 #define VEC_FLOAT_DIV(a,b)		PFX_INTX_DIV(a,b)
 #define VEC_FLOAT_ABS(a)			PFX_ABS(a)
@@ -67,7 +67,7 @@
 // 有fpu
 #include <math.h>
 
-#define VEC_FLOAT	pfx_float_t
+#define VEC_FLOAT	float_t
 
 #define ZERO_FLOAT (0.0f)
 #define ONE_FLOAT	(1.0f)
@@ -90,7 +90,7 @@
 #define FLOAT_SIGNIF_BIT_MASK	(0x007FFFFF)
 
 
-PFX_INLINE pfx_bitfield_t pfx_float_to_int_bits (pfx_float_t X)
+PFX_INLINE bitfield_t pfx_float_to_int_bits (float_t X)
 {
 	PFX_32bit_DataType bitfiled;
 	bitfiled.m_float_type = X;
@@ -102,7 +102,7 @@ PFX_INLINE pfx_bitfield_t pfx_float_to_int_bits (pfx_float_t X)
 	}
 	return bitfiled.m_uint_type;
 }
-PFX_INLINE pfx_sint_t float_equals (pfx_float_t X,pfx_float_t Y)
+PFX_INLINE sint_t float_equals (float_t X,float_t Y)
 {
 	if (X > FLOAT_REF_VALUE || X < (-FLOAT_REF_VALUE))
 	{
@@ -119,7 +119,7 @@ PFX_INLINE pfx_sint_t float_equals (pfx_float_t X,pfx_float_t Y)
 	else
 	{
 		PFX_32bit_DataType		bitfiledx;
-		pfx_bitfield_t					bit_count;
+		bitfield_t					bit_count;
 		int cmp_mask;
 
 		bitfiledx.m_float_type = X;
@@ -155,7 +155,7 @@ PFX_INLINE pfx_sint_t float_equals (pfx_float_t X,pfx_float_t Y)
 		}
 	}
 }
-PFX_INLINE int float_cmp (pfx_float_t X,pfx_float_t Y)
+PFX_INLINE int float_cmp (float_t X,float_t Y)
 {
 	int cmp_mask;
 
@@ -178,7 +178,7 @@ PFX_INLINE int float_cmp (pfx_float_t X,pfx_float_t Y)
 	else
 	{
 		PFX_32bit_DataType		bitfiledx;
-		pfx_bitfield_t					bit_count;
+		bitfield_t					bit_count;
 
 		bitfiledx.m_float_type = X;
 
@@ -206,7 +206,7 @@ PFX_INLINE int float_cmp (pfx_float_t X,pfx_float_t Y)
 		return cmp_mask;
 	}
 }
-PFX_INLINE int float_cmp_zero (pfx_float_t X)
+PFX_INLINE int float_cmp_zero (float_t X)
 {	
 	if (X > FLOAT_ERROR_VALUE)
 	{

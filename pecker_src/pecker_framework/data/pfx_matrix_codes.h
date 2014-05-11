@@ -123,7 +123,7 @@ protected:
 		}
 	}
 	PFX_INLINE pfx_usize_t rev_clear_oneline_unsafe (pfx_uindex_t clear_line,		
-		clear_mul_factor_t* mul_factor, pfx_u32_t delta)
+		clear_mul_factor_t* mul_factor, u32_t delta)
 	{
 		pfx_uindex_t fac_count = 0;
 		pfx_uindex_t itr = 0;
@@ -590,7 +590,7 @@ PFX_INLINE  MAT_CMAT& MAT_CMAT::div_repalce (TYPE_CMAT::dimension_value_t  val)
 
 // 矩阵行列式的值
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
-PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant (pfx_u32_t delta)
+PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant (u32_t delta)
 {
 	return MAT_CMAT::determinant(m_mat,delta);
 }
@@ -604,7 +604,7 @@ PFX_INLINE TYPE_CMAT::dimension_value_t   MAT_CMAT::algebraic_cofactor_determina
 
 // 使用高斯消元法求秩
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
-PFX_INLINE pfx_usize_t MAT_CMAT::rank_gaussian (pfx_u32_t delta) const
+PFX_INLINE pfx_usize_t MAT_CMAT::rank_gaussian (u32_t delta) const
 {
 	TYPE_CMAT::matrix_t mat_cp = m_mat;
 	return MAT_CMAT::rank_gaussian(m_mat,mat_cp,delta);
@@ -614,7 +614,7 @@ PFX_INLINE pfx_usize_t MAT_CMAT::rank_gaussian (pfx_u32_t delta) const
 // 使用高斯消元法求逆
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
 PFX_INLINE MAT_CMAT* MAT_CMAT::inverse_matrix_gaussian_elimination 
-(MAT_CMAT& PARAM_OUT mat, pfx_u32_t delta) const
+(MAT_CMAT& PARAM_OUT mat, u32_t delta) const
 {
 	TYPE_CMAT::matrix_t mat_gau = m_mat;
 	//TYPE_CMAT::matrix_t mat_;
@@ -741,7 +741,7 @@ TYPE_CMAT::matrix_t& trans_mat)
 
 // 矩阵行列式的值
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
-PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant_gaussian_unsafe (TYPE_CMAT::matrix_ex_t& gaussian_mat,pfx_u32_t delta)
+PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant_gaussian_unsafe (TYPE_CMAT::matrix_ex_t& gaussian_mat,u32_t delta)
 {
 	TYPE_CMAT::dimension_value_t  det = 1;
 	for (pfx_uindex_t i=0; i<dimension_count; ++i)
@@ -778,7 +778,7 @@ PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant_gaussian_unsafe (
 }
 
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
-PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant (const TYPE_CMAT::matrix_t& mat,pfx_u32_t delta)
+PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant (const TYPE_CMAT::matrix_t& mat,u32_t delta)
 {
 	TYPE_CMAT::dimension_value_t  det = 0;
 	// release 模式下会自动将没用的分支剃掉，从而达到编译时多态的效果 
@@ -848,7 +848,7 @@ PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::determinant (const TYPE_CMAT:
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
 PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::algebraic_cofactor_determinant_gaussian_unsafe 
 (matrix_ex_t& gaussian_mat,
-pfx_uindex_t x,pfx_uindex_t y,pfx_u32_t delta)
+pfx_uindex_t x,pfx_uindex_t y,u32_t delta)
 {
 	TYPE_CMAT::dimension_value_t  det = 1;
 
@@ -909,7 +909,7 @@ pfx_uindex_t x,pfx_uindex_t y,pfx_u32_t delta)
 
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
 PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::algebraic_cofactor_determinant 
-(const TYPE_CMAT::matrix_t& mat,pfx_uindex_t x,pfx_uindex_t y,pfx_u32_t delta)
+(const TYPE_CMAT::matrix_t& mat,pfx_uindex_t x,pfx_uindex_t y,u32_t delta)
 {
 	RETURN_INVALID_RESULT ((x >= dimension_count|| y>= dimension_count),0);
 
@@ -994,7 +994,7 @@ PFX_INLINE TYPE_CMAT::dimension_value_t  MAT_CMAT::algebraic_cofactor_determinan
 // 使用高斯消元法求秩
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
 PFX_INLINE pfx_usize_t MAT_CMAT::rank_gaussian (const  TYPE_CMAT::matrix_t& PARAM_IN mat,
-	TYPE_CMAT::matrix_t& PARAM_OUT result_mat, pfx_u32_t delta) 
+	TYPE_CMAT::matrix_t& PARAM_OUT result_mat, u32_t delta) 
 {
 	pfx_usize_t rank = 0;
 	TYPE_CMAT::matrix_t mat_cp;
@@ -1038,7 +1038,7 @@ PFX_INLINE pfx_usize_t MAT_CMAT::rank_gaussian (const  TYPE_CMAT::matrix_t& PARA
 
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
 PFX_INLINE TYPE_CMAT::matrix_t* MAT_CMAT::inverse_matrix (TYPE_CMAT::matrix_ex_t& PARAM_INOUT mat,
-	TYPE_CMAT::matrix_ex_t& PARAM_OUT indt_mat, pfx_u32_t delta)
+	TYPE_CMAT::matrix_ex_t& PARAM_OUT indt_mat, u32_t delta)
 {
 	RETURN_INVALID_RESULT (null == indt_mat.m_mat_ptr || null == gaussian_mat.m_mat_ptr,
 		null);
@@ -1066,7 +1066,7 @@ PFX_INLINE TYPE_CMAT::matrix_t* MAT_CMAT::inverse_matrix (TYPE_CMAT::matrix_ex_t
 // 使用高斯消元法求逆
 PFX_SQUARE_MATRIX_TEMPLATE_DEFS
 PFX_INLINE TYPE_CMAT::matrix_ex_t* MAT_CMAT::inverse_matrix_gaussian_elimination (TYPE_CMAT::matrix_ex_t& PARAM_INOUT gaussian_mat,
-	TYPE_CMAT::matrix_ex_t& PARAM_OUT indt_mat, pfx_u32_t delta)
+	TYPE_CMAT::matrix_ex_t& PARAM_OUT indt_mat, u32_t delta)
 {
 	RETURN_INVALID_RESULT (null == indt_mat.m_mat_ptr || null == gaussian_mat.m_mat_ptr,
 		null);

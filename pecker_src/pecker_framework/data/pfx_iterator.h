@@ -14,16 +14,16 @@
 PECKER_BEGIN
 
 template < class element_type >
-PFX_Interface pfx_increase_iterator
+PFX_Interface IPfx_increase_iterator
 {
-	virtual pfx_increase_iterator < element_type >*	increase_iterator () = 0;
+	virtual IPfx_increase_iterator < element_type >*	increase_iterator () = 0;
 	virtual	const element_type*									get_current_element () const = 0;
 };
 
 template < class element_type >
-PFX_Interface pfx_decrease_iterator
+PFX_Interface IPfx_decrease_iterator
 {
-	virtual pfx_decrease_iterator < element_type >*	decrease_iterator () = 0;
+	virtual IPfx_decrease_iterator < element_type >*	decrease_iterator () = 0;
 	virtual	const element_type*									get_current_element () const = 0;
 };
 PECKER_END

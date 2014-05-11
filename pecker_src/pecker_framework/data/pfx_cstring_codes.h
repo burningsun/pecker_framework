@@ -11,16 +11,16 @@
 #include "../pfx_defines.h"
 #include "pfx_cstring.h"
 
-#define TEMPLATE_CSTR pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS
-#define TYPE_CSTR typename pfx_cstring PFX_CSTRING_TEMPLATE_PARAMS
+#define TEMPLATE_CSTR cstring PFX_CSTRING_TEMPLATE_PARAMS
+#define TYPE_CSTR typename cstring PFX_CSTRING_TEMPLATE_PARAMS
 
-#define TEMPLATE_CSHARE_STR pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS
-#define TYPE_CSHARE_STR typename pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS
+#define TEMPLATE_CSHARE_STR cshare_string PFX_CSTRING_TEMPLATE_PARAMS
+#define TYPE_CSHARE_STR typename cshare_string PFX_CSTRING_TEMPLATE_PARAMS
 
 PECKER_BEGIN
 
 PFX_CSTRING_TEMPLATE_DEFINES
-TEMPLATE_CSTR ::pfx_cstring () : m_extern_string_buffer_ptr (null)
+TEMPLATE_CSTR ::cstring () : m_extern_string_buffer_ptr (null)
 {
 	if (CACHE_BUFFER_SIZE > 0)
 	{
@@ -31,7 +31,7 @@ TEMPLATE_CSTR ::pfx_cstring () : m_extern_string_buffer_ptr (null)
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-TEMPLATE_CSTR ::pfx_cstring (const TYPE_CSTR & other_) throw (pfx_result_t)
+TEMPLATE_CSTR ::cstring (const TYPE_CSTR & other_) throw (result_t)
 {
 	m_extern_string_buffer_ptr = null;
 	if (CACHE_BUFFER_SIZE > 0)
@@ -41,7 +41,7 @@ TEMPLATE_CSTR ::pfx_cstring (const TYPE_CSTR & other_) throw (pfx_result_t)
 		m_header.m_element_count = 0;
 	}
 
-	pfx_result_t status;
+	result_t status;
 	status = append_string(&other_);
 
 	if (PFX_STATUS_OK != status)
@@ -53,14 +53,14 @@ TEMPLATE_CSTR ::pfx_cstring (const TYPE_CSTR & other_) throw (pfx_result_t)
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-TEMPLATE_CSTR :: ~pfx_cstring ()
+TEMPLATE_CSTR :: ~cstring ()
 {
 	resize_string(0);
 	garbage_collection();
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t	TEMPLATE_CSTR :: reset_header ()
+PFX_INLINE result_t	TEMPLATE_CSTR :: reset_header ()
 {
 	if (CACHE_BUFFER_SIZE > 0)
 	{
@@ -78,13 +78,13 @@ PFX_INLINE pfx_result_t	TEMPLATE_CSTR :: reset_header ()
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE element_*		TEMPLATE_CSTR :: resize_new_stringbuffer 
+PFX_INLINE element_t*		TEMPLATE_CSTR :: resize_new_stringbuffer 
 																(const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-																pfx_usize_t elememt_size, 
-																pfx_result_t& PARAM_INOUT status_)
+																usize__t elememt_size, 
+																result_t& PARAM_INOUT status_)
 {
-	element_* result_elem_ptr;
-	element_* last_elem_ptr;
+	element_t* result_elem_ptr;
+	element_t* last_elem_ptr;
 
 	status_ = PFX_STATUS_OK;
 	// 当新指定的BUF小于或者等于原有的BUF，不再重现申请
@@ -93,7 +93,7 @@ PFX_INLINE element_*		TEMPLATE_CSTR :: resize_new_stringbuffer
 		result_elem_ptr = null;
 		return result_elem_ptr;
 	}
-	last_elem_ptr = (element_*) header.m_element_ptr;
+	last_elem_ptr = (element_t*) header.m_element_ptr;
 
 	//// 
 	//if (CACHE_BUFFER_SIZE > 0 && last_elem_ptr == m_cache_buffer)
@@ -125,16 +125,16 @@ PFX_INLINE element_*		TEMPLATE_CSTR :: resize_new_stringbuffer
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t		TEMPLATE_CSTR ::remove_referance ()
+PFX_INLINE result_t		TEMPLATE_CSTR ::remove_referance ()
 {
-	pfx_result_t status;
+	result_t status;
 
 	if (is_reference ())
 	{
 		//enable_reference (PFX_BOOL_TRUE);
-		IPfx_string PFX_STRING_TEMPLATE_PARAMS* this_ptr = this;
-		pfx_clist_base <  IPfx_string PFX_STRING_TEMPLATE_PARAMS  >  :: remove_list_node_unsafe (this_ptr);
-		pfx_clist_base <  IPfx_string PFX_STRING_TEMPLATE_PARAMS  >  :: init_list_node (this_ptr);
+		TYPE_CSTR::IString_t* this_ptr = this;
+		clist_base < TYPE_CSTR::IString_t >  :: remove_list_node_unsafe (this_ptr);
+		clist_base <  TYPE_CSTR::IString_t  >  :: init_list_node (this_ptr);
 		//enable_reference (PFX_BOOL_FALSE);
 
 		status = reset_header ();
@@ -148,12 +148,12 @@ PFX_INLINE pfx_result_t		TEMPLATE_CSTR ::remove_referance ()
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE  pfx_result_t		TEMPLATE_CSTR ::add_referance (IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr)
+PFX_INLINE  result_t		TEMPLATE_CSTR ::add_referance (TYPE_CSTR::IString_t* PARAM_IN other_ptr)
 {
-	const IPfx_string PFX_STRING_TEMPLATE_PARAMS* insert_ptr;
+	const TYPE_CSTR::IString_t* insert_ptr;
 	//enable_reference (PFX_BOOL_TRUE);
 	//other_ptr->enable_reference (PFX_BOOL_TRUE);
-	insert_ptr = pfx_clist_base < IPfx_string PFX_STRING_TEMPLATE_PARAMS >  :: insert_list_node_back (this,other_ptr);
+	insert_ptr = clist_base < TYPE_CSTR::IString_t >  :: insert_list_node_back (this,other_ptr);
 	//enable_reference (PFX_BOOL_FALSE);
 	if (insert_ptr)
 	{
@@ -166,27 +166,27 @@ PFX_INLINE  pfx_result_t		TEMPLATE_CSTR ::add_referance (IPfx_string PFX_STRING_
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE  pfx_boolean_t	TEMPLATE_CSTR ::is_reference ()
+PFX_INLINE  boolean_t	TEMPLATE_CSTR ::is_reference ()
 {
-	return (pfx_boolean_t) (get_next_node () || get_prev_node ());
+	return (boolean_t) (get_next_node () || get_prev_node ());
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE element_*		TEMPLATE_CSTR ::reallocate_string_buffer 
-																																			(element_* PARAM_INOUT elem_ptr, 
-																																			pfx_usize_t element_count)
+PFX_INLINE element_t*		TEMPLATE_CSTR ::reallocate_string_buffer 
+																					(element_t* PARAM_INOUT elem_ptr, 
+																					usize__t element_count)
 {
 	return null;
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE  element_*	TEMPLATE_CSTR ::new_string_buffer (pfx_usize_t element_count)
+PFX_INLINE  element_t*	TEMPLATE_CSTR ::new_string_buffer (usize__t element_count)
 {
-	return new element_[element_count];
+	return new element_t[element_count];
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE  pfx_result_t	TEMPLATE_CSTR ::delete_string_buffer (element_* PARAM_IN elem_ptr)
+PFX_INLINE  result_t	TEMPLATE_CSTR ::delete_string_buffer (element_t* PARAM_IN elem_ptr)
 {
 	if (elem_ptr)
 	{
@@ -200,29 +200,29 @@ PFX_INLINE  pfx_result_t	TEMPLATE_CSTR ::delete_string_buffer (element_* PARAM_I
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE pfx_ulong_t	TEMPLATE_CSTR ::get_string_type_code () const
+PFX_INLINE ulong_t	TEMPLATE_CSTR ::get_string_type_code () const
 {
 	return (PFX_CSTRING_CODE);
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE	 pfx_usize_t	TEMPLATE_CSTR ::cache_buffer_size ()
+PFX_INLINE	 usize__t	TEMPLATE_CSTR ::cache_buffer_size ()
 {
 		return CACHE_BUFFER_SIZE;
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE pfx_usize_t	TEMPLATE_CSTR ::get_cache_buffer_size () const
+PFX_INLINE usize__t	TEMPLATE_CSTR ::get_cache_buffer_size () const
 {
 	return TEMPLATE_CSTR ::cache_buffer_size ();
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-																																	pfx_boolean_t	bheader_cache_buffer, 
-																																	pfx_boolean_t & PARAM_INOUT is_reference)
+result_t	TEMPLATE_CSTR ::copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
+																																	boolean_t	bheader_cache_buffer, 
+																																	boolean_t & PARAM_INOUT is_reference)
 {
-	pfx_result_t status;
+	result_t status;
 	is_reference = PFX_BOOL_FALSE;
 	if (bheader_cache_buffer)
 	{
@@ -254,9 +254,9 @@ pfx_result_t	TEMPLATE_CSTR ::copy_header (const pfx_block_header PFX_BLOCKHEADER
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t  TEMPLATE_CSTR ::attach_extern_string_buffer (element_* PARAM_IN elem_ptr)
+result_t  TEMPLATE_CSTR ::attach_extern_string_buffer (element_t* PARAM_IN elem_ptr)
 {
-	pfx_result_t status; 
+	result_t status; 
 	status = PFX_STATUS_OK;
 	//if (is_reference())
 	//{
@@ -272,25 +272,25 @@ pfx_result_t  TEMPLATE_CSTR ::attach_extern_string_buffer (element_* PARAM_IN el
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE const element_* TEMPLATE_CSTR ::get_string () const
+PFX_INLINE const element_t* TEMPLATE_CSTR ::get_string () const
 {
 	return m_header.m_element_ptr;
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE pfx_usize_t TEMPLATE_CSTR ::get_length () const
+PFX_INLINE usize__t TEMPLATE_CSTR ::get_length () const
 {
 	return m_header.m_element_count;
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-PFX_INLINE pfx_usize_t TEMPLATE_CSTR ::get_string_buffer_size () const
+PFX_INLINE usize__t TEMPLATE_CSTR ::get_string_buffer_size () const
 {
 	return m_header.m_element_buffer_size;
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-const element_*		TEMPLATE_CSTR ::get_charbuffer_at (pfx_uindex_t index_) const
+const element_t*		TEMPLATE_CSTR ::get_charbuffer_at (uindex_t index_) const
 {
 	if (index_ < m_header.m_element_count)
 	{
@@ -303,11 +303,11 @@ const element_*		TEMPLATE_CSTR ::get_charbuffer_at (pfx_uindex_t index_) const
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_usize_t					TEMPLATE_CSTR ::set_charbuffer_at (pfx_uindex_t index_, 
-																														const element_* PARAM_IN char_buffer, 
-																														pfx_usize_t buf_size)
+usize__t		TEMPLATE_CSTR ::set_charbuffer_at (uindex_t index_, 
+																						const element_t* PARAM_IN char_buffer, 
+																						usize__t buf_size)
 {
-	pfx_usize_t success_count;
+	usize__t success_count;
 	success_count = 0;
 	if (null == char_buffer || 0 == buf_size)
 	{
@@ -316,16 +316,16 @@ pfx_usize_t					TEMPLATE_CSTR ::set_charbuffer_at (pfx_uindex_t index_,
 
 	if (null != char_buffer && index_ < m_header.m_element_count)
 	{
-		pfx_result_t status;
-		element_* element_ptr;
+		result_t status;
+		element_t* element_ptr;
 		status = PFX_STATUS_OK;
 
 		// 消除共享BUF的影响
 		if (is_reference ())
 		{
 			// 如果BUF与其他字符串共享
-			pfx_usize_t  new_size;
-			element_* new_buffer_ptr;
+			usize__t  new_size;
+			element_t* new_buffer_ptr;
 			
 			new_size = m_header.m_element_count;
 			new_buffer_ptr = null;
@@ -368,8 +368,8 @@ pfx_usize_t					TEMPLATE_CSTR ::set_charbuffer_at (pfx_uindex_t index_,
 			char_buffer < (m_header.m_element_ptr + m_header.m_element_count))
 		{
 			//char_buffer为当字符串中某段BUF
-			pfx_uindex_t offset;
-			offset = (pfx_uindex_t)char_buffer - (pfx_uindex_t)m_header.m_element_ptr;
+			uindex_t offset;
+			offset = (uindex_t)char_buffer - (uindex_t)m_header.m_element_ptr;
 			if (offset == index_)
 			{
 				break;
@@ -378,7 +378,7 @@ pfx_usize_t					TEMPLATE_CSTR ::set_charbuffer_at (pfx_uindex_t index_,
 			if (offset < index_ && offset + success_count > index_)
 			{
 				element_ptr = m_header.m_element_ptr + index_;
-				pfx_uindex_t i = success_count - 1;
+				uindex_t i = success_count - 1;
 				for (;i>=0;--i)
 				{
 					element_ptr [i] = char_buffer [i];
@@ -388,7 +388,7 @@ pfx_usize_t					TEMPLATE_CSTR ::set_charbuffer_at (pfx_uindex_t index_,
 		}
 		
 		element_ptr = m_header.m_element_ptr + index_;
-		for (pfx_uindex_t i=0;i<success_count; ++i)
+		for (uindex_t i=0;i<success_count; ++i)
 		{
 			element_ptr [i] = char_buffer [i];
 		}
@@ -400,38 +400,38 @@ pfx_usize_t					TEMPLATE_CSTR ::set_charbuffer_at (pfx_uindex_t index_,
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-const element_*		TEMPLATE_CSTR ::sub_string_buffer (pfx_uindex_t index_) const
+const element_t*		TEMPLATE_CSTR ::sub_string_buffer (uindex_t index_) const
 {
 	return get_charbuffer_at (index_);
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-const IPfx_string PFX_STRING_TEMPLATE_PARAMS*		TEMPLATE_CSTR ::sub_string (pfx_uindex_t index_, 
-																																													IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_INOUT sub_string_ptr)
+const TYPE_CSTR::IString_t*		TEMPLATE_CSTR ::sub_string (uindex_t index_, 
+																												TYPE_CSTR::IString_t* PARAM_INOUT sub_string_ptr)
 {
-	return sub_string (index_, (pfx_usize_t) (-1), sub_string_ptr);
+	return sub_string (index_, (usize__t) (-1), sub_string_ptr);
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-const IPfx_string PFX_STRING_TEMPLATE_PARAMS*		TEMPLATE_CSTR ::sub_string (pfx_uindex_t index_, 
-																																													pfx_usize_t		sub_string_size, 
-																																													IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_INOUT sub_string_ptr)
+const TYPE_CSTR::IString_t*		TEMPLATE_CSTR ::sub_string (uindex_t index_, 
+																											usize__t		sub_string_size, 
+																											TYPE_CSTR::IString_t* PARAM_INOUT sub_string_ptr)
 {
 	pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS header;
 
-	pfx_boolean_t		is_reference_header;
-	pfx_result_t			status;
-	pfx_boolean_t		using_cache_buffer;
-	element_*				elem_ptr;
-	IPfx_string_header_operate < element_ >* cov_string_ptr;
+	boolean_t		is_reference_header;
+	result_t			status;
+	boolean_t		using_cache_buffer;
+	element_t*				elem_ptr;
+	IPfx_string_header_operate < element_t >* cov_string_ptr;
 
 	RETURN_INVALID_RESULT (null == sub_string_ptr,null);
 
 	if ((sub_string_ptr == this) || 
 		(sub_string_ptr->get_string_type_code () != this->get_string_type_code ()))
 	{
-		const element_* string_buffer_ptr;
-		pfx_usize_t			string_size;
+		const element_t* string_buffer_ptr;
+		usize__t			string_size;
 		string_buffer_ptr = get_charbuffer_at(index_);
 		if (string_buffer_ptr)
 		{
@@ -510,7 +510,7 @@ const IPfx_string PFX_STRING_TEMPLATE_PARAMS*		TEMPLATE_CSTR ::sub_string (pfx_u
 			}
 			else
 			{
-				sub_string_ptr->init_string ((pfx_usize_t)0);
+				sub_string_ptr->init_string ((usize__t)0);
 				sub_string_ptr->garbage_collection ();
 			}
 		
@@ -525,23 +525,23 @@ const IPfx_string PFX_STRING_TEMPLATE_PARAMS*		TEMPLATE_CSTR ::sub_string (pfx_u
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-const IPfx_string PFX_STRING_TEMPLATE_PARAMS*	TEMPLATE_CSTR ::sub_string_const (pfx_uindex_t index_,
-																																																				pfx_usize_t		sub_string_size, 
-																																																				IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_INOUT sub_string_ptr)  const
+const TYPE_CSTR::IString_t*	TEMPLATE_CSTR ::sub_string_const (uindex_t index_,
+																													usize__t		sub_string_size, 
+																													TYPE_CSTR::IString_t* PARAM_INOUT sub_string_ptr)  const
 {
-	return sub_string_const (index_, (pfx_usize_t)(-1), sub_string_ptr);
+	return sub_string_const (index_, (usize__t)(-1), sub_string_ptr);
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-const IPfx_string PFX_STRING_TEMPLATE_PARAMS*	TEMPLATE_CSTR ::sub_string_const (pfx_uindex_t index_,
-	IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_INOUT sub_string_ptr)  const
+const TYPE_CSTR::IString_t*	TEMPLATE_CSTR ::sub_string_const (uindex_t index_,
+	TYPE_CSTR::IString_t* PARAM_INOUT sub_string_ptr)  const
 {
 	RETURN_INVALID_RESULT (null == sub_string_ptr || this == sub_string_ptr,null);
 
-	const element_*	string_buffer_ptr;
-	pfx_usize_t				string_size;
-	pfx_usize_t				sub_string_size;
-	pfx_result_t			status;
+	const element_t*	string_buffer_ptr;
+	usize__t				string_size;
+	usize__t				sub_string_size;
+	result_t			status;
 
 	string_buffer_ptr = get_charbuffer_at(index_);
 	sub_string_size = get_length ();
@@ -574,10 +574,10 @@ const IPfx_string PFX_STRING_TEMPLATE_PARAMS*	TEMPLATE_CSTR ::sub_string_const (
 
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_boolean_t	TEMPLATE_CSTR ::find_first_string (const element_* PARAM_IN str_chars_buffer_ptr,
-																																		pfx_usize_t buffer_size,pfx_uindex_t& find_index) const
+boolean_t	TEMPLATE_CSTR ::find_first_string (const element_t* PARAM_IN str_chars_buffer_ptr,
+																																		usize__t buffer_size,uindex_t& find_index) const
 {
-	pfx_boolean_t is_find;
+	boolean_t is_find;
 	is_find = PFX_BOOL_FALSE;
 	
 	RETURN_RESULT (null == str_chars_buffer_ptr || 
@@ -587,7 +587,7 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_first_string (const element_* PARAM_IN str_ch
 	if (str_chars_buffer_ptr >= m_header.m_element_ptr && 
 		str_chars_buffer_ptr < m_header.m_element_ptr + m_header.m_element_count)
 	{
-		pfx_uindex_t offset = str_chars_buffer_ptr - m_header.m_element_ptr;
+		uindex_t offset = str_chars_buffer_ptr - m_header.m_element_ptr;
 		if (buffer_size <= m_header.m_element_count - offset)
 		{
 			find_index = offset;
@@ -596,9 +596,9 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_first_string (const element_* PARAM_IN str_ch
 	}
 	else
 	{
-		pfx_uindex_t i;
-		pfx_uindex_t same_count;
-		pfx_usize_t		cmp_count;
+		uindex_t i;
+		uindex_t same_count;
+		usize__t		cmp_count;
 		int					cmp_result;
 		i = 0;
 		same_count = 0;
@@ -627,10 +627,10 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_first_string (const element_* PARAM_IN str_ch
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_boolean_t	TEMPLATE_CSTR ::find_first_string (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN find_string_ptr,
-																																		pfx_uindex_t & find_index) const
+boolean_t	TEMPLATE_CSTR ::find_first_string (const TYPE_CSTR::IString_t* PARAM_IN find_string_ptr,
+																																		uindex_t & find_index) const
 {
-	pfx_boolean_t is_find;
+	boolean_t is_find;
 	if (find_string_ptr)
 	{
 		if (find_string_ptr == this)
@@ -650,12 +650,14 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_first_string (const IPfx_string PFX_STRING_TE
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_boolean_t	TEMPLATE_CSTR ::find_string (pfx_uindex_t begin_index, const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size,pfx_uindex_t& find_index) const
+boolean_t	TEMPLATE_CSTR ::find_string (uindex_t begin_index, 
+																			const element_t* PARAM_IN str_chars_buffer_ptr,
+																			usize__t buffer_size,uindex_t& find_index) const
 {
-	pfx_boolean_t is_find;
+	boolean_t is_find;
 	is_find = PFX_BOOL_FALSE;
-	const element_* this_search_elem_ptr;
-	pfx_usize_t			  this_search_elem_size;
+	const element_t* this_search_elem_ptr;
+	usize__t			  this_search_elem_size;
 
 
 	RETURN_RESULT (null == str_chars_buffer_ptr || 
@@ -670,7 +672,7 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_string (pfx_uindex_t begin_index, const eleme
 	if (str_chars_buffer_ptr >= this_search_elem_ptr && 
 		str_chars_buffer_ptr < this_search_elem_ptr + this_search_elem_size)
 	{
-		pfx_uindex_t offset;
+		uindex_t offset;
 		offset = str_chars_buffer_ptr - m_header.m_element_ptr;
 		if (buffer_size <= m_header.m_element_count - offset)
 		{
@@ -680,9 +682,9 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_string (pfx_uindex_t begin_index, const eleme
 	}
 	else
 	{
-		pfx_uindex_t i;
-		pfx_uindex_t same_count;
-		pfx_usize_t		cmp_count;
+		uindex_t i;
+		uindex_t same_count;
+		usize__t		cmp_count;
 		int					cmp_result;
 		i = begin_index;
 		same_count = 0;
@@ -711,9 +713,11 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_string (pfx_uindex_t begin_index, const eleme
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_boolean_t	TEMPLATE_CSTR ::find_string (pfx_uindex_t begin_index, IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_INOUT find_string_ptr,pfx_uindex_t& find_index) const
+boolean_t	TEMPLATE_CSTR ::find_string (uindex_t begin_index, 
+								TYPE_CSTR::IString_t* PARAM_INOUT find_string_ptr,
+								uindex_t& find_index) const
 {
-	pfx_boolean_t is_find;
+	boolean_t is_find;
 	if (find_string_ptr)
 	{
 		if (find_string_ptr == this)
@@ -733,13 +737,14 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_string (pfx_uindex_t begin_index, IPfx_string
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_boolean_t	TEMPLATE_CSTR ::find_near_string (pfx_uindex_t begin_index, const element_* PARAM_IN str_chars_buffer_ptr,
-																																				pfx_usize_t buffer_size,pfx_uindex_t& find_index, pfx_usize_t& same_chars_count) const
+boolean_t	TEMPLATE_CSTR ::find_near_string (uindex_t begin_index, 
+																						const element_t* PARAM_IN str_chars_buffer_ptr,
+																						usize__t buffer_size,uindex_t& find_index, usize__t& same_chars_count) const
 {
-	pfx_boolean_t is_find;
+	boolean_t is_find;
 	is_find = PFX_BOOL_FALSE;
-	const element_* this_search_elem_ptr;
-	pfx_usize_t			  this_search_elem_size;
+	const element_t* this_search_elem_ptr;
+	usize__t			  this_search_elem_size;
 
 
 	RETURN_RESULT (null == str_chars_buffer_ptr || 
@@ -755,8 +760,8 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_near_string (pfx_uindex_t begin_index, const 
 	if (str_chars_buffer_ptr >= this_search_elem_ptr && 
 		str_chars_buffer_ptr < this_search_elem_ptr + this_search_elem_size)
 	{
-		pfx_uindex_t offset;
-		pfx_uindex_t to_cmp_size;
+		uindex_t offset;
+		uindex_t to_cmp_size;
 		offset = str_chars_buffer_ptr - m_header.m_element_ptr;
 		to_cmp_size = m_header.m_element_count - offset;
 		is_find = PFX_BOOL_TRUE;
@@ -765,9 +770,9 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_near_string (pfx_uindex_t begin_index, const 
 	}
 	else
 	{
-		pfx_uindex_t i;
-		pfx_uindex_t same_count;
-		pfx_usize_t		cmp_count;
+		uindex_t i;
+		uindex_t same_count;
+		usize__t		cmp_count;
 		int					cmp_result;
 		i = begin_index;
 		same_count = 0;
@@ -799,11 +804,11 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_near_string (pfx_uindex_t begin_index, const 
 	return is_find;
 }
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_boolean_t	TEMPLATE_CSTR ::find_near_string (pfx_uindex_t begin_index, 
-																												IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_INOUT find_string_ptr,
-																												pfx_uindex_t& find_index, pfx_usize_t& same_chars_count) const
+boolean_t	TEMPLATE_CSTR ::find_near_string (uindex_t begin_index, 
+																												TYPE_CSTR::IString_t* PARAM_INOUT find_string_ptr,
+																												uindex_t& find_index, usize__t& same_chars_count) const
 {
-	pfx_boolean_t is_find;
+	boolean_t is_find;
 	if (find_string_ptr)
 	{
 		if (find_string_ptr == this && 0 == begin_index)
@@ -826,12 +831,12 @@ pfx_boolean_t	TEMPLATE_CSTR ::find_near_string (pfx_uindex_t begin_index,
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::init_string (pfx_usize_t buffer_size,element_*& PARAM_INOUT del_element_ptr)
+result_t	TEMPLATE_CSTR ::init_string (usize__t buffer_size,element_t*& PARAM_INOUT del_element_ptr)
 {
-	pfx_result_t			status;
-	//const element_*	str_chars_buffer_ptr;
-	pfx_usize_t				new_size;
-	element_*				new_buffer_ptr;
+	result_t			status;
+	//const element_t*	str_chars_buffer_ptr;
+	usize__t				new_size;
+	element_t*				new_buffer_ptr;
 
 	//RETURN_INVALID_RESULT (0 == buffer_size,PFX_STATUS_INVALID_PARAMS);
 	if (0 == buffer_size)
@@ -914,10 +919,10 @@ pfx_result_t	TEMPLATE_CSTR ::init_string (pfx_usize_t buffer_size,element_*& PAR
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::init_string (pfx_usize_t size_)
+result_t	TEMPLATE_CSTR ::init_string (usize__t size_)
 {
-	element_* del_element_ptr;
-	pfx_result_t status;
+	element_t* del_element_ptr;
+	result_t status;
 
 	del_element_ptr = null;
 	status = init_string (size_,del_element_ptr);
@@ -930,18 +935,18 @@ pfx_result_t	TEMPLATE_CSTR ::init_string (pfx_usize_t size_)
 
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::init_string (const element_* PARAM_IN str_chars_buffer_ptr,
-																																pfx_usize_t buffer_size)
+result_t	TEMPLATE_CSTR ::init_string (const element_t* PARAM_IN str_chars_buffer_ptr,
+																																usize__t buffer_size)
 {
-	element_* del_element_ptr;
-	pfx_result_t status;
+	element_t* del_element_ptr;
+	result_t status;
 
 	del_element_ptr = null;
 	status = init_string (buffer_size,del_element_ptr);
 	
 	if (PFX_STATUS_OK == status)
 	{
-		pfx_usize_t successed_count;
+		usize__t successed_count;
 		successed_count = set_charbuffer_at (0,str_chars_buffer_ptr,buffer_size);
 		if (successed_count != buffer_size)
 		{
@@ -957,20 +962,20 @@ pfx_result_t	TEMPLATE_CSTR ::init_string (const element_* PARAM_IN str_chars_buf
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::init_string (const IPfx_string PFX_STRING_TEMPLATE_PARAMS* PARAM_IN other_ptr)
+result_t	TEMPLATE_CSTR ::init_string (const TYPE_CSTR::IString_t* PARAM_IN other_ptr)
 {
 		RETURN_INVALID_RESULT (null == other_ptr,PFX_STATUS_INVALID_PARAMS);
 		return init_string (other_ptr->get_string (),other_ptr->get_length ());
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::resize_string (pfx_usize_t size_)
+result_t	TEMPLATE_CSTR ::resize_string (usize__t size_)
 {
 
-	const element_*	str_chars_buffer_ptr;
-	element_*				del_element_ptr;
-	pfx_usize_t				buffer_size;
-	pfx_result_t			status;
+	const element_t*	str_chars_buffer_ptr;
+	element_t*				del_element_ptr;
+	usize__t				buffer_size;
+	result_t			status;
 
 	str_chars_buffer_ptr = get_string ();
 	buffer_size = get_length ();
@@ -985,7 +990,7 @@ pfx_result_t	TEMPLATE_CSTR ::resize_string (pfx_usize_t size_)
 
 	if (PFX_STATUS_OK == status)
 	{
-		pfx_usize_t successed_count;
+		usize__t successed_count;
 		successed_count = set_charbuffer_at (0,str_chars_buffer_ptr,buffer_size);
 		if (successed_count != buffer_size)
 		{
@@ -1003,18 +1008,18 @@ pfx_result_t	TEMPLATE_CSTR ::resize_string (pfx_usize_t size_)
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::garbage_collection (GarbageCollectionMODE_t mode /*= GC_DEFUALT_MODE*/,
-	pfx_usize_t size_ /*= 0*/)
+result_t	TEMPLATE_CSTR ::garbage_collection (GarbageCollectionMODE_t mode /*= GC_DEFUALT_MODE*/,
+	usize__t size_ /*= 0*/)
 {
 	RETURN_INVALID_RESULT (get_length() > get_string_buffer_size (),PFX_STATUS_MEM_ERR);
 	RETURN_RESULT (get_length() == get_string_buffer_size (),PFX_STATUS_OK);
 
-	pfx_result_t status;
+	result_t status;
 	switch (mode)
 	{
 	case GC_DEFUALT_MODE:
 		{
-			pfx_usize_t pre_size;
+			usize__t pre_size;
 
 			if (get_length() > CACHE_BUFFER_SIZE)
 			{
@@ -1033,22 +1038,22 @@ pfx_result_t	TEMPLATE_CSTR ::garbage_collection (GarbageCollectionMODE_t mode /*
 		break;
 	case GC_USER_MODE:
 		{
-			const element_*  str_chars_buffer_ptr;
-			pfx_usize_t				buffer_size;
-			pfx_usize_t				success_count;
+			const element_t*  str_chars_buffer_ptr;
+			usize__t				buffer_size;
+			usize__t				success_count;
 
 			str_chars_buffer_ptr = get_string ();
 			buffer_size = get_length ();
 
-			//element_* element_ptr;
-			element_* del_element_ptr;
+			//element_t* element_ptr;
+			element_t* del_element_ptr;
 
 			del_element_ptr = null;
 
 			status = PFX_STATUS_OK;
 
-			pfx_usize_t  new_size;
-			element_* new_buffer_ptr;
+			usize__t  new_size;
+			element_t* new_buffer_ptr;
 
 			if (size_ < get_length())
 			{
@@ -1147,14 +1152,14 @@ pfx_result_t	TEMPLATE_CSTR ::garbage_collection (GarbageCollectionMODE_t mode /*
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::append_string (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size_)
+result_t	TEMPLATE_CSTR ::append_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size_)
 {
 	RETURN_RESULT (null == str_chars_buffer_ptr || 0 == buffer_size_,PFX_STATUS_OK);
 
-	element_*				del_element_ptr;
-	pfx_usize_t				this_buffer_size;
-	pfx_result_t			status;
-	const element_*	str_this_chars_buffer_ptr;
+	element_t*				del_element_ptr;
+	usize__t				this_buffer_size;
+	result_t			status;
+	const element_t*	str_this_chars_buffer_ptr;
 	str_this_chars_buffer_ptr = get_string ();
 	this_buffer_size = get_length ();
 
@@ -1163,7 +1168,7 @@ pfx_result_t	TEMPLATE_CSTR ::append_string (const element_* PARAM_IN str_chars_b
 
 	if (PFX_STATUS_OK == status)
 	{
-		pfx_usize_t successed_count;
+		usize__t successed_count;
 		successed_count = set_charbuffer_at (0,str_this_chars_buffer_ptr,this_buffer_size);
 		if (successed_count != this_buffer_size)
 		{
@@ -1190,7 +1195,7 @@ pfx_result_t	TEMPLATE_CSTR ::append_string (const element_* PARAM_IN str_chars_b
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::append_string (const TYPE_CSTR ::IString_t* PARAM_IN append_string_ptr)
+result_t	TEMPLATE_CSTR ::append_string (const TYPE_CSTR ::IString_t* PARAM_IN append_string_ptr)
 {
 	if (append_string_ptr)
 	{
@@ -1203,14 +1208,14 @@ pfx_result_t	TEMPLATE_CSTR ::append_string (const TYPE_CSTR ::IString_t* PARAM_I
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::append_front (const element_* PARAM_IN str_chars_buffer_ptr,pfx_usize_t buffer_size_)
+result_t	TEMPLATE_CSTR ::append_front (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size_)
 {
 	RETURN_RESULT (null == str_chars_buffer_ptr || 0 == buffer_size_,PFX_STATUS_OK);
 
-	element_*				del_element_ptr;
-	pfx_usize_t				this_buffer_size;
-	pfx_result_t			status;
-	const element_*	str_this_chars_buffer_ptr;
+	element_t*				del_element_ptr;
+	usize__t				this_buffer_size;
+	result_t			status;
+	const element_t*	str_this_chars_buffer_ptr;
 	str_this_chars_buffer_ptr = get_string ();
 	this_buffer_size = get_length ();
 
@@ -1219,7 +1224,7 @@ pfx_result_t	TEMPLATE_CSTR ::append_front (const element_* PARAM_IN str_chars_bu
 
 	if (PFX_STATUS_OK == status)
 	{
-		pfx_usize_t successed_count;
+		usize__t successed_count;
 		successed_count = set_charbuffer_at (buffer_size_,str_this_chars_buffer_ptr,this_buffer_size);
 		if (successed_count != this_buffer_size)
 		{
@@ -1245,7 +1250,7 @@ pfx_result_t	TEMPLATE_CSTR ::append_front (const element_* PARAM_IN str_chars_bu
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::append_front (const TYPE_CSTR ::IString_t* PARAM_IN append_string_ptr)
+result_t	TEMPLATE_CSTR ::append_front (const TYPE_CSTR ::IString_t* PARAM_IN append_string_ptr)
 {
 	if (append_string_ptr)
 	{
@@ -1258,7 +1263,7 @@ pfx_result_t	TEMPLATE_CSTR ::append_front (const TYPE_CSTR ::IString_t* PARAM_IN
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::clip_string_remain_left (pfx_uindex_t clip_index, TYPE_CSTR ::IString_t* PARAM_IN other_ptr)
+result_t	TEMPLATE_CSTR ::clip_string_remain_left (uindex_t clip_index, TYPE_CSTR ::IString_t* PARAM_IN other_ptr)
 {
 	RETURN_INVALID_RESULT (this == other_ptr, PFX_STATUS_INVALID_PARAMS);
 
@@ -1272,7 +1277,7 @@ pfx_result_t	TEMPLATE_CSTR ::clip_string_remain_left (pfx_uindex_t clip_index, T
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSTR ::clip_string_remain_right (pfx_uindex_t clip_index, TYPE_CSTR ::IString_t* PARAM_IN other_ptr)
+result_t	TEMPLATE_CSTR ::clip_string_remain_right (uindex_t clip_index, TYPE_CSTR ::IString_t* PARAM_IN other_ptr)
 {
 	RETURN_INVALID_RESULT (this == other_ptr, PFX_STATUS_INVALID_PARAMS);
 
@@ -1297,9 +1302,9 @@ PFX_CSTRING_TEMPLATE_DEFINES
 int	TEMPLATE_CSTR ::compare (const TYPE_CSTR ::IString_t* other_ptr) const
 {
 	RETURN_RESULT (null == other_ptr,1);
-	pfx_usize_t compare_count;
-	const element_* this_string_buffer;
-	const element_* other_string_buffer;
+	usize__t compare_count;
+	const element_t* this_string_buffer;
+	const element_t* other_string_buffer;
 	
 	int this_length;
 	int other_length;
@@ -1314,7 +1319,7 @@ int	TEMPLATE_CSTR ::compare (const TYPE_CSTR ::IString_t* other_ptr) const
 
 	compare_count = (this_length > other_length) ?other_length : this_length;
 	cmp_result = this_length - other_length;
-	for (pfx_uindex_t i=0;i<compare_count;++i)
+	for (uindex_t i=0;i<compare_count;++i)
 	{
 		cmp_result = elem_compare::compare (this_string_buffer[i], other_string_buffer[i]);
 
@@ -1336,13 +1341,13 @@ int	TEMPLATE_CSTR ::compare (const TYPE_CSTR & other_) const
 }
 //////////////////////////////////////////////////////////////////////////
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS :: pfx_cshare_string ():
+ TEMPLATE_CSHARE_STR:: cshare_string ():
 			m_prev_string_ptr (null),m_next_string_ptr(null)//,m_enable_set_reference_string(PFX_BOOL_FALSE)
 {
 
 }
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS ::pfx_cshare_string (const TYPE_CSHARE_STR & other_) throw (pfx_result_t)
+TEMPLATE_CSHARE_STR::cshare_string (const TYPE_CSHARE_STR & other_) throw (result_t)
 {
 	m_extern_string_buffer_ptr = null;
 	if (CACHE_BUFFER_SIZE > 0)
@@ -1352,7 +1357,7 @@ pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS ::pfx_cshare_string (const TYPE_CS
 		m_header.m_element_count = 0;
 	}
 
-	pfx_result_t status;
+	result_t status;
 	status = append_string(&other_);
 
 	if (PFX_STATUS_OK != status)
@@ -1361,7 +1366,7 @@ pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS ::pfx_cshare_string (const TYPE_CS
 	}
 }
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_cshare_string PFX_CSTRING_TEMPLATE_PARAMS ::~pfx_cshare_string ()
+TEMPLATE_CSHARE_STR::~cshare_string ()
 {
 	resize_string(0);
 	garbage_collection();
@@ -1406,11 +1411,11 @@ PFX_INLINE void TEMPLATE_CSHARE_STR :: set_next_node  (TYPE_CSHARE_STR ::IString
 }
 
 PFX_CSTRING_TEMPLATE_DEFINES
-pfx_result_t	TEMPLATE_CSHARE_STR ::copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-	pfx_boolean_t	bheader_cache_buffer, 
-	pfx_boolean_t & PARAM_INOUT is_reference)
+result_t	TEMPLATE_CSHARE_STR ::copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
+	boolean_t	bheader_cache_buffer, 
+	boolean_t & PARAM_INOUT is_reference)
 {
-	pfx_result_t status;
+	result_t status;
 	is_reference = PFX_BOOL_FALSE;
 	if (bheader_cache_buffer)
 	{

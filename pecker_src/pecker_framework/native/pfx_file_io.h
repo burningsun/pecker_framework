@@ -15,59 +15,59 @@
 
 PFX_C_EXTERN_BEGIN
 
-typedef struct st_pfx_file
+typedef struct st_file
 {
-	pfx_handle_t	m_hfile;
+	handle_t	m_hfile;
 	size_t				m_file_size;
-}pfx_file_t;
+}file_t;
 
-typedef struct st_pfx_file_data_buffer
+typedef struct st_file_data_buffer
 {
 	void*	m_pitems_buffer;
 	size_t	m_item_size;
 	size_t	m_items_count;
-}pfx_file_data_buffer_t;
+}file_data_buffer_t;
 
-PFX_CORE_API pfx_result_t pfx_check_file_exists (const pfx_char_t*  PARAM_IN pstr_path_name);
+PFX_CORE_API result_t pfx_check_file_exists (const char_t*  PARAM_IN pstr_path_name);
 
-PFX_CORE_API pfx_result_t pfx_open_file (pfx_file_t* PARAM_INOUT	hfile,
-										const pfx_char_t* PARAM_IN	pstr_path_name,
-										const pfx_char_t* PARAM_IN pstr_mode);
+PFX_CORE_API result_t pfx_open_file (file_t* PARAM_INOUT	hfile,
+										const char_t* PARAM_IN	pstr_path_name,
+										const char_t* PARAM_IN pstr_mode);
 
-PFX_CORE_API pfx_result_t pfx_close_file (pfx_file_t* PARAM_INOUT hfile);
+PFX_CORE_API result_t pfx_close_file (file_t* PARAM_INOUT hfile);
 
-PFX_CORE_API pfx_result_t pfx_seek_file (pfx_file_t* PARAM_INOUT hfile,pfx_long_t offset,pfx_sint_t origin);
+PFX_CORE_API result_t pfx_seek_file (file_t* PARAM_INOUT hfile,long_t offset,sint_t origin);
 
 //PFX_CORE_API pfx_result_t pfx_file_scanf (pfx_file_t* PARAM_INOUT hfile,const pfx_char_t* PARAM_IN str_format,...);
 
 
-PFX_CORE_API pfx_result_t pfx_file_printf (pfx_file_t* PARAM_INOUT hfile,const pfx_char_t* PARAM_IN str_format,...);
+PFX_CORE_API result_t pfx_file_printf (file_t* PARAM_INOUT hfile,const char_t* PARAM_IN str_format,...);
 
 //PFX_CORE_API pfx_result_t pfx_file_wscanf (pfx_file_t* PARAM_INOUT hfile,const pfx_wchar_t* PARAM_IN str_format,...);
 
 //PFX_CORE_API pfx_result_t pfx_file_wprintf (pfx_file_t* PARAM_INOUT hfile,const pfx_wchar_t* PARAM_IN str_format,...);
 
 
-PFX_CORE_API pfx_sint_t	pfx_test_file_eof (pfx_file_t* PARAM_INOUT hfile);
+PFX_CORE_API sint_t	pfx_test_file_eof (file_t* PARAM_INOUT hfile);
 
-PFX_CORE_API size_t pfx_file_read (pfx_file_t* PARAM_INOUT hfile,pfx_file_data_buffer_t* PARAM_INOUT pread_buffer);
+PFX_CORE_API size_t pfx_file_read (file_t* PARAM_INOUT hfile,file_data_buffer_t* PARAM_INOUT pread_buffer);
 
-PFX_CORE_API size_t pfx_file_write (pfx_file_t* PARAM_INOUT hfile,pfx_file_data_buffer_t* PARAM_INOUT pwrite_buffer);
+PFX_CORE_API size_t pfx_file_write (file_t* PARAM_INOUT hfile,file_data_buffer_t* PARAM_INOUT pwrite_buffer);
 
-PFX_CORE_API pfx_sint_t pfx_test_file_error (pfx_file_t* PARAM_INOUT hfile); 
+PFX_CORE_API sint_t pfx_test_file_error (file_t* PARAM_INOUT hfile); 
 
-PFX_CORE_API size_t pfx_get_file_size (pfx_file_t* PARAM_INOUT hfile);
+PFX_CORE_API size_t pfx_get_file_size (file_t* PARAM_INOUT hfile);
 
-PFX_CORE_API pfx_sint_t pfx_file_flush (pfx_file_t* PARAM_INOUT hfile);
+PFX_CORE_API sint_t pfx_file_flush (file_t* PARAM_INOUT hfile);
 
 // '\0'结束
-PFX_CORE_API pfx_nsize_t pfx_file_get_string_a (pfx_file_t* PARAM_INOUT hfile,
-															pfx_char_t* PARAM_INOUT pbuffer,
-															pfx_usize_t nread_buffer_size);
+PFX_CORE_API nsize__t pfx_file_get_string_a (file_t* PARAM_INOUT hfile,
+															char_t* PARAM_INOUT pbuffer,
+															usize__t nread_buffer_size);
 
-PFX_CORE_API pfx_nsize_t pfx_file_set_string_a (pfx_file_t* PARAM_INOUT hfile,
-															pfx_char_t* PARAM_INOUT pbuffer,
-															pfx_usize_t nread_buffer_size);
+PFX_CORE_API nsize__t pfx_file_set_string_a (file_t* PARAM_INOUT hfile,
+															char_t* PARAM_INOUT pbuffer,
+															usize__t nread_buffer_size);
 
 PFX_C_EXTERN_END
 
@@ -98,39 +98,39 @@ typedef enum enumFILE_ORIGIN
 #define PFO_OPEN_TEXT				(1<<6)
 #define PFO_OPEN_EX_BIT			(1<<7)
 
-class PFX_NATIVE_API pfx_cfile
+class PFX_NATIVE_API pecker_file
 {
 protected:
-	pfx_file_t	m_file;
+	file_t	m_file;
 public:
-	static pfx_result_t				set_install_apkfile_path (const pfx_char_t* str_path_ptr,pfx_nsize_t path_length);
-	static const pfx_char_t*	get_install_apkfile_path (pfx_nsize_t& path_length);
-	static pfx_handle_t			get_private_apkfile_manager ();
-	static pfx_result_t				is_file_exists (const pfx_char_t* pstr_path,pfx_nsize_t path_length);
-	static pfx_flag_t					get_file_rw_mode (const pfx_char_t* pstr_path,pfx_nsize_t path_length);
+	static result_t				set_install_apkfile_path (const char_t* str_path_ptr,nsize__t path_length);
+	static const char_t*	get_install_apkfile_path (nsize__t& path_length);
+	static handle_t			get_private_apkfile_manager ();
+	static result_t				is_file_exists (const char_t* pstr_path,nsize__t path_length);
+	static flag_t					get_file_rw_mode (const char_t* pstr_path,nsize__t path_length);
 public:
-	pfx_cfile();
-	virtual ~pfx_cfile();
+	pecker_file();
+	virtual ~pecker_file();
 
-	pfx_result_t			open (const pfx_char_t* pstr_path,pfx_nsize_t path_length, pfx_flag_t nOpenType);
-	pfx_result_t			close();
+	result_t			open (const char_t* pstr_path,nsize__t path_length, flag_t nOpenType);
+	result_t			close();
 
-	pfx_result_t			read_to_memery (pfx_byte_t* PARAM_INOUT memery_buffer_ptr,pfx_usize_t memery_buffer_size,
-												pfx_usize_t& PARAM_INOUT read_buffer_size);
+	result_t			read_to_memery (byte_t* PARAM_INOUT memery_buffer_ptr,usize__t memery_buffer_size,
+												usize__t& PARAM_INOUT read_buffer_size);
 
-	pfx_usize_t				write_to_file(const pfx_byte_t*  memery_buffer_ptr, pfx_usize_t memery_buffer_size,pfx_result_t& PARAM_INOUT error_code_s);
+	usize__t				write_to_file(const byte_t*  memery_buffer_ptr, usize__t memery_buffer_size,result_t& PARAM_INOUT error_code_s);
 
-	pfx_result_t			seek (pfx_long_t offset,pfx_sint_t origin);
+	result_t			seek (long_t offset,sint_t origin);
 
-	pfx_nsize_t				get_file_size();
+	nsize__t				get_file_size();
 
-	pfx_sint_t				test_error ();
+	sint_t				test_error ();
 
-	pfx_sint_t				fflush ();
+	sint_t				fflush ();
 
-	pfx_sint_t				eof ();
+	sint_t				eof ();
 
-	pfx_file_t*				get_handle () const;
+	file_t*				get_handle () const;
 	
 };
 

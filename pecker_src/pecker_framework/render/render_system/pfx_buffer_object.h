@@ -33,21 +33,21 @@ typedef enum enumBufferUsageType
 
 typedef struct buffer_bits
 {
-	pfx_byte_t*										m_bits_ptr;
-	pfx_usize_t										m_bytes_count;
+	byte_t*										m_bits_ptr;
+	usize__t										m_bytes_count;
 	PFX_BUFFER_USAGE_TYPE_t			m_usage;
 }buffer_bits_t;
 
 PFX_Interface Ipfx_update_buffer_usermode
 {
-	virtual pfx_result_t update_buffer (buffer_bits_t* PARAM_INOUT lock_bits_ptr) = 0;
+	virtual result_t update_buffer (buffer_bits_t* PARAM_INOUT lock_bits_ptr) = 0;
 };
 
 PFX_Interface IPfx_buffer_object
 {
-	virtual pfx_result_t lock_buffer (buffer_bits_t* & PARAM_INOUT bits_ptr) = 0;
-	virtual pfx_result_t unlock_buffer () = 0;
-	virtual pfx_result_t update_buffer (Ipfx_update_buffer_usermode* PARAM_IN usermode_ptr) = 0;
+	virtual result_t lock_buffer (buffer_bits_t* & PARAM_INOUT bits_ptr) = 0;
+	virtual result_t unlock_buffer () = 0;
+	virtual result_t update_buffer (Ipfx_update_buffer_usermode* PARAM_IN usermode_ptr) = 0;
 	virtual PFX_BUFFER_OBJECT_TYPE_t get_buffer_type () const = 0;
 };
 
@@ -61,7 +61,7 @@ struct PFX_Buffer_Object
 	{
 		return null;
 	}
-	static PFX_INLINE pfx_result_t			delete_buffer (buffer_object_t* PARAM_INOUT render_object_ptr)
+	static PFX_INLINE result_t			delete_buffer (buffer_object_t* PARAM_INOUT render_object_ptr)
 	{
 		return PFX_STATUS_DENIED;
 	}
@@ -70,22 +70,22 @@ struct PFX_Buffer_Object
 
 PFX_Interface IPfx_vertex_array
 {
-	virtual pfx_result_t push_struct_info ( pfx_enum_int_t element_type_, 
-																			pfx_usize_t element_count, 
-																			pfx_boolean_t bNormalisze) = 0;
+	virtual result_t push_struct_info ( enum_int_t element_type_, 
+																			usize__t element_count, 
+																			boolean_t bNormalisze) = 0;
 
-	virtual pfx_result_t clear_struct_info () = 0;
+	virtual result_t clear_struct_info () = 0;
 	
-	virtual pfx_usize_t	get_struct_count () const = 0;
+	virtual usize__t	get_struct_count () const = 0;
 
 	// 使用一个vertex_attributes_buffer保存所有结构体数据，实现Array of Structures
-	virtual pfx_result_t update_vertex_attributes (PFX_Interface Ipfx_shader_program* PARAM_IN shader_program_ptr,
-																								const pfx_byte_t* PARAM_IN vertex_attributes_buffer, pfx_usize_t bytes_count) = 0;
+	virtual result_t update_vertex_attributes (PFX_Interface Ipfx_shader_program* PARAM_IN shader_program_ptr,
+																								const byte_t* PARAM_IN vertex_attributes_buffer, usize__t bytes_count) = 0;
 
 	// 使用一个vertex_attributes_buffer只保存一个结构体数据，实现Structure of Arrays 
-	virtual pfx_result_t update_one_vertex_attributes (PFX_Interface Ipfx_shader_program* PARAM_IN shader_program_ptr,
-																								pfx_uindex_t	struct_index,
-																								const pfx_byte_t* PARAM_IN vertex_attributes_buffer, pfx_usize_t bytes_count) = 0;
+	virtual result_t update_one_vertex_attributes (PFX_Interface Ipfx_shader_program* PARAM_IN shader_program_ptr,
+																								uindex_t	struct_index,
+																								const byte_t* PARAM_IN vertex_attributes_buffer, usize__t bytes_count) = 0;
 };
 
 template < typename vertex_array_type >
@@ -97,7 +97,7 @@ struct PFX_Vertex_Array
 	{
 		return null;
 	}
-	static PFX_INLINE pfx_result_t			delete_vertex_array (vertex_array_t* PARAM_INOUT array_ptr)
+	static PFX_INLINE result_t			delete_vertex_array (vertex_array_t* PARAM_INOUT array_ptr)
 	{
 		return PFX_STATUS_DENIED;
 	}

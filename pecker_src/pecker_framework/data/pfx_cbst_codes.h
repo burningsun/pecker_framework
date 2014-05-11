@@ -1,5 +1,5 @@
 ﻿/*
- * pfx_cbst.h
+ * cbst.h
  *
  *  Created on: 2013-12-16
 *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
@@ -12,28 +12,28 @@
 #include "pfx_cbst.h"
 PECKER_BEGIN
 
-#define TEMPLATE_CBST pfx_cbst PFX_CBST_TEMPLATE_PARAMS
-#define TYPE_CBST typename pfx_cbst PFX_CBST_TEMPLATE_PARAMS
+#define TEMPLATE_CBST cbst PFX_CBST_TEMPLATE_PARAMS
+#define TYPE_CBST typename cbst PFX_CBST_TEMPLATE_PARAMS
 
-#define TEMPLATE_CAVL_BST pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS
-#define TYPE_CAVL_BST typename pfx_cavl_tree PFX_CBST_TEMPLATE_PARAMS
+#define TEMPLATE_CAVL_BST cavl_tree PFX_CBST_TEMPLATE_PARAMS
+#define TYPE_CAVL_BST typename cavl_tree PFX_CBST_TEMPLATE_PARAMS
 
-#define TEMPLATE_CRB_BST pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS
-#define TYPE_CRB_BST typename pfx_crb_tree PFX_CBST_TEMPLATE_PARAMS
+#define TEMPLATE_CRB_BST crb_tree PFX_CBST_TEMPLATE_PARAMS
+#define TYPE_CRB_BST typename crb_tree PFX_CBST_TEMPLATE_PARAMS
 
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CBST ::pfx_cbst(/*Iallocator_cpp* allocator = null*/):
+TEMPLATE_CBST ::cbst(/*Iallocator_cpp* allocator = null*/):
 	m_root_ptr (null)
 {
 
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CBST ::pfx_cbst(const TYPE_CBST* other_ptr) throw (pfx_result_t) : m_root_ptr (null)
+TEMPLATE_CBST ::cbst(const TYPE_CBST* other_ptr) throw (result_t) : m_root_ptr (null)
 {
 	if (this != other_ptr)
 	{
-		pfx_result_t status_ = copy(other_ptr);
+		result_t status_ = copy(other_ptr);
 		if (PFX_STATUS_OK != status_)
 		{
 			throw (status_);
@@ -42,16 +42,16 @@ TEMPLATE_CBST ::pfx_cbst(const TYPE_CBST* other_ptr) throw (pfx_result_t) : m_ro
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CBST ::~pfx_cbst()
+TEMPLATE_CBST ::~cbst()
 {
 	clear ();
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CBST ::copy (const TYPE_CBST * PARAM_IN other_bst_ptr)
+result_t TEMPLATE_CBST ::copy (const TYPE_CBST * PARAM_IN other_bst_ptr)
 {
 	RETURN_RESULT (other_bst_ptr == this,PFX_STATUS_OK);
-	pfx_result_t status_ = clear();
+	result_t status_ = clear();
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status_,PFX_STATUS_ERROR_);
 	RETURN_RESULT (null == other_bst_ptr->m_root_ptr,PFX_STATUS_OK);
 
@@ -114,23 +114,23 @@ pfx_result_t TEMPLATE_CBST ::copy (const TYPE_CBST * PARAM_IN other_bst_ptr)
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CBST ::copy_by_iterator (const TYPE_CBST * PARAM_IN other_bst_ptr)
+result_t TEMPLATE_CBST ::copy_by_iterator (const TYPE_CBST * PARAM_IN other_bst_ptr)
 {
 	RETURN_RESULT (other_bst_ptr == this,PFX_STATUS_OK);
-	pfx_result_t status_ = clear();
+	result_t status_ = clear();
 	RETURN_INVALID_RESULT (PFX_STATUS_OK != status_,PFX_STATUS_ERROR_);
 
 	const node_type_* pbegin;
 	const node_type_* pend;
-	pfx_result_t status = PFX_STATUS_OK;
+	result_t status = PFX_STATUS_OK;
 
 	RETURN_RESULT (null == m_root_ptr,status);
 
-	pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_begin;
-	pfx_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_end;
+	bst_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_begin;
+	bst_preorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_end;
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_begin_ptr = begin (&iterator_begin);
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_end_ptr = end (&iterator_end);
+	cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_begin_ptr = begin (&iterator_begin);
+	cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_end_ptr = end (&iterator_end);
 
 	const node_type_* cur_node_ptr;
 	cur_node_ptr = iterator_begin_ptr->get_current_node();
@@ -200,17 +200,17 @@ pfx_result_t TEMPLATE_CBST ::copy_by_iterator (const TYPE_CBST * PARAM_IN other_
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CBST ::clear ()
+result_t TEMPLATE_CBST ::clear ()
 {
-	pfx_result_t status = PFX_STATUS_OK;
+	result_t status = PFX_STATUS_OK;
 
 	RETURN_RESULT (null == m_root_ptr,status);
 
-	pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_begin;
-	pfx_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_end;
+	bst_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_begin;
+	bst_posorder_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS iterator_end;
 
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_begin_ptr =  begin (&iterator_begin);
-	pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_end_ptr =  end (&iterator_end);
+	cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_begin_ptr =  begin (&iterator_begin);
+	cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS*  iterator_end_ptr =  end (&iterator_end);
 	
 	const node_type_* cur_node_ptr;
 	cur_node_ptr = iterator_begin_ptr->get_current_node();
@@ -255,11 +255,11 @@ pfx_result_t TEMPLATE_CBST ::clear ()
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* TEMPLATE_CBST ::begin (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_OUT iterator_) const
+cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* TEMPLATE_CBST ::begin (cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_OUT iterator_) const
 {
 	if (iterator_)
 	{
-		pfx_result_t status_ = iterator_->init (m_root_ptr,m_root_ptr);
+		result_t status_ = iterator_->init (m_root_ptr,m_root_ptr);
 		if (PFX_STATUS_OK == status_)
 		{
 			iterator_ = iterator_->begin ();
@@ -273,11 +273,11 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* TEMPLATE_CBST ::begin (pfx_
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * TEMPLATE_CBST ::end (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_) const
+cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * TEMPLATE_CBST ::end (cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * PARAM_OUT iterator_) const
 {
 	if (iterator_)
 	{
-		pfx_result_t status_ = iterator_->init (m_root_ptr,m_root_ptr);
+		result_t status_ = iterator_->init (m_root_ptr,m_root_ptr);
 		if (PFX_STATUS_OK == status_)
 		{
 			iterator_ = iterator_->end ();
@@ -292,7 +292,7 @@ pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS * TEMPLATE_CBST ::end (pfx_c
 
 //public:
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* TEMPLATE_CBST ::find (pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_OUT iterator_,
+PFX_INLINE cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* TEMPLATE_CBST ::find (cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* PARAM_OUT iterator_,
 		const node_type_* PARAM_IN key_node_ptr) const
 {
 	if (iterator_)
@@ -300,7 +300,7 @@ PFX_INLINE pfx_cbst_iterator PFX_CBST_ITERATOR_TEMPLATE_PARAMS* TEMPLATE_CBST ::
 		const node_type_* find_node_ptr = find (key_node_ptr);
 		if (find_node_ptr)
 		{
-			pfx_result_t status_ = iterator_->init(find_node_ptr,m_root_ptr);
+			result_t status_ = iterator_->init(find_node_ptr,m_root_ptr);
 			if (PFX_STATUS_OK != status_)
 			{
 				iterator_ = null;
@@ -341,7 +341,7 @@ node_type_* TEMPLATE_CBST ::find_reference (const node_type_* PARAM_IN key_node_
 
 PFX_CBST_TEMPLATE_DEFINES
 const node_type_* TEMPLATE_CBST ::add (node_type_* PARAM_INOUT add_node_ptr,
-	pfx_result_t& PARAM_OUT status_)
+	result_t& PARAM_OUT status_)
 {
 	node_type_* added_node_ptr = null;
 	status_ = TEMPLATE_CBST ::add_node (m_root_ptr,add_node_ptr,added_node_ptr);
@@ -350,7 +350,7 @@ const node_type_* TEMPLATE_CBST ::add (node_type_* PARAM_INOUT add_node_ptr,
 
 PFX_CBST_TEMPLATE_DEFINES
 node_type_* TEMPLATE_CBST ::remove (node_type_* PARAM_INOUT remove_node_ptr,
-		pfx_result_t& PARAM_OUT status_)
+		result_t& PARAM_OUT status_)
 {
 	status_ = TEMPLATE_CBST ::remove_node (m_root_ptr,remove_node_ptr);
 	if (PFX_STATUS_OK != status_)
@@ -421,12 +421,12 @@ PFX_INLINE const node_type_* TEMPLATE_CBST ::min_node (const node_type_* root_no
 }
 //
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t TEMPLATE_CBST ::init_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
+PFX_INLINE result_t TEMPLATE_CBST ::init_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
 	node_type_* PARAM_IN left_node_ptr /*= null*/,
 	node_type_* PARAM_IN right_node_ptr /*= null*/,
 	node_type_* PARAM_IN parent_node_ptr /*= null*/)
 {
-	pfx_result_t status_ = PFX_STATUS_INVALID_PARAMS;
+	result_t status_ = PFX_STATUS_INVALID_PARAMS;
 	if (tree_node_ptr)
 	{
 		tree_node_ptr->set_left_node ((node_type_*)left_node_ptr);
@@ -549,11 +549,11 @@ const node_type_* TEMPLATE_CBST ::find_near_node_by_item  (const typename bst_no
 
 //
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CBST ::add_node (node_type_*& PARAM_INOUT root_node_ptr,
+result_t TEMPLATE_CBST ::add_node (node_type_*& PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT add_node_ptr,
 		node_type_*& PARAM_OUT added_node_ptr)
 {
-	pfx_result_t	status;
+	result_t	status;
 	int					cmp_result;
 	node_type_*	tmp_root_node_ptr;
 	node_type_*	node_to_be_add_ptr;
@@ -621,7 +621,7 @@ pfx_result_t TEMPLATE_CBST ::add_node (node_type_*& PARAM_INOUT root_node_ptr,
 }
 //
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CBST ::remove_node (node_type_*& PARAM_INOUT root_node_ptr,
+result_t TEMPLATE_CBST ::remove_node (node_type_*& PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT remove_node_ptr,
 		const node_type_* PARAM_IN null_node_ptr /*= null*/)
 {
@@ -630,7 +630,7 @@ pfx_result_t TEMPLATE_CBST ::remove_node (node_type_*& PARAM_INOUT root_node_ptr
 
 	node_type_* sub_romove_ref_node_ptr;
 	node_type_* sub_remove_node_ptr;
-	pfx_result_t status_ = PFX_STATUS_OK;
+	result_t status_ = PFX_STATUS_OK;
 
 	sub_romove_ref_node_ptr = TEMPLATE_CBST ::find_remove_replace_node 
 		(remove_node_ptr,sub_remove_node_ptr,null_node_ptr);
@@ -685,7 +685,7 @@ node_type_* TEMPLATE_CBST ::find_remove_replace_node (node_type_* PARAM_IN remov
 //
 PFX_CBST_TEMPLATE_DEFINES
 //node_type_* 
-pfx_result_t TEMPLATE_CBST ::remove_node_internal (node_type_*& PARAM_INOUT root_node_ptr,
+result_t TEMPLATE_CBST ::remove_node_internal (node_type_*& PARAM_INOUT root_node_ptr,
 		node_type_* PARAM_INOUT remove_node_ptr,
 		node_type_* PARAM_INOUT sub_remove_node_ptr,
 		node_type_* PARAM_INOUT sub_remove_node_ref_ptr,
@@ -693,7 +693,7 @@ pfx_result_t TEMPLATE_CBST ::remove_node_internal (node_type_*& PARAM_INOUT root
 {
 	node_type_* tmp_root_node_ptr = root_node_ptr;
 	node_type_* parant_node_ptr = null;
-	pfx_result_t status_ = PFX_STATUS_OK;
+	result_t status_ = PFX_STATUS_OK;
 
 	FOR_ONE_LOOP_BEGIN
 	// 处理替换节点
@@ -834,16 +834,16 @@ pfx_result_t TEMPLATE_CBST ::remove_node_internal (node_type_*& PARAM_INOUT root
 
 
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CAVL_BST ::pfx_cavl_tree(/*Iallocator_cpp* allocator = null*/)
+TEMPLATE_CAVL_BST ::cavl_tree(/*Iallocator_cpp* allocator = null*/)
 {
 	;
 }
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CAVL_BST ::pfx_cavl_tree (const TYPE_CBST* PARAM_IN other_) throw (pfx_result_t)
+TEMPLATE_CAVL_BST ::cavl_tree (const TYPE_CBST* PARAM_IN other_) throw (result_t)
 {
 	if (this != other_ptr)
 	{
-		pfx_result_t status_ = TEMPLATE_CAVL_BST :: copy(other_ptr);
+		result_t status_ = TEMPLATE_CAVL_BST :: copy(other_ptr);
 		if (PFX_STATUS_OK != status_)
 		{
 			throw (status_);
@@ -851,11 +851,11 @@ TEMPLATE_CAVL_BST ::pfx_cavl_tree (const TYPE_CBST* PARAM_IN other_) throw (pfx_
 	}
 }
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CAVL_BST ::pfx_cavl_tree (const TYPE_CAVL_BST* PARAM_IN other_) throw (pfx_result_t)
+TEMPLATE_CAVL_BST ::cavl_tree (const TYPE_CAVL_BST* PARAM_IN other_) throw (result_t)
 {
 	if (this != other_ptr)
 	{
-		pfx_result_t status_ = TEMPLATE_CBST :: copy(other_ptr);
+		result_t status_ = TEMPLATE_CBST :: copy(other_ptr);
 		if (PFX_STATUS_OK != status_)
 		{
 			throw (status_);
@@ -865,38 +865,38 @@ TEMPLATE_CAVL_BST ::pfx_cavl_tree (const TYPE_CAVL_BST* PARAM_IN other_) throw (
 //public:
 PFX_CBST_TEMPLATE_DEFINES
 const node_type_* TEMPLATE_CAVL_BST ::add (node_type_* PARAM_INOUT add_node_ptr,
-		pfx_result_t& PARAM_OUT status_)
+		result_t& PARAM_OUT status_)
 {
 	return TEMPLATE_CAVL_BST ::add_avl_node (m_root_ptr,add_node_ptr,status_);
 }
 
 PFX_CBST_TEMPLATE_DEFINES
 node_type_* TEMPLATE_CAVL_BST ::remove (node_type_* PARAM_INOUT remove_node_ptr,
-		pfx_result_t& PARAM_OUT status_)
+		result_t& PARAM_OUT status_)
 {
 	return remove_avl_node (m_root_ptr,remove_node_ptr,status_);
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CAVL_BST ::copy (const TYPE_CBST * 
+result_t TEMPLATE_CAVL_BST ::copy (const TYPE_CBST * 
 																													PARAM_IN other_bst_ptr)
 {
 	return TEMPLATE_CBST :: copy_by_iterator (other_bst_ptr);
 }
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CAVL_BST ::copy (const TYPE_CAVL_BST * 
+result_t TEMPLATE_CAVL_BST ::copy (const TYPE_CAVL_BST * 
 																													PARAM_IN other_bst_ptr)
 {
 	return TEMPLATE_CBST :: copy (other_bst_ptr);
 }
 //public:
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t TYPE_CAVL_BST::init_avl_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
+PFX_INLINE result_t TYPE_CAVL_BST::init_avl_node_leaves (node_type_* PARAM_INOUT tree_node_ptr,
 	 node_type_* PARAM_IN left_node_ptr /*= null*/,
 	 node_type_* PARAM_IN right_node_ptr /*= null*/,
 	 node_type_* PARAM_IN parent_node_ptr/* = null*/)
 {
-	pfx_result_t status_ = PFX_STATUS_INVALID_PARAMS;
+	result_t status_ = PFX_STATUS_INVALID_PARAMS;
 	if (tree_node_ptr)
 	{
 		tree_node_ptr->set_left_node ((node_type_*)left_node_ptr);
@@ -909,9 +909,9 @@ PFX_INLINE pfx_result_t TYPE_CAVL_BST::init_avl_node_leaves (node_type_* PARAM_I
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::get_avl_height (const node_type_* PARAM_IN node_ptr)
+PFX_INLINE nsize__t TEMPLATE_CAVL_BST ::get_avl_height (const node_type_* PARAM_IN node_ptr)
 {
-	pfx_nsize_t height_value = -1;
+	nsize__t height_value = -1;
 	if (node_ptr)
 	{
 		height_value = node_ptr->get_height ();
@@ -920,11 +920,11 @@ PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::get_avl_height (const node_type_* PAR
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::calculate_avl_height (const node_type_* PARAM_IN left_node_ptr,
+PFX_INLINE nsize__t TEMPLATE_CAVL_BST ::calculate_avl_height (const node_type_* PARAM_IN left_node_ptr,
 		const node_type_* PARAM_IN right_node_ptr)
 {
-	pfx_nsize_t left_height = TYPE_CAVL_BST::get_avl_height (left_node_ptr);
-	pfx_nsize_t right_height = TYPE_CAVL_BST::get_avl_height (right_node_ptr);
+	nsize__t left_height = TYPE_CAVL_BST::get_avl_height (left_node_ptr);
+	nsize__t right_height = TYPE_CAVL_BST::get_avl_height (right_node_ptr);
 	if (left_height > right_height)
 	{
 		return (left_height+1);
@@ -936,9 +936,9 @@ PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::calculate_avl_height (const node_type
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::calculate_avl_height (const node_type_* PARAM_IN node_ptr)
+PFX_INLINE nsize__t TEMPLATE_CAVL_BST ::calculate_avl_height (const node_type_* PARAM_IN node_ptr)
 {
-	pfx_nsize_t height_value = -1;
+	nsize__t height_value = -1;
 	if (node_ptr)
 	{
 		height_value = TEMPLATE_CAVL_BST ::calculate_avl_height 
@@ -948,10 +948,10 @@ PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::calculate_avl_height (const node_type
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::calculate_avl_balance_value 
+PFX_INLINE nsize__t TEMPLATE_CAVL_BST ::calculate_avl_balance_value 
 																	(const node_type_* PARAM_IN node_ptr)
 {
-	pfx_nsize_t balance_value = 0;
+	nsize__t balance_value = 0;
 	if (node_ptr)
 	{
 		balance_value = get_avl_height (node_ptr->get_left_node ()) - get_avl_height (node_ptr->get_right_node ());
@@ -962,7 +962,7 @@ PFX_INLINE pfx_nsize_t TEMPLATE_CAVL_BST ::calculate_avl_balance_value
 PFX_CBST_TEMPLATE_DEFINES
 PFX_INLINE void TEMPLATE_CAVL_BST ::update_avl_height (node_type_* PARAM_IN node_ptr)
 {
-	pfx_nsize_t height_value = calculate_avl_height (node_ptr);
+	nsize__t height_value = calculate_avl_height (node_ptr);
 	node_ptr->set_height (height_value);
 }
 
@@ -1029,7 +1029,7 @@ PFX_INLINE node_type_* TEMPLATE_CAVL_BST ::avl_rl_rotate (node_type_* PARAM_INOU
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE AVLTREE_ROTATE_t TEMPLATE_CAVL_BST ::avl_single_rotate (pfx_nsize_t balance_value,
+PFX_INLINE AVLTREE_ROTATE_t TEMPLATE_CAVL_BST ::avl_single_rotate (nsize__t balance_value,
 	node_type_* PARAM_INOUT node_ptr, node_type_* & PARAM_INOUT parent_ref_node_ptr)
 {
 	AVLTREE_ROTATE_t rotate_type = AVLTREE_NOT_SIMPLE_ROTATE;
@@ -1088,11 +1088,11 @@ PFX_INLINE AVLTREE_ROTATE_t TEMPLATE_CAVL_BST ::avl_single_rotate (pfx_nsize_t b
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t TEMPLATE_CAVL_BST ::avl_update_insert_rotate (node_type_* & PARAM_INOUT root_node_ptr,
+PFX_INLINE result_t TEMPLATE_CAVL_BST ::avl_update_insert_rotate (node_type_* & PARAM_INOUT root_node_ptr,
 	node_type_* PARAM_INOUT begin_node_ptr)
 {
-	pfx_result_t				status = PFX_STATUS_OK;
-	pfx_nsize_t					height;
+	result_t				status = PFX_STATUS_OK;
+	nsize__t					height;
 	node_type_*				tmp_root_node_ptr;
 	const node_type_*	tmp_root_parent_node_ptr;
 	node_type_*				parent_node_ptr;
@@ -1122,12 +1122,12 @@ PFX_INLINE pfx_result_t TEMPLATE_CAVL_BST ::avl_update_insert_rotate (node_type_
 		return status;
 	}
 
-	pfx_nsize_t balance_value;
+	nsize__t balance_value;
 	node_type_* parent_parent_node_ptr;
 
 	TEMPLATE_CAVL_BST ::update_avl_height (begin_node_ptr);
 
-	pfx_nsize_t same_count = 0;
+	nsize__t same_count = 0;
 	// 从第一个节点的跟节点开始翻转
 	do 
 	{
@@ -1206,11 +1206,11 @@ PFX_INLINE pfx_result_t TEMPLATE_CAVL_BST ::avl_update_insert_rotate (node_type_
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t TEMPLATE_CAVL_BST ::avl_update_fixed (node_type_* & PARAM_INOUT root_node_ptr,
+PFX_INLINE result_t TEMPLATE_CAVL_BST ::avl_update_fixed (node_type_* & PARAM_INOUT root_node_ptr,
 	node_type_* PARAM_INOUT begin_node_ptr)
 {
-	pfx_result_t				status = PFX_STATUS_OK;
-	pfx_nsize_t					height;
+	result_t				status = PFX_STATUS_OK;
+	nsize__t					height;
 	node_type_*				tmp_root_node_ptr;
 	const node_type_*	tmp_root_parent_node_ptr;
 	node_type_*				parent_node_ptr;
@@ -1240,7 +1240,7 @@ PFX_INLINE pfx_result_t TEMPLATE_CAVL_BST ::avl_update_fixed (node_type_* & PARA
 		return status;
 	}
 
-	pfx_nsize_t balance_value;
+	nsize__t balance_value;
 	node_type_* parent_parent_node_ptr;
 
 	balance_value = TEMPLATE_CAVL_BST ::calculate_avl_balance_value (begin_node_ptr);
@@ -1258,7 +1258,7 @@ PFX_INLINE pfx_result_t TEMPLATE_CAVL_BST ::avl_update_fixed (node_type_* & PARA
 
 		TEMPLATE_CAVL_BST ::update_avl_height (begin_node_ptr);
 
-		pfx_nsize_t same_count = 0;
+		nsize__t same_count = 0;
 		// 从第一个节点的跟节点开始翻转
 		do 
 		{
@@ -1349,9 +1349,9 @@ PFX_INLINE pfx_result_t TEMPLATE_CAVL_BST ::avl_update_fixed (node_type_* & PARA
 PFX_CBST_TEMPLATE_DEFINES
 const node_type_* TEMPLATE_CAVL_BST ::add_avl_node (node_type_*& PARAM_INOUT root_node_ptr,
 	node_type_* PARAM_INOUT add_node_ptr,
-	pfx_result_t& PARAM_OUT status_)
+	result_t& PARAM_OUT status_)
 {
-	pfx_result_t	status;
+	result_t	status;
 	node_type_*	temp_node_ptr = null;
 
 	RETURN_INVALID_BY_ACT_RESULT ((null == add_node_ptr),
@@ -1376,9 +1376,9 @@ const node_type_* TEMPLATE_CAVL_BST ::add_avl_node (node_type_*& PARAM_INOUT roo
 PFX_CBST_TEMPLATE_DEFINES
 node_type_* TEMPLATE_CAVL_BST ::remove_avl_node (node_type_*& PARAM_INOUT root_node_ptr,
 	node_type_* PARAM_INOUT remove_node_ptr,
-	pfx_result_t& PARAM_OUT status_)
+	result_t& PARAM_OUT status_)
 {
-	pfx_result_t			status;
+	result_t			status;
 	node_type_*	temp_node_ptr = null;
 	node_type_*	parent_node_ptr;
 	node_type_* sub_romove_ref_node_ptr;
@@ -1445,21 +1445,21 @@ node_type_* TEMPLATE_CAVL_BST ::remove_avl_node (node_type_*& PARAM_INOUT root_n
 
 
 //template < class node_type_, typename compare_two_node_ >
-//class pfx_crb_tree : public virtual pfx_cbst
+//class crb_tree : public virtual cbst
 //{
 //public:
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CRB_BST ::pfx_crb_tree (/*Iallocator_cpp* allocator = null*/)
+TEMPLATE_CRB_BST ::crb_tree (/*Iallocator_cpp* allocator = null*/)
 {
 	;
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-	TEMPLATE_CRB_BST :: pfx_crb_tree (const TYPE_CBST * PARAM_IN other_ptr) throw (pfx_result_t)
+	TEMPLATE_CRB_BST :: crb_tree (const TYPE_CBST * PARAM_IN other_ptr) throw (result_t)
 {
 	if (this != other_ptr)
 	{
-		pfx_result_t status_ = TEMPLATE_CRB_BST :: copy(other_ptr);
+		result_t status_ = TEMPLATE_CRB_BST :: copy(other_ptr);
 		if (PFX_STATUS_OK != status_)
 		{
 			throw (status_);
@@ -1468,11 +1468,11 @@ PFX_CBST_TEMPLATE_DEFINES
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-TEMPLATE_CRB_BST :: pfx_crb_tree (const TYPE_CRB_BST* PARAM_IN other_ptr) throw (pfx_result_t)
+TEMPLATE_CRB_BST :: crb_tree (const TYPE_CRB_BST* PARAM_IN other_ptr) throw (result_t)
 {
 	if (this != other_ptr)
 	{
-		pfx_result_t status_ = TEMPLATE_CBST :: copy(other_ptr);
+		result_t status_ = TEMPLATE_CBST :: copy(other_ptr);
 		if (PFX_STATUS_OK != status_)
 		{
 			throw (status_);
@@ -1481,39 +1481,39 @@ TEMPLATE_CRB_BST :: pfx_crb_tree (const TYPE_CRB_BST* PARAM_IN other_ptr) throw 
 }
 //public:
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CRB_BST :: copy (const TYPE_CBST * PARAM_IN other_bst_ptr)
+result_t TEMPLATE_CRB_BST :: copy (const TYPE_CBST * PARAM_IN other_bst_ptr)
 {
 	return TEMPLATE_CBST :: copy_by_iterator (other_bst_ptr);
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-pfx_result_t TEMPLATE_CRB_BST ::  copy (const TYPE_CRB_BST * PARAM_IN other_bst_ptr)
+result_t TEMPLATE_CRB_BST ::  copy (const TYPE_CRB_BST * PARAM_IN other_bst_ptr)
 {
 	return TEMPLATE_CBST :: copy (other_bst_ptr);
 }
 
 PFX_CBST_TEMPLATE_DEFINES
 const node_type_* TEMPLATE_CRB_BST ::add (node_type_* PARAM_INOUT add_node_ptr,
-	pfx_result_t& PARAM_OUT status_)
+	result_t& PARAM_OUT status_)
 {
 	return TEMPLATE_CRB_BST ::add_rb_node (m_root_ptr,add_node_ptr,status_);
 }
 
 PFX_CBST_TEMPLATE_DEFINES
 node_type_* TEMPLATE_CRB_BST ::remove (node_type_* PARAM_INOUT remove_node_ptr,
-		pfx_result_t& PARAM_OUT status_)
+		result_t& PARAM_OUT status_)
 {
 	return TEMPLATE_CRB_BST :: remove_rb_node (m_root_ptr,remove_node_ptr,status_);
 }
 //public:
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t TEMPLATE_CRB_BST ::init_rb_node_leaves 
+PFX_INLINE result_t TEMPLATE_CRB_BST ::init_rb_node_leaves 
 	(node_type_* PARAM_INOUT tree_node_ptr,
 	node_type_* PARAM_IN left_node_ptr /*= null*/,
 	node_type_* PARAM_IN right_node_ptr /*= null*/,
 	node_type_* PARAM_IN parent_node_ptr /*= null*/)
 {
-	pfx_result_t status_ = PFX_STATUS_INVALID_PARAMS;
+	result_t status_ = PFX_STATUS_INVALID_PARAMS;
 	if (tree_node_ptr)
 	{
 		tree_node_ptr->set_left_node ((node_type_*)left_node_ptr);
@@ -1638,7 +1638,7 @@ PFX_INLINE void TEMPLATE_CRB_BST ::rbt_right_rotate (node_type_ *& PARAM_INOUT	r
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t TEMPLATE_CRB_BST :: rbt_add_rotate_fixup (node_type_ *& PARAM_INOUT root_node_ptr,
+PFX_INLINE result_t TEMPLATE_CRB_BST :: rbt_add_rotate_fixup (node_type_ *& PARAM_INOUT root_node_ptr,
 	node_type_*  PARAM_INOUT add_node_ptr)
 {
 	node_type_* temp_node_ptr;
@@ -1747,7 +1747,7 @@ PFX_INLINE pfx_result_t TEMPLATE_CRB_BST :: rbt_add_rotate_fixup (node_type_ *& 
 }
 
 PFX_CBST_TEMPLATE_DEFINES
-PFX_INLINE pfx_result_t TEMPLATE_CRB_BST :: rbt_remove_rotate_fixup (node_type_ *& PARAM_INOUT root_node_ptr,
+PFX_INLINE result_t TEMPLATE_CRB_BST :: rbt_remove_rotate_fixup (node_type_ *& PARAM_INOUT root_node_ptr,
 	node_type_*  PARAM_INOUT ref_node_ptr)
 {
 	node_type_* temp_node_ptr;
@@ -1915,9 +1915,9 @@ PFX_INLINE pfx_result_t TEMPLATE_CRB_BST :: rbt_remove_rotate_fixup (node_type_ 
 PFX_CBST_TEMPLATE_DEFINES
 const node_type_* TEMPLATE_CRB_BST ::add_rb_node (node_type_*& PARAM_INOUT root_node_ptr,
 	node_type_* PARAM_INOUT add_node_ptr,
-	pfx_result_t& PARAM_OUT status_)
+	result_t& PARAM_OUT status_)
 {
-	pfx_result_t			status;
+	result_t			status;
 	node_type_*	temp_node_ptr = null;
 
 	RETURN_INVALID_BY_ACT_RESULT (null == add_node_ptr,
@@ -1944,9 +1944,9 @@ const node_type_* TEMPLATE_CRB_BST ::add_rb_node (node_type_*& PARAM_INOUT root_
 PFX_CBST_TEMPLATE_DEFINES
 node_type_* TEMPLATE_CRB_BST ::remove_rb_node (node_type_*& PARAM_INOUT root_node_ptr,
 	node_type_* PARAM_INOUT remove_node_ptr,
-	pfx_result_t& PARAM_OUT status_)
+	result_t& PARAM_OUT status_)
 {
-	pfx_result_t			status;
+	result_t			status;
 	bool							is_red_node;
 
 	//_redblack_tree_node_t*	proot_node;

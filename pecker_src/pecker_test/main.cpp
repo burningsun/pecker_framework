@@ -4,14 +4,14 @@
 #include "pfx_api_info.h"
 
 
-extern pfx_result_t string_test ();
-extern pfx_result_t list_test ();
+extern result_t string_test ();
+extern result_t list_test ();
 extern int bst_test_main();
 extern int avl_bst_test_main();
 extern int rb_bst_test_main();
 extern int array_test_main ();
 extern int bst_stress_test_main ();
-extern void matrix_test ();
+//extern void matrix_test ();
 int main ()
 {
 	//list_test();
@@ -21,6 +21,6 @@ int main ()
 	// rb_bst_test_main();
 	//array_test_main ();
 	//bst_stress_test_main();
-	matrix_test();
+	//matrix_test();
 	return 0;
 }

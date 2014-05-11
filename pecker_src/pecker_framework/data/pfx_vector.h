@@ -38,9 +38,9 @@ typedef enum enumFLOAT_PRECISION_QUALIFER
 #define VARY_HIGH_PRECISION_QUALIFER_VAL (1)
 
 
-PFX_INLINE pfx_u32_t FLOAT_PRECISION_QUALIFIER (PFX_FLOAT_PRECISION_QUALIFER_t PQ)
+PFX_INLINE u32_t FLOAT_PRECISION_QUALIFIER (PFX_FLOAT_PRECISION_QUALIFER_t PQ)
 {
-	static const pfx_u32_t precision_qualifer_table [] = 
+	static const u32_t precision_qualifer_table [] = 
 	{LOW_PRECISION_QUALIFER_VAL,MID_PRECISION_QUALIFER_VAL,HIGH_PRECISION_QUALIFER_VAL,VARY_HIGH_PRECISION_QUALIFER_VAL,0};
 	return precision_qualifer_table[PQ];
 };
@@ -50,7 +50,7 @@ struct PFX_DATA_TEMPALE_API dimension_value_operations
 {
 	typedef dimension_value dimension_value_t;
 
-	static PFX_INLINE pfx_boolean_t equals (dimension_value X, dimension_value Y, pfx_u32_t delta);
+	static PFX_INLINE pfx_boolean_t equals (dimension_value X, dimension_value Y, u32_t delta);
 
 	static PFX_INLINE dimension_value abs (dimension_value val);
 
@@ -138,7 +138,7 @@ public:
 	PFX_INLINE cvector_t&								normalize_repalce ();
 
 	PFX_INLINE pfx_boolean_t						equals (const vector_t& other_, 
-																				pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+																				u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	PFX_INLINE dimension_value_t				cacluate_vector_size () const;
 	PFX_INLINE dimension_value_t				cacluate_vector_size_square () const;
@@ -172,7 +172,7 @@ public:
 
 	static PFX_INLINE dimension_value_t		dot (const vector_t& a, const vector_t& b);
 
-	static PFX_INLINE pfx_boolean_t				equals (const vector_t& vec_a, const vector_t& vec_b, pfx_u32_t delta = MID_PRECISION_QUALIFER_VAL);
+	static PFX_INLINE pfx_boolean_t				equals (const vector_t& vec_a, const vector_t& vec_b, u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
 	static PFX_INLINE vector_t							normalize (vector_t& to_normalize);
 

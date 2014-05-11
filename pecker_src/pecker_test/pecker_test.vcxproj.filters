@@ -11,8 +11,6 @@
     <ClCompile Include="pfx_block_test.cpp" />
     <ClCompile Include="pfx_array_test.cpp" />
     <ClCompile Include="pfx_bst_stress_test.cpp" />
-    <ClCompile Include="pfx_vector_test.cpp" />
-    <ClCompile Include="pfx_matrix_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pfx_file_inputdata_cmd.h" />
