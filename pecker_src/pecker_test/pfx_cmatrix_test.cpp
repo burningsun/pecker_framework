@@ -170,7 +170,7 @@ void matrix_test ()
 
 	SMat2 mat2_invert;
 	SMat2 mat2_extern;
-	mat2_extern.indentify_replace(1);
+	//mat2_extern.indentify_replace(1);
 	mat2_0.inverse_matrix(mat2_invert, mat2_extern);
 	PECKER_LOG_ ("invert mat\n");
 	print_mat <SMat2, 2> (&mat2_invert);
@@ -272,7 +272,7 @@ void matrix_test ()
 
 	SMat3 mat3_invert;
 	SMat3 mat3_extern;
-	mat3_extern.indentify_replace(1);
+	//mat3_extern.indentify_replace(1);
 	mat3_0.inverse_matrix(mat3_invert, mat3_extern);
 	PECKER_LOG_ ("invert mat\n");
 	print_mat <SMat3, 3> (&mat3_invert);
@@ -316,8 +316,8 @@ void matrix_test ()
 	PECKER_LOG_ ("mat4 test!\n");
 	SMat4 mat4_0(1, 2, 3, 4,
 								3, 2, 1, 4,
-								3, 2, 1, 5,
-								1, 2, 4, 6);
+								1, 2, 1, 5,
+								0, 0, 0, 1);
 	SMat4 mat4_1(mat4_0);
 	print_mat <SMat4, 4> (&mat4_0);
 
@@ -356,10 +356,12 @@ void matrix_test ()
 
 	SMat4 mat_invert;
 	SMat4 mat_extern;
-	mat_extern.indentify_replace(1);
+	//mat_extern.indentify_replace(1);
 	mat4_0.inverse_matrix(mat_invert, mat_extern);
 	PECKER_LOG_ ("invert mat\n");
 	print_mat <SMat4, 4> (&mat_invert);
+
+	
 
 	SMat4X matx_invert(mat_invert);
 	SMat4X matx_extern(mat_extern);
@@ -368,6 +370,12 @@ void matrix_test ()
 	print_mat <SMat4X, 4> (&matx_invert);
 
 	SMat4::matrix_alg_t::matrix_t mat_ = SMat4::matrix_reference(mat4_0.m_mat);
+	SMat4::matrix_alg_t::matrix_t mat_inv = SMat4::matrix_reference(mat_invert.m_mat);
+
+	SMat4::matrix_alg_t::inverse_matrix_for_3sp(mat_,mat_inv);
+	PECKER_LOG_ ("invert mat 3d sp\n");
+	print_mat <SMat4, 4> (&mat_invert);
+
 	SMat4::matrix_ex_t mat_ex_tmp(mat4_0.m_mat);
 	SMat4::matrix_alg_t::matrix_ex_t mat_ex = SMat4::matrix_reference(mat_ex_tmp);
 	for (uindex_t i=0; i<4; ++i)

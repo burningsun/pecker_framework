@@ -1249,18 +1249,18 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::matrixNxN_mul
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
-	if (__tempbuffer)
-	{
+	//if (__tempbuffer)
+	//{
 
-	}
-	else
-	{
+	//}
+	//else
+	//{
 		vec_alg_t::matrix_mul_matrix_direct (__mat_a, vec_alg_t::vector_dim_count(),
 			vec_alg_t::vector_dim_count(),
 			vec_alg_t::vector_dim_count(),
 			__mat_b,
 			__mat_result);
-	}
+	//}
 	return __mat_result;
 }
 
@@ -1427,18 +1427,18 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
-	if (__tempbuffer)
-	{
+	//if (__tempbuffer)
+	//{
 
-	}
-	else
-	{
+	//}
+	//else
+	//{
 		vec_alg_t::matrix_mul_matrix_direct (__mat_a, vec_alg_t::vector_dim_count(),
 			vec_alg_t::vector_dim_count(),
 			vec_alg_t::vector_dim_count(),
 			__mat_b,
 			__mat_result);
-	}
+	//}
 	return __mat_result;
 }
 
@@ -2274,7 +2274,7 @@ PFX_INLINE usize__t PFX_SMAT_ALG::matrix_rank (PFX_SMAT_ALG_TYPE::matrix_ex_t& P
 
 //求逆矩阵
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix_for_3d 
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix_for_3sp 
 (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_a, 
 	PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_inverse,
 	u32_t delta)
@@ -2296,37 +2296,39 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 		return null;
 	}
 	// A 可逆 3* 3可逆阵公式 inverse(A) = 1/det(A) * adj(A)
+	det_a = 1/det_a;
 	dim_t temp;
+	// 注：伴随阵是代数余子式的转置
 	temp =	matrix3x3_algebraic_cofactor_det(__mat_a, 0, 0);
 	vec_alg_t::matrix_at (__mat_inverse, 0, 0) =	  dim_alg_t::mul (det_a, temp);
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 0, 1);
-	vec_alg_t::matrix_at (__mat_inverse, 0, 1) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 1, 0) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 0, 2);
-	vec_alg_t::matrix_at (__mat_inverse, 0, 2) = dim_alg_t::mul (det_a, temp); 
+	vec_alg_t::matrix_at (__mat_inverse, 2, 0) = dim_alg_t::mul (det_a, temp); 
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 1, 0);
-	vec_alg_t::matrix_at (__mat_inverse, 1, 0) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 0, 1) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 1, 1);
 	vec_alg_t::matrix_at (__mat_inverse, 1, 1) = dim_alg_t::mul (det_a, temp);
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 1, 2);
-	vec_alg_t::matrix_at (__mat_inverse, 1, 2) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 2, 1) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 2, 0);
-	vec_alg_t::matrix_at (__mat_inverse, 2, 0) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 0, 2) = dim_alg_t::mul (det_a, temp);
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 2, 1);
-	vec_alg_t::matrix_at (__mat_inverse, 2, 1) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 1, 2) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 2, 2);
 	vec_alg_t::matrix_at (__mat_inverse, 2, 2) = dim_alg_t::mul (det_a, temp);
 	//-inverse(A) C
-	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 0, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 1, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 2, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 0, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 1, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 2, 3));
 	vec_alg_t::matrix_at(__mat_inverse, 0, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 0, 3);
 	vec_alg_t::matrix_at(__mat_inverse, 1, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 1, 3);
 	vec_alg_t::matrix_at(__mat_inverse, 2, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 2, 3);
@@ -2339,7 +2341,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t* PFX_SMAT_ALG::inverse_matrix_for_3d 
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t* PFX_SMAT_ALG::inverse_matrix_for_3sp 
 (const PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat_a, 
 	PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat_inverse,
 	u32_t delta)
@@ -2361,37 +2363,39 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 		return null;
 	}
 	// A 可逆 3* 3可逆阵公式 inverse(A) = 1/det(A) * adj(A)
+	det_a = 1/det_a;
 	dim_t temp;
+	// 注：伴随阵是代数余子式的转置
 	temp =	matrix3x3_algebraic_cofactor_det(__mat_a, 0, 0);
 	vec_alg_t::matrix_at (__mat_inverse, 0, 0) =	  dim_alg_t::mul (det_a, temp);
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 0, 1);
-	vec_alg_t::matrix_at (__mat_inverse, 0, 1) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 1, 0) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 0, 2);
-	vec_alg_t::matrix_at (__mat_inverse, 0, 2) = dim_alg_t::mul (det_a, temp); 
+	vec_alg_t::matrix_at (__mat_inverse, 2, 0) = dim_alg_t::mul (det_a, temp); 
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 1, 0);
-	vec_alg_t::matrix_at (__mat_inverse, 1, 0) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 0, 1) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 1, 1);
 	vec_alg_t::matrix_at (__mat_inverse, 1, 1) = dim_alg_t::mul (det_a, temp);
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 1, 2);
-	vec_alg_t::matrix_at (__mat_inverse, 1, 2) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 2, 1) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 2, 0);
-	vec_alg_t::matrix_at (__mat_inverse, 2, 0) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 0, 2) = dim_alg_t::mul (det_a, temp);
 
 	temp =  -matrix3x3_algebraic_cofactor_det(__mat_a, 2, 1);
-	vec_alg_t::matrix_at (__mat_inverse, 2, 1) = dim_alg_t::mul (det_a, temp);
+	vec_alg_t::matrix_at (__mat_inverse, 1, 2) = dim_alg_t::mul (det_a, temp);
 
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 2, 2);
 	vec_alg_t::matrix_at (__mat_inverse, 2, 2) = dim_alg_t::mul (det_a, temp);
 	//-inverse(A) C
-	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 0, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 1, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 2, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 0, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 1, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 2, 3));
 	vec_alg_t::matrix_at(__mat_inverse, 0, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 0, 3);
 	vec_alg_t::matrix_at(__mat_inverse, 1, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 1, 3);
 	vec_alg_t::matrix_at(__mat_inverse, 2, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 2, 3);
@@ -2400,7 +2404,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 	vec_alg_t::matrix_at(__mat_inverse, 3, 1) = vec_alg_t::matrix_at_const(__mat_a, 3, 1);
 	vec_alg_t::matrix_at(__mat_inverse, 3, 2) = vec_alg_t::matrix_at_const(__mat_a, 3, 2);
 	vec_alg_t::matrix_at(__mat_inverse, 3, 3) = vec_alg_t::matrix_at_const(__mat_a, 3, 3);
-	return __mat_inverse;
+	return &__mat_inverse;
 }
 
 // 高斯消元法求逆

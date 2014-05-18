@@ -410,11 +410,11 @@ public:
 
 	// 求行列式的值和行列式的代数余子式的值
 	// 全主元高斯消元法
-	static PFX_INLINE matrix_ex_t* inverse_matrix_for_3d (const matrix_ex_t& PARAM_INOUT __mat_a, 
+	static PFX_INLINE matrix_ex_t* inverse_matrix_for_3sp (const matrix_ex_t& PARAM_INOUT __mat_a, 
 		matrix_ex_t& PARAM_INOUT __mat_inverse,
 		u32_t delta = MID_PRECISION_QUALIFER_VAL);
 
-	static PFX_INLINE matrix_t* inverse_matrix_for_3d (const matrix_t& PARAM_INOUT __mat_a, 
+	static PFX_INLINE matrix_t* inverse_matrix_for_3sp (const matrix_t& PARAM_INOUT __mat_a, 
 		matrix_t& PARAM_INOUT __mat_inverse,
 		u32_t delta = MID_PRECISION_QUALIFER_VAL);
 

@@ -376,7 +376,7 @@ PFX_SQE_CMAT_TYPE::cmatrix_t& extern_matrix,
 	PFX_SQE_CMAT_TYPE::matrix_alg_t::matrix_ex_t __mat_extern = matrix_reference (mat_extern);
 	inverse_matrix = *this;
 	
-	matrix_alg_t::Indentify_matrix (dim_count, __mat_inverse, 1, 0);
+	//matrix_alg_t::Indentify_matrix (dim_count, __mat_inverse, 1, 0);
 	matrix_alg_t::clr_mul_factor_t mul_factor[0 == dim_count?1:dim_count];
 	matrix_alg_t::inverse_matrix (__mat_extern, dim_count, __mat_inverse, mul_factor, delta);
 	mat_inverse.to_matrix (inverse_matrix.m_mat);
@@ -720,7 +720,7 @@ PFX_SQEX_CMAT_TEMPLATE
 	PFX_SQE_CMAT_TYPE::matrix_alg_t::matrix_ex_t __mat_inverse = matrix_reference(inv_matrix.m_mat);
 	PFX_SQE_CMAT_TYPE::matrix_alg_t::matrix_ex_t __mat_extern = matrix_reference (extern_matrix.m_mat);
 	this->m_mat.copy_to_matrix_ex(extern_matrix.m_mat);
-	inv_matrix.indentify_replace (1);
+	//inv_matrix.indentify_replace (1);
 	matrix_alg_t::clr_mul_factor_t mul_factor[0 == dim_count?1:dim_count];
 	matrix_alg_t::inverse_matrix (__mat_extern, dim_count, __mat_inverse, mul_factor, delta);
 	return inv_matrix;
