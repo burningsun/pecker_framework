@@ -308,7 +308,7 @@ PFX_INLINE int vector_dim_op_alg < int > ::
 //////////////////////////////////////////////////////////////////////////
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
-PFX_INLINE usize_t PFX_VEC_ALG::vector_dim_count()
+PFX_INLINE usize__t PFX_VEC_ALG::vector_dim_count()
 {
 	return vector_t :: vector_dim_count ();
 }
@@ -316,7 +316,7 @@ PFX_INLINE usize_t PFX_VEC_ALG::vector_dim_count()
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_at 
 		(PFX_VEC_ALG_TYPE::vector_t& __vector, 
-		PFX_VEC_ALG_TYPE::uindex_t dim_index)
+		uindex_t dim_index)
 {
 	return __vector[dim_index];
 }
@@ -334,16 +334,16 @@ PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::matrix_at
 	return (*__matrix[i])[j];
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
+PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::matrix_at	
-		(PFX_VEC_ALG_TYPE::matrix_t& __matrix, usize_t ivec_size, uindex_t i, 
+		(PFX_VEC_ALG_TYPE::matrix_t& __matrix, uindex_t i, 
 		PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT vector_out)
 {
 	vector_out =  __matrix[i];
 	return vector_out;
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
+PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::matrix_at	
 		(PFX_VEC_ALG_TYPE::matrix_ex_t& __matrix, uindex_t i, 
 		PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT vector_out)
@@ -352,112 +352,133 @@ PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::matrix_at
 	return vector_out;
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::vector_t* PFX_VEC_ALG_TYPE::matrix_at	
+PFX_VEC_ALG_TEMPLATE_DEFINES
+PFX_INLINE PFX_VEC_ALG_TYPE::vector_t* PFX_VEC_ALG::matrix_at	
 	(PFX_VEC_ALG_TYPE::matrix_t&	__matrix, uindex_t i)
 {
 	return &__matrix[i];
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
+PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::vector_t*& PFX_VEC_ALG::matrix_at	
 	(PFX_VEC_ALG_TYPE::matrix_ex_t&	__matrix, uindex_t i)
 {
 	return __matrix[i];
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::vector_t* const& PFX_VEC_ALG::matrix_at	
+PFX_VEC_ALG_TEMPLATE_DEFINES
+PFX_INLINE PFX_VEC_ALG_TYPE::vector_t* const& PFX_VEC_ALG::matrix_at_	
 	(PFX_VEC_ALG_TYPE::matrix_ex_t&	__matrix, uindex_t i)
 {
 	return __matrix[i];
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_at_const 
-	(PFX_VEC_ALG_TYPE::vector_t& __vector, 
-	PFX_VEC_ALG_TYPE::uindex_t dim_index)
+PFX_INLINE const PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_at_const 
+	(const PFX_VEC_ALG_TYPE::vector_t& __vector, 
+	uindex_t dim_index)
 {
 	return __vector[dim_index];
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::matrix_at_const 
-	(PFX_VEC_ALG_TYPE::matrix_t& __matrix, uindex_t i, uindex_t j)
+PFX_INLINE const PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::matrix_at_const 
+	(const PFX_VEC_ALG_TYPE::matrix_t& __matrix, uindex_t i, uindex_t j)
 {
 	return __matrix[i][j];
 }
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE const PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::matrix_at_const 
-	(PFX_VEC_ALG_TYPE::matrix_ex_t& __matrix, uindex_t i, uindex_t j)
+	(const PFX_VEC_ALG_TYPE::matrix_ex_t& __matrix, uindex_t i, uindex_t j)
 {
 	return (*__matrix[i])[j];
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
+PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::matrix_at_const	
-	(PFX_VEC_ALG_TYPE::matrix_t& __matrix, usize_t ivec_size, uindex_t i, 
+	(const PFX_VEC_ALG_TYPE::matrix_t& __matrix, uindex_t i, 
 	PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT vector_out)
 {
 	vector_out =  __matrix[i];
 	return vector_out;
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
+PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::matrix_at_const	
-	(PFX_VEC_ALG_TYPE::matrix_ex_t& __matrix, uindex_t i, 
+	(const PFX_VEC_ALG_TYPE::matrix_ex_t& __matrix, uindex_t i, 
 	PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT vector_out)
 {
 	vector_out = (*__matrix[i]);
 	return vector_out;
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
-PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* PFX_VEC_ALG_TYPE::matrix_at_const	
-	(PFX_VEC_ALG_TYPE::matrix_t&	__matrix, uindex_t i)
-{
-	return &__matrix[i];
-}
-
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
+PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* PFX_VEC_ALG::matrix_at_const	
-	(PFX_VEC_ALG_TYPE::matrix_ex_t&	__matrix, uindex_t i)
-{
-	return __matrix[i];
-}
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
-PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* PFX_VEC_ALG_TYPE::matrix_at_const	
-	(PFX_VEC_ALG_TYPE::matrix_t&	__matrix, uindex_t i)
+	(const PFX_VEC_ALG_TYPE::matrix_t&	__matrix, uindex_t i)
 {
 	return &__matrix[i];
 }
 
-PFX_VECDIM_ALG_TEMPLATE_DEFINES
+PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* const& PFX_VEC_ALG::matrix_at_const	
-	(PFX_VEC_ALG_TYPE::matrix_ex_t&	__matrix, uindex_t i)
+	(const PFX_VEC_ALG_TYPE::matrix_ex_t&	__matrix, uindex_t i)
 {
 	return __matrix[i];
 }
+//PFX_VEC_ALG_TEMPLATE_DEFINES
+//PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* PFX_VEC_ALG::matrix_at_const	
+//	(const PFX_VEC_ALG_TYPE::matrix_t&	__matrix, uindex_t i)
+//{
+//	return &__matrix[i];
+//}
+
+//PFX_VEC_ALG_TEMPLATE_DEFINES
+//PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* const& PFX_VEC_ALG::matrix_at_const	
+//	(const PFX_VEC_ALG_TYPE::matrix_ex_t&	__matrix, uindex_t i)
+//{
+//	return __matrix[i];
+//}
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::vector_t& PFX_VEC_ALG::init_vector 
 	(PFX_VEC_ALG_TYPE::vector_t& __vector, const dim_t __val)
 {
-	for (uindex_t i=0; i<vector_dim_count(); ++i)
+	usize__t dim_count = vector_dim_count ();
+	return init_vector (__vector, __val, dim_count);
+}
+
+
+
+PFX_VEC_ALG_TEMPLATE_DEFINES
+PFX_INLINE PFX_VEC_ALG_TYPE::vector_t& PFX_VEC_ALG::init_vector 
+		(PFX_VEC_ALG_TYPE::vector_t& __vector, 
+		const dim_t __val, usize__t dim_count)
+{
+	for (uindex_t i=0; i<dim_count; ++i)
 	{
-		vector_at(__vector,i) = __val;
+		vector_at(__vector, i) = __val;
 	}
 	return __vector;
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::vector_t& PFX_VEC_ALG::init_vector 
-		(PFX_VEC_ALG_TYPE::vector_t& __vector, 
-		const dim_t __val, usize_t dim_count)
+PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::init_vector 
+(PFX_VEC_ALG_TYPE::vector_t& __vector, 
+const PFX_VEC_ALG_TYPE::vector_t& other_vec)
 {
+	usize__t dim_count = vector_dim_count ();
+	return init_vector(__vector, other_vec, dim_count);
+}
+
+PFX_VEC_ALG_TEMPLATE_DEFINES
+	PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::init_vector 
+	(PFX_VEC_ALG_TYPE::vector_t& __vector, 
+	const PFX_VEC_ALG_TYPE::vector_t& other_vec,
+	usize__t dim_count)
+{	
 	for (uindex_t i=0; i<dim_count; ++i)
 	{
-		vector_at(__vector,i) = __val;
+		vector_at(__vector, i) = vector_at_const(other_vec, i);
 	}
 	return __vector;
 }
@@ -465,7 +486,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::vector_t& PFX_VEC_ALG::init_vector
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& __matrix, 
 																																const dim_t __val , 
-																																usize_t dim_count, usize_t vector_count)
+																																usize__t dim_count, usize__t vector_count)
 {
 	for (uindex_t i=0; i<vector_count; ++i)
 	{
@@ -476,7 +497,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& 
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& __matrix, const dim_t __val , usize_t vector_count)
+PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& __matrix, const dim_t __val , usize__t vector_count)
 {
 	for (uindex_t i=0; i<vector_count; ++i)
 	{
@@ -487,7 +508,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& 
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& __matrix, const matrix_t& s_matrix, usize_t vector_count)
+PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& __matrix, const matrix_t& s_matrix, usize__t vector_count)
 {
 	for (uindex_t i=0; i<vector_count; ++i)
 	{
@@ -497,7 +518,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& 
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::init_matrix(matrix_t& __matrix, const dim_t __val , usize_t vector_count)
+PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::init_matrix(matrix_t& __matrix, const dim_t __val , usize__t vector_count)
 {
 	for (uindex_t i=0; i<vector_count; ++i)
 	{
@@ -512,21 +533,21 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_dot			
 		(const PFX_VEC_ALG_TYPE::vector_t& __vec_a, 
 		const PFX_VEC_ALG_TYPE::vector_t& __vec__b, 
-		usize_t dim_count, dim_t& PARAM_INOUT __dim_result)
+		usize__t dim_count, dim_t& PARAM_INOUT __dim_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
 	PFX_VEC_ALG_TYPE::dim_t return_val;
-	return_val = dim_alg_t::mul (vector_at(__vec_a, 0), vector_at(__vec__b, 0));
+	return_val = dim_alg_t::mul (vector_at_const(__vec_a, 0), vector_at_const(__vec__b, 0));
 
-	for (usize_t i=1; i<dim_count; ++i)
+	for (usize__t i=1; i<dim_count; ++i)
 	{
-		PFX_VECDIM_ALG_TYPE::dim_t temp;
-		temp = dim_alg_t::mul (vector_at(__vec_a, 0), vector_at(__vec__b, 0));
+		PFX_VEC_ALG_TYPE::dim_t temp;
+		temp = dim_alg_t::mul (vector_at_const(__vec_a, 0), vector_at_const(__vec__b, 0));
 		dim_alg_t::add_replace(return_val, temp); 
 	}
-
-	return return_val;
+	__dim_result = return_val;
+	return __dim_result;
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
@@ -537,22 +558,22 @@ PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector3_cross
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
-	PFX_VECDIM_ALG_TYPE::dim_t temp;
+	PFX_VEC_ALG_TYPE::dim_t temp;
 
-	vector_at(__vec_result, DIMENSION_X) = dim_alg_t::mul (vector_at(__vec_a,DIMENSION_Y), 
-		vector_at(__vec_b, DIMENSION_Z));
-	temp = dim_alg_t::mul (vector_at(__vec_a, DIMENSION_Z), vector_at(__vec_b, DIMENSION_Y));
+	vector_at(__vec_result, DIMENSION_X) = dim_alg_t::mul (vector_at_const(__vec_a,DIMENSION_Y), 
+		vector_at_const(__vec_b, DIMENSION_Z));
+	temp = dim_alg_t::mul (vector_at_const(__vec_a, DIMENSION_Z), vector_at_const(__vec_b, DIMENSION_Y));
 	dim_alg_t::sub_replace(vector_at(__vec_result, DIMENSION_X), temp);
 
-	vector_at(__vec_result, DIMENSION_Y) = dim_alg_t::mul (vector_at(__vec_a, DIMENSION_Z), 
-		vector_at(__vec_b, DIMENSION_X));
-	temp = dim_alg_t::mul (vector_at(__vec_a, DIMENSION_X), vector_at(__vec_b, DIMENSION_Z));
+	vector_at(__vec_result, DIMENSION_Y) = dim_alg_t::mul (vector_at_const(__vec_a, DIMENSION_Z), 
+		vector_at_const(__vec_b, DIMENSION_X));
+	temp = dim_alg_t::mul (vector_at_const(__vec_a, DIMENSION_X), vector_at_const(__vec_b, DIMENSION_Z));
 	dim_alg_t::sub_replace(vector_at(__vec_result, DIMENSION_Y), temp);
 
-	vector_at(__vec_result, DIMENSION_Z) = dim_alg_t::mul (vector_at(__vec_a, DIMENSION_X), 
-		vector_at(__vec_b, DIMENSION_Y));
-	temp = dim_alg_t::mul (vector_at(__vec_a, DIMENSION_Y), 
-		vector_at(__vec_b, DIMENSION_X));
+	vector_at(__vec_result, DIMENSION_Z) = dim_alg_t::mul (vector_at_const(__vec_a, DIMENSION_X), 
+		vector_at_const(__vec_b, DIMENSION_Y));
+	temp = dim_alg_t::mul (vector_at_const(__vec_a, DIMENSION_Y), 
+		vector_at_const(__vec_b, DIMENSION_X));
 	dim_alg_t::sub_replace(vector_at(__vec_result, DIMENSION_Z), temp);
 
 	return __vec_result;
@@ -560,21 +581,21 @@ PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector3_cross
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_dot			
-	(usize_t dim_count, 
+	(usize__t dim_count, 
 	const PFX_VEC_ALG_TYPE::matrix_ex_t& __matrix_a, uindex_t i_index, 
 	const PFX_VEC_ALG_TYPE::matrix_ex_t& __matrix_b, uindex_t j_index, 
 	PFX_VEC_ALG_TYPE::dim_t& PARAM_INOUT __dim_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 	PFX_VEC_ALG_TYPE::dim_t tmp_result;
-	tmp_result = dim_alg_t::mul (matrix_at(__matrix_a, i_index, 0), 
-		matrix_at(__matrix_b, 0, j_index);
+	tmp_result = dim_alg_t::mul (matrix_at_const(__matrix_a, i_index, 0), 
+		matrix_at_const(__matrix_b, 0, j_index));
 
-	for (usize_t i=1; i<dim_count; ++i)
+	for (usize__t i=1; i<dim_count; ++i)
 	{
 		PFX_VEC_ALG_TYPE::dim_t temp;
-		temp = dim_alg_t::mul (matrix_at(__matrix_a, i_index, i), 
-			matrix_at(__matrix_b, i, j_index);
+		temp = dim_alg_t::mul (matrix_at_const(__matrix_a, i_index, i), 
+			matrix_at_const(__matrix_b, i, j_index));
 		dim_alg_t::add_replace(tmp_result, temp); 
 	}
 	__dim_result = tmp_result;
@@ -583,21 +604,21 @@ PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_dot
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_dot			
-	(usize_t dim_count, 
+	(usize__t dim_count, 
 	const PFX_VEC_ALG_TYPE::matrix_t& __matrix_a, uindex_t i_index, 
 	const PFX_VEC_ALG_TYPE::matrix_t& __matrix_b, uindex_t j_index, 
 	PFX_VEC_ALG_TYPE::dim_t& PARAM_INOUT __dim_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 	PFX_VEC_ALG_TYPE::dim_t tmp_result;
-	tmp_result = dim_alg_t::mul (matrix_at(__matrix_a, i_index, 0), 
-		matrix_at(__matrix_b, 0, j_index);
+	tmp_result = dim_alg_t::mul (matrix_at_const(__matrix_a, i_index, 0), 
+		matrix_at_const(__matrix_b, 0, j_index));
 
-	for (usize_t i=1; i<dim_count; ++i)
+	for (usize__t i=1; i<dim_count; ++i)
 	{
 		PFX_VEC_ALG_TYPE::dim_t temp;
-		temp = dim_alg_t::mul (matrix_at(__matrix_a, i_index, i), 
-			matrix_at(__matrix_b, i, j_index);
+		temp = dim_alg_t::mul (matrix_at_const(__matrix_a, i_index, i), 
+			matrix_at_const(__matrix_b, i, j_index));
 		dim_alg_t::add_replace(tmp_result, temp); 
 	}
 	__dim_result = tmp_result;
@@ -606,14 +627,14 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector_mul	 (const PFX_VEC_ALG_TYPE::vector_t& __vec_a, 
-	const dim_t& __dim, usize_t dim_count, 
+	const dim_t& __dim, usize__t dim_count, 
 	PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
 	for (uindex_t i=0; i<dim_count; ++i)
 	{
-		vector_at(__vec_result, i) = dim_alg_t::mul (__dim, vector_at(__vec_a, i));
+		vector_at(__vec_result, i) = dim_alg_t::mul (__dim, vector_at_const(__vec_a, i));
 	}
 	return __vec_result;
 }
@@ -629,21 +650,21 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector_div (const PFX_VEC_ALG_TYPE::vector_t& __vec_a, 
-	const dim_t& __dim, usize_t dim_count, 
+	const dim_t& __dim, usize__t dim_count, 
 	PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
 	for (uindex_t i=0; i<dim_count; ++i)
 	{
-		vector_at(__vec_result, i) = dim_alg_t::div (vector_at(__vec_a, i), __dim);
+		vector_at(__vec_result, i) = dim_alg_t::div (vector_at_const(__vec_a, i), __dim);
 	}
 	return __vec_result;
 }
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector_div	 (const PFX_VEC_ALG_TYPE::vector_t& __vec_a, 
-	const dim_t& __dim, usize_t dim_count, 
+	const dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
 {
 	return vector_div(__vec_a, __dim, vector_dim_count(), __vec_result);
@@ -652,13 +673,13 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector_add	 (const PFX_VEC_ALG_TYPE::vector_t& __vec_a, 
 	const PFX_VEC_ALG_TYPE::vector_t& __vec_b, 
-	usize_t dim_count, PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
+	usize__t dim_count, PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
 	for (uindex_t i=0; i<dim_count; ++i)
 	{
-		vector_at(__vec_result, i) = dim_alg_t::add (vector_at(__vec_a, i), vector_at(__vec_b,i));
+		vector_at(__vec_result, i) = dim_alg_t::add (vector_at_const(__vec_a, i), vector_at_const(__vec_b,i));
 	}
 	return __vec_result;
 }
@@ -674,13 +695,13 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector_sub (const PFX_VEC_ALG_TYPE::vector_t& __vec_a, 
 	const PFX_VEC_ALG_TYPE::vector_t& __vec_b, 
-	usize_t dim_count, PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
+	usize__t dim_count, PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
 	for (uindex_t i=0; i<dim_count; ++i)
 	{
-		vector_at(__vec_result, i) = dim_alg_t::sub (vector_at(__vec_a, i), vector_at(__vec_b,i));
+		vector_at(__vec_result, i) = dim_alg_t::sub (vector_at_const(__vec_a, i), vector_at_const(__vec_b,i));
 	}
 	return __vec_result;
 }
@@ -697,7 +718,7 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_mul_matrix_direct 
 	(const PFX_VEC_ALG_TYPE::matrix_t& __mat_a, 
-	usize_t ai_count, usize_t aj_count, usize_t bj_count, 
+	usize__t ai_count, usize__t aj_count, usize__t bj_count, 
 	const PFX_VEC_ALG_TYPE::matrix_t& __mat_b, 
 	matrix_t&	PARAM_INOUT __mat_result)
 {
@@ -705,7 +726,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_mul_matrix_direct
 	{
 		for (uindex_t j=0; j<bj_count; ++j)
 		{
-			vector_dot(aj_count, __mat_a, i, __mat_b, j, matrix_at(__mat_result, i, j));
+			vector_dot(aj_count, __mat_a, i, __mat_b, j, matrix_at (__mat_result, i, j));
 		}
 		
 	}
@@ -714,7 +735,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_mul_matrix_direct
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_mul_value_direct 
 (const PFX_VEC_ALG_TYPE::matrix_t& __mat_a, 
-	usize_t i_count, usize_t j_count,
+	usize__t i_count, usize__t j_count,
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_t&	PARAM_INOUT __mat_result)
 {
@@ -729,7 +750,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_mul_value_direct
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_div_value_direct 
 	(const PFX_VEC_ALG_TYPE::matrix_t& __mat_a, 
-	usize_t i_count, usize_t j_count,
+	usize__t i_count, usize__t j_count,
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_t&	PARAM_INOUT __mat_result)
 {
@@ -743,15 +764,15 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::matrix_mul_matrix_direct 
 	(const PFX_VEC_ALG_TYPE::matrix_ex_t& __mat_a, 
-	usize_t ai_count, usize_t aj_count, usize_t bj_count, 
+	usize__t ai_count, usize__t aj_count, usize__t bj_count, 
 	const PFX_VEC_ALG_TYPE::matrix_ex_t& __mat_b, 
-	matrix_t&	PARAM_INOUT __mat_result)
+	matrix_ex_t&	PARAM_INOUT __mat_result)
 {
 	for (uindex_t i =0; i<ai_count; ++i)
 	{
 		for (uindex_t j=0; j<bj_count; ++j)
 		{
-			vector_dot(aj_count, __mat_a, i, __mat_b, j, matrix_at(__mat_result, i, j));
+			vector_dot(aj_count, __mat_a, i, __mat_b, j, matrix_at (__mat_result, i, j));
 		}
 
 	}
@@ -761,7 +782,7 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::matrix_mul_value_direct 
 	(const PFX_VEC_ALG_TYPE::matrix_ex_t& __mat_a, 
-	usize_t i_count, usize_t j_count,
+	usize__t i_count, usize__t j_count,
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_ex_t&	PARAM_INOUT __mat_result)
 {
@@ -776,7 +797,7 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::matrix_div_value_direct 
 	(const PFX_VEC_ALG_TYPE::matrix_ex_t& __mat_a, 
-	usize_t i_count, usize_t j_count,
+	usize__t i_count, usize__t j_count,
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_ex_t&	PARAM_INOUT __mat_result)
 {
@@ -789,13 +810,13 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 
 //////////////////////////////////////////////////////////////////////////
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-	PFX_INLINE usize_t PFX_SMAT_ALG::get_dim_count()
+	PFX_INLINE usize__t PFX_SMAT_ALG::get_dim_count()
 {
 	return PFX_SMAT_ALG_TYPE::vec_alg_t::vector_dim_count ();
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::Indentify_matrix (usize_t dim_count,
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::Indentify_matrix (usize__t dim_count,
 	PFX_SMAT_ALG_TYPE::matrix_t& __mat, dim_t val, dim_t null_val)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
@@ -807,22 +828,24 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::Indentify_matrix (usize_t 
 	{
 		for (uindex_t j=0; j<i; ++j)
 		{
-			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+			vec_alg_t::matrix_at (__mat, i, j) = null_val;
 		}
 
 		vec_alg_t::matrix_at (__mat, i, i) = val;
 
 		for (uindex_t j=i+1; j<dim_count; ++j)
 		{
-			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+			vec_alg_t::matrix_at (__mat, i, j) = null_val;
 		}
 	}
 	return __mat;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::Indentify_matrix (usize_t dim_count,
-	PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat, dim_t val)
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::Indentify_matrix (usize__t dim_count,
+	PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat, 
+	PFX_SMAT_ALG_TYPE::dim_t val, 
+	PFX_SMAT_ALG_TYPE::dim_t null_val)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -833,23 +856,23 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::Indentify_matrix (usize
 	{
 		for (uindex_t j=0; j<i; ++j)
 		{
-			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+			vec_alg_t::matrix_at (__mat, i, j) = null_val;
 		}
 
 		vec_alg_t::matrix_at (__mat, i, i) = val;
 
 		for (uindex_t j=i+1; j<dim_count; ++j)
 		{
-			vec_alg_t::matrix_at (__mat, 0, j) = null_val;
+			vec_alg_t::matrix_at (__mat, i, j) = null_val;
 		}
 	}
 	return __mat;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::transpose_matrix (usize_t dim_count,
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::transpose_matrix (usize__t dim_count,
 	const PFX_SMAT_ALG_TYPE::matrix_t& __mat, 
-	PFX_SMAT_ALG_TYPE::matrix_t& __mat_reslut, dim_t val)
+	PFX_SMAT_ALG_TYPE::matrix_t& __mat_reslut)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -861,7 +884,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::transpose_matrix (usize_t 
 		{
 			for (uindex_t j=0; j<dimension_count; ++j)
 			{
-				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at_const (__mat_reslut, j, i);
 			}
 		}
 	}
@@ -872,8 +895,8 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::transpose_matrix (usize_t 
 			uindex_t j=i+1;
 			for (; j<dimension_count; ++j)
 			{
-				dim_t tmpval = vec_alg_t::matrix_at (__mat_reslut, i, j);
-				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+				dim_t tmpval = vec_alg_t::matrix_at_const (__mat_reslut, i, j);
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at_const (__mat_reslut, j, i);
 				vec_alg_t::matrix_at (__mat_reslut, j, i) = tmpval;
 			}
 		}
@@ -882,9 +905,9 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::transpose_matrix (usize_t 
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::transpose_matrix (usize_t dim_count,
+PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::transpose_matrix (usize__t dim_count,
 	const PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat, 
-	PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat_reslut, dim_t val)
+	PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat_reslut)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -896,7 +919,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::transpose_matrix (usize
 		{
 			for (uindex_t j=0; j<dimension_count; ++j)
 			{
-				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at_const (__mat_reslut, j, i);
 			}
 		}
 	}
@@ -907,8 +930,8 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::transpose_matrix (usize
 			uindex_t j=i+1;
 			for (; j<dimension_count; ++j)
 			{
-				dim_t tmpval = vec_alg_t::matrix_at (__mat_reslut, i, j);
-				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at (__mat_reslut, j, i);
+				dim_t tmpval = vec_alg_t::matrix_at_const (__mat_reslut, i, j);
+				vec_alg_t::matrix_at (__mat_reslut, i, j) = vec_alg_t::matrix_at_const (__mat_reslut, j, i);
 				vec_alg_t::matrix_at (__mat_reslut, j, i) = tmpval;
 			}
 		}
@@ -918,7 +941,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::transpose_matrix (usize
 
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-static PFX_INLINE PFX_SMAT_ALG_TYPE::vector_t& PFX_SMAT_ALG::vector4_mul
+PFX_INLINE PFX_SMAT_ALG_TYPE::vector_t& PFX_SMAT_ALG::vector4_mul
 (const PFX_SMAT_ALG_TYPE::vector_t& __mat_a, 
 const PFX_SMAT_ALG_TYPE::matrix_t& __mat_b,  
 PFX_SMAT_ALG_TYPE::vector_t&	PARAM_INOUT __mat_result,
@@ -931,15 +954,15 @@ PFX_SMAT_ALG_TYPE::vector_t* PARAM_INOUT __tempbuffer,
 
 	if (__tempbuffer)
 	{
-		vec_alg_t::vector_mul (*matrix_at(__mat_b,0), vec_alg_t::vector_at (__mat_a, 0), __mat_result);
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,0), vec_alg_t::vector_at_const (__mat_a, 0), __mat_result);
 
-		vec_alg_t::vector_mul (*matrix_at(__mat_b,1), vec_alg_t::vector_at (__mat_a, 1), *__tempbuffer);
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,1), vec_alg_t::vector_at_const (__mat_a, 1), *__tempbuffer);
 		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
 
-		vec_alg_t::vector_mul (*matrix_at(__mat_b,2), vec_alg_t::vector_at (__mat_a, 2), *__tempbuffer);
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,2), vec_alg_t::vector_at_const (__mat_a, 2), *__tempbuffer);
 		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
 
-		vec_alg_t::vector_mul (*matrix_at(__mat_b,3), vec_alg_t::vector_at (__mat_a, 3), *__tempbuffer);
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,3), vec_alg_t::vector_at_const (__mat_a, 3), *__tempbuffer);
 		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
 	}
 	else
@@ -947,48 +970,122 @@ PFX_SMAT_ALG_TYPE::vector_t* PARAM_INOUT __tempbuffer,
 		dim_t tmp1;
 		dim_t tmp2;
 		//////////////////////////////////////////////////////////////////////////
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 0), vec_alg_t::matrix_at(__mat_b, 0, 0));
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 0));
 		tmp2 = tmp1;
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 1), vec_alg_t::matrix_at(__mat_b, 1, 0));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 2), vec_alg_t::matrix_at(__mat_b, 2, 0));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 3), vec_alg_t::matrix_at(__mat_b, 3, 0));
-		vec_alg_t::add_replace (temp2, tmp1);
-		vec_alg_t::vector_at(__mat_result, 0) = temp2;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 0));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 0));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 0));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 0) = tmp2;
 		//////////////////////////////////////////////////////////////////////////
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 0), vec_alg_t::matrix_at(__mat_b, 0, 1));
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 1));
 		tmp2 = tmp1;
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 1), vec_alg_t::matrix_at(__mat_b, 1, 1));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 2), vec_alg_t::matrix_at(__mat_b, 2, 1));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 3), vec_alg_t::matrix_at(__mat_b, 3, 1));
-		vec_alg_t::add_replace (temp2, tmp1);
-		vec_alg_t::vector_at(__mat_result, 1) = temp2;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 1));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 1));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 1));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 1) = tmp2;
 		//////////////////////////////////////////////////////////////////////////
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 0), vec_alg_t::matrix_at(__mat_b, 0, 2));
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 2));
 		tmp2 = tmp1;
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 1), vec_alg_t::matrix_at(__mat_b, 1, 2));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 2), vec_alg_t::matrix_at(__mat_b, 2, 2));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 3), vec_alg_t::matrix_at(__mat_b, 3, 2));
-		vec_alg_t::add_replace (temp2, tmp1);
-		vec_alg_t::vector_at(__mat_result, 2) = temp2;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 2));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 2));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 2));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 2) = tmp2;
 		//////////////////////////////////////////////////////////////////////////
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 0), vec_alg_t::matrix_at(__mat_b, 0, 3));
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 3));
 		tmp2 = tmp1;
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 1), vec_alg_t::matrix_at(__mat_b, 1, 3));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 2), vec_alg_t::matrix_at(__mat_b, 2, 3));
-		vec_alg_t::add_replace (temp2, tmp1);
-		tmp1 = vec_alg_t::mul (vec_alg_t::vector_at (__mat_a, 3), vec_alg_t::matrix_at(__mat_b, 3, 3));
-		vec_alg_t::add_replace (temp2, tmp1);
-		vec_alg_t::vector_at(__mat_result, 3) = temp2;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 3));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 3));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 3));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 3) = tmp2;
 	}
-	
+	return __mat_result;
 }
+
+PFX_SMAT_ALG_TEMPLATE_DEFINES
+	PFX_INLINE PFX_SMAT_ALG_TYPE::vector_t& PFX_SMAT_ALG::vector4_mul
+	(const PFX_SMAT_ALG_TYPE::vector_t& __mat_a, 
+	const PFX_SMAT_ALG_TYPE::matrix_ex_t& __mat_b,  
+	PFX_SMAT_ALG_TYPE::vector_t&	PARAM_INOUT __mat_result,
+	PFX_SMAT_ALG_TYPE::vector_t* PARAM_INOUT __tempbuffer,
+	u32_t delta)
+{
+	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
+	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
+
+	if (__tempbuffer)
+	{
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,0), vec_alg_t::vector_at_const (__mat_a, 0), __mat_result);
+
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,1), vec_alg_t::vector_at_const (__mat_a, 1), *__tempbuffer);
+		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
+
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,2), vec_alg_t::vector_at_const (__mat_a, 2), *__tempbuffer);
+		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
+
+		vec_alg_t::vector_mul (*vec_alg_t::matrix_at_const(__mat_b,3), vec_alg_t::vector_at_const (__mat_a, 3), *__tempbuffer);
+		vec_alg_t::vector_add (*__tempbuffer, __mat_result, __mat_result);
+	}
+	else
+	{
+		dim_t tmp1;
+		dim_t tmp2;
+		//////////////////////////////////////////////////////////////////////////
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 0));
+		tmp2 = tmp1;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 0));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 0));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 0));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 0) = tmp2;
+		//////////////////////////////////////////////////////////////////////////
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 1));
+		tmp2 = tmp1;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 1));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 1));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 1));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 1) = tmp2;
+		//////////////////////////////////////////////////////////////////////////
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 2));
+		tmp2 = tmp1;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 2));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 2));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 2));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 2) = tmp2;
+		//////////////////////////////////////////////////////////////////////////
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 3));
+		tmp2 = tmp1;
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 3));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 3));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		tmp1 = dim_alg_t::mul (vec_alg_t::vector_at_const (__mat_a, 3), vec_alg_t::matrix_at_const(__mat_b, 3, 3));
+		dim_alg_t::add_replace (tmp2, tmp1);
+		vec_alg_t::vector_at(__mat_result, 3) = tmp2;
+	}
+	return __mat_result;
+}
+
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::matrix2x2_mul 
 (const PFX_SMAT_ALG_TYPE::matrix_t& __mat_a, 
@@ -1004,31 +1101,31 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t& PFX_SMAT_ALG::matrix2x2_mul
 	
 	// 0, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b,0,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b,0,0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b,1,0));
-	vec_alg_t::matrix_at (__mat_result, 0, 0) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b,1,0));
+	vec_alg_t::matrix_at (__mat_result, 0, 0) = dim_alg_t::add (temp1, temp2);
 
 	//0, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b,0,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b,0,1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b,1,1));
-	vec_alg_t::matrix_at (__mat_result, 0, 1) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b,1,1));
+	vec_alg_t::matrix_at (__mat_result, 0, 1) = dim_alg_t::add (temp1, temp2);
 
 	// 1, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b,0,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b,0,0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b,1,0));
-	vec_alg_t::matrix_at (__mat_result, 1, 0) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b,1,0));
+	vec_alg_t::matrix_at (__mat_result, 1, 0) = dim_alg_t::add (temp1, temp2);
 
 	// 1, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b,0,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b,0,1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b,1,1));
-	vec_alg_t::matrix_at (__mat_result, 1, 1) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b,1,1));
+	vec_alg_t::matrix_at (__mat_result, 1, 1) = dim_alg_t::add (temp1, temp2);
 	return __mat_result;
 }
 
@@ -1047,96 +1144,96 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 
 	// 0, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b, 0, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b, 1, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 0));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 2), vec_alg_t::matrix_at(__mat_b, 2, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 0));
 
-	vec_alg_t::matrix_at (__mat_result, 0, 0) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 0, 0) = dim_alg_t::add (temp1, temp2);
 	// 0, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b, 0, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b, 1, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 1));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 2), vec_alg_t::matrix_at(__mat_b, 2, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 1));
 
-	vec_alg_t::matrix_at (__mat_result, 0, 1) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 0, 1) = dim_alg_t::add (temp1, temp2);
 	// 0, 2
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b, 0, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 2));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b, 1, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 2));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 2), vec_alg_t::matrix_at(__mat_b, 2, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 2));
 
-	vec_alg_t::matrix_at (__mat_result, 0, 2) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 0, 2) = dim_alg_t::add (temp1, temp2);
 
 	// 1, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b, 0, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b, 1, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 0));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 2), vec_alg_t::matrix_at(__mat_b, 2, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 0));
 
-	vec_alg_t::matrix_at (__mat_result, 1, 0) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 1, 0) = dim_alg_t::add (temp1, temp2);
 	// 1, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b, 0, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b, 1, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 1));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 2), vec_alg_t::matrix_at(__mat_b, 2, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 1));
 
-	vec_alg_t::matrix_at (__mat_result, 1, 1) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 1, 1) = dim_alg_t::add (temp1, temp2);
 	// 1, 2
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b, 0, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 2));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b, 1, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 2));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 2), vec_alg_t::matrix_at(__mat_b, 2, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 2));
 
-	vec_alg_t::matrix_at (__mat_result, 1, 2) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 1, 2) = dim_alg_t::add (temp1, temp2);
 
 	// 2, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 0), vec_alg_t::matrix_at(__mat_b, 0, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 1), vec_alg_t::matrix_at(__mat_b, 1, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 0));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 2), vec_alg_t::matrix_at(__mat_b, 2, 0));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 0));
 
-	vec_alg_t::matrix_at (__mat_result, 2, 0) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 2, 0) = dim_alg_t::add (temp1, temp2);
 	// 2, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 0), vec_alg_t::matrix_at(__mat_b, 0, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 1), vec_alg_t::matrix_at(__mat_b, 1, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 1));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 2), vec_alg_t::matrix_at(__mat_b, 2, 1));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 1));
 
-	vec_alg_t::matrix_at (__mat_result, 2, 1) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 2, 1) = dim_alg_t::add (temp1, temp2);
 	// 2, 2
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 0), vec_alg_t::matrix_at(__mat_b, 0, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 0), vec_alg_t::matrix_at_const(__mat_b, 0, 2));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 1), vec_alg_t::matrix_at(__mat_b, 1, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 1), vec_alg_t::matrix_at_const(__mat_b, 1, 2));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 2), vec_alg_t::matrix_at(__mat_b, 2, 2));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 2), vec_alg_t::matrix_at_const(__mat_b, 2, 2));
 
-	vec_alg_t::matrix_at (__mat_result, 2, 2) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 2, 2) = dim_alg_t::add (temp1, temp2);
 	return __mat_result;
 }
 
@@ -1182,31 +1279,31 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 
 	// 0, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b,0,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b,0,0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b,1,0));
-	vec_alg_t::matrix_at (__mat_result, 0, 0) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b,1,0));
+	vec_alg_t::matrix_at (__mat_result, 0, 0) = dim_alg_t::add (temp1, temp2);
 
 	//0, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b,0,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b,0,1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b,1,1));
-	vec_alg_t::matrix_at (__mat_result, 0, 1) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b,1,1));
+	vec_alg_t::matrix_at (__mat_result, 0, 1) = dim_alg_t::add (temp1, temp2);
 
 	// 1, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b,0,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b,0,0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b,1,0));
-	vec_alg_t::matrix_at (__mat_result, 1, 0) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b,1,0));
+	vec_alg_t::matrix_at (__mat_result, 1, 0) = dim_alg_t::add (temp1, temp2);
 
 	// 1, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b,0,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b,0,1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b,1,1));
-	vec_alg_t::matrix_at (__mat_result, 1, 1) = vec_alg_t::add (temp1, temp2);
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b,1,1));
+	vec_alg_t::matrix_at (__mat_result, 1, 1) = dim_alg_t::add (temp1, temp2);
 	return __mat_result;
 }
 
@@ -1225,96 +1322,96 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 
 	// 0, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b,0,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b,0,0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b,1,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b,1,0));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 2), vec_alg_t::matrix_at(__mat_b,2,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 2), vec_alg_t::matrix_at_const(__mat_b,2,0));
 
-	vec_alg_t::matrix_at (__mat_result, 0, 0) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 0, 0) = dim_alg_t::add (temp1, temp2);
 	// 0, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b,0,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b,0,1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b,1,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b,1,1));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 2), vec_alg_t::matrix_at(__mat_b,2,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 2), vec_alg_t::matrix_at_const(__mat_b,2,1));
 
-	vec_alg_t::matrix_at (__mat_result, 0, 1) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 0, 1) = dim_alg_t::add (temp1, temp2);
 	// 0, 2
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 0), vec_alg_t::matrix_at(__mat_b,0,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 0), vec_alg_t::matrix_at_const(__mat_b,0,2));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 1), vec_alg_t::matrix_at(__mat_b,1,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 1), vec_alg_t::matrix_at_const(__mat_b,1,2));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 0, 2), vec_alg_t::matrix_at(__mat_b,2,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 0, 2), vec_alg_t::matrix_at_const(__mat_b,2,2));
 
-	vec_alg_t::matrix_at (__mat_result, 0, 2) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 0, 2) = dim_alg_t::add (temp1, temp2);
 
 	// 1, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b,0,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b,0,0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b,1,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b,1,0));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 2), vec_alg_t::matrix_at(__mat_b,2,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 2), vec_alg_t::matrix_at_const(__mat_b,2,0));
 
-	vec_alg_t::matrix_at (__mat_result, 1, 0) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 1, 0) = dim_alg_t::add (temp1, temp2);
 	// 1, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b,0,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b,0,1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b,1,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b,1,1));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 2), vec_alg_t::matrix_at(__mat_b,2,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 2), vec_alg_t::matrix_at_const(__mat_b,2,1));
 
-	vec_alg_t::matrix_at (__mat_result, 1, 1) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 1, 1) = dim_alg_t::add (temp1, temp2);
 	// 1, 2
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 0), vec_alg_t::matrix_at(__mat_b,0,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 0), vec_alg_t::matrix_at_const(__mat_b,0,2));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 1), vec_alg_t::matrix_at(__mat_b,1,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 1), vec_alg_t::matrix_at_const(__mat_b,1,2));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 1, 2), vec_alg_t::matrix_at(__mat_b,2,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 1, 2), vec_alg_t::matrix_at_const(__mat_b,2,2));
 
-	vec_alg_t::matrix_at (__mat_result, 1, 2) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 1, 2) = dim_alg_t::add (temp1, temp2);
 
 	// 2, 0
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 0), vec_alg_t::matrix_at(__mat_b,0,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 0), vec_alg_t::matrix_at_const(__mat_b,0,0));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 1), vec_alg_t::matrix_at(__mat_b,1,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 1), vec_alg_t::matrix_at_const(__mat_b,1,0));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 2), vec_alg_t::matrix_at(__mat_b,2,0));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 2), vec_alg_t::matrix_at_const(__mat_b,2,0));
 
-	vec_alg_t::matrix_at (__mat_result, 2, 0) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 2, 0) = dim_alg_t::add (temp1, temp2);
 	// 2, 1
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 0), vec_alg_t::matrix_at(__mat_b,0,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 0), vec_alg_t::matrix_at_const(__mat_b,0,1));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 1), vec_alg_t::matrix_at(__mat_b,1,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 1), vec_alg_t::matrix_at_const(__mat_b,1,1));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 2), vec_alg_t::matrix_at(__mat_b,2,1));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 2), vec_alg_t::matrix_at_const(__mat_b,2,1));
 
-	vec_alg_t::matrix_at (__mat_result, 2, 1) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 2, 1) = dim_alg_t::add (temp1, temp2);
 	// 2, 2
 	temp1 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 0), vec_alg_t::matrix_at(__mat_b,0,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 0), vec_alg_t::matrix_at_const(__mat_b,0,2));
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 1), vec_alg_t::matrix_at(__mat_b,1,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 1), vec_alg_t::matrix_at_const(__mat_b,1,2));
 	dim_alg_t::add_replace (temp1, temp2);
 	temp2 = dim_alg_t::mul 
-		(vec_alg_t::matrix_at(__mat_a, 2, 2), vec_alg_t::matrix_at(__mat_b,2,2));
+		(vec_alg_t::matrix_at_const(__mat_a, 2, 2), vec_alg_t::matrix_at_const(__mat_b,2,2));
 
-	vec_alg_t::matrix_at (__mat_result, 2, 2) = vec_alg_t::add (temp1, temp2);
+	vec_alg_t::matrix_at (__mat_result, 2, 2) = dim_alg_t::add (temp1, temp2);
 	return __mat_result;
 }
 
@@ -1347,12 +1444,14 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t& PFX_SMAT_ALG::matrixNxN_mul 
-(usize_t dim_count, 
+(usize__t dim_count, 
 	const matrix_ex_t& __mat_a, const matrix_ex_t& __mat_b,  
 	matrix_ex_t&	PARAM_INOUT __mat_result,
 	cw_buffer_t* PARAM_INOUT __tempbuffer,
 	u32_t delta)
 {
+
+
 	return __mat_result;
 }
 
@@ -1375,7 +1474,7 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::clear_oneline 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	uindex_t test_line, uindex_t clear_line, 
-	uindex_t line_index, usize_t dim_count)
+	uindex_t line_index, usize__t dim_count)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -1388,7 +1487,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::clear_oneline
 
 	for (uindex_t i=line_index; i<dim_count; ++i)
 	{
-		dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, test_line, i), mul_factor);
+		dim_alg_t::mul_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), mul_factor);
 		dim_alg_t::sub_replace(vec_alg_t::matrix_at (__matrix, clear_line, i), vec_alg_t::matrix_at (__matrix, test_line, i));
 	}
 	return mul_factor;
@@ -1399,7 +1498,7 @@ PFX_INLINE void PFX_SMAT_ALG::clear_oneline_same
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	uindex_t test_line, 
 	uindex_t clear_line, PFX_SMAT_ALG_TYPE::dim_t mul_factor,
-	usize_t dim_count)
+	usize__t dim_count)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -1419,7 +1518,7 @@ PFX_INLINE void PFX_SMAT_ALG::restore_oneline
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	uindex_t restore_line,uindex_t line_index,
 	PFX_SMAT_ALG_TYPE::dim_t mul_factor,
-	usize_t dim_count)
+	usize__t dim_count)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -1433,10 +1532,10 @@ PFX_INLINE void PFX_SMAT_ALG::restore_oneline
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE usize_t PFX_SMAT_ALG::rev_clear_oneline 
+PFX_INLINE usize__t PFX_SMAT_ALG::rev_clear_oneline 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	uindex_t clear_line,	
-	usize_t	 dim_count,
+	usize__t	 dim_count,
 	PFX_SMAT_ALG_TYPE::clr_mul_factor_t* mul_factor, u32_t delta)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
@@ -1472,7 +1571,7 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::rev_clear_oneline_same 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	uindex_t clear_line,
-	usize_t dim_count, 
+	usize__t dim_count, 
 	const PFX_SMAT_ALG_TYPE::clr_mul_factor_t* PARAM_IN mul_factor)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
@@ -1507,7 +1606,7 @@ PFX_INLINE void PFX_SMAT_ALG::restore_oneline
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	uindex_t restore_line, uindex_t line_index,
 	PFX_SMAT_ALG_TYPE::dim_t mul_factor, 
-	usize_t dim_count, 
+	usize__t dim_count, 
 	uindex_t except_j)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
@@ -1544,7 +1643,7 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::
 clear_oneline (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  
 	uindex_t test_line, uindex_t clear_line,
-	uindex_t line_index, usize_t dim_count,
+	uindex_t line_index, usize__t dim_count,
 	uindex_t except_j)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
@@ -1591,7 +1690,7 @@ clear_oneline (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE void PFX_SMAT_ALG::clear_oneline_same 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  uindex_t test_line, 
-usize_t dim_count)
+usize__t dim_count)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -1615,7 +1714,7 @@ usize_t dim_count)
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE uindex_t PFX_SMAT_ALG::find_test_line 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __matrix,  uindex_t line_index,
-usize_t dim_count)
+usize__t dim_count)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t	dim_alg_t;
@@ -1649,7 +1748,7 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix1x1_det (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
-	return vec_alg_t::matrix_at (__mat, 0, 0);
+	return vec_alg_t::matrix_at_const (__mat, 0, 0);
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
@@ -1661,8 +1760,8 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix2x2_det (const PFX_SMAT_
 
 	dim_t __pos;
 	dim_t __neg;
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 0), vec_alg_t::matrix_at (__mat, 1, 1));  
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 1), vec_alg_t::matrix_at (__mat, 1, 0));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 0), vec_alg_t::matrix_at_const (__mat, 1, 1));  
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 1), vec_alg_t::matrix_at_const (__mat, 1, 0));
 	return dim_alg_t::sub (__pos, __neg);
 }
 
@@ -1677,31 +1776,47 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix3x3_det (const PFX_SMAT_
 	dim_t __neg;
 	dim_t __res;
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 0), vec_alg_t::matrix_at (__mat, 1, 1));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat,2,2));
-	
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 2), vec_alg_t::matrix_at (__mat, 1, 1));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat,2,0));
-	
-	__res = dim_alg_t::sub (__pos, __neg);
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 2), 
+		vec_alg_t::matrix_at_const (__mat, 1, 1));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, 2, 0));
+
+	__res = __neg;
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 0), 
+		vec_alg_t::matrix_at_const (__mat, 1, 2));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, 2, 1));
+
+	dim_alg_t::add_replace (__res, __neg);
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 1), 
+		vec_alg_t::matrix_at_const (__mat, 1, 0));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, 2, 2));
+
+	dim_alg_t::add_replace (__neg, __res);
+
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 1), vec_alg_t::matrix_at (__mat, 1, 2));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat,2,0));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 0), 
+		vec_alg_t::matrix_at_const (__mat, 1, 1));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, 2, 2));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 0), vec_alg_t::matrix_at (__mat, 1, 2));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, 2, 1));
+	__res = __pos;
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
-	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 2), vec_alg_t::matrix_at (__mat, 1, 0));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, 2, 1));
-	
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 1), vec_alg_t::matrix_at (__mat, 1, 0));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, 2, 2));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 1), 
+		vec_alg_t::matrix_at_const (__mat, 1, 2));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, 2, 0));
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
+	dim_alg_t::add_replace (__res, __pos);
 
-	return dim_alg_t::sub (__pos, __neg);
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 2), 
+		vec_alg_t::matrix_at_const (__mat, 1, 0));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, 2, 1));
+
+	dim_alg_t::add_replace (__res, __pos);
+
+	dim_alg_t::sub_replace (__res, __neg);
+
+	return __res;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
@@ -1714,16 +1829,16 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix1x1_algebraic_cofactor_d
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix2x2_algebraic_cofactor_det 
 (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat, 
-	usize_t x, usize_t y)
+	usize__t x, usize__t y)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
-	return vec_alg_t::matrix_at (__mat, y, x);
+	return vec_alg_t::matrix_at_const (__mat,(0 == x)?1:0, (0 == y)?1:0);
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix3x3_algebraic_cofactor_det 
 (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat, 
-	usize_t x, usize_t y)
+	usize__t x, usize__t y)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
@@ -1731,7 +1846,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix3x3_algebraic_cofactor_d
 
 	dim_t __pos;
 	dim_t __neg;
-	dim_t __temp;
+	//dim_t __temp;
 
 	uindex_t map_xindex[2];
 	uindex_t map_yindex[2];
@@ -1742,17 +1857,17 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix3x3_algebraic_cofactor_d
 	map_yindex [0] = (0 == y)?1:0;
 	map_yindex [1] = (1 == y)?(y+1):(map_yindex [0]+1);
 
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[0]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[1]));  
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[1]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[0]));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[0]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[1]));  
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[1]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[0]));
 	return dim_alg_t::sub (__pos, __neg);
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix4x4_algebraic_cofactor_det 
 (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat, 
-	usize_t x, usize_t y)
+	usize__t x, usize__t y)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
@@ -1773,48 +1888,58 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix4x4_algebraic_cofactor_d
 	dim_t __neg;
 	dim_t __res;
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[0]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[1]));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[2]));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[2]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[1]));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[0]));
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[2]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[1]));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[0]));
 
-	__res = dim_alg_t::sub (__pos, __neg);
+	__res = __neg;
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[0]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[2]));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[1]));
+
+	dim_alg_t::add_replace (__res, __neg);
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[1]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[0]));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[2]));
+
+	dim_alg_t::add_replace (__neg, __res);
+
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[1]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[2]));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[0]));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[0]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[1]));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[2]));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[0]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[2]));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[1]));
+	__res = __pos;
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
-	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[2]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[0]));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[1]));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[1]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[2]));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[0]));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[1]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[0]));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[2]));
+	dim_alg_t::add_replace (__res, __pos);
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[2]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[0]));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[1]));
 
-	return dim_alg_t::sub (__pos, __neg);
+	dim_alg_t::add_replace (__res, __pos);
+
+	dim_alg_t::sub_replace (__res, __neg);
+
+	return __res;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix1x1_det (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat)
+	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix1x1_det (const PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
-	return vec_alg_t::matrix_at (__mat, 0, 0);
+	return vec_alg_t::matrix_at_const (__mat, 0, 0);
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix2x2_det (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat)
+	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix2x2_det (const PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
@@ -1822,13 +1947,13 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 
 	dim_t __pos;
 	dim_t __neg;
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 0), vec_alg_t::matrix_at (__mat, 1, 1));  
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 1), vec_alg_t::matrix_at (__mat, 1, 0));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 0), vec_alg_t::matrix_at_const (__mat, 1, 1));  
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 1), vec_alg_t::matrix_at_const (__mat, 1, 0));
 	return dim_alg_t::sub (__pos, __neg);
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix3x3_det (const PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat)
+	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix3x3_det (const PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
@@ -1838,31 +1963,47 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 	dim_t __neg;
 	dim_t __res;
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 0), vec_alg_t::matrix_at (__mat, 1, 1));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat,2,2));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 2), vec_alg_t::matrix_at (__mat, 1, 1));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat,2,0));
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 2), 
+		vec_alg_t::matrix_at_const (__mat, 1, 1));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, 2, 0));
 
-	__res = dim_alg_t::sub (__pos, __neg);
+	__res = __neg;
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 0), 
+		vec_alg_t::matrix_at_const (__mat, 1, 2));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, 2, 1));
+
+	dim_alg_t::add_replace (__res, __neg);
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 1), 
+		vec_alg_t::matrix_at_const (__mat, 1, 0));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, 2, 2));
+
+	dim_alg_t::add_replace (__neg, __res);
+
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 1), vec_alg_t::matrix_at (__mat, 1, 2));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat,2,0));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 0), 
+		vec_alg_t::matrix_at_const (__mat, 1, 1));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, 2, 2));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 0), vec_alg_t::matrix_at (__mat, 1, 2));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, 2, 1));
+	__res = __pos;
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
-	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 2), vec_alg_t::matrix_at (__mat, 1, 0));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, 2, 1));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 1), 
+		vec_alg_t::matrix_at_const (__mat, 1, 2));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, 2, 0));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, 0, 1), vec_alg_t::matrix_at (__mat, 1, 0));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, 2, 2));
+	dim_alg_t::add_replace (__res, __pos);
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, 0, 2), 
+		vec_alg_t::matrix_at_const (__mat, 1, 0));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, 2, 1));
 
-	return dim_alg_t::sub (__pos, __neg);
+	dim_alg_t::add_replace (__res, __pos);
+
+	dim_alg_t::sub_replace (__res, __neg);
+
+	return __res;
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
@@ -1875,16 +2016,16 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix2x2_algebraic_cofactor_det 
 	(const PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat, 
-	usize_t x, usize_t y)
+	usize__t x, usize__t y)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
-	return vec_alg_t::matrix_at (__mat, y, x);
+	return vec_alg_t::matrix_at_const (__mat,(0 == x)?1:0, (0 == y)?1:0);
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix3x3_algebraic_cofactor_det 
 	(const PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat, 
-	usize_t x, usize_t y)
+	usize__t x, usize__t y)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
@@ -1892,7 +2033,7 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 
 	dim_t __pos;
 	dim_t __neg;
-	dim_t __temp;
+	//dim_t __temp;
 
 	uindex_t map_xindex[2];
 	uindex_t map_yindex[2];
@@ -1903,17 +2044,17 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 	map_yindex [0] = (0 == y)?1:0;
 	map_yindex [1] = (1 == y)?(y+1):(map_yindex [0]+1);
 
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[0]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[1]));  
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[1]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[0]));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[0]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[1]));  
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[1]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[0]));
 	return dim_alg_t::sub (__pos, __neg);
 }
 
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix4x4_algebraic_cofactor_det 
 	(const PFX_SMAT_ALG_TYPE::matrix_t& PARAM_INOUT __mat, 
-	usize_t x, usize_t y)
+	usize__t x, usize__t y)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
@@ -1934,44 +2075,54 @@ PFX_SMAT_ALG_TEMPLATE_DEFINES
 	dim_t __neg;
 	dim_t __res;
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[0]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[1]));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[2]));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[2]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[1]));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[0]));
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[2]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[1]));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[0]));
 
-	__res = dim_alg_t::sub (__pos, __neg);
+	__res = __neg;
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[0]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[2]));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[1]));
+
+	dim_alg_t::add_replace (__res, __neg);
+
+	__neg = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[1]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[0]));
+	dim_alg_t::mul_replace (__neg, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[2]));
+
+	dim_alg_t::add_replace (__neg, __res);
+
 	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[1]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[2]));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[0]));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[0]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[1]));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[2]));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[0]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[2]));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[1]));
+	__res = __pos;
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
-	//////////////////////////////////////////////////////////////////////////
-	__pos = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[2]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[0]));  
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[1]));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[1]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[2]));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[0]));
 
-	__neg = dim_alg_t::mul(vec_alg_t::matrix_at (__mat, map_xindex[0], map_yindex[1]), 
-		vec_alg_t::matrix_at (__mat, map_xindex[1], map_yindex[0]));
-	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at (__mat, map_xindex[2], map_yindex[2]));
+	dim_alg_t::add_replace (__res, __pos);
 
-	dim_alg_t::add_replace (__res, dim_alg_t::sub (__pos, __neg));
+	__pos = dim_alg_t::mul(vec_alg_t::matrix_at_const (__mat, map_xindex[0], map_yindex[2]), 
+		vec_alg_t::matrix_at_const (__mat, map_xindex[1], map_yindex[0]));  
+	dim_alg_t::mul_replace (__pos, vec_alg_t::matrix_at_const (__mat, map_xindex[2], map_yindex[1]));
 
-	return dim_alg_t::sub (__pos, __neg);
+	dim_alg_t::add_replace (__res, __pos);
+
+	dim_alg_t::sub_replace (__res, __neg);
+
+	return __res;
 }
 
 // 高斯消元法
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_det 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_replace, 
-	usize_t dim_count,
+	usize__t dim_count,
 	u32_t delta)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
@@ -1990,20 +2141,20 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_det
 			det = -det;
 		}
 		// 判断是否可逆，不可逆的方阵，行列式的值必为0
-		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, i), 0, delta))
+		if (dim_alg_t::equals(vec_alg_t::matrix_at_const(__mat_replace, i, i), 0, delta))
 		{
 			det = 0;
 			break;
 		}
 		//叠加值
-		dim_alg_t::mul_replace(det, vec_alg_t::matrix_at(__mat_replace, i, i));
+		dim_alg_t::mul_replace(det, vec_alg_t::matrix_at_const(__mat_replace, i, i));
 
 		if (i < dim_count-1)
 		{
 			// 消元并恢复
 			for (uindex_t k=i+1; k< dim_count;++k)
 			{
-				if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, k, i), 0, delta))
+				if (dim_alg_t::equals(vec_alg_t::matrix_at_const(__mat_replace, k, i), 0, delta))
 				{
 					continue;
 				}
@@ -2018,8 +2169,8 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_det
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_algebraic_cofactor_det 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_replace, 
-	usize_t dim_count, 
-	usize_t x, usize_t y,
+	usize__t dim_count, 
+	usize__t x, usize__t y,
 	u32_t delta)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
@@ -2049,22 +2200,22 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_algebraic_cofactor_det
 			++j_itr;
 		}
 		// 当主元为0的时候，行列式的值必为0，是不可逆方阵
-		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, j_itr), 0, delta))
+		if (dim_alg_t::equals(vec_alg_t::matrix_at_const(__mat_replace, i, j_itr), 0, delta))
 		{
 			det = 0;
 			break;
 		}
 		// 跌成行列式的值
-		dim_alg_t::mul_replace(det, vec_alg_t::matrix_at(__mat_replace, i, j_itr));
+		dim_alg_t::mul_replace(det, vec_alg_t::matrix_at_const(__mat_replace, i, j_itr));
 
 		// 除主元行外消除主元列位置的其他行的值
 		if (i < dim_count-1)
 		{
 			for (uindex_t k=i+1; k< dim_count;++k)
 			{
-				if (vec_alg_t::matrix_at(__mat_replace, k))
+				if (vec_alg_t::matrix_at_const(__mat_replace, k))
 				{
-					if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, k, j_itr), 0, delta))
+					if (dim_alg_t::equals(vec_alg_t::matrix_at_const(__mat_replace, k, j_itr), 0, delta))
 					{
 						continue;
 					}
@@ -2083,14 +2234,14 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::dim_t PFX_SMAT_ALG::matrix_algebraic_cofactor_det
 //
 // 求秩 （方阵）
 PFX_SMAT_ALG_TEMPLATE_DEFINES
-PFX_INLINE usize_t PFX_SMAT_ALG::matrix_rank (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_replace, 
-	usize_t dim_count, u32_t delta)
+PFX_INLINE usize__t PFX_SMAT_ALG::matrix_rank (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_replace, 
+	usize__t dim_count, u32_t delta)
 {
 	typedef PFX_SMAT_ALG_TYPE::vec_alg_t	vec_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_alg_t dim_alg_t;
 	typedef PFX_SMAT_ALG_TYPE::dim_t			dim_t;
 
-	usize_t rank = 0;
+	usize__t rank = 0;
 
 	for (uindex_t i=0; i<dim_count; ++i)
 	{
@@ -2098,9 +2249,9 @@ PFX_INLINE usize_t PFX_SMAT_ALG::matrix_rank (PFX_SMAT_ALG_TYPE::matrix_ex_t& PA
 		j = find_test_line (__mat_replace, i, dim_count);
 		if (i != j)
 		{
-			swap_line_unsafe(__mat_replace, i, j);
+			swap_line (__mat_replace, i, j);
 		}
-		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, i), 0, delta))
+		if (dim_alg_t::equals(vec_alg_t::matrix_at_const(__mat_replace, i, i), 0, delta))
 		{
 			break;
 		}
@@ -2110,7 +2261,7 @@ PFX_INLINE usize_t PFX_SMAT_ALG::matrix_rank (PFX_SMAT_ALG_TYPE::matrix_ex_t& PA
 		{
 			for (uindex_t k=i+1; k< dim_count;++k)
 			{
-				if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, k, i), 0, delta))
+				if (dim_alg_t::equals(vec_alg_t::matrix_at_const(__mat_replace, k, i), 0, delta))
 				{
 					continue;
 				}
@@ -2173,17 +2324,17 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 2, 2);
 	vec_alg_t::matrix_at (__mat_inverse, 2, 2) = dim_alg_t::mul (det_a, temp);
 	//-inverse(A) C
-	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 0, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 1, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 2, 3));
-	vec_alg_t::matrix_at(__mat_inverse, 0, 3) = -vec_alg_t::matrix_at(__mat_inverse, 0, 3);
-	vec_alg_t::matrix_at(__mat_inverse, 1, 3) = -vec_alg_t::matrix_at(__mat_inverse, 1, 3);
-	vec_alg_t::matrix_at(__mat_inverse, 2, 3) = -vec_alg_t::matrix_at(__mat_inverse, 2, 3);
+	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 0, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 1, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 2, 3));
+	vec_alg_t::matrix_at(__mat_inverse, 0, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 0, 3);
+	vec_alg_t::matrix_at(__mat_inverse, 1, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 1, 3);
+	vec_alg_t::matrix_at(__mat_inverse, 2, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 2, 3);
 	//
-	vec_alg_t::matrix_at(__mat_inverse, 3, 0) = vec_alg_t::matrix_at(__mat_a, 3, 0);
-	vec_alg_t::matrix_at(__mat_inverse, 3, 1) = vec_alg_t::matrix_at(__mat_a, 3, 1);
-	vec_alg_t::matrix_at(__mat_inverse, 3, 2) = vec_alg_t::matrix_at(__mat_a, 3, 2);
-	vec_alg_t::matrix_at(__mat_inverse, 3, 3) = vec_alg_t::matrix_at(__mat_a, 3, 3);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 0) = vec_alg_t::matrix_at_const(__mat_a, 3, 0);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 1) = vec_alg_t::matrix_at_const(__mat_a, 3, 1);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 2) = vec_alg_t::matrix_at_const(__mat_a, 3, 2);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 3) = vec_alg_t::matrix_at_const(__mat_a, 3, 3);
 	return __mat_inverse;
 }
 
@@ -2238,17 +2389,17 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 	temp =  matrix3x3_algebraic_cofactor_det(__mat_a, 2, 2);
 	vec_alg_t::matrix_at (__mat_inverse, 2, 2) = dim_alg_t::mul (det_a, temp);
 	//-inverse(A) C
-	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 0, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 1, 3));
-	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at(__mat_inverse, 2, 3));
-	vec_alg_t::matrix_at(__mat_inverse, 0, 3) = -vec_alg_t::matrix_at(__mat_inverse, 0, 3);
-	vec_alg_t::matrix_at(__mat_inverse, 1, 3) = -vec_alg_t::matrix_at(__mat_inverse, 1, 3);
-	vec_alg_t::matrix_at(__mat_inverse, 2, 3) = -vec_alg_t::matrix_at(__mat_inverse, 2, 3);
+	vec_alg_t::vector_dot (3,__mat_inverse, 0, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 0, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 1, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 1, 3));
+	vec_alg_t::vector_dot (3,__mat_inverse, 2, __mat_a, 3, vec_alg_t::matrix_at_const(__mat_inverse, 2, 3));
+	vec_alg_t::matrix_at(__mat_inverse, 0, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 0, 3);
+	vec_alg_t::matrix_at(__mat_inverse, 1, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 1, 3);
+	vec_alg_t::matrix_at(__mat_inverse, 2, 3) = -vec_alg_t::matrix_at_const(__mat_inverse, 2, 3);
 	//
-	vec_alg_t::matrix_at(__mat_inverse, 3, 0) = vec_alg_t::matrix_at(__mat_a, 3, 0);
-	vec_alg_t::matrix_at(__mat_inverse, 3, 1) = vec_alg_t::matrix_at(__mat_a, 3, 1);
-	vec_alg_t::matrix_at(__mat_inverse, 3, 2) = vec_alg_t::matrix_at(__mat_a, 3, 2);
-	vec_alg_t::matrix_at(__mat_inverse, 3, 3) = vec_alg_t::matrix_at(__mat_a, 3, 3);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 0) = vec_alg_t::matrix_at_const(__mat_a, 3, 0);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 1) = vec_alg_t::matrix_at_const(__mat_a, 3, 1);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 2) = vec_alg_t::matrix_at_const(__mat_a, 3, 2);
+	vec_alg_t::matrix_at(__mat_inverse, 3, 3) = vec_alg_t::matrix_at_const(__mat_a, 3, 3);
 	return __mat_inverse;
 }
 
@@ -2256,7 +2407,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_t* PFX_SMAT_ALG::inverse_matrix_for_3d
 PFX_SMAT_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix 
 (PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_replace,
-	usize_t dim_count, 
+	usize__t dim_count, 
 	PFX_SMAT_ALG_TYPE::matrix_ex_t& PARAM_INOUT __mat_inverse,
 	PFX_SMAT_ALG_TYPE::clr_mul_factor_t* mul_factor_ptr, 
 	u32_t delta)
@@ -2284,7 +2435,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix
 	}
 	if (1 == dim_count)
 	{
-		dim_t tmp = vec_alg_t::matrix_at (__mat_replace, 0, 0);
+		dim_t tmp = vec_alg_t::matrix_at_const (__mat_replace, 0, 0);
 		if (dim_alg_t::equals(tmp, 0, delta))
 		{
 			return null;
@@ -2295,7 +2446,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix
 			return &__mat_inverse;
 		}
 	}
-	usize_t rank = 0;
+	usize__t rank = 0;
 	// 单位化
 	Indentify_matrix(dim_count, __mat_inverse, 1, 0);
 
@@ -2309,7 +2460,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix
 			swap_line(__mat_replace, i, j);
 			swap_line(__mat_inverse, i, j);
 		}
-		if (dim_alg_t::equals(vec_alg_t::matrix_at(__mat_replace, i, i), 0, delta))
+		if (dim_alg_t::equals(vec_alg_t::matrix_at_const(__mat_replace, i, i), 0, delta))
 		{
 			break;
 		}
@@ -2319,7 +2470,7 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix
 		{
 			for (uindex_t k=i+1; k< dim_count;++k)
 			{
-				if (dim_alg_t::equals (vec_alg_t::matrix_at(__mat_replace, k, i), 0, delta))
+				if (dim_alg_t::equals (vec_alg_t::matrix_at_const(__mat_replace, k, i), 0, delta))
 				{
 					continue;
 				}
@@ -2360,9 +2511,9 @@ PFX_INLINE PFX_SMAT_ALG_TYPE::matrix_ex_t* PFX_SMAT_ALG::inverse_matrix
 	// 第三步,单位化
 	for (uindex_t i=0; i<dim_count; ++i)
 	{
-		dim_alg_t::div_replace 
-		vec_alg_t::vector_div	(*vec_alg_t::matrix_at(__mat_inverse,i), 
-		vec_alg_t::matrix_at(__mat_replace, i, i), *vec_alg_t::matrix_at(__mat_inverse,i));
+		vec_alg_t::vector_div	(*vec_alg_t::matrix_at_const (__mat_inverse,i), 
+													vec_alg_t::matrix_at_const(__mat_replace, i, i), 
+												 *vec_alg_t::matrix_at(__mat_inverse,i));
 	}
 	return &__mat_inverse;
 }

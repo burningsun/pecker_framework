@@ -177,9 +177,9 @@ usize__t pecker_read_stream_form_memery::read_chars (char_t* read_buffer_ptr,usi
 	cs_lock.lock(&m_critical_section);
 	
 	char read_char_value = 0;
-	int isubsize = 0;
-	int ireadsize = 0;
-	for (ireadsize=0;ireadsize<read_buffer_size;++ireadsize)
+	usize__t isubsize = 0;
+	usize__t ireadsize = 0;
+	for (ireadsize=0; ireadsize < read_buffer_size; ++ireadsize)
 	{
 		if (PFX_STATUS_OK == read_char(read_char_value))
 		{

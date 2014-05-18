@@ -168,5 +168,11 @@
     <ClInclude Include="..\pecker_framework\data\pfx_cvector_alg_codes.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cmatrix_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.txt" />
   </ItemGroup>
 </Project>

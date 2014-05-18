@@ -30,6 +30,7 @@
     <ClInclude Include="..\pecker_framework\data\pfx_cbst_iterator_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_clist.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_cmatrix_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cstring.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cstring_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cvector.h" />
@@ -62,6 +63,9 @@
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_buffer_object.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_framebuffer_object.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4D19307-630D-4AE6-A544-B5EAB6E2607B}</ProjectGuid>
