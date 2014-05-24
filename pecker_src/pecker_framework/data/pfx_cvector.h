@@ -89,6 +89,39 @@ static PFX_INLINE	cvector_t sub (const cvector_t& vec_a, const vector_t& vec_b);
 static PFX_INLINE	cvector_t add (const vector_t& vec_a, const vector_t& vec_b);
 static PFX_INLINE	cvector_t sub (const vector_t& vec_a, const vector_t& vec_b);
 
+static PFX_INLINE vector_t* vector_pointer (cvector_t* vec)
+{
+	return (vector_t*)vec;
+}
+static PFX_INLINE const vector_t* vector_pointer (const cvector_t* vec)
+{
+	return (const vector_t*)m_vec;
+}
+static PFX_INLINE cvector_t* vector_pointer (vector_t* vec)
+{
+	return (cvector_t*)vec;
+}
+static PFX_INLINE const cvector_t* vector_pointer (const vector_t* vec)
+{
+	return (cvector_t*)vec;
+}
+
+static PFX_INLINE vector_t& vector_ref (cvector_t& vec)
+{
+	return vec.m_vec;
+}
+static PFX_INLINE const vector_t& vector_ref (const cvector_t& vec)
+{
+	return m_vec.vec;
+}
+static PFX_INLINE cvector_t& vector_ref (vector_t& vec)
+{
+	return (cvector_t&)vec;
+}
+static PFX_INLINE const cvector_t& vector_ref (const vector_t& vec)
+{
+	return (cvector_t&)vec;
+}
 
 static PFX_INLINE typename vec_alg_t::vector_t& vector_reference (cvector_t& vec);
 static PFX_INLINE const typename vec_alg_t::vector_t& vector_reference (const cvector_t& vec);

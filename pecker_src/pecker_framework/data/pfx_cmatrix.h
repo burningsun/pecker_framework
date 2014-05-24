@@ -316,6 +316,40 @@ public:
 	static PFX_INLINE cvector_t mul (const cvector_t& vec, const cmatrix_t& mat);
 	static PFX_INLINE cvector_t& mul_replace (cvector_t& vec, const cmatrix_t& mat);
 
+	static PFX_INLINE matrix_t* matrix_pointer (cmatrix_t* __matrix)
+	{
+		return (matrix_t*)__matrix;
+	}
+	static PFX_INLINE const matrix_t* matrix_pointer (const cmatrix_t* __matrix)
+	{
+		return (const matrix_t*)__matrix;
+	}
+	static PFX_INLINE cmatrix_t* matrix_pointer (matrix_t* __matrix)
+	{
+		return (cmatrix_t*)__matrix;
+	}
+	static PFX_INLINE const cmatrix_t* matrix_pointer (const matrix_t* __matrix)
+	{
+		return (const cmatrix_t*)__matrix;
+	}
+	static PFX_INLINE matrix_t& matrix_ref (cmatrix_t& __matrix)
+	{
+		return __matrix.m_mat;
+	}
+	static PFX_INLINE const matrix_t& matrix_ref (const cmatrix_t& __matrix)
+	{
+		return __matrix.m_mat;
+	}
+	static PFX_INLINE cmatrix_t& matrix_ref (matrix_t& __matrix)
+	{
+		return (cmatrix_t&)__matrix;
+	}
+	static PFX_INLINE const cmatrix_t& matrix_ref (const matrix_t& __matrix)
+	{
+		return (const cmatrix_t&)__matrix;
+	}
+
+
 	static PFX_INLINE typename matrix_alg_t::matrix_t matrix_reference (matrix_t& __matrix)
 	{
 		return (const typename matrix_alg_t::matrix_t)__matrix.m_vec;

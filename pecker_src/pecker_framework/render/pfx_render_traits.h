@@ -8,7 +8,7 @@
 #ifndef		PFX_RENDER_TRAITS_H_
 #define		PFX_RENDER_TRAITS_H_
 
-#include "../pfx_defines.h"
+#include "../include/config"
 
 PECKER_BEGIN
 

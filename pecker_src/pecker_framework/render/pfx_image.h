@@ -8,8 +8,8 @@
 #ifndef		PFX_IMAGE_H_
 #define		PFX_IMAGE_H_
 
-#include "../../pfx_defines.h"
-#include "../pfx_color.h"
+#include "../include/config"
+#include "pfx_color.h"
 
 PECKER_BEGIN
 

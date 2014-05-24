@@ -37,6 +37,9 @@
     <Filter Include="render\render_util">
       <UniqueIdentifier>{c780a2ff-8078-4380-9fae-ef5ef789c5ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{a732ba44-a170-4e28-aa15-0b22dcd37341}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\pecker_framework\data\pecker_value_compare.h">
@@ -114,16 +117,7 @@
     <ClInclude Include="..\pecker_framework\data\pfx_iterator.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_array.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_dynamic_array.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_array_codes.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_array_iterator_codes.h">
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_data_traits.h">
@@ -171,8 +165,53 @@
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix_codes.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cmatrix4.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_shader_program.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_device.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cblock.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />
+    <None Include="..\pecker_framework\include\carray">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cbst">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\clist">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cmatrix">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cmatrix4">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cmp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cshare_object">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cstring">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cvector">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\util">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\config">
+      <Filter>include</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 #ifndef		PFX_BUFFER_OBJECT_H_
 #define		PFX_BUFFER_OBJECT_H_
 
-#include "../../pfx_defines.h"
+#include "../../include/config"
 
 
 PECKER_BEGIN
@@ -33,9 +33,9 @@ typedef enum enumBufferUsageType
 
 typedef struct buffer_bits
 {
-	byte_t*										m_bits_ptr;
-	usize__t										m_bytes_count;
-	PFX_BUFFER_USAGE_TYPE_t			m_usage;
+	byte_t*					m_bits_ptr;
+	usize__t					m_bytes_count;
+	enum_int_t			m_usage; //PFX_BUFFER_USAGE_TYPE_t
 }buffer_bits_t;
 
 PFX_Interface Ipfx_update_buffer_usermode
@@ -45,63 +45,72 @@ PFX_Interface Ipfx_update_buffer_usermode
 
 PFX_Interface IPfx_buffer_object
 {
-	virtual result_t lock_buffer (buffer_bits_t* & PARAM_INOUT bits_ptr) = 0;
-	virtual result_t unlock_buffer () = 0;
-	virtual result_t update_buffer (Ipfx_update_buffer_usermode* PARAM_IN usermode_ptr) = 0;
-	virtual PFX_BUFFER_OBJECT_TYPE_t get_buffer_type () const = 0;
+	virtual result_t			lock_buffer (buffer_bits_t* & PARAM_INOUT bits_ptr) = 0;
+	virtual result_t			unlock_buffer () = 0;
+	virtual result_t			update_buffer (Ipfx_update_buffer_usermode* PARAM_IN usermode_ptr) = 0;
+	virtual enum_int_t	get_buffer_type () const = 0; //PFX_BUFFER_OBJECT_TYPE_t
 };
 
 template < typename buffer_object_type >
-struct PFX_Buffer_Object
+struct PFX_Buffer_Object_traits
 {
-	typedef typename buffer_object_type::render_device_t		render_device_t;
-	typedef typename buffer_object_type::buffer_object_t			buffer_object_t;
+	typedef typename buffer_object_type			BO_t;
+	typedef typename BO_t::render_device_t		render_device_t;
+	typedef typename BO_t::update_mode_t		update_mode_t;
 
-	static PFX_INLINE buffer_object_t*	create_buffer (render_device_t render_device)
+	static PFX_INLINE BO_t*	create_buffer (render_device_t& render_device)
 	{
-		return null;
+		return BO_t::create_buffer (render_device);
 	}
-	static PFX_INLINE result_t			delete_buffer (buffer_object_t* PARAM_INOUT render_object_ptr)
+	static PFX_INLINE result_t	delete_buffer (BO_t* PARAM_INOUT object_ptr)
 	{
-		return PFX_STATUS_DENIED;
+		return BO_t::delete_buffer (object_ptr);
 	}
 };
 
-
-PFX_Interface IPfx_vertex_array
+template < typename vertex_struct_type >
+struct PFX_vertex_struct_traits
 {
-	virtual result_t push_struct_info ( enum_int_t element_type_, 
-																			usize__t element_count, 
-																			boolean_t bNormalisze) = 0;
+	typedef typename vertex_struct_type vertex_struct_t;
+	static PFX_INLINE usize__t				sub_struct_size (const vertex_struct_t& __vs, uindex_t i)
+	{
+		return __vs.sub_struct_size (i);
+	}
+	static PFX_INLINE usize__t				sub_struct_count (const vertex_struct_t& __vs)
+	{
+		return __vs.sub_struct_count ();
+	}
+	static PFX_INLINE uindex_t			sub_struct_offset (const vertex_struct_t& __vs, uindex_t i)
+	{
+		return __vs.sub_struct_offset(i);
+	}
+	static PFX_INLINE const byte_t*	sub_struct_ptr (const vertex_struct_t& __vs, uindex_t i)
+	{
+		return __vs.sub_struct_ptr(i);
+	}
+};
 
-	virtual result_t clear_struct_info () = 0;
-	
-	virtual usize__t	get_struct_count () const = 0;
+template < typename vertex_struct_type, class shader_program, const bool_t using_vbo = PFX_BOOL_FALSE >
+struct PFX_vertex_struct_format
+{
+	typedef PFX_vertex_struct_traits< vertex_struct_type > vertex_struct_t;
+	typedef typename shader_program									 shader_program_t;
 
 	// 使用一个vertex_attributes_buffer保存所有结构体数据，实现Array of Structures
-	virtual result_t update_vertex_attributes (PFX_Interface Ipfx_shader_program* PARAM_IN shader_program_ptr,
-																								const byte_t* PARAM_IN vertex_attributes_buffer, usize__t bytes_count) = 0;
+	static PFX_INLINE result_t update_vertex_with_AOS (shader_program_t& __shader_program, 
+		vertex_struct_t* PARAM_IN __vs_ptr, usize__t __vs_count)
+	{
+		return 0;
+	}
 
 	// 使用一个vertex_attributes_buffer只保存一个结构体数据，实现Structure of Arrays 
-	virtual result_t update_one_vertex_attributes (PFX_Interface Ipfx_shader_program* PARAM_IN shader_program_ptr,
-																								uindex_t	struct_index,
-																								const byte_t* PARAM_IN vertex_attributes_buffer, usize__t bytes_count) = 0;
-};
-
-template < typename vertex_array_type >
-struct PFX_Vertex_Array
-{
-	typedef typename vertex_array_t::vertex_array_t			vertex_array_t;
-
-	static PFX_INLINE vertex_array_t*	create_vertex_array ()
+	static PFX_INLINE result_t update_vertex_with_SOA (shader_program_t& __shader_program, 
+		const byte_t* PARAM_IN __vs_array_ptr, usize__t __vs_buf_size)
 	{
-		return null;
-	}
-	static PFX_INLINE result_t			delete_vertex_array (vertex_array_t* PARAM_INOUT array_ptr)
-	{
-		return PFX_STATUS_DENIED;
+		return 0;
 	}
 };
+
 
 PECKER_END
 
