@@ -588,6 +588,87 @@ typedef struct st_pfx_api_version
 #define MIP_BUFFER_SIZE_29(X,Y,F) ((((X)>>1)>0)?(MIP_BUFFER_SIZE_28( ((X)>>1), ((Y)+(((X)*(X)*(F))>>2)) , (F) )):(Y))
 #define MIP_BUFFER_SIZE_30(X,Y,F) ((((X)>>1)>0)?(MIP_BUFFER_SIZE_29( ((X)>>1), ((Y)+(((X)*(X)*(F))>>2)) , (F) )):(Y))
 #define MIP_BUFFER_SIZE_31(X,Y,F) ((((X)>>1)>0)?(MIP_BUFFER_SIZE_30( ((X)>>1), ((Y)+(((X)*(X)*(F))>>2)) , (F) )):(Y))
+
 PFX_C_EXTERN_END
+
+PECKER_BEGIN
+
+typedef struct object_id
+{
+	typedef uint_t (*__final_type_id) ();
+	typedef boolean_t (*__check_id) (uint_t test_id);
+	typedef object_id object_id__t;
+
+	__final_type_id			final_type_id;
+	__check_id					check_id;
+	const object_id__t*		next;
+}object_id_t;
+
+struct PFX_DATA_API __type_id
+{
+	static uint_t&	ID ();
+	static uint_t NEW_ID ();
+	static boolean_t __IS_type (const object_id_t& type_a, const object_id_t& test_type);
+};
+
+template < class this_type_t, 
+					class base_type_t = this_type_t >
+class PFX_DATA_TEMPALE_API cobject_id
+{
+public:
+	typedef this_type_t										this_type_t;
+	typedef base_type_t									base_type_t;
+	typedef typename cobject_id< this_type_t, base_type_t >	cobject_id_t;
+public:
+	static uint_t final_type_id ()
+	{
+		static const uint_t static_id = __type_id::NEW_ID();
+		return static_id;
+	}
+	static boolean_t check_id (uint_t test_id)
+	{
+		uint_t __id = final_type_id();
+		if (test_id == __id)
+		{
+			return PFX_BOOL_TRUE; 
+		}
+		else
+		{
+			boolean_t retn_res = PFX_BOOL_FALSE;
+
+			const struct object_id& __idlist = base_type_t::final_type ();
+			const struct object_id* list_ptr = & __idlist;
+			do 
+			{
+				uint_t __base_id = list_ptr->final_type_id();
+				if (__id != __base_id)
+				{
+					retn_res = list_ptr->check_id (test_id);
+					if (PFX_BOOL_TRUE == retn_res)
+					{
+						break;
+					}
+				}
+				list_ptr = list_ptr->next;
+			} while (list_ptr);
+
+			return retn_res;
+
+		}
+	}
+	static struct object_id& to_object_id (struct object_id& obj_id)
+	{
+		obj_id.check_id = check_id;
+		obj_id.final_type_id = final_type_id;
+		obj_id.next = null;
+		return obj_id;
+	}
+};
+
+
+
+
+
+PECKER_END
 
 #endif		//PFX_DEFINES_H_

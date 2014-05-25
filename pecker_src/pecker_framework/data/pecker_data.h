@@ -10,7 +10,7 @@
 
 #include "pecker_value_compare.h"
 #include "pfx_clist.h"
-#include "pfx_cstring_codes.h"
-#include "pfx_dynamic_array.h"
-#include "pfx_binary_search_tree.h"
+//#include "pfx_cstring_codes.h"
+//#include "pfx_dynamic_array.h"
+//#include "pfx_binary_search_tree.h"
 #endif			//PFX_PECKER_DATA_H_

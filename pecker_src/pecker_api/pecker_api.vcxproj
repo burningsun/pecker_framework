@@ -16,6 +16,7 @@
     <ClCompile Include="..\pecker_framework\native\pecker_tick.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_file_io.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_api_info.cpp" />
+    <ClCompile Include="..\pecker_framework\pfx_defines.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +25,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_binary_search_tree.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cblock.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_cbst_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst_iterator_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_clist.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix.h" />
@@ -44,6 +44,8 @@
     <ClInclude Include="..\pecker_framework\data\pfx_region.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_allocator.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_stream.h" />

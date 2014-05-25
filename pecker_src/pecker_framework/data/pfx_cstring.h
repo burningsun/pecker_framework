@@ -9,41 +9,17 @@
 #define		PFX_CSTRING_H_
 
 #include "../pfx_defines.h"
-//#include "pfx_block.h"
-#include "pfx_clist.h"
+#include "pfx_cblock.h"
+#include "pfx_share_object.h"
+//#include "pfx_clist.h"
 #include "pecker_value_compare.h"
 #include "pfx_data_traits.h"
 
 PECKER_BEGIN
 
 #define DEFUALT_CACHE_BUFFER_SIZE (16)
-#define PFX_BLOCKHEADER_TEMPLATE_DEFINES template < class element_t >
-#define PFX_BLOCKHEADER_TEMPLATE_PARAMS  < element_t >
-
-template < class element_t >
-struct PFX_DATA_TEMPALE_API pfx_block_header
-{
-	usize__t		m_element_buffer_size;
-	usize__t		m_element_count;
-	element_t*			m_element_ptr;
-
-	pfx_block_header () : m_element_buffer_size (0),m_element_count(0),m_element_ptr(null){;};
-};
-
-#define PFX_CSTRING_CODE	(0XFFFF0000)
 
 #define DEFUALT_STRING_CACHE_BUFFER_SIZE DEFUALT_CACHE_BUFFER_SIZE
-#define PFX_STRING_TEMPLATE_DEFINES template < class element_t >
-#define PFX_STRING_TEMPLATE_PARAMS  < element_t >
-
-#define PFX_CSTRING_TEMPLATE_DEFINES template < class element_t,  class elem_compare /*= pecker_value_compare < element_t >*/, const unsigned int CACHE_BUFFER_SIZE /*= DEFUALT_STRING_CACHE_BUFFER_SIZE*/ >
-#define PFX_CSTRING_TEMPLATE_PARAMS   < element_t, elem_compare, CACHE_BUFFER_SIZE  >
-
-#define PFX_CSTRING cstring < element_t, elem_compare, CACHE_BUFFER_SIZE >
-#define PFX_CSTRING_TYPE typename cstring < element_t, elem_compare, CACHE_BUFFER_SIZE >
-
-#define PFX_CSSTRING cshare_string < element_t, elem_compare, CACHE_BUFFER_SIZE >
-#define PFX_CSSTRING_TYPE typename cshare_string < element_t, elem_compare, CACHE_BUFFER_SIZE >
 
 typedef enum enumGarbageCollectionMODE
 {
@@ -53,237 +29,441 @@ typedef enum enumGarbageCollectionMODE
 }GarbageCollectionMODE_t;
 
 template < class element_t >
-PFX_Interface PFX_DATA_TEMPALE_API IPfx_string_header_operate
-{
-virtual ~IPfx_string_header_operate () {;};
-virtual	result_t				copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-	boolean_t	bheader_cache_buffer, 
-	boolean_t & PARAM_INOUT is_reference) = 0;
-virtual	result_t				reset_header () = 0;
-virtual result_t				attach_extern_string_buffer (element_t* PARAM_IN elem_ptr) = 0;
-//virtual void								enable_reference (pfx_boolean_t bEnable) = 0;
-};
-
-template < class element_t >
-PFX_Interface PFX_DATA_TEMPALE_API IPfx_string : public IPfx_string_header_operate < element_t >
+PFX_Interface PFX_DATA_TEMPALE_API IPfx_string
 {
 public:
-	typedef typename IPfx_string PFX_STRING_TEMPLATE_PARAMS IString_t;
+	typedef typename element_t							element_t;
+	typedef typename IPfx_string< element_t > IString_t;
 	virtual ~IPfx_string () {;};
-protected:
-	virtual	result_t				copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-																			boolean_t	bheader_cache_buffer, 
-																			boolean_t & PARAM_INOUT is_reference) = 0;
-	virtual	result_t				reset_header () = 0;
-	virtual result_t				attach_extern_string_buffer (element_t* PARAM_IN elem_ptr) = 0;
-protected:
-	//virtual PFX_INLINE	void enable_reference (pfx_boolean_t bEnable){;};
 public:
-	virtual const IString_t* get_prev_node () const {return null;}
-	virtual const IString_t* get_next_node () const {return null;}
-
-	virtual void set_prev_node (IString_t* PARAM_IN node_ptr) {;};
-	virtual void set_next_node  (IString_t* PARAM_IN node_ptr) {;};
+	static const object_id_t& final_type ()
+	{
+		static object_id_t obj_id;
+		return cobject_id < IString_t >::to_object_id(obj_id);
+	}
+	PFX_INLINE virtual const object_id_t& type_id () const
+	{
+		return final_type();
+	}
 public:
-	//virtual	pfx_result_t				swap_string (IPfx_string* PARAM_INOUT other_string_ptr) = 0;
-	virtual const element_t*		get_string () const = 0;
-	virtual usize__t				get_length () const = 0;
-	virtual usize__t				get_string_buffer_size () const = 0;
+	virtual result_t						init_string (usize__t __size) = 0;
+	virtual result_t						init_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size) = 0;
+	virtual result_t						init_string (const IString_t* PARAM_IN other_ptr) = 0;
 
-	virtual const element_t*		get_charbuffer_at (uindex_t index_) const = 0;
-	virtual usize__t				set_charbuffer_at (uindex_t index_, const element_t* PARAM_IN char_buffer, usize__t buf_size) = 0;
-	
-	virtual  const element_t*		sub_string_buffer (uindex_t index_) const = 0;
-
-	virtual  const IString_t*	sub_string (uindex_t index_,
-																																IString_t* PARAM_INOUT sub_string_ptr)  = 0;
-	virtual  const IString_t*	sub_string (uindex_t index_,
-																																usize__t		sub_string_size, 
-																																IString_t* PARAM_INOUT sub_string_ptr)  = 0;
-	virtual  const IString_t *sub_string_const (uindex_t index_,
-																																				IString_t* PARAM_INOUT sub_string_ptr)  const = 0;
-	virtual  const IString_t*	sub_string_const (uindex_t index_,
-																																			usize__t		sub_string_size, 
-																																			IString_t* PARAM_INOUT sub_string_ptr)  const = 0;
-
-
-	virtual	 boolean_t			find_first_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size,uindex_t& find_index) const = 0;
-	virtual	 boolean_t			find_first_string (const IString_t * PARAM_IN sub_string_ptr,uindex_t & find_index) const = 0;
-
-	virtual	 boolean_t			find_string (uindex_t begin_index, const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size,uindex_t& find_index) const = 0;
-	virtual	 boolean_t			find_string (uindex_t begin_index, IPfx_string* PARAM_INOUT sub_string_ptr,uindex_t& find_index) const = 0;
-
-	virtual	 boolean_t			find_near_string (uindex_t begin_index, const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size,uindex_t& find_index, usize__t& same_chars_count) const = 0;
-	virtual	 boolean_t			find_near_string (uindex_t begin_index, IPfx_string* PARAM_INOUT sub_string_ptr,uindex_t& find_index, usize__t& same_chars_count) const = 0;
-
-	virtual result_t				init_string (usize__t size_) = 0;
-	virtual result_t				init_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size) = 0;
-	virtual result_t				init_string (const IPfx_string* PARAM_IN other_ptr) = 0;
-
-	virtual result_t				resize_string (usize__t size_) = 0;
-	virtual result_t				garbage_collection (GarbageCollectionMODE_t mode = GC_DEFUALT_MODE,
+	virtual result_t						resize_string (usize__t __size) = 0;
+	virtual result_t						garbage_collection (GarbageCollectionMODE_t mode = GC_DEFUALT_MODE, 
 																						usize__t new_size = 0) = 0;
 
-	virtual result_t				append_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size) = 0;
-	virtual result_t				append_string (const IString_t* PARAM_IN append_string_ptr) = 0;
+	virtual result_t						append_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size) = 0;
+	virtual result_t						append_string (const IString_t* PARAM_IN append_string_ptr) = 0;
 
-	virtual result_t				append_front (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size) = 0;
-	virtual result_t				append_front (const IString_t* PARAM_IN append_string_ptr) = 0;
+	virtual result_t						append_front (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size) = 0;
+	virtual result_t						append_front (const IString_t* PARAM_IN append_string_ptr) = 0;
 
-	virtual result_t				clip_string_remain_left (uindex_t clip_index, IString_t* PARAM_IN other_ptr) = 0;
-	virtual result_t				clip_string_remain_right (uindex_t clip_index, IString_t* PARAM_IN other_ptr) = 0;
-	virtual	ulong_t				get_string_type_code () const = 0;
-	virtual usize__t				get_cache_buffer_size () const = 0;
+	virtual result_t						insert_string (uindex_t __offset, const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size) = 0;
+	virtual result_t						insert_string (uindex_t __offset, const IString_t* PARAM_IN insert_string_ptr) = 0;
+
+	virtual result_t						clip_string_remain_left (uindex_t clip_index, IString_t* PARAM_OUT other_ptr) = 0;
+	virtual result_t						clip_string_remain_right (uindex_t clip_index, IString_t* PARAM_OUT other_ptr) = 0;
+
+	virtual usize__t						get_cache_buffer_size () const = 0;
+
+	virtual const element_t*	get_string () const = 0;
+	virtual usize__t						get_length () const = 0;
+	virtual usize__t						get_string_buffer_size () const = 0;
+
+	virtual const element_t*	get_charbuffer_at (uindex_t index_) const = 0;
+	virtual usize__t						set_charbuffer_at (uindex_t index_, 
+																						const element_t* PARAM_IN char_buffer, 
+																						usize__t buf_size) = 0;
+	virtual element_t&				reference (uindex_t __index) = 0; 
+	virtual const element_t&	reference (uindex_t __index) const = 0; 
 	
-	
+	virtual  const element_t*	sub_string_buffer (uindex_t index_) const = 0;
 
-	//virtual pfx_result_t				copy_string () const = 0;
-	virtual int								compare (const IString_t* other_ptr) const = 0;
+	virtual  const IString_t *		sub_string (uindex_t index_,
+																		IString_t* PARAM_OUT sub_string_ptr)  const = 0;
+
+	virtual  const IString_t*		sub_string (uindex_t index_,
+																		usize__t		sub_string_size, 
+																		IString_t* PARAM_OUT sub_string_ptr)  const = 0;
+
+	virtual result_t						sub_string (uindex_t __index, usize__t __size) = 0;
+
+	virtual result_t						to_same_string (IString_t* PARAM_OUT same_string_ptr) = 0;
+	virtual result_t						copy_to (IString_t* PARAM_OUT to_string_ptr)  const = 0;
+	virtual result_t						dispose () = 0;
+	virtual result_t						clean () = 0;
 
 
-	
+	//
+	//virtual int								compare (const IString_t* other_ptr) const = 0;
 };
 
-template < class element_t,  
-	class elem_compare = pecker_value_compare < element_t >, 
+template < class __alloc,  
 	const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
-class PFX_DATA_TEMPALE_API cstring : public IPfx_string < element_t >
+class PFX_DATA_TEMPALE_API cstring : 
+	public IPfx_string < typename __alloc::element_t >
 {
 public:
-	typedef typename element_t								element_t;
+	typedef typename __alloc										allocator_t;
+	typedef typename allocator_t::element_t			element_t;
 	typedef typename element_t								item_type_t;
-	typedef typename elem_compare						compare_two_item_t;
-	typedef PFX_CSTRING_TYPE									cstring_t;
 	typedef typename IPfx_string < element_t >		IString_t;
+	typedef typename cblock< allocator_t >				cblock_t;
+
+	typedef typename cstring< allocator_t, CACHE_BUFFER_SIZE >	cstring_t;
 protected:
-	pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS	m_header;
-	element_t																							m_cache_buffer [(0 == CACHE_BUFFER_SIZE ? 1: CACHE_BUFFER_SIZE)];
-	element_t*																						m_extern_string_buffer_ptr;
-
-protected:
-	PFX_INLINE result_t							reset_header ();
-	PFX_INLINE element_t*					resize_new_stringbuffer (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-																									usize__t elememt_size, 
-																									result_t& PARAM_INOUT status_); 
-	result_t												attach_extern_string_buffer (element_t* PARAM_IN elem_ptr);
-	PFX_INLINE result_t							remove_referance ();
-	PFX_INLINE result_t							add_referance (IString_t* PARAM_IN other_ptr);
-	virtual PFX_INLINE boolean_t		is_reference ();
-
-	virtual PFX_INLINE element_t*		reallocate_string_buffer (element_t* PARAM_INOUT elem_ptr, 
-																											usize__t element_count);
-	virtual PFX_INLINE element_t*		new_string_buffer (usize__t element_count);
-	virtual PFX_INLINE result_t			delete_string_buffer (element_t* PARAM_IN elem_ptr);
+	element_t											m_cache_buffer [(0 == CACHE_BUFFER_SIZE ? 1: CACHE_BUFFER_SIZE)];
+	cblock_t												m_block;
+	element_t*										m_this_string_ptr;
+	usize__t												m_size;
 public:
-	virtual const IString_t*					get_prev_node () const {return null;}
-	virtual const IString_t*					get_next_node () const {return null;}
-protected:
-	virtual void set_prev_node			(IString_t* PARAM_IN node_ptr) {;};
-	virtual void set_next_node			(IString_t* PARAM_IN node_ptr) {;};
+	cstring ():m_size(0), m_this_string_ptr(m_cache_buffer)
+	{
+		;
+	}
+	cstring (const cstring_t & other_) throw (result_t)
+	{
+		m_size = 0;
+		m_this_string_ptr = m_cache_buffer;
+		result_t status = other_.copy_to(*this);
+		if (PFX_STATUS_OK != status)
+		{
+			throw (status);
+		}
+	}
+	virtual ~cstring ()
+	{
+		dispose ();
+	}
 public:
-	cstring ();
-	cstring (const cstring_t & other_) throw (result_t);
-	virtual ~cstring ();
+	typedef class cstring_const_iterator
+	{
+		friend cstring_t;
+	public:
+		typedef element_t							element_t;
+		typedef cstring_const_iterator		iterator_t;
+	private:
+		const element_t*	 m_cur_ptr;
+		const element_t* m_begin_ptr;
+		const element_t* m_end_ptr;
+	public:
+		cstring_const_iterator():m_cur_ptr(null), m_begin_ptr(null), m_end_ptr(null)
+		{
+			;
+		}
+		~cstring_const_iterator()
+		{
+			m_cur_ptr		= null; 
+			m_begin_ptr	=null; 
+			m_end_ptr	= null;
+		}
+	public:
+		PFX_INLINE usize__t size() const
+		{
+			if (m_end_ptr >= m_begin_ptr)
+			{
+				return (uindex_t)(m_end_ptr - m_begin_ptr) + 1;
+			}
+			else
+			{
+				return 0;
+			}
+			
+		}
+		PFX_INLINE void to_begin ()
+		{
+			m_cur_ptr = m_begin_ptr;
+		}
+		PFX_INLINE void to_end ()
+		{
+			m_cur_ptr = m_end_ptr;
+		}
+		PFX_INLINE const element_t& reference() const
+		{
+			return *m_cur_ptr;
+		}
+		PFX_INLINE iterator_t*	cur_ptr()
+		{
+			if (m_cur_ptr)
+			{
+				return this;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		PFX_INLINE iterator_t*	increase ()
+		{
+			if (m_cur_ptr != m_end_ptr)
+			{
+				++m_cur_ptr;
+				return this;
+			}
+			else
+			{
+				return null;
+			}
+			
+		}
+		PFX_INLINE iterator_t*	decrease ()
+		{
+			if (m_cur_ptr != m_begin_ptr)
+			{
+				--m_cur_ptr;
+				return this;
+			}
+			else
+			{
+				return null;
+			}
+
+		}
+	}const_iterator_t;
 public:
-	PFX_INLINE ulong_t						get_string_type_code () const;
-	PFX_INLINE usize__t					get_cache_buffer_size () const;
-protected:
-	virtual	result_t								copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-																			boolean_t	bheader_cache_buffer, 
-																			boolean_t & PARAM_INOUT is_reference);
-	result_t											init_string (usize__t size_,element_t*& PARAM_INOUT del_extern_string);
+	typedef class cstring_iterator
+	{
+		friend cstring_t;
+	public:
+		typedef element_t				element_t;
+		typedef cstring_iterator		iterator_t;
+	private:
+		element_t*			m_cur_ptr;
+		const element_t* m_begin_ptr;
+		const element_t* m_end_ptr;
+	public:
+		cstring_iterator():m_cur_ptr(null), m_begin_ptr(null), m_end_ptr(null)
+		{
+			;
+		}
+		~cstring_iterator()
+		{
+			m_cur_ptr		= null; 
+			m_begin_ptr	=null; 
+			m_end_ptr	= null;
+		}
+	public:
+		PFX_INLINE usize__t size() const
+		{
+			if (m_begin_ptr >=  m_end_ptr)
+			{
+				return (uindex_t)(m_end_ptr - m_begin_ptr)+1;
+			}
+			else
+			{
+				return 0;
+			}
+			
+		}
+		PFX_INLINE void to_begin ()
+		{
+			m_cur_ptr = (element_t*)m_begin_ptr;
+		}
+		PFX_INLINE void to_end ()
+		{
+			m_cur_ptr = (element_t*)m_end_ptr;
+		}
+		PFX_INLINE element_t& reference()
+		{
+			return *m_cur_ptr;
+		}
+		PFX_INLINE const element_t& reference() const
+		{
+			return *m_cur_ptr;
+		}
+		PFX_INLINE iterator_t*	cur_ptr()
+		{
+			if (m_cur_ptr)
+			{
+				return this;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		PFX_INLINE iterator_t*	increase ()
+		{
+			if (m_cur_ptr != m_end_ptr)
+			{
+				++m_cur_ptr;
+				return this;
+			}
+			else
+			{
+				return null;
+			}
+
+		}
+		PFX_INLINE iterator_t*	decrease ()
+		{
+			if (m_cur_ptr != m_begin_ptr)
+			{
+				--m_cur_ptr;
+				return this;
+			}
+			else
+			{
+				return null;
+			}
+
+		}
+	}iterator_t;
 public:
-	PFX_INLINE const element_t*	get_string () const;
-	PFX_INLINE usize__t					get_length () const;
-	PFX_INLINE usize__t					get_string_buffer_size () const;
+	PFX_INLINE const_iterator_t* begin (const_iterator_t& PARAM_OUT itr) const
+	{
+		RETURN_RESULT (0 == get_length(), null);
+		itr.m_begin_ptr = this->m_this_string_ptr;
+		itr.m_cur_ptr = itr.m_begin_ptr;
+		itr.m_end_ptr = this->m_this_string_ptr + get_length() - 1;
+		return &itr;
+	}
+	PFX_INLINE const_iterator_t* end (const_iterator_t& PARAM_OUT itr) const
+	{
+		RETURN_RESULT (0 == get_length(), null);
+		itr.m_end_ptr = this->m_this_string_ptr + get_length() - 1;
+		itr.m_cur_ptr = itr.m_end_ptr;
+		itr.m_begin_ptr = this->m_this_string_ptr;
+		return &itr;
+	}
+	PFX_INLINE iterator_t* begin (iterator_t& PARAM_OUT itr)
+	{
+		RETURN_RESULT (0 == get_length(), null);
+		itr.m_cur_ptr = this->m_this_string_ptr;
+		itr.m_begin_ptr = itr.m_cur_ptr;
+		itr.m_end_ptr = this->m_this_string_ptr + get_length() - 1;
+		return &itr;
+	}
+	PFX_INLINE iterator_t* end (iterator_t& PARAM_OUT itr)
+	{
+		RETURN_RESULT (0 == get_length(), null);
+		itr.m_cur_ptr = this->m_this_string_ptr + get_length() - 1;
+		itr.m_end_ptr = itr.m_cur_ptr;
+		itr.m_begin_ptr = this->m_this_string_ptr;
+		return &itr;
+	}
 
-	const element_t*							get_charbuffer_at (uindex_t index_) const;
-	usize__t											set_charbuffer_at (uindex_t index_, const element_t* PARAM_IN char_buffer, usize__t buf_size);
-
-	const element_t*							sub_string_buffer (uindex_t index_) const;
-
-	const IString_t*							sub_string (uindex_t index_, IString_t* PARAM_INOUT sub_string_ptr) ;
-	const IString_t*							sub_string (uindex_t index_, usize__t sub_string_size, IString_t* PARAM_INOUT sub_string_ptr) ;
-
-	const IString_t*							sub_string_const (uindex_t index_,IString_t* PARAM_INOUT sub_string_ptr)  const;
-
-	const IString_t*							sub_string_const (uindex_t index_,
-																								usize__t		sub_string_size, 
-																								IString_t* PARAM_INOUT sub_string_ptr)  const;
-
-	 boolean_t										find_first_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size,
-																							uindex_t& find_index) const;
-	 boolean_t										find_first_string (const IString_t * PARAM_IN find_string_ptr,uindex_t & find_index) const;
-
-	 boolean_t										find_string (uindex_t begin_index, const element_t* PARAM_IN str_chars_buffer_ptr,
-																					usize__t buffer_size,uindex_t& find_index) const;
-	 boolean_t										find_string (uindex_t begin_index, IString_t * PARAM_INOUT sub_string_ptr,
-																					uindex_t& find_index) const;
-
-	 boolean_t										find_near_string (uindex_t begin_index, const element_t* PARAM_IN str_chars_buffer_ptr,
-																							usize__t buffer_size,uindex_t& find_index, usize__t& same_chars_count) const;
-	 boolean_t										find_near_string (uindex_t begin_index, IString_t * PARAM_INOUT sub_string_ptr,
-																							uindex_t& find_index, usize__t& same_chars_count) const;
-
-	result_t											init_string (usize__t size_);
-	result_t											init_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
-	result_t											init_string (const IString_t * PARAM_IN other_ptr);
-
-	result_t											resize_string (usize__t size_);
-	result_t											garbage_collection (GarbageCollectionMODE_t mode = GC_DEFUALT_MODE,
-																									usize__t new_size = 0);
-
-	result_t											append_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
-	result_t											append_string (const IString_t* PARAM_IN append_string_ptr);
-
-	result_t											append_front (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
-	result_t											append_front (const IString_t* PARAM_IN append_string_ptr);
-
-	result_t											clip_string_remain_left (uindex_t clip_index, IString_t* PARAM_IN other_ptr);
-	result_t											clip_string_remain_right (uindex_t clip_index, IString_t* PARAM_IN other_ptr);
-
-	int													compare (const IString_t* other_ptr) const;
-	int													compare (const cstring_t & other_) const;
-
+	PFX_INLINE usize__t	size() const
+	{
+		return m_size;
+	}
 public:
-	static PFX_INLINE	usize__t			cache_buffer_size ();
+	static PFX_INLINE	usize__t							cache_buffer_size ()
+	{
+		return CACHE_BUFFER_SIZE;//(0 == CACHE_BUFFER_SIZE ? 1: CACHE_BUFFER_SIZE);
+	}
+	static const object_id_t&							final_type ()
+	{
+		static object_id_t obj_id;
+		return cobject_id < cstring_t, IString_t >::to_object_id(obj_id);
+	}
+	PFX_INLINE virtual const object_id_t&	type_id () const
+	{
+		return final_type();
+	}
+public:
+	result_t									init_string(const cstring_t& __otherstr);
+	virtual result_t						init_string (usize__t __size);
+	virtual result_t						init_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
+	virtual result_t						init_string (const IString_t* PARAM_IN other_ptr);
 	
+	virtual result_t						resize_string (usize__t __size);
+	virtual result_t						garbage_collection (GarbageCollectionMODE_t mode = GC_DEFUALT_MODE, 
+																						usize__t new_size = 0);
+
+	virtual result_t						append_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
+	virtual result_t						append_string (const IString_t* PARAM_IN append_string_ptr);
+	virtual result_t						append_string (const cstring_t& PARAM_IN __append_str);
+
+	virtual result_t						append_front (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
+	virtual result_t						append_front (const IString_t* PARAM_IN append_string_ptr);
+	virtual result_t						append_front (const cstring_t& PARAM_IN __append_str);
+
+	virtual result_t						insert_string (uindex_t __offset, const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
+	virtual result_t						insert_string (uindex_t __offset, const IString_t* PARAM_IN insert_string_ptr);
+	virtual result_t						insert_string (uindex_t __offset, const cstring_t& PARAM_IN __append_str);
+
+	virtual result_t						clip_string_remain_left (uindex_t clip_index, IString_t* PARAM_OUT other_ptr);
+	virtual result_t						clip_string_remain_left (uindex_t clip_index, cstring_t& PARAM_OUT __other);
+
+	virtual result_t						clip_string_remain_right (uindex_t clip_index, IString_t* PARAM_OUT other_ptr);
+	virtual result_t						clip_string_remain_right (uindex_t clip_index, cstring_t& PARAM_OUT __other);
+	
+	virtual usize__t						get_cache_buffer_size () const;
+
+	virtual const element_t*	get_string () const;
+	virtual usize__t						get_length () const;
+	virtual usize__t						get_string_buffer_size () const;
+
+	virtual element_t&				reference (uindex_t __index); 
+	virtual const element_t&	reference (uindex_t __index) const; 
+
+	virtual const element_t*	get_charbuffer_at (uindex_t index_) const;
+	virtual usize__t						set_charbuffer_at (uindex_t index_, 
+																						const element_t* PARAM_IN char_buffer, 
+																						usize__t buf_size);
+
+	virtual  const element_t*	sub_string_buffer (uindex_t index_) const;
+
+	virtual  const IString_t *		sub_string (uindex_t index_,
+																			IString_t* PARAM_OUT sub_string_ptr)  const;
+	virtual  const IString_t*		sub_string (uindex_t	index_,
+																		usize__t		sub_string_size, 
+																		IString_t* PARAM_OUT sub_string_ptr)  const;
+
+	virtual  const cstring_t *		sub_string (uindex_t index_,cstring_t& PARAM_OUT __sub_string)  const;
+	virtual  const cstring_t*		sub_string (uindex_t index_,
+																		usize__t		sub_string_size, 
+																		cstring_t& PARAM_OUT __sub_string)  const;
+
+	virtual result_t						sub_string (uindex_t __index, usize__t __size);
+
+	virtual result_t						to_same_string (IString_t* PARAM_OUT same_string_ptr);
+	virtual result_t						to_same_string (cstring_t& PARAM_OUT __same_string);
+
+	virtual result_t						copy_to (IString_t* PARAM_OUT to_string_ptr)  const;
+	virtual result_t						copy_to (cstring_t& PARAM_OUT __to_string)  const;
+	virtual result_t						dispose ();
+	virtual result_t						clean ();
 };
 
-template < class element_t,  
-	typename elem_compare = pecker_value_compare < element_t >, 
-	const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
-class PFX_DATA_TEMPALE_API cshare_string : public cstring < element_t,  elem_compare, CACHE_BUFFER_SIZE >
-{
-public:
-	typedef typename	element_t								element_t;
-	typedef typename	element_t								item_type_t;
-	typedef typename	elem_compare						compare_two_item_t;
-	typedef PFX_CSTRING_TYPE									cstring_t;
-	typedef typename IPfx_string < element_t >		IString_t;
-	typedef PFX_CSSTRING_TYPE								cshare_string_t;
-protected:
-	IString_t*	m_prev_string_ptr;
-	IString_t*	m_next_string_ptr;
-protected:
-	virtual result_t	copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
-																boolean_t	bheader_cache_buffer, 
-																boolean_t & PARAM_INOUT is_reference);
-public:
-	virtual const IString_t* get_prev_node () const;
-	virtual const IString_t* get_next_node () const;
-protected:
-	virtual void set_prev_node (IString_t* PARAM_IN node_ptr);
-	virtual void set_next_node  (IString_t* PARAM_IN node_ptr);
 
-public:
-	cshare_string ();
-	cshare_string (const cshare_string_t & other_) throw (result_t);
-	virtual ~cshare_string ();
-public:
-	PFX_INLINE int	compare (const IString_t* other_ptr) const;
-	PFX_INLINE int	compare (const cshare_string_t & other_) const;
-};
+//template < class element_t,  
+//	typename elem_compare = pecker_value_compare < element_t >, 
+//	const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
+//class PFX_DATA_TEMPALE_API cshare_string : public cstring < element_t,  elem_compare, CACHE_BUFFER_SIZE >
+//{
+//public:
+//	typedef typename	element_t								element_t;
+//	typedef typename	element_t								item_type_t;
+//	typedef typename	elem_compare						compare_two_item_t;
+//	typedef PFX_CSTRING_TYPE									cstring_t;
+//	typedef typename IPfx_string < element_t >		IString_t;
+//	typedef PFX_CSSTRING_TYPE								cshare_string_t;
+//protected:
+//	IString_t*	m_prev_string_ptr;
+//	IString_t*	m_next_string_ptr;
+//protected:
+//	virtual result_t	copy_header (const pfx_block_header PFX_BLOCKHEADER_TEMPLATE_PARAMS & PARAM_IN header,
+//																boolean_t	bheader_cache_buffer, 
+//																boolean_t & PARAM_INOUT is_reference);
+//public:
+//	virtual const IString_t* get_prev_node () const;
+//	virtual const IString_t* get_next_node () const;
+//protected:
+//	virtual void set_prev_node (IString_t* PARAM_IN node_ptr);
+//	virtual void set_next_node  (IString_t* PARAM_IN node_ptr);
+//
+//public:
+//	cshare_string ();
+//	cshare_string (const cshare_string_t & other_) throw (result_t);
+//	virtual ~cshare_string ();
+//public:
+//	PFX_INLINE int	compare (const IString_t* other_ptr) const;
+//	PFX_INLINE int	compare (const cshare_string_t & other_) const;
+//};
 PECKER_END
 
 #endif			//PFX_CSTRING_H_

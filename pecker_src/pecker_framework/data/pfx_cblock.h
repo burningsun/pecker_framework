@@ -14,7 +14,7 @@ PECKER_BEGIN
 
 
 template < class __alloc >
-class cblock
+class PFX_DATA_TEMPALE_API cblock
 {
 public:
 	typedef typename __alloc								allocator_t;
@@ -141,7 +141,7 @@ public:
 		uindex_t __offset, usize__t __size);
 	PFX_INLINE usize__t set_buffer_direct_up (const element_t* buf_ptr, 
 		uindex_t __offset, usize__t __size);
-	PFX_INLINE usize__t set_buffer (const element_t* buf_ptr, usize__t __size);
+	PFX_INLINE usize__t set_buffer (const element_t* buf_ptr, usize__t __size, uindex_t __offset = 0);
 
 	PFX_INLINE usize__t move_buffer (uindex_t __offset, usize__t __size, uindex_t __new_offset);
 
@@ -159,6 +159,111 @@ public:
 		cblock_t tmp_block;
 		this->swap(tmp_block);
 	}
+};
+
+template < class element_type >
+struct block_operate
+{
+	typedef element_type						element_t;
+	typedef typename block_operate	block_op_t; 
+
+	static PFX_INLINE boolean_t is_same_buffer (element_t* buffer_ptr, usize__t buffer_size, 
+		const element_t* buf_ptr)
+	{
+		const element_t* begin_ptr	= buffer_ptr;
+		const element_t* end_ptr		= buffer_ptr + buffer_size - 1;
+
+		if (buf_ptr >= begin_ptr && buf_ptr <= end_ptr) 
+		{
+			return PFX_BOOL_TRUE;
+		}
+		else
+		{
+			return PFX_BOOL_FALSE;
+		}
+	}
+
+	static PFX_INLINE usize__t set_buffer_direct_down  (element_t* buffer_ptr, usize__t buffer_size, 
+		const element_t* buf_ptr, 
+		uindex_t __offset, usize__t __size)
+	{
+		RETURN_RESULT (__offset >= buffer_size || !buffer_ptr, 0);
+		if (__size+__offset > buffer_size)
+		{
+			__size = buffer_size - __offset;
+		}
+		RETURN_RESULT (0 == __size, 0);
+
+		usize__t succeed_size = __size;
+		while (__size)
+		{
+			--__size;
+			buffer_ptr[__offset + __size] = buf_ptr[__size];
+		}
+
+		return succeed_size;
+	}
+
+	static PFX_INLINE usize__t set_buffer_direct_up (element_t* buffer_ptr, usize__t buffer_size, 
+		const element_t* buf_ptr, 
+		uindex_t __offset, usize__t __size)
+	{
+		RETURN_RESULT (__offset >= buffer_size || !buffer_ptr, 0);
+		if (__size+__offset > buffer_size)
+		{
+			__size = buffer_size - __offset;
+		}
+		for (uindex_t i=0; i<__size;++i)
+		{
+			buffer_ptr[__offset + i] = buf_ptr[i];
+		}
+		return __size;
+	}
+
+	static PFX_INLINE usize__t move_buffer (element_t* buffer_ptr, usize__t buffer_size,
+		uindex_t __offset, usize__t __size, uindex_t __new_offset)
+	{
+		usize__t succeed_size;
+		RETURN_RESULT ((__offset >= buffer_size || 
+			__new_offset >= buffer_size), 0);
+		RETURN_RESULT (__offset == __new_offset, __size);
+
+		if (__offset > __new_offset)
+		{
+			succeed_size = set_buffer_direct_up(buffer_ptr, buffer_size,
+				(buffer_ptr + __offset), __new_offset, __size);
+		}
+		else
+		{
+			succeed_size = set_buffer_direct_down(buffer_ptr, buffer_size, 
+				(buffer_ptr + __offset), __new_offset, __size);
+		}
+		return succeed_size;
+	}
+
+	static PFX_INLINE usize__t set_buffer (element_t* buffer_ptr, usize__t buffer_size,
+		const element_t* buf_ptr, 
+		usize__t __size, 
+		uindex_t	__offset = 0)
+	{
+		usize__t succeed_size;
+		RETURN_RESULT (!buffer_ptr || !buffer_size, 0);
+		RETURN_RESULT ((null == buf_ptr || 0 == __size), __size);
+
+		const element_t* begin_ptr	= buffer_ptr;
+		const element_t* end_ptr		= buffer_ptr + buffer_size - 1;
+
+		if (buf_ptr >= begin_ptr && buf_ptr <= end_ptr) 
+		{
+			succeed_size = move_buffer (buffer_ptr, buffer_size, (uindex_t)(buf_ptr - begin_ptr) , __size, __offset);
+		}
+		else
+		{
+			succeed_size = set_buffer_direct_down(buffer_ptr, buffer_size, buf_ptr, __offset, __size);
+		}
+
+		return succeed_size;
+	} 
 };
 
 template < class __allocA, class __allcB >
@@ -339,8 +444,12 @@ PFX_INLINE result_t PFX_CBLOCK::init_buffer (const PFX_CBLOCK_TYPE::element_t* b
 	
 	status = init_buffer(__size);
 	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
-
-	status = set_buffer(buf_ptr, __size);
+	usize__t succeed_size;
+	succeed_size = set_buffer(buf_ptr, __size);
+	if (__size != succeed_size)
+	{
+		status = PFX_STATUS_OK;
+	}
 	FOR_ONE_LOOP_END
 	return status;
 }
@@ -442,7 +551,7 @@ PFX_INLINE usize__t PFX_CBLOCK::set_buffer_direct_down (const PFX_CBLOCK_TYPE::e
 		reference_unsafe(__offset + __size) = buf_ptr[__size];
 	}
 		
-	return __size;
+	return succeed_size;
 }
 
 PFX_CBLOCK_TEMPLATE_DEFINES
@@ -481,17 +590,20 @@ PFX_INLINE usize__t PFX_CBLOCK::move_buffer (uindex_t __offset, usize__t __size,
 }
 
 PFX_CBLOCK_TEMPLATE_DEFINES
-PFX_INLINE usize__t PFX_CBLOCK::set_buffer (const PFX_CBLOCK_TYPE::element_t* buf_ptr, usize__t __size)
+	PFX_INLINE usize__t PFX_CBLOCK::set_buffer (const PFX_CBLOCK_TYPE::element_t* buf_ptr, 
+	usize__t __size, 
+	uindex_t	__offset)
 {
 	usize__t succeed_size;
-	RETURN_RESULT ((null == buf_ptr || 0 == __size || 0 == m_size), __size);
+	RETURN_RESULT (!this->m_block_ptr||!this->m_size,0);
+	RETURN_RESULT ((null == buf_ptr || 0 == __size), __size);
 	if (buf_ptr >= begin() && buf_ptr <= end()) 
 	{
-		succeed_size = move_buffer ((uindex_t)(buf_ptr - begin()), __size, 0);
+		succeed_size = move_buffer ((uindex_t)(buf_ptr - begin()) , __size, __offset);
 	}
 	else
 	{
-		succeed_size = set_buffer_direct (buf_ptr, __size);
+		succeed_size = set_buffer_direct_down(buf_ptr, __offset, __size);
 	}
 
 	return succeed_size;

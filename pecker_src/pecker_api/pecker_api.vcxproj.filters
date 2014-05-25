@@ -17,6 +17,9 @@
     <ClCompile Include="..\pecker_framework\native\pfx_file_io.cpp">
       <Filter>native</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\pfx_defines.cpp">
+      <Filter>configs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -51,9 +54,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_cbst.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_cbst_codes.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_cbst_iterator_codes.h">
       <Filter>data</Filter>
     </ClInclude>
@@ -82,9 +82,6 @@
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_cstring.h">
-      <Filter>data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_cstring_codes.h">
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_fixed_point.h">
@@ -175,6 +172,15 @@
       <Filter>render\render_system</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_cblock.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cstring_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h">
       <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>

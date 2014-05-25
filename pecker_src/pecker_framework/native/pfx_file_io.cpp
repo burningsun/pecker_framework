@@ -224,24 +224,25 @@ nsize__t pfx_file_set_string_a (file_t* PARAM_INOUT hfile,
 
 
 PECKER_BEGIN
-static cstring < char_t, pecker_value_compare < char_t > > gstr_path;
+//static cstring < char_t, pecker_value_compare < char_t > > gstr_path;
 
 result_t	pecker_file::set_install_apkfile_path (const char_t* str_path_ptr,nsize__t path_length)
 {
 	result_t status;
-	status = gstr_path.init_string(str_path_ptr,path_length+1);
+	//status = gstr_path.init_string(str_path_ptr,path_length+1);
 	if (PFX_STATUS_OK == status)
 	{
 		char_t null_char = 0;
-		status = gstr_path.set_charbuffer_at (path_length,&null_char,1);
+		//status = gstr_path.set_charbuffer_at (path_length,&null_char,1);
 	}
 	return status;
 }
 const char_t*	pecker_file::get_install_apkfile_path (nsize__t& path_length)
 {
-	nsize__t string_len = gstr_path.get_length();
-	path_length = (string_len > 0) ? (string_len -1):0;
-	return gstr_path.get_string ();
+	//nsize__t string_len = gstr_path.get_length();
+	//path_length = (string_len > 0) ? (string_len -1):0;
+	//return gstr_path.get_string ();
+	return null;
 }
 handle_t	pecker_file::get_private_apkfile_manager ()
 {

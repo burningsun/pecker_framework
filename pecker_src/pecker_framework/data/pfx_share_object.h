@@ -14,7 +14,7 @@
 PECKER_BEGIN
 
 template < class __alloc >
-class cauto_release_object
+class PFX_DATA_TEMPALE_API cauto_release_object
 {
 public:
 	typedef typename __alloc															allocator_t;
@@ -48,7 +48,7 @@ protected:
 };
 
 template < class __alloc >
-class cauto_release_buffer
+class PFX_DATA_TEMPALE_API cauto_release_buffer
 {
 public:
 	typedef typename __alloc															allocator_t;
@@ -82,7 +82,7 @@ protected:
 };
 
 template < class leakable_object >
-class cshare_leakable_object
+class PFX_DATA_TEMPALE_API cshare_leakable_object
 {
 public:
 	typedef typename leakable_object								leakable_object_t;
@@ -221,7 +221,7 @@ public:
 };
 
 template < class __alloc >
-class cleakable_object_packet
+class PFX_DATA_TEMPALE_API cleakable_object_packet
 {
 public:
 	typedef typename __alloc								allocator_t;
