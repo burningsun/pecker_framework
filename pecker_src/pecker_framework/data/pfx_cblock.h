@@ -615,11 +615,19 @@ PFX_INLINE result_t PFX_CBLOCK::clear ()
 	typedef PFX_CBLOCK_TYPE::allocator_t allocator_t;
 
 	result_t status;
-	FOR_ONE_LOOP_BEGIN
-	status				= allocator_t::deallocate_objects (m_block_ptr);
+	//FOR_ONE_LOOP_BEGIN
+	if (m_block_ptr)
+	{
+		status	= allocator_t::deallocate_objects (m_block_ptr);
+	}
+	else
+	{
+		status = PFX_STATUS_OK;
+	}
+	
 	m_block_ptr = null;
 	m_size			= 0;
-	FOR_ONE_LOOP_END
+	//FOR_ONE_LOOP_END
 	return status;
 }
 

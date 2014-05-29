@@ -15,11 +15,10 @@ template <class Aaa >
 class testA
 {
 public:
-	typedef typename testA < Aaa > this_type_t;
-	typedef typename testA < Aaa > base_type_t;
-public:
 	static const object_id_t& final_type ()
 	{
+		typedef typename testA < Aaa > this_type_t;
+		typedef typename testA < Aaa > base_type_t;
 		static object_id_t obj_id;
 		return cobject_id < this_type_t, base_type_t >::to_object_id(obj_id);
 	}
@@ -33,11 +32,10 @@ template <class Aaa, const usize__t x = 0 >
 class testB : testA < Aaa >
 {
 public:
-	typedef typename testA < Aaa >		base_type_t;
-	typedef typename testB < Aaa,x  >	this_type_t;
-public:
 	static const object_id_t& final_type ()
 	{
+		typedef typename testA < Aaa >		base_type_t;
+		typedef typename testB < Aaa,x  >	this_type_t;
 		static object_id_t obj_id;
 		return cobject_id < this_type_t, base_type_t >::to_object_id(obj_id);
 	}
@@ -50,12 +48,12 @@ public:
 template <class Aaa, const usize__t x = 0 >
 class testC : testA < Aaa >
 {
-public:
-	typedef typename testA < Aaa >		base_type_t;
-	typedef typename testC < Aaa,x  >	this_type_t;
+
 public:
 	static const object_id_t& final_type ()
 	{
+		typedef typename testA < Aaa >		base_type_t;
+		typedef typename testC < Aaa,x  >	this_type_t;
 		static object_id_t obj_id;
 		return cobject_id < this_type_t, base_type_t >::to_object_id(obj_id);
 	}
@@ -69,11 +67,10 @@ template <class Aaa, const usize__t x = 0 >
 class testD : testB < Aaa, x >
 {
 public:
-	typedef typename testB < Aaa, x >	base_type_t;
-	typedef typename testD < Aaa, x  > this_type_t;
-public:
 	static const object_id_t& final_type ()
 	{
+		typedef typename testB < Aaa, x >	base_type_t;
+		typedef typename testD < Aaa, x  > this_type_t;
 		static object_id_t obj_id;
 		return cobject_id < this_type_t, base_type_t >::to_object_id(obj_id);
 	}

@@ -29,14 +29,14 @@ boolean_t __type_id::__IS_type (const object_id_t& type_a, const object_id_t& te
 	do 
 	{
 		uint_t __base_id = list_ptr->final_type_id();
-		if (__testID != __base_id)
-		{
+		//if (__testID != __base_id)
+		//{
 			retn_res = list_ptr->check_id (__testID);
 			if (PFX_BOOL_TRUE == retn_res)
 			{
 				break;
 			}
-		}
+		//}
 		list_ptr = list_ptr->next;
 	} while (list_ptr);
 

@@ -37,7 +37,7 @@ int auto_obj_test ()
 	__schare_block_t sb1,sb2,sb3;
 	__schare_block_t::lock_object_t lock_obj;
 	
-	sb1.lock(lock_obj);
+	sb1.lock_bits(lock_obj);
 	cblock_t* lock_ptr =  lock_obj.lock_modify_object();
 	usize__t __init_size = 100;
 	lock_ptr->resize(__init_size);
@@ -46,16 +46,16 @@ int auto_obj_test ()
 		--__init_size;
 		lock_ptr->reference(_index) = __init_size;
 	}
-	sb1.unlock(lock_obj);
+	sb1.unlock_bits(lock_obj);
 
 	sb1.share(sb2);
 	sb1.share(sb3);
 
-	lock_obj = sb2.lock(lock_obj);
+	lock_obj = sb2.lock_bits(lock_obj);
 	lock_ptr = lock_obj.lock_modify_object(PFX_BOOL_TRUE);
 	uint_t tmpbuf[10] = {11,22,33,44,55,66,77,88,99,00};
 	lock_ptr->set_buffer (tmpbuf, sizeof (tmpbuf));
-	sb2.unlock(lock_obj);
+	sb2.unlock_bits(lock_obj);
 
 	sb2.release_object();
 	sb3.release_object();
@@ -63,19 +63,19 @@ int auto_obj_test ()
 
 	PFX_ShareObject< alloc >::cshare_object_t so1,so2,so3;
 	PFX_ShareObject< alloc >::cshare_object_t::lock_object_t lobj;
-	so1.lock(lobj);
+	so1.lock_bits(lobj);
 	PFX_ShareObject< alloc >::cshare_object_t::leakable_object_t* lobj_ptr;
 	lobj_ptr = lobj.lock_modify_object();
 	lobj_ptr->init();
 	lobj_ptr->reference() = 20;
-	so1.unlock(lobj);
+	so1.unlock_bits(lobj);
 	so1.share(so2);
 	so1.share(so3);
 
-	so2.lock(lobj);
+	so2.lock_bits(lobj);
 	lobj_ptr = lobj.lock_modify_object(PFX_BOOL_TRUE);
 	lobj_ptr->reference() = 30;
-	so2.unlock(lobj);
+	so2.unlock_bits(lobj);
 
 	so1.release_object();
 	so2.release_object();

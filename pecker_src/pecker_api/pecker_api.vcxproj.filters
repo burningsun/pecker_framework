@@ -183,6 +183,12 @@
     <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h">
       <Filter>data</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cshare_string_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cshare_string.h">
+      <Filter>data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />

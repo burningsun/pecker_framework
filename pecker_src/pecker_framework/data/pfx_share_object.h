@@ -134,11 +134,27 @@ public:
 			RETURN_RESULT (!m_locked, null);
 
 			m_lock = PFX_BOOL_TRUE;
-			if (__restore && m_old_object_ptr)
+
+			if (m_old_object_ptr)
 			{
-				m_old_object_ptr->m_share_obj.deep_copy_to (m_new_object);
+				if (m_old_object_ptr->is_shared())
+				{
+					if (__restore)
+					{
+						m_old_object_ptr->m_share_obj.deep_copy_to (m_new_object);
+					}
+					return &m_new_object;
+				}
+				else
+				{
+					return  &(m_old_object_ptr->m_share_obj);
+				}
 			}
-			return &m_new_object;
+			else
+			{
+				return &m_new_object;
+			}
+
 		}
 
 
@@ -198,15 +214,19 @@ public:
 
 	PFX_INLINE result_t release_object ();
 	PFX_INLINE result_t share (cshare_leakable_object_t& __other);
+	PFX_INLINE boolean_t is_shared () const
+	{
+		return (boolean_t)(get_prev_node() || get_next_node());
+	}
 
-	PFX_INLINE lock_object_t& lock (lock_object_t& __lock, 
+	PFX_INLINE lock_object_t& lock_bits (lock_object_t& __lock, 
 		boolean_t __clone = PFX_BOOL_FALSE)
 	{
 		__lock.m_old_object_ptr = this;
 		__lock.lock_object(__clone);
 		return __lock;
 	}
-	PFX_INLINE result_t unlock (lock_object_t& __lock)
+	PFX_INLINE result_t unlock_bits (lock_object_t& __lock)
 	{
 		if (__lock.m_old_object_ptr != this)
 		{
@@ -428,11 +448,18 @@ PFX_INLINE result_t CSLEAKABLE_OBJECT::clock_object ::unlock_object ()
 	result_t status;
 	if (m_lock)
 	{
-		FOR_ONE_LOOP_BEGIN
-		status = m_old_object_ptr->release_object();
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
-		m_old_object_ptr->m_share_obj.swap (m_new_object);
-		FOR_ONE_LOOP_END;
+		if (m_old_object_ptr->is_shared())
+		{
+			FOR_ONE_LOOP_BEGIN
+			status = m_old_object_ptr->release_object();
+			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+			m_old_object_ptr->m_share_obj.swap (m_new_object);
+			FOR_ONE_LOOP_END;
+		}
+		else
+		{
+			status = PFX_STATUS_OK;
+		}
 	}
 	else
 	{
@@ -482,6 +509,9 @@ PFX_INLINE result_t CSLEAKABLE_OBJECT::share (CSLEAKABLE_OBJECT_TYPE::cshare_lea
 	typedef CSLEAKABLE_OBJECT_TYPE::clist_node_t	clist_node_t;
 	typedef CSLEAKABLE_OBJECT_TYPE::clist_t				clist_t;
 	result_t status;
+
+	__other.release_object ();
+
 	const  clist_node_t* node_ptr = 
 				clist_t::insert_list_node_back(this, &__other);
 

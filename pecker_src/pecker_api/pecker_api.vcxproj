@@ -30,6 +30,8 @@
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix4.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix_codes.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_cshare_string.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_cshare_string_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cstring.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cstring_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cvector.h" />
