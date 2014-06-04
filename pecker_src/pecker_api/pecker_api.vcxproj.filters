@@ -87,9 +87,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_fixed_point.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\native\pecker_stream.h">
       <Filter>native</Filter>
     </ClInclude>
@@ -187,6 +184,15 @@
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_cshare_string.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cbst_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_carray.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_carray_codes.h">
       <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>

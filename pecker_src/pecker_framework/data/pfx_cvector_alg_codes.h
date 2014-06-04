@@ -425,19 +425,6 @@ PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* const& PFX_VEC_ALG::matrix_at_const
 {
 	return __matrix[i];
 }
-//PFX_VEC_ALG_TEMPLATE_DEFINES
-//PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* PFX_VEC_ALG::matrix_at_const	
-//	(const PFX_VEC_ALG_TYPE::matrix_t&	__matrix, uindex_t i)
-//{
-//	return &__matrix[i];
-//}
-
-//PFX_VEC_ALG_TEMPLATE_DEFINES
-//PFX_INLINE const PFX_VEC_ALG_TYPE::vector_t* const& PFX_VEC_ALG::matrix_at_const	
-//	(const PFX_VEC_ALG_TYPE::matrix_ex_t&	__matrix, uindex_t i)
-//{
-//	return __matrix[i];
-//}
 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_INLINE PFX_VEC_ALG_TYPE::vector_t& PFX_VEC_ALG::init_vector 
@@ -454,8 +441,10 @@ PFX_INLINE PFX_VEC_ALG_TYPE::vector_t& PFX_VEC_ALG::init_vector
 		(PFX_VEC_ALG_TYPE::vector_t& __vector, 
 		const dim_t __val, usize__t dim_count)
 {
-	for (uindex_t i=0; i<dim_count; ++i)
+	uindex_t i=dim_count;
+	while (i)
 	{
+		--i;
 		vector_at(__vector, i) = __val;
 	}
 	return __vector;
@@ -476,8 +465,10 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 	const PFX_VEC_ALG_TYPE::vector_t& other_vec,
 	usize__t dim_count)
 {	
-	for (uindex_t i=0; i<dim_count; ++i)
+	uindex_t i = dim_count;
+	while (i)
 	{
+		--i;
 		vector_at(__vector, i) = vector_at_const(other_vec, i);
 	}
 	return __vector;
@@ -488,8 +479,10 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& 
 																																const dim_t __val , 
 																																usize__t dim_count, usize__t vector_count)
 {
-	for (uindex_t i=0; i<vector_count; ++i)
+	uindex_t i = vector_count;
+	while (i)
 	{
+		--i;
 		PFX_VEC_ALG_TYPE::vector_t& vec = *matrix_at(__matrix,i);
 		init_vector(vec,__val,dim_count);
 	}
@@ -499,8 +492,10 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& __matrix, const dim_t __val , usize__t vector_count)
 {
-	for (uindex_t i=0; i<vector_count; ++i)
+	uindex_t i = vector_count;
+	while (i)
 	{
+		--i;
 		PFX_VEC_ALG_TYPE::vector_t& vec = *matrix_at(__matrix,i);
 		init_vector(vec,__val);
 	}
@@ -510,8 +505,10 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& __matrix, const matrix_t& s_matrix, usize__t vector_count)
 {
-	for (uindex_t i=0; i<vector_count; ++i)
+	uindex_t i = vector_count;
+	while (i)
 	{
+		--i;
 		matrix_at(__matrix,i) = matrix_at(s_matrix,i);
 	}
 	return __matrix;
@@ -520,8 +517,10 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_ex_t& PFX_VEC_ALG::init_matrix(matrix_ex_t& 
 PFX_VEC_ALG_TEMPLATE_DEFINES
 PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::init_matrix(matrix_t& __matrix, const dim_t __val , usize__t vector_count)
 {
-	for (uindex_t i=0; i<vector_count; ++i)
+	uindex_t i = vector_count;
+	while (i)
 	{
+		--i;
 		PFX_VEC_ALG_TYPE::vector_t& vec = *matrix_at(__matrix,i);
 		init_vector(vec,__val);
 	}
@@ -543,7 +542,7 @@ PFX_INLINE PFX_VEC_ALG_TYPE::dim_t&	PFX_VEC_ALG::vector_dot
 	for (usize__t i=1; i<dim_count; ++i)
 	{
 		PFX_VEC_ALG_TYPE::dim_t temp;
-		temp = dim_alg_t::mul (vector_at_const(__vec_a, 0), vector_at_const(__vec__b, 0));
+		temp = dim_alg_t::mul (vector_at_const(__vec_a, i), vector_at_const(__vec__b, i));
 		dim_alg_t::add_replace(return_val, temp); 
 	}
 	__dim_result = return_val;
@@ -632,8 +631,10 @@ PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector_mul	 (const PFX_VEC_A
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
-	for (uindex_t i=0; i<dim_count; ++i)
+	uindex_t i = dim_count;
+	while (i)
 	{
+		--i;
 		vector_at(__vec_result, i) = dim_alg_t::mul (__dim, vector_at_const(__vec_a, i));
 	}
 	return __vec_result;
@@ -654,9 +655,10 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 	PFX_VEC_ALG_TYPE::vector_t& PARAM_INOUT __vec_result)
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
-
-	for (uindex_t i=0; i<dim_count; ++i)
+	uindex_t i = dim_count;
+	while (i)
 	{
+		--i;
 		vector_at(__vec_result, i) = dim_alg_t::div (vector_at_const(__vec_a, i), __dim);
 	}
 	return __vec_result;
@@ -677,8 +679,10 @@ PFX_INLINE PFX_VEC_ALG_TYPE::vector_t&	PFX_VEC_ALG::vector_add	 (const PFX_VEC_A
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
-	for (uindex_t i=0; i<dim_count; ++i)
+	uindex_t i=dim_count;
+	while (i)
 	{
+		--i;
 		vector_at(__vec_result, i) = dim_alg_t::add (vector_at_const(__vec_a, i), vector_at_const(__vec_b,i));
 	}
 	return __vec_result;
@@ -699,8 +703,10 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 {
 	typedef PFX_VEC_ALG_TYPE::dim_alg_t dim_alg_t;
 
-	for (uindex_t i=0; i<dim_count; ++i)
+	uindex_t i = dim_count;
+	while (i)
 	{
+		--i;
 		vector_at(__vec_result, i) = dim_alg_t::sub (vector_at_const(__vec_a, i), vector_at_const(__vec_b,i));
 	}
 	return __vec_result;
@@ -722,14 +728,18 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_mul_matrix_direct
 	const PFX_VEC_ALG_TYPE::matrix_t& __mat_b, 
 	matrix_t&	PARAM_INOUT __mat_result)
 {
-	for (uindex_t i =0; i<ai_count; ++i)
+	uindex_t i=ai_count;
+	while (i)
 	{
-		for (uindex_t j=0; j<bj_count; ++j)
+		--i;
+		uindex_t j = bj_count;
+		while(j)
 		{
+			--j;
 			vector_dot(aj_count, __mat_a, i, __mat_b, j, matrix_at (__mat_result, i, j));
 		}
-		
 	}
+
 	return __mat_result;
 }
 PFX_VEC_ALG_TEMPLATE_DEFINES
@@ -739,9 +749,11 @@ PFX_INLINE PFX_VEC_ALG_TYPE::matrix_t& PFX_VEC_ALG::matrix_mul_value_direct
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_t&	PARAM_INOUT __mat_result)
 {
-	for (uindex_t i=0; i<i_count; ++i)
+	uindex_t i = i_count;
+	while (i)
 	{
-		vector_mul(__mat_a, __dim, j_count, *vector_at(__mat_result,i));
+		--i;
+		vector_mul(__mat_a, __dim, j_count, *vector_at(__mat_result, i));
 	}
 	return __mat_result;
 }
@@ -754,8 +766,10 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_t&	PARAM_INOUT __mat_result)
 {
-	for (uindex_t i=0; i<i_count; ++i)
+	uindex_t i = i_count;
+	while (i)
 	{
+		--i;
 		vector_div(__mat_a, __dim, j_count, *vector_at(__mat_result,i));
 	}
 	return __mat_result;
@@ -768,13 +782,16 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 	const PFX_VEC_ALG_TYPE::matrix_ex_t& __mat_b, 
 	matrix_ex_t&	PARAM_INOUT __mat_result)
 {
-	for (uindex_t i =0; i<ai_count; ++i)
+	uindex_t i=ai_count;
+	while (i)
 	{
-		for (uindex_t j=0; j<bj_count; ++j)
+		--i;
+		uindex_t j = bj_count;
+		while(j)
 		{
+			--j;
 			vector_dot(aj_count, __mat_a, i, __mat_b, j, matrix_at (__mat_result, i, j));
 		}
-
 	}
 	return __mat_result;
 }
@@ -786,9 +803,11 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_ex_t&	PARAM_INOUT __mat_result)
 {
-	for (uindex_t i=0; i<i_count; ++i)
+	uindex_t i = i_count;
+	while (i)
 	{
-		vector_mul(__mat_a, __dim, j_count, *vector_at(__mat_result,i));
+		--i;
+		vector_mul(__mat_a, __dim, j_count, *vector_at(__mat_result, i));
 	}
 	return __mat_result;
 }
@@ -801,9 +820,11 @@ PFX_VEC_ALG_TEMPLATE_DEFINES
 	const PFX_VEC_ALG_TYPE::dim_t& __dim, 
 	PFX_VEC_ALG_TYPE::matrix_ex_t&	PARAM_INOUT __mat_result)
 {
-	for (uindex_t i=0; i<i_count; ++i)
+	uindex_t i = i_count;
+	while (i)
 	{
-		vector_div(__mat_a, __dim, j_count, *vector_at(__mat_result,i));
+		--i;
+		vector_div(__mat_a, __dim, j_count, *vector_at(__mat_result, i));
 	}
 	return __mat_result;
 }

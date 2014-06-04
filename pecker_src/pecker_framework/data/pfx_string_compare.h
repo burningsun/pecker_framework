@@ -17,8 +17,6 @@ typedef enum enumSTRING_CMP_TYPE
 {
 	CMP_ALL_STRING_SAME = 0,
 	CMP_SAME_AS_ONE_STRING,
-	CMP_FIST_PART_SAME,
-	CMP_CONTAINS_OTHER,
 
 	STRING_CMP_TYPE_COUNT
 }STRING_CMP_TYPE_t;
@@ -103,14 +101,51 @@ struct find_cstrstring_operate
 
 template< 
 	class string_type1,
-	class string_type2,
+	class string_type2 = string_type1,
+	class elem_compare = pecker_value_compare < typename string_type1::element_t >,
 	const enum_int_t cmp_type = 0>  
 struct PFX_DATA_TEMPALE_API string_compare
 {
-	PFX_INLINE int operator () (const string_type1& str1,const string_type2& str2) const;
-	static PFX_INLINE int compare(const string_type1& str1,const string_type2& str2);
-	static PFX_INLINE int compare(const string_type1& str1,const string_type2& str2, 
-															uindex_t &__index, usize__t &__same_size);
+	typedef string_type1		stringa_t;
+	typedef string_type2		stringb_t;
+
+	typedef typename stringa_t::element_t			element_t;
+	typedef elem_compare										elem_compare_t;
+
+	typedef find_cstrstring_operate< stringa_t, stringb_t, elem_compare_t >		find_t;
+
+
+	PFX_INLINE int operator () (const string_type1& str1,const string_type2& str2) const
+	{
+		return compare(str1, str2);
+	}
+	static PFX_INLINE int compare(const string_type1& str1,const string_type2& str2)
+	{
+		int cmp_result;
+		switch (cmp_type)
+		{
+		case CMP_ALL_STRING_SAME:
+			cmp_result = find_t::same_string(str1, str2);
+			break;
+		case CMP_SAME_AS_ONE_STRING:
+			{
+				usize__t same_count = 0;
+				cmp_result = find_t::same_string(str1, str2, same_count);
+				if (same_count)
+				{
+					cmp_result = 0;
+				}
+			}
+			break;
+		default:
+			cmp_result = find_t::same_string(str1, str2);
+			break;
+		}
+
+	
+		return cmp_result;
+	}
+	
 };
 
 PECKER_END

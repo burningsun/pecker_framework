@@ -77,11 +77,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pfx_avl_bst_test.cpp" />
     <ClCompile Include="pfx_block_test.cpp" />
+    <ClCompile Include="pfx_bst_test.cpp" />
     <ClCompile Include="pfx_cmatrix_test.cpp" />
     <ClCompile Include="pfx_file_inputdata_cmd.cpp" />
     <ClCompile Include="pfx_list_test.cpp" />
     <ClCompile Include="pfx_objectid_test.cpp" />
+    <ClCompile Include="pfx_rb_bst_test.cpp" />
     <ClCompile Include="pfx_share_object_test.cpp" />
     <ClCompile Include="pfx_string_test.cpp" />
   </ItemGroup>

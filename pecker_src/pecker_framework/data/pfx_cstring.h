@@ -103,7 +103,7 @@ public:
 template < class __alloc,  
 	const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
 class PFX_DATA_TEMPALE_API cstring : 
-	public IPfx_string < typename __alloc::element_t >
+	public IPfx_string <  typename __alloc::element_t >
 {
 public:
 	typedef typename __alloc										allocator_t;
@@ -295,7 +295,7 @@ public:
 		return final_type();
 	}
 public:
-	result_t									init_string(const cstring_t& __otherstr);
+	virtual result_t						init_string(const cstring_t& __otherstr);
 	virtual result_t						init_string (usize__t __size);
 	virtual result_t						init_string (const element_t* PARAM_IN str_chars_buffer_ptr,usize__t buffer_size);
 	virtual result_t						init_string (const IString_t* PARAM_IN other_ptr);
@@ -322,21 +322,21 @@ public:
 	virtual result_t						clip_string_remain_right (uindex_t clip_index, IString_t* PARAM_OUT other_ptr);
 	virtual result_t						clip_string_remain_right (uindex_t clip_index, cstring_t& PARAM_OUT __other);
 	
-	virtual usize__t						get_cache_buffer_size () const;
+	virtual PFX_INLINE usize__t					get_cache_buffer_size () const;
 
-	virtual const element_t*	get_string () const;
-	virtual usize__t						get_length () const;
-	virtual usize__t						get_string_buffer_size () const;
+	virtual PFX_INLINE const element_t*	get_string () const;
+	virtual PFX_INLINE usize__t					get_length () const;
+	virtual PFX_INLINE usize__t					get_string_buffer_size () const;
 
-	virtual element_t&				reference (uindex_t __index); 
-	virtual const element_t&	reference (uindex_t __index) const; 
+	virtual PFX_INLINE element_t&				reference (uindex_t __index); 
+	virtual PFX_INLINE const element_t&	reference (uindex_t __index) const; 
 
-	virtual const element_t*	get_charbuffer_at (uindex_t index_) const;
-	virtual usize__t						set_charbuffer_at (uindex_t index_, 
+	virtual PFX_INLINE const element_t*	get_charbuffer_at (uindex_t index_) const;
+	virtual PFX_INLINE usize__t					set_charbuffer_at (uindex_t index_, 
 																						const element_t* PARAM_IN char_buffer, 
 																						usize__t buf_size);
 
-	virtual  const element_t*	sub_string_buffer (uindex_t index_) const;
+	virtual  PFX_INLINE const element_t*	sub_string_buffer (uindex_t index_) const;
 
 	virtual  const IString_t *		sub_string (uindex_t index_,
 																			IString_t* PARAM_OUT sub_string_ptr)  const;

@@ -525,25 +525,25 @@ result_t	PFX_CSHARE_STRING::clip_string_remain_right (uindex_t clip_index,
 }
 
 PFX_CSHARE_STRING_TEMPLATE
-usize__t	PFX_CSHARE_STRING::get_cache_buffer_size () const
+PFX_INLINE usize__t	PFX_CSHARE_STRING::get_cache_buffer_size () const
 {
 	return cache_buffer_size ();
 }
 
 PFX_CSHARE_STRING_TEMPLATE
-const PFX_CSHARE_STRING_TYPE::element_t*	PFX_CSHARE_STRING::get_string () const
+PFX_INLINE const PFX_CSHARE_STRING_TYPE::element_t*	PFX_CSHARE_STRING::get_string () const
 {
 	return this->m_this_string_ptr;
 }
 
 PFX_CSHARE_STRING_TEMPLATE
-usize__t	PFX_CSHARE_STRING::get_length () const
+PFX_INLINE usize__t	PFX_CSHARE_STRING::get_length () const
 {
 	return this->m_size;
 }
 
 PFX_CSHARE_STRING_TEMPLATE
-usize__t	PFX_CSHARE_STRING::get_string_buffer_size () const
+PFX_INLINE usize__t	PFX_CSHARE_STRING::get_string_buffer_size () const
 {
 	typedef PFX_CSHARE_STRING_TYPE::element_t				element_t;
 	typedef PFX_CSHARE_STRING_TYPE::cblock_t					cblock_t;
@@ -564,7 +564,7 @@ usize__t	PFX_CSHARE_STRING::get_string_buffer_size () const
 
 
 PFX_CSHARE_STRING_TEMPLATE
-const PFX_CSHARE_STRING_TYPE::element_t&	PFX_CSHARE_STRING::reference (uindex_t __index) const
+PFX_INLINE const PFX_CSHARE_STRING_TYPE::element_t&	PFX_CSHARE_STRING::reference (uindex_t __index) const
 {
 	typedef PFX_CSHARE_STRING_TYPE::element_t				element_t;
 	typedef PFX_CSHARE_STRING_TYPE::cblock_t					cblock_t;
@@ -581,7 +581,7 @@ const PFX_CSHARE_STRING_TYPE::element_t&	PFX_CSHARE_STRING::reference (uindex_t 
 }
 
 PFX_CSHARE_STRING_TEMPLATE
-const PFX_CSHARE_STRING_TYPE::element_t*	PFX_CSHARE_STRING::get_charbuffer_at (uindex_t index_) const
+PFX_INLINE const PFX_CSHARE_STRING_TYPE::element_t*	PFX_CSHARE_STRING::get_charbuffer_at (uindex_t index_) const
 {
 	if (index_ < get_length())
 	{
@@ -594,7 +594,7 @@ const PFX_CSHARE_STRING_TYPE::element_t*	PFX_CSHARE_STRING::get_charbuffer_at (u
 }
 
 PFX_CSHARE_STRING_TEMPLATE
-usize__t	PFX_CSHARE_STRING::set_charbuffer_at (uindex_t index_, 
+PFX_INLINE usize__t	PFX_CSHARE_STRING::set_charbuffer_at (uindex_t index_, 
 	const PFX_CSHARE_STRING_TYPE::element_t* PARAM_IN char_buffer, 
 	usize__t buf_size)
 {
@@ -624,7 +624,7 @@ usize__t	PFX_CSHARE_STRING::set_charbuffer_at (uindex_t index_,
 }
 
 PFX_CSHARE_STRING_TEMPLATE
-const PFX_CSHARE_STRING_TYPE::element_t*	PFX_CSHARE_STRING::sub_string_buffer (uindex_t index_) const
+PFX_INLINE const PFX_CSHARE_STRING_TYPE::element_t*	PFX_CSHARE_STRING::sub_string_buffer (uindex_t index_) const
 {
 	return get_charbuffer_at(index_);
 }

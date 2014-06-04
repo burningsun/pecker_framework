@@ -23,8 +23,11 @@
     <ClInclude Include="..\pecker_framework\data\pecker_data.h" />
     <ClInclude Include="..\pecker_framework\data\pecker_value_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_binary_search_tree.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_carray_codes.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_carray.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cblock.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_cbst_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst_iterator_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_clist.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix.h" />
@@ -45,7 +48,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_region.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />

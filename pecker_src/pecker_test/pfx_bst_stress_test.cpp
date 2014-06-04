@@ -12,14 +12,16 @@
 #include "../pecker_framework/native/pecker_timetick.h"
 #include "../pecker_framework/native/pfx_file_io.h"
 #include "../pecker_framework/native/pecker_stream.h"
+#include "../pecker_framework/data/pfx_string_cmp_codes.h"
 
 USING_PECKER_SDK
 
 #define NODE_ARRAY
 
 
+typedef pecker_simple_allocator< char_t > allc_char_t;
+typedef crb_bst_node < cstring < allc_char_t > > bst_string_node_t;
 
-typedef cbalance_bst_node < cstring < char_t >, pecker_value_compare_extern < cstring < char_t > > > bst_string_node_t;
 //static pfx_binary_search_tree < bst_string_node_t >  bst_strings;
 //static pfx_binary_search_tree < bst_string_node_t >  bst_copy_strings;
 //static bst_string_node_t bst_key_node;
@@ -38,7 +40,7 @@ PFX_INLINE_CODE void print_bbst_node (const bst_string_node_t* PARAM_IN node_ptr
 {
 	if (node_ptr)
 	{
-		const cstring < char_t >& string_ref = node_ptr->get_item();
+		const cstring < allc_char_t >& string_ref = node_ptr->get_item();
 		const char_t* str_ptr = string_ref.get_string ();
 		char_t strformat[200];
 		if (str_ptr)

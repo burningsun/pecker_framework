@@ -50,7 +50,7 @@ public:
 	}
 	~cblock()
 	{
-		clear();
+		clean();
 	}
 public:
 	PFX_INLINE leak_data_t& leak_memery_to (leak_data_t& PARAM_OUT __block);
@@ -77,6 +77,18 @@ public:
 			return error_element();
 		}
 	}
+	PFX_INLINE const element_t&	reference (uindex_t i) const
+	{
+		if (i < size())
+		{
+			return reference_unsafe(i);
+		}
+		else
+		{
+			return error_element();
+		}
+	}
+
 	PFX_INLINE element_t*	pointer (uindex_t i)
 	{
 		if (i < size())
@@ -148,11 +160,11 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	PFX_INLINE result_t copy_to(cblock_t&  PARAM_OUT __block) const;
 
-	PFX_INLINE result_t clear ();
+	PFX_INLINE result_t clean ();
 
 	PFX_INLINE result_t dispose ()
 	{
-		return clear();
+		return clean();
 	}
 	PFX_INLINE void force_clean ()
 	{
@@ -347,7 +359,7 @@ PFX_CBLOCK_TEMPLATE_DEFINES
 PFX_INLINE result_t PFX_CBLOCK::shallow_copy_to (PFX_CBLOCK_TYPE::cblock_t & PARAM_OUT __block) const
 {
 	result_t status;
-	status = __block.clear ();
+	status = __block.clean ();
 	if (PFX_STATUS_OK == status)
 	{
 		__block.m_block_ptr = this->m_block_ptr;
@@ -401,7 +413,7 @@ PFX_INLINE result_t PFX_CBLOCK::init_buffer (usize__t __size)
 	
 	if (!__size)
 	{
-		status = clear();
+		status = clean();
 	}
 	else if (__size != m_size)
 	{
@@ -462,7 +474,7 @@ PFX_INLINE result_t PFX_CBLOCK::resize(usize__t __size)
 	result_t status;
 	if (0 == __size)
 	{
-		status = clear();
+		status = clean();
 	}
 	else if (__size != m_size)
 	{
@@ -610,7 +622,7 @@ PFX_CBLOCK_TEMPLATE_DEFINES
 } 
 
 PFX_CBLOCK_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_CBLOCK::clear ()
+PFX_INLINE result_t PFX_CBLOCK::clean ()
 {
 	typedef PFX_CBLOCK_TYPE::allocator_t allocator_t;
 

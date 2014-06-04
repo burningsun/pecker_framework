@@ -401,25 +401,25 @@ result_t	PFX_CSTRING::clip_string_remain_right (uindex_t clip_index,
 }
 
 PFX_CSTRING_TEMPLATE
-usize__t	PFX_CSTRING::get_cache_buffer_size () const
+PFX_INLINE usize__t	PFX_CSTRING::get_cache_buffer_size () const
 {
 	return cache_buffer_size ();
 }
 
 PFX_CSTRING_TEMPLATE
-const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::get_string () const
+PFX_INLINE const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::get_string () const
 {
 	return this->m_this_string_ptr;
 }
 
 PFX_CSTRING_TEMPLATE
-usize__t	PFX_CSTRING::get_length () const
+PFX_INLINE usize__t	PFX_CSTRING::get_length () const
 {
 	return this->m_size;
 }
 
 PFX_CSTRING_TEMPLATE
-usize__t	PFX_CSTRING::get_string_buffer_size () const
+PFX_INLINE usize__t	PFX_CSTRING::get_string_buffer_size () const
 {
 	if (this->m_block.size() > 0)
 	{
@@ -432,7 +432,7 @@ usize__t	PFX_CSTRING::get_string_buffer_size () const
 }
 
 PFX_CSTRING_TEMPLATE
-PFX_CSTRING_TYPE::element_t&	PFX_CSTRING::reference (uindex_t __index)
+PFX_INLINE PFX_CSTRING_TYPE::element_t&	PFX_CSTRING::reference (uindex_t __index)
 {
 	typedef PFX_CSTRING::cblock_t cblock_t;
 	if (__index < get_length())
@@ -446,7 +446,7 @@ PFX_CSTRING_TYPE::element_t&	PFX_CSTRING::reference (uindex_t __index)
 }
 
 PFX_CSTRING_TEMPLATE
-const PFX_CSTRING_TYPE::element_t&	PFX_CSTRING::reference (uindex_t __index) const
+PFX_INLINE const PFX_CSTRING_TYPE::element_t&	PFX_CSTRING::reference (uindex_t __index) const
 {
 	typedef PFX_CSTRING::cblock_t cblock_t;
 	if (__index < get_length())
@@ -460,7 +460,7 @@ const PFX_CSTRING_TYPE::element_t&	PFX_CSTRING::reference (uindex_t __index) con
 }
 
 PFX_CSTRING_TEMPLATE
-const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::get_charbuffer_at (uindex_t index_) const
+PFX_INLINE const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::get_charbuffer_at (uindex_t index_) const
 {
 	if (index_ < get_length())
 	{
@@ -473,7 +473,7 @@ const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::get_charbuffer_at (uindex_t inde
 }
 
 PFX_CSTRING_TEMPLATE
-usize__t	PFX_CSTRING::set_charbuffer_at (uindex_t index_, 
+PFX_INLINE usize__t	PFX_CSTRING::set_charbuffer_at (uindex_t index_, 
 	const PFX_CSTRING_TYPE::element_t* PARAM_IN char_buffer, 
 	usize__t buf_size)
 {
@@ -482,7 +482,7 @@ usize__t	PFX_CSTRING::set_charbuffer_at (uindex_t index_,
 }
 
 PFX_CSTRING_TEMPLATE
-const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::sub_string_buffer (uindex_t index_) const
+PFX_INLINE const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::sub_string_buffer (uindex_t index_) const
 {
 	return get_charbuffer_at(index_);
 }
@@ -598,7 +598,7 @@ result_t	PFX_CSTRING::copy_to (PFX_CSTRING_TYPE::cstring_t& PARAM_OUT __to_strin
 PFX_CSTRING_TEMPLATE
 result_t	PFX_CSTRING::dispose ()
 {
-	result_t status = this->m_block.clear();
+	result_t status = this->m_block.clean();
 	m_size = 0;
 	m_this_string_ptr = m_cache_buffer;
 	return status;

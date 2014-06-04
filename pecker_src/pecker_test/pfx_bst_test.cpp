@@ -7,6 +7,7 @@
 #include "pfx_file_inputdata_cmd.h"
 #include "../pecker_framework/data/pfx_binary_search_tree.h"
 #include "../pecker_framework/data/pfx_cstring_codes.h"
+#include "../pecker_framework/data/pfx_string_cmp_codes.h"
 
 #define	NONE_FLAG_				(-1)
 #define	INORDER_FLAG_INC	(0)
@@ -21,16 +22,19 @@
 //static avl_tree_node_t* proot_node_2 = null;
 USING_PECKER_SDK
 	
-typedef cbst_node < cstring < char_t >, pecker_value_compare_extern < cstring < char_t > > > bst_string_node_t;
-static pfx_binary_search_tree_type < bst_string_node_t >::binary_search_tree_t  bst_strings;
-static pfx_binary_search_tree_type < bst_string_node_t >::binary_search_tree_t  bst_copy_strings;
+typedef pecker_simple_allocator< char_t > allc_char_t;
+typedef cbst_node < cstring < allc_char_t > > bst_string_node_t;
+typedef  pfx_binary_search_tree_type < bst_string_node_t, 
+	compare_two_node< bst_string_node_t, bst_string_node_t, string_compare < cstring < allc_char_t > > > >::binary_search_tree_t bst_t;
+static bst_t  bst_strings;
+static bst_t  bst_copy_strings;
 static bst_string_node_t bst_key_node;
 
 PFX_INLINE_CODE void print_bst_node (const bst_string_node_t* PARAM_IN node_ptr)
 {
 	if (node_ptr)
 	{
-		const cstring < char_t >& string_ref = node_ptr->get_item();
+		const cstring < allc_char_t >& string_ref = node_ptr->get_item();
 		const char_t* str_ptr = string_ref.get_string ();
 		char_t strformat[200];
 		if (str_ptr)
@@ -76,7 +80,7 @@ result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,
 			bst_string_node_t* new_node_ptr =  bst_strings.new_node();
 			new_node_ptr->get_item_ref().init_string(str_chars_ptr,nchars_count);
 			result_t status = PFX_STATUS_ERROR_;
-			const bst_string_node_t* added_node_ptr = bst_strings.add (new_node_ptr,status);
+			const bst_string_node_t* added_node_ptr = bst_strings.add (new_node_ptr, status);
 			print_bst_node(added_node_ptr);
 		}
 		break;
@@ -85,7 +89,7 @@ result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,
 			result_t status = PFX_STATUS_ERROR_;
 			nchars_count = nchars_count > 0 ? (nchars_count - 1) : nchars_count;
 			bst_key_node.get_item_ref().init_string(str_chars_ptr,nchars_count);
-			bst_string_node_t* remove_node_ptr = bst_strings.find_reference(&bst_key_node);
+			bst_string_node_t* remove_node_ptr = (bst_string_node_t*)bst_strings.find(&bst_key_node);
 			if (remove_node_ptr)
 			{
 				remove_node_ptr = bst_strings.remove (remove_node_ptr,status);
@@ -107,12 +111,12 @@ result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,
 		break;
 	case CMD_COPY:
 		{
-			result_t status = bst_copy_strings.copy(&bst_strings);
+			result_t status = bst_copy_strings.copy(bst_strings.get_root());
 		}
 		break;
 	case CMD_CLR:
 		{
-			result_t status =bst_copy_strings.clear();
+			result_t status =bst_copy_strings.clean();
 		}
 		*cmd_type = CMD_NONE;
 		break;
@@ -122,35 +126,34 @@ result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,
 			PECKER_LOG_("============\n");
 			if (0 == strncmp(str_chars_ptr,"inorder",strlen("inorder")))
 			{
-				bst_inorder_iterator < bst_string_node_t > bst_iterator;
-				cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
+				bst_t::const_inorder_itr_t bst_iterator;
+				bst_t::const_inorder_itr_t* iterator_ptr = bst_strings.begin (bst_iterator);
 				while (iterator_ptr)
 				{
 
-					print_bst_node(iterator_ptr->get_current_node ());
+					print_bst_node(iterator_ptr->cur_node());
 					iterator_ptr = iterator_ptr->increase();
-					
 				} 
 			}
 			else 	if (0 == strncmp(str_chars_ptr,"posorder",strlen("posorder")))
 			{
-				bst_posorder_iterator < bst_string_node_t > bst_iterator;
-				cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
+				bst_t::const_posorder_itr_t bst_iterator;
+				bst_t::const_posorder_itr_t* iterator_ptr = bst_strings.begin (bst_iterator);
 
 				while (iterator_ptr)
 				{
-					print_bst_node(iterator_ptr->get_current_node ());
+					print_bst_node(iterator_ptr->cur_node());
 					iterator_ptr = iterator_ptr->increase();
 				} 
 			}
 			else 	if (0 == strncmp(str_chars_ptr,"preorder",strlen("preorder")))
 			{
-				bst_preorder_iterator < bst_string_node_t > bst_iterator;
-				cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.begin (&bst_iterator);
+				bst_t::const_preorder_itr_t bst_iterator;
+				bst_t::const_preorder_itr_t* iterator_ptr = bst_strings.begin (bst_iterator);
 
 				while (iterator_ptr)
 				{
-					print_bst_node(iterator_ptr->get_current_node ());
+					print_bst_node(iterator_ptr->cur_node());
 					iterator_ptr = iterator_ptr->increase();
 				} 
 			}
@@ -162,25 +165,25 @@ result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,
 		PECKER_LOG_("============\n");
 		if (0 == strncmp(str_chars_ptr,"inorder",strlen("inorder")))
 		{
-			cbst_iterator < bst_string_node_t > bst_iterator;
-			cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.end (&bst_iterator);
+			bst_t::const_inorder_itr_t bst_iterator;
+			bst_t::const_inorder_itr_t* iterator_ptr = bst_strings.end (bst_iterator);
 
 			while (iterator_ptr) 
 			{
-				print_bst_node(iterator_ptr->get_current_node ());
+				print_bst_node(iterator_ptr->cur_node());
 				iterator_ptr = iterator_ptr->decrease();
 			} 
 		}
 		else 	if (0 == strncmp(str_chars_ptr,"posorder",strlen("posorder")))
 		{
-			bst_posorder_iterator < bst_string_node_t > bst_iterator;
-			cbst_iterator < bst_string_node_t >* iterator_ptr = bst_strings.end (&bst_iterator);
-			iterator_ptr = bst_iterator.reverse_begin ();
+			bst_t::const_posorder_itr_t bst_iterator;
+			bst_t::const_posorder_itr_t* iterator_ptr = bst_strings.end (bst_iterator);
+			iterator_ptr = bst_iterator.to_reverse_begin();
 
 			while (iterator_ptr)
 			{
-				print_bst_node(iterator_ptr->get_current_node ());
-				iterator_ptr = iterator_ptr->decrease();
+				print_bst_node(iterator_ptr->cur_node());
+				iterator_ptr = iterator_ptr->increase();
 			} 
 		}
 		break;
@@ -197,58 +200,58 @@ result_t bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,
 int bst_test_main()
 {
 	//bstree_method_tratis < pfx_cbst < bst_string_node_t > >::bst_init_node_leaves bst_method;
-	bst_member_reference_type < cbst < bst_string_node_t >  >  tree_mem_type;
-	bst_member_reference_type < cbst < bst_string_node_t >  >::node_type_t aaa;
+	//bst_member_reference_type < cbst < bst_string_node_t >  >  tree_mem_type;
+	//bst_member_reference_type < cbst < bst_string_node_t >  >::node_type_t aaa;
 	
 	PECKER_LOG_ ("------------------------------bst test--------------------------------\n");
 	PECKER_LOG_ ("*********test_data\\bst_test_data.txt***********\n");
-	bst_strings.clear();
-	bst_copy_strings.clear();
+	bst_strings.clean();
+	bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_2.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_2.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_3.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_3.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_4.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_4.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_5.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_5.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_6.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_6.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_7.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_7.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_8.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_8.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_9.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_9.txt",bst_cmd_operate_func);
 
 	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_10.txt***********\n");
-	 bst_strings.clear();
-	 bst_copy_strings.clear();
+	 bst_strings.clean();
+	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_10.txt",bst_cmd_operate_func);
 	 return 0;
 }
