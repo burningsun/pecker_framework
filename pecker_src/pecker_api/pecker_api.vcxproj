@@ -23,7 +23,6 @@
     <ClInclude Include="..\pecker_framework\data\pecker_data.h" />
     <ClInclude Include="..\pecker_framework\data\pecker_value_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_binary_search_tree.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_carray_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_carray.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cblock.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst.h" />

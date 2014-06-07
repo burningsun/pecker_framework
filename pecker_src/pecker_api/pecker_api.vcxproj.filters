@@ -192,9 +192,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_carray.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_carray_codes.h">
-      <Filter>data</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />

@@ -546,11 +546,9 @@ protected:
 	usize__t				m_size;
 private:
 	usize__t		m_auto_size_step;
-	//usize__t		m_auto_block_step;
 	usize__t		m_max_elements_count;
 public:
 	carray_mbs () : m_size (0), m_auto_size_step (PFX_ARRAY_AUTO_STEP_SIZE), 
-		//m_auto_block_step (PFX_ARRAY_AUTO_STEP_SIZE), 
 		m_max_elements_count((usize__t)PFX_ARRAY_SIZE)
 	{
 		;
@@ -725,7 +723,7 @@ public:
 			__other.m_max_elements_count	= __tmp;
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 public:
 	virtual result_t						init (usize__t element_count, usize__t allocate_step_size = 0)
 	{
@@ -960,49 +958,41 @@ public:
 	virtual result_t						copy_to (carray_t& __other, boolean_t new_buffer = PFX_BOOL_TRUE) const
 	{
 		result_t status;
-		if (&__other != this)
+		RETURN_RESULT (&__other == this, PFX_STATUS_OK);
+		if (new_buffer)
 		{
-			if (new_buffer)
-			{
-				FOR_ONE_LOOP_BEGIN
-				carray_mbs new_array;
-				new_array.set_max_elements_count(this->get_max_elements_count());
-				usize__t _block_count = m_size / new_step + ((m_size % new_step)?1:0);
-				FOR_ONE_LOOP_BEGIN
+			carray_mbs new_array;
+			new_array.set_max_elements_count(this->get_max_elements_count());
+			usize__t _block_count = m_size / new_step + ((m_size % new_step)?1:0);
+			FOR_ONE_LOOP_BEGIN
 				status = new_array.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
-				BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
-				status = new_array.init(m_size, new_step);
-				BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
-				uindex_t i = m_size;
-				while (i)
-				{
-					--i;
-					new_array.get_element_at(i) = this->get_element_at(i);
-				}
-				__other.swap(new_array);
-				FOR_ONE_LOOP_END
-			}
-			else
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			status = new_array.init(m_size, new_step);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			uindex_t i = m_size;
+			while (i)
 			{
-				__other.set_max_elements_count(this->get_max_elements_count());
-				FOR_ONE_LOOP_BEGIN
-				status = __other.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
-				BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
-				status = __other.init(m_size, new_step);
-				BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
-				uindex_t i = m_size;
-				while (i)
-				{
-					--i;
-					new_array.get_element_at(i) = this->get_element_at(i);
-				}
-				FOR_ONE_LOOP_END
+				--i;
+				new_array.get_element_at(i) = this->get_element_at(i);
 			}
-
+			__other.swap(new_array);
+			FOR_ONE_LOOP_END
 		}
 		else
 		{
-			status = PFX_STATUS_OK;
+			__other.set_max_elements_count(this->get_max_elements_count());
+			FOR_ONE_LOOP_BEGIN
+				status = __other.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			status = __other.init(m_size, new_step);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			uindex_t i = m_size;
+			while (i)
+			{
+				--i;
+				new_array.get_element_at(i) = this->get_element_at(i);
+			}
+			FOR_ONE_LOOP_END
 		}
 		return status;
 	}
