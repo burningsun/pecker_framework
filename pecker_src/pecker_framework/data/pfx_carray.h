@@ -56,6 +56,8 @@ PFX_Interface PFX_DATA_TEMPALE_API IPfx_array
 
 	virtual	boolean_t					is_full () const = 0;
 	virtual boolean_t					is_empty () const = 0;
+
+	virtual boolean_t					is_error_element (const element_t& __elem) const = 0;
 //protected:
 //	virtual const element_t*	get_buffer () const = 0;
 public:
@@ -80,14 +82,17 @@ public:
 	typedef typename element_t								item_type_t;
 	typedef typename IPfx_array < element_t >		IArray_t;
 	typedef typename cblock< allocator_t >				cblock_t;
-
 	typedef typename carray< allocator_t >				carray_t;
+
+
 protected:
 	cblock_t		m_block;
 	usize__t		m_size;
 private:
 	usize__t		m_auto_size_step;
 	usize__t		m_max_elements_count;
+
+
 public:
 	carray () : m_size (0), m_auto_size_step (PFX_ARRAY_AUTO_STEP_SIZE), 
 		m_max_elements_count((usize__t)PFX_ARRAY_SIZE)
@@ -279,7 +284,10 @@ public:
 			__other.m_max_elements_count	= __tmp;
 		}
 	}
-
+	const cblock_t& get_block () const
+	{
+		return m_block;
+	}
 public:
 	virtual result_t						init (usize__t element_count, usize__t allocate_step_size = 0)
 	{
@@ -295,7 +303,8 @@ public:
 		}
 		else
 		{
-			__size = element_count / allocate_step_size + (((element_count % allocate_step_size) > 0)?1:0)*allocate_step_size;
+			usize__t remain_size = element_count % allocate_step_size;
+			__size = element_count  + ((remain_size)?(allocate_step_size - remain_size):(0));
 		}
 		
 		status = m_block.init_buffer(__size);
@@ -321,7 +330,8 @@ public:
 			}
 			else
 			{
-				__size = element_size / allocate_step_size + (((element_size % m_auto_size_step) > 0)?1:0)*m_auto_size_step;
+				usize__t remain_size = element_size % m_auto_size_step;
+				__size = element_size  + ((remain_size)?(m_auto_size_step - remain_size):(0));
 			}
 
 			status = m_block.resize(__size);
@@ -355,7 +365,8 @@ public:
 		}
 		else
 		{
-			__size = new_size / allocate_step_size + (((new_size % m_auto_size_step) > 0)?1:0)*m_auto_size_step;
+			usize__t remain_size = new_size % m_auto_size_step;
+			__size = new_size  + ((remain_size)?(m_auto_size_step - remain_size):(0));
 		}
 		
 		if (__size < m_block.size())
@@ -420,6 +431,7 @@ public:
 					__other.m_block.swap(new_block);
 					break;
 				}
+				__other.resize(m_size);
 			}
 			status = __other.m_block.set_buffer_direct(this->m_block.begin(), m_size);
 			FOR_ONE_LOOP_END
@@ -499,9 +511,16 @@ public:
 		return m_block.reference(index_);
 	}
 
+	virtual PFX_INLINE boolean_t is_error_element (const element_t& __elem) const
+	{
+		return m_block.is_error_element (__elem);
+	}
+
 	virtual PFX_INLINE usize__t				set_element_buffers_at (uindex_t index_, const element_t* PARAM_IN elements_ptr,
 		usize__t element_size)
 	{
+		RETURN_RESULT (index_ > size(), 0);
+		element_size = size() - index_;
 		return m_block.set_buffer(elements_ptr, element_size, index_);
 	}
 
@@ -814,10 +833,8 @@ public:
 
 		usize__t __size;
 		result_t status;
-		if (!allocate_step_size)
-		{
-			allocate_step_size = m_auto_size_step;
-		}
+		usize__t	allocate_step_size = m_auto_size_step;
+
 		if (!allocate_step_size)
 		{
 			allocate_step_size = element_count;
@@ -850,11 +867,9 @@ public:
 	{
 		result_t status;
 		usize__t __size;
-		result_t status;
-		if (!allocate_step_size)
-		{
-			allocate_step_size = m_auto_size_step;
-		}
+
+		usize__t	allocate_step_size = m_auto_size_step;
+
 		if (!allocate_step_size)
 		{
 			m_blocks.dispose ();
@@ -959,15 +974,17 @@ public:
 	{
 		result_t status;
 		RETURN_RESULT (&__other == this, PFX_STATUS_OK);
+
+		carray_mbs new_array;
 		if (new_buffer)
 		{
-			carray_mbs new_array;
 			new_array.set_max_elements_count(this->get_max_elements_count());
-			usize__t _block_count = m_size / new_step + ((m_size % new_step)?1:0);
+			//usize__t _block_count = m_size / new_step + ((m_size % new_step)?1:0);
+
 			FOR_ONE_LOOP_BEGIN
-				status = new_array.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
+			status = new_array.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
 			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
-			status = new_array.init(m_size, new_step);
+			status = new_array.init(m_size);
 			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
 			uindex_t i = m_size;
 			while (i)
@@ -982,9 +999,9 @@ public:
 		{
 			__other.set_max_elements_count(this->get_max_elements_count());
 			FOR_ONE_LOOP_BEGIN
-				status = __other.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
+			status = __other.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
 			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
-			status = __other.init(m_size, new_step);
+			status = __other.init(m_size, this->get_auto_step());
 			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
 			uindex_t i = m_size;
 			while (i)
@@ -1017,7 +1034,7 @@ public:
 			status = other_ptr->resize (m_size);
 		}
 		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
-		status = other_ptr->set_element_buffers_at(0, this->m_block.begin(), m_size);
+		status = other_ptr->set_element_buffers_at(0, this->m_blocks.get_block().begin()->begin(), m_size);
 		FOR_ONE_LOOP_END
 		return status;
 	}
@@ -1050,7 +1067,7 @@ public:
 
 	virtual PFX_INLINE usize__t	get_buffer_size () const
 	{
-		return (m_block.size() * m_auto_size_step);
+		return (this->m_blocks.size() * m_auto_size_step);
 	}
 	virtual	PFX_INLINE usize__t	size () const
 	{
@@ -1062,7 +1079,10 @@ public:
 		static element_t __error_elem;
 		return __error_elem;
 	}
-
+	virtual PFX_INLINE boolean_t is_error_element (const element_t& __elem) const
+	{
+		return (&error_element() == &__elem);
+	}
 	virtual PFX_INLINE const element_t&	get_element_at (uindex_t __index) const
 	{ 
 		uindex_t block_index;

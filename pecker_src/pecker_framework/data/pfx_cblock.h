@@ -66,6 +66,10 @@ public:
 		static element_t __error_elem;
 		return __error_elem;
 	}
+	PFX_INLINE boolean_t is_error_element (const element_t& __elem) const
+	{
+		return (&error_element() == &__elem);
+	}
 	PFX_INLINE element_t&	reference (uindex_t i)
 	{
 		if (i < size())
