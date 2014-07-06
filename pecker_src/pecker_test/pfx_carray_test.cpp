@@ -62,38 +62,51 @@ int test_array (array_typeA& __arrayA, array_typeB& __arrayB)
 	int temp_buffer [20] = {11,12,13,14,15,16,17,18,19,110,111,112,113,114,115,116,117,118,119,120};
 	__arrayA.init (16);
 	__arrayA.resize (16);
+	PECKER_LOG_("resize 16\n");
 	__arrayA.set_element_buffers_at (0, temp_buffer, 16);
 	print_carray< array_typeA >(__arrayA);
+	PECKER_LOG_("resize 20\n");
 	__arrayA.resize (20);
+	PECKER_LOG_("resize 16\n");
 	__arrayA.resize (16);
+	PECKER_LOG_("push back 4 items\n");
 	for (uindex_t i=16; i<20; ++i)
 	{
 		__arrayA.push_back (temp_buffer[i]);
 	}
 	print_carray< array_typeA >(__arrayA);
-
+	PECKER_LOG_("pop 20 items\n");
 	for (uindex_t i=0; i<20; ++i)
 	{
 		__arrayA.pop_back ();
 	}
 	print_carray< array_typeA >(__arrayA);
 
+	PECKER_LOG_("push 20 items\n");
 	for (uindex_t i=0; i<20; ++i)
 	{
 		__arrayA.push_back (temp_buffer[i]);
 	}
 	print_carray< array_typeA >(__arrayA);
 
+	PECKER_LOG_("set number10 to number14 items\n");
 	__arrayA.set_element_buffers_at (10, temp_buffer, 5);
 	print_carray< array_typeA >(__arrayA);
 
+	PECKER_LOG_("copy a array\n");
 	__arrayA.copy_to (&__arrayB);
 	print_carray< array_typeB >(__arrayB);
 
+	PECKER_LOG_("set auto step to 20\n");
 	__arrayA.set_auto_step (20);
+	PECKER_LOG_("resize 30\n");
 	__arrayA.resize (30);
+
+	PECKER_LOG_("set number 0 to number 15 items\n");
 	__arrayA.set_element_buffers_at (0, temp_buffer, 16);
+	PECKER_LOG_("set number 16 to number 19 items\n");
 	__arrayA.set_element_buffers_at (16, temp_buffer, 4);
+	PECKER_LOG_("set number 20 to number 29 items\n");
 	__arrayA.set_element_buffers_at (20, temp_buffer, 10);
 	print_carray< array_typeA >(__arrayA);
 
@@ -107,16 +120,16 @@ int array_test_main ()
 	carray < alloc_t >	__array;
 	carray < alloc_t >	__copy_array;
 
-	//carray_mbs< alloc_t > __array_mbs;
-	//carray_mbs< alloc_t > __copy_array_mbs;
+	carray_mbs< alloc_t > __array_mbs;
+	carray_mbs< alloc_t > __copy_array_mbs;
 
 	PECKER_LOG_("======================\n");
 	PECKER_LOG_ ("carray < alloc_t > carray < alloc_t >\n");
 	test_array< carray < alloc_t >, carray < alloc_t > > (__array, __copy_array);
 
-	//PECKER_LOG_("======================\n");
-	//PECKER_LOG_ ("carray_mbs < alloc_t > carray_mbs < alloc_t >\n");
-	//test_array< carray_mbs < alloc_t >, carray_mbs < alloc_t > > (__array_mbs, __copy_array_mbs);
+	PECKER_LOG_("======================\n");
+	PECKER_LOG_ ("carray_mbs < alloc_t > carray_mbs < alloc_t >\n");
+	test_array< carray_mbs < alloc_t >, carray_mbs < alloc_t > > (__array_mbs, __copy_array_mbs);
 	return 0;
 }
 

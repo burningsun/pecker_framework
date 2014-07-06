@@ -308,7 +308,7 @@ public:
 		}
 		
 		status = m_block.init_buffer(__size);
-		if (status)
+		if (PFX_STATUS_OK == status)
 		{
 			m_auto_size_step	= allocate_step_size;
 			m_size						= element_count;
@@ -520,7 +520,8 @@ public:
 		usize__t element_size)
 	{
 		RETURN_RESULT (index_ > size(), 0);
-		element_size = size() - index_;
+		usize__t temp_size = size() - index_;
+		element_size = (temp_size < element_size)?temp_size:element_size;
 		return m_block.set_buffer(elements_ptr, element_size, index_);
 	}
 
@@ -607,8 +608,8 @@ public:
 		typedef element_t							element_t;
 		typedef carray_const_iterator		iterator_t;
 	private:
-		carray_t*	m_array;
-		uindex_t	m_index;
+		const carray_t*	m_array;
+		uindex_t				m_index;
 	public:
 		carray_const_iterator():m_array(null),m_index(0)
 		{
@@ -772,7 +773,7 @@ public:
 		}
 
 		usize__t new_block_size = 
-			element_count / allocate_step_size + ((element_count % allocate_step_size > 0)?0:1); 
+			element_count / allocate_step_size + ((element_count % allocate_step_size > 0)?1:0); 
 
 
 
@@ -803,7 +804,7 @@ public:
 			}
 		}
 		FOR_ONE_LOOP_END
-		if (status)
+		if (PFX_STATUS_OK == status)
 		{
 			m_auto_size_step	= allocate_step_size;
 			m_size						= element_count;
@@ -841,7 +842,7 @@ public:
 		}
 
 		usize__t new_block_size = 
-			element_count / allocate_step_size + ((element_count % allocate_step_size > 0)?0:1); 
+			element_count / allocate_step_size + ((element_count % allocate_step_size > 0)?1:0); 
 
 		FOR_ONE_LOOP_BEGIN
 
@@ -855,7 +856,7 @@ public:
 			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
 		}
 		FOR_ONE_LOOP_END
-		if (status)
+		if (PFX_STATUS_OK == status)
 		{
 			m_auto_size_step	= allocate_step_size;
 			m_size						= element_count;
@@ -918,14 +919,15 @@ public:
 		usize__t new_step = 0;
 		if (auto_step && auto_step != m_auto_size_step)
 		{
-			if (m_size > m_auto_size_step &&m_size > auto_step)
-			{
-				new_step = auto_step;
-			}
-			else
-			{
-				m_auto_size_step = auto_step;
-			}
+			new_step = auto_step;
+			//if (m_size > m_auto_size_step)
+			//{
+			//	new_step = auto_step;
+			//}
+			//else
+			//{
+			//	m_auto_size_step = auto_step;
+			//}
 		}
 		else if (!m_auto_size_step)
 		{
@@ -934,8 +936,10 @@ public:
 		if (new_step)
 		{
 			carray_mbs new_array;
-			usize__t _block_count = m_size / new_step + ((m_size % new_step)?1:0);
+			usize__t _block_count;
 			result_t status;
+
+			_block_count = m_size / new_step + ((m_size % new_step)?1:0);
 			FOR_ONE_LOOP_BEGIN
 			status = new_array.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
 			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
@@ -1091,9 +1095,9 @@ public:
 			return error_element();
 		}
 		block_index = __index / m_auto_size_step;
-		return m_block.get_element_at(block_index).reference_unsafe(__index % m_auto_size_step);
+		return m_blocks.get_element_at(block_index).reference_unsafe(__index % m_auto_size_step);
 	}
-	virtual PFX_INLINE element_t&			get_element_at (uindex_t index_)
+	virtual PFX_INLINE element_t&			get_element_at (uindex_t __index)
 	{
 		uindex_t block_index;
 		if (!m_auto_size_step || __index >= m_size)
@@ -1101,7 +1105,7 @@ public:
 			return error_element();
 		}
 		block_index = __index / m_auto_size_step;
-		return m_block.get_element_at(block_index).reference_unsafe(__index % m_auto_size_step);
+		return m_blocks.get_element_at(block_index).reference_unsafe(__index % m_auto_size_step);
 	}
 
 	virtual PFX_INLINE usize__t				set_element_buffers_at (uindex_t __index, const element_t* PARAM_IN elements_ptr,
@@ -1121,6 +1125,10 @@ public:
 		block_index	= __index / m_auto_size_step;
 		__index			= __index % m_auto_size_step;
 		usize__t temp_size = m_auto_size_step - __index;
+		if (temp_size > element_size)
+		{
+			temp_size = element_size;
+		}
 		FOR_ONE_LOOP_BEGIN
 		usize__t temp_ssize = m_blocks.get_element_at(block_index).set_buffer(elements_ptr, temp_size, __index);
 		succeeded_size += temp_size;
@@ -1152,7 +1160,7 @@ public:
 	virtual PFX_INLINE result_t				dispose ()
 	{
 		m_size = 0;
-		return m_block.dispose();
+		return m_blocks.dispose();
 	}
 
 	virtual	 PFX_INLINE boolean_t			is_full () const
