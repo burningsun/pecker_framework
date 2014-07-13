@@ -5,7 +5,8 @@
 *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 #include <stdio.h>
-#include "../pecker_framework/data/pfx_dynamic_array.h"
+//#include "../pecker_framework/data/pfx_dynamic_array.h"
+#include "../pecker_framework/data/pfx_carray_codes.h"
 #include "../pecker_framework/data/pfx_binary_search_tree.h"
 #include "../pecker_framework/native/pfx_log.h"
 #include "../pecker_framework/native/pecker_allocator.h"

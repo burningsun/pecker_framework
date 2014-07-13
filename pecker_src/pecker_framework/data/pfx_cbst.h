@@ -29,7 +29,7 @@ template < class friend_obj >
 class PFX_DATA_TEMPALE_API const_bst_inorder_iterator
 {
 public:
-	friend friend_obj;
+	friend  friend_obj;
 	typedef friend_obj																			friend_t;
 	typedef typename friend_t::node_t											node_t;
 	typedef typename const_bst_inoreder_operate< node_t >	operate_t;
@@ -39,12 +39,12 @@ private:
 	const node_t*	m_cur_node_ptr;
 	const node_t*	m_root_node_ptr;	
 public:
-	void init (const node_t* PARAM_IN cur_node_ptr)
+	PFX_INLINE void init (const node_t* PARAM_IN cur_node_ptr)
 	{
 		m_cur_node_ptr = cur_node_ptr;
 	}
 protected:
-	void init (const node_t* PARAM_IN root_node_ptr, 
+	PFX_INLINE void init (const node_t* PARAM_IN root_node_ptr, 
 						const node_t* PARAM_IN cur_node_ptr)
 	{
 		m_root_node_ptr	= root_node_ptr;
@@ -160,7 +160,7 @@ template < class friend_obj >
 class PFX_DATA_TEMPALE_API const_bst_preorder_iterator
 {
 public:
-	friend friend_obj;
+	friend  friend_obj;
 	typedef friend_obj										friend_t;
 	typedef typename friend_t::node_t		node_t;
 	typedef typename const_bst_preorder_operate	< node_t >		operate_t;	
@@ -170,7 +170,7 @@ public:
 private:
 	st_iterator_t m_iter;
 protected:
-	void init (const node_t* PARAM_IN root_node_ptr)
+	PFX_INLINE void init (const node_t* PARAM_IN root_node_ptr)
 	{
 		m_iter.m_root_node_ptr	= root_node_ptr;
 	}
@@ -244,7 +244,7 @@ template < class friend_obj >
 class PFX_DATA_TEMPALE_API const_bst_posorder_iterator
 {
 public:
-	friend friend_obj;
+	friend  friend_obj;
 	typedef friend_obj										friend_t;
 	typedef typename friend_t::node_t		node_t;
 	typedef typename const_bst_posorder_operate< node_t >		operate_t;
@@ -255,7 +255,7 @@ private:
 	const node_t*	m_root_node_ptr;
 	bool_t					m_reversed;
 protected:
-	void init (const node_t* PARAM_IN root_node_ptr)
+	PFX_INLINE void init (const node_t* PARAM_IN root_node_ptr)
 	{
 		m_root_node_ptr	= root_node_ptr;
 	}
@@ -859,11 +859,11 @@ public:
 		return status;
 	}
 	
-	PFX_INLINE node_t*	new_node () 
+	static PFX_INLINE node_t*	new_node () 
 	{
 		return new_delete_t::new_node();
 	}
-	PFX_INLINE result_t		release_node (node_t*& PARAM_IN node_ptr)
+	static PFX_INLINE result_t		release_node (node_t*& PARAM_IN node_ptr)
 	{
 		return new_delete_t::delete_node(node_ptr);
 	}

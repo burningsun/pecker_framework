@@ -12,8 +12,8 @@
 #define	NONE_FLAG_				(-1)
 #define	INORDER_FLAG_INC	(0)
 #define	INORDER_FLAG_DEC	(1)
-#define	PREORDER_FLAG		(2)
-#define	POSORDER_FLAG		(3)
+#define	PREORDER_FLAG			(2)
+#define	POSORDER_FLAG			(3)
 #define	REPOSORDER_FLAG	(4)
 
 //static avl_tree_node_t* proot_node = null;
@@ -22,10 +22,13 @@
 //static avl_tree_node_t* proot_node_2 = null;
 USING_PECKER_SDK
 	
-typedef pecker_simple_allocator< char_t > allc_char_t;
-typedef cavl_bst_node < cstring < allc_char_t > > bst_string_node_t;
-typedef  pfx_binary_search_tree_type < bst_string_node_t, 
-	compare_two_node< bst_string_node_t, bst_string_node_t, string_compare < cstring < allc_char_t > > > >::avl_binary_search_tree_t bst_t;
+typedef pecker_simple_allocator< char_t >				allc_char_t;
+typedef cavl_bst_node < cstring < allc_char_t > >	bst_string_node_t;
+typedef  pfx_binary_search_tree_type 
+	< bst_string_node_t, compare_two_node
+	< bst_string_node_t, bst_string_node_t, 
+	string_compare < cstring < allc_char_t > > > >
+	::avl_binary_search_tree_t										bst_t;
 
 static bst_t  bst_strings;
 static bst_t  bst_copy_strings;
@@ -53,7 +56,7 @@ PFX_INLINE_CODE void print_avl_bst_node (const bst_string_node_t* PARAM_IN node_
 		else
 		{
 			sprintf (strformat,"THIS(%08X) <null> L(%08X) R(%08X) P(%08X)  HEIGHT(%d) BALANCE(%d)",
-				(ulong_t)node_ptr, string_ref.get_length(),
+				(ulong_t)node_ptr, //string_ref.get_length(),
 				(ulong_t)node_ptr->get_left_node(),
 				(ulong_t)node_ptr->get_right_node(),
 				(ulong_t)node_ptr->get_parent_node(),

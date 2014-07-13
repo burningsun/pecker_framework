@@ -11,12 +11,14 @@ extern int avl_bst_test_main();
 extern int rb_bst_test_main();
 //extern int array_test_main ();
 //extern int bst_stress_test_main ();
+extern int bst_stress_test_main (bool bshow = false);
 extern void matrix_test ();
 extern int auto_obj_test ();
 extern void test_object_id ();
 int main ()
 {
-	array_test_main ();
+	bst_stress_test_main (false);
+	//array_test_main ();
 	//list_test();
 	//string_test();
 	//bst_test_main();

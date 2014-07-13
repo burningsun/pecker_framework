@@ -348,7 +348,10 @@ protected:
 	nsize__t											m_balance_value;
 	item_type										m_item;
 public:
-	cbalance_bst_node () : m_right_node_ptr (null),m_left_node_ptr(null),m_parent_node_ptr(null),m_balance_value (0)
+	cbalance_bst_node () : m_right_node_ptr (null),
+		m_left_node_ptr(null),
+		m_parent_node_ptr(null),
+		m_balance_value (0)
 	{
 		;
 	}
@@ -436,6 +439,15 @@ struct PFX_DATA_TEMPALE_API pfx_binary_search_tree_type
 	typedef typename cbst < AVL_BST_operate < allocate_t, cmp_t > >		avl_binary_search_tree_t;
 	typedef typename cbst < RB_BST_operate < allocate_t, cmp_t > >		redblack_binary_search_tree_t;
 };
+
+typedef enum enumTREE_TYPE
+{
+	BINARY_SEARCH_TREE_TYPE = 0,
+	AVL_BINARY_SEARCH_TREE_TYPE,
+	RB_BINARY_SEARCH_TREE_TYPE,
+
+	BINARY_SEARCH_TREE_TYPE_COUNT
+}BST_TYPE_t;
 
 
 PECKER_END

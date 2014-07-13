@@ -13,6 +13,7 @@
     <ClCompile Include="pfx_avl_bst_test.cpp" />
     <ClCompile Include="pfx_rb_bst_test.cpp" />
     <ClCompile Include="pfx_carray_test.cpp" />
+    <ClCompile Include="pfx_stress_test_bst.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pfx_file_inputdata_cmd.h" />

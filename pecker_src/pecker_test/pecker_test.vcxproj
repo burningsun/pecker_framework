@@ -87,6 +87,7 @@
     <ClCompile Include="pfx_objectid_test.cpp" />
     <ClCompile Include="pfx_rb_bst_test.cpp" />
     <ClCompile Include="pfx_share_object_test.cpp" />
+    <ClCompile Include="pfx_stress_test_bst.cpp" />
     <ClCompile Include="pfx_string_test.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -130,6 +130,15 @@ int array_test_main ()
 	PECKER_LOG_("======================\n");
 	PECKER_LOG_ ("carray_mbs < alloc_t > carray_mbs < alloc_t >\n");
 	test_array< carray_mbs < alloc_t >, carray_mbs < alloc_t > > (__array_mbs, __copy_array_mbs);
+
+	PECKER_LOG_("======================\n");
+	PECKER_LOG_ ("carray < alloc_t > carray_mbs < alloc_t >\n");
+	test_array< carray < alloc_t >, carray_mbs < alloc_t > > (__array, __copy_array_mbs);
+
+	PECKER_LOG_("======================\n");
+	PECKER_LOG_ ("carray_mbs < alloc_t > carray < alloc_t >\n");
+	test_array< carray_mbs < alloc_t >, carray < alloc_t > > (__array_mbs, __copy_array);
+
 	return 0;
 }
 

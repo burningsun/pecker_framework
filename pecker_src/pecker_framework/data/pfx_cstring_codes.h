@@ -478,7 +478,8 @@ PFX_INLINE usize__t	PFX_CSTRING::set_charbuffer_at (uindex_t index_,
 	usize__t buf_size)
 {
 	typedef PFX_CSTRING_TYPE::element_t element_t;
-	return block_operate< element_t >::set_buffer (this->m_this_string_ptr, this->m_size, char_buffer, index_);
+	return block_operate< element_t >::set_buffer (this->m_this_string_ptr, this->m_size, 
+		char_buffer, buf_size, index_);
 }
 
 PFX_CSTRING_TEMPLATE
