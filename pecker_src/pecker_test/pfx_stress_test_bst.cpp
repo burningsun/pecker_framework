@@ -24,7 +24,8 @@ typedef cstring < alloc_char_t >						string_t;
 
 typedef pecker_simple_allocator< string_t >	alloc_t;
 
-typedef carray_mbs< alloc_t >							array_t;
+typedef carray< alloc_t >									array_t;
+//typedef carray_mbs< alloc_t >							array_t;
 
 typedef cbalance_bst_node < string_t >			bst_node_t;
 
@@ -45,6 +46,11 @@ typedef  pfx_binary_search_tree_type
 	< bst_node_t, node_cmp_t >
 	::redblack_binary_search_tree_t					rb_bst_t;
 
+typedef pecker_simple_allocator< bst_node_t > bst_set_node_t;
+
+typedef cbst_set< BST_operate < bst_set_node_t, node_cmp_t > >				bst_set_t;
+typedef cbst_set< AVL_BST_operate < bst_set_node_t, node_cmp_t > >		avl_bst_set_t;
+typedef cbst_set< RB_BST_operate < bst_set_node_t, node_cmp_t > >			rb_bst_set_t;
 
 PFX_INLINE_CODE void print_bbst_node (const bst_node_t* PARAM_IN node_ptr, int __type =0)
 {
@@ -215,9 +221,17 @@ void bst_find_node_stress_test_by_node (const __array_type& PARAM_IN __array,
 		{
 			PECKER_LOG_ ("not find\n", 0);
 		}
-		else if (bshow)
+		else
 		{
-			print_bbst_node(const_node_ptr, __print_type);
+			//if (__bst_type::cmp_t::compare_two_elemen_t::compare(const_node_ptr->get_item(), elem))
+			//{
+			//	PECKER_LOG_("not  same!\n");
+			//}
+			 if (bshow)
+			 {
+				 print_bbst_node(const_node_ptr, __print_type);
+			 }
+			
 		}
 		arr_itr_ptr = arr_itr_ptr->increase();
 		continue;
@@ -226,8 +240,7 @@ void bst_find_node_stress_test_by_node (const __array_type& PARAM_IN __array,
 	tick_count.stop();
 }
 
-
-
+//#define __bst_type bst_set_t
 template < class __array_type, class __bst_type, const int __print_type  >
 void bst_erase_node_stress_test_by_node (const __array_type& PARAM_IN __array, 
 	__bst_type&  PARAM_OUT __bst, 
@@ -273,6 +286,7 @@ void bst_erase_node_stress_test_by_node (const __array_type& PARAM_IN __array,
 		}
 		else
 		{
+
 			removed_node_ptr = (__bst_type::node_t*)const_node_ptr;
 			removed_node_ptr = __bst.remove(removed_node_ptr, status);
 		}
@@ -282,6 +296,119 @@ void bst_erase_node_stress_test_by_node (const __array_type& PARAM_IN __array,
 			if (bshow)
 			{
 				print_bbst_node(const_node_ptr, __print_type);
+			}
+
+			status = __bst.release_node(removed_node_ptr);
+			if (PFX_STATUS_OK != status)
+			{
+				PECKER_LOG_("release node error = %d\n", status);
+			}
+		}
+
+		arr_itr_ptr = arr_itr_ptr->increase();
+		continue;
+	}
+	PECKER_LOG_ ("erase node time tick = %lf ms\n",tick_count.get_microsecond());
+	tick_count.stop();
+}
+
+template < class __array_type, class __bst_type, const int __print_type  >
+void bst_find_node_stress_test_by_elem (const __array_type& PARAM_IN __array, 
+	__bst_type&  PARAM_OUT __bst, 
+	boolean_t bshow = true)
+{
+	__bst_type::node_t	key_node;
+	__array_type::const_iterator_t	__arr_itr;
+	pecker_tick tick_count;
+
+	__array_type::const_iterator_t* arr_itr_ptr = null;
+	
+	// 
+	PECKER_LOG_ ("begin find ......\n", 0);
+	tick_count.init();
+	arr_itr_ptr = __array.begin(__arr_itr);
+	tick_count.start();
+	while (arr_itr_ptr)
+	{
+		const __array_type::element_t& elem = arr_itr_ptr->reference();
+		if (&elem == &(__array_type::error_element()))
+		{
+			PECKER_LOG_ ("null element in array!\n");
+			arr_itr_ptr = arr_itr_ptr->increase();
+			continue;
+		}
+		__bst_type::const_iterator_t __bst_itr;
+		__bst_type::const_iterator_t* __itr_ptr = __bst.find_node(elem, __bst_itr);
+		if (null == __itr_ptr)
+		{
+			PECKER_LOG_ ("not find\n", 0);
+		}
+		else 
+		{
+			//if (__bst_type::cmp_t::compare_two_elemen_t::compare(__itr_ptr->cur_node()->get_item(), elem))
+			//{
+			//	PECKER_LOG_("not  same!\n");
+			//}
+			if (bshow)
+			{
+					print_bbst_node(__itr_ptr->cur_node(), __print_type);
+			}
+		}
+		arr_itr_ptr = arr_itr_ptr->increase();
+		continue;
+	}
+	PECKER_LOG_ ("find node time tick = %lf ms\n",tick_count.get_microsecond());
+	tick_count.stop();
+}
+
+//#define __array_type array_t
+//#define __bst_type bst_set_t
+template < class __array_type, class __bst_type, const int __print_type  >
+void bst_erase_node_stress_test_by_elem (const __array_type& PARAM_IN __array, 
+	__bst_type&  PARAM_OUT __bst, 
+	boolean_t bshow = true)
+{
+	__bst_type::node_t	key_node;
+	__array_type::const_iterator_t	__arr_itr;
+	pecker_tick tick_count;
+
+	__array_type::const_iterator_t* arr_itr_ptr = null;
+	
+	// 
+	PECKER_LOG_ ("begin erase ......\n", 0);
+	tick_count.init();
+	arr_itr_ptr = __array.begin(__arr_itr);
+	tick_count.start();
+	while (arr_itr_ptr)
+	{
+		const __array_type::element_t& elem = arr_itr_ptr->reference();
+		if (&elem == &(__array_type::error_element()))
+		{
+			PECKER_LOG_ ("null element in array!\n");
+			arr_itr_ptr = arr_itr_ptr->increase();
+			continue;
+		}
+
+		__bst_type::const_iterator_t __bst_itr;
+		result_t										status;
+		__bst_type::node_t*				removed_node_ptr = null;
+
+		status					= PFX_STATUS_OK;
+
+		__bst_type::const_iterator_t* __itr_ptr = __bst.find_node(elem, __bst_itr);
+		if (null == __itr_ptr)
+		{
+			PECKER_LOG_ ("not find\n", 0);
+			continue;
+		}
+
+		removed_node_ptr = __bst.remove(__bst_itr, status);
+
+		if (removed_node_ptr && PFX_STATUS_OK == status)
+		{
+			if (bshow)
+			{
+				print_bbst_node(removed_node_ptr, __print_type);
 			}
 
 			status = __bst.release_node(removed_node_ptr);
@@ -431,34 +558,40 @@ int bst_stress_test_main (bool bshow = false)
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test bst\n");
 
-	bst_t	_binst;
-	bst_add_node_stress_test_by_node< array_t, bst_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
-	bst_find_node_stress_test_by_node< array_t, bst_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
-	bst_enum_node_stress_test_by_node< bst_t, BINARY_SEARCH_TREE_TYPE >(_binst, PFX_BOOL_TRUE, bshow);
-	bst_enum_node_stress_test_by_node< bst_t, BINARY_SEARCH_TREE_TYPE >(_binst, PFX_BOOL_FALSE, bshow);
-	bst_erase_node_stress_test_by_node< array_t, bst_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
+	bst_set_t	_binst;
+	bst_add_node_stress_test_by_node< array_t, bst_set_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
+	bst_find_node_stress_test_by_elem< array_t, bst_set_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
+	bst_find_node_stress_test_by_node< array_t, bst_set_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
+	bst_enum_node_stress_test_by_node< bst_set_t, BINARY_SEARCH_TREE_TYPE >(_binst, PFX_BOOL_TRUE, bshow);
+	bst_enum_node_stress_test_by_node< bst_set_t, BINARY_SEARCH_TREE_TYPE >(_binst, PFX_BOOL_FALSE, bshow);
+	bst_erase_node_stress_test_by_elem< array_t, bst_set_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
+	//bst_erase_node_stress_test_by_node< array_t, bst_set_t, BINARY_SEARCH_TREE_TYPE >(incs_array, _binst, bshow);
 
 	::Sleep(2000);
 
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test avl-bst\n");
-	avl_bst_t _avlbinst;
-	bst_add_node_stress_test_by_node< array_t, avl_bst_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
-	bst_find_node_stress_test_by_node< array_t, avl_bst_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
-	bst_enum_node_stress_test_by_node< avl_bst_t, AVL_BINARY_SEARCH_TREE_TYPE >(_avlbinst, PFX_BOOL_TRUE, bshow);
-	bst_enum_node_stress_test_by_node< avl_bst_t, AVL_BINARY_SEARCH_TREE_TYPE >(_avlbinst, PFX_BOOL_FALSE, bshow);
-	bst_erase_node_stress_test_by_node< array_t, avl_bst_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
+	avl_bst_set_t _avlbinst;
+	bst_add_node_stress_test_by_node< array_t, avl_bst_set_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
+	bst_find_node_stress_test_by_elem< array_t, avl_bst_set_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
+	bst_find_node_stress_test_by_node< array_t, avl_bst_set_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
+	bst_enum_node_stress_test_by_node< avl_bst_set_t, AVL_BINARY_SEARCH_TREE_TYPE >(_avlbinst, PFX_BOOL_TRUE, bshow);
+	bst_enum_node_stress_test_by_node< avl_bst_set_t, AVL_BINARY_SEARCH_TREE_TYPE >(_avlbinst, PFX_BOOL_FALSE, bshow);
+	bst_erase_node_stress_test_by_elem< array_t, avl_bst_set_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
+	//bst_erase_node_stress_test_by_node< array_t, avl_bst_set_t, AVL_BINARY_SEARCH_TREE_TYPE >(incs_array, _avlbinst, bshow);
 
 	::Sleep(2000);
 
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test rb-bst\n");
-	rb_bst_t _rbbinst;
-	bst_add_node_stress_test_by_node< array_t, rb_bst_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
-	bst_find_node_stress_test_by_node< array_t, rb_bst_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
-	bst_enum_node_stress_test_by_node< rb_bst_t, RB_BINARY_SEARCH_TREE_TYPE >(_rbbinst, PFX_BOOL_TRUE, bshow);
-	bst_enum_node_stress_test_by_node< rb_bst_t, RB_BINARY_SEARCH_TREE_TYPE >(_rbbinst, PFX_BOOL_FALSE, bshow);
-	bst_erase_node_stress_test_by_node< array_t, rb_bst_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
+	rb_bst_set_t _rbbinst;
+	bst_add_node_stress_test_by_node< array_t, rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
+	bst_find_node_stress_test_by_elem< array_t, rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
+	bst_find_node_stress_test_by_node< array_t, rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
+	bst_enum_node_stress_test_by_node< rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(_rbbinst, PFX_BOOL_TRUE, bshow);
+	bst_enum_node_stress_test_by_node< rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(_rbbinst, PFX_BOOL_FALSE, bshow);
+	bst_erase_node_stress_test_by_elem< array_t, rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
+	//bst_erase_node_stress_test_by_node< array_t, avl_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
 
 	return 0;
 }

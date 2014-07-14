@@ -1591,7 +1591,7 @@ PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_node
 	(const PFX_CBST_ELEM_FIND_TYPE::element_t& PARAM_IN __key, 
 	PFX_CBST_ELEM_FIND_TYPE::const_iterator_t& itr)
 {
-	typedef PFX_CBST_ELEM_FIND_TYPE::node_find_t							node_find_t;
+	//typedef PFX_CBST_ELEM_FIND_TYPE::node_find_t							node_find_t;
 	typedef PFX_CBST_ELEM_FIND_TYPE::node_t									node_t;
 	typedef PFX_CBST_ELEM_FIND_TYPE::compare_two_elemen_t	cmp_t;
 

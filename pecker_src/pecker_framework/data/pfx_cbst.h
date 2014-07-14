@@ -48,7 +48,7 @@ protected:
 						const node_t* PARAM_IN cur_node_ptr)
 	{
 		m_root_node_ptr	= root_node_ptr;
-		m_cur_node_ptr = root_node_ptr;
+		m_cur_node_ptr = cur_node_ptr;
 	}
 public:
 	const_bst_inorder_iterator():m_root_node_ptr(null),m_cur_node_ptr(null)
@@ -63,7 +63,11 @@ public:
 	{
 		return m_cur_node_ptr;
 	}
-	PFX_INLINE iterator_t*		cur_ptr () const
+	PFX_INLINE iterator_t*		cur_ptr ()
+	{
+		return this;
+	}
+	PFX_INLINE const iterator_t* cur_ptr () const
 	{
 		return this;
 	}
@@ -184,7 +188,11 @@ public:
 	{
 		return m_iter.m_cur_node_ptr;
 	}
-	PFX_INLINE iterator_t*		cur_ptr () const
+	PFX_INLINE iterator_t*		cur_ptr ()
+	{
+		return this;
+	}
+	PFX_INLINE const iterator_t* cur_ptr () const
 	{
 		return this;
 	}
@@ -272,7 +280,11 @@ public:
 	{
 		return m_cur_node_ptr;
 	}
-	PFX_INLINE iterator_t*		cur_ptr () const
+	PFX_INLINE iterator_t*		cur_ptr ()
+	{
+		return this;
+	}
+	PFX_INLINE const iterator_t* cur_ptr () const
 	{
 		return this;
 	}
@@ -577,7 +589,7 @@ struct PFX_DATA_TEMPALE_API BST_find_element
 	typedef tree_type																	tree_t;
 	typedef typename	tree_type::element_t							element_t;
 	typedef typename	tree_type::node_t								node_t;
-	typedef  typename	tree_t::compare_two_node_t			compare_two_node_t;
+	typedef  typename	tree_t::cmp_t										compare_two_node_t;
 
 	typedef  typename	compare_two_node_t::	compare_two_elemen_t	compare_two_elemen_t;
 	
@@ -916,7 +928,13 @@ public:
 			return null;
 		}
 	}
-
+protected:
+	PFX_INLINE const_iterator_t*			set_itr_internal (const node_t* PARAM_IN cur_node_ptr, 
+		const_iterator_t& __itr) const
+	{
+		__itr.init(m_root_ptr, cur_node_ptr);
+		return &__itr;
+	}
 public:
 	PFX_INLINE const node_t*					find(const node_t* PARAM_IN key_node_ptr) const
 	{
@@ -973,7 +991,7 @@ public:
 		if (__itr.cur_ptr() && __itr.root_node() == get_root())
 		{
 			node_t* remove_ptr = (node_t*)(__itr.cur_node());
-			remove_ptr = base_bst_t::remove(remove_ptr, __status);
+			remove_ptr = remove(remove_ptr, __status);
 			if (__status == __status)
 			{
 				set_itr(null, __itr);
@@ -1010,13 +1028,15 @@ class PFX_DATA_TEMPALE_API cbst_set : public  cbst< BST_operate_type >
 public:
 	typedef typename cbst< BST_operate_type >					base_bst_t;
 	typedef	typename cbst_set< BST_operate_type >			bst_t;
-	typedef typename BST_find_element< base_bst_t >		find_elem_t;
+	typedef typename BST_find_element< bst_t >					find_elem_t;
 
 	typedef	typename base_bst_t::operator_t						operator_t;
 	typedef	typename base_bst_t::allocate_t							allocate_t;
 	typedef	typename base_bst_t::node_t								node_t;	
 	typedef	typename base_bst_t::cmp_t								cmp_t;
 	typedef typename node_t::element_t								element_t;
+
+	
 
 	typedef	typename base_bst_t::init_t									init_t;
 	typedef	typename base_bst_t::new_delete_t					new_delete_t;	
@@ -1035,10 +1055,25 @@ public:
 	typedef	typename	base_bst_t::const_inorder_itr_t		const_inorder_itr_t;
 	typedef	typename	base_bst_t::const_preorder_itr_t	const_preorder_itr_t;
 	typedef	typename	base_bst_t::const_posorder_itr_t	const_posorder_itr_t;
+
+	typedef	typename	const_bst_inorder_iterator< bst_t >	const_iterator_ex_t;
 public:
 	PFX_INLINE const_iterator_t*	find_node (const element_t& PARAM_IN __key, const_iterator_t& itr)
 	{
-		return find_elem_t::find_node(__key, m_root_ptr, itr);
+		const_iterator_ex_t __itr;
+		__itr.init(m_root_ptr, itr.cur_node());
+		const_iterator_ex_t* __itr_ptr = find_elem_t::find_node(__key, __itr);
+		if (__itr_ptr)
+		{
+			set_itr_internal(__itr_ptr->cur_node(), itr);
+			return &itr;
+		}
+		else
+		{
+			return null;
+		}
+		
+		
 	}
 
 	PFX_INLINE const_iterator_t*	find_near_node  (const_iterator_t& itr,
@@ -1047,7 +1082,7 @@ public:
 	{
 		return find_elem_t::find_near_node(__key, last_cmp_result, itr);
 	}
-	PFX_INLINE const node_t*			add (const element_t& PARAM_IN __key,
+	PFX_INLINE const node_t*			add_element (const element_t& PARAM_IN __key,
 																	result_t& PARAM_OUT __status)
 	{
 		node_t*				new_node_ptr = new_node();

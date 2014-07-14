@@ -511,6 +511,11 @@ public:
 		return m_block.reference(index_);
 	}
 
+	static PFX_INLINE element_t& error_element ()
+	{
+		return cblock_t::error_element();
+	}
+
 	virtual PFX_INLINE boolean_t is_error_element (const element_t& __elem) const
 	{
 		return m_block.is_error_element (__elem);
@@ -621,6 +626,11 @@ public:
 			m_index = 0;
 		}
 	public:
+		PFX_INLINE uindex_t index () const
+		{
+			return m_index;
+		}
+
 		PFX_INLINE usize__t size() const
 		{
 			if (m_array)
