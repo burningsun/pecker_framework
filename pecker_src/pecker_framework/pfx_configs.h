@@ -14,28 +14,29 @@
 #define	WINDOW_PHONE	(1<<3)
 #define	WINDOW_CE			(1<<4)
 
+#define OS_32BIT
+
 #define	ANDROID				(1)
 
 #define	OS_WINDOWS		(1)
-#define	OS_ANDROID			(1<<1)
-
+#define	OS_ANDROID		(1<<1)
+#define	OS_LINUX				(1<<2)
 
 //CONFIGS
 #define OS_CONFIG						OS_WINDOWS
 #define OS_VERSION_CONFIG		WINDOW_7_8
 
-#if (OS_CONFIG == OS_WINDOWS)
+//#if (OS_CONFIG == OS_WINDOWS)
+////#include <Windows.h>
+//#include <WinSock2.h>
+//#include <ws2ipdef.h>
 //#include <Windows.h>
-#include <WinSock2.h>
-#include <ws2ipdef.h>
-#include <Windows.h>
-#pragma comment(lib,"Ws2_32.lib")
-#define SOCK_LAST_ERROR_CODE WSAGetLastError
-#endif
-
-#ifndef INVALID_SOCKET
-#define INVALID_SOCKET  (~0)
-#endif
-
+//#pragma comment(lib,"Ws2_32.lib")
+//#define SOCK_LAST_ERROR_CODE WSAGetLastError
+//#endif
+//
+//#ifndef INVALID_SOCKET
+//#define INVALID_SOCKET  (~0)
+//#endif
 
 #endif			//PFX_CONFIGS_H_

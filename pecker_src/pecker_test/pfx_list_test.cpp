@@ -17,18 +17,22 @@ PFX_INLINE_CODE void print_list_node (const int_list_node* PARAM_IN node_ptr)
 {
 	if (node_ptr)
 	{
-		PECKER_LOG_ ("node(%08X) = (item(%d),prev(%08X),next(%08X)\n",node_ptr,node_ptr->get_item(), node_ptr->get_prev_node(),node_ptr->get_next_node());
+		PECKER_LOG_ ("node(%08X) = (item(%d),prev(%08X),next(%08X)\n",node_ptr,node_ptr->get_element(), node_ptr->get_prev_node(),node_ptr->get_next_node());
 	}
 }
 
 result_t list_test ()
 {
 
-	clist_base < int_list_node > * int_list_ptr;
+	clinked_list < int_list_allocator > * int_list_ptr;
 	int_list_allocator simple_allocator;
-	clist_iterator_base < int_list_node > iterator_traval;
-	pfx_clist < int_list_node, int_list_allocator > int_list ;//(&simple_allocator);
+	clinked_list < int_list_allocator > ::iterator_t iterator_traval;
+	clinked_list < int_list_allocator > int_list ;
+	clinked_list < int_list_allocator > ::iterator_t* iterator_traval_ptr;
+
+
 	int_list_ptr = &int_list;
+
 
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test push back\n");
@@ -36,18 +40,16 @@ result_t list_test ()
 	for (index_t i=0; i<5;++i)
 	{
 		int_list_node* new_node_ptr = int_list_ptr->new_node();
-		new_node_ptr->get_item_ref() = 10 + i;
+		new_node_ptr->get_element() = 10 + i;
 		int_list_ptr->push_back(new_node_ptr);
 	}
-	int_list_ptr->begin(&iterator_traval);
-	
-	while (iterator_traval.get_item())
+
+	iterator_traval_ptr = int_list_ptr->begin(iterator_traval);
+	while (iterator_traval_ptr)
 	{
-		print_list_node(iterator_traval.get_item());
-		if (null == iterator_traval.increase())
-		{
-			break;
-		}
+		print_list_node(iterator_traval_ptr->cur_node ());
+
+		iterator_traval_ptr = iterator_traval_ptr->increase ();
 	}
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("\n");
@@ -58,19 +60,16 @@ result_t list_test ()
 	for (index_t i=0; i<5;++i)
 	{
 		int_list_node* new_node_ptr = int_list_ptr->new_node();
-		new_node_ptr->get_item_ref() = 10 + i;
-		int_list_ptr->push_front(new_node_ptr);
+		new_node_ptr->get_element() = 10 + i;
+		int_list_ptr->push_fornt(new_node_ptr);
 	}
 
-	int_list_ptr->begin(&iterator_traval);
-
-	while (iterator_traval.get_item())
+	iterator_traval_ptr = int_list_ptr->begin(iterator_traval);
+	while (iterator_traval_ptr)
 	{
-		print_list_node(iterator_traval.get_item());
-		if (null == iterator_traval.increase())
-		{
-			break;
-		}
+		print_list_node(iterator_traval_ptr->cur_node ());
+
+		iterator_traval_ptr = iterator_traval_ptr->increase ();
 	}
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("\n");
@@ -84,15 +83,12 @@ result_t list_test ()
 		int_list_ptr->release_node(pop_node_ptr);
 	}
 
-	int_list_ptr->begin(&iterator_traval);
-
-	while (iterator_traval.get_item())
+	iterator_traval_ptr = int_list_ptr->begin(iterator_traval);
+	while (iterator_traval_ptr)
 	{
-		print_list_node(iterator_traval.get_item());
-		if (null == iterator_traval.increase())
-		{
-			break;
-		}
+		print_list_node(iterator_traval_ptr->cur_node ());
+
+		iterator_traval_ptr = iterator_traval_ptr->increase ();
 	}
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("\n");
@@ -102,19 +98,16 @@ result_t list_test ()
 
 	for (index_t i=0; i<3;++i)
 	{
-		int_list_node* pop_node_ptr = int_list_ptr->pop_front();
+		int_list_node* pop_node_ptr = int_list_ptr->pop_fornt();
 		int_list_ptr->release_node(pop_node_ptr);
 	}
 
-	int_list_ptr->begin(&iterator_traval);
-
-	while (iterator_traval.get_item())
+	iterator_traval_ptr = int_list_ptr->begin(iterator_traval);
+	while (iterator_traval_ptr)
 	{
-		print_list_node(iterator_traval.get_item());
-		if (null == iterator_traval.increase())
-		{
-			break;
-		}
+		print_list_node(iterator_traval_ptr->cur_node ());
+
+		iterator_traval_ptr = iterator_traval_ptr->increase ();
 	}
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("\n");
@@ -122,32 +115,29 @@ result_t list_test ()
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test iterator increase\n");
 
-	clist_iterator_base < int_list_node > iterator_;
-	int_list_ptr->begin(&iterator_);
+	clinked_list < int_list_allocator > ::iterator_t iterator_;
+	int_list_ptr->begin(iterator_);
 
 	for (index_t i=0; i<2;++i)
 	{
 		iterator_.increase();
 	}
 
-	print_list_node(iterator_.get_item());
+	print_list_node(iterator_.cur_node());
 
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test insert_list_node_back\n");
 
 	int_list_node* new_node_ptr = int_list_ptr->new_node();
-	new_node_ptr->get_item_ref() = 100;
-	int_list_ptr->insert_list_node_back(&iterator_,new_node_ptr);
+	new_node_ptr->get_element() = 100;
+	int_list_ptr->insert_back(iterator_, new_node_ptr);
 
-	int_list_ptr->begin(&iterator_traval);
-
-	while (iterator_traval.get_item())
+	iterator_traval_ptr = int_list_ptr->begin(iterator_traval);
+	while (iterator_traval_ptr)
 	{
-		print_list_node(iterator_traval.get_item());
-		if (null == iterator_traval.increase())
-		{
-			break;
-		}
+		print_list_node(iterator_traval_ptr->cur_node ());
+
+		iterator_traval_ptr = iterator_traval_ptr->increase ();
 	}
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("\n");
@@ -156,18 +146,15 @@ result_t list_test ()
 	PECKER_LOG_ ("test insert_list_node_front\n");
 
 	new_node_ptr = int_list_ptr->new_node();
-	new_node_ptr->get_item_ref() = 200;
-	int_list_ptr->insert_list_node_front(&iterator_,new_node_ptr);
+	new_node_ptr->get_element() = 200;
+	int_list_ptr->insert_front(iterator_,new_node_ptr);
 
-	int_list_ptr->begin(&iterator_traval);
-
-	while (iterator_traval.get_item())
+	iterator_traval_ptr = int_list_ptr->begin(iterator_traval);
+	while (iterator_traval_ptr)
 	{
-		print_list_node(iterator_traval.get_item());
-		if (null == iterator_traval.increase())
-		{
-			break;
-		}
+		print_list_node(iterator_traval_ptr->cur_node ());
+
+		iterator_traval_ptr = iterator_traval_ptr->increase ();
 	}
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("\n");
@@ -175,17 +162,15 @@ result_t list_test ()
 	//////////////////////////////////////////////////////////////////////////
 	PECKER_LOG_ ("test remove_list_node\n");
 
-	int_list_ptr->remove_list_node(&iterator_);
+	int_list_ptr->remove (iterator_);
 
-	int_list_ptr->begin(&iterator_traval);
 
-	while (iterator_traval.get_item())
+	iterator_traval_ptr = int_list_ptr->begin(iterator_traval);
+	while (iterator_traval_ptr)
 	{
-		print_list_node(iterator_traval.get_item());
-		if (null == iterator_traval.increase())
-		{
-			break;
-		}
+		print_list_node(iterator_traval_ptr->cur_node ());
+
+		iterator_traval_ptr = iterator_traval_ptr->increase ();
 	}
 	PECKER_LOG_ENDLINE
 	PECKER_LOG_ ("\n");

@@ -8,9 +8,6 @@
     <ClCompile Include="..\pecker_framework\native\pecker_stream.cpp">
       <Filter>native</Filter>
     </ClCompile>
-    <ClCompile Include="..\pecker_framework\native\pecker_thread.cpp">
-      <Filter>native</Filter>
-    </ClCompile>
     <ClCompile Include="..\pecker_framework\native\pecker_tick.cpp">
       <Filter>native</Filter>
     </ClCompile>
@@ -19,6 +16,18 @@
     </ClCompile>
     <ClCompile Include="..\pecker_framework\pfx_defines.cpp">
       <Filter>configs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\asyn_udp_comm.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\socket_param.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\syn_lock.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\udp_socket.cpp">
+      <Filter>native</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +100,6 @@
       <Filter>native</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\native\pecker_system.h">
-      <Filter>native</Filter>
-    </ClInclude>
-    <ClInclude Include="..\pecker_framework\native\pecker_thread.h">
       <Filter>native</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\native\pecker_timetick.h">
@@ -190,6 +196,39 @@
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_carray.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\linux_thread.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\net_cmd.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\socket_param.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\syn_lock.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\thread_param.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\udp_asyn_comm.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\udp_socket.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\window_thread.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_thread.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_os_hal.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_linked_mem_pool.h">
       <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>

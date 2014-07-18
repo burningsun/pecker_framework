@@ -9,6 +9,7 @@
 #define		PFX_DEFINES_H_
 
 #include "pfx_configs.h"
+#include "pfx_os_hal.h"
 
 #define PFX_API 
 #define PFX_Interface struct

@@ -11,7 +11,7 @@
 #define PECKER_TIMETICK_H_
 
 #include "../pfx_defines.h"
-#if (OS_CONFIG == OS_ANDROID)
+#if ((OS_CONFIG == OS_ANDROID)||(OS_CONFIG == OS_LINUX))
 #include <time.h>
 typedef timespec Time_ticker;
 #else

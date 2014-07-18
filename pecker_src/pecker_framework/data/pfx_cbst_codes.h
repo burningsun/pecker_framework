@@ -1480,7 +1480,7 @@ PFX_RB_BST_RM_TYPE::node_t* PFX_RB_BST_RM ::remove_node
 
 // 通过节点查找结点
 PFX_CBST_NFIND_TEMPLATE_DEFINES
-const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_node 
+PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_node 
 	(const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN key_node_ptr,
 	const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN root_node_ptr)
 {
@@ -1511,7 +1511,7 @@ const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_node
 }
 //
 PFX_CBST_NFIND_TEMPLATE_DEFINES
-const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_near_node  
+PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_near_node  
 	(const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN key_node_ptr,
 	const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN root_node_ptr,
 	int& PARAM_INOUT last_cmp_result)
@@ -1587,7 +1587,7 @@ PFX_INLINE PFX_CBST_ITR_FIND_TYPE::const_iterator_t*	PFX_CBST_ITR_FIND::find_nea
 }
 
 PFX_CBST_ELEM_FIND_TEMPLATE_DEFINES
-PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_node 
+PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_node 
 	(const PFX_CBST_ELEM_FIND_TYPE::element_t& PARAM_IN __key, 
 	PFX_CBST_ELEM_FIND_TYPE::const_iterator_t& itr)
 {
@@ -1625,7 +1625,7 @@ PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_node
 }
 
 PFX_CBST_ELEM_FIND_TEMPLATE_DEFINES
-PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_near_node 
+PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_near_node 
 	(const PFX_CBST_ELEM_FIND_TYPE::element_t& PARAM_IN __key, 
 	PFX_CBST_ELEM_FIND_TYPE::const_iterator_t& itr,
 	int& PARAM_INOUT last_cmp_result)

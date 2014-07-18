@@ -555,10 +555,10 @@ struct PFX_DATA_TEMPALE_API BST_find_node
 	typedef typename BST_node_minmax< node_t >										minmax_t;
 	typedef typename BST_find_node< node_t, compare_two_node_t >	find_t;
 
-	static const node_t*	find_node (const node_t* PARAM_IN key_node_ptr, 
+	static PFX_INLINE const node_t*	find_node (const node_t* PARAM_IN key_node_ptr, 
 																const node_t* PARAM_IN root_node_ptr);
 
-	static const node_t*	find_near_node  (const node_t* PARAM_IN key_node_ptr,
+	static PFX_INLINE const node_t*	find_near_node  (const node_t* PARAM_IN key_node_ptr,
 																					const node_t* PARAM_IN root_node_ptr,
 																					int& PARAM_INOUT last_cmp_result);
 };
@@ -599,10 +599,10 @@ struct PFX_DATA_TEMPALE_API BST_find_element
 
 	typedef  typename const_bst_inorder_iterator< tree_t > const_iterator_t;
 
-	static const_iterator_t*	find_node (const element_t& PARAM_IN __key, 
+	static PFX_INLINE const_iterator_t*	find_node (const element_t& PARAM_IN __key, 
 																	 const_iterator_t& itr);
 
-	static const_iterator_t*	find_near_node  (const element_t& PARAM_IN __key,
+	static PFX_INLINE const_iterator_t*	find_near_node  (const element_t& PARAM_IN __key,
 																				const_iterator_t& itr,
 																				int& PARAM_INOUT last_cmp_result);
 };

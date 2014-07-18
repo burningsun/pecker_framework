@@ -11,10 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\pecker_framework\native\asyn_udp_comm.cpp" />
     <ClCompile Include="..\pecker_framework\native\pecker_stream.cpp" />
-    <ClCompile Include="..\pecker_framework\native\pecker_thread.cpp" />
     <ClCompile Include="..\pecker_framework\native\pecker_tick.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_file_io.cpp" />
+    <ClCompile Include="..\pecker_framework\native\socket_param.cpp" />
+    <ClCompile Include="..\pecker_framework\native\syn_lock.cpp" />
+    <ClCompile Include="..\pecker_framework\native\udp_socket.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_api_info.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_defines.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -43,6 +46,7 @@
     <ClInclude Include="..\pecker_framework\data\pfx_dynamic_array.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_fixed_point.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_iterator.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_linked_mem_pool.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_region.h" />
@@ -50,16 +54,25 @@
     <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
+    <ClInclude Include="..\pecker_framework\native\linux_thread.h" />
+    <ClInclude Include="..\pecker_framework\native\net_cmd.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_allocator.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_stream.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_system.h" />
-    <ClInclude Include="..\pecker_framework\native\pecker_thread.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_timetick.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_file_io.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_log.h" />
+    <ClInclude Include="..\pecker_framework\native\socket_param.h" />
+    <ClInclude Include="..\pecker_framework\native\syn_lock.h" />
+    <ClInclude Include="..\pecker_framework\native\thread_param.h" />
+    <ClInclude Include="..\pecker_framework\native\udp_asyn_comm.h" />
+    <ClInclude Include="..\pecker_framework\native\udp_socket.h" />
+    <ClInclude Include="..\pecker_framework\native\window_thread.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_thread.h" />
     <ClInclude Include="..\pecker_framework\pfx_api_info.h" />
     <ClInclude Include="..\pecker_framework\pfx_configs.h" />
     <ClInclude Include="..\pecker_framework\pfx_defines.h" />
+    <ClInclude Include="..\pecker_framework\pfx_os_hal.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_color.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_image.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h" />

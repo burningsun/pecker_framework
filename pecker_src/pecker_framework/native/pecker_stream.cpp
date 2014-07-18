@@ -14,14 +14,14 @@ PECKER_BEGIN
 pecker_read_stream_form_memery::pecker_read_stream_form_memery():m_bind_read_buffer_ptr(null),
 																																	m_bind_read_size(0)
 {
-
+	InitCriticalSection(&m_critical_section);
 }
 pecker_read_stream_form_memery::~pecker_read_stream_form_memery()
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
 	m_bind_read_buffer_ptr = null;
 	m_bind_read_size = 0;
+
+	DelCriticalSection(&m_critical_section);
 }
 result_t pecker_read_stream_form_memery::bind_read_buffer(CONST_STREAM_BUFFER_t bind_buffer_ptr,usize__t bind_size)
 {
@@ -29,8 +29,8 @@ result_t pecker_read_stream_form_memery::bind_read_buffer(CONST_STREAM_BUFFER_t 
 	{
 		return PFX_STATUS_ERROR_;
 	}
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	m_bind_read_buffer_ptr = bind_buffer_ptr;
 	m_bind_read_size = bind_size; 
@@ -43,8 +43,8 @@ result_t pecker_read_stream_form_memery::read_integer (sint_t &read_value)
 	{
 		return PFX_STATUS_ERROR_;
 	}
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	int index = sscanf(m_bind_read_buffer_ptr,"%d",&read_value);
 	if (index  > m_bind_read_size)
 	{
@@ -66,8 +66,8 @@ result_t pecker_read_stream_form_memery::read_long (s64_t &read_value)
 	{
 		return PFX_STATUS_ERROR_;
 	}
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	int index = sscanf(m_bind_read_buffer_ptr,"%ld",&read_value);
 	if (index  > m_bind_read_size)
 	{
@@ -89,8 +89,8 @@ result_t pecker_read_stream_form_memery::read_char (char_t &read_value)
 	{
 		return PFX_STATUS_ERROR_;
 	}
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	if (m_bind_read_size > 0)
 	{
@@ -125,8 +125,8 @@ result_t pecker_read_stream_form_memery::read_float (float_t &read_value)
 	{
 		return PFX_STATUS_ERROR_;
 	}
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	int index = sscanf(m_bind_read_buffer_ptr,"%f",&read_value);
 	if (index > m_bind_read_size)
 	{
@@ -149,8 +149,8 @@ result_t pecker_read_stream_form_memery::read_double (double_t &read_value)
 		return PFX_STATUS_ERROR_;
 	}
 
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	int index = sscanf(m_bind_read_buffer_ptr,"%lf",&read_value);
 	if (index > m_bind_read_size)
 	{
@@ -173,8 +173,8 @@ usize__t pecker_read_stream_form_memery::read_chars (char_t* read_buffer_ptr,usi
 		return 0;
 	}
 
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	
 	char read_char_value = 0;
 	usize__t isubsize = 0;
@@ -213,8 +213,8 @@ pecker_write_stream_to_memery::pecker_write_stream_to_memery():	m_bind_write_buf
 
 pecker_write_stream_to_memery::~pecker_write_stream_to_memery()
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	m_bind_write_buffer_ptr = null;
 	m_bind_write_size = null;
@@ -227,8 +227,8 @@ result_t pecker_write_stream_to_memery::bind_write_buffer( STREAM_BUFFER_t bind_
 		return PFX_STATUS_ERROR_;
 	}
 
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	m_bind_write_buffer_ptr = bind_buffer_ptr;
 	m_bind_write_size = bind_size;
@@ -238,8 +238,8 @@ result_t pecker_write_stream_to_memery::bind_write_buffer( STREAM_BUFFER_t bind_
 
 result_t pecker_write_stream_to_memery::write_integer (sint_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	
 	char tempstring[5];
 	int index = sprintf(tempstring,"%d",write_value);
@@ -259,8 +259,8 @@ result_t pecker_write_stream_to_memery::write_integer (sint_t write_value)
 
 result_t pecker_write_stream_to_memery::write_unsigned_integer (uint_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	char tempstring[5];
 	int index = sprintf(tempstring,"%u",write_value);
@@ -280,8 +280,8 @@ result_t pecker_write_stream_to_memery::write_unsigned_integer (uint_t write_val
 
 result_t pecker_write_stream_to_memery::write_long (s64_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	char tempstring[9];
 	int index = sprintf(tempstring,"%ld",write_value);
 	if (index < m_bind_write_size)
@@ -300,8 +300,8 @@ result_t pecker_write_stream_to_memery::write_long (s64_t write_value)
 
 result_t pecker_write_stream_to_memery::write_unsigned_long (u64_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	char tempstring[9];
 	int index = sprintf(tempstring,"%ld",write_value);
 	if (index < m_bind_write_size)
@@ -320,8 +320,8 @@ result_t pecker_write_stream_to_memery::write_unsigned_long (u64_t write_value)
 
 result_t pecker_write_stream_to_memery::write_char (char_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	char tempstring[5];
 	int index = sprintf(tempstring,"%c",write_value);
@@ -341,8 +341,8 @@ result_t pecker_write_stream_to_memery::write_char (char_t write_value)
 
 result_t pecker_write_stream_to_memery::write_byte (byte_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 
 	char tempstring[5];
@@ -363,8 +363,8 @@ result_t pecker_write_stream_to_memery::write_byte (byte_t write_value)
 
 result_t pecker_write_stream_to_memery::write_float (float_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	char tempstring[5];
 	int index = sprintf(tempstring,"%f",write_value);
@@ -384,8 +384,8 @@ result_t pecker_write_stream_to_memery::write_float (float_t write_value)
 
 result_t pecker_write_stream_to_memery::write_double (double_t write_value)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 	char tempstring[5];
 	int index = sprintf(tempstring,"%f",write_value);
 	if (index < m_bind_write_size)
@@ -404,8 +404,8 @@ result_t pecker_write_stream_to_memery::write_double (double_t write_value)
 
 usize__t pecker_write_stream_to_memery::write_chars (char_t* write_buffer_ptr,usize__t write_buffer_size)
 {
-	pecker_critical_lock cs_lock;
-	cs_lock.lock(&m_critical_section);
+	critical_section_lock_t cs_lock;
+	cs_lock.lock(m_critical_section);
 
 	char write_char_value = 0;
 

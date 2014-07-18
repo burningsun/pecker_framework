@@ -11,6 +11,7 @@
 #define PECKER_STREAM_H_
 
 #include "../pfx_defines.h"
+#include "syn_lock.h"
 #include "pecker_thread.h"
 
 #include <stdio.h>
@@ -48,7 +49,7 @@ typedef const char* CONST_STREAM_BUFFER_t;
 private:
 	CONST_STREAM_BUFFER_t m_bind_read_buffer_ptr;
 	usize__t								m_bind_read_size;
-	pecker_critical_section			m_critical_section;
+	cs_t										m_critical_section;
 public:
 	pecker_read_stream_form_memery();
 	virtual ~pecker_read_stream_form_memery();
@@ -67,9 +68,9 @@ class PFX_NATIVE_API pecker_write_stream_to_memery : public Ipecker_write_stream
 {
 	typedef char* STREAM_BUFFER_t; 
 private:
-	STREAM_BUFFER_t			m_bind_write_buffer_ptr;
+	STREAM_BUFFER_t		m_bind_write_buffer_ptr;
 	usize__t							m_bind_write_size;
-	pecker_critical_section		m_critical_section;
+	cs_t									m_critical_section;
 public:
 	pecker_write_stream_to_memery();
 	virtual ~pecker_write_stream_to_memery();

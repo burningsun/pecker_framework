@@ -92,7 +92,7 @@ public:
 
 	typedef typename	cshare_leakable_object < leakable_object_t > cshare_leakable_object_t;
 	typedef  typename	cshare_leakable_object_t	clist_node_t;
-	typedef typename	clist_base < clist_node_t >	clist_t;
+	typedef typename	linked_list_operation < clist_node_t >	clist_op_t;
 
 	typedef class clock_object  
 	{
@@ -160,7 +160,7 @@ public:
 
 	}lock_object_t;
 
-	friend clist_t; 
+	friend clist_op_t; 
 private:
 	leakable_object_t	m_share_obj;
 	clist_node_t*			m_prev_node_ptr;
@@ -171,6 +171,14 @@ protected:
 		return m_prev_node_ptr;
 	}
 	PFX_INLINE const clist_node_t*	get_next_node () const
+	{
+		return m_next_node_ptr;
+	}
+	PFX_INLINE  clist_node_t*	get_prev_node () 
+	{
+		return m_prev_node_ptr;
+	}
+	PFX_INLINE  clist_node_t*	get_next_node () 
 	{
 		return m_next_node_ptr;
 	}
@@ -488,7 +496,7 @@ PFX_INLINE result_t CSLEAKABLE_OBJECT::release_object ()
 	}
 	else
 	{
-		clist_node_t* node_ptr = clist_t::remove_list_node_unsafe(this);
+		clist_node_t* node_ptr = clist_op_t::remove_list_node (this);
 		if (node_ptr)
 		{
 			m_next_node_ptr = null;
@@ -507,13 +515,13 @@ CSLEAKABLE_OBJECT_TEMPALTE
 PFX_INLINE result_t CSLEAKABLE_OBJECT::share (CSLEAKABLE_OBJECT_TYPE::cshare_leakable_object_t& __other)
 {
 	typedef CSLEAKABLE_OBJECT_TYPE::clist_node_t	clist_node_t;
-	typedef CSLEAKABLE_OBJECT_TYPE::clist_t				clist_t;
+	typedef CSLEAKABLE_OBJECT_TYPE::clist_op_t				clist_op_t;
 	result_t status;
 
 	__other.release_object ();
 
 	const  clist_node_t* node_ptr = 
-				clist_t::insert_list_node_back(this, &__other);
+				clist_op_t:: insert_list_node_back(this, &__other);
 
 	if (node_ptr)
 	{

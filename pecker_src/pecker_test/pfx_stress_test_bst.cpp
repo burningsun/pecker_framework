@@ -29,7 +29,8 @@ typedef carray< alloc_t >									array_t;
 
 typedef cbalance_bst_node < string_t >			bst_node_t;
 
-typedef string_compare < string_t >				string_cmp_t;
+//typedef string_compare < string_t >				string_cmp_t;
+typedef ascii_string_compare< string_t >		string_cmp_t;
 
 typedef compare_two_node< bst_node_t, 
 	bst_node_t, string_cmp_t >							node_cmp_t;
@@ -324,7 +325,7 @@ void bst_find_node_stress_test_by_elem (const __array_type& PARAM_IN __array,
 	__array_type::const_iterator_t* arr_itr_ptr = null;
 	
 	// 
-	PECKER_LOG_ ("begin find ......\n", 0);
+	PECKER_LOG_ ("begin find element......\n", 0);
 	tick_count.init();
 	arr_itr_ptr = __array.begin(__arr_itr);
 	tick_count.start();
@@ -555,6 +556,9 @@ int bst_stress_test_main (bool bshow = false)
 		&incs_array);
 	//load_file_to_array ("test_data\\tst_test_data2.txt",strlen("test_data\\tst_test_data2.txt"),&incs_array);
 
+	for (int i=0; i<5; ++i)
+	{
+
 	PECKER_LOG_ ("====================");
 	PECKER_LOG_ ("test bst\n");
 
@@ -592,6 +596,7 @@ int bst_stress_test_main (bool bshow = false)
 	bst_enum_node_stress_test_by_node< rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(_rbbinst, PFX_BOOL_FALSE, bshow);
 	bst_erase_node_stress_test_by_elem< array_t, rb_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
 	//bst_erase_node_stress_test_by_node< array_t, avl_bst_set_t, RB_BINARY_SEARCH_TREE_TYPE >(incs_array, _rbbinst, bshow);
+	}
 
 	return 0;
 }
