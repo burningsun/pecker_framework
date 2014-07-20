@@ -90,24 +90,32 @@ struct PFX_vertex_struct_traits
 	}
 };
 
-template < typename vertex_struct_type, class shader_program, const bool_t using_vbo = PFX_BOOL_FALSE >
+template < typename vertex_struct_type, 
+					class shader_program, 
+					const bool_t using_vbo = PFX_BOOL_FALSE >
 struct PFX_vertex_struct_format
 {
 	typedef PFX_vertex_struct_traits< vertex_struct_type > vertex_struct_t;
 	typedef typename shader_program									 shader_program_t;
 
 	// 使用一个vertex_attributes_buffer保存所有结构体数据，实现Array of Structures
-	static PFX_INLINE result_t update_vertex_with_AOS (shader_program_t& __shader_program, 
-		vertex_struct_t* PARAM_IN __vs_ptr, usize__t __vs_count)
+	static PFX_INLINE result_t update_vertex_with_AOS (
+		shader_program_t& __shader_program, 
+		vertex_struct_t* PARAM_IN __vs_ptr, 
+		usize__t __vs_count)
 	{
-		return 0;
+		return shader_program_t::
+			update_vertex_with_AOS(&__shader_program, __vs_ptr, __vs_count);
 	}
 
 	// 使用一个vertex_attributes_buffer只保存一个结构体数据，实现Structure of Arrays 
-	static PFX_INLINE result_t update_vertex_with_SOA (shader_program_t& __shader_program, 
-		const byte_t* PARAM_IN __vs_array_ptr, usize__t __vs_buf_size)
+	static PFX_INLINE result_t update_vertex_with_SOA (
+		shader_program_t& __shader_program, 
+		const byte_t* PARAM_IN __vs_array_ptr, 
+		usize__t __vs_buf_size)
 	{
-		return 0;
+		return shader_program_t::
+			update_vertex_with_SOA(&__shader_program, __vs_array_ptr, __vs_buf_size);
 	}
 };
 

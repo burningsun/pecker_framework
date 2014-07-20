@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,12 +20,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -42,7 +44,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;$(SolutionDir)depends_lib\OGLES2\Include\GLES2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>PFX_RENDER_SYSTEM_EXPORT;PFX_DEBUG_MODE;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -71,6 +73,16 @@
     <ClInclude Include="..\pecker_framework\pfx_configs.h" />
     <ClInclude Include="..\pecker_framework\pfx_defines.h" />
     <ClInclude Include="..\pecker_framework\pfx_hal_info.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_color.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_image.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_render_defs.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_buffer_object.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_framebuffer_object.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_device.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_shader_program.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\pecker_framework\pfx_hal_info.cpp" />

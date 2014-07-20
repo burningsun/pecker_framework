@@ -1,142 +1,121 @@
 ﻿/*
- * pfx_shader_program.h
+ * pfx_shader_program_gles.h
  *
- *  Created on: 2013-8-25
+ *  Created on: 2014-7-20
 *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
-#ifndef		PFX_SHADER_PROGRAM_H_
-#define		PFX_SHADER_PROGRAM_H_
+#ifndef		PFX_SHADER_PROGRAM_GLES_H_
+#define		PFX_SHADER_PROGRAM_GLES_H_
 
-#include "../../include/config"
+#include <gl2.h>
+#include "../pfx_shader_program.h"
 
 PECKER_BEGIN
 
-typedef enum enumSHADER_PARAM_TYPE
+class cpixels_shader_gles2 : public Ipfx_shader
 {
-	PFXSPT_UNKNOWN_SHADER_PARAM_TYPE = 0,
-
-	PFXSPT_FLOAT1,
-	PFXSPT_FLOAT2,
-	PFXSPT_FLOAT3,
-	PFXSPT_FLOAT4,
-	PFXSPT_INT1,
-	PFXSPT_INT2,
-	PFXSPT_INT3,
-	PFXSPT_INT4,
-
-	PFXSPT_MATRIX_2X2,
-	PFXSPT_MATRIX_2X3,
-	PFXSPT_MATRIX_2X4,
-	PFXSPT_MATRIX_3X2,
-	PFXSPT_MATRIX_3X3,
-	PFXSPT_MATRIX_3X4,
-	PFXSPT_MATRIX_4X2,
-	PFXSPT_MATRIX_4X3,
-	PFXSPT_MATRIX_4X4,
-
-	PFXSPT_SAMPLER1D,
-	PFXSPT_SAMPLER2D,
-	PFXSPT_SAMPLER3D,
-	PFXSPT_SAMPLERCUBE,
-	PFXSPT_SAMPLER1DSHADOW,
-	PFXSPT_SAMPLER2DSHADOW,
-	PFXSPT_SAMPLER2DARRAY,
-
-	PFXSPT_SHADER_PARAM_TYPE_COUNT
-}PFX_SHADER_PARAM_TYPE_t;
-
-//typedef void* pfx_unknown_shader_param_object_t;
-
-typedef enum enumSHADER_TYPE
-{
-	PFXST_VERTEXT_SHADER = 0,
-	PFXST_PIXEL_SHADER,
-	PFXST_SHADER_TYPE_COUNT
-}PFX_SHADER_TYPE_t;
-
-typedef enum enumPrimitiveMode
-{
-	PFX_PRI_POINTS = 0,
-	PFX_PRI_LINES,
-	PFX_PRI_LINE_STRIP,
-	PFX_PRI_LINE_LOOP,
-	PFX_PRI_TRIANGLES,
-	PFX_PRI_TRIANGLE_STRIP,
-	PFX_PRI_TRIANGLE_FAN,
-
-	PFX_PRIMITIVE_MODE_COUNT
-}PFX_PRIMITIVE_MODE_t;
-
-typedef struct shader_pps //program param structure
-{
-	enum_int_t	m_type;
-	void *				m_name;
-	usize__t			m_name_len;
-
-	enum_int_t	m_var_type;
-	void*				m_variables;
-	
-	index_t			m_index;
-	bool_t				m_modify;
-
-	shader_pps () : m_name(null), m_name_len(0),
-		m_variables(null), m_var_type(0), m_index (INVALID_VALUE),
-		m_modify (PFX_BOOL_FALSE)
+private:
+	GLuint m_shaderID;
+public:
+	cpixels_shader_gles2();
+	~cpixels_shader_gles2();
+public:
+	PFX_INLINE GLuint get_shader_id() const
 	{
-		;
+		return m_shaderID;
 	}
-}shader_pps_t;
-
-
-// shader 处理器
-PFX_Interface Ipfx_shader
-{
-	virtual long_t			compile_shader (const char_t* PARAM_IN str_shader_codes, 
-																		usize__t buf_size, 
-																		const void* PARAM_IN param_ptr = null) = 0;
-	virtual result_t			reloacation (long_t __locate) = 0;
-	virtual long_t			get_shader_location () = 0;
-	virtual enum_int_t	get_type () const = 0; //PFX_SHADER_TYPE_t
-	virtual const shader_pps_t* query_shader_info (usize__t& __pps_count) const = 0;
+	void dispose ();
+public:
+	long_t			compile_shader (const char_t* PARAM_IN str_shader_codes, 
+		usize__t buf_size, 
+		const void* PARAM_IN param_ptr = null);
+	result_t			reloacation (long_t __locate);
+	long_t				get_shader_location ();
+	enum_int_t	get_type () const; //PFX_SHADER_TYPE_t
+	const shader_pps_t* query_shader_info (usize__t& __pps_count) const;
 };
 
-PFX_Interface Ipfx_shader_program
+class cvertex_shader_gles2 : public Ipfx_shader
 {
-	virtual ~Ipfx_shader_program(){;}
+private:
+	GLuint m_shaderID;
+public:
+	cvertex_shader_gles2();
+	~cvertex_shader_gles2();
+public:
+	PFX_INLINE GLuint shader_id() const
+	{
+		return m_shaderID;
+	}
+	void dispose ();
+public:
+	long_t			compile_shader (const char_t* PARAM_IN str_shader_codes, 
+		usize__t buf_size, 
+		const void* PARAM_IN param_ptr = null);
+	result_t			reloacation (long_t __locate);
+	
+	PFX_INLINE long_t	get_shader_location ()
+	{
+		return m_shaderID;
+	}
+	PFX_INLINE enum_int_t	get_type () const //PFX_SHADER_TYPE_t
+	{
+		return PFXST_PIXEL_SHADER;
+	}
+	const shader_pps_t* query_shader_info (usize__t& __pps_count) const;
+};
 
-	virtual result_t init () = 0;
-	virtual result_t close () = 0;
+
+
+class cshader_program_gles2 : public Ipfx_shader_program
+{
+private:
+	Ipfx_shader*	m_pixels_shader_ptr;
+	Ipfx_shader*	m_vertex_shader_ptr;
+	GLuint				m_programID;
+public:
+	PFX_INLINE GLuint glProgramID() const
+	{
+		return m_programID;
+	}
+public:
+	cshader_program_gles2();
+	~cshader_program_gles2();
+
+	result_t init ();
+	result_t close ();
 
 	// shader 处理程序
-	virtual result_t link_shader (Ipfx_shader* PARAM_INOUT shader_ptr) = 0;
-	virtual result_t link_shader_object () = 0;
-	virtual result_t clean_shader_object () = 0;
-	//virtual result_t begin_program () = 0;
-	//virtual result_t end_program () = 0;
-	virtual	long_t		program_id () const = 0;
+	 result_t link_shader (Ipfx_shader* PARAM_INOUT shader_ptr);
+	 result_t link_shader_object ();
+	 result_t clean_shader_object ();
+	 PFX_INLINE long_t	program_id () const
+	 {
+		 return m_programID;
+	 }
 
-	virtual result_t draw_array (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
-														uindex_t fist_vertex_index,
-														usize__t primitive_count) = 0;
+	 result_t draw_array (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
+											uindex_t fist_vertex_index,
+											usize__t primitive_count);
 
-	virtual result_t draw_element (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
-														usize__t indices) = 0; //PFX_CONST_GRAM_ELEMENT_INDICES_PARAMS_t
+	 result_t draw_element (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
+											usize__t indices); //PFX_CONST_GRAM_ELEMENT_INDICES_PARAMS_t
 
-	virtual result_t	enable_vertex_array_attribute	(long_t tagVertex) = 0;
-	virtual result_t	disable_vertex_array_attribute	(long_t tagVertex) = 0;
+	 result_t	enable_vertex_array_attribute	(long_t tagVertex);
+	 result_t	disable_vertex_array_attribute	(long_t tagVertex);
 
-	virtual result_t	set_vertex_array			(const shader_pps_t& PARAM_IN __param) = 0;
+	 result_t	set_vertex_array			(const shader_pps_t& PARAM_IN __param);
 
-	virtual result_t	set_vertex_attribute	(const shader_pps_t& PARAM_IN __param) = 0;
-	virtual result_t	get_attri_location		(shader_pps_t& PARAM_INOUT __result) const = 0;
+	 result_t	set_vertex_attribute	(const shader_pps_t& PARAM_IN __param);
+	 result_t	get_attri_location		(shader_pps_t& PARAM_INOUT __result) const;
 
-	virtual result_t	set_uniform (const shader_pps& PARAM_IN __param) const = 0;
-	virtual result_t	get_uniform_location (shader_pps_t& PARAM_INOUT __result) const = 0;
+	 result_t	set_uniform (const shader_pps& PARAM_IN __param) const;
+	 result_t	get_uniform_location (shader_pps_t& PARAM_INOUT __result) const;
 
-	virtual result_t query_program	(shader_pps_t& PARAM_INOUT __result) const = 0;
-	virtual result_t query_uniform		(shader_pps_t& PARAM_INOUT __result) const = 0;
-	virtual result_t query_vertex			(shader_pps_t& PARAM_INOUT __result) const = 0;
+	 result_t query_program	(shader_pps_t& PARAM_INOUT __result) const;
+	 result_t query_uniform		(shader_pps_t& PARAM_INOUT __result) const;
+	 result_t query_vertex			(shader_pps_t& PARAM_INOUT __result) const;
 };
 
 template < class shader_type >

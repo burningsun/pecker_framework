@@ -7,6 +7,15 @@
     <Filter Include="render">
       <UniqueIdentifier>{b340f1a6-5a5b-4c0d-841f-7df610c5e60c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="render\render_system">
+      <UniqueIdentifier>{8932da5d-424a-439d-93c6-36e3255f606d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\render_util">
+      <UniqueIdentifier>{bddcc7e9-d17a-4d3a-bda9-ac6412ef906d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\render_system\opengles">
+      <UniqueIdentifier>{6032e758-74d9-463f-984b-4237aeaf8422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\pecker_framework\pfx_configs.h">
@@ -17,6 +26,36 @@
     </ClInclude>
     <ClInclude Include="..\pecker_framework\pfx_hal_info.h">
       <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_color.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_image.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_render_defs.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_buffer_object.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_framebuffer_object.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_device.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_shader_program.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_texture.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.h">
+      <Filter>render\render_system\opengles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,13 @@ PECKER_BEGIN
 #define PFX_ALLOCATOR_TEMPLATE_DEFINES template < class element_ >
 #define PFX_ALLOCATOR_TEMPLATE_PARAMS < element_ >
 
+PFX_Interface Ialloacate
+{
+	virtual ~Ialloacate(){;}
+	virtual void* allocate_object () = 0;
+	virtual result_t deallocate_object(void*&  PARAM_INOUT del_element_ptr) = 0;
+};
+
 template < class element_ >
 struct pecker_simple_allocator
 {

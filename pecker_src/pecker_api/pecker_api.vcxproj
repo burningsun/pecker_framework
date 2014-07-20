@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -49,17 +49,18 @@
     <ClInclude Include="..\pecker_framework\data\pfx_linked_mem_pool.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_reference.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_region.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
     <ClInclude Include="..\pecker_framework\native\linux_thread.h" />
-    <ClInclude Include="..\pecker_framework\native\net_cmd.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_allocator.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_stream.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_system.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_timetick.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_disposeable.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_file_io.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_log.h" />
     <ClInclude Include="..\pecker_framework\native\socket_param.h" />
@@ -94,6 +95,7 @@
     <None Include="..\pecker_framework\include\cshare_object" />
     <None Include="..\pecker_framework\include\cstring" />
     <None Include="..\pecker_framework\include\cvector" />
+    <None Include="..\pecker_framework\include\native" />
     <None Include="..\pecker_framework\include\util" />
     <None Include="readme.txt" />
   </ItemGroup>
@@ -107,12 +109,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

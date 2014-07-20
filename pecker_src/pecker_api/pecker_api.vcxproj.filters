@@ -201,9 +201,6 @@
     <ClInclude Include="..\pecker_framework\native\linux_thread.h">
       <Filter>native</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\native\net_cmd.h">
-      <Filter>native</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\native\socket_param.h">
       <Filter>native</Filter>
     </ClInclude>
@@ -230,6 +227,12 @@
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_linked_mem_pool.h">
       <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_reference.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_disposeable.h">
+      <Filter>native</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +268,9 @@
       <Filter>include</Filter>
     </None>
     <None Include="..\pecker_framework\include\config">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\native">
       <Filter>include</Filter>
     </None>
   </ItemGroup>

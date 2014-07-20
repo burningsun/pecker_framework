@@ -75,7 +75,7 @@ struct linked_list_operation
 		list_node_t* PARAM_INOUT insert_node_ptr);
 	static PFX_INLINE list_node_t*	insert_list_node_front (list_node_t* PARAM_INOUT node_ptr,
 		list_node_t* PARAM_INOUT insert_node_ptr);
-	static PFX_INLINE list_node_t*				remove_list_node (list_node_t* PARAM_INOUT node_ptr);
+	static PFX_INLINE list_node_t*	remove_list_node (list_node_t* PARAM_INOUT node_ptr);
 };
 
 template < class __node_type >

@@ -10,6 +10,15 @@
 
 #include "../pfx_defines.h"
 
+#include "pecker_allocator.h"
+#include "pecker_timetick.h"
+#include "pfx_file_io.h"
+#include "pfx_log.h"
+#include "pfx_thread.h"
+#include "syn_lock.h"
+#include "udp_socket.h"
+#include "udp_asyn_comm.h"
+#include "pecker_stream.h"
 
 PECKER_BEGIN
 
