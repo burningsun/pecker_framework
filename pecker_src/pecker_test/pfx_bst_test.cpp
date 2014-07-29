@@ -39,7 +39,7 @@ PFX_INLINE_CODE void print_bst_node (const bst_string_node_t* PARAM_IN node_ptr)
 		char_t strformat[200];
 		if (str_ptr)
 		{
-			sprintf (strformat,"THIS(%08X) <%%.%ds> L(%08X) R(%08X) P(%08X)",
+			sprintf_s(strformat, sizeof(strformat), "THIS(%08X) <%%.%ds> L(%08X) R(%08X) P(%08X)",
 				(ulong_t)node_ptr, string_ref.get_length(),
 				(ulong_t)node_ptr->get_left_node(),
 				(ulong_t)node_ptr->get_right_node(),
@@ -48,7 +48,7 @@ PFX_INLINE_CODE void print_bst_node (const bst_string_node_t* PARAM_IN node_ptr)
 		}
 		else
 		{
-			sprintf (strformat,"THIS(%08X) <null> L(%08X) R(%08X) P(%08X)",
+			sprintf_s(strformat, sizeof(strformat), "THIS(%08X) <null> L(%08X) R(%08X) P(%08X)",
 				(ulong_t)node_ptr, //string_ref.get_length(),
 				(ulong_t)node_ptr->get_left_node(),
 				(ulong_t)node_ptr->get_right_node(),

@@ -9,6 +9,10 @@
 
 #include "pecker_stream.h"
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4996)
+#endif
 PECKER_BEGIN
 
 pecker_read_stream_form_memery::pecker_read_stream_form_memery():m_bind_read_buffer_ptr(null),
@@ -46,7 +50,7 @@ result_t pecker_read_stream_form_memery::read_integer (sint_t &read_value)
 	critical_section_lock_t cs_lock;
 	cs_lock.lock(m_critical_section);
 	int index = sscanf(m_bind_read_buffer_ptr,"%d",&read_value);
-	if (index  > m_bind_read_size)
+	if ((usize__t)index  > m_bind_read_size)
 	{
 		m_bind_read_buffer_ptr = null; 
 		m_bind_read_size = 0;
@@ -68,8 +72,8 @@ result_t pecker_read_stream_form_memery::read_long (s64_t &read_value)
 	}
 	critical_section_lock_t cs_lock;
 	cs_lock.lock(m_critical_section);
-	int index = sscanf(m_bind_read_buffer_ptr,"%ld",&read_value);
-	if (index  > m_bind_read_size)
+	int index = sscanf(m_bind_read_buffer_ptr,"%lld",&read_value);
+	if ((usize__t)index  > m_bind_read_size)
 	{
 		m_bind_read_buffer_ptr = null; 
 		m_bind_read_size = 0;
@@ -128,7 +132,7 @@ result_t pecker_read_stream_form_memery::read_float (float_t &read_value)
 	critical_section_lock_t cs_lock;
 	cs_lock.lock(m_critical_section);
 	int index = sscanf(m_bind_read_buffer_ptr,"%f",&read_value);
-	if (index > m_bind_read_size)
+	if ((usize__t)index > m_bind_read_size)
 	{
 		m_bind_read_buffer_ptr = null; 
 		m_bind_read_size = 0;
@@ -152,7 +156,7 @@ result_t pecker_read_stream_form_memery::read_double (double_t &read_value)
 	critical_section_lock_t cs_lock;
 	cs_lock.lock(m_critical_section);
 	int index = sscanf(m_bind_read_buffer_ptr,"%lf",&read_value);
-	if (index > m_bind_read_size)
+	if ((usize__t)index > m_bind_read_size)
 	{
 		m_bind_read_buffer_ptr = null; 
 		m_bind_read_size = 0;
@@ -242,8 +246,8 @@ result_t pecker_write_stream_to_memery::write_integer (sint_t write_value)
 	cs_lock.lock(m_critical_section);
 	
 	char tempstring[5];
-	int index = sprintf(tempstring,"%d",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%d", write_value);
+	if ((usize__t)index < m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -263,8 +267,8 @@ result_t pecker_write_stream_to_memery::write_unsigned_integer (uint_t write_val
 	cs_lock.lock(m_critical_section);
 
 	char tempstring[5];
-	int index = sprintf(tempstring,"%u",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%u", write_value);
+	if ((usize__t)index < m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -283,8 +287,8 @@ result_t pecker_write_stream_to_memery::write_long (s64_t write_value)
 	critical_section_lock_t cs_lock;
 	cs_lock.lock(m_critical_section);
 	char tempstring[9];
-	int index = sprintf(tempstring,"%ld",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%lld", write_value);
+	if ((usize__t)index < m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -303,8 +307,8 @@ result_t pecker_write_stream_to_memery::write_unsigned_long (u64_t write_value)
 	critical_section_lock_t cs_lock;
 	cs_lock.lock(m_critical_section);
 	char tempstring[9];
-	int index = sprintf(tempstring,"%ld",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%lld", write_value);
+	if ((usize__t)index < m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -324,8 +328,8 @@ result_t pecker_write_stream_to_memery::write_char (char_t write_value)
 	cs_lock.lock(m_critical_section);
 
 	char tempstring[5];
-	int index = sprintf(tempstring,"%c",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%c", write_value);
+	if ((usize__t)index < m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -346,8 +350,8 @@ result_t pecker_write_stream_to_memery::write_byte (byte_t write_value)
 
 
 	char tempstring[5];
-	int index = sprintf(tempstring,"%02x",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%02x", write_value);
+	if (index < (int)m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -367,8 +371,8 @@ result_t pecker_write_stream_to_memery::write_float (float_t write_value)
 	cs_lock.lock(m_critical_section);
 
 	char tempstring[5];
-	int index = sprintf(tempstring,"%f",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%f", write_value);
+	if (index < (int)m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -387,8 +391,8 @@ result_t pecker_write_stream_to_memery::write_double (double_t write_value)
 	critical_section_lock_t cs_lock;
 	cs_lock.lock(m_critical_section);
 	char tempstring[5];
-	int index = sprintf(tempstring,"%f",write_value);
-	if (index < m_bind_write_size)
+	int index = sprintf_s(tempstring, sizeof(tempstring), "%f", write_value);
+	if (index < (int)m_bind_write_size)
 	{
 		for (int i=0;i<index;++i)
 		{
@@ -410,7 +414,7 @@ usize__t pecker_write_stream_to_memery::write_chars (char_t* write_buffer_ptr,us
 	char write_char_value = 0;
 
 	int iwritesize = 0;
-	for (iwritesize=0;iwritesize<write_buffer_size;++iwritesize)
+	for (iwritesize=0;iwritesize<(int)write_buffer_size;++iwritesize)
 	{
 		write_char_value = write_buffer_ptr[iwritesize];
 		if (0 == write_char_value)
@@ -430,3 +434,6 @@ usize__t pecker_write_stream_to_memery::write_chars (char_t* write_buffer_ptr,us
 
 PECKER_END
 
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif

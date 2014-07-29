@@ -58,7 +58,7 @@ struct compare_two_node
 };
 
 template < class item_type >
-class PFX_DATA_TEMPALE_API cbst_node
+class PFX_DATA_TEMPLATE_API cbst_node
 {
 public:
 	typedef item_type													item_type_t;
@@ -148,7 +148,7 @@ public:
 };
 
 template < class item_type >
-class PFX_DATA_TEMPALE_API cavl_bst_node
+class PFX_DATA_TEMPLATE_API cavl_bst_node
 {
 public:
 	typedef item_type															item_type_t;
@@ -197,6 +197,7 @@ public:
 	{
 		return m_item;
 	}
+
 	PFX_INLINE result_t set_item (const item_type_t& __item)
 	{
 		if (null == m_parent_node_ptr && 
@@ -248,7 +249,7 @@ public:
 };
 
 template < class item_type >
-class PFX_DATA_TEMPALE_API crb_bst_node
+class PFX_DATA_TEMPLATE_API crb_bst_node
 {
 public:
 	typedef item_type															item_type_t;
@@ -258,7 +259,7 @@ protected:
 	node_t*			m_parent_node_ptr;
 	node_t*			m_left_node_ptr;
 	node_t*			m_right_node_ptr;
-	flag_t				m_color;
+	flag_t			m_color;
 	item_type		m_item;
 public:
 	crb_bst_node () : m_right_node_ptr (null),
@@ -335,7 +336,7 @@ public:
 };
 
 template < class item_type >
-class PFX_DATA_TEMPALE_API cbalance_bst_node
+class PFX_DATA_TEMPLATE_API cbalance_bst_node
 {
 public:
 	typedef item_type		item_type_t;
@@ -430,7 +431,7 @@ public:
 };
 
 template < class node_type_, class compare_two_node_, class node_allocator = pecker_simple_allocator< node_type_ > >
-struct PFX_DATA_TEMPALE_API pfx_binary_search_tree_type
+struct PFX_DATA_TEMPLATE_API pfx_binary_search_tree_type
 {
 	typedef node_type_					node_t;
 	typedef compare_two_node_	cmp_t;

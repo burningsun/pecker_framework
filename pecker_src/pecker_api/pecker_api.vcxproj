@@ -20,6 +20,7 @@
     <ClCompile Include="..\pecker_framework\native\udp_socket.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_api_info.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_defines.cpp" />
+    <ClCompile Include="..\pecker_framework\render\pfx_image.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +64,9 @@
     <ClInclude Include="..\pecker_framework\native\pfx_disposeable.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_file_io.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_log.h" />
+    <ClInclude Include="..\pecker_framework\native\window_native_form.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_native_component.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_native_form.h" />
     <ClInclude Include="..\pecker_framework\native\socket_param.h" />
     <ClInclude Include="..\pecker_framework\native\syn_lock.h" />
     <ClInclude Include="..\pecker_framework\native\thread_param.h" />
@@ -76,6 +80,8 @@
     <ClInclude Include="..\pecker_framework\pfx_os_hal.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_color.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_image.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_on_context_view.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_render_allocator.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_render_defs.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_buffer_object.h" />

@@ -25,7 +25,7 @@ struct rectangle_region
 	m_x (x),m_y(y),m_width(w),m_height(h){;}
 };
 
-typename < typename linear_pos_value >
+template < typename linear_pos_value >
 struct linear_region
 {
 	linear_pos_value m_offset;

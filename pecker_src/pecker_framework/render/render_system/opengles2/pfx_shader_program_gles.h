@@ -10,329 +10,402 @@
 
 #include <gl2.h>
 #include "../pfx_shader_program.h"
+#include "pfx_hal_info_gles2.h"
+
+
 
 PECKER_BEGIN
 
-class cpixels_shader_gles2 : public Ipfx_shader
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
+
+class PFX_RENDER_SYSTEM_API cshader_method_gles2
 {
+public:
+	static GLuint compile_shader(
+		GLenum __shader_type,
+		const GLchar* PARAM_IN str_shader_codes,
+		const GLint* PARAM_IN source_size,
+		GLint& compiled_status,
+		GLsizei source_count =1);
+
+	static void dispose_shader(GLuint& __shader_addr);
+
+	static usize__t get_shader_info_lengh(GLuint __shader_addr);
+
+	static usize__t get_shader_info_log(GLuint __shader_addr,
+		char_t* log_info_buff_ptr,
+		usize__t log_buff_size);
+
+	static u64_t get_version();
+};
+
+template <const GLenum SHADER_TYPE >
+class PFX_RENDER_SYSTEM_API cnative_shader_gles2
+{
+protected:
+	typedef cavl_bst_node < shader_param_t > shader_param_node_t;
+
 private:
 	GLuint m_shaderID;
 public:
-	cpixels_shader_gles2();
-	~cpixels_shader_gles2();
+	cnative_shader_gles2() :m_shaderID(0){ ; }
+	~cnative_shader_gles2()
+	{
+		dispose();
+	}
 public:
 	PFX_INLINE GLuint get_shader_id() const
 	{
 		return m_shaderID;
 	}
-	void dispose ();
-public:
-	long_t			compile_shader (const char_t* PARAM_IN str_shader_codes, 
-		usize__t buf_size, 
-		const void* PARAM_IN param_ptr = null);
-	result_t			reloacation (long_t __locate);
-	long_t				get_shader_location ();
-	enum_int_t	get_type () const; //PFX_SHADER_TYPE_t
-	const shader_pps_t* query_shader_info (usize__t& __pps_count) const;
-};
-
-class cvertex_shader_gles2 : public Ipfx_shader
-{
-private:
-	GLuint m_shaderID;
-public:
-	cvertex_shader_gles2();
-	~cvertex_shader_gles2();
-public:
-	PFX_INLINE GLuint shader_id() const
+	PFX_INLINE void dispose()
 	{
+		cshader_method_gles2::dispose_shader(m_shaderID);
+	}
+protected:
+
+
+public:
+	PFX_INLINE long_t compile_shader(const char_t* PARAM_IN str_shader_codes,
+		usize__t buf_size,
+		result_t& status,
+		GLsizei source_count = 1)
+	{
+		if (m_shaderID)
+		{
+			status = PFX_STATUS_OPENED;
+			return m_shaderID;
+		}
+		m_shaderID = cshader_method_gles2::compile_shader
+			(SHADER_TYPE, str_shader_codes, (GLint*)&buf_size, (GLint&)status, source_count);
 		return m_shaderID;
 	}
-	void dispose ();
-public:
-	long_t			compile_shader (const char_t* PARAM_IN str_shader_codes, 
-		usize__t buf_size, 
-		const void* PARAM_IN param_ptr = null);
-	result_t			reloacation (long_t __locate);
-	
-	PFX_INLINE long_t	get_shader_location ()
+
+	PFX_INLINE long_t get_native_handle()
 	{
-		return m_shaderID;
+		return  m_shaderID;
 	}
-	PFX_INLINE enum_int_t	get_type () const //PFX_SHADER_TYPE_t
+
+	static PFX_INLINE enum_int_t	get_type()  //PFX_SHADER_TYPE_t
 	{
-		return PFXST_PIXEL_SHADER;
+		return PFXST_UNKOWN_SHADER;
 	}
-	const shader_pps_t* query_shader_info (usize__t& __pps_count) const;
+	static PFX_INLINE u64_t		get_version() 
+	{
+		return cshader_method_gles2::get_version();
+	}
 };
 
+template<>
+enum_int_t cnative_shader_gles2< GL_VERTEX_SHADER >::get_type()  
+{
+	return PFXST_VERTEXT_SHADER;
+}
+template<>
+enum_int_t cnative_shader_gles2< GL_FRAGMENT_SHADER >::get_type()	
+{
+	return PFXST_PIXEL_SHADER;
+}
+
+typedef cnative_shader_gles2< GL_VERTEX_SHADER >	cnative_vertex_shder_gles2_t;
+typedef cnative_shader_gles2< GL_FRAGMENT_SHADER >	cnative_pixel_shder_gles2_t;
+
+template <const GLenum SHADER_TYPE >
+class  PFX_RENDER_SYS_TEMPLATE_API cshader_gles2 : public creference_base< cnative_shader_gles2< SHADER_TYPE > >,
+					public Ipfx_shader
+{
+protected:
+	typedef  cnative_shader_gles2< SHADER_TYPE > ref_element_t;
+	typedef  creference_base< cnative_shader_gles2< SHADER_TYPE > > ref_t;
+public:
+	PFX_INLINE ref_element_t* get_native_shader()
+	{
+		return 	get_reference();
+	}
+	PFX_INLINE long_t	compile_shader(const char_t* PARAM_IN str_shader_codes,
+		usize__t buf_size,
+		result_t& status,
+		usize__t source_count = 1,
+		const void* PARAM_IN param_ptr = null)
+	{
+		release_reference();
+		ref_element_t* ref_ptr = create_ref_element();
+		if (ref_ptr)
+		{
+			return ref_ptr->compile_shader(str_shader_codes, buf_size, status, source_count);
+		}
+		else
+		{
+			return PFX_STATUS_UNINIT;
+		}
+	}
+	PFX_INLINE long_t	get_native_handle()
+	{
+		ref_element_t* ref_ptr = get_reference();
+		if (ref_ptr)
+		{
+			return ref_ptr->get_native_handle();
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	PFX_INLINE enum_int_t	get_type() const
+	{
+		return ref_element_t::get_type();
+	}
+	PFX_INLINE u64_t get_version() const
+	{
+		return ref_element_t::get_version();
+	}
+	PFX_INLINE void	 release_reference()
+	{
+		ref_t::release_reference();
+	}
+
+protected:
+	PFX_INLINE ref_element_t* create_element()
+	{
+		return new ref_element_t;
+	}
+	PFX_INLINE result_t dispose_element(element_t*& elem_ptr)
+	{
+		if (elem_ptr)
+		{
+			delete elem_ptr;
+			elem_ptr = null;
+		}
+		return PFX_STATUS_OK;
+	}
+};
+
+typedef cshader_gles2< GL_VERTEX_SHADER >	cvertex_shader_gles2_t;
+typedef cshader_gles2< GL_FRAGMENT_SHADER >	cpixel_shder_gles2_t;
 
 
-class cshader_program_gles2 : public Ipfx_shader_program
+
+#define INVALID_SHADER (-1)
+class PFX_RENDER_SYSTEM_API cnative_shader_program_gles2
 {
 private:
-	Ipfx_shader*	m_pixels_shader_ptr;
-	Ipfx_shader*	m_vertex_shader_ptr;
-	GLuint				m_programID;
+	GLuint					m_programID;
+	cpixel_shder_gles2_t	m_pixel_shader;
+	cvertex_shader_gles2_t	m_vertex_shader;
 public:
-	PFX_INLINE GLuint glProgramID() const
+
+
+
+	typedef cavl_bst_node < shader_param_t >					shader_param_node_t;
+	typedef compare_two_node< shader_param_node_t, 
+		shader_param_node_t, compare_shader_param_t >			node_cmp_t;
+	typedef pfx_binary_search_tree_type < shader_param_node_t,
+		node_cmp_t, shader_param_node_allocator_t >
+		::avl_binary_search_tree_t								tree_t;
+	typedef BST_find_elementx< tree_t,
+		cstring_ascii_t, compare_shader_param_ex_t >			find_t;
+
+
+
+public:
+	static  usize__t  get_program_info_lengh(GLuint __program_id);
+
+	static usize__t  get_program_info_log(GLuint __program_ID,
+		char_t* log_info_buff_ptr,
+		usize__t log_buff_size);
+protected:
+
+
+
+	tree_t	m_shader_param_table;
+
+
+
+	result_t  parse_shader_param_table();
+	result_t  modify_shader_param_table
+		(enum_int_t param_type,
+		enum_int_t param_value_type,
+		const cstring_ascii_t& str_name,
+		long_t new_location);
+public:
+	PFX_INLINE const tree_t& get_shader_param_table() const
 	{
-		return m_programID;
+		return m_shader_param_table;
 	}
 public:
-	cshader_program_gles2();
-	~cshader_program_gles2();
+	 cnative_shader_program_gles2();
+	 ~cnative_shader_program_gles2();
+public:
+	PFX_INLINE result_t attach_pixel_shader(cpixel_shder_gles2_t* PARAM_INOUT shader_ptr)
+	{
+		if (!shader_ptr)
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
+		//m_pixel_shader.release_reference();
+		shader_ptr->share_to(&m_pixel_shader);
+		return PFX_STATUS_OK;
+	}
+	PFX_INLINE result_t attach_vertex_shader(cvertex_shader_gles2_t* PARAM_INOUT shader_ptr)
+	{
+		if (!shader_ptr)
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
+		//m_vertex_shader.release_reference();
+		shader_ptr->share_to(&m_vertex_shader);
+		return PFX_STATUS_OK;
+	}
+	result_t  compile_program();
 
-	result_t init ();
-	result_t close ();
+	void  dispose();
+public:
+	PFX_INLINE GLuint get_program_id() const
+	{
+		return 	m_programID;
+	}
+	result_t  use();
 
-	// shader 处理程序
-	 result_t link_shader (Ipfx_shader* PARAM_INOUT shader_ptr);
-	 result_t link_shader_object ();
-	 result_t clean_shader_object ();
-	 PFX_INLINE long_t	program_id () const
-	 {
-		 return m_programID;
-	 }
-
-	 result_t draw_array (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
-											uindex_t fist_vertex_index,
-											usize__t primitive_count);
-
-	 result_t draw_element (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
-											usize__t indices); //PFX_CONST_GRAM_ELEMENT_INDICES_PARAMS_t
-
-	 result_t	enable_vertex_array_attribute	(long_t tagVertex);
-	 result_t	disable_vertex_array_attribute	(long_t tagVertex);
-
-	 result_t	set_vertex_array			(const shader_pps_t& PARAM_IN __param);
-
-	 result_t	set_vertex_attribute	(const shader_pps_t& PARAM_IN __param);
-	 result_t	get_attri_location		(shader_pps_t& PARAM_INOUT __result) const;
-
-	 result_t	set_uniform (const shader_pps& PARAM_IN __param) const;
-	 result_t	get_uniform_location (shader_pps_t& PARAM_INOUT __result) const;
-
-	 result_t query_program	(shader_pps_t& PARAM_INOUT __result) const;
-	 result_t query_uniform		(shader_pps_t& PARAM_INOUT __result) const;
-	 result_t query_vertex			(shader_pps_t& PARAM_INOUT __result) const;
-};
-
-template < class shader_type >
-struct PFX_Shader_traits
-{
-	typedef typename shader_type				shader_t;
+	long_t  get_location_by_name
+		(const cstring_ascii_t& PARAM_IN str_shader_param_name) const;
 	
-	typedef typename shader_t::string_t		string_t;
-	typedef typename shader_t::handle_t	handle_t;
-	typedef typename shader_t::param_t	param_t;	
+public:
+	PFX_INLINE result_t attach_shader(Ipfx_shader* PARAM_IN shader_ptr)
+	{
+		if (shader_ptr && 
+			shader_ptr->get_version() == get_hal_instanse_ID().m_version)
+		{
+			if (PFXST_VERTEXT_SHADER == shader_ptr->get_type())
+			{
+				return attach_vertex_shader(DYNAMIC_CAST(cvertex_shader_gles2_t*)(shader_ptr));
+			}
+			else if (PFXST_PIXEL_SHADER == shader_ptr->get_type())
+			{
+				return attach_pixel_shader(DYNAMIC_CAST(cpixel_shder_gles2_t*)(shader_ptr));
+			}
+		}
+		return PFX_STATUS_INVALID_PARAMS;
+	}
+	PFX_INLINE long_t get_native_handle() const
+	{
+		return 	m_programID;
+	}
 
-	typedef typename shader_t::render_device_t render_device_t;
-
-	static PFX_INLINE shader_t	create_shader (render_device_t&  render_device)
-	{
-		return shader_t::create_shader (render_device);
-	}
-	static PFX_INLINE result_t		delete_shader (shader_t&  __shader)
-	{
-		return shader_t::delete_shader (__shader);
-	}
-	static PFX_INLINE shader_t& compile_shader (shader_t& __shader, string_t __shader_code, 
-																						const param_t* PARAM_IN param_ptr = null)
-	{
-		__shader.compile_shader (__shader_code, param_ptr);
-		return __shader;
-	}
-};
-
-template < class shader_program_type, class param_type >
-struct PFX_ShaderProgram_set_operate_traits
-{
-	typedef typename shader_program_type					shader_program_t;
-	typedef typename param_type									param_t;
-	typedef typename shader_program_t::name_t		name_t;
-	typedef typename shader_program_t::location_t	location_t;
-	static PFX_INLINE result_t set_variables (shader_program_t& __program, 
-		location_t __loc, const param_t& __param)
-	{
-		return __program.set_variables (__loc, __param);
-	}
-	static PFX_INLINE location_t set_variables (shader_program_t& __program, 
-		const name_t& param_name, const param_t& __param)
-	{
-		return __program.set_variables (param_name, __param);
-	}
-};
-
-template < class shader_program_type >
-struct PFX_ShaderProgram_get_operate_traits
-{
-	typedef typename shader_program_type					shader_program_t;
-	typedef typename shader_program_t::name_t		name_t;
-	typedef typename shader_program_t::location_t	location_t;
-	static PFX_INLINE location_t get_variables_location (shader_program_t& __program, 
-																									const name_t& __name)
-	{
-		return __program.get_variables_location (__loc, __name);
-	}
-	static PFX_INLINE result_t bind_variables_location (shader_program_t& __program, 
-		const name_t& __name, location_t __loc)
-	{
-		return __program.bind_variables_location (__name, __loc);
-	}
+	static  u64_t	get_version();
 };
 
 
-template < class shader_program_type >
-struct PFX_ShaderVertex_params_traits
+
+class  cshader_program_gles2 : public creference_base< cnative_shader_program_gles2 >,
+	public Ipfx_shader_program
 {
-	typedef typename shader_program_type							shader_program_t;
+protected:
+	typedef  cnative_shader_program_gles2						ref_element_t;
+	typedef  creference_base< cnative_shader_program_gles2 >	ref_t;
+public:
+	PFX_INLINE ref_element_t* get_native_shader_pragram()
+	{
+		return 	get_reference();
+	}
+	PFX_INLINE result_t	compile_program()
+	{
+		ref_element_t* ref_ptr = get_reference();
+		if (ref_ptr)
+		{
+			return ref_ptr->compile_program();
+		}
+		else
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
 
-	// param
-	typedef typename shader_program_t::vex1f_t				vex1f_t;
-	typedef typename shader_program_t::vex2f_t				vex2f_t;
-	typedef typename shader_program_t::vex3f_t				vex3f_t;
-	typedef typename shader_program_t::vex4f_t				vex4f_t;
-
-	typedef typename shader_program_t::vex1fv_t				vex1fv_t;
-	typedef typename shader_program_t::vex2fv_t				vex2fv_t;
-	typedef typename shader_program_t::vex3fv_t				vex3fv_t;
-	typedef typename shader_program_t::vex4fv_t				vex4fv_t;
-
-	typedef typename shader_program_t::vex_array_t		vex_array_t;
-	// result
-	typedef typename shader_program_t::vex_location_t	vex_location_t;
-};
-
-template < class shader_program_type >
-struct PFX_ShaderUniform_params_traits
-{
-	typedef typename shader_program_type									shader_program_t;
-
-	// param
-	typedef typename shader_program_t::uniform1i_t				uniform1i_t	;
-	typedef typename shader_program_t::uniform2i_t				uniform2i_t	;
-	typedef typename shader_program_t::uniform3i_t				uniform3i_t	;
-	typedef typename shader_program_t::uniform4i_t				uniform4i_t	;
+	}
+	PFX_INLINE long_t		get_location_by_name
+		(const cstring_ascii_t& PARAM_IN
+		str_shader_param_name) const
+	{
+		const ref_element_t* ref_ptr = get_reference();
+		if (ref_ptr)
+		{
+			return ref_ptr->get_location_by_name(str_shader_param_name);
+		}
+		else
+		{
+			return 0;
+		}
+	}
 	
-	typedef typename shader_program_t::uniform1f_t				uniform1f_t	;
-	typedef typename shader_program_t::uniform2f_t				uniform2f_t	;
-	typedef typename shader_program_t::uniform3f_t				uniform3f_t	;
-	typedef typename shader_program_t::uniform4f_t				uniform4f_t	;
-
-	typedef typename shader_program_t::mat2f_t						mat2f_t	;
-	typedef typename shader_program_t::mat3f_t						mat3f_t	;
-	typedef typename shader_program_t::mat4f_t						mat4f_t	;
-
-	typedef typename shader_program_t::uniform1iv_t				uniform1iv_t	;
-	typedef typename shader_program_t::uniform2iv_t				uniform2iv_t	;
-	typedef typename shader_program_t::uniform3iv_t				uniform3iv_t	;
-	typedef typename shader_program_t::uniform4iv_t				uniform4iv_t	;
-
-	typedef typename shader_program_t::uniform1fv_t				uniform1fv_t	;
-	typedef typename shader_program_t::uniform2fv_t				uniform2fv_t	;
-	typedef typename shader_program_t::uniform3fv_t				uniform3fv_t	;
-	typedef typename shader_program_t::uniform4fv_t				uniform4fv_t	;
-
-	typedef typename shader_program_t::mat2fv_t						mat2fv_t	;
-	typedef typename shader_program_t::mat3fv_t						mat3fv_t	;
-	typedef typename shader_program_t::mat4fv_t						mat4fv_t	;
-
-	//result
-	typedef typename shader_program_t::unform_location_t	unform_location_t; 
-
-};
-template < class shader_program_type >
-struct PFX_ShaderProgram_traits
-{
-	typedef typename shader_program_type									shader_program_t;
-	typedef typename shader_program_t::render_device_t		render_device_t;
-
-	// return old shader program
-	static PFX_INLINE shader_program_t&	use_shader_program (render_device_t&  render_device, 
-		shader_program_t& __program)
+	PFX_INLINE result_t	attach_shader(Ipfx_shader* PARAM_IN shader_ptr)
 	{
-		return render_device.use_shader_program (__program);
-	}
-	static PFX_INLINE shader_program_t	create_shader_program (render_device_t&  render_device)
-	{
-		return shader_program_t::create_shader_program (render_device);
-	}
-	static PFX_INLINE result_t		delete_shader_program (shader_program_t&  __shader_program)
-	{
-		return shader_program_t::delete_shader (__shader_program);
+		ref_element_t* ref_ptr = get_reference();
+		if (ref_ptr)
+		{
+			return ref_ptr->attach_shader(shader_ptr);
+		}
+		else
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
 	}
 
+	virtual  const tree_t* get_shader_param_table() const
+	{
+		const ref_element_t* ref_ptr = get_reference();
+		if (ref_ptr)
+		{
+			return &(ref_ptr->get_shader_param_table());
+		}
+		else
+		{
+			return null;
+		}
+	}
 
-	typedef typename PFX_ShaderVertex_params_traits< shader_program_t >					vertex_param_t;
-	typedef typename PFX_ShaderUniform_params_traits< shader_program_t >				uniform_param_t;
-	typedef typename PFX_ShaderProgram_get_operate_traits< shader_program_t >	loction_gets_t;
-	// param
-	typedef typename vertex_param_t::vex1f_t				vex1f_t;
-	typedef typename vertex_param_t::vex2f_t				vex2f_t;
-	typedef typename vertex_param_t::vex3f_t				vex3f_t;
-	typedef typename vertex_param_t::vex4f_t				vex4f_t;
-	typedef typename vertex_param_t::vex1fv_t			vex1fv_t;
-	typedef typename vertex_param_t::vex2fv_t			vex2fv_t;
-	typedef typename vertex_param_t::vex3fv_t			vex3fv_t;
-	typedef typename vertex_param_t::vex4fv_t			vex4fv_t;
-	typedef typename vertex_param_t::vex_array_t		vex_array_t;
-	// result
-	typedef typename vertex_param_t::vex_location_t	vex_location_t;
+	PFX_INLINE long_t	get_native_handle()
+	{
+		ref_element_t* ref_ptr = get_reference();
+		if (ref_ptr)
+		{
+			return ref_ptr->get_native_handle();
+		}
+		else
+		{
+			return 0;
+		}
+	}
 
-	// param
-	typedef typename uniform_param_t::uniform1i_t		uniform1i_t	;
-	typedef typename uniform_param_t::uniform2i_t		uniform2i_t	;
-	typedef typename uniform_param_t::uniform3i_t		uniform3i_t	;
-	typedef typename uniform_param_t::uniform4i_t		uniform4i_t	;
-	typedef typename uniform_param_t::uniform1f_t		uniform1f_t	;
-	typedef typename uniform_param_t::uniform2f_t		uniform2f_t	;
-	typedef typename uniform_param_t::uniform3f_t		uniform3f_t	;
-	typedef typename uniform_param_t::uniform4f_t		uniform4f_t	;
-	typedef typename uniform_param_t::uniform1iv_t	uniform1iv_t	;
-	typedef typename uniform_param_t::uniform2iv_t	uniform2iv_t	;
-	typedef typename uniform_param_t::uniform3iv_t	uniform3iv_t	;
-	typedef typename uniform_param_t::uniform4iv_t	uniform4iv_t	;
-	typedef typename uniform_param_t::uniform1fv_t	uniform1fv_t;
-	typedef typename uniform_param_t::uniform2fv_t	uniform2fv_t;
-	typedef typename uniform_param_t::uniform3fv_t	uniform3fv_t;
-	typedef typename uniform_param_t::uniform4fv_t	uniform4fv_t;
-	//result
-	typedef typename shader_program_t::unform_location_t	unform_location_t; 
+	PFX_INLINE u64_t get_version() const
+	{
+		return ref_element_t::get_version();
+	}
+	PFX_INLINE void	 release_reference()
+	{
+		ref_t::release_reference();
+	}
 
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex_array_t > set_vexarr_t;
-
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex1f_t >			set_vex1f_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex2f_t >			set_vex2f_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex3f_t >			set_vex3f_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex4f_t >			set_vex4f_t;
-
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex1fv_t >		set_vex1fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex2fv_t >		set_vex2fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex3fv_t >		set_vex3fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex4fv_t >		set_vex4fv_t;
-																																											   
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1i_t  >		set_ufm1i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2i_t  >		set_ufm2i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3i_t  >		set_ufm3i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4i_t  >		set_ufm4i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1f_t  >		set_ufm1f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2f_t  >		set_ufm2f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3f_t  >		set_ufm3f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4f_t  >		set_ufm4f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1iv_t >		set_ufm1iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2iv_t >		set_ufm2iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3iv_t >		set_ufm3iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4iv_t >		set_ufm4iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1fv_t >		set_ufm1fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2fv_t >		set_ufm2fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3fv_t >		set_ufm3fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4fv_t >		set_ufm4fv_t;
-
-
+protected:
+	PFX_INLINE ref_element_t* create_element()
+	{
+		return new ref_element_t;
+	}
+	PFX_INLINE result_t dispose_element(element_t*& elem_ptr)
+	{
+		if (elem_ptr)
+		{
+			delete elem_ptr;
+			elem_ptr = null;
+		}
+		return PFX_STATUS_OK;
+	}
 };
 
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 PECKER_END
 
-#endif			//PFX_SHADER_PROGRAM_H_
+#endif			//PFX_SHADER_PROGRAM_GLES_H_

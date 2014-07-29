@@ -125,67 +125,6 @@ PFX_Interface IPfx_texture
 	virtual Ipfx_texture_layer*		get_texture_layer (uindex_t mipLevel) = 0;
 };
 
-template < typename  texture_operates >
-struct PFX_TextureOperation_traits
-{
-	typedef typename texture_operates::render_device_t		render_device_t;
-	typedef typename texture_operates::texture_param_t		texture_param_t;
-	typedef typename texture_operates::texture_layer_t		texture_layer_t;
-	typedef typename texture_operates::update_mode_t		update_mode_t;
-	
-	static PFX_INLINE render_device_t&	get_render_device (texture_operates& texture_op)
-	{
-		return texture_operates::get_render_device (texture_op);
-	}
-	static PFX_INLINE result_t						active_texture_params (render_device_t& device, 
-		const texture_param_t* PARAM_INOUT texture_params, usize__t params_count)
-	{
-		return texture_operates::active_texture_params (device, texture_params, params_count);
-	}
-	static PFX_INLINE result_t						active_texture_unit (render_device_t& device, uindex_t unit_index)
-	{
-		return texture_operates::active_texture_unit (device, unit_index);
-	}
-};
-
-template < typename  texture_layer_type >
-struct PFX_TextureLayer_traits
-{
-	typedef typename texture_layer_type								texture_layer_t;
-	typedef typename texture_layer_t::texture_t					texture_t;		
-	typedef typename texture_layer_t::render_device_t		render_device_t;
-	typedef typename texture_layer_t::extern_params_t	extern_params_t;
-	typedef typename texture_operates::texture_bits_t		texture_bits_t;
-
-	static PFX_INLINE render_device_t& get_render_device (texture_layer_type& texture_layer)
-	{
-		return texture_operates::get_render_device (texture_layer);
-	}
-
-	static PFX_INLINE texture_t*				create_texture (render_device_t& render_device)
-	{
-		return texture_layer_t::create_texture (render_device);
-	}
-
-	static PFX_INLINE result_t					release_texture(texture_t* PARAM_INOUT texture_ptr)
-	{
-		return texture_layer_t::release_texture(texture_ptr);
-	}
-
-	static PFX_INLINE texture_layer_t* create_texture_layer (texture_t* PARAM_INOUT texture_ptr,
-		usize__t nMipLevel, 
-		const texture_bits_t* PARAM_IN texture_bits_, 
-		const extern_params_t* PARAM_IN  extern_params_)
-	{
-		return texture_layer_t::create_texture_layer (texture_ptr, nMipLevel, texture_bits_, extern_params_);
-	}
-
-	static PFX_INLINE result_t					release_texture_layer (texture_layer_t* PARAM_INOUT texture_ptr)
-	{
-		return texture_layer_t::release_texture_layer (texture_ptr);
-	}
-};
-
 
 PECKER_END
 

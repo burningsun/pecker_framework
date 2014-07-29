@@ -65,25 +65,25 @@ PFX_INLINE_CODE void print_bbst_node (const bst_node_t* PARAM_IN node_ptr, int _
 		switch (__type)
 		{
 		case BINARY_SEARCH_TREE_TYPE:
-			sprintf (strformat,
+			sprintf_s(strformat, sizeof(strformat),
 				"THIS(%%08X) <%%.%ds> L(%%08X) R(%%08X) P(%%08X)",
 				print_size);
 			break;
 		case AVL_BINARY_SEARCH_TREE_TYPE:
-			sprintf (strformat,
+			sprintf_s(strformat, sizeof(strformat),
 				"THIS(%%08X) <%%.%ds> L(%%08X) R(%%08X) P(%%08X) HEIGHT(%d) BALANCE(%d)",
 				print_size,
 				(ulong_t)node_ptr->get_height(),
 				AVL_BST_node_init< bst_node_t >::calculate_avl_balance_value(node_ptr));
 			break;
 		case RB_BINARY_SEARCH_TREE_TYPE:
-			sprintf (strformat,
+			sprintf_s(strformat, sizeof(strformat),
 				"THIS(%%08X) <%%.%ds> L(%%08X) R(%%08X) P(%%08X) COLOR(%s)",
 				print_size,
 				(((ulong_t)node_ptr->get_color())?"red":"black"));
 			break;
 		default:
-			sprintf (strformat,
+			sprintf_s(strformat, sizeof(strformat),
 				"THIS(%%08X) <%%.%ds> L(%%08X) R(%%08X) P(%%08X)",
 				print_size);
 			break;
@@ -206,8 +206,8 @@ void bst_find_node_stress_test_by_node (const __array_type& PARAM_IN __array,
 			continue;
 		}
 
-		__bst_type::node_t*				bst_node_ptr;
-		result_t										status;
+		//__bst_type::node_t*				bst_node_ptr;
+		result_t					status;
 		const __bst_type::node_t*	const_node_ptr;
 
 		status					= PFX_STATUS_OK;

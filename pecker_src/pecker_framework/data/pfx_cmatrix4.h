@@ -47,22 +47,22 @@ struct PFX_CMatrix4x4
 	typedef typename SquareMatrixX < dim_t, 4, optinal_type >					matrix4_t;
 	typedef typename SquareMatrixEX_unsafe < dim_t, 4, optinal_type >	matrix4x_t;
 
-	static PFX_INLINE vector4_t operator* (const vector4_t& __vec_a, const matrix4_t& __matrix_b)
-	{
-		return matrix4_t::mul (__vec_a, __matrix_b);
-	}
-	static PFX_INLINE vector4_t& operator*= (vector4_t& __vec_a, const matrix4_t& __matrix_b)
-	{
-		return matrix4_t::mul_replace (__vec_a, __matrix_b);
-	}
-	static PFX_INLINE matrix4_t& operator*= (matrix4_t& __matrix_a, const matrix4_t& __matrix_b)
-	{
-		return __matrix_a.mul_replace (__matrix_b);
-	}
-	static PFX_INLINE matrix4_t operator = (const matrix4_t& __matrix_a, const matrix4_t& __matrix_b)
-	{
-		return __matrix_a.mul (__matrix_b);
-	}
+	//static PFX_INLINE vector4_t operator* (const vector4_t& __vec_a, const matrix4_t& __matrix_b)
+	//{
+	//	return matrix4_t::mul (__vec_a, __matrix_b);
+	//}
+	//static PFX_INLINE vector4_t& operator*= (vector4_t& __vec_a, const matrix4_t& __matrix_b)
+	//{
+	//	return matrix4_t::mul_replace (__vec_a, __matrix_b);
+	//}
+	//static PFX_INLINE matrix4_t& operator*= (matrix4_t& __matrix_a, const matrix4_t& __matrix_b)
+	//{
+	//	return __matrix_a.mul_replace (__matrix_b);
+	//}
+	//static PFX_INLINE matrix4_t operator = (const matrix4_t& __matrix_a, const matrix4_t& __matrix_b)
+	//{
+	//	return __matrix_a.mul (__matrix_b);
+	//}
 
 	static PFX_INLINE matrix4_t scale (dim_t scale_size)
 	{
@@ -72,16 +72,6 @@ struct PFX_CMatrix4x4
 			(scale_size		,	ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT,
 			ZERO_FLOAT	,	scale_size		,	ZERO_FLOAT	,	ZERO_FLOAT,
 			ZERO_FLOAT	,	ZERO_FLOAT	,	scale_size		,	ZERO_FLOAT,
-			ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT	,	ONE_FLOAT);
-	}
-	static PFX_INLINE matrix4_t scale (const vector3_t& vec)
-	{
-		const dim_t ZERO_FLOAT	= 0;
-		const dim_t ONE_FLOAT		= 1;
-		return matrix4_t
-			(vec[0],				ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT,
-			ZERO_FLOAT	,	vec[1]				,	ZERO_FLOAT	,	ZERO_FLOAT,
-			ZERO_FLOAT	,	ZERO_FLOAT	,	vec[2]				,	ZERO_FLOAT,
 			ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT	,	ONE_FLOAT);
 	}
 	static PFX_INLINE matrix4_t scale (dim_t x, dim_t y, dim_t z)
@@ -189,15 +179,15 @@ struct PFX_CMatrix4x4
 	{
 		return matrix4_t();
 	}
-	static PFX_INLINE matrix4_t perspective_projection_matrix (dim_t width, dim_t hight, 
-		dim_t near_plane, dim_t far_plane, 
+	static PFX_INLINE matrix4_t perspective_projection_matrix (dim_t width, 
+		dim_t hight, dim_t near_plane, dim_t far_plane, 
 		boolean_t bOPENGL = PFX_BOOL_TRUE,
 		boolean_t bright_handle = PFX_BOOL_TRUE, 
 		boolean_t brotate = PFX_BOOL_FALSE)
 	{
 		return matrix4_t();
 	}
-	static PFX_INLINE matrix4_t perspective_projection_matrix (dim_t fovy,
+	static PFX_INLINE matrix4_t perspective_projection_matrix_fov (dim_t fovy,
 		dim_t aspect,dim_t near_plane,dim_t far_plane,		
 		boolean_t bOPENGL = PFX_BOOL_TRUE,
 		boolean_t bright_handle = PFX_BOOL_TRUE, 
@@ -214,7 +204,7 @@ struct PFX_CMatrix4x4
 	{
 		return matrix4_t();
 	}
-	static PFX_INLINE matrix4_t perspective_projection_matrix (dim_t fovy,
+	static PFX_INLINE matrix4_t perspective_projection_matrix_fov (dim_t fovy,
 		dim_t aspect,dim_t near_plane,
 		boolean_t bOPENGL = PFX_BOOL_TRUE,
 		boolean_t bright_handle = PFX_BOOL_TRUE, 

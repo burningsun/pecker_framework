@@ -27,18 +27,18 @@
 
 #ifdef PFX_CORE_EXPORT
 #define PFX_CORE_API			PFX_EXPORT_API
-#define PFX_TEMPALE_API	PFX_EXPORT_API
+#define PFX_TEMPLATE_API	PFX_EXPORT_API
 #else
 #define PFX_CORE_API			PFX_IMPORT_API
-#define PFX_TEMPALE_API
+#define PFX_TEMPLATE_API
 #endif
 
 #ifdef PFX_DATA_EXPORT
 #define PFX_DATA_API						PFX_EXPORT_API
-#define PFX_DATA_TEMPALE_API	PFX_EXPORT_API
+#define PFX_DATA_TEMPLATE_API	PFX_EXPORT_API
 #else
 #define PFX_DATA_API PFX_IMPORT_API
-#define PFX_DATA_TEMPALE_API
+#define PFX_DATA_TEMPLATE_API  
 #endif
 
 #ifdef PFX_NATIVE_EXPORT
@@ -50,15 +50,19 @@
 
 #ifdef PFX_RENDER_SYSTEM_EXPORT
 #define PFX_RENDER_SYSTEM_API PFX_EXPORT_API 
+#define PFX_RENDER_SYS_TEMPLATE_API PFX_EXPORT_API
 #else
 #define PFX_RENDER_SYSTEM_API PFX_IMPORT_API
+#define PFX_RENDER_SYS_TEMPLATE_API 
 #endif
 
 
 #ifdef PFX_RENDER_EXPORT
 #define PFX_RENDER_API PFX_EXPORT_API 
+#define PFX_RENDER_TEMPLATE_API PFX_EXPORT_API 
 #else
 #define PFX_RENDER_API PFX_IMPORT_API
+#define PFX_RENDER_TEMPLATE_API 
 #endif
 
 #ifdef _UNICODE
@@ -210,6 +214,8 @@ typedef unsigned long		ulong_t;
 typedef long							address_t;
 typedef long							result_t;
 typedef long							flag_t;
+typedef unsigned char		u8flag_t;
+typedef unsigned short		u16flag_t;
 typedef unsigned long		enum_t;
 typedef int								coord_t;
 typedef int								nsize__t;
@@ -523,6 +529,16 @@ typedef struct st_pfx_api_version
 	unsigned int version_code[4];
 }pfx_version_t;
 
+typedef union un_pfx_instance_version
+{
+	typedef struct st_ins_ver 
+	{
+		u16_t m_sub_version[4];
+	}ins_ver_t;
+	ins_ver_t	m_sub_ver;
+	u64_t		m_version;
+}instance_version_t;
+
 
 #define FIRST_BITINDEX_0(X,Y) (Y)
 #define FIRST_BITINDEX_1(X,Y) ((((X)>>1)>0)?(FIRST_BITINDEX_0((X)>>1,((Y)+1))):(Y))
@@ -614,7 +630,7 @@ struct PFX_DATA_API __type_id
 
 template < class this_type_t, 
 					class base_type_t = this_type_t >
-class PFX_DATA_TEMPALE_API cobject_id
+class PFX_DATA_TEMPLATE_API cobject_id
 {
 public:
 	typedef this_type_t										this_type_t;

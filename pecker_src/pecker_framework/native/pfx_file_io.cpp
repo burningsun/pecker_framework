@@ -12,6 +12,10 @@
 #include "../data/pfx_cstring_codes.h"
 #include "../data/pecker_value_compare.h"
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4996)
+#endif
 
 result_t pfx_check_file_exists (const char_t*  PARAM_IN pstr_path_name)
 {
@@ -21,7 +25,7 @@ result_t pfx_check_file_exists (const char_t*  PARAM_IN pstr_path_name)
 	{
 		return PFX_STATUS_INVALID_PARAMS;
 	}
-	status = access(pstr_path_name,0);
+	status = ::access(pstr_path_name,0);
 
 	switch(status)
 	{
@@ -47,7 +51,7 @@ result_t pfx_open_file (file_t* PARAM_INOUT	hfile,
 	{
 		return PFX_STATUS_INVALID_PARAMS;
 	}
-	hfile->m_hfile = fopen(pstr_path_name,pstr_mode);
+	hfile->m_hfile = ::fopen(pstr_path_name,pstr_mode);
 	if (null != hfile->m_hfile)
 	{
 		hfile->m_file_size = pfx_get_file_size(hfile);
@@ -255,19 +259,19 @@ result_t pecker_file::is_file_exists (const char_t* pstr_path,nsize__t path_leng
 flag_t pecker_file::get_file_rw_mode (const char_t* pstr_path,nsize__t path_length)
 {
 	flag_t rw_mode = 0;
-	if(0 == access(pstr_path,0))
+	if(0 == ::access(pstr_path,0))
 	{
 		rw_mode |= PF_FILE_EXISTS;
 	}
-	if(0 == access(pstr_path,2))
+	if(0 == ::access(pstr_path,2))
 	{
 		rw_mode |= PF_FILE_READ_ONLY;
 	}
-	if(0 == access(pstr_path,4))
+	if(0 == ::access(pstr_path,4))
 	{
 		rw_mode |= PF_FILE_WRITE_ONLY;
 	}
-	if(0 == access(pstr_path,6))
+	if(0 == ::access(pstr_path,6))
 	{
 		rw_mode |= PF_FILE_RW;
 	}
@@ -294,30 +298,30 @@ result_t pecker_file::open(const char_t* pstr_path,nsize__t path_length, flag_t 
 	int string_length = 1;
 	if(nOpenType & (PFO_OPEN_CREATE | PFO_OPEN_WRITE | PFO_OPEN_READ))
 	{
-		string_length = sprintf(str_open_type,"a+");
+		string_length = sprintf_s(str_open_type, sizeof(str_open_type), "a+");
 	}
 	else if(nOpenType & (PFO_OPEN_CREATE | PFO_OPEN_WRITE))
 	{
-		string_length = sprintf(str_open_type,"a");
+		string_length = sprintf_s(str_open_type, sizeof(str_open_type), "a");
 	}
 	else if(nOpenType & (PFO_OPEN_READ | PFO_OPEN_WRITE))
 	{
-		string_length = sprintf(str_open_type,"w+");
+		string_length = sprintf_s(str_open_type, sizeof(str_open_type), "w+");
 	}
 	else if(nOpenType & PFO_OPEN_WRITE)
 	{
-		string_length = sprintf(str_open_type,"w");
+		string_length = sprintf_s(str_open_type, sizeof(str_open_type), "w");
 		//string_length = 1;
 	}
 
 	if(nOpenType | PFO_OPEN_BINARY)
 	{
-		sprintf(str_open_type+string_length,"b");
+		sprintf_s(str_open_type + string_length, sizeof(str_open_type)-string_length, "b");
 	}
 
 	if(nOpenType | PFO_OPEN_TEXT)
 	{
-		sprintf(str_open_type+string_length,"t");
+		sprintf_s(str_open_type + string_length, sizeof(str_open_type)-string_length, "t");
 	}
 
 	result_t result_val;
@@ -401,5 +405,7 @@ sint_t pecker_file::fflush()
 
 PECKER_END
 
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 

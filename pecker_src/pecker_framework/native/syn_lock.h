@@ -17,6 +17,21 @@ public:
 	int unlock ();
 }critical_section_lock_t;
 
+typedef class PFX_NATIVE_API __critical_section_lock_ins
+{
+	
+public:
+	cs_t					m_cs;
+private:
+	critical_section_lock_t	m_lock;
+public:
+	__critical_section_lock_ins();
+	~__critical_section_lock_ins();
+	const cs_t* locked_cs() const;
+	int lock();
+	int unlock();
+}critical_section_lock_ins_t;
+
 PECKER_END
 
 #endif //SYN_LOCK_H_

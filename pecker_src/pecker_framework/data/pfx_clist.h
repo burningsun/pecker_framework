@@ -15,12 +15,17 @@ PECKER_BEGIN
 class clist_node
 {
 public:
-	typedef __elem								element_t;
+	typedef __elem					element_t;
 	typedef clist_node< element_t >	clist_node_t;
 private:
+	element_t		m_elem;
 	clist_node_t*	m_prev_ptr;
 	clist_node_t*	m_next_ptr;
-	element_t			m_elem;
+public:
+	static PFX_INLINE clist_node_t* convert_unsafe(element_t* elemnt_ptr)
+	{
+		return (clist_node_t*)(elemnt_ptr);
+	}
 public:
 	clist_node () : m_next_ptr (null), m_prev_ptr(null){;}
 	~clist_node()

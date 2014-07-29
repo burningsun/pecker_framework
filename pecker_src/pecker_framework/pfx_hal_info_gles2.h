@@ -1,7 +1,7 @@
 ﻿/*
- * pfx_hal_info.h
+ * pfx_hal_info_gles2.h
  *
- *  Created on: 2014-1-31
+ *  Created on: 2014-7-23
 *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
@@ -10,10 +10,9 @@
 
 #include "pfx_defines.h"
 
-extern "C" 
+extern "C"
 {
-	PFX_RENDER_SYSTEM_API const pfx_version_t& get_pecker_hal_version (); 
-	//PFX_RENDER_SYSTEM_API const instance_version_t& get_hal_instanse_ID();
+	const instance_version_t& get_hal_instanse_ID();
 }
 
 #endif			//PFX_HAL_INFO_H_

@@ -104,7 +104,7 @@ template<
 	class string_type2 = string_type1,
 	class elem_compare = pecker_value_compare < typename string_type1::element_t >,
 	const enum_int_t cmp_type = 0>  
-struct PFX_DATA_TEMPALE_API string_compare
+struct PFX_DATA_TEMPLATE_API string_compare
 {
 	typedef string_type1		stringa_t;
 	typedef string_type2		stringb_t;
@@ -151,7 +151,7 @@ struct PFX_DATA_TEMPALE_API string_compare
 #define pfx_memcmp memcmp
 
 template < class ascii_string_typeA, class ascii_string_typeB = ascii_string_typeA >
-struct PFX_DATA_TEMPALE_API ascii_string_compare
+struct PFX_DATA_TEMPLATE_API ascii_string_compare
 {
 	typedef ascii_string_typeA	stringa_t;
 	typedef ascii_string_typeB		stringb_t;

@@ -16,7 +16,7 @@ PECKER_BEGIN
 #define PFX_ARRAY_AUTO_STEP_SIZE (16)
 #define PFX_ARRAY_SIZE MAX_UNSIGNED_VALUE
 template < class element_ >
-PFX_Interface PFX_DATA_TEMPALE_API IPfx_array
+PFX_Interface PFX_DATA_TEMPLATE_API IPfx_array
 {
 	typedef typename	element_															element_t;
 	typedef typename	element_															item_type_t;
@@ -73,7 +73,7 @@ public:
 };
 
 template < class  __alloc >
-class PFX_DATA_TEMPALE_API carray : 
+class PFX_DATA_TEMPLATE_API carray : 
 	public IPfx_array < typename __alloc::element_t >
 {
 public:
@@ -263,6 +263,15 @@ public:
 		{
 			return PFX_STATUS_DENIED;
 		}
+	}
+
+	PFX_INLINE const cblock_t* get_block_ptr() const
+	{
+		return &m_block;
+	}
+	PFX_INLINE cblock_t* get_block_ptr() 
+	{
+		return &m_block;
 	}
 public:
 	void swap (carray_t& __other)
@@ -553,7 +562,7 @@ public:
 
 template < class  __alloc, 
 					class __alloc_block = pecker_simple_allocator < cblock< __alloc > > >
-class PFX_DATA_TEMPALE_API carray_mbs : 
+class PFX_DATA_TEMPLATE_API carray_mbs : 
 	public IPfx_array < typename __alloc::element_t >
 {
 public:
@@ -771,7 +780,7 @@ public:
 			return PFX_STATUS_OK;
 		}
 
-		usize__t __size;
+		//usize__t __size;
 		result_t status;
 		if (!allocate_step_size)
 		{
@@ -842,7 +851,7 @@ public:
 			return PFX_STATUS_FULL;
 		}
 
-		usize__t __size;
+		//usize__t __size;
 		result_t status;
 		usize__t	allocate_step_size = m_auto_size_step;
 
@@ -877,7 +886,7 @@ public:
 	virtual result_t						garbage_collection (usize__t new_size = 0)
 	{
 		result_t status;
-		usize__t __size;
+		//usize__t __size;
 
 		usize__t	allocate_step_size = m_auto_size_step;
 

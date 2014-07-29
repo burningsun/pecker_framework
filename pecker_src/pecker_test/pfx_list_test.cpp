@@ -25,7 +25,7 @@ result_t list_test ()
 {
 
 	clinked_list < int_list_allocator > * int_list_ptr;
-	int_list_allocator simple_allocator;
+	//int_list_allocator simple_allocator;
 	clinked_list < int_list_allocator > ::iterator_t iterator_traval;
 	clinked_list < int_list_allocator > int_list ;
 	clinked_list < int_list_allocator > ::iterator_t* iterator_traval_ptr;

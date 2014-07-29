@@ -11,10 +11,10 @@ template < class __listnode_allocator >
 class clinked_mem_pool
 {
 public:
-	typedef __listnode_allocator							allocator_t;
+	typedef __listnode_allocator				allocator_t;
 	typedef typename allocator_t::element_t		list_node_t;
 	typedef typename list_node_t::element_t		element_t;
-	typedef clinked_list < allocator_t >	list_t;
+	typedef clinked_list < allocator_t >		list_t;
 private:
 	cs_t	m_alloc_locked;
 	cs_t	m_active_locked;
@@ -112,6 +112,16 @@ public:
 		}
 	}
 
+	PFX_INLINE result_t clean_alloc_pool_list()
+	{
+		list_t deallocate_alloc_list;
+		critical_section_lock_t __lock;
+		__lock.lock(m_alloc_locked);
+		deallocate_alloc_list.swap(m_alloc_ls);
+		__lock.unlock();
+		return PFX_STATUS_OK;
+	}
+
 	PFX_INLINE result_t dispose()
 	{
 		list_t deallocate_alloc_list;
@@ -136,6 +146,123 @@ template < class __elem  >
 class linked_mem_pool : public clinked_mem_pool < pecker_simple_allocator< clist_node< __elem > > >
 {
 	;
+};
+
+
+
+#define DEFUALT_AUTO_RELEASE_POOL_TRIGER (32)
+
+
+template < class __listnode_allocator >
+class cmemery_pool
+{
+public:
+	typedef __listnode_allocator				allocator_t;
+	typedef typename allocator_t::element_t		list_node_t;
+	typedef typename list_node_t::element_t		element_t;
+	typedef clinked_list < allocator_t >		list_t;
+private:
+	cs_t		m_locker;
+	list_t		m_pool;
+	usize__t	m_release_triger;
+public:
+	cmemery_pool() :m_release_triger(DEFUALT_AUTO_RELEASE_POOL_TRIGER)
+	{
+		InitCriticalSection(&m_locker);
+	}
+	~cmemery_pool()
+	{
+		DelCriticalSection(&m_locker);
+	}
+public:
+	PFX_INLINE element_t* allocate()
+	{
+		if (m_pool.size())
+		{
+			critical_section_lock_t __lock;
+			__lock.lock(m_locker);
+			list_node_t* node_ptr = m_pool.pop_back();
+			return &(node_ptr->get_element());
+		}
+		else
+		{
+			list_node_t* node_ptr = list_t::new_node();
+			return &(node_ptr->get_element());
+		}
+	}
+	PFX_INLINE result_t dispose_node(list_node_t*& PARAM_INOUT node_ptr)
+	{
+		if (node_ptr)
+		{
+			return list_t::release_node(node_ptr);
+		}
+		else
+		{
+			return PFX_STATUS_OK;
+		}
+	}
+
+	PFX_INLINE result_t auto_release_pool(usize__t triger_count = 0)
+	{
+		if (triger_count > 0)
+		{
+			m_release_triger = triger_count;
+		}
+
+		critical_section_lock_t __lock;
+		__lock.lock(m_locker);
+		if (m_pool.size() > m_release_triger)
+		{
+			usize__t dispose_count = m_pool.size() - m_release_triger;
+			while (dispose_count)
+			{
+				list_node_t* node_ptr = m_pool.pop_back();
+				dispose_node(node_ptr);
+				--dispose_count;
+			}
+		}
+		return PFX_STATUS_OK;
+	}
+
+	PFX_INLINE result_t clean_pool()
+	{
+		list_t clean_pool;
+		critical_section_lock_t __lock;
+		__lock.lock(m_locker);
+		clean_pool.swap(m_pool);
+		return PFX_STATUS_OK;
+	}
+
+	PFX_INLINE result_t dellocate(element_t*& PARAM_INOUT del_ptr)
+	{
+		result_t status = PFX_STATUS_OK;
+		if (del_ptr)
+		{
+			list_node_t* del_node_ptr = list_node_t::convert_unsafe(del_ptr);
+
+			critical_section_lock_t __lock;
+			__lock.lock(m_locker);
+			del_node_ptr = m_pool.push_back(del_node_ptr);
+			if (!del_node_ptr)
+			{
+				status = PFX_STATUS_FAIL;
+			}
+			else
+			{
+				del_ptr = null;
+			}
+
+		}
+		auto_release_pool();
+		return status;
+	}
+
+public:
+	static cmemery_pool& get_reference_pool()
+	{
+		static 	cmemery_pool	pool;
+		return pool;
+	}
 };
 
 PECKER_END

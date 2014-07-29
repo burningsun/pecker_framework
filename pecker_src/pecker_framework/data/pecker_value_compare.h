@@ -154,7 +154,7 @@ PFX_INLINE int cmp_a_and_b_string_w_ex(const widechar_t* pstr_a,
 PECKER_BEGIN
 
 template< class  compare_type, typename compare_method >
-PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template(const compare_type* pstr_a,nsize__t nstr_a_len,
+PFX_DATA_TEMPLATE_API int  cmp_a_and_b_string_a_template(const compare_type* pstr_a,nsize__t nstr_a_len,
 	const compare_type* pstr_b,nsize__t nstr_b_len)
 {
 	nsize__t min_len = 0;
@@ -181,7 +181,7 @@ PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template(const compare_type* pstr
 }
 
 template< class  compare_type, typename compare_method >
-PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template_ex(const compare_type* pstr_a,nsize__t nstr_a_len,
+PFX_DATA_TEMPLATE_API int  cmp_a_and_b_string_a_template_ex(const compare_type* pstr_a,nsize__t nstr_a_len,
 	const compare_type* pstr_b,nsize__t nstr_b_len,nsize__t& same_count)
 {
 	nsize__t min_len = 0;
@@ -211,7 +211,7 @@ PFX_DATA_TEMPALE_API int  cmp_a_and_b_string_a_template_ex(const compare_type* p
 
 // 带compare方法的类的扩展比较
 template< class compare_value_ext >
-struct PFX_DATA_TEMPALE_API pecker_value_compare_extern
+struct PFX_DATA_TEMPLATE_API pecker_value_compare_extern
 {
 PFX_INLINE int operator() (const compare_value_ext& value1,const compare_value_ext& value2) const
 {
@@ -257,7 +257,7 @@ static PFX_INLINE int compare (const compare_value_ext* value1,const compare_val
 
 // 多种基本类型比较
 template< class classtype >
-struct PFX_DATA_TEMPALE_API pecker_value_compare
+struct PFX_DATA_TEMPLATE_API pecker_value_compare
 {
 PFX_INLINE int operator () (const classtype& value1,const classtype& value2) const;
 static PFX_INLINE int compare (const classtype& value1,const classtype& value2);
@@ -298,7 +298,7 @@ else
 }
 
 template<>
-struct PFX_DATA_TEMPALE_API pecker_value_compare<char>
+struct PFX_DATA_TEMPLATE_API pecker_value_compare<char>
 {
 //static int tst_char_cmp_count;
 PFX_INLINE int operator () (const char &value1,const char &value2) const
@@ -313,7 +313,7 @@ static PFX_INLINE int compare (const char &value1,const char &value2)
 };
 
 template<>
-struct PFX_DATA_TEMPALE_API pecker_value_compare<short>
+struct PFX_DATA_TEMPLATE_API pecker_value_compare<short>
 {
 PFX_INLINE int operator () (const short &value1,const short &value2) const
 {
@@ -327,7 +327,7 @@ static PFX_INLINE int compare (const short &value1,const short &value2)
 };
 
 template<>
-struct PFX_DATA_TEMPALE_API pecker_value_compare<int>
+struct PFX_DATA_TEMPLATE_API pecker_value_compare<int>
 {
 PFX_INLINE int operator () (const int &value1,const int &value2) const
 {

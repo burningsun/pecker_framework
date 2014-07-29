@@ -25,7 +25,7 @@ void string_cmp_test (const cstring < alloc_char_t >& str1, const cstring< alloc
 	usize__t same_count;
 	PECKER_LOG_ ("find_str1_t::same_string(str1, str2)\n");
 	find_res = find_str1_t::same_string(str1, str2);
-	sprintf (strformat,"str=%%.%ds, find=%%.%ds, res = %d",
+	sprintf_s(strformat, sizeof(strformat), "str=%%.%ds, find=%%.%ds, res = %d",
 		str1.get_length(),
 		str2.get_length(),
 		find_res);
@@ -36,7 +36,7 @@ void string_cmp_test (const cstring < alloc_char_t >& str1, const cstring< alloc
 
 	PECKER_LOG_ ("find_str1_t::same_string(str1, str2, same_count)\n");
 	find_res = find_str1_t::same_string(str1, str2, same_count);
-	sprintf (strformat,"str=%%.%ds, find=%%.%ds, res = %d, same_count = %d",
+	sprintf_s(strformat, sizeof(strformat), "str=%%.%ds, find=%%.%ds, res = %d, same_count = %d",
 		str1.get_length(),
 		str2.get_length(),
 		find_res,
@@ -51,7 +51,7 @@ void string_cmp_test (const cstring < alloc_char_t >& str1, const cstring< alloc
 
 	PECKER_LOG_ ("find_str1_t::find_first_string(str1, str2)\n");
 	index = find_str1_t::find_first_string(str1, str2);
-	sprintf (strformat,"str=%%.%ds, find=%%.%ds, index = %d",
+	sprintf_s(strformat, sizeof(strformat), "str=%%.%ds, find=%%.%ds, index = %d",
 		str1.get_length(),
 		str2.get_length(),
 		index);
@@ -62,7 +62,7 @@ void string_cmp_test (const cstring < alloc_char_t >& str1, const cstring< alloc
 
 	PECKER_LOG_ ("find_str1_t::find_near_string(str1, str2, same_count)\n");
 	index = find_str1_t::find_near_string(str1, str2, same_count);
-	sprintf (strformat,"str=%%.%ds, find=%%.%ds, index = %d, same_count = %d",
+	sprintf_s(strformat, sizeof(strformat), "str=%%.%ds, find=%%.%ds, index = %d, same_count = %d",
 		str1.get_length(),
 		str2.get_length(),
 		index,
@@ -234,79 +234,79 @@ result_t string_test ()
 	string_ptr3->append_string (string_ptr2);
 
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->garbage_collection ();
 
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->append_string (" 1234567890",strlen(" 1234567890"));
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->resize_string (20);
 
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->garbage_collection ();
 
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->append_string (" 1234567890123456789",strlen(" 1234567890123456789"));
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->resize_string (20);
 
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->garbage_collection ();
 
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->clip_string_remain_left (11,string_ptr2);
 
-	sprintf (strformat,"%%.%ds|%%.%ds",string_ptr3->get_length(),string_ptr2->get_length ());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds|%%.%ds", string_ptr3->get_length(), string_ptr2->get_length());
 	PECKER_LOG_DIRECT_A (strformat,string_ptr3->get_string (),string_ptr2->get_string ());
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->clip_string_remain_right (5,string_ptr1);
 
-	sprintf (strformat,"%%.%ds|%%.%ds",string_ptr3->get_length(),string_ptr1->get_length ());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds|%%.%ds", string_ptr3->get_length(), string_ptr1->get_length());
 	PECKER_LOG_DIRECT_A (strformat,string_ptr3->get_string (),string_ptr1->get_string ());
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->garbage_collection ();
 
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
 	string_ptr3->init_string ("hey!hey!1234567890qwertyuiop",strlen("hey!hey!1234567890qwertyuiop"));
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 
@@ -327,7 +327,7 @@ result_t string_test ()
 
 	string_ptr3->append_front ("987654321",strlen("987654321"));
 	str = string_ptr3->get_string ();
-	sprintf (strformat,"%%.%ds",string_ptr3->get_length());
+	sprintf_s(strformat, sizeof(strformat), "%%.%ds", string_ptr3->get_length());
 	PECKER_LOG_DIRECT_A (strformat,str);
 	PECKER_LOG_ ("\n");
 

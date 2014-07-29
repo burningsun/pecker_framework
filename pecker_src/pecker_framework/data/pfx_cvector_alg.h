@@ -48,7 +48,7 @@ PFX_INLINE u32_t FLOAT_PRECISION_QUALIFIER (PFX_FLOAT_PRECISION_QUALIFER_t PQ)
 
 
 template < class dim_value, const enum_int_t optional_type = 0 >
-struct PFX_DATA_TEMPALE_API vector_dim_op_alg
+struct PFX_DATA_TEMPLATE_API vector_dim_op_alg
 {
 	typedef dim_value			dim_t;
 	static PFX_INLINE boolean_t equals (dim_t X, dim_t Y, u32_t delta);
@@ -82,7 +82,7 @@ struct PFX_DATA_TEMPALE_API vector_dim_op_alg
 };
 
 template < class dim_value, const enum_int_t optional_type = 0 >
-struct PFX_DATA_TEMPALE_API vector_dim_op_traits
+struct PFX_DATA_TEMPLATE_API vector_dim_op_traits
 {
 	typedef typename vector_dim_op_alg < dim_value, optional_type > dim_alg_t;
 	typedef typename dim_alg_t::dim_t															dim_t;
@@ -91,7 +91,7 @@ struct PFX_DATA_TEMPALE_API vector_dim_op_traits
 
 
 template < class vector_type, const enum_int_t optional_type = 0 >
-struct PFX_DATA_TEMPALE_API vector_base_op_alg
+struct PFX_DATA_TEMPLATE_API vector_base_op_alg
 {
 	typedef typename vector_dim_op_traits < typename vector_type::dim_t, optional_type >::dim_alg_t		dim_alg_t;
 	typedef typename dim_alg_t::dim_t					dim_t;
@@ -205,7 +205,7 @@ struct PFX_DATA_TEMPALE_API vector_base_op_alg
 };
 
 template < class vector_type, const enum_int_t optional_type = 0 >
-struct PFX_DATA_TEMPALE_API vector_base_op_traits
+struct PFX_DATA_TEMPLATE_API vector_base_op_traits
 {
 
 	typedef typename vector_base_op_alg < vector_type, optional_type > vec_alg_t;
@@ -428,7 +428,7 @@ public:
 };
 
 template < class square_matrix_type, const enum_int_t optional_type = 0 >
-struct PFX_DATA_TEMPALE_API square_matrix_op_traits
+struct PFX_DATA_TEMPLATE_API square_matrix_op_traits
 {
 	typedef typename square_matrix_base_op_alg < square_matrix_type, optional_type > matrix_alg_t;
 	typedef typename matrix_alg_t::dim_alg_t													dim_alg_t;

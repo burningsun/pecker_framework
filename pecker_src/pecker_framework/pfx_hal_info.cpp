@@ -12,3 +12,4 @@ const pfx_version_t& get_pecker_hal_version ()
 {
 	return gVersion;
 }
+

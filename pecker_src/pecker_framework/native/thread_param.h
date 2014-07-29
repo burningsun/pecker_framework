@@ -8,10 +8,14 @@ typedef struct st_proxy_status
 {
 	volatile int		m_status;
 	void*				m_reverd_object_ptr;
-	cs_t					m_lock;
+	cs_t				m_lock;
 	st_proxy_status ():m_status(0), m_reverd_object_ptr(NULL)
 	{
 		InitCriticalSection(&m_lock);
+	}
+	~st_proxy_status()
+	{
+		DelCriticalSection(&m_lock);
 	}
 }proxy_status_t;
 

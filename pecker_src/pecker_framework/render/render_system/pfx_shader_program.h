@@ -9,6 +9,9 @@
 #define		PFX_SHADER_PROGRAM_H_
 
 #include "../../include/config"
+#include "../../include/cshare_object"
+#include "../../Include/cstring"
+#include "../pfx_render_allocator.h"
 
 PECKER_BEGIN
 
@@ -24,6 +27,11 @@ typedef enum enumSHADER_PARAM_TYPE
 	PFXSPT_INT2,
 	PFXSPT_INT3,
 	PFXSPT_INT4,
+
+	PFXSPT_BOOL1,
+	PFXSPT_BOOL2,
+	PFXSPT_BOOL3,
+	PFXSPT_BOOL4,
 
 	PFXSPT_MATRIX_2X2,
 	PFXSPT_MATRIX_2X3,
@@ -50,7 +58,8 @@ typedef enum enumSHADER_PARAM_TYPE
 
 typedef enum enumSHADER_TYPE
 {
-	PFXST_VERTEXT_SHADER = 0,
+	PFXST_UNKOWN_SHADER = 0,
+	PFXST_VERTEXT_SHADER,
 	PFXST_PIXEL_SHADER,
 	PFXST_SHADER_TYPE_COUNT
 }PFX_SHADER_TYPE_t;
@@ -68,290 +77,94 @@ typedef enum enumPrimitiveMode
 	PFX_PRIMITIVE_MODE_COUNT
 }PFX_PRIMITIVE_MODE_t;
 
-typedef struct shader_pps //program param structure
+typedef enum enumShaderParamValueType
 {
-	enum_int_t	m_type;
-	void *				m_name;
-	usize__t			m_name_len;
+	PFX_CONST_VALUE = 0,
+	PFX_UNIFORM_VALUE,
+	PFX_VERTEX_VALUE,
+	PFX_SHADER_PARAM_VALUE_COUNT,
+}PFX_SHADER_PARAM_VALUE_t;
 
-	enum_int_t	m_var_type;
-	void*				m_variables;
-	
-	index_t			m_index;
-	bool_t				m_modify;
+typedef struct  st_shader_param
+{
+	enum_int_t		m_type; // PFX_SHADER_PARAM_VALUE_t
+	enum_int_t		m_value_type; 
+	long_t			m_location;
+	cstring_ascii_t	m_name;
+}shader_param_t;
 
-	shader_pps () : m_name(null), m_name_len(0),
-		m_variables(null), m_var_type(0), m_index (INVALID_VALUE),
-		m_modify (PFX_BOOL_FALSE)
+typedef struct  st_compare_shader_param
+{
+	PFX_INLINE int operator () (const shader_param_t& value1,
+	const shader_param_t& value2) const
 	{
-		;
+		return cascii_string_compare_t::compare(value1.m_name, value2.m_name);
 	}
-}shader_pps_t;
+	static PFX_INLINE int compare(const shader_param_t& value1,
+		const shader_param_t& value2)
+	{
+		return cascii_string_compare_t::compare(value1.m_name, value2.m_name);
+	}
+}compare_shader_param_t;
 
-
-// shader 处理器
-PFX_Interface Ipfx_shader
+typedef struct  st_compare_shader_param_by_name
 {
-	virtual long_t			compile_shader (const char_t* PARAM_IN str_shader_codes, 
-																		usize__t buf_size, 
-																		const void* PARAM_IN param_ptr = null) = 0;
-	virtual result_t			reloacation (long_t __locate) = 0;
-	virtual long_t			get_shader_location () = 0;
-	virtual enum_int_t	get_type () const = 0; //PFX_SHADER_TYPE_t
-	virtual const shader_pps_t* query_shader_info (usize__t& __pps_count) const = 0;
+	PFX_INLINE int operator () (const shader_param_t& value1,
+	const cstring_ascii_t& value2) const
+	{
+		return cascii_string_compare_t::compare(value1.m_name, value2);
+	}
+	static PFX_INLINE int compare(const shader_param_t& value1,
+		const cstring_ascii_t& value2)
+	{
+		return cascii_string_compare_t::compare(value1.m_name, value2);
+	}
+}compare_shader_param_ex_t;
+
+
+PFX_Interface  PFX_RENDER_SYSTEM_API Ipfx_shader
+{
+	virtual ~Ipfx_shader(){ ; }
+	virtual long_t	compile_shader(const char_t* PARAM_IN str_shader_codes,
+		usize__t buf_size,
+		result_t& status,
+		usize__t source_count = 1,
+		const void* PARAM_IN param_ptr = null)	= 0;
+	virtual long_t		get_native_handle() = 0;
+	virtual enum_int_t	get_type() const = 0;
+	virtual u64_t		get_version() const = 0;
+	virtual void		release_reference() = 0;
 };
 
 PFX_Interface Ipfx_shader_program
 {
-	virtual ~Ipfx_shader_program(){;}
+	typedef cavl_bst_node < shader_param_t >					shader_param_node_t;
+	typedef compare_two_node< shader_param_node_t,
+		shader_param_node_t, compare_shader_param_t >			node_cmp_t;
+	typedef pfx_binary_search_tree_type < shader_param_node_t,
+		node_cmp_t, shader_param_node_allocator_t >
+		::avl_binary_search_tree_t								tree_t;
+	typedef BST_find_elementx< tree_t,
+		cstring_ascii_t, compare_shader_param_ex_t >			find_t;
 
-	virtual result_t init () = 0;
-	virtual result_t close () = 0;
+	virtual ~Ipfx_shader_program(){ ; }
 
-	// shader 处理程序
-	virtual result_t link_shader (Ipfx_shader* PARAM_INOUT shader_ptr) = 0;
-	virtual result_t link_shader_object () = 0;
-	virtual result_t clean_shader_object () = 0;
-	//virtual result_t begin_program () = 0;
-	//virtual result_t end_program () = 0;
-	virtual	long_t		program_id () const = 0;
-
-	virtual result_t draw_array (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
-														uindex_t fist_vertex_index,
-														usize__t primitive_count) = 0;
-
-	virtual result_t draw_element (enum_int_t mode_, //PFX_PRIMITIVE_MODE_t
-														usize__t indices) = 0; //PFX_CONST_GRAM_ELEMENT_INDICES_PARAMS_t
-
-	virtual result_t	enable_vertex_array_attribute	(long_t tagVertex) = 0;
-	virtual result_t	disable_vertex_array_attribute	(long_t tagVertex) = 0;
-
-	virtual result_t	set_vertex_array			(const shader_pps_t& PARAM_IN __param) = 0;
-
-	virtual result_t	set_vertex_attribute	(const shader_pps_t& PARAM_IN __param) = 0;
-	virtual result_t	get_attri_location		(shader_pps_t& PARAM_INOUT __result) const = 0;
-
-	virtual result_t	set_uniform (const shader_pps& PARAM_IN __param) const = 0;
-	virtual result_t	get_uniform_location (shader_pps_t& PARAM_INOUT __result) const = 0;
-
-	virtual result_t query_program	(shader_pps_t& PARAM_INOUT __result) const = 0;
-	virtual result_t query_uniform		(shader_pps_t& PARAM_INOUT __result) const = 0;
-	virtual result_t query_vertex			(shader_pps_t& PARAM_INOUT __result) const = 0;
-};
-
-template < class shader_type >
-struct PFX_Shader_traits
-{
-	typedef typename shader_type				shader_t;
-	
-	typedef typename shader_t::string_t		string_t;
-	typedef typename shader_t::handle_t	handle_t;
-	typedef typename shader_t::param_t	param_t;	
-
-	typedef typename shader_t::render_device_t render_device_t;
-
-	static PFX_INLINE shader_t	create_shader (render_device_t&  render_device)
-	{
-		return shader_t::create_shader (render_device);
-	}
-	static PFX_INLINE result_t		delete_shader (shader_t&  __shader)
-	{
-		return shader_t::delete_shader (__shader);
-	}
-	static PFX_INLINE shader_t& compile_shader (shader_t& __shader, string_t __shader_code, 
-																						const param_t* PARAM_IN param_ptr = null)
-	{
-		__shader.compile_shader (__shader_code, param_ptr);
-		return __shader;
-	}
-};
-
-template < class shader_program_type, class param_type >
-struct PFX_ShaderProgram_set_operate_traits
-{
-	typedef typename shader_program_type					shader_program_t;
-	typedef typename param_type									param_t;
-	typedef typename shader_program_t::name_t		name_t;
-	typedef typename shader_program_t::location_t	location_t;
-	static PFX_INLINE result_t set_variables (shader_program_t& __program, 
-		location_t __loc, const param_t& __param)
-	{
-		return __program.set_variables (__loc, __param);
-	}
-	static PFX_INLINE location_t set_variables (shader_program_t& __program, 
-		const name_t& param_name, const param_t& __param)
-	{
-		return __program.set_variables (param_name, __param);
-	}
-};
-
-template < class shader_program_type >
-struct PFX_ShaderProgram_get_operate_traits
-{
-	typedef typename shader_program_type					shader_program_t;
-	typedef typename shader_program_t::name_t		name_t;
-	typedef typename shader_program_t::location_t	location_t;
-	static PFX_INLINE location_t get_variables_location (shader_program_t& __program, 
-																									const name_t& __name)
-	{
-		return __program.get_variables_location (__loc, __name);
-	}
-	static PFX_INLINE result_t bind_variables_location (shader_program_t& __program, 
-		const name_t& __name, location_t __loc)
-	{
-		return __program.bind_variables_location (__name, __loc);
-	}
-};
+	virtual result_t	compile_program() = 0;
+	virtual long_t		get_location_by_name
+		(const cstring_ascii_t& PARAM_IN
+		str_shader_param_name) const = 0;
+	virtual result_t	attach_shader(Ipfx_shader* PARAM_IN shader_ptr) = 0;
 
 
-template < class shader_program_type >
-struct PFX_ShaderVertex_params_traits
-{
-	typedef typename shader_program_type							shader_program_t;
-
-	// param
-	typedef typename shader_program_t::vex1f_t				vex1f_t;
-	typedef typename shader_program_t::vex2f_t				vex2f_t;
-	typedef typename shader_program_t::vex3f_t				vex3f_t;
-	typedef typename shader_program_t::vex4f_t				vex4f_t;
-
-	typedef typename shader_program_t::vex1fv_t				vex1fv_t;
-	typedef typename shader_program_t::vex2fv_t				vex2fv_t;
-	typedef typename shader_program_t::vex3fv_t				vex3fv_t;
-	typedef typename shader_program_t::vex4fv_t				vex4fv_t;
-
-	typedef typename shader_program_t::vex_array_t		vex_array_t;
-	// result
-	typedef typename shader_program_t::vex_location_t	vex_location_t;
-};
-
-template < class shader_program_type >
-struct PFX_ShaderUniform_params_traits
-{
-	typedef typename shader_program_type									shader_program_t;
-
-	// param
-	typedef typename shader_program_t::uniform1i_t				uniform1i_t	;
-	typedef typename shader_program_t::uniform2i_t				uniform2i_t	;
-	typedef typename shader_program_t::uniform3i_t				uniform3i_t	;
-	typedef typename shader_program_t::uniform4i_t				uniform4i_t	;
-	
-	typedef typename shader_program_t::uniform1f_t				uniform1f_t	;
-	typedef typename shader_program_t::uniform2f_t				uniform2f_t	;
-	typedef typename shader_program_t::uniform3f_t				uniform3f_t	;
-	typedef typename shader_program_t::uniform4f_t				uniform4f_t	;
-
-	typedef typename shader_program_t::mat2f_t						mat2f_t	;
-	typedef typename shader_program_t::mat3f_t						mat3f_t	;
-	typedef typename shader_program_t::mat4f_t						mat4f_t	;
-
-	typedef typename shader_program_t::uniform1iv_t				uniform1iv_t	;
-	typedef typename shader_program_t::uniform2iv_t				uniform2iv_t	;
-	typedef typename shader_program_t::uniform3iv_t				uniform3iv_t	;
-	typedef typename shader_program_t::uniform4iv_t				uniform4iv_t	;
-
-	typedef typename shader_program_t::uniform1fv_t				uniform1fv_t	;
-	typedef typename shader_program_t::uniform2fv_t				uniform2fv_t	;
-	typedef typename shader_program_t::uniform3fv_t				uniform3fv_t	;
-	typedef typename shader_program_t::uniform4fv_t				uniform4fv_t	;
-
-	typedef typename shader_program_t::mat2fv_t						mat2fv_t	;
-	typedef typename shader_program_t::mat3fv_t						mat3fv_t	;
-	typedef typename shader_program_t::mat4fv_t						mat4fv_t	;
-
-	//result
-	typedef typename shader_program_t::unform_location_t	unform_location_t; 
+	virtual  const tree_t* get_shader_param_table() const = 0;
+	virtual long_t		get_native_handle() = 0;
+	virtual u64_t		get_version() const = 0;
+	virtual void		release_reference() = 0;
 
 };
-template < class shader_program_type >
-struct PFX_ShaderProgram_traits
-{
-	typedef typename shader_program_type									shader_program_t;
-	typedef typename shader_program_t::render_device_t		render_device_t;
-
-	// return old shader program
-	static PFX_INLINE shader_program_t&	use_shader_program (render_device_t&  render_device, 
-		shader_program_t& __program)
-	{
-		return render_device.use_shader_program (__program);
-	}
-	static PFX_INLINE shader_program_t	create_shader_program (render_device_t&  render_device)
-	{
-		return shader_program_t::create_shader_program (render_device);
-	}
-	static PFX_INLINE result_t		delete_shader_program (shader_program_t&  __shader_program)
-	{
-		return shader_program_t::delete_shader (__shader_program);
-	}
 
 
-	typedef typename PFX_ShaderVertex_params_traits< shader_program_t >					vertex_param_t;
-	typedef typename PFX_ShaderUniform_params_traits< shader_program_t >				uniform_param_t;
-	typedef typename PFX_ShaderProgram_get_operate_traits< shader_program_t >	loction_gets_t;
-	// param
-	typedef typename vertex_param_t::vex1f_t				vex1f_t;
-	typedef typename vertex_param_t::vex2f_t				vex2f_t;
-	typedef typename vertex_param_t::vex3f_t				vex3f_t;
-	typedef typename vertex_param_t::vex4f_t				vex4f_t;
-	typedef typename vertex_param_t::vex1fv_t			vex1fv_t;
-	typedef typename vertex_param_t::vex2fv_t			vex2fv_t;
-	typedef typename vertex_param_t::vex3fv_t			vex3fv_t;
-	typedef typename vertex_param_t::vex4fv_t			vex4fv_t;
-	typedef typename vertex_param_t::vex_array_t		vex_array_t;
-	// result
-	typedef typename vertex_param_t::vex_location_t	vex_location_t;
 
-	// param
-	typedef typename uniform_param_t::uniform1i_t		uniform1i_t	;
-	typedef typename uniform_param_t::uniform2i_t		uniform2i_t	;
-	typedef typename uniform_param_t::uniform3i_t		uniform3i_t	;
-	typedef typename uniform_param_t::uniform4i_t		uniform4i_t	;
-	typedef typename uniform_param_t::uniform1f_t		uniform1f_t	;
-	typedef typename uniform_param_t::uniform2f_t		uniform2f_t	;
-	typedef typename uniform_param_t::uniform3f_t		uniform3f_t	;
-	typedef typename uniform_param_t::uniform4f_t		uniform4f_t	;
-	typedef typename uniform_param_t::uniform1iv_t	uniform1iv_t	;
-	typedef typename uniform_param_t::uniform2iv_t	uniform2iv_t	;
-	typedef typename uniform_param_t::uniform3iv_t	uniform3iv_t	;
-	typedef typename uniform_param_t::uniform4iv_t	uniform4iv_t	;
-	typedef typename uniform_param_t::uniform1fv_t	uniform1fv_t;
-	typedef typename uniform_param_t::uniform2fv_t	uniform2fv_t;
-	typedef typename uniform_param_t::uniform3fv_t	uniform3fv_t;
-	typedef typename uniform_param_t::uniform4fv_t	uniform4fv_t;
-	//result
-	typedef typename shader_program_t::unform_location_t	unform_location_t; 
-
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex_array_t > set_vexarr_t;
-
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex1f_t >			set_vex1f_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex2f_t >			set_vex2f_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex3f_t >			set_vex3f_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex4f_t >			set_vex4f_t;
-
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex1fv_t >		set_vex1fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex2fv_t >		set_vex2fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex3fv_t >		set_vex3fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, vex4fv_t >		set_vex4fv_t;
-																																											   
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1i_t  >		set_ufm1i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2i_t  >		set_ufm2i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3i_t  >		set_ufm3i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4i_t  >		set_ufm4i_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1f_t  >		set_ufm1f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2f_t  >		set_ufm2f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3f_t  >		set_ufm3f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4f_t  >		set_ufm4f_t  ;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1iv_t >		set_ufm1iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2iv_t >		set_ufm2iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3iv_t >		set_ufm3iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4iv_t >		set_ufm4iv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform1fv_t >		set_ufm1fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform2fv_t >		set_ufm2fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform3fv_t >		set_ufm3fv_t;
-	typedef typename PFX_ShaderProgram_set_operate_traits< shader_program_t, uniform4fv_t >		set_ufm4fv_t;
-
-
-};
 
 
 PECKER_END

@@ -57,11 +57,47 @@
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.h">
       <Filter>render\render_system\opengles</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_hal_info_gles2.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_render_state_gles.h">
+      <Filter>render\render_system\opengles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_buffer_object_gles.h">
+      <Filter>render\render_system\opengles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_texture_gles.h">
+      <Filter>render\render_system\opengles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_on_context_view.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_display_context_gles.h">
+      <Filter>render\render_system\opengles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_hal_info.cpp">
       <Filter>configs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\pfx_hal_info_gles2.cpp">
+      <Filter>configs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.cpp">
+      <Filter>render\render_system\opengles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_render_state_gles.cpp">
+      <Filter>render\render_system\opengles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_buffer_object_gles.cpp">
+      <Filter>render\render_system\opengles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_texture_gles.cpp">
+      <Filter>render\render_system\opengles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_display_context_gles.cpp">
+      <Filter>render\render_system\opengles</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

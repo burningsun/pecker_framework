@@ -155,7 +155,7 @@ char* st_net_system::get_local_udpip_info (ip_addr_info_t& __ipinfo,
 		}
 		++loacal_ip_count;
 	}
-	if (select_num >= loacal_ip_count)
+	if (select_num >= (unsigned int)loacal_ip_count)
 	{
 		select_local_addr_info = result_addr_info_ptr[0];
 	}

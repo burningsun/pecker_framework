@@ -44,7 +44,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;$(SolutionDir)depends_lib\OGLES2\Include\GLES2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;$(SolutionDir)depends_lib\OGLES2\Include\;$(SolutionDir)depends_lib\OGLES2\Include\GLES2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>PFX_RENDER_SYSTEM_EXPORT;PFX_DEBUG_MODE;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -73,11 +73,17 @@
     <ClInclude Include="..\pecker_framework\pfx_configs.h" />
     <ClInclude Include="..\pecker_framework\pfx_defines.h" />
     <ClInclude Include="..\pecker_framework\pfx_hal_info.h" />
+    <ClInclude Include="..\pecker_framework\pfx_hal_info_gles2.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_color.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_image.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_on_context_view.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_render_defs.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_buffer_object_gles.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_render_state_gles.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_texture_gles.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_display_context_gles.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_buffer_object.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_framebuffer_object.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_device.h" />
@@ -86,6 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\pecker_framework\pfx_hal_info.cpp" />
+    <ClCompile Include="..\pecker_framework\pfx_hal_info_gles2.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_buffer_object_gles.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_render_state_gles.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_texture_gles.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_display_context_gles.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

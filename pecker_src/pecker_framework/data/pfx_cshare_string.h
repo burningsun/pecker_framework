@@ -14,7 +14,7 @@
 PECKER_BEGIN
 
 template < class __alloc >
-class PFX_DATA_TEMPALE_API cshare_string : 
+class PFX_DATA_TEMPLATE_API cshare_string : 
 	public IPfx_string < typename __alloc::element_t >
 {
 public:

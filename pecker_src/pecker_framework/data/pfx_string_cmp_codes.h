@@ -27,7 +27,7 @@ PFX_INLINE int PFX_FCHR_OP::same_string (const PFX_FCHR_OP_TYPE::element_t* PARA
 	const PFX_FCHR_OP_TYPE::element_t* PARAM_IN str_cmp_string_ptr,
 	usize__t cmp_str_size)
 {
-	typename PFX_FCHR_OP_TYPE::elem_compare_t elem_compare_t;
+	typedef PFX_FCHR_OP_TYPE::elem_compare_t elem_compare_t;
 
 	if ((str_string_ptr == str_cmp_string_ptr && str_size == cmp_str_size) || 
 		(!str_string_ptr && !str_cmp_string_ptr))
@@ -59,7 +59,7 @@ PFX_INLINE int PFX_FCHR_OP::same_string (const PFX_FCHR_OP_TYPE::element_t* PARA
 	usize__t cmp_str_size,
 	usize__t& same_count)
 {
-	typename PFX_FCHR_OP_TYPE::elem_compare_t elem_compare_t;
+	typedef PFX_FCHR_OP_TYPE::elem_compare_t elem_compare_t;
 
 	if (str_string_ptr == str_cmp_string_ptr && str_size == cmp_str_size)
 	{

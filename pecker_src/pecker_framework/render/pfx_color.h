@@ -40,12 +40,13 @@ typedef enum enumCOLOR_FORMAT_TYPE
 	PFX_LUMINANCE_8_FMT,
 	PFX_LUMINANCE_ALPHA_88_FMT,
 
+	PFX_COMPRESS_COLOR_FMT,
 	PFX_UNKNOW_COLOR_FMT,
 	PFX_COLOR_FORMAT_COUNT
 }PFX_COLOR_FORMAT_TYPE_t;
 
 template < const enum_int_t color_format >
-struct PFX_DATA_TEMPALE_API color_internal_format
+struct PFX_RENDER_TEMPLATE_API color_internal_format
 {
 	static  PFX_INLINE enum_int_t get_internal_format ()
 	{
@@ -54,7 +55,7 @@ struct PFX_DATA_TEMPALE_API color_internal_format
 };
 #define COLOR_INTERNAL_FORMAT_TRAITS(FORMAT,INTERANL_FORMAT) \
 template <  >\
-struct PFX_DATA_TEMPALE_API color_internal_format < FORMAT >\
+struct  color_internal_format < FORMAT >\
 {\
 	static  PFX_INLINE enum_int_t get_internal_format ()\
 	{\
@@ -108,7 +109,7 @@ COLOR_INTERNAL_FORMAT_TRAITS(PFX_LUMINANCE_ALPHA_88_FMT, PFX_LUMINANCE_ALPHA_FMT
 
 typedef bitfield_t		bits_color_t;
 typedef u16_t			u16bits_color_t;
-typedef u8_t				u8bits_color_t;
+typedef u8_t			u8bits_color_t;
 
 struct float_RGBA_color
 {
@@ -200,10 +201,16 @@ struct LUMINANCE_ALPHA_88_color
 	u8_t m_alpha;
 };
 
+PFX_INLINE usize__t max_color_size()
+{
+	static const usize__t max_size = (sizeof (float_RGBA_color)+ 2 * sizeof(float_t));
+	return max_size;
+}
+
 // 通过 PFX_COLOR_FORMAT_TYPE_t 和
 //容器color_format_reference获取想要的颜色结构
 template < const enum_int_t color_format >
-struct PFX_DATA_TEMPALE_API color_value_reference
+struct PFX_RENDER_TEMPLATE_API color_value_reference
 {
 	// 通用情况下是PFX_UNKNOW_COLOR_FMT
 	typedef bits_color_t	color_value;
@@ -261,6 +268,12 @@ struct color_value_reference < PFX_LUMINANCE_ALPHA_88_FMT >
 	typedef LUMINANCE_ALPHA_88_color	color_value;
 };
 
+template <  >
+struct color_value_reference < PFX_COMPRESS_COLOR_FMT >
+{
+	typedef byte_t	color_value;
+};
+
 template< const enum_int_t  color_format >
 struct color_format_size
 {
@@ -272,7 +285,7 @@ struct color_format_size
 
 // 颜色类
 template < class color_value >
-struct PFX_DATA_TEMPALE_API color
+struct PFX_RENDER_TEMPLATE_API color
 {
 	typedef color_value value_type;
 	typedef typename color_reference_type < color_value >::value_type color_chanel_t; 
@@ -319,14 +332,14 @@ struct PFX_DATA_TEMPALE_API color
 };
 
 template < const enum_int_t color_format >
-struct PFX_DATA_TEMPALE_API color_reference
+struct PFX_RENDER_TEMPLATE_API color_reference
 {
 	typedef color < typename  color_value_reference< color_format >::color_value	 >	color_t;
 };
 
 
-
-
+typedef color_reference< PFX_RGBA8_FMT >::color_t		colori_t;
+typedef color_reference< PFX_RGBA_FLOAT_FMT >::color_t	colorf_t;
 
 
 
@@ -352,15 +365,15 @@ color PFX_COLOR_TEMPLATE_PARAMS :: color ()
 	set_color (0,0,0,0);
 	set_color (0);
 }
-template<>
-color < bits_color_t > :: color() : m_value(0)
-{;}
-template<>
-color < u16bits_color_t > :: color() : m_value(0)
-{;}
-template<>
-color < u8bits_color_t > :: color() : m_value(0)
-{;}
+//template<>
+//color < bits_color_t > :: color() : m_value(0)
+//{;}
+//template<>
+//color < u16bits_color_t > :: color() : m_value(0)
+//{;}
+//template<>
+//color < u8bits_color_t > :: color() : m_value(0)
+//{;}
 
 //////////////////////////////////////////////////////////////////////////
 //color (const color_chanel_t luminance,const color_chanel_t alpha)
@@ -370,17 +383,17 @@ color PFX_COLOR_TEMPLATE_PARAMS :: color(const color_chanel_t luminance,const co
 	set_color (0,0,0,alpha);
 	set_color (luminance);
 }
-template<>
-color < bits_color_t > :: color(const color_chanel_t luminance,const color_chanel_t alpha) : 
-m_value((((bits_color_t)luminance << 8)& 0xFF00)|(((bits_color_t)alpha)&0xFF))
-{;}
-template<>
-color < u16bits_color_t > :: color(const color_chanel_t luminance,const color_chanel_t alpha) : 
-m_value((((bits_color_t)luminance << 8) & 0xFF00)|((bits_color_t)alpha&0xFF))
-{;}
-template<>
-color < u8bits_color_t > :: color(const color_chanel_t luminance,const color_chanel_t alpha) : m_value(0)
-{;}
+//template<>
+//color < bits_color_t > :: color(const color_chanel_t luminance,const color_chanel_t alpha) : 
+//m_value((((bits_color_t)luminance << 8)& 0xFF00)|(((bits_color_t)alpha)&0xFF))
+//{;}
+//template<>
+//color < u16bits_color_t > :: color(const color_chanel_t luminance,const color_chanel_t alpha) : 
+//m_value((((bits_color_t)luminance << 8) & 0xFF00)|((bits_color_t)alpha&0xFF))
+//{;}
+//template<>
+//color < u8bits_color_t > :: color(const color_chanel_t luminance,const color_chanel_t alpha) : m_value(0)
+//{;}
 //
 //	color (const color_chanel_t red, const color_chanel_t green, 
 //	const color_chanel_t blue, const color_chanel_t alpha)
@@ -391,19 +404,19 @@ color PFX_COLOR_TEMPLATE_PARAMS :: color(const color_chanel_t red, const color_c
 	set_color (red,green,blue,alpha);
 	set_color (0);
 }
-template<>
-color < bits_color_t > :: color(const color_chanel_t red, const color_chanel_t green, const color_chanel_t blue, const color_chanel_t alpha): 
-m_value((((bits_color_t)red << 24) & 0xFF000000)|(((bits_color_t)green << 16) & 0xFF0000)|(((bits_color_t)blue << 8) & 0xFF00)|((bits_color_t)alpha &0xFF))
-{;}
-template<>
-	color < u16bits_color_t > :: color(const color_chanel_t red, const color_chanel_t green, 
-	const color_chanel_t blue, const color_chanel_t alpha) : 
-m_value((((bits_color_t)red << 12) & 0xF000)|(((bits_color_t)green << 8) & 0xF00)|(((bits_color_t)blue << 4) & 0xF0)|((bits_color_t)alpha &0xF))
-{;}
-template<>
-color < u8bits_color_t > :: color(const color_chanel_t red, const color_chanel_t green, 
-	const color_chanel_t blue, const color_chanel_t alpha) : m_value(0)
-{;}
+//template<>
+//color < bits_color_t > :: color(const color_chanel_t red, const color_chanel_t green, const color_chanel_t blue, const color_chanel_t alpha): 
+//m_value((((bits_color_t)red << 24) & 0xFF000000)|(((bits_color_t)green << 16) & 0xFF0000)|(((bits_color_t)blue << 8) & 0xFF00)|((bits_color_t)alpha &0xFF))
+//{;}
+//template<>
+//	color < u16bits_color_t > :: color(const color_chanel_t red, const color_chanel_t green, 
+//	const color_chanel_t blue, const color_chanel_t alpha) : 
+//m_value((((bits_color_t)red << 12) & 0xF000)|(((bits_color_t)green << 8) & 0xF00)|(((bits_color_t)blue << 4) & 0xF0)|((bits_color_t)alpha &0xF))
+//{;}
+//template<>
+//color < u8bits_color_t > :: color(const color_chanel_t red, const color_chanel_t green, 
+//	const color_chanel_t blue, const color_chanel_t alpha) : m_value(0)
+//{;}
 
 //////////////////////////////////////////////////////////////////////////
 //color (const  const color_chanel_t alpha);
@@ -413,17 +426,17 @@ color PFX_COLOR_TEMPLATE_PARAMS :: color (const color_chanel_t alpha)
 	set_color (0,0,0,alpha);
 	set_color (0);
 }
-template<>
-color < bits_color_t > :: color(const color_chanel_t alpha) : 
-m_value(((bits_color_t)alpha)&0xFF)
-{;}
-template<>
-color < u16bits_color_t > :: color(const color_chanel_t alpha) : 
-m_value(((bits_color_t)alpha >> 4)&0xF)
-{;}
-template<>
-color < u8bits_color_t > :: color (const color_chanel_t alpha) : m_value (0)
-{;}
+//template<>
+//color < bits_color_t > :: color(const color_chanel_t alpha) : 
+//m_value(((bits_color_t)alpha)&0xFF)
+//{;}
+//template<>
+//color < u16bits_color_t > :: color(const color_chanel_t alpha) : 
+//m_value(((bits_color_t)alpha >> 4)&0xF)
+//{;}
+//template<>
+//color < u8bits_color_t > :: color (const color_chanel_t alpha) : m_value (0)
+//{;}
 
 //////////////////////////////////////////////////////////////////////////
 PFX_COLOR_TEMPLATE_DEFINES

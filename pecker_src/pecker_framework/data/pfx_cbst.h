@@ -17,7 +17,7 @@ PECKER_BEGIN
 // 二叉树迭代器
 // 中序遍历
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API const_bst_inoreder_operate
+struct PFX_DATA_TEMPLATE_API const_bst_inoreder_operate
 {
 	typedef node_type_		node_t;
 	static const node_t* begin (const node_t* PARAM_IN root_ptr);
@@ -26,7 +26,7 @@ struct PFX_DATA_TEMPALE_API const_bst_inoreder_operate
 	static const node_t* decrease (const node_t* PARAM_IN root_ptr, const node_t* cur_node_ptr);
 };
 template < class friend_obj >
-class PFX_DATA_TEMPALE_API const_bst_inorder_iterator
+class PFX_DATA_TEMPLATE_API const_bst_inorder_iterator
 {
 public:
 	friend  friend_obj;
@@ -65,11 +65,26 @@ public:
 	}
 	PFX_INLINE iterator_t*		cur_ptr ()
 	{
-		return this;
+		if (m_cur_node_ptr)
+		{
+			return this;
+		}
+		else
+		{
+			return null;
+		}
+		
 	}
 	PFX_INLINE const iterator_t* cur_ptr () const
 	{
-		return this;
+		if (m_cur_node_ptr)
+		{
+			return this;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	PFX_INLINE iterator_t*		to_begin ()
 	{
@@ -127,7 +142,7 @@ public:
 };
 
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API const_bst_preorder_operate
+struct PFX_DATA_TEMPLATE_API const_bst_preorder_operate
 {
 	typedef node_type_ node_t;
 	typedef enum PFX_DATA_API enum_preorder_iterator_next_node_type
@@ -161,7 +176,7 @@ struct PFX_DATA_TEMPALE_API const_bst_preorder_operate
 };
 // 前序遍历
 template < class friend_obj >
-class PFX_DATA_TEMPALE_API const_bst_preorder_iterator
+class PFX_DATA_TEMPLATE_API const_bst_preorder_iterator
 {
 public:
 	friend  friend_obj;
@@ -190,11 +205,25 @@ public:
 	}
 	PFX_INLINE iterator_t*		cur_ptr ()
 	{
-		return this;
+		if (m_cur_node_ptr)
+		{
+			return this;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	PFX_INLINE const iterator_t* cur_ptr () const
 	{
-		return this;
+		if (m_cur_node_ptr)
+		{
+			return this;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	PFX_INLINE iterator_t*		to_begin ()
 	{
@@ -236,7 +265,7 @@ public:
 
 // 后序遍历
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API const_bst_posorder_operate
+struct PFX_DATA_TEMPLATE_API const_bst_posorder_operate
 {
 	typedef node_type_ node_t;
 
@@ -249,7 +278,7 @@ struct PFX_DATA_TEMPALE_API const_bst_posorder_operate
 																			const node_t* cur_node_ptr);
 };
 template < class friend_obj >
-class PFX_DATA_TEMPALE_API const_bst_posorder_iterator
+class PFX_DATA_TEMPLATE_API const_bst_posorder_iterator
 {
 public:
 	friend  friend_obj;
@@ -282,11 +311,25 @@ public:
 	}
 	PFX_INLINE iterator_t*		cur_ptr ()
 	{
-		return this;
+		if (m_cur_node_ptr)
+		{
+			return this;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	PFX_INLINE const iterator_t* cur_ptr () const
 	{
-		return this;
+		if (m_cur_node_ptr)
+		{
+			return this;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	PFX_INLINE iterator_t*		to_begin ()
 	{
@@ -354,7 +397,7 @@ public:
 // 二叉树基本操作
 // 最大最小值
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API BST_node_minmax
+struct PFX_DATA_TEMPLATE_API BST_node_minmax
 {
 	typedef node_type_ node_t;
 	typedef typename BST_node_minmax< node_t > minmax_t;
@@ -368,7 +411,7 @@ struct PFX_DATA_TEMPALE_API BST_node_minmax
 
 // 基本初始化
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API BST_node_init
+struct PFX_DATA_TEMPLATE_API BST_node_init
 {
 	typedef node_type_ node_t;
 	typedef typename BST_node_init< node_t > init_t;
@@ -399,7 +442,7 @@ typedef enum  enumAVLTREE_ROTATE_TYPE
 
 // AVL树基本初始化
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API AVL_BST_node_init
+struct PFX_DATA_TEMPLATE_API AVL_BST_node_init
 {
 	typedef node_type_ node_t;
 	typedef typename BST_node_init< node_t >			BST_init_t;
@@ -450,7 +493,7 @@ typedef enum  enumRB_COLOR
 
 //黑红树基本初始化
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API RB_BST_node_init
+struct PFX_DATA_TEMPLATE_API RB_BST_node_init
 {
 	typedef node_type_ node_t;
 	typedef typename BST_node_init< node_t >		BST_init_t;
@@ -492,7 +535,7 @@ struct PFX_DATA_TEMPALE_API RB_BST_node_init
 
 // 移除
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API BST_node_remove
+struct PFX_DATA_TEMPLATE_API BST_node_remove
 {
 	typedef node_type_ node_t;
 	typedef typename BST_node_minmax< node_t >	minmax_t;
@@ -520,7 +563,7 @@ struct PFX_DATA_TEMPALE_API BST_node_remove
 };
 // AVL移除节点
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API AVL_BST_node_remove
+struct PFX_DATA_TEMPLATE_API AVL_BST_node_remove
 {
 	typedef node_type_ node_t;
 	typedef typename BST_node_remove< node_t >			bst_remove_t;
@@ -533,7 +576,7 @@ struct PFX_DATA_TEMPALE_API AVL_BST_node_remove
 };
 // 黑红树移除节点
 template < class node_type_ >
-struct PFX_DATA_TEMPALE_API RB_BST_node_remove
+struct PFX_DATA_TEMPLATE_API RB_BST_node_remove
 {
 	typedef node_type_ node_t;
 	typedef typename BST_node_remove< node_t >		bst_remove_t;
@@ -547,7 +590,7 @@ struct PFX_DATA_TEMPALE_API RB_BST_node_remove
 
 // 通过节点查找结点
 template < class node_type_, class compare_two_node_ >
-struct PFX_DATA_TEMPALE_API BST_find_node
+struct PFX_DATA_TEMPLATE_API BST_find_node
 {
 	typedef node_type_						node_t;
 	typedef compare_two_node_		compare_two_node_t;
@@ -564,7 +607,7 @@ struct PFX_DATA_TEMPALE_API BST_find_node
 };
 // 通过节点查找迭代器
 template < class tree_type >
-struct PFX_DATA_TEMPALE_API BST_find_iterator
+struct PFX_DATA_TEMPLATE_API BST_find_iterator
 {
 	typedef tree_type																tree_t;
 	typedef typename	tree_type::node_t							node_t;
@@ -584,7 +627,7 @@ struct PFX_DATA_TEMPALE_API BST_find_iterator
 };
 // 通过关键元素查找迭代器
 template < class tree_type >
-struct PFX_DATA_TEMPALE_API BST_find_element
+struct PFX_DATA_TEMPLATE_API BST_find_element
 {
 	typedef tree_type																	tree_t;
 	typedef typename	tree_type::element_t							element_t;
@@ -607,9 +650,28 @@ struct PFX_DATA_TEMPALE_API BST_find_element
 																				int& PARAM_INOUT last_cmp_result);
 };
 
+// 通过关键元素查找迭代器
+template < class tree_type, class key_element, class key_cmp_node_t>
+struct PFX_DATA_TEMPLATE_API BST_find_elementx
+{
+	typedef tree_type							tree_t;
+	typedef typename	tree_type::node_t		node_t;
+	typedef key_cmp_node_t						compare_two_elemen_t;
+	typedef key_element							key_t;
+
+	typedef  typename const_bst_inorder_iterator< tree_t > const_iterator_t;
+
+	static PFX_INLINE const_iterator_t*	find_node(const key_t& PARAM_IN __key,
+		const_iterator_t& itr);
+
+	static PFX_INLINE const_iterator_t*	find_near_node(const key_t& PARAM_IN __key,
+		const_iterator_t& itr,
+		int& PARAM_INOUT last_cmp_result);
+};
+
 // 插入
 template < class node_type_, class compare_two_node_ >
-struct PFX_DATA_TEMPALE_API BST_insert_node
+struct PFX_DATA_TEMPLATE_API BST_insert_node
 {
 	typedef node_type_						node_t;
 	typedef compare_two_node_		compare_two_node_t;
@@ -628,7 +690,7 @@ struct PFX_DATA_TEMPALE_API BST_insert_node
 };
 // AVL 树插入节点
 template < class node_type_, class compare_two_node_ >
-struct PFX_DATA_TEMPALE_API AVL_BST_insert_node
+struct PFX_DATA_TEMPLATE_API AVL_BST_insert_node
 {
 	typedef node_type_						node_t;
 	typedef compare_two_node_		compare_two_node_t;
@@ -643,7 +705,7 @@ struct PFX_DATA_TEMPALE_API AVL_BST_insert_node
 };
 // 黑红树插入节点
 template < class node_type_, class compare_two_node_ >
-struct PFX_DATA_TEMPALE_API RB_BST_insert_node
+struct PFX_DATA_TEMPLATE_API RB_BST_insert_node
 {
 	typedef node_type_						node_t;
 	typedef compare_two_node_		compare_two_node_t;
@@ -659,7 +721,7 @@ struct PFX_DATA_TEMPALE_API RB_BST_insert_node
 
 // 创建和删除节点
 template < class node_alloc >
-struct PFX_DATA_TEMPALE_API BST_new_delete
+struct PFX_DATA_TEMPLATE_API BST_new_delete
 {
 	typedef node_alloc											allocate_t;
 	typedef typename allocate_t::element_t	node_t;
@@ -676,7 +738,7 @@ struct PFX_DATA_TEMPALE_API BST_new_delete
 };
 // 清除
 template < class node_alloc >
-struct PFX_DATA_TEMPALE_API BST_clean
+struct PFX_DATA_TEMPLATE_API BST_clean
 {
 	typedef node_alloc											allocate_t;
 	typedef typename allocate_t::element_t	node_t;
@@ -690,7 +752,7 @@ struct PFX_DATA_TEMPALE_API BST_clean
 };
 // 克隆
 template < class node_alloc, class node_init >
-struct PFX_DATA_TEMPALE_API XBST_clone
+struct PFX_DATA_TEMPLATE_API XBST_clone
 {
 	typedef node_alloc											allocate_t;
 	typedef typename allocate_t::element_t	node_t;
@@ -708,7 +770,7 @@ struct PFX_DATA_TEMPALE_API XBST_clone
 
 // 复制
 template < class node_alloc, class node_insert >
-struct PFX_DATA_TEMPALE_API XBST_copy
+struct PFX_DATA_TEMPLATE_API XBST_copy
 {
 	typedef node_alloc											allocate_t;
 	typedef typename allocate_t::element_t	node_t;
@@ -783,7 +845,7 @@ struct RB_BST_operate
 
 // 搜索二叉树
 template <	class BST_operate_type >
-class PFX_DATA_TEMPALE_API cbst
+class PFX_DATA_TEMPLATE_API cbst
 {
 public:
 	typedef BST_operate_type														operator_t;
@@ -881,6 +943,7 @@ public:
 	}
 
 public:
+	 
 	PFX_INLINE const_posorder_itr_t*	begin (const_posorder_itr_t& __itr) const
 	{
 		__itr.init(m_root_ptr);
@@ -902,6 +965,12 @@ public:
 	{
 		__itr.init(m_root_ptr);
 		return __itr.to_end();
+	}
+
+	PFX_INLINE const_iterator_t*		root(const_iterator_t& __itr) const
+	{
+		__itr.init(m_root_ptr, m_root_ptr);
+		return __itr.cur_ptr();
 	}
 
 	PFX_INLINE const_iterator_t*			begin (const_iterator_t& __itr) const
@@ -1023,7 +1092,7 @@ public:
 };
 
 template < class BST_operate_type >
-class PFX_DATA_TEMPALE_API cbst_set : public  cbst< BST_operate_type >
+class PFX_DATA_TEMPLATE_API cbst_set : public  cbst< BST_operate_type >
 {
 public:
 	typedef typename cbst< BST_operate_type >					base_bst_t;

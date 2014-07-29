@@ -302,7 +302,7 @@ template <>
 PFX_INLINE int vector_dim_op_alg < int > ::
 	sqrt (int val)
 {
-	return ::sqrt (PFX_INTX_2_FLOAT(val));
+	return (int)::sqrt (PFX_INTX_2_FLOAT(val));
 }
 
 //////////////////////////////////////////////////////////////////////////

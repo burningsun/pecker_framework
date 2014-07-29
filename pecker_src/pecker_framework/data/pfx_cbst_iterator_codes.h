@@ -540,7 +540,7 @@ const node_t* current_node_ptr)
 {
 	typedef PFX_CBST_POS_ITR_OP_TYPE::node_t				node_t;
 
-	result_t status_;
+	//result_t status_;
 	const node_t* tmp_parent_node_ptr;
 	const node_t* tmp_r_node_ptr;
 	const node_t* tmp_l_node_ptr;
@@ -592,7 +592,7 @@ PFX_CBST_ITR_OP_TEMPLATE_DEFINES
 {
 	typedef PFX_CBST_POS_ITR_OP_TYPE::node_t				node_t;
 
-	result_t status_;
+	//result_t status_;
 	const node_t* tmp_parent_node_ptr;
 	const node_t* tmp_l_node_ptr;
 	const node_t* tmp_r_node_ptr;

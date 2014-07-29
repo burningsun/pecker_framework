@@ -29,7 +29,7 @@ typedef enum enumGarbageCollectionMODE
 }GarbageCollectionMODE_t;
 
 template < class element_t >
-PFX_Interface PFX_DATA_TEMPALE_API IPfx_string
+PFX_Interface PFX_DATA_TEMPLATE_API IPfx_string
 {
 public:
 	typedef typename element_t							element_t;
@@ -102,7 +102,7 @@ public:
 
 template < class __alloc,  
 	const unsigned int CACHE_BUFFER_SIZE = DEFUALT_STRING_CACHE_BUFFER_SIZE >
-class PFX_DATA_TEMPALE_API cstring : 
+class PFX_DATA_TEMPLATE_API cstring : 
 	public IPfx_string <  typename __alloc::element_t >
 {
 public:

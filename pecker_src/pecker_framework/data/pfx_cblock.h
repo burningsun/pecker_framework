@@ -14,7 +14,7 @@ PECKER_BEGIN
 
 
 template < class __alloc >
-class PFX_DATA_TEMPALE_API cblock
+class PFX_DATA_TEMPLATE_API cblock
 {
 public:
 	typedef typename __alloc								allocator_t;

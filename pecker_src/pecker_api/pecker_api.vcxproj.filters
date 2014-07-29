@@ -29,6 +29,9 @@
     <ClCompile Include="..\pecker_framework\native\udp_socket.cpp">
       <Filter>native</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\pfx_image.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -232,6 +235,21 @@
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\native\pfx_disposeable.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_render_allocator.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_on_context_view.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_native_form.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_native_component.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\window_native_form.h">
       <Filter>native</Filter>
     </ClInclude>
   </ItemGroup>

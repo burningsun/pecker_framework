@@ -9,6 +9,7 @@
 #define		PFX_RENDER_DEFS_H_
 
 #include "../pfx_defines.h"
+#include "../include/util"
 PECKER_BEGIN
 
 typedef enum enumRENDER_SYSTEM_TYPE
@@ -42,6 +43,21 @@ typedef enum enumOPENGL_SUB_VERSION_TYPE
 	//
 	OPENGL_SUB_VERSION_COUNT
 }OPENGL_SUB_VERSION_TYPE_t;
+
+typedef struct buffer_bits
+{
+	byte_t*				m_bits_ptr;
+	usize__t			m_bytes_count;
+}buffer_bits_t;
+
+typedef struct  buffer_rect
+{
+	usize__t m_offset;
+	usize__t m_size;
+}buffer_rect_t;
+
+
+typedef rectangle_region< sint_t > viewport_rect_t;
 
 PECKER_END
 

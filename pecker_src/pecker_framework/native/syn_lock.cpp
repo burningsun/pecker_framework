@@ -45,5 +45,28 @@ const cs_t* __critical_section_lock::locked_cs () const
 	return m_cs_ptr;
 }
 
+
+__critical_section_lock_ins::__critical_section_lock_ins()
+{
+	InitCriticalSection(&m_cs);
+}
+__critical_section_lock_ins::~__critical_section_lock_ins()
+{
+	DelCriticalSection(&m_cs);
+}
+
+const cs_t* __critical_section_lock_ins::locked_cs() const
+{
+	return m_lock.locked_cs();
+}
+int __critical_section_lock_ins::lock()
+{
+	return m_lock.lock(m_cs);
+}
+int __critical_section_lock_ins::unlock()
+{
+	return m_lock.unlock();
+}
+
 PECKER_END
 
