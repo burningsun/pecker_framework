@@ -49,7 +49,9 @@ typedef struct stEGL_device
 class cdisplay_context_gles
 {
 public:
-	typedef IPfx_On_render_view < cnative_render_state_gles2 > cOn_render_view_t;
+	typedef IPfx_On_render_view < cnative_render_state_gles2 >	cOn_render_view_t;
+	typedef cnative_render_state_gles2							render_state_t;
+	typedef	window_contex_t										win_contex_t;
 protected:
 	typedef long_t(cdisplay_context_gles::*on_callback_t)(proxy_status_t* PARAM_INOUT status_ptr);
 	typedef thread_proxy< cdisplay_context_gles, on_callback_t > thread_proxy_t;

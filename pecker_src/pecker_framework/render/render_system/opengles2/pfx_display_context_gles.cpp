@@ -103,7 +103,7 @@ result_t cdisplay_context_gles::pfx_config_to_egl_config(EGLint egl_context_ID,
 		config_data |= EGL_PBUFFER_BIT;
 	}
 
-	if (__context.m_pixmal_bit)
+	if (__context.m_pixelmap_bit)
 	{
 		config_data |= EGL_PIXMAP_BIT;
 	}
@@ -454,7 +454,7 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	}
 
 	// 如果pixmap标志被设置，使用pixmaps的方式创建surface
-	if (__context.m_hpixelmap && __context.m_pixmal_bit)
+	if (__context.m_hpixelmap && __context.m_pixelmap_bit)
 	{
 		PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
 			"open device EGL, using pixmaps,about to create egl surface,%s", 
@@ -698,7 +698,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		}
 
 		// 加载渲染数据
-		esacape_tick = ticker.get_microsecond();
+		esacape_tick = (u64_t)ticker.get_microsecond();
 		m_on_render_view_ptr->on_load(*display_device_ptr,
 			render_state,
 			esacape_tick,
@@ -725,7 +725,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			}
 
 			// 渲染回调
-			esacape_tick = ticker.get_microsecond();
+			esacape_tick = (u64_t)ticker.get_microsecond();
 			m_on_render_view_ptr->on_view(*display_device_ptr,
 				render_state,
 				esacape_tick,
@@ -743,7 +743,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 
 			// 将渲染数据发送到显卡，交换窗口帧缓存
 			status = render_complete(m_egl_device,
-				!((bool)(__context.m_pixmal_bit)));
+				!((bool)(__context.m_pixelmap_bit)));
 
 			// 渲染结果回调，出错的时候给窗口通知
 			m_on_render_view_ptr->on_render_complete(*display_device_ptr,
@@ -769,6 +769,9 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			}
 
 		}
+
+		// 销毁渲染设备前回调窗口函数，通知窗口
+		m_on_render_view_ptr->on_closing_render_device(esacape_tick, *display_device_ptr, render_state);
 		//销毁渲染设备
 		status = destroy_egl_device(m_egl_device, m_egl_context_ID, m_on_render_view_ptr);
 		//

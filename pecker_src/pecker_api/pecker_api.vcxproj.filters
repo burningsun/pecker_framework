@@ -32,6 +32,9 @@
     <ClCompile Include="..\pecker_framework\render\pfx_image.cpp">
       <Filter>render</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\window_native_form.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -250,6 +253,9 @@
       <Filter>native</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\native\window_native_form.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_native_activity.h">
       <Filter>native</Filter>
     </ClInclude>
   </ItemGroup>

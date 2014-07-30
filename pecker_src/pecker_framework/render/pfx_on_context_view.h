@@ -68,7 +68,7 @@ typedef struct st_window_contex_info
 	unsigned		m_context_priority	: 3;
 	unsigned		m_conformat_bit		: 2;
 	unsigned		m_pbuffer_bit		: 1;
-	unsigned		m_pixmal_bit		: 1;
+	unsigned		m_pixelmap_bit		: 1;
 	unsigned		m_max_pbuffer_size	: 24;
 	unsigned		m_fsaamode_bit		: 1;
 	unsigned		m_sample_per_pixel	: 16;
@@ -92,7 +92,7 @@ typedef struct st_window_contex_info
 		m_context_priority(PFX_CONTEXT_DEFAULT_PREPRIORITY),
 		m_conformat_bit(0),
 		m_pbuffer_bit(1),
-		m_pixmal_bit(0),
+		m_pixelmap_bit(0),
 		m_max_pbuffer_size(0),
 		m_fsaamode_bit(0),
 		m_sample_per_pixel(4),
@@ -136,6 +136,12 @@ PFX_Interface IPfx_On_render_view
 		render_state& PARAM_INOUT __state, 
 		result_t status) = 0;
 
+	virtual void on_closing_render_device(
+		u64_t	__escape_time,
+		const display_device_t& PARAM_IN device,
+		render_state& PARAM_INOUT __state) = 0;
+
+
 	virtual void on_init(window_contex_t& PARAM_OUT win_context) = 0;
 
 	virtual void on_log(result_t status, const char_t* str_info_ptr,
@@ -147,9 +153,16 @@ PFX_Interface IPfx_On_render_view
 	virtual volatile bool is_on_hideview() const = 0;
 	virtual volatile bool is_on_resize() const = 0;
 	virtual volatile bool is_on_exit() const = 0;
+	virtual volatile bool is_hide_complate() const = 0;
+	virtual volatile bool is_exit_complate() const = 0;
 
 	virtual void on_hide_complate(bool enable) = 0;
 	virtual void on_exit_complate(bool enable) = 0;
+
+	virtual void set_hideview(bool bEnable) = 0;
+	virtual void set_resize(bool bEnable) = 0;
+	virtual void set_exit(bool bEnable) = 0;
+	virtual void set_window_context(const window_contex_t& PARAM_IN win_context) = 0;
 };
 
 

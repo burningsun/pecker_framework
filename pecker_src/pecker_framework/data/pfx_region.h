@@ -25,6 +25,8 @@ struct rectangle_region
 	m_x (x),m_y(y),m_width(w),m_height(h){;}
 };
 
+typedef rectangle_region< sint_t > viewport_rect_t;
+
 template < typename linear_pos_value >
 struct linear_region
 {

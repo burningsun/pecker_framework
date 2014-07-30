@@ -18,6 +18,7 @@
     <ClCompile Include="..\pecker_framework\native\socket_param.cpp" />
     <ClCompile Include="..\pecker_framework\native\syn_lock.cpp" />
     <ClCompile Include="..\pecker_framework\native\udp_socket.cpp" />
+    <ClCompile Include="..\pecker_framework\native\window_native_form.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_api_info.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_defines.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="..\pecker_framework\native\pfx_disposeable.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_file_io.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_log.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_native_activity.h" />
     <ClInclude Include="..\pecker_framework\native\window_native_form.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_native_component.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_native_form.h" />

@@ -57,7 +57,7 @@ typedef struct  buffer_rect
 }buffer_rect_t;
 
 
-typedef rectangle_region< sint_t > viewport_rect_t;
+
 
 PECKER_END
 
