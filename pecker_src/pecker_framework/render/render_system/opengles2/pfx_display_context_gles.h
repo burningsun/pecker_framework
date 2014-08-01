@@ -46,10 +46,10 @@ typedef struct stEGL_device
 	}
 }EGL_device_t;
 
-class cdisplay_context_gles
+class PFX_RENDER_SYSTEM_API cdisplay_context_gles
 {
 public:
-	typedef IPfx_On_render_view < cnative_render_state_gles2 >	cOn_render_view_t;
+	typedef cOn_render_view_base < cnative_render_state_gles2 >	cOn_render_view_t;
 	typedef cnative_render_state_gles2							render_state_t;
 	typedef	window_contex_t										win_contex_t;
 protected:
@@ -64,6 +64,8 @@ protected:
 	EGLint					m_egl_context_ID;
 	volatile result_t		m_last_status;
 	volatile bool			m_bshow_window;
+	volatile usize__t		m_limit_frame_time;
+	volatile usize__t		m_last_fp1ks;
 public:
 	typedef carray< configbuffer_allocator_t > configs_stack_t;
 	typedef pecker_simple_allocator< EGLConfig > egl_config_allocator_t;
@@ -113,6 +115,20 @@ public:
 	cdisplay_context_gles();
 	~cdisplay_context_gles();
 
+	PFX_INLINE volatile usize__t get_fp1ks() const
+	{
+		return	m_last_fp1ks;
+	}
+	PFX_INLINE result_t set_limit_fps(usize__t fps)
+	{
+		if (!fps)
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
+		m_limit_frame_time = 1000 / fps;
+		m_last_fp1ks = 1000000 / m_limit_frame_time;
+		return PFX_STATUS_OK;
+	}
 	result_t show_view(cOn_render_view_t* PARAM_INOUT on_view_callback_ptr);
 	result_t close_view();
 };

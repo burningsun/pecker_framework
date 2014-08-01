@@ -5,10 +5,12 @@
 //#include "pfx_native_component.h"
 
 #if (OS_CONFIG == OS_WINDOWS)
+
+#define CNative_form		class window_native_form
+#define CNative_form_ptr	CNative_form *
 #include "window_native_form.h"
 
 PECKER_BEGIN
-#define CNative_form		class window_native_form
 typedef class window_native_form  native_form_t;
 PECKER_END
 

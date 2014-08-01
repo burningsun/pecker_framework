@@ -21,6 +21,12 @@ public:
 	typedef Ithread_proxy					thread_proxy_interface_t;
 private:
 	thread_handle_t								m_thread_handle;
+	DWORD										m_threadID;
+public:
+	inline DWORD get_threadID() const
+	{
+		return m_threadID;
+	}
 protected:
 static	DWORD	WINAPI	__on_thread_callback(LPVOID  lpParamers)
 	{
@@ -32,7 +38,7 @@ static	DWORD	WINAPI	__on_thread_callback(LPVOID  lpParamers)
 		return PFX_STATUS_FAIL;
 	}
 public:
-	win_thread ():m_thread_handle(NULL)
+	win_thread() :m_thread_handle(NULL), m_threadID(0)
 	{
 		;
 	}
@@ -68,17 +74,18 @@ public:
 				__proxy,
 				0,
 				&(thread_attr_ptr->m_thread_id));
+			m_threadID = thread_attr_ptr->m_thread_id;
 		}
 		else
 		{
-			DWORD thread_id;
+			//DWORD thread_id;
 			m_thread_handle = 
 				::CreateThread(NULL,
 				0,
 				__on_thread_callback,
 				__proxy,
 				0,
-				&thread_id);
+				&m_threadID);
 		}
 		
 		if (!m_thread_handle)
@@ -96,6 +103,7 @@ public:
 			status = ::WaitForSingleObject(m_thread_handle,timeout);
 			::CloseHandle(m_thread_handle);
 			m_thread_handle = NULL;
+			m_threadID = 0;
 		}
 		return PFX_STATUS_OK;
 	}
@@ -108,6 +116,7 @@ public:
 			status = ::TerminateThread(m_thread_handle,  DWORD(-1));
 			::CloseHandle(m_thread_handle);
 			m_thread_handle = NULL;
+			m_threadID = 0;
 			return status;
 		}
 		return PFX_STATUS_OK;

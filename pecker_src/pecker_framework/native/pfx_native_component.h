@@ -67,11 +67,12 @@ typedef enum enumACTIVE_STATUS
 	PFX_ACTIVE_STATUS_COUNT
 }PFX_ACTIVE_STATUS_t;
 
+
 PFX_Interface PFX_NATIVE_API IActivity_component
 {
 	virtual ~IActivity_component(){ ; }
 	virtual void on_create (activity_init_state_t& PARAM_OUT init_state) = 0;
-	virtual void on_start(native_form_t* PARAM_INOUT active_form_ptr) = 0;
+	virtual void on_start(CNative_form_ptr PARAM_INOUT active_form_ptr) = 0;
 	virtual void on_restart ()	= 0;
 	virtual void on_resume()	= 0;
 	virtual void on_parse()		= 0;

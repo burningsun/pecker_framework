@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;$(SolutionDir)depends_lib\OGLES2\Include\;$(SolutionDir)depends_lib\OGLES2\Include\GLES2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,6 +92,8 @@
     <ClCompile Include="pfx_share_object_test.cpp" />
     <ClCompile Include="pfx_stress_test_bst.cpp" />
     <ClCompile Include="pfx_string_test.cpp" />
+    <ClCompile Include="pfx_gles2_displayview_test.cpp" />
+    <ClCompile Include="pfx_window_form_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pfx_file_inputdata_cmd.h" />

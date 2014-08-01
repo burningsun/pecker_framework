@@ -21,11 +21,12 @@ class PFX_NATIVE_TEMPLATE_API cnative_activity : public IActivity_component
 public:
 	//typedef typename display_context::cOn_render_view_t IOnRenderView_t;
 	typedef typename display_context::render_state_t	render_state_t;
-	typedef IPfx_On_render_view< render_state_t >		IOnRenderView_t;
+	typedef cOn_render_view_base< render_state_t >		IOnRenderView_t;
 protected:
 	native_form_t*		m_active_form_ptr;
 	IOnRenderView_t*	m_render_view_ptr;
 	display_context		m_display_context;
+	
 protected:
 	PFX_INLINE result_t set_render_view(IOnRenderView_t* render_view_ptr)
 	{
@@ -71,7 +72,7 @@ public:
 	virtual void on_create(activity_init_state_t& PARAM_OUT init_state)
 	{
 		init_state.m_fixed_window = true;
-		init_state.m_windows_rect = viewport_rect_t(0, 0, 800, 600);
+		init_state.m_windows_rect = viewport_rect_t(100, 100, 800, 600);
 	}
 	virtual void on_start(native_form_t* PARAM_INOUT active_form_ptr)
 	{
@@ -164,11 +165,11 @@ public:
 			uindex_t  time_out_count = 50;
 			while (time_out_count)
 			{	
-				if (m_render_view_ptr->is_exit_complate())
+				if (m_render_view_ptr->is_hide_complate())
 				{
 					break;
 				}
-				::SleepMS(100);
+				SleepMS(100);
 				--time_out_count;
 			}
 		}

@@ -8,11 +8,12 @@
 
 PECKER_BEGIN
 cdisplay_context_gles::cdisplay_context_gles() :m_last_status(PFX_STATUS_OK),
-m_on_render_view_ptr(null), m_bshow_window(false), m_egl_context_ID(0)
+m_on_render_view_ptr(null), m_bshow_window(false), m_egl_context_ID(0), m_limit_frame_time(17)
 {
 	m_thread_proxy.m_object_ptr		= this;
 	m_thread_proxy.m_proxy_status	= &m_proxy_status;
 	m_thread_proxy.m_callback		= &cdisplay_context_gles::render;
+	m_last_fp1ks = 1000000 / m_limit_frame_time;
 }
 
 cdisplay_context_gles::~cdisplay_context_gles()
@@ -457,8 +458,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	if (__context.m_hpixelmap && __context.m_pixelmap_bit)
 	{
 		PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
-			"open device EGL, using pixmaps,about to create egl surface,%s", 
-			"... ...");
+			"open device EGL, using pixmaps,about to create egl surface", 
+			0);
 		__egl_device.m_EGLWindow = 
 			::eglCreatePixmapSurface(__egl_device.m_EGLDisplay, 
 			__egl_device.m_EGLConfig, 
@@ -475,8 +476,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 		//	&egl_visual_id);
 
 		PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
-			"open device EGL,using native window handle,about to create egl surface,%s",
-			"... ...");
+			"open device EGL,using native window handle,about to create egl surface",
+			0);
 		__egl_device.m_EGLWindow = ::eglCreateWindowSurface
 			(__egl_device.m_EGLDisplay, 
 			__egl_device.m_EGLConfig,
@@ -487,8 +488,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	if (EGL_NO_SURFACE == __egl_device.m_EGLWindow)
 	{
 		PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
-			"open device EGL,using null window handle value,about to create egl surface,%s", 
-			"... ...");
+			"open device EGL,using null window handle value,about to create egl surface", 
+			0);
 		__egl_device.m_EGLWindow = ::eglCreateWindowSurface
 			(__egl_device.m_EGLDisplay,
 			__egl_device.m_EGLConfig,
@@ -499,8 +500,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	if (EGL_NO_SURFACE == __egl_device.m_EGLWindow)
 	{
 		PECKER_LOG_ERR("cdisplay_context_gles::create_egl_device", 
-			"create window surface EGL,unable to create surface,%s", 
-			"... ...");
+			"create window surface EGL,unable to create surface", 
+			0);
 		msg_info_ptr = "create window surface EGL,unable to create surface";
 		msg_info_len = strlen(msg_info_ptr);
 		status = PFX_STATUS_FAIL;
@@ -548,7 +549,14 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	__context.m_viewport.m_y		= 0;
 	__context.m_viewport.m_width	= width;
 	__context.m_viewport.m_height	= height;
-
+	PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device",
+		"create egl device ok viewport(%d,%d,%d,%d)",
+		__context.m_viewport.m_x	  ,
+		__context.m_viewport.m_y	  ,
+		__context.m_viewport.m_width  ,
+		__context.m_viewport.m_height 
+		);
+	
 	return status;
 }
 
@@ -582,8 +590,8 @@ result_t cdisplay_context_gles::destroy_egl_device(
 		{
 			__egl_device.m_EGLContext = EGL_NO_CONTEXT;
 			PECKER_LOG_INFO("cdisplay_context_gles::destroy_egl_device", 
-				"close render device,eglDestroyContext ok! %s", 
-				"... ...");
+				"close render device,eglDestroyContext ok!", 
+				0);
 		}
 		else
 		{
@@ -600,8 +608,8 @@ result_t cdisplay_context_gles::destroy_egl_device(
 		{
 			__egl_device.m_EGLWindow = EGL_NO_SURFACE;
 			PECKER_LOG_INFO("cdisplay_context_gles::destroy_egl_device", 
-				"close render device,eglDestroySurface ok! %s", 
-				"... ...");
+				"close render device,eglDestroySurface ok!", 
+				0);
 		}
 		else
 		{
@@ -617,8 +625,8 @@ result_t cdisplay_context_gles::destroy_egl_device(
 	{
 		__egl_device.m_EGLDisplay = EGL_NO_DISPLAY;
 		PECKER_LOG_INFO("cdisplay_context_gles::destroy_egl_device", 
-			"close render device,eglTerminate ok! %s", 
-			"... ...");
+			"close render device,eglTerminate ok!", 
+			0);
 	}
 	else
 	{
@@ -662,7 +670,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		m_on_render_view_ptr->on_exit_complate(false);
 		if (m_on_render_view_ptr->is_on_hideview())
 		{
-			SleepMS(1000);
+			SleepMS(100);
 			continue;
 		}
 		m_on_render_view_ptr->on_hide_complate(false);
@@ -673,6 +681,8 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		void*			msg_params_ptr = null;
 		usize__t		msg_param_buffer_size = 0;
 		display_device_t* display_device_ptr = (display_device_t*)&m_egl_device;
+		u64_t			finish_escape_tick;
+		usize__t		frame_render_time = 0;
 
 		// 初始化窗口的context
 		m_on_render_view_ptr->on_init(__context);
@@ -724,6 +734,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				break;
 			}
 
+			//::glViewport(0, 0, __context.m_viewport.m_width, __context.m_viewport.m_height);
 			// 渲染回调
 			esacape_tick = (u64_t)ticker.get_microsecond();
 			m_on_render_view_ptr->on_view(*display_device_ptr,
@@ -741,6 +752,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				msg_param_buffer_size,
 				msg_params_ptr);
 
+
 			// 将渲染数据发送到显卡，交换窗口帧缓存
 			status = render_complete(m_egl_device,
 				!((bool)(__context.m_pixelmap_bit)));
@@ -755,6 +767,8 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				break;
 			}
 
+			
+
 			// 窗口变化的时候，对应的窗口帧缓存会变，所以这时候需要
 			// 销毁渲染设备，重新创建
 			if (m_on_render_view_ptr->is_on_resize())
@@ -767,6 +781,39 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				m_bshow_window = false;
 				break;
 			}
+
+			finish_escape_tick = (u64_t)ticker.get_microsecond();
+			if (finish_escape_tick > esacape_tick)
+			{
+				frame_render_time = (usize__t)(finish_escape_tick - esacape_tick);
+			}
+			else
+			{
+				frame_render_time = m_limit_frame_time;
+			}
+			
+			// 锁帧
+			if (m_limit_frame_time)
+			{
+				if (frame_render_time < m_limit_frame_time)
+				{
+					SleepMS(m_limit_frame_time - frame_render_time);
+				}
+				//m_last_fps = 1000000 / m_limit_frame_time;
+			}
+			else
+			{
+				if (frame_render_time)
+				{
+					m_last_fp1ks = 1000000 / frame_render_time;
+				}
+				else
+				{
+					m_last_fp1ks = 0;
+				}
+				
+			}
+
 
 		}
 
@@ -793,12 +840,12 @@ result_t cdisplay_context_gles::render_complete(
 	EGLBoolean egl_result;
 	if (bswap_buffer)
 	{
-		egl_result = ::eglWaitGL();
+		egl_result = ::eglSwapBuffers(device.m_EGLDisplay,
+			device.m_EGLWindow);
 	}
 	else
 	{
-		egl_result = ::eglSwapBuffers(device.m_EGLDisplay,
-			device.m_EGLWindow);
+		egl_result = ::eglWaitGL();
 	}
 	if (egl_result)
 	{
@@ -820,7 +867,7 @@ result_t cdisplay_context_gles::show_view(cOn_render_view_t* PARAM_INOUT on_view
 	{
 		return PFX_STATUS_UNIQUE;
 	}
-	m_on_render_view_ptr = m_on_render_view_ptr;
+	m_on_render_view_ptr = on_view_callback_ptr;
 	m_bshow_window = true;
 	return m_thread.start_thread(&m_thread_proxy);
 }

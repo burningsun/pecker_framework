@@ -63,6 +63,14 @@ protected:
 public:
 	static cnative_render_state_gles2& singletone();
 public:
+	PFX_INLINE void clear_color(float_t red, float_t green, float_t blue, float_t alpha_value)
+	{
+		glClearColor(red, green, blue, alpha_value);
+	}
+	PFX_INLINE void set_clear_mask(bitfield_t bitmask)
+	{
+		glClear(bitmask);
+	}
 	//
 	PFX_INLINE void set_viewport(const viewport_rect_t& viewport)
 	{

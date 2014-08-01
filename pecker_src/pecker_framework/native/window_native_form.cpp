@@ -8,12 +8,13 @@
 */
 
 #include "window_native_form.h"
+#include "window_msgcode_def.h"
 #if (OS_CONFIG == OS_WINDOWS)
 
 
 PECKER_BEGIN
 
-HWND window_native_form::hwnd_main = null;
+//HWND window_native_form::hwnd_main = null;
 
 LRESULT WINAPI window_native_form::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -28,13 +29,15 @@ LRESULT WINAPI window_native_form::WndProc(HWND hwnd, UINT message, WPARAM wPara
 		//return 0;
 	}
 
+
+
 	// look up window instance
 	// note: it is possible to get a WM_SIZE before WM_CREATE
 	window_native_form* winform_ptr = (window_native_form*)(::GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	if (null == hwnd_main)
-	{
-		hwnd_main = hwnd;
-	}
+	//if (null == hwnd_main)
+	//{
+	//	hwnd_main = hwnd;
+	//}
 	if (winform_ptr)
 	{
 		return 	winform_ptr->on_message(message, wParam, lParam);
@@ -50,8 +53,14 @@ m_activity_status(PFX_ACTIVE_NO_INIT),
 m_component_ptr(null),
 m_visiable(false),
 m_started_window(false),
-m_parent_form_ptr(null)
+m_parent_form_ptr(null),
+m_dlg_result(0),
+m_benter_size_move(false),
+m_bview_change(false)
 {
+	m_msg_trans_proxy.m_object_ptr		= this;
+	m_msg_trans_proxy.m_callback		= &window_native_form::on_message_translate;
+	m_msg_trans_proxy.m_proxy_status	= null;
 	;
 }
 
@@ -71,7 +80,7 @@ result_t window_native_form::listen_message()
 	status		= PFX_STATUS_OK;
 	msg_result	= ::GetMessage(&msg, hwnd, 0, 0);
 
-	while (m_started_window && 0 != msg_result)
+	while (0 != msg_result)
 	{
 		if (-1 == msg_result)
 		{
@@ -86,7 +95,7 @@ result_t window_native_form::listen_message()
 		}
 		msg_result = ::GetMessage(&msg, hwnd, 0, 0);
 	}
-
+	m_started_window = false;
 	return status;
 }
 
@@ -102,35 +111,122 @@ LRESULT	window_native_form::on_message(UINT message, WPARAM wParam, LPARAM lPara
 		switch (message)
 		{
 		case WM_CREATE:
-			if (m_hdc)
+			status = PFX_STATUS_OK;	
+			m_benter_size_move = false;
+			m_bview_change = false;
+			m_visiable = true;
+			break;
+		case WM_ENTERSIZEMOVE:
+			m_benter_size_move = true;
+			break;
+		case WM_EXITSIZEMOVE:
+			m_benter_size_move = false;
+			if (m_bview_change)
 			{
-				::ReleaseDC(m_hwmd, m_hdc);
-				m_hdc = null;
-			}
-			if (m_pixelmap)
-			{
-				::DeleteObject(m_pixelmap);
-				m_pixelmap = null;
-			}
-			m_hdc = ::GetDC(m_hwmd);
-			if (m_init_state.m_pixlmap)
-			{
-				m_pixelmap = ::CreateCompatibleBitmap(m_hdc, 
-					m_init_state.m_windows_rect.m_width, 
-					m_init_state.m_windows_rect.m_height);
+				m_bview_change = false;
+				::GetClientRect(m_hwmd, &client_rect);
+				m_component_ptr->on_modify_view();
+
+				if (m_hdc)
+				{
+					::ReleaseDC(m_hwmd, m_hdc);
+					m_hdc = null;
+				}
+				if (m_pixelmap)
+				{
+					::DeleteObject(m_pixelmap);
+					m_pixelmap = null;
+				}
+				m_hdc = ::GetDC(m_hwmd);
+				if (m_init_state.m_pixlmap)
+				{
+					m_pixelmap = ::CreateCompatibleBitmap(m_hdc,
+						m_init_state.m_windows_rect.m_width,
+						m_init_state.m_windows_rect.m_height);
+				}
+				::GetClientRect(m_hwmd, &client_rect);
+				m_init_state.m_windows_rect.m_x = client_rect.left;
+				m_init_state.m_windows_rect.m_y = client_rect.top;
+				m_init_state.m_windows_rect.m_width = client_rect.right - client_rect.left;
+				m_init_state.m_windows_rect.m_height = client_rect.bottom - client_rect.top;
+
+
+				m_component_ptr->on_finish_modify_view();
+				m_activity_status = PFX_ACTIVE_RESUME;
 			}
 
-			::GetClientRect(m_hwmd, &client_rect);
-			m_init_state.m_windows_rect.m_x		= client_rect.left;
-			m_init_state.m_windows_rect.m_y		= client_rect.top;
-			m_init_state.m_windows_rect.m_width	= client_rect.right - client_rect.left;
-			m_init_state.m_windows_rect.m_height= client_rect.bottom - client_rect.top;
-			m_component_ptr->on_start(this);
-			m_activity_status = PFX_ACTIVE_START;
-			status = PFX_STATUS_OK;
+
+			
 			break;
 		case WM_SIZE:
-			m_component_ptr->on_modify_view();
+			m_bview_change = true;
+			// 第一次 设置窗口的大小
+			if (PFX_ACTIVE_CREATE == m_activity_status ||
+				PFX_ACTIVE_RESTART == m_activity_status)
+			{
+				m_bview_change = false;
+				::GetClientRect(m_hwmd, &client_rect);
+
+				if (m_hdc)
+				{
+					::ReleaseDC(m_hwmd, m_hdc);
+					m_hdc = null;
+				}
+				if (m_pixelmap)
+				{
+					::DeleteObject(m_pixelmap);
+					m_pixelmap = null;
+				}
+				m_hdc = ::GetDC(m_hwmd);
+				if (m_init_state.m_pixlmap)
+				{
+					m_pixelmap = ::CreateCompatibleBitmap(m_hdc,
+						m_init_state.m_windows_rect.m_width,
+						m_init_state.m_windows_rect.m_height);
+				}
+
+				m_init_state.m_windows_rect.m_x = client_rect.left;
+				m_init_state.m_windows_rect.m_y = client_rect.top;
+				m_init_state.m_windows_rect.m_width = client_rect.right - client_rect.left;
+				m_init_state.m_windows_rect.m_height = client_rect.bottom - client_rect.top;
+
+
+
+				m_component_ptr->on_start(this);
+				m_activity_status = PFX_ACTIVE_START;
+			}
+			// 非第一次改变窗口的大小
+			else if (!m_benter_size_move)
+			{
+				::PostMessage(m_hwmd, WM_EXITSIZEMOVE, null, null);
+			}
+			status = PFX_STATUS_OK;
+			break;
+
+		case WM_CLOSE:
+			m_component_ptr->on_stop();
+			m_activity_status = PFX_ACTIVE_STOP;
+
+			//status = PFX_STATUS_OK;
+			break;
+		case WM_DESTROY:
+			m_component_ptr->on_destroy();
+			m_activity_status = PFX_ACTIVE_DESTROY;
+			status = PFX_STATUS_OK;
+			::PostQuitMessage(0);
+			m_hwmd = null;
+			break;
+		case WM_SHOW_PARSE:
+			m_visiable = false;
+			//m_component_ptr->on_parse();
+			status = PFX_STATUS_OK;
+			break;
+		case WM_SHOW_RESUM:
+			m_visiable = true;
+			//m_component_ptr->on_resume();
+			status = PFX_STATUS_OK;
+			break;
+		case WM_SHOW_RESTART:
 			if (m_hdc)
 			{
 				::ReleaseDC(m_hwmd, m_hdc);
@@ -148,35 +244,20 @@ LRESULT	window_native_form::on_message(UINT message, WPARAM wParam, LPARAM lPara
 					m_init_state.m_windows_rect.m_width,
 					m_init_state.m_windows_rect.m_height);
 			}
+			m_visiable = true;
 			::GetClientRect(m_hwmd, &client_rect);
-			m_init_state.m_windows_rect.m_x		= client_rect.left;
-			m_init_state.m_windows_rect.m_y		= client_rect.top;
-			m_init_state.m_windows_rect.m_width	= client_rect.right - client_rect.left;
-			m_init_state.m_windows_rect.m_height= client_rect.bottom - client_rect.top;
-
-			m_component_ptr->on_finish_modify_view();
-			status = PFX_STATUS_OK;
-			break;
-		case WM_CLOSE:
-			m_component_ptr->on_stop();
-			m_activity_status = PFX_ACTIVE_STOP;
-			status = PFX_STATUS_OK;
-			break;
-		case WM_DESTROY:
-			
-			m_component_ptr->on_destroy();
-			m_activity_status = PFX_ACTIVE_DESTROY;
+			m_init_state.m_windows_rect.m_x = client_rect.left;
+			m_init_state.m_windows_rect.m_y = client_rect.top;
+			m_init_state.m_windows_rect.m_width = client_rect.right - client_rect.left;
+			m_init_state.m_windows_rect.m_height = client_rect.bottom - client_rect.top;
+			m_component_ptr->on_restart();
+			m_activity_status = PFX_ACTIVE_RESTART;
 			status = PFX_STATUS_OK;
 			break;
 		default:
 			status = m_component_ptr->on_event(message, (long_t)wParam, (long_t)lParam);
 			break;
 		}
-	}
-
-	if (WM_DESTROY == message && m_hwmd == hwnd_main)
-	{
-		::PostQuitMessage(0);
 	}
 	if (PFX_STATUS_FIN == status)
 	{
@@ -230,7 +311,7 @@ result_t window_native_form::init(IActivity_component* activity_ptr,
 result_t window_native_form::dispose()
 {
 	m_started_window = false;
-	return 0;
+	return close();
 }
 
 	
@@ -241,8 +322,8 @@ result_t window_native_form::create()
 		return PFX_STATUS_DENIED;
 	}
 
-	WNDCLASSA window_class;
-	memset(&window_class, 0, sizeof(WNDCLASSA));
+	WNDCLASS window_class;
+	memset(&window_class, 0, sizeof(WNDCLASS));
 
 	DWORD window_style;
 	DWORD window_ex_style;
@@ -299,7 +380,7 @@ result_t window_native_form::create()
 	// 获得目前运行的程序
 	window_class.hInstance = ::GetModuleHandle(NULL);
 	// 向操作系统注册一个新的窗口
-	if (0 == ::RegisterClassA(&window_class))
+	if (0 == ::RegisterClass(&window_class))
 	{
 		return PFX_STATUS_FAIL;
 	}
@@ -324,7 +405,7 @@ result_t window_native_form::create()
 		parent_hwnd = null;
 	}
 	// 准备工作完成, 打开一个窗口.
-	m_hwmd = ::CreateWindowExA(
+	m_hwmd = ::CreateWindowEx(
 		window_ex_style,
 		strtitle_ptr,
 		strtitle_ptr,
@@ -341,70 +422,54 @@ result_t window_native_form::create()
 
 	if (m_hwmd)
 	{
+		m_started_window = true;
 		return PFX_STATUS_OK;
 	}
 	else
 	{
+		m_started_window = false;
 		return PFX_STATUS_FAIL;
 	}
+}
+
+long window_native_form::on_message_translate(proxy_status_t* __proxy_status_ptr)
+{
+	
+	return show_dialog();
 }
 	
 void window_native_form::show(bool fullscreen //= false
 	)
 {
-	if (PFX_ACTIVE_PARSE == m_activity_status)
-	{
-	}
-
 	if (m_hwmd)
 	{
-		if (fullscreen)
-		{
-			::ShowWindow(m_hwmd, SW_MAX);
-		}
-		else
-		{
-			::ShowWindow(m_hwmd, SW_NORMAL);
-		}
-
-		if (m_visiable)
-		{
-
-		}
-		else
-		{
-			// this->listen_message();
-		}
+		return;
 	}
+	m_msg_trans_thread.start_thread(&m_msg_trans_proxy);
+
 }
 	
 result_t window_native_form::show_dialog(bool fullscreen //= false
 	)
 {
-	if (PFX_ACTIVE_PARSE == m_activity_status)
-	{
-
-	}
-
 	if (m_hwmd)
 	{
+		return PFX_STATUS_DENIED;
+	}
+	result_t status;
+	status = create();
+	if (m_hwmd)
+	{		
 		if (fullscreen)
 		{
-			::ShowWindow(m_hwmd, SW_MAX);
+			::ShowWindow(m_hwmd, SW_MAXIMIZE);
 		}
 		else
 		{
 			::ShowWindow(m_hwmd, SW_NORMAL);
 		}
-		if (m_visiable)
-		{
-
-		}
-		else
-		{
-			return this->listen_message();
-		}
-	
+		this->listen_message();
+		
 	}
 
 	return PFX_STATUS_OK;
@@ -412,24 +477,41 @@ result_t window_native_form::show_dialog(bool fullscreen //= false
 
 result_t window_native_form::close()
 {
-	return 0;
+	if (m_started_window)
+	{
+		::PostMessage(m_hwmd, WM_CLOSE, null, null);
+	}
+	m_msg_trans_thread.wait_thread_exit(5000);
+	return PFX_STATUS_OK;
 }
 	
-result_t window_native_form::hide()
-{
-	if (m_component_ptr)
+result_t window_native_form::set_visiable(bool bvisiable, 
+	bool bfullscreen //= false
+	)
+{	
+	if (!m_hwmd)
 	{
-		//m_component_ptr->on_parse();
-		//m_activity_status = PFX_ACTIVE_PARSE;
+		return PFX_ACTIVE_NO_INIT;
 	}
-
-	m_visiable = false;
-	if (m_hwmd)
+	
+	if (!bvisiable)
 	{
 		::ShowWindow(m_hwmd, SW_HIDE);
+		::PostMessage(m_hwmd, WM_SHOW_PARSE, null, null);
 	}
-	
-	
+	else
+	{
+		if (bfullscreen)
+		{
+			::ShowWindow(m_hwmd, SW_MAXIMIZE);
+		}
+		else
+		{
+			::ShowWindow(m_hwmd, SW_NORMAL);
+		}
+		::PostMessage(m_hwmd, WM_SHOW_RESUM, null, null);
+	}
+
 	return PFX_STATUS_OK;
 }
 

@@ -111,9 +111,67 @@ typedef struct st_window_contex_info
 }window_contex_t;
 
 template <class render_state >
-PFX_Interface IPfx_On_render_view
+class PFX_RENDER_SYS_TEMPLATE_API cOn_render_view_base
 {
-	virtual ~IPfx_On_render_view(){ ; }
+private:
+	volatile bool	m_bon_hideview;
+	volatile bool	m_bon_resize;
+	volatile bool	m_bon_exit;
+	volatile bool	m_bhide_complate;
+	volatile bool	m_bexit_complate;
+protected:
+	window_contex_t	m_target;
+public:
+	PFX_INLINE volatile bool is_on_hideview() const
+	{
+		return m_bon_hideview;
+	}
+	PFX_INLINE volatile bool is_on_resize() const
+	{
+		return m_bon_resize;
+	}
+	PFX_INLINE volatile bool is_on_exit() const
+	{
+		return m_bon_exit;
+	}
+	PFX_INLINE volatile bool is_hide_complate() const
+	{
+		return m_bhide_complate;
+	}
+	PFX_INLINE volatile bool is_exit_complate() const
+	{
+		return m_bexit_complate;
+	}
+
+	virtual void set_hideview(bool bEnable)
+	{
+		m_bon_hideview = bEnable;
+	}
+	virtual void set_resize(bool bEnable)
+	{
+		m_bon_resize = bEnable;
+	}
+	virtual void set_exit(bool bEnable)
+	{
+		m_bon_exit = bEnable;
+	}
+	virtual void set_window_context(const window_contex_t& PARAM_IN win_context)
+	{
+		m_target = win_context;
+	}
+
+public:
+	virtual void on_hide_complate(bool enable)
+	{
+		m_bhide_complate = enable;
+	}
+	virtual void on_exit_complate(bool enable)
+	{
+		m_bexit_complate = enable;
+	}
+public:
+	cOn_render_view_base(){ ; }
+	virtual ~cOn_render_view_base(){ ; }
 
 	virtual void on_view(
 		const display_device_t& PARAM_IN device,
@@ -121,7 +179,10 @@ PFX_Interface IPfx_On_render_view
 		u64_t	__escape_time,
 		flag_t& PARAM_OUT msg_type,
 		usize__t& PARAM_OUT param_size,
-		void*& PARAM_OUT param_data_ptr) = 0;
+		void*& PARAM_OUT param_data_ptr)
+	{
+		;
+	}
 
 	virtual void on_load(
 		const display_device_t& PARAM_IN device,
@@ -129,40 +190,46 @@ PFX_Interface IPfx_On_render_view
 		u64_t	__escape_time,
 		flag_t& PARAM_OUT msg_type,
 		usize__t& PARAM_OUT param_size,
-		void*& PARAM_OUT param_data_ptr) = 0;
+		void*& PARAM_OUT param_data_ptr)
+	{
+		;
+	}
 
 	virtual void on_render_complete(
 		const display_device_t& PARAM_IN device,
-		render_state& PARAM_INOUT __state, 
-		result_t status) = 0;
+		render_state& PARAM_INOUT __state,
+		result_t status)
+	{
+		;
+	}
 
 	virtual void on_closing_render_device(
 		u64_t	__escape_time,
 		const display_device_t& PARAM_IN device,
-		render_state& PARAM_INOUT __state) = 0;
+		render_state& PARAM_INOUT __state)
+	{
+		;
+	}
 
 
-	virtual void on_init(window_contex_t& PARAM_OUT win_context) = 0;
+	virtual void on_init(window_contex_t& PARAM_OUT win_context)
+	{
+		win_context = m_target;
+	}
 
 	virtual void on_log(result_t status, const char_t* str_info_ptr,
-		usize__t str_info_length) = 0;
+		usize__t str_info_length)
+	{
+		;
+	}
 
 	virtual void on_message_box(result_t status, const char_t* str_info_ptr,
-		usize__t str_info_length) = 0;
+		usize__t str_info_length)
+	{
+		;
+	}
 
-	virtual volatile bool is_on_hideview() const = 0;
-	virtual volatile bool is_on_resize() const = 0;
-	virtual volatile bool is_on_exit() const = 0;
-	virtual volatile bool is_hide_complate() const = 0;
-	virtual volatile bool is_exit_complate() const = 0;
 
-	virtual void on_hide_complate(bool enable) = 0;
-	virtual void on_exit_complate(bool enable) = 0;
-
-	virtual void set_hideview(bool bEnable) = 0;
-	virtual void set_resize(bool bEnable) = 0;
-	virtual void set_exit(bool bEnable) = 0;
-	virtual void set_window_context(const window_contex_t& PARAM_IN win_context) = 0;
 };
 
 

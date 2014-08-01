@@ -1,5 +1,11 @@
 ﻿#include "pfx_defines.h"
+#ifdef _DEBUG
 #pragma comment (lib,"..\\debug\\pecker_api.lib")
+#pragma comment (lib,"..\\debug\\pecker_hal.lib")
+#else
+#pragma comment (lib,"..\\release\\pecker_api.lib")
+#pragma comment (lib,"..\\release\\pecker_hal.lib")
+#endif
 
 #include "pfx_api_info.h"
 
@@ -15,9 +21,13 @@ extern int bst_stress_test_main (bool bshow = false);
 extern void matrix_test ();
 extern int auto_obj_test ();
 extern void test_object_id ();
+extern void form_test();
+extern void gles2_displayview_test();
 int main ()
 {
-	bst_stress_test_main (false);
+	gles2_displayview_test();
+	//form_test();
+	//bst_stress_test_main(false);
 	//array_test_main ();
 	//list_test();
 	//string_test();

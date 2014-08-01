@@ -100,4 +100,9 @@
       <Filter>render\render_system\opengles</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\pecker_framework\render\opengles2_render_system.h">
+      <Filter>render</Filter>
+    </None>
+  </ItemGroup>
 </Project>

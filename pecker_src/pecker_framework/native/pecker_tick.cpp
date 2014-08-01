@@ -17,7 +17,7 @@ PECKER_BEGIN
 
 pecker_tick::pecker_tick():m_start_tick(-1.0)
 {
-#if (OS_CONFIG == OS_ANDROID)
+#if (OS_CONFIG == OS_ANDROID || OS_CONFIG == OS_LINUX)
 
 #else
 #if (OS_CONFIG == OS_WINDOWS)
@@ -49,7 +49,7 @@ result_t pecker_tick::start()
 	//{
 	//	return PFX_STATUS_ERROR_;
 	//}
-#if (OS_CONFIG == OS_ANDROID)
+#if (OS_CONFIG == OS_ANDROID || OS_CONFIG == OS_LINUX)
 	pfx_result_t pfx_result_t = clock_gettime(CLOCK_MONOTONIC, &m_ticker);
 	m_start_tick = (double_t)m_ticker.tv_sec * 1000.0 + (double_t)(m_ticker.tv_nsec) / 1000000.0;
 //	res = clock_gettime(CLOCK_MONOTONIC, &m_startTime);
@@ -66,7 +66,7 @@ double_t pecker_tick::get_microsecond()
 {
 	if (m_start_tick > 0.0)
 	{
-#if (OS_CONFIG == OS_ANDROID)
+#if (OS_CONFIG == OS_ANDROID || OS_CONFIG == OS_LINUX)
 		pfx_result_t pfx_result_t = clock_gettime(CLOCK_MONOTONIC, &m_ticker);
 		double_t current_tick = (double_t)m_ticker.tv_sec * 1000.0 + (double_t)(m_ticker.tv_nsec) / 1000000.0;
 		return (current_tick - m_start_tick);
