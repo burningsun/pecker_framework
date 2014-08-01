@@ -12,7 +12,7 @@
 
 #include "../pfx_defines.h"
 #include "syn_lock.h"
-#include "pecker_thread.h"
+
 
 #include <stdio.h>
 PECKER_BEGIN

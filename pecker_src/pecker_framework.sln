@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pecker_hal", "pecker_hal\pecker_hal.vcxproj", "{68FFB384-231F-4CB3-8280-8942B49E3B43}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F4D19307-630D-4AE6-A544-B5EAB6E2607B} = {F4D19307-630D-4AE6-A544-B5EAB6E2607B}
@@ -9,6 +11,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pecker_api", "pecker_api\pecker_api.vcxproj", "{F4D19307-630D-4AE6-A544-B5EAB6E2607B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pecker_test", "pecker_test\pecker_test.vcxproj", "{C8DD75A0-34B7-418E-8E44-DD7D994A91C6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F4D19307-630D-4AE6-A544-B5EAB6E2607B} = {F4D19307-630D-4AE6-A544-B5EAB6E2607B}
+		{68FFB384-231F-4CB3-8280-8942B49E3B43} = {68FFB384-231F-4CB3-8280-8942B49E3B43}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
