@@ -17,18 +17,20 @@ template < class __alloc >
 class PFX_DATA_TEMPLATE_API cblock
 {
 public:
-	typedef typename __alloc								allocator_t;
+	typedef __alloc							allocator_t;
 	typedef typename allocator_t::element_t	element_t;
-	typedef typename cblock < allocator_t >	cblock_t;
+	typedef cblock < allocator_t >			cblock_t;
 
-	typedef typename cblock_t							cleakable_obj_t;
+	typedef cblock_t						cleakable_obj_t;
 public:
 	typedef class cleak_data
 	{
-		friend cblock_t;
+		friend class cblock< allocator_t >;
+		// gcc 4.6不支持这样的写法，尼玛
+		//friend cblock_t;
 	private:
 		element_t*	m_block_ptr;
-		usize__t			m_size;
+		usize__t	m_size;
 	}leak_data_t;
 
 private:
@@ -180,8 +182,8 @@ public:
 template < class element_type >
 struct block_operate
 {
-	typedef element_type						element_t;
-	typedef typename block_operate	block_op_t; 
+	typedef element_type	element_t;
+	typedef block_operate	block_op_t;
 
 	static PFX_INLINE boolean_t is_same_buffer (element_t* buffer_ptr, usize__t buffer_size, 
 		const element_t* buf_ptr)

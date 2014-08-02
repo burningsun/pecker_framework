@@ -1,0 +1,30 @@
+
+**** Build of configuration Default for project PFX_framework ****
+
+C:\android\android-ndk-r10\ndk-build.cmd DEBUG=1 V=1 
+del /f/q .\libs\armeabi-v7a\libPFX_framework.so      >NUL 2>NUL
+[armeabi-v7a] Install        : libPFX_framework.so => libs/armeabi-v7a/libPFX_framework.so
+copy /b/y ".\obj\local\armeabi-v7a\libPFX_framework.so" ".\libs\armeabi-v7a\libPFX_framework.so" > NUL
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-strip --strip-unneeded  ./libs/armeabi-v7a/libPFX_framework.so
+
+**** Build Finished ****
+
+**** Build of configuration Default for project PFX_framework ****
+
+C:\android\android-ndk-r10\ndk-build.cmd DEBUG=1 V=1 
+del /f/q .\libs\armeabi-v7a\libPFX_framework.so      >NUL 2>NUL
+[armeabi-v7a] Install        : libPFX_framework.so => libs/armeabi-v7a/libPFX_framework.so
+copy /b/y ".\obj\local\armeabi-v7a\libPFX_framework.so" ".\libs\armeabi-v7a\libPFX_framework.so" > NUL
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-strip --strip-unneeded  ./libs/armeabi-v7a/libPFX_framework.so
+
+**** Build Finished ****
+
+**** Build of configuration Default for project PFX_framework ****
+
+C:\android\android-ndk-r10\ndk-build.cmd DEBUG=1 V=1 
+del /f/q .\libs\armeabi-v7a\libPFX_framework.so      >NUL 2>NUL
+[armeabi-v7a] Install        : libPFX_framework.so => libs/armeabi-v7a/libPFX_framework.so
+copy /b/y ".\obj\local\armeabi-v7a\libPFX_framework.so" ".\libs\armeabi-v7a\libPFX_framework.so" > NUL
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-strip --strip-unneeded  ./libs/armeabi-v7a/libPFX_framework.so
+
+**** Build Finished ****

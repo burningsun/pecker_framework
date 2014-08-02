@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+environment/project/com.android.toolchain.gcc.479780125/CYGPATH/delimiter=;
+environment/project/com.android.toolchain.gcc.479780125/CYGPATH/operation=append
+environment/project/com.android.toolchain.gcc.479780125/CYGPATH/value=C\:\\android\\android-ndk-r10\\toolchains\\arm-linux-androideabi-4.6\\prebuilt\\windows-x86_64\\bin
+environment/project/com.android.toolchain.gcc.479780125/NDK_ROOT/delimiter=;
+environment/project/com.android.toolchain.gcc.479780125/NDK_ROOT/operation=replace
+environment/project/com.android.toolchain.gcc.479780125/NDK_ROOT/value=C\:\\android\\android-ndk-r10
+environment/project/com.android.toolchain.gcc.479780125/append=true
+environment/project/com.android.toolchain.gcc.479780125/appendContributed=true

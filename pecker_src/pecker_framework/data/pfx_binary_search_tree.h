@@ -2,28 +2,28 @@
  * pfx_binary_search_tree.h
  *
  *  Created on: 2014-2-1
-*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 #ifndef		PFX_BINARY_SEARCH_TREE_H_
 #define		PFX_BINARY_SEARCH_TREE_H_
 
-#include "data/pfx_cbst.h"
-#include "data/pfx_cbst_codes.h"
-#include "data/pfx_cbst_iterator_codes.h"
-#include "native/pecker_allocator.h"
+#include "pfx_cbst.h"
+#include "pfx_cbst_codes.h"
+#include "pfx_cbst_iterator_codes.h"
+#include "../native/pecker_allocator.h"
 
 PECKER_BEGIN
 
-template < class node_A_type, 
-		class node_B_type, 
-		class compare_two_elem >
+template < class node_A_type,
+class node_B_type,
+class compare_two_elem >
 struct xcompare_two_node
 {
-	typedef node_A_type					node_t;
-	typedef node_A_type					node_a_t;
-	typedef node_B_type					node_b_t;
-	typedef compare_two_elem		compare_two_elemen_t;
+	typedef node_A_type node_t;
+	typedef node_A_type node_a_t;
+	typedef node_B_type node_b_t;
+	typedef compare_two_elem compare_two_elemen_t;
 	typedef xcompare_two_node< node_a_t, node_b_t, compare_two_elemen_t > cmp_t;
 
 	static PFX_INLINE int compare(const node_a_t& node_a, const node_b_t& node_b)
@@ -36,15 +36,15 @@ struct xcompare_two_node
 	}
 };
 
-template < class node_A_type, 
-class node_B_type				= node_A_type, 
-class compare_two_elem	= typename pecker_value_compare < node_A_type::element_t > >
+template < class node_A_type,
+class node_B_type = node_A_type,
+class compare_two_elem = pecker_value_compare < typename node_A_type::element_t > >
 struct compare_two_node
 {
-	typedef node_A_type					node_t;
-	typedef node_A_type					node_a_t;
-	typedef node_B_type					node_b_t;
-	typedef compare_two_elem		compare_two_elemen_t;
+	typedef node_A_type node_t;
+	typedef node_A_type node_a_t;
+	typedef node_B_type node_b_t;
+	typedef compare_two_elem compare_two_elemen_t;
 	typedef compare_two_node< node_a_t, node_b_t, compare_two_elemen_t > cmp_t;
 
 	static PFX_INLINE int compare(const node_a_t& node_a, const node_b_t& node_b)
@@ -61,14 +61,14 @@ template < class item_type >
 class PFX_DATA_TEMPLATE_API cbst_node
 {
 public:
-	typedef item_type													item_type_t;
-	typedef item_type													element_t;
-	typedef typename cbst_node < item_type_t > node_t;
+	typedef item_type item_type_t;
+	typedef item_type element_t;
+	typedef cbst_node < item_type_t > node_t;
 protected:
-	node_t*			m_parent_node_ptr;
-	node_t*			m_left_node_ptr;
-	node_t*			m_right_node_ptr;
-	item_type_t	m_item;
+	node_t* m_parent_node_ptr;
+	node_t* m_left_node_ptr;
+	node_t* m_right_node_ptr;
+	item_type_t m_item;
 public:
 	cbst_node () : m_right_node_ptr (null),m_left_node_ptr(null),m_parent_node_ptr(null)
 	{
@@ -103,9 +103,9 @@ public:
 	}
 	PFX_INLINE result_t set_item (const item_type_t& __item)
 	{
-		if (null == m_parent_node_ptr && 
-			null == m_left_node_ptr && 
-			null == m_right_node_ptr)
+		if (null == m_parent_node_ptr &&
+				null == m_left_node_ptr &&
+				null == m_right_node_ptr)
 		{
 			m_item = __item;
 			return PFX_STATUS_OK;
@@ -120,7 +120,7 @@ public:
 	{
 		m_left_node_ptr = node_ptr;
 	}
-	PFX_INLINE void set_right_node  (node_t* PARAM_IN node_ptr)
+	PFX_INLINE void set_right_node (node_t* PARAM_IN node_ptr)
 	{
 		m_right_node_ptr = node_ptr;
 	}
@@ -133,15 +133,15 @@ public:
 	{
 		return m_item;
 	}
-	PFX_INLINE node_t* const &	get_left_node_ref () const
+	PFX_INLINE node_t* const & get_left_node_ref () const
 	{
 		return m_left_node_ptr;
 	}
-	PFX_INLINE node_t* const&	get_right_node_ref () const
+	PFX_INLINE node_t* const& get_right_node_ref () const
 	{
 		return m_right_node_ptr;
 	}
-	PFX_INLINE node_t* const&	get_parent_node_ref () const
+	PFX_INLINE node_t* const& get_parent_node_ref () const
 	{
 		return m_parent_node_ptr;
 	}
@@ -151,15 +151,15 @@ template < class item_type >
 class PFX_DATA_TEMPLATE_API cavl_bst_node
 {
 public:
-	typedef item_type															item_type_t;
-	typedef item_type															element_t;
-	typedef typename cavl_bst_node < item_type_t >	node_t;
+	typedef item_type item_type_t;
+	typedef item_type element_t;
+	typedef cavl_bst_node < item_type_t > node_t;
 protected:
-	node_t*			m_parent_node_ptr;
-	node_t*			m_left_node_ptr;
-	node_t*			m_right_node_ptr;
-	nsize__t			m_height;
-	item_type		m_item;
+	node_t* m_parent_node_ptr;
+	node_t* m_left_node_ptr;
+	node_t* m_right_node_ptr;
+	nsize__t m_height;
+	item_type m_item;
 public:
 	cavl_bst_node () : m_right_node_ptr (null),m_left_node_ptr(null),m_parent_node_ptr(null),m_height (0)
 	{
@@ -200,9 +200,9 @@ public:
 
 	PFX_INLINE result_t set_item (const item_type_t& __item)
 	{
-		if (null == m_parent_node_ptr && 
-			null == m_left_node_ptr && 
-			null == m_right_node_ptr)
+		if (null == m_parent_node_ptr &&
+				null == m_left_node_ptr &&
+				null == m_right_node_ptr)
 		{
 			m_item = __item;
 			return PFX_STATUS_OK;
@@ -217,7 +217,7 @@ public:
 	{
 		m_left_node_ptr = node_ptr;
 	}
-	PFX_INLINE void set_right_node  (node_t* PARAM_IN node_ptr)
+	PFX_INLINE void set_right_node (node_t* PARAM_IN node_ptr)
 	{
 		m_right_node_ptr = node_ptr;
 	}
@@ -252,19 +252,19 @@ template < class item_type >
 class PFX_DATA_TEMPLATE_API crb_bst_node
 {
 public:
-	typedef item_type															item_type_t;
-	typedef item_type															element_t;
-	typedef typename crb_bst_node < item_type_t >	node_t;
+	typedef item_type item_type_t;
+	typedef item_type element_t;
+	typedef crb_bst_node < item_type_t > node_t;
 protected:
-	node_t*			m_parent_node_ptr;
-	node_t*			m_left_node_ptr;
-	node_t*			m_right_node_ptr;
-	flag_t			m_color;
-	item_type		m_item;
+	node_t* m_parent_node_ptr;
+	node_t* m_left_node_ptr;
+	node_t* m_right_node_ptr;
+	flag_t m_color;
+	item_type m_item;
 public:
 	crb_bst_node () : m_right_node_ptr (null),
-		m_left_node_ptr(null),m_parent_node_ptr(null),
-		m_color(BLACK_COLOR_NODE_TYPE)
+	m_left_node_ptr(null),m_parent_node_ptr(null),
+	m_color(BLACK_COLOR_NODE_TYPE)
 	{
 		;
 	}
@@ -304,7 +304,7 @@ public:
 	{
 		m_left_node_ptr = node_ptr;
 	}
-	PFX_INLINE void set_right_node  (node_t* PARAM_IN node_ptr)
+	PFX_INLINE void set_right_node (node_t* PARAM_IN node_ptr)
 	{
 		m_right_node_ptr = node_ptr;
 	}
@@ -339,20 +339,20 @@ template < class item_type >
 class PFX_DATA_TEMPLATE_API cbalance_bst_node
 {
 public:
-	typedef item_type		item_type_t;
-	typedef item_type		element_t;
-	typedef typename cbalance_bst_node < item_type_t >	node_t;
+	typedef item_type item_type_t;
+	typedef item_type element_t;
+	typedef cbalance_bst_node < item_type_t > node_t;
 protected:
 	node_t* m_parent_node_ptr;
 	node_t* m_left_node_ptr;
 	node_t* m_right_node_ptr;
-	nsize__t											m_balance_value;
-	item_type										m_item;
+	nsize__t m_balance_value;
+	item_type m_item;
 public:
 	cbalance_bst_node () : m_right_node_ptr (null),
-		m_left_node_ptr(null),
-		m_parent_node_ptr(null),
-		m_balance_value (0)
+	m_left_node_ptr(null),
+	m_parent_node_ptr(null),
+	m_balance_value (0)
 	{
 		;
 	}
@@ -363,7 +363,7 @@ public:
 			this->m_right_node_ptr = other_.m_right_node_ptr;
 			this->m_left_node_ptr = other_.m_left_node_ptr;
 			this->m_parent_node_ptr = other_.m_parent_node_ptr;
-			this->m_balance_value = other_.m_height;
+			this->m_balance_value = other_.m_balance_value;
 			this->m_item = other_.m_item;
 		}
 	}
@@ -395,7 +395,7 @@ public:
 	{
 		m_left_node_ptr = node_ptr;
 	}
-	PFX_INLINE void set_right_node  (node_t* PARAM_IN node_ptr)
+	PFX_INLINE void set_right_node (node_t* PARAM_IN node_ptr)
 	{
 		m_right_node_ptr = node_ptr;
 	}
@@ -433,12 +433,12 @@ public:
 template < class node_type_, class compare_two_node_, class node_allocator = pecker_simple_allocator< node_type_ > >
 struct PFX_DATA_TEMPLATE_API pfx_binary_search_tree_type
 {
-	typedef node_type_					node_t;
-	typedef compare_two_node_	cmp_t;
-	typedef node_allocator				allocate_t;
-	typedef typename cbst < BST_operate < allocate_t, cmp_t > >				binary_search_tree_t;
-	typedef typename cbst < AVL_BST_operate < allocate_t, cmp_t > >		avl_binary_search_tree_t;
-	typedef typename cbst < RB_BST_operate < allocate_t, cmp_t > >		redblack_binary_search_tree_t;
+	typedef node_type_ node_t;
+	typedef compare_two_node_ cmp_t;
+	typedef node_allocator allocate_t;
+	typedef cbst < BST_operate < allocate_t, cmp_t > > binary_search_tree_t;
+	typedef cbst < AVL_BST_operate < allocate_t, cmp_t > > avl_binary_search_tree_t;
+	typedef cbst < RB_BST_operate < allocate_t, cmp_t > > redblack_binary_search_tree_t;
 };
 
 typedef enum enumTREE_TYPE
@@ -449,7 +449,6 @@ typedef enum enumTREE_TYPE
 
 	BINARY_SEARCH_TREE_TYPE_COUNT
 }BST_TYPE_t;
-
 
 PECKER_END
 

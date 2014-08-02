@@ -2,13 +2,13 @@
  * pfx_render_state.h
  *
  *  Created on: 2014-7-25
-*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 #ifndef		PFX_RENDER_STATE_GLES_H_
 #define		PFX_RENDER_STATE_GLES_H_
 
-#include <gl2.h>
+#include <GLES2/gl2.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include "../../../include/util"
@@ -31,8 +31,8 @@ PFX_INLINE EGLint PFX_RSYSCBT_TO_EGL_RSYSCBT(PFX_RSYS_PARAM_COLOR_BUFFER_TYPE_t 
 	static EGLint egl_cbt_table[PFX_RENDER_SYS_PARAM_COLOR_BUFFER_TYPE_COUNT + 1] =
 	{
 		EGL_RGB_BUFFER,			//PFX_RSYS_RGB_BUFFER,
-		EGL_LUMINANCE_BUFFER,	//PFX_RSYS_LUMINANCE_BUFFER,
-		EGL_RGB_BUFFER			//PFX_RSYS_RGB_BUFFER
+		EGL_LUMINANCE_BUFFER,//PFX_RSYS_LUMINANCE_BUFFER,
+		EGL_RGB_BUFFER//PFX_RSYS_RGB_BUFFER
 	};
 	return egl_cbt_table[__cbt];
 };
@@ -42,20 +42,19 @@ PFX_INLINE EGLint PFX_CPLV_TO_EGL_CPLV(PFX_CONTEX_PREPRIORITY_t __priority)
 	static EGLint egl_cplv_table[PFX_CONTEXT_PREPRIORITY_TYPE_COUNT+1] =
 	{
 		EGL_CONTEXT_PRIORITY_HIGH_IMG,	//PFX_CONTEXT_DEFAULT_PREPRIORITY,
-		EGL_CONTEXT_PRIORITY_LOW_IMG,	//PFX_CONTEXT_LOW_PREPRIORITY,
+		EGL_CONTEXT_PRIORITY_LOW_IMG,//PFX_CONTEXT_LOW_PREPRIORITY,
 		EGL_CONTEXT_PRIORITY_MEDIUM_IMG,//PFX_CONTEXT_MEDIUM_PREPRIORITY,
-		EGL_CONTEXT_PRIORITY_HIGH_IMG,	//PFX_CONTEXT_HIGH_PREPRIORITY,
-		EGL_CONTEXT_PRIORITY_HIGH_IMG,  //PFX_CONTEXT_PREPRIORITY_TYPE_COUNT
+		EGL_CONTEXT_PRIORITY_HIGH_IMG,//PFX_CONTEXT_HIGH_PREPRIORITY,
+		EGL_CONTEXT_PRIORITY_HIGH_IMG,//PFX_CONTEXT_PREPRIORITY_TYPE_COUNT
 	};
 	return egl_cplv_table[__priority];
 };
 
-
 class PFX_RENDER_SYSTEM_API cnative_render_state_gles2
 {
 private:
-	enum_int_t				m_texture_unit; //GLenum
-	cshader_program_gles2	m_use_program;
+	enum_int_t m_texture_unit; //GLenum
+	cshader_program_gles2 m_use_program;
 public:
 	~cnative_render_state_gles2();
 protected:
@@ -86,8 +85,8 @@ public:
 			return null;
 		}
 
-		cshader_program_gles2* old_program_ptr = 
-			DYNAMIC_CAST(cshader_program_gles2*)(m_use_program.create_reference(false));
+		cshader_program_gles2* old_program_ptr =
+		DYNAMIC_CAST(cshader_program_gles2*)(m_use_program.create_reference(false));
 
 		program_ptr->share_to(&m_use_program);
 
@@ -106,7 +105,7 @@ public:
 		if (m_use_program.get_native_handle())
 		{
 			cshader_program_gles2* new_program_ptr =
-				DYNAMIC_CAST(cshader_program_gles2*)(cshader_program_gles2::new_reference());
+			DYNAMIC_CAST(cshader_program_gles2*)(cshader_program_gles2::new_reference());
 			if (new_program_ptr)
 			{
 				if (!new_program_ptr->share_to(&m_use_program))
@@ -120,10 +119,9 @@ public:
 				status = PFX_STATUS_MEM_LOW;
 			}
 		}
-		
+
 		return PFX_STATUS_OK;
 	}
-
 
 	//////////////////////////////////////////////////////////////////////////
 	// buffer
@@ -134,32 +132,32 @@ public:
 	}
 
 	PFX_INLINE void set_vertex_attrib_array(long_t __attribute_location,
-		IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr,
-		boolean_t bNormalized = PFX_BOOL_FALSE,  
-		uindex_t offset = 0, usize__t _size = MAX_UNSIGNED_VALUE)
+			IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr,
+			boolean_t bNormalized = PFX_BOOL_FALSE,
+			uindex_t offset = 0, usize__t _size = MAX_UNSIGNED_VALUE)
 	{
 		if (buffer_ptr)
 		{
 			::glEnableVertexAttribArray((GLuint)__attribute_location);
 			buffer_bits_t bits;
 			buffer_rect_t rect_bit;
-			rect_bit.m_offset	= offset;
-			rect_bit.m_size		= _size;
+			rect_bit.m_offset = offset;
+			rect_bit.m_size = _size;
 			buffer_ptr->lock_cache_buffer(bits, &rect_bit);
 			::glVertexAttribPointer((GLuint)__attribute_location,
-				buffer_ptr->vb_struct_attribcount(),
-				PfxVVT_to_GLVVT((PFX_VEXBUFFER_VALUE_TYPE_t)buffer_ptr->get_value_type()), 
-				(GLboolean)bNormalized, 
-				(GLsizei)bits.m_bytes_count,
-				bits.m_bits_ptr);
+					buffer_ptr->vb_struct_attribcount(),
+					PfxVVT_to_GLVVT((PFX_VEXBUFFER_VALUE_TYPE_t)buffer_ptr->get_value_type()),
+					(GLboolean)bNormalized,
+					(GLsizei)bits.m_bytes_count,
+					bits.m_bits_ptr);
 			buffer_ptr->unlock_cache_buffer();
 		}
 	}
 
 	PFX_INLINE void set_vertex_attrib_array(long_t __attribute_location,
-		cbuffer_object_gles2* PARAM_IN buffer_ptr,
-		boolean_t bNormalized = PFX_BOOL_FALSE,
-		long_t offset = 0)
+			cbuffer_object_gles2* PARAM_IN buffer_ptr,
+			boolean_t bNormalized = PFX_BOOL_FALSE,
+			long_t offset = 0)
 	{
 		if (buffer_ptr)
 		{
@@ -169,11 +167,11 @@ public:
 				native_buffer_ptr->update_data();
 				::glEnableVertexAttribArray((GLuint)__attribute_location);
 				::glVertexAttribPointer((GLuint)__attribute_location,
-					native_buffer_ptr->m_vb_struct_attribcount,
-					PfxVVT_to_GLVVT((PFX_VEXBUFFER_VALUE_TYPE_t)native_buffer_ptr->m_value_type),
-					(GLboolean)bNormalized,
-					(GLsizei)native_buffer_ptr->m_bytes_count,
-					(const char*)offset);
+						native_buffer_ptr->m_vb_struct_attribcount,
+						PfxVVT_to_GLVVT((PFX_VEXBUFFER_VALUE_TYPE_t)native_buffer_ptr->m_value_type),
+						(GLboolean)bNormalized,
+						(GLsizei)native_buffer_ptr->m_bytes_count,
+						(const char*)offset);
 			}
 
 		}
@@ -187,8 +185,8 @@ public:
 	// vbo
 	PFX_INLINE cbuffer_object_gles2* create_buffer()
 	{
-		cbuffer_object_gles2* new_buffer_ptr = 
-			(cbuffer_object_gles2*)cbuffer_object_gles2::new_reference();
+		cbuffer_object_gles2* new_buffer_ptr =
+		(cbuffer_object_gles2*)cbuffer_object_gles2::new_reference();
 		cnative_buffer_object_gles2* native_buffer_ptr = null;
 		if (new_buffer_ptr)
 		{
@@ -211,7 +209,7 @@ public:
 	}
 
 	PFX_INLINE result_t set_buffer_object(cbuffer_object_gles2* PARAM_IN buffer_ptr,
-		buffer_rect_t* PARAM_IN rect_bit = null)
+			buffer_rect_t* PARAM_IN rect_bit = null)
 	{
 		if (buffer_ptr)
 		{
@@ -225,7 +223,7 @@ public:
 				return PFX_STATUS_UNINIT;
 			}
 		}
-		
+
 		return PFX_STATUS_INVALID_PARAMS;
 	}
 

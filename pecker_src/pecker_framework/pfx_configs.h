@@ -16,15 +16,34 @@
 
 #define OS_32BIT
 
-#define	ANDROID			(1)
+//#define	ANDROID			(1)
 
 #define	OS_WINDOWS		(1)
 #define	OS_ANDROID		(1<<1)
 #define	OS_LINUX		(1<<2)
 
 //CONFIGS
+#define AUTO_DETECT_TARGET_OS
+
+#ifdef AUTO_DETECT_TARGET_OS
+#ifdef _MSC_VER
 #define OS_CONFIG				OS_WINDOWS
 #define OS_VERSION_CONFIG		WINDOW_7_8
+#else
+#ifdef __GNUC__
+#define OS_CONFIG				OS_ANDROID
+#define OS_VERSION_CONFIG		(17)
+#endif
+#endif
+
+#else //#ifndef AUTO_DETECT_TARGET_OS
+#define OS_CONFIG				OS_WINDOWS
+#define OS_VERSION_CONFIG		WINDOW_7_8
+#endif //AUTO_DETECT_TARGET_OS
+
+
+
+
 
 typedef enum enumBASE_RENDER_SYSTEM_TYPE
 {
@@ -57,5 +76,8 @@ typedef enum enumMATRIX_OPTIMIZATION
 }MATRIX_OPTIMIZATION_t;
 
 #define MATRIX_OPTIMIZATION	 (NO_MATRIX_OPTIMIZATION)
+
+#define RENDER_SYSTEM_TYPE (OPENGLES_BASE_RENDER_SYSTEM)
+#define RENDER_SYSTEM_VERSION (2)
 
 #endif			//PFX_CONFIGS_H_

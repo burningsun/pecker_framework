@@ -11,22 +11,13 @@
 #define PECKER_TIMETICK_H_
 
 #include "../pfx_defines.h"
-#if ((OS_CONFIG == OS_ANDROID)||(OS_CONFIG == OS_LINUX))
-#include <time.h>
-typedef timespec Time_ticker;
-#else
-#if (OS_CONFIG == OS_WINDOWS)
-typedef LARGE_INTEGER Time_ticker;
-#endif
-#endif
 
 PECKER_BEGIN
 // 计时器，时间单位是毫秒，浮点数。
 class PFX_NATIVE_API pecker_tick
 {
 private:
-	//Time_ticker		m_ticker;
-	double_t	m_start_tick;
+	double_t m_start_tick;
 public:
 	pecker_tick();
 	~pecker_tick();

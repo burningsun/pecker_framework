@@ -20,36 +20,41 @@ PECKER_BEGIN
 
 PFX_Interface Ialloacate
 {
-	virtual ~Ialloacate(){;}
+	virtual ~Ialloacate()
+	{	;}
 	virtual void* allocate_object () = 0;
-	virtual result_t deallocate_object(void*&  PARAM_INOUT del_element_ptr) = 0;
+	virtual result_t deallocate_object(void*& PARAM_INOUT del_element_ptr) = 0;
 };
 
 template < class element_ >
 struct pecker_simple_allocator
 {
-	typedef pecker_simple_allocator < element_ > allocator_t;
-	typedef typename	element_								 element_t;
-	typedef typename	element_*								 handle_t;
 
-	static PFX_INLINE element_* allocate_object ();
-	static PFX_INLINE result_t deallocate_object(element_*&  PARAM_INOUT del_element_ptr);
+	typedef element_                              element_t;
+	typedef element_*                             handle_t;
+	typedef pecker_simple_allocator < element_t > allocator_t;
 
-	static PFX_INLINE element_* reallocate_objects (element_* PARAM_INOUT del_element_ptr,usize__t new_count);
-	
-	static PFX_INLINE element_* allocate_objects (usize__t count);
-	static PFX_INLINE result_t deallocate_objects(element_*&  PARAM_INOUT del_element_ptr);
+	static PFX_INLINE element_t* allocate_object ();
+	static PFX_INLINE result_t deallocate_object(element_t*& PARAM_INOUT del_element_ptr);
+
+	static PFX_INLINE element_t* reallocate_objects (element_t* PARAM_INOUT del_element_ptr,usize__t new_count);
+
+	static PFX_INLINE element_t* allocate_objects (usize__t count);
+	static PFX_INLINE result_t deallocate_objects(element_t*& PARAM_INOUT del_element_ptr);
 };
 //////////////////////////////////////////////////////////////////////////
+#define SIMPLEALLOCATOR_TYPE typename pecker_simple_allocator< element_ >
+#define SIMPLEALLOCATOR    pecker_simple_allocator< element_ >
+
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE element_* pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::allocate_object ()
+PFX_INLINE SIMPLEALLOCATOR_TYPE::element_t* SIMPLEALLOCATOR::allocate_object ()
 {
-	return new element_;
+	return new element_t;
 }
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deallocate_object 
-																			(element_*& PARAM_INOUT del_element_ptr)
+PFX_INLINE result_t SIMPLEALLOCATOR::deallocate_object
+(element_t*& PARAM_INOUT del_element_ptr)
 {
 	result_t status;
 	if (del_element_ptr)
@@ -66,21 +71,21 @@ PFX_INLINE result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deall
 }
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE element_* pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::reallocate_objects 
-																(element_* PARAM_INOUT del_element_ptr,usize__t new_count)
+PFX_INLINE SIMPLEALLOCATOR_TYPE::element_t* SIMPLEALLOCATOR::reallocate_objects
+(element_t* PARAM_INOUT del_element_ptr,usize__t new_count)
 {
 	return null;
 }
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE element_* pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::allocate_objects (usize__t count)
+PFX_INLINE SIMPLEALLOCATOR_TYPE::element_t* SIMPLEALLOCATOR::allocate_objects (usize__t count)
 {
-	return new element_[count];
+	return new element_t[count];
 }
 
 PFX_ALLOCATOR_TEMPLATE_DEFINES
-PFX_INLINE result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deallocate_objects 
-																											(element_*& PARAM_INOUT del_element_ptr)
+PFX_INLINE result_t SIMPLEALLOCATOR::deallocate_objects
+(element_t*& PARAM_INOUT del_element_ptr)
 {
 	result_t status;
 	if (del_element_ptr)
@@ -95,9 +100,6 @@ PFX_INLINE result_t pecker_simple_allocator PFX_ALLOCATOR_TEMPLATE_PARAMS::deall
 	}
 	return status;
 }
-
-
-
 
 PECKER_END
 

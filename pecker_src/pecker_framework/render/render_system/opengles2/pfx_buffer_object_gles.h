@@ -8,12 +8,12 @@
 #ifndef		PFX_BUFFER_OBJECT_GLES_H_
 #define		PFX_BUFFER_OBJECT_GLES_H_
 
-#include <gl2.h>
+#include <GLES2/gl2.h>
 
 #include "../pfx_buffer_object.h"
 #include "../../../Include/carray"
 #include "../../pfx_render_allocator.h"
-#include "pfx_hal_info_gles2.h"
+#include "../../../pfx_hal_info_gles2.h"
 
 
 PECKER_BEGIN

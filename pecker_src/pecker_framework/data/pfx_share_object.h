@@ -2,7 +2,7 @@
  * pfx_share_object.h
  *
  *  Created on: 2013-8-25
-*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 #ifndef		PFX_SHARE_OBJECT_H_
@@ -17,11 +17,11 @@ template < class __alloc >
 class PFX_DATA_TEMPLATE_API cauto_release_object
 {
 public:
-	typedef typename __alloc															allocator_t;
-	typedef typename allocator_t::element_t								element_t;
-	typedef typename cauto_release_object < allocator_t >	auto_release_obj_t;
+	typedef __alloc                              allocator_t;
+	typedef typename allocator_t::element_t      element_t;
+	typedef cauto_release_object < allocator_t > auto_release_obj_t;
 private:
-	element_t*&	m_obj_ptr;
+	element_t*& m_obj_ptr;
 public:
 	cauto_release_object ()
 	{
@@ -32,14 +32,14 @@ public:
 	{
 		;
 	}
-	 ~cauto_release_object()
-	 {
-		 if (m_obj_ptr)
-		 {
-			 allocator_t::deallocate_object (m_obj_ptr);
-			 m_obj_ptr = null;
-		 } 
-	 }
+	~cauto_release_object()
+	{
+		if (m_obj_ptr)
+		{
+			allocator_t::deallocate_object (m_obj_ptr);
+			m_obj_ptr = null;
+		}
+	}
 protected:
 	cauto_release_object (const auto_release_obj_t& __other): m_obj_ptr (__other.m_obj_ptr)
 	{
@@ -51,9 +51,9 @@ template < class __alloc >
 class PFX_DATA_TEMPLATE_API cauto_release_buffer
 {
 public:
-	typedef typename __alloc															allocator_t;
-	typedef typename allocator_t::element_t								element_t;
-	typedef typename cauto_release_object < allocator_t >	auto_release_obj_t;
+	typedef __alloc                              allocator_t;
+	typedef typename allocator_t::element_t      element_t;
+	typedef cauto_release_object < allocator_t > auto_release_obj_t;
 private:
 	element_t*& m_buffer_ptr;
 public:
@@ -72,10 +72,10 @@ public:
 		{
 			allocator_t::deallocate_objects (m_buffer_ptr);
 			m_buffer_ptr = null;
-		} 
+		}
 	}
 protected:
-	cauto_release_buffer (const auto_release_obj_t& __other): m_obj_ptr (__other.m_obj_ptr)
+	cauto_release_buffer (const auto_release_obj_t& __other): m_buffer_ptr (__other.m_buffer_ptr)
 	{
 		;
 	}
@@ -85,43 +85,46 @@ template < class leakable_object >
 class PFX_DATA_TEMPLATE_API cshare_leakable_object
 {
 public:
-	typedef typename leakable_object								leakable_object_t;
-	typedef typename leakable_object_t::allocator_t	allocator_t;
-	typedef typename leakable_object_t::element_t		element_t;
-	typedef typename leakable_object_t::leak_data_t	leak_data_t;
+	typedef leakable_object                         leakable_object_t;
+	typedef typename leakable_object_t::allocator_t allocator_t;
+	typedef typename leakable_object_t::element_t   element_t;
+	typedef typename leakable_object_t::leak_data_t leak_data_t;
 
-	typedef typename	cshare_leakable_object < leakable_object_t > cshare_leakable_object_t;
-	typedef  typename	cshare_leakable_object_t	clist_node_t;
-	typedef typename	linked_list_operation < clist_node_t >	clist_op_t;
+	typedef cshare_leakable_object < leakable_object_t > cshare_leakable_object_t;
+	typedef cshare_leakable_object_t                     clist_node_t;
+	typedef linked_list_operation < clist_node_t >       clist_op_t;
 
-	typedef class clock_object  
+	typedef class clock_object
 	{
 	public:
-		friend cshare_leakable_object_t;
+		friend class cshare_leakable_object < leakable_object_t >;
+		// gcc 4.6不支持这样的写法
+		//friend cshare_leakable_object_t;
 	private:
-		leakable_object_t							m_new_object;
-		cshare_leakable_object_t*			m_old_object_ptr;
-		boolean_t											m_lock;
-		boolean_t											m_locked;
-			
+		leakable_object_t m_new_object;
+		cshare_leakable_object_t* m_old_object_ptr;
+		boolean_t m_lock;
+		boolean_t m_locked;
+
 	public:
 		clock_object ():m_old_object_ptr(null), m_lock (PFX_BOOL_FALSE),
-			m_locked(PFX_BOOL_FALSE)
-		{;}
+		m_locked(PFX_BOOL_FALSE)
+		{	;}
 		~clock_object()
 		{
 			unlock_object();
-			m_old_object_ptr	= null;
-			m_lock						= PFX_BOOL_FALSE;
-			m_locked					= PFX_BOOL_FALSE;
+			m_old_object_ptr = null;
+			m_lock = PFX_BOOL_FALSE;
+			m_locked = PFX_BOOL_FALSE;
 		}
 	protected:
-		clock_object (const clock_object& __other):m_new_object (__other.m_new_object),
-			m_old_object_ptr(__other.m_old_object_ptr), m_lock (__other.m_lock),
-			m_locked(__other.m_locked)
+		clock_object (const clock_object& __other):
+		m_new_object (__other.m_new_object),
+		m_old_object_ptr(__other.m_old_object_ptr), m_lock (__other.m_lock),
+		m_locked(__other.m_locked)
 		{
 		}
-		PFX_INLINE  result_t  lock_object(boolean_t __clone = PFX_BOOL_FALSE);
+		PFX_INLINE result_t lock_object(boolean_t __clone = PFX_BOOL_FALSE);
 		PFX_INLINE result_t unlock_object ();
 	public:
 		PFX_INLINE const cshare_leakable_object_t& const_lock_object () const
@@ -130,7 +133,7 @@ public:
 		}
 
 		PFX_INLINE leakable_object_t* lock_modify_object(boolean_t __restore = PFX_BOOL_FALSE)
-		{			
+		{
 			RETURN_RESULT (!m_locked, null);
 
 			m_lock = PFX_BOOL_TRUE;
@@ -147,7 +150,7 @@ public:
 				}
 				else
 				{
-					return  &(m_old_object_ptr->m_share_obj);
+					return &(m_old_object_ptr->m_share_obj);
 				}
 			}
 			else
@@ -157,44 +160,45 @@ public:
 
 		}
 
-
 	}lock_object_t;
 
-	friend clist_op_t; 
+	friend struct linked_list_operation < clist_node_t >;
+	// gcc 4.6 不支持这样的写法
+	//friend clist_op_t;
 private:
-	leakable_object_t	m_share_obj;
-	clist_node_t*			m_prev_node_ptr;
-	clist_node_t*			m_next_node_ptr;
+	leakable_object_t m_share_obj;
+	clist_node_t*     m_prev_node_ptr;
+	clist_node_t*     m_next_node_ptr;
 protected:
-	PFX_INLINE const clist_node_t*	get_prev_node () const
+	PFX_INLINE const clist_node_t* get_prev_node () const
 	{
 		return m_prev_node_ptr;
 	}
-	PFX_INLINE const clist_node_t*	get_next_node () const
+	PFX_INLINE const clist_node_t* get_next_node () const
 	{
 		return m_next_node_ptr;
 	}
-	PFX_INLINE  clist_node_t*	get_prev_node () 
+	PFX_INLINE clist_node_t* get_prev_node ()
 	{
 		return m_prev_node_ptr;
 	}
-	PFX_INLINE  clist_node_t*	get_next_node () 
+	PFX_INLINE clist_node_t* get_next_node ()
 	{
 		return m_next_node_ptr;
 	}
-	PFX_INLINE void								set_prev_node (clist_node_t* PARAM_IN node_ptr)
+	PFX_INLINE void set_prev_node (clist_node_t* PARAM_IN node_ptr)
 	{
 		m_prev_node_ptr = node_ptr;
 	}
-	PFX_INLINE void								set_next_node  (clist_node_t* PARAM_IN node_ptr)
+	PFX_INLINE void set_next_node (clist_node_t* PARAM_IN node_ptr)
 	{
 		m_next_node_ptr = node_ptr;
 	}
-	PFX_INLINE clist_node_t*				get_prev_node_ref ()
+	PFX_INLINE clist_node_t* get_prev_node_ref ()
 	{
 		return m_prev_node_ptr;
 	}
-	PFX_INLINE clist_node_t*				get_next_node_ref ()
+	PFX_INLINE clist_node_t* get_next_node_ref ()
 	{
 		return m_next_node_ptr;
 	}
@@ -212,7 +216,7 @@ protected:
 	{
 		m_prev_node_ptr = null;
 		m_next_node_ptr = null;
-		__other.copy_to(*this);
+		__other.m_share_obj.copy_to(this->m_share_obj);
 	}
 public:
 	PFX_INLINE const leakable_object_t& const_reference () const
@@ -227,8 +231,8 @@ public:
 		return (boolean_t)(get_prev_node() || get_next_node());
 	}
 
-	PFX_INLINE lock_object_t& lock_bits (lock_object_t& __lock, 
-		boolean_t __clone = PFX_BOOL_FALSE)
+	PFX_INLINE lock_object_t& lock_bits (lock_object_t& __lock,
+			boolean_t __clone = PFX_BOOL_FALSE)
 	{
 		__lock.m_old_object_ptr = this;
 		__lock.lock_object(__clone);
@@ -252,20 +256,22 @@ template < class __alloc >
 class PFX_DATA_TEMPLATE_API cleakable_object_packet
 {
 public:
-	typedef typename __alloc								allocator_t;
-	typedef typename allocator_t::element_t	element_t;
+	typedef __alloc                                 allocator_t;
+	typedef typename allocator_t::element_t         element_t;
 
-	typedef typename cleakable_object_packet < allocator_t >	cpacket_t;
+	typedef cleakable_object_packet < allocator_t > cpacket_t;
 
-	typedef typename cpacket_t							cleakable_obj_t;
+	typedef cpacket_t                               cleakable_obj_t;
 
 	typedef class cleak_data
 	{
-		friend cpacket_t;
+		friend class cleakable_object_packet < allocator_t >;
+		//gcc 4.6 不支持这样的写法
+		//friend cpacket_t;
 	private:
-		element_t*	m_packet_ptr;
+		element_t* m_packet_ptr;
 	}leak_data_t;
-	
+
 private:
 	element_t* m_packet_ptr;
 public:
@@ -281,21 +287,21 @@ protected:
 	cleakable_object_packet (cpacket_t& __other)
 	{
 		m_packet_ptr = null;
-		__other.copy_to(*this);
+		__other.m_packet_ptr->copy_to(*(this->m_packet_ptr));
 	}
 public:
 	PFX_INLINE leak_data_t& leak_memery_to (leak_data_t& PARAM_OUT __packet)
 	{
 		__packet.m_packet_ptr = m_packet_ptr;
-		this->m_packet_ptr			= null;
+		this->m_packet_ptr = null;
 		return __packet;
 	};
 
 	static PFX_INLINE result_t free_leak_block (leak_data_t& PARAM_INOUT __packet)
 	{
-		 cpacket_t __freepacket;
-		__freepacket.m_packet_ptr	=	__packet.m_packet_ptr;
-		__packet.m_packet_ptr			= null;
+		cpacket_t __freepacket;
+		__freepacket.m_packet_ptr = __packet.m_packet_ptr;
+		__packet.m_packet_ptr = null;
 		return PFX_STATUS_OK;
 	}
 
@@ -318,9 +324,9 @@ public:
 	{
 		if (&__other != this)
 		{
-			element_t* tmp_ptr		= __other.m_packet_ptr;
-			__other.m_packet_ptr	= this->m_packet_ptr;
-			this->m_packet_ptr			= tmp_ptr;
+			element_t* tmp_ptr = __other.m_packet_ptr;
+			__other.m_packet_ptr = this->m_packet_ptr;
+			this->m_packet_ptr = tmp_ptr;
 		}
 	}
 	PFX_INLINE result_t init ()
@@ -339,7 +345,7 @@ public:
 		{
 			status = PFX_STATUS_MEM_LOW;
 		}
-		
+
 		return status;
 	}
 	PFX_INLINE result_t copy_to (cpacket_t& PARAM_OUT __packet) const
@@ -350,7 +356,7 @@ public:
 			if (this->m_packet_ptr)
 			{
 				FOR_ONE_LOOP_BEGIN
-				
+
 				if (!__packet.m_packet_ptr)
 				{
 					status = __packet.init ();
@@ -377,8 +383,8 @@ public:
 		result_t status;
 		if (m_packet_ptr)
 		{
-			 status = allocator_t::deallocate_object (m_packet_ptr);
-			 m_packet_ptr = null;
+			status = allocator_t::deallocate_object (m_packet_ptr);
+			m_packet_ptr = null;
 		}
 		else
 		{
@@ -391,7 +397,7 @@ public:
 		static element_t __error_elem;
 		return __error_elem;
 	}
-	PFX_INLINE element_t&	reference ()
+	PFX_INLINE element_t& reference ()
 	{
 		if (m_packet_ptr)
 		{
@@ -402,7 +408,7 @@ public:
 			return error_element();
 		}
 	}
-	PFX_INLINE const element_t&	reference () const
+	PFX_INLINE const element_t& reference () const
 	{
 		if (m_packet_ptr)
 		{
@@ -418,11 +424,8 @@ public:
 template < class __alloc >
 struct PFX_ShareObject
 {
-	typedef typename cshare_leakable_object < cleakable_object_packet < __alloc > > cshare_object_t;
+	typedef cshare_leakable_object < cleakable_object_packet < __alloc > > cshare_object_t;
 };
-
-
-
 
 //////////////////////////////////////////////////////////////////////////
 #define CSLEAKABLE_OBJECT_TEMPALTE template < class leakable_object >
@@ -430,7 +433,7 @@ struct PFX_ShareObject
 #define CSLEAKABLE_OBJECT_TYPE typename cshare_leakable_object< leakable_object >
 
 CSLEAKABLE_OBJECT_TEMPALTE
-PFX_INLINE  result_t  CSLEAKABLE_OBJECT::clock_object::lock_object(boolean_t __clone /*= PFX_BOOL_FALSE*/)
+PFX_INLINE result_t CSLEAKABLE_OBJECT::clock_object::lock_object(boolean_t __clone /*= PFX_BOOL_FALSE*/)
 {
 	result_t status;
 	if (__clone && m_old_object_ptr)
@@ -474,17 +477,17 @@ PFX_INLINE result_t CSLEAKABLE_OBJECT::clock_object ::unlock_object ()
 		status = PFX_STATUS_OK;
 	}
 	//m_lock_object_ptr = null;
-	m_lock		= PFX_BOOL_FALSE;
-	m_locked	= PFX_BOOL_FALSE;
+	m_lock = PFX_BOOL_FALSE;
+	m_locked = PFX_BOOL_FALSE;
 	return status;
 }
 
 CSLEAKABLE_OBJECT_TEMPALTE
 PFX_INLINE result_t CSLEAKABLE_OBJECT::release_object ()
 {
-	
-	typedef CSLEAKABLE_OBJECT_TYPE::leak_data_t		leak_data_t;
-	typedef CSLEAKABLE_OBJECT_TYPE::clist_node_t	clist_node_t;
+
+	typedef CSLEAKABLE_OBJECT_TYPE::leak_data_t leak_data_t;
+	typedef CSLEAKABLE_OBJECT_TYPE::clist_node_t clist_node_t;
 
 	result_t status;
 	leak_data_t __tmp_data;
@@ -514,14 +517,14 @@ PFX_INLINE result_t CSLEAKABLE_OBJECT::release_object ()
 CSLEAKABLE_OBJECT_TEMPALTE
 PFX_INLINE result_t CSLEAKABLE_OBJECT::share (CSLEAKABLE_OBJECT_TYPE::cshare_leakable_object_t& __other)
 {
-	typedef CSLEAKABLE_OBJECT_TYPE::clist_node_t	clist_node_t;
-	typedef CSLEAKABLE_OBJECT_TYPE::clist_op_t				clist_op_t;
+	typedef CSLEAKABLE_OBJECT_TYPE::clist_node_t clist_node_t;
+	typedef CSLEAKABLE_OBJECT_TYPE::clist_op_t clist_op_t;
 	result_t status;
 
 	__other.release_object ();
 
-	const  clist_node_t* node_ptr = 
-				clist_op_t:: insert_list_node_back(this, &__other);
+	const clist_node_t* node_ptr =
+	clist_op_t:: insert_list_node_back(this, &__other);
 
 	if (node_ptr)
 	{
@@ -535,6 +538,5 @@ PFX_INLINE result_t CSLEAKABLE_OBJECT::share (CSLEAKABLE_OBJECT_TYPE::cshare_lea
 	return status;
 }
 PECKER_END
-
 
 #endif			//PFX_SHARE_OBJECT_H_

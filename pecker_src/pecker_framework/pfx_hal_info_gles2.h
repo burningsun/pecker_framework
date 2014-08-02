@@ -9,10 +9,11 @@
 #define		PFX_HAL_INFO_H_
 
 #include "pfx_defines.h"
-
+#if ((RENDER_SYSTEM_TYPE == OPENGLES_BASE_RENDER_SYSTEM) && RENDER_SYSTEM_VERSION == (2))
 extern "C"
 {
 	const instance_version_t& get_hal_instanse_ID();
 }
+#endif
 
 #endif			//PFX_HAL_INFO_H_

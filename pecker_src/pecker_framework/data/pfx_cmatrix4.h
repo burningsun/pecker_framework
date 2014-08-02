@@ -16,7 +16,7 @@ PECKER_BEGIN
 template < class dim_value >
 struct PFX_CMatrix4x4_DATA
 {
-	typedef typename dim_value															dim_t;
+	typedef  dim_value															dim_t;
 
 	typedef typename vector_data< dim_t, 2 >::vector_t					vector_d2_t;
 	typedef typename square_matrix_data< dim_t, 2 >::matrix_t matrix_d2_t;
@@ -35,17 +35,17 @@ struct PFX_CMatrix4x4
 {
 	typedef typename smatrix_data::dim_t															dim_t;
 
-	typedef typename VectorX < dim_t, 2, optinal_type >									vector2_t;
-	typedef typename SquareMatrixX < dim_t, 2, optinal_type >					matrix2_t;
-	typedef typename SquareMatrixEX_unsafe < dim_t, 2, optinal_type >	matrix2x_t;
+	typedef  VectorX < dim_t, 2, optinal_type >									vector2_t;
+	typedef  SquareMatrixX < dim_t, 2, optinal_type >					matrix2_t;
+	typedef  SquareMatrixEX_unsafe < dim_t, 2, optinal_type >	matrix2x_t;
 
-	typedef typename VectorX < dim_t, 3, optinal_type >									vector3_t;
-	typedef typename SquareMatrixX < dim_t, 3, optinal_type >					matrix3_t;
-	typedef typename SquareMatrixEX_unsafe < dim_t, 3, optinal_type >	matrix3x_t;
+	typedef  VectorX < dim_t, 3, optinal_type >									vector3_t;
+	typedef  SquareMatrixX < dim_t, 3, optinal_type >					matrix3_t;
+	typedef  SquareMatrixEX_unsafe < dim_t, 3, optinal_type >	matrix3x_t;
 
-	typedef typename VectorX < dim_t, 4, optinal_type >									vector4_t;
-	typedef typename SquareMatrixX < dim_t, 4, optinal_type >					matrix4_t;
-	typedef typename SquareMatrixEX_unsafe < dim_t, 4, optinal_type >	matrix4x_t;
+	typedef  VectorX < dim_t, 4, optinal_type >									vector4_t;
+	typedef  SquareMatrixX < dim_t, 4, optinal_type >					matrix4_t;
+	typedef  SquareMatrixEX_unsafe < dim_t, 4, optinal_type >	matrix4x_t;
 
 	//static PFX_INLINE vector4_t operator* (const vector4_t& __vec_a, const matrix4_t& __matrix_b)
 	//{
@@ -66,8 +66,8 @@ struct PFX_CMatrix4x4
 
 	static PFX_INLINE matrix4_t scale (dim_t scale_size)
 	{
-		const dim_t ZERO_FLOAT	= 0;
-		const dim_t ONE_FLOAT		= 1;
+		dim_t ZERO_FLOAT	= 0;
+		dim_t ONE_FLOAT		= 1;
 		return matrix4_t
 			(scale_size		,	ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT,
 			ZERO_FLOAT	,	scale_size		,	ZERO_FLOAT	,	ZERO_FLOAT,
@@ -76,8 +76,8 @@ struct PFX_CMatrix4x4
 	}
 	static PFX_INLINE matrix4_t scale (dim_t x, dim_t y, dim_t z)
 	{
-		const dim_t ZERO_FLOAT	= 0;
-		const dim_t ONE_FLOAT		= 1;
+		dim_t ZERO_FLOAT	= 0;
+		dim_t ONE_FLOAT		= 1;
 		return matrix4_t
 			(x,						ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT,
 			ZERO_FLOAT	,	y						,	ZERO_FLOAT	,	ZERO_FLOAT,
@@ -94,8 +94,8 @@ struct PFX_CMatrix4x4
 	}
 	static PFX_INLINE matrix4_t translate (dim_t x, dim_t y, dim_t z)
 	{
-		const dim_t ZERO_FLOAT	= 0;
-		const dim_t ONE_FLOAT		= 1;
+		dim_t ZERO_FLOAT	= 0;
+		dim_t ONE_FLOAT		= 1;
 
 		return matrix4_t
 			(ONE_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT,
@@ -121,8 +121,8 @@ struct PFX_CMatrix4x4
 	}
 	static PFX_INLINE matrix4_t rotate_x (dim_t radian)
 	{
-		const dim_t ZERO_FLOAT	= 0;
-		const dim_t ONE_FLOAT		= 1;
+		dim_t ZERO_FLOAT	= 0;
+		dim_t ONE_FLOAT		= 1;
 		dim_t fsin;
 		dim_t fcos;
 
@@ -132,12 +132,11 @@ struct PFX_CMatrix4x4
 			ZERO_FLOAT	,	fcos					,	fsin					,	ZERO_FLOAT,
 			ZERO_FLOAT	,	-fsin				,	fcos					,	ZERO_FLOAT,
 			ZERO_FLOAT	,	ZERO_FLOAT	,	ZERO_FLOAT	,	ONE_FLOAT);
-		return mat;
 	}
-	static PFX_INLINE matrix4_t rotate_y (dim_t rad)
+	static PFX_INLINE matrix4_t rotate_y (dim_t radian)
 	{
-		const dim_t ZERO_FLOAT	= 0;
-		const dim_t ONE_FLOAT		= 1;
+		dim_t ZERO_FLOAT	= 0;
+		dim_t ONE_FLOAT		= 1;
 		dim_t fsin;
 		dim_t fcos;
 
@@ -150,8 +149,8 @@ struct PFX_CMatrix4x4
 	}
 	static PFX_INLINE matrix4_t rotate_z (dim_t radian)
 	{
-		const dim_t ZERO_FLOAT	= 0;
-		const dim_t ONE_FLOAT		= 1;
+		dim_t ZERO_FLOAT	= 0;
+		dim_t ONE_FLOAT		= 1;
 		dim_t fsin;
 		dim_t fcos;
 

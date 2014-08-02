@@ -18,15 +18,15 @@ class PFX_DATA_TEMPLATE_API cshare_string :
 	public IPfx_string < typename __alloc::element_t >
 {
 public:
-	typedef typename __alloc										allocator_t;
-	typedef typename allocator_t::element_t			element_t;
-	typedef typename element_t								item_type_t;
-	typedef typename IPfx_string < element_t >		IString_t;
-	typedef typename cblock< allocator_t >				cblock_t;
+	typedef  __alloc										allocator_t;
+	typedef  typename __alloc::element_t			element_t;
+	typedef  element_t								item_type_t;
+	typedef  IPfx_string < element_t >		IString_t;
+	typedef  cblock< allocator_t >				cblock_t;
 
-	typedef typename cshare_leakable_object < cblock_t > cshare_block_t;
+	typedef  cshare_leakable_object < cblock_t > cshare_block_t;
 
-	typedef typename cshare_string< allocator_t >	cstring_t;
+	typedef  cshare_string< allocator_t >	cstring_t;
 protected:
 	cshare_block_t									m_block;
 	element_t*										m_this_string_ptr;
@@ -39,7 +39,7 @@ public:
 	cshare_string (const cstring_t & other_) throw (result_t)
 	{
 		m_size = 0;
-		m_this_string_ptr = m_cache_buffer;
+		m_this_string_ptr = null;
 		result_t status = other_.copy_to(*this);
 		if (PFX_STATUS_OK != status)
 		{
@@ -53,9 +53,9 @@ public:
 public:
 	typedef class cstring_const_iterator
 	{
-		friend cstring_t;
+		friend class cshare_string< __alloc >;
 	public:
-		typedef element_t							element_t;
+		typedef typename cstring_t::element_t							element_t;
 		typedef cstring_const_iterator		iterator_t;
 	private:
 		const element_t*	 m_cur_ptr;
@@ -176,11 +176,11 @@ public:
 		{
 			uindex_t offset = 0;
 			result_t status = 0;
-			cshare_block_t::lock_object_t __lock;
+			typename cshare_block_t::lock_object_t __lock;
 
 			m_block.lock_bits(__lock);
 
-			cshare_block_t::leak_data_t* lock_ptr = __lock.lock_modify_object(PFX_BOOL_TRUE);
+			typename cshare_block_t::leak_data_t* lock_ptr = __lock.lock_modify_object(PFX_BOOL_TRUE);
 			if (lock_ptr)
 			{
 				lock_ptr->reference_unsafe(offset) = __char; 
@@ -202,7 +202,7 @@ public:
 			 
 			 if (PFX_STATUS_OK != status)
 			 {
-				 return status
+				 return status;
 			 }
 			 else
 			 {

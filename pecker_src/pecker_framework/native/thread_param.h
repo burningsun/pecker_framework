@@ -22,6 +22,12 @@ typedef struct st_proxy_status
 
 struct Ithread_proxy
 {
+#ifdef __ANDROID__
+	friend class android_thread;
+private:
+	volatile bool m_bExit_ok;
+public:
+#endif
 	virtual ~Ithread_proxy(){;}
 	virtual long run_proxy () = 0;
 };
@@ -31,14 +37,14 @@ struct thread_proxy : public Ithread_proxy
 {
 	typedef __proxy_object			proxy_object_t;
 	typedef __on_proxy_callback		proxy_callback_t;
+	typedef thread_proxy < __proxy_object, __on_proxy_callback > thread_proxy_t;
 
 
-
-	proxy_object_t	*	m_object_ptr;
+	proxy_object_t*		m_object_ptr;
 	proxy_callback_t	m_callback;
-	proxy_status_t*	m_proxy_status;
+	proxy_status_t*		m_proxy_status;
 
-	thread_proxy ():m_object_ptr(NULL),m_callback(NULL)
+	thread_proxy ():m_object_ptr(NULL),m_callback(NULL),m_bclone_obj(false)
 	{
 		;
 	}
@@ -55,21 +61,42 @@ struct thread_proxy : public Ithread_proxy
 		}
 		return 0;
 	}
+
+
+	virtual Ithread_proxy* clone ()
+	{
+		thread_proxy_t* return_proxy_ptr = new thread_proxy_t;
+		if (return_proxy_ptr)
+		{
+			*return_proxy_ptr = *this;
+			return_proxy_ptr->m_bclone_obj = true;
+		}
+		return return_proxy_ptr;
+	}
+	virtual void release ()
+	{
+		if (m_bclone_obj)
+		{
+			delete this;
+		}
+	}
+private:
+	bool m_bclone_obj;
 };
 
 template < class __proxy_object, class __on_proxy_callback >
 struct thread_proxy_proc : public Ithread_proxy
 {
-	typedef __proxy_object					proxy_object_t;
+	typedef __proxy_object			proxy_object_t;
 	typedef __on_proxy_callback		proxy_callback_t;
-
+	typedef thread_proxy < __proxy_object, __on_proxy_callback > thread_proxy_t;
 
 
 	proxy_object_t	*	m_object_ptr;
 	proxy_callback_t	m_callback;
 	proxy_status_t		m_proxy_status;
 
-	thread_proxy_proc ():m_object_ptr(NULL),m_callback(NULL)
+	thread_proxy_proc ():m_object_ptr(NULL),m_callback(NULL),m_bclone_obj(false)
 	{
 		;
 	}
@@ -86,6 +113,26 @@ struct thread_proxy_proc : public Ithread_proxy
 		}
 		return 0;
 	}
+
+	virtual Ithread_proxy* clone ()
+	{
+		thread_proxy_t* return_proxy_ptr = new thread_proxy_t;
+		if (return_proxy_ptr)
+		{
+			*return_proxy_ptr = *this;
+			return_proxy_ptr->m_bclone_obj = true;
+		}
+		return return_proxy_ptr;
+	}
+	virtual void release ()
+	{
+		if (m_bclone_obj)
+		{
+			delete this;
+		}
+	}
+private:
+	bool m_bclone_obj;
 };
 
 PECKER_END

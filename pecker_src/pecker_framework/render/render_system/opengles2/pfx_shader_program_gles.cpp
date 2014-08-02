@@ -188,7 +188,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 				// Query uniform info.
 				GLsizei uniform_size = 0;
 				GLenum value_type = 0;
-				glGetActiveUniform(m_programID, i, length, nullptr, &uniform_size, 
+				glGetActiveUniform(m_programID, i, length, null, &uniform_size,
 					&value_type,
 					(GLchar*)(node_ptr->get_item_ref().m_name.get_string()));
 				if (uniform_size)
@@ -267,7 +267,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 				// Query attribute info.
 				GLsizei attribute_size = 0;
 				GLenum value_type = 0;
-				glGetActiveAttrib(m_programID, i, length, nullptr, &attribute_size, 
+				glGetActiveAttrib(m_programID, i, length, null, &attribute_size,
 					&value_type, 
 					(GLchar*)(node_ptr->get_item_ref().m_name.get_string()));
 				if (attribute_size)

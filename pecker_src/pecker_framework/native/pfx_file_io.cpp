@@ -6,7 +6,14 @@
  */
 
 #include "pfx_file_io.h"
-#include <io.h>
+
+// 插，android 居然木有io.h这个文件
+#if !defined(__APPLE__) && !defined(__ANDROID__)
+ #include <io.h>
+#endif //#if !defined(__APPLE__) && !defined(__ANDROID__)
+#ifdef __ANDROID__
+#include <stdarg.h>
+#endif //#ifdef __ANDROID__
 #include <errno.h>
 #include <stdio.h>
 #include "../data/pfx_cstring_codes.h"

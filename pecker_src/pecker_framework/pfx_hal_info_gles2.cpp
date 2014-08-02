@@ -7,9 +7,10 @@
 
 #include "pfx_hal_info_gles2.h"
 
-
+#if ((RENDER_SYSTEM_TYPE == OPENGLES_BASE_RENDER_SYSTEM) && RENDER_SYSTEM_VERSION == (2))
 static instance_version_t gInstance_version = { OPENGLES_BASE_RENDER_SYSTEM, 2, 0, 0 };
 const instance_version_t& get_hal_instanse_ID()
 {
 	return gInstance_version;
 }
+#endif

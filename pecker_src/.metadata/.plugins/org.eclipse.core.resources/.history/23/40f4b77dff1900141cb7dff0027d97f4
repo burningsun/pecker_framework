@@ -1,0 +1,17 @@
+
+PFX_LOCAL_PATH := pecker_framework/
+
+NATIVE_MK := native.mk
+include $(PFX_LOCAL_PATH)$(NATIVE_MK)
+
+PFX_LOCAL_SUB_FILES := $(PFX_NATIVE_LOCAL_SRC_FILES) 
+
+
+PFX_LOCAL_SRC_FILES := \
+					$(PFX_LOCAL_PATH)pfx_defines.cpp \
+					$(PFX_LOCAL_PATH)pfx_api_info.cpp \
+					$(PFX_LOCAL_PATH)pfx_hal_info.cpp \
+				   $(LOCAL_SUB_FILES)
+				   
+
+

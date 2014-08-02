@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package com.burnningsun.pfx_framework;
+
+import android.app.NativeActivity;
+
+/**
+ * @author cut
+ *
+ */
+public class PFXNativeActivityBase extends NativeActivity {
+
+	/**
+	 * 
+	 */
+	public PFXNativeActivityBase() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

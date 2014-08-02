@@ -57,7 +57,7 @@ int udp_socket::init(ip_addr_info_t& local_ip_info,
 			if (SOCKET_ERROR == bind_result)
 			{
 				LOG_OUT("port %d ~ 65535 bind error,error code = %d",
-					backup_port,GetNetLastErrorCode);
+					backup_port, GetNetLastErrorCode());
 				local_ip_info.m_socket_info.m_ipv4addr.sin_port = htons(backup_port);
 				close();
 				status = PFX_STATUS_FAIL;
@@ -95,6 +95,7 @@ int udp_socket::close()
 {
 	if (check_socket_ok())
 	{
+		::shutdown(m_socket,2);
 		::closesocket(m_socket);
 		m_socket = INVALID_SOCKET;
 	}

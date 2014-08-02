@@ -7,20 +7,19 @@
 PECKER_BEGIN
 
 typedef pthread_attr_t thread_attribute_t;
-typedef pthread_t		thread_handle_t;
-
+typedef pthread_t      thread_handle_t;
 
 class linux_thread
 {
 public:
-	typedef Ithread_proxy					thread_proxy_interface_t;
+	typedef Ithread_proxy thread_proxy_interface_t;
 private:
-	thread_handle_t								m_thread_handle;
-	int														m_create_thread_status;
+	thread_handle_t m_thread_handle;
+	int             m_create_thread_status;
 protected:
-	static void*	__on_thread_callback(void*  lpParamers)
+	static void* __on_thread_callback(void* lpParamers)
 	{
-		thread_proxy_interface_t*	proxy_obect_ptr = (thread_proxy_interface_t*)lpParamers;
+		thread_proxy_interface_t* proxy_obect_ptr = (thread_proxy_interface_t*)lpParamers;
 		if (proxy_obect_ptr)
 		{
 			long status;
@@ -47,9 +46,9 @@ public:
 	}
 
 	inline result_t start_thread (
-		thread_proxy_interface_t*		__proxy_object, 
-		thread_attribute_t* thread_attr_ptr = 0,
-		int wait_last_thread_time = 2000)
+			thread_proxy_interface_t* __proxy_object,
+			thread_attribute_t* thread_attr_ptr = 0,
+			int wait_last_thread_time = 2000)
 	{
 		if (!__proxy_object)
 		{
@@ -61,9 +60,9 @@ public:
 		}
 
 		m_create_thread_status = pthread_create(&m_thread_handle,
-			thread_attr_ptr,
-			__on_thread_callback,
-			__proxy_object);
+				thread_attr_ptr,
+				__on_thread_callback,
+				__proxy_object);
 
 		if (m_create_thread_status)
 		{
@@ -72,16 +71,16 @@ public:
 		return m_create_thread_status;
 	}
 
-	inline result wait_thread_exit (unsigned int timeout = 0xFFFFFFFF)
+	inline result_t wait_thread_exit (unsigned int timeout = 0xFFFFFFFF)
 	{
 		result_t status;
 		if (0xFFFFFFFF != timeout)
 		{
-			timespec   joinDelay; 
-			joinDelay.tv_nsec   =   timeout/1000; 
+			timespec joinDelay;
+			joinDelay.tv_nsec = timeout/1000;
 			if (!m_create_thread_status)
 			{
-				status = pthread_timedjoin_np(m_thread_handle,   NULL,   &joinDelay); //等待线程结束
+				status = pthread_timedjoin_np(m_thread_handle, NULL, &joinDelay); //等待线程结束
 			}
 			else
 			{
@@ -92,36 +91,35 @@ public:
 		{
 			if (!m_create_thread_status)
 			{
-				status =  pthread_join(m_thread_handle,   NULL); //等待线程结束
+				status = pthread_join(m_thread_handle, NULL); //等待线程结束
 			}
 			else
 			{
 				status = PFX_STATUS_OK;
 			}
 		}
-
 
 		if (PFX_STATUS_OK == status)
 		{
-			m_thread_handle				= null;
-			m_create_thread_status	= -1;
+			m_thread_handle = null;
+			m_create_thread_status = -1;
 		}
 		else
 		{
-			status = force_terminal_thread();
+			status = terminal_thread();
 		}
 		return status;
 	}
 
-	inline result_t force_terminal_thread()
+	inline result_t terminal_thread()
 	{
 		result_t status = 0;
 		if (!m_create_thread_status)
 		{
 			status = pthread_cancel(m_thread_handle);
 		}
-		m_thread_handle				= null;
-		m_create_thread_status	= -1;
+		m_thread_handle = null;
+		m_create_thread_status = -1;
 		return status;
 	}
 

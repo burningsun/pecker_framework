@@ -2,12 +2,11 @@
  * cbst.h
  *
  *  Created on: 2013-12-16
-*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 #ifndef		PFX_CBST_CODES_H_
 #define		PFX_CBST_CODES_H_
-
 
 #include "pfx_cbst.h"
 #include "pfx_cbst_iterator_codes.h"
@@ -68,7 +67,7 @@ PECKER_BEGIN
 #define PFX_RB_BST_INSERT_TEMPLATE_DEFINES template < class node_type_, class compare_two_node_ >
 #define PFX_RB_BST_INSERT					RB_BST_insert_node< node_type_, compare_two_node_ >
 #define PFX_RB_BST_INSERT_TYPE			typename RB_BST_insert_node< node_type_, compare_two_node_ >
-	
+
 #define PFX_CBST_CLEAN_TEMPLATE_DEFINES template < class node_alloc >
 #define PFX_CBST_CLEAN							BST_clean< node_alloc >
 #define PFX_CBST_CLEAN_TYPE				typename BST_clean< node_alloc >
@@ -81,12 +80,11 @@ PECKER_BEGIN
 #define PFX_CBST_COPY							XBST_copy< node_alloc, node_insert >
 #define PFX_CBST_COPY_TYPE				typename XBST_copy< node_alloc, node_insert >
 
-
 //最大最小值
 PFX_CBST_MINMAX_TEMPLATE_DEFINES
-PFX_INLINE const PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::max_node 
-	(const PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr, 
-	const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
+PFX_INLINE const PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::max_node
+(const PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr,
+		const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
 {
 	typedef PFX_CBST_MINMAX_TYPE::node_t node_t;
 
@@ -114,9 +112,9 @@ PFX_INLINE const PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::max_node
 }
 
 PFX_CBST_MINMAX_TEMPLATE_DEFINES
-PFX_INLINE const PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::min_node 
-	(const PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr, 
-	const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
+PFX_INLINE const PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::min_node
+(const PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr,
+		const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
 {
 	typedef PFX_CBST_MINMAX_TYPE::node_t node_t;
 
@@ -144,18 +142,18 @@ PFX_INLINE const PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::min_node
 }
 
 PFX_CBST_MINMAX_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::max_node 
-	(PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr, 
-	const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
+PFX_INLINE PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::max_node
+(PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr,
+		const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
 {
 	typedef PFX_CBST_MINMAX_TYPE::node_t node_t;
 	return (node_t*)max_node((node_t*)root_node_ptr, null_node_ptr);
 }
 
 PFX_CBST_MINMAX_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::min_node 
-	(PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr, 
-	const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
+PFX_INLINE PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::min_node
+(PFX_CBST_MINMAX_TYPE::node_t* root_node_ptr,
+		const PFX_CBST_MINMAX_TYPE::node_t* null_node_ptr /*= null*/)
 {
 	typedef PFX_CBST_MINMAX_TYPE::node_t node_t;
 	return (node_t*)min_node((node_t*)root_node_ptr, null_node_ptr);
@@ -164,10 +162,10 @@ PFX_INLINE PFX_CBST_MINMAX_TYPE::node_t* PFX_CBST_MINMAX ::min_node
 // 初始化
 PFX_CBST_INIT_TEMPLATE_DEFINES
 PFX_INLINE result_t PFX_CBST_INIT::init_node_leaves (
-	PFX_CBST_INIT_TYPE::node_t* PARAM_INOUT tree_node_ptr,
-	PFX_CBST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
-	PFX_CBST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
-	PFX_CBST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
+		PFX_CBST_INIT_TYPE::node_t* PARAM_INOUT tree_node_ptr,
+		PFX_CBST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
+		PFX_CBST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
+		PFX_CBST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
 {
 	result_t status_ = PFX_STATUS_INVALID_PARAMS;
 	if (tree_node_ptr)
@@ -182,10 +180,10 @@ PFX_INLINE result_t PFX_CBST_INIT::init_node_leaves (
 
 PFX_CBST_INIT_TEMPLATE_DEFINES
 PFX_INLINE result_t PFX_CBST_INIT::init_node_leaves (
-	PFX_CBST_INIT_TYPE::node_t& PARAM_INOUT tree_node,
-	PFX_CBST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
-	PFX_CBST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
-	PFX_CBST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
+		PFX_CBST_INIT_TYPE::node_t& PARAM_INOUT tree_node,
+		PFX_CBST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
+		PFX_CBST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
+		PFX_CBST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
 {
 	tree_node.set_left_node (left_node_ptr);
 	tree_node.set_right_node (right_node_ptr);
@@ -194,11 +192,11 @@ PFX_INLINE result_t PFX_CBST_INIT::init_node_leaves (
 }
 // AVL树基本初始化
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_AVL_BST_INIT::init_node_leaves 
-	(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT tree_node_ptr,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr/* = null*/)
+PFX_INLINE result_t PFX_AVL_BST_INIT::init_node_leaves
+(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT tree_node_ptr,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr/* = null*/)
 {
 	result_t status_ = PFX_STATUS_INVALID_PARAMS;
 	if (tree_node_ptr)
@@ -213,11 +211,11 @@ PFX_INLINE result_t PFX_AVL_BST_INIT::init_node_leaves
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_AVL_BST_INIT::init_node_leaves 
-	(PFX_AVL_BST_INIT_TYPE::node_t& PARAM_INOUT tree_node,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr/* = null*/)
+PFX_INLINE result_t PFX_AVL_BST_INIT::init_node_leaves
+(PFX_AVL_BST_INIT_TYPE::node_t& PARAM_INOUT tree_node,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr/* = null*/)
 {
 	tree_node.set_left_node (left_node_ptr);
 	tree_node.set_right_node (right_node_ptr);
@@ -227,8 +225,8 @@ PFX_INLINE result_t PFX_AVL_BST_INIT::init_node_leaves
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE nsize__t PFX_AVL_BST_INIT ::get_avl_height 
-	(const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
+PFX_INLINE nsize__t PFX_AVL_BST_INIT ::get_avl_height
+(const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
 {
 	nsize__t height_value = -1;
 	if (node_ptr)
@@ -239,9 +237,9 @@ PFX_INLINE nsize__t PFX_AVL_BST_INIT ::get_avl_height
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE nsize__t PFX_AVL_BST_INIT ::calculate_avl_height 
+PFX_INLINE nsize__t PFX_AVL_BST_INIT ::calculate_avl_height
 (const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr,
-	const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr)
+		const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr)
 {
 	nsize__t left_height = get_avl_height (left_node_ptr);
 	nsize__t right_height = get_avl_height (right_node_ptr);
@@ -256,50 +254,50 @@ PFX_INLINE nsize__t PFX_AVL_BST_INIT ::calculate_avl_height
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE nsize__t PFX_AVL_BST_INIT ::calculate_avl_height 
-	(const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
+PFX_INLINE nsize__t PFX_AVL_BST_INIT ::calculate_avl_height
+(const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
 {
 	nsize__t height_value = -1;
 	if (node_ptr)
 	{
-		height_value = calculate_avl_height 
-			(node_ptr->get_left_node(),node_ptr->get_right_node ());
+		height_value = calculate_avl_height
+		(node_ptr->get_left_node(),node_ptr->get_right_node ());
 	}
 	return height_value;
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE nsize__t PFX_AVL_BST_INIT ::calculate_avl_balance_value 
-	(const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
+PFX_INLINE nsize__t PFX_AVL_BST_INIT ::calculate_avl_balance_value
+(const PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
 {
 	nsize__t balance_value = 0;
 	if (node_ptr)
 	{
-		balance_value = get_avl_height 
-			(node_ptr->get_left_node ()) - get_avl_height (node_ptr->get_right_node ());
+		balance_value = get_avl_height
+		(node_ptr->get_left_node ()) - get_avl_height (node_ptr->get_right_node ());
 	}
 	return balance_value;
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE void PFX_AVL_BST_INIT ::update_avl_height 
-	(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
+PFX_INLINE void PFX_AVL_BST_INIT ::update_avl_height
+(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_IN node_ptr)
 {
 	nsize__t height_value = calculate_avl_height (node_ptr);
 	node_ptr->set_height (height_value);
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_rr_rotate 
-	(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_rr_rotate
+(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	typedef PFX_AVL_BST_INIT_TYPE::node_t node_t;
-	node_t* rotate_node_ptr =  node_ptr->get_right_node_ref ();
+	node_t* rotate_node_ptr = node_ptr->get_right_node_ref ();
 
 	node_ptr->set_right_node (rotate_node_ptr->get_left_node_ref ());
 	rotate_node_ptr->set_left_node (node_ptr);
 
-	node_t* tmp_right_node_ptr =  node_ptr->get_right_node_ref ();
+	node_t* tmp_right_node_ptr = node_ptr->get_right_node_ref ();
 	if (tmp_right_node_ptr)
 	{
 		tmp_right_node_ptr->set_parent_node (node_ptr);
@@ -314,11 +312,11 @@ PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_rr_rotate
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_ll_rotate 
-	(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_ll_rotate
+(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	typedef PFX_AVL_BST_INIT_TYPE::node_t node_t;
-	node_t* rotate_node_ptr = node_ptr->get_left_node_ref (); 
+	node_t* rotate_node_ptr = node_ptr->get_left_node_ref ();
 
 	node_ptr->set_left_node (rotate_node_ptr->get_right_node_ref ());
 	rotate_node_ptr->set_right_node (node_ptr);
@@ -338,34 +336,33 @@ PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_ll_rotate
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-	PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_lr_rotate 
-	(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_lr_rotate
+(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	// LR = RR(node_ptr->letf) + LL(node_ptr)
 	typedef PFX_AVL_BST_INIT_TYPE::node_t node_t;
 	node_t* tmp_node_ptr = avl_rr_rotate (node_ptr->get_left_node_ref ());
-	node_ptr->set_left_node (tmp_node_ptr); 
+	node_ptr->set_left_node (tmp_node_ptr);
 	return avl_ll_rotate (node_ptr);
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_rl_rotate 
-	(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE PFX_AVL_BST_INIT_TYPE::node_t* PFX_AVL_BST_INIT ::avl_rl_rotate
+(PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	// RL = LL(node_ptr->right)) + RR(node_ptr)
 	typedef PFX_AVL_BST_INIT_TYPE::node_t node_t;
 	node_t* tmp_node_ptr = avl_ll_rotate (node_ptr->get_right_node_ref ());
-	node_ptr->set_right_node (tmp_node_ptr); 
+	node_ptr->set_right_node (tmp_node_ptr);
 	return avl_rr_rotate (node_ptr);
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE PFX_AVL_BST_INIT_TYPE::AVLTREE_ROTATE_t PFX_AVL_BST_INIT ::avl_single_rotate 
-	(nsize__t balance_value,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr, 
-	PFX_AVL_BST_INIT_TYPE::node_t* & PARAM_INOUT parent_ref_node_ptr)
+PFX_INLINE AVLTREE_ROTATE_t PFX_AVL_BST_INIT ::avl_single_rotate
+(nsize__t balance_value,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr,
+		PFX_AVL_BST_INIT_TYPE::node_t* & PARAM_INOUT parent_ref_node_ptr)
 {
-	typedef PFX_AVL_BST_INIT_TYPE::AVLTREE_ROTATE_t AVLTREE_ROTATE_t;
 	typedef PFX_AVL_BST_INIT_TYPE::node_t node_t;
 
 	AVLTREE_ROTATE_t rotate_type = AVLTREE_NOT_SIMPLE_ROTATE;
@@ -385,8 +382,8 @@ PFX_INLINE PFX_AVL_BST_INIT_TYPE::AVLTREE_ROTATE_t PFX_AVL_BST_INIT ::avl_single
 		{
 			BREAK_LOOP (rotate_type,AVLTREE_ROTATE_ERR);
 		}
-		else if (get_avl_height (left_node_ptr->get_left_node ()) >= 
-						get_avl_height (left_node_ptr->get_right_node ()))
+		else if (get_avl_height (left_node_ptr->get_left_node ()) >=
+				get_avl_height (left_node_ptr->get_right_node ()))
 		{
 			parent_ref_node_ptr = avl_ll_rotate (node_ptr);
 			BREAK_LOOP (rotate_type,AVLTREE_LL_ROTATE);
@@ -406,8 +403,8 @@ PFX_INLINE PFX_AVL_BST_INIT_TYPE::AVLTREE_ROTATE_t PFX_AVL_BST_INIT ::avl_single
 			BREAK_LOOP (rotate_type,AVLTREE_ROTATE_ERR);
 		}
 
-		if ( get_avl_height  (right_node_ptr->get_right_node ()) >= 
-			get_avl_height  (right_node_ptr->get_left_node ()))
+		if ( get_avl_height (right_node_ptr->get_right_node ()) >=
+				get_avl_height (right_node_ptr->get_left_node ()))
 		{
 			parent_ref_node_ptr = avl_rr_rotate (node_ptr);
 			BREAK_LOOP (rotate_type,AVLTREE_RR_ROTATE);
@@ -424,21 +421,20 @@ PFX_INLINE PFX_AVL_BST_INIT_TYPE::AVLTREE_ROTATE_t PFX_AVL_BST_INIT ::avl_single
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_insert_rotate 
-	(PFX_AVL_BST_INIT_TYPE::node_t* & PARAM_INOUT root_node_ptr,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT begin_node_ptr)
+PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_insert_rotate
+(PFX_AVL_BST_INIT_TYPE::node_t* & PARAM_INOUT root_node_ptr,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT begin_node_ptr)
 {
-	typedef PFX_AVL_BST_INIT_TYPE::AVLTREE_ROTATE_t AVLTREE_ROTATE_t;
 	typedef PFX_AVL_BST_INIT_TYPE::node_t node_t;
 
-	result_t							status = PFX_STATUS_OK;
-	nsize__t							height;
-	node_t*							tmp_root_node_ptr;
-	const node_t*				tmp_root_parent_node_ptr;
-	node_t*							parent_node_ptr;
-	AVLTREE_ROTATE_t		rotate_type;
+	result_t status = PFX_STATUS_OK;
+	nsize__t height;
+	node_t* tmp_root_node_ptr;
+	const node_t* tmp_root_parent_node_ptr;
+	node_t* parent_node_ptr;
+	AVLTREE_ROTATE_t rotate_type;
 
-	tmp_root_node_ptr				= root_node_ptr;
+	tmp_root_node_ptr = root_node_ptr;
 	tmp_root_parent_node_ptr = root_node_ptr->get_parent_node ();
 
 	// 当起始节点为根节点的处理流程
@@ -446,12 +442,11 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_insert_rotate
 	{
 		update_avl_height (begin_node_ptr);
 
-		rotate_type = avl_single_rotate 
-			(calculate_avl_balance_value (tmp_root_node_ptr), tmp_root_node_ptr, root_node_ptr);
-
+		rotate_type = avl_single_rotate
+		(calculate_avl_balance_value (tmp_root_node_ptr), tmp_root_node_ptr, root_node_ptr);
 
 		if (AVLTREE_ROTATE_ERR == rotate_type ||
-			AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
+				AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
 		{
 			status = PFX_STATUS_ERROR_;
 		}
@@ -469,7 +464,7 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_insert_rotate
 
 	nsize__t same_count = 0;
 	// 从第一个节点的跟节点开始翻转
-	do 
+	do
 	{
 		parent_node_ptr = begin_node_ptr->get_parent_node_ref ();
 
@@ -495,30 +490,30 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_insert_rotate
 			BREAK_LOOP (status,PFX_STATUS_OK);
 		}
 
-		parent_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();		
+		parent_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();
 		begin_node_ptr = parent_node_ptr;
 
-		node_t**	reference_node_ptr_ptr = null;
+		node_t** reference_node_ptr_ptr = null;
 		// 注：这利用相关节点的关联引用进行操作，在翻转过程中快速替换被关联节点对应的节点指针
 		if (parent_node_ptr == tmp_root_node_ptr || tmp_root_parent_node_ptr == parent_parent_node_ptr)
 		{
-			rotate_type = avl_single_rotate 
-				(balance_value, parent_node_ptr, root_node_ptr);
+			rotate_type = avl_single_rotate
+			(balance_value, parent_node_ptr, root_node_ptr);
 		}
 		else
 		{
 			if (parent_parent_node_ptr->get_left_node () == parent_node_ptr)
 			{
 				reference_node_ptr_ptr = (node_t**)(&parent_parent_node_ptr->get_left_node_ref ());
-				rotate_type = avl_single_rotate 
-					(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
+				rotate_type = avl_single_rotate
+				(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
 
 			}
 			else if (parent_parent_node_ptr->get_right_node () == parent_node_ptr)
 			{
 				reference_node_ptr_ptr = (node_t**)(&parent_parent_node_ptr->get_right_node_ref ());
-				rotate_type = avl_single_rotate 
-					(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
+				rotate_type = avl_single_rotate
+				(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
 			}
 			else
 			{
@@ -527,7 +522,7 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_insert_rotate
 		}
 
 		if (AVLTREE_ROTATE_ERR == rotate_type ||
-			AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
+				AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
 		{
 			// 翻转出错，退出流程
 			BREAK_LOOP (status,PFX_STATUS_ERROR_);
@@ -537,26 +532,25 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_insert_rotate
 			status = PFX_STATUS_OK;
 		}
 
-	} while (1);
+	}while (1);
 	return status;
 }
 
 PFX_AVL_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed 
-	(PFX_AVL_BST_INIT_TYPE::node_t* & PARAM_INOUT root_node_ptr,
-	PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT begin_node_ptr)
+PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
+(PFX_AVL_BST_INIT_TYPE::node_t* & PARAM_INOUT root_node_ptr,
+		PFX_AVL_BST_INIT_TYPE::node_t* PARAM_INOUT begin_node_ptr)
 {
-	typedef PFX_AVL_BST_INIT_TYPE::AVLTREE_ROTATE_t AVLTREE_ROTATE_t;
 	typedef PFX_AVL_BST_INIT_TYPE::node_t node_t;
 
-	result_t						status = PFX_STATUS_OK;
-	nsize__t						height;
-	node_t*						tmp_root_node_ptr;
-	const node_t*			tmp_root_parent_node_ptr;
-	node_t*						parent_node_ptr;
-	AVLTREE_ROTATE_t	rotate_type;
+	result_t status = PFX_STATUS_OK;
+	nsize__t height;
+	node_t* tmp_root_node_ptr;
+	const node_t* tmp_root_parent_node_ptr;
+	node_t* parent_node_ptr;
+	AVLTREE_ROTATE_t rotate_type;
 
-	tmp_root_node_ptr				= root_node_ptr;
+	tmp_root_node_ptr = root_node_ptr;
 	tmp_root_parent_node_ptr = root_node_ptr->get_parent_node ();
 
 	// 当起始节点为根节点的处理流程
@@ -564,11 +558,11 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
 	{
 		update_avl_height (begin_node_ptr);
 
-		rotate_type = avl_single_rotate 
-			(calculate_avl_balance_value (tmp_root_node_ptr), tmp_root_node_ptr, root_node_ptr);
+		rotate_type = avl_single_rotate
+		(calculate_avl_balance_value (tmp_root_node_ptr), tmp_root_node_ptr, root_node_ptr);
 
 		if (AVLTREE_ROTATE_ERR == rotate_type ||
-			AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
+				AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
 		{
 			status = PFX_STATUS_ERROR_;
 		}
@@ -599,7 +593,7 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
 
 	nsize__t same_count = 0;
 	// 从第一个节点的跟节点开始翻转
-	do 
+	do
 	{
 		parent_node_ptr = begin_node_ptr->get_parent_node_ref ();
 
@@ -623,7 +617,7 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
 		// 高度一样，平衡，连续出现2次，则退出
 		if (height == parent_node_ptr->get_height () && balance_value > -2 && balance_value <2)
 		{
-			++same_count; 
+			++same_count;
 			if (same_count > 1)
 			{
 				BREAK_LOOP (status,PFX_STATUS_OK);
@@ -634,30 +628,30 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
 			same_count = 0;
 		}
 
-		parent_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();		
+		parent_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();
 		begin_node_ptr = parent_node_ptr;
 
-		node_t**	reference_node_ptr_ptr = null;
+		node_t** reference_node_ptr_ptr = null;
 		// 注：这利用相关节点的关联引用进行操作，在翻转过程中快速替换被关联节点对应的节点指针
 		if (parent_node_ptr == tmp_root_node_ptr || tmp_root_parent_node_ptr == parent_parent_node_ptr)
 		{
-			rotate_type = avl_single_rotate 
-				(balance_value, parent_node_ptr, root_node_ptr);
+			rotate_type = avl_single_rotate
+			(balance_value, parent_node_ptr, root_node_ptr);
 		}
 		else
 		{
 			if (parent_parent_node_ptr->get_left_node () == parent_node_ptr)
 			{
 				reference_node_ptr_ptr = (node_t**)(&parent_parent_node_ptr->get_left_node_ref ());
-				rotate_type = avl_single_rotate 
-					(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
+				rotate_type = avl_single_rotate
+				(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
 
 			}
 			else if (parent_parent_node_ptr->get_right_node () == parent_node_ptr)
 			{
 				reference_node_ptr_ptr = (node_t**)(&parent_parent_node_ptr->get_right_node_ref ());
-				rotate_type = avl_single_rotate 
-					(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
+				rotate_type = avl_single_rotate
+				(balance_value, parent_node_ptr, *reference_node_ptr_ptr);
 			}
 			else
 			{
@@ -666,7 +660,7 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
 		}
 
 		if (AVLTREE_ROTATE_ERR == rotate_type ||
-			AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
+				AVLTREE_NOT_SIMPLE_ROTATE == rotate_type)
 		{
 			// 翻转出错，退出流程
 			BREAK_LOOP (status,PFX_STATUS_ERROR_);
@@ -676,9 +670,7 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
 			status = PFX_STATUS_OK;
 		}
 
-
-
-	} while (1);
+	}while (1);
 
 	FOR_ONE_LOOP_END
 
@@ -687,11 +679,11 @@ PFX_INLINE result_t PFX_AVL_BST_INIT ::avl_update_fixed
 
 //黑红树基本初始化
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_RB_BST_INIT ::init_node_leaves 
-	(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT tree_node_ptr,
-	PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
-	PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
-	PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
+PFX_INLINE result_t PFX_RB_BST_INIT ::init_node_leaves
+(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT tree_node_ptr,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
 {
 	result_t status_ = PFX_STATUS_INVALID_PARAMS;
 	if (tree_node_ptr)
@@ -706,11 +698,11 @@ PFX_INLINE result_t PFX_RB_BST_INIT ::init_node_leaves
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_RB_BST_INIT ::init_node_leaves 
-	(PFX_RB_BST_INIT_TYPE::node_t& PARAM_INOUT tree_node,
-	PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
-	PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
-	PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
+PFX_INLINE result_t PFX_RB_BST_INIT ::init_node_leaves
+(PFX_RB_BST_INIT_TYPE::node_t& PARAM_INOUT tree_node,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN left_node_ptr /*= null*/,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN right_node_ptr /*= null*/,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN parent_node_ptr /*= null*/)
 {
 	tree_node.set_left_node (left_node_ptr);
 	tree_node.set_right_node (right_node_ptr);
@@ -720,46 +712,46 @@ PFX_INLINE result_t PFX_RB_BST_INIT ::init_node_leaves
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE	void  PFX_RB_BST_INIT ::set_rbt_color_red 
-	(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE void PFX_RB_BST_INIT ::set_rbt_color_red
+(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	node_ptr->set_color (RED_COLOR_NODE_TYPE);
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE	void  PFX_RB_BST_INIT ::set_rbt_color_black 
-	(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE void PFX_RB_BST_INIT ::set_rbt_color_black
+(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	node_ptr->set_color (BLACK_COLOR_NODE_TYPE);
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE	bool  PFX_RB_BST_INIT ::is_rbt_color_red 
-	(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE bool PFX_RB_BST_INIT ::is_rbt_color_red
+(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	return (node_ptr && RED_COLOR_NODE_TYPE == node_ptr->get_color ());
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE	bool  PFX_RB_BST_INIT ::is_rbt_color_black 
-	(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
+PFX_INLINE bool PFX_RB_BST_INIT ::is_rbt_color_black
+(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	return (!node_ptr || BLACK_COLOR_NODE_TYPE == node_ptr->get_color ());
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE void PFX_RB_BST_INIT ::copy_tree_color 
-	(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT dec_node_ptr,	
-	const PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN src_node_ptr)
+PFX_INLINE void PFX_RB_BST_INIT ::copy_tree_color
+(PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT dec_node_ptr,
+		const PFX_RB_BST_INIT_TYPE::node_t* PARAM_IN src_node_ptr)
 {
 	dec_node_ptr->set_color (src_node_ptr->get_color());
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE  void PFX_RB_BST_INIT ::rbt_left_rotate 
-	(PFX_RB_BST_INIT_TYPE::node_t *& PARAM_INOUT root_node_ptr, 
-	PFX_RB_BST_INIT_TYPE::node_t *	PARAM_INOUT sentinel_node_ptr,
-	PFX_RB_BST_INIT_TYPE::node_t*	PARAM_INOUT node_ptr)
+PFX_INLINE void PFX_RB_BST_INIT ::rbt_left_rotate
+(PFX_RB_BST_INIT_TYPE::node_t *& PARAM_INOUT root_node_ptr,
+		PFX_RB_BST_INIT_TYPE::node_t * PARAM_INOUT sentinel_node_ptr,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT node_ptr)
 {
 	typedef PFX_RB_BST_INIT_TYPE::node_t node_t;
 	node_t* temp_node_ptr;
@@ -769,17 +761,17 @@ PFX_INLINE  void PFX_RB_BST_INIT ::rbt_left_rotate
 	node_ptr->set_right_node (temp_node_ptr->get_left_node_ref ());
 
 	tmp_letf_node_ptr = temp_node_ptr->get_left_node_ref ();
-	if (tmp_letf_node_ptr != sentinel_node_ptr) 
+	if (tmp_letf_node_ptr != sentinel_node_ptr)
 	{
 		tmp_letf_node_ptr->set_parent_node (node_ptr);
 	}
 
 	temp_node_ptr->set_parent_node (node_ptr->get_parent_node_ref ());
 
-	if (node_ptr == root_node_ptr) 
+	if (node_ptr == root_node_ptr)
 	{
 		root_node_ptr = temp_node_ptr;
-	} 
+	}
 	else
 	{
 		node_t* tmp_parent_node_ptr = node_ptr->get_parent_node_ref ();
@@ -798,10 +790,10 @@ PFX_INLINE  void PFX_RB_BST_INIT ::rbt_left_rotate
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE void PFX_RB_BST_INIT ::rbt_right_rotate 
-	(PFX_RB_BST_INIT_TYPE::node_t*& PARAM_INOUT	root_node_ptr, 
-	PFX_RB_BST_INIT_TYPE::node_t *	PARAM_INOUT	sentinel_node_ptr,
-	PFX_RB_BST_INIT_TYPE::node_t *	PARAM_INOUT	node_ptr)
+PFX_INLINE void PFX_RB_BST_INIT ::rbt_right_rotate
+(PFX_RB_BST_INIT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_RB_BST_INIT_TYPE::node_t * PARAM_INOUT sentinel_node_ptr,
+		PFX_RB_BST_INIT_TYPE::node_t * PARAM_INOUT node_ptr)
 {
 	typedef PFX_RB_BST_INIT_TYPE::node_t node_t;
 	node_t* temp_node_ptr;
@@ -812,17 +804,17 @@ PFX_INLINE void PFX_RB_BST_INIT ::rbt_right_rotate
 
 	temp_right_node_ptr = temp_node_ptr->get_right_node_ref ();
 
-	if (temp_right_node_ptr != sentinel_node_ptr) 
+	if (temp_right_node_ptr != sentinel_node_ptr)
 	{
 		temp_right_node_ptr->set_parent_node (node_ptr);
 	}
 
 	temp_node_ptr->set_parent_node (node_ptr->get_parent_node_ref ());
 
-	if (node_ptr == root_node_ptr) 
+	if (node_ptr == root_node_ptr)
 	{
 		root_node_ptr = temp_node_ptr;
-	} 
+	}
 	else
 	{
 		node_t* tmp_parent_node_ptr = node_ptr->get_parent_node_ref ();
@@ -841,9 +833,9 @@ PFX_INLINE void PFX_RB_BST_INIT ::rbt_right_rotate
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_add_rotate_fixup 
-	(PFX_RB_BST_INIT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_RB_BST_INIT_TYPE::node_t*  PARAM_INOUT add_node_ptr)
+PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_add_rotate_fixup
+(PFX_RB_BST_INIT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT add_node_ptr)
 {
 	typedef PFX_RB_BST_INIT_TYPE::node_t node_t;
 	node_t* temp_node_ptr;
@@ -856,10 +848,10 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_add_rotate_fixup
 		return PFX_STATUS_OK;
 	}
 
-	while (add_node_ptr != root_node_ptr) 
+	while (add_node_ptr != root_node_ptr)
 	{
-		is_red_node = is_rbt_color_red 
-			(add_node_ptr->get_parent_node_ref ());
+		is_red_node = is_rbt_color_red
+		(add_node_ptr->get_parent_node_ref ());
 
 		if (!is_red_node)
 		{
@@ -867,16 +859,16 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_add_rotate_fixup
 		}
 		// 新添加的父节点为红色
 
-		node_t* parent_node_ptr					= add_node_ptr->get_parent_node_ref ();
-		node_t* grand_parent_node_ptr	= parent_node_ptr->get_parent_node_ref ();
+		node_t* parent_node_ptr = add_node_ptr->get_parent_node_ref ();
+		node_t* grand_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();
 
 		RETURN_INVALID_RESULT (null == grand_parent_node_ptr,PFX_STATUS_MEM_ERR);
 
 		// 当爷爷的左孩子节点为父节点的时候
-		if (grand_parent_node_ptr->get_left_node () == parent_node_ptr) 
+		if (grand_parent_node_ptr->get_left_node () == parent_node_ptr)
 		{
-			temp_node_ptr	= grand_parent_node_ptr->get_right_node_ref (); 
-			is_red_node			= is_rbt_color_red (temp_node_ptr);
+			temp_node_ptr = grand_parent_node_ptr->get_right_node_ref ();
+			is_red_node = is_rbt_color_red (temp_node_ptr);
 
 			//RETURN_INVALID_RESULT ((pfx_invalid == is_color_temp),PFX_STATUS_MEM_ERR);
 			if (is_red_node)
@@ -901,22 +893,21 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_add_rotate_fixup
 					add_node_ptr = parent_node_ptr;
 					rbt_left_rotate (root_node_ptr,null,add_node_ptr);
 
-					parent_node_ptr					= add_node_ptr->get_parent_node_ref ();
-					grand_parent_node_ptr	= parent_node_ptr->get_parent_node_ref ();
+					parent_node_ptr = add_node_ptr->get_parent_node_ref ();
+					grand_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();
 				}
-
 
 				set_rbt_color_black (parent_node_ptr);
 				set_rbt_color_red (grand_parent_node_ptr);
 				rbt_right_rotate (root_node_ptr,null,grand_parent_node_ptr);
 			}
 
-		} 
+		}
 		// 当爷爷的右孩子节点为父节点的时候
-		else if (grand_parent_node_ptr->get_right_node () == parent_node_ptr) 
+		else if (grand_parent_node_ptr->get_right_node () == parent_node_ptr)
 		{
-			temp_node_ptr	= grand_parent_node_ptr->get_left_node_ref ();
-			is_red_node			=  is_rbt_color_red (temp_node_ptr);
+			temp_node_ptr = grand_parent_node_ptr->get_left_node_ref ();
+			is_red_node = is_rbt_color_red (temp_node_ptr);
 
 			if (is_red_node)
 			{
@@ -932,8 +923,8 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_add_rotate_fixup
 					add_node_ptr = parent_node_ptr;
 					rbt_right_rotate (root_node_ptr,null,add_node_ptr);
 
-					parent_node_ptr					= add_node_ptr->get_parent_node_ref ();
-					grand_parent_node_ptr	= parent_node_ptr->get_parent_node_ref ();
+					parent_node_ptr = add_node_ptr->get_parent_node_ref ();
+					grand_parent_node_ptr = parent_node_ptr->get_parent_node_ref ();
 				}
 				set_rbt_color_black (parent_node_ptr);
 				set_rbt_color_red (grand_parent_node_ptr);
@@ -947,19 +938,19 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_add_rotate_fixup
 		}
 	}
 	set_rbt_color_black (root_node_ptr);
-	
+
 	return PFX_STATUS_OK;
 }
 
 PFX_RB_BST_INIT_TEMPLATE_DEFINES
-PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup 
-	(PFX_RB_BST_INIT_TYPE::node_t *& PARAM_INOUT root_node_ptr, 
-	PFX_RB_BST_INIT_TYPE::node_t*  PARAM_INOUT ref_node_ptr)
+PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
+(PFX_RB_BST_INIT_TYPE::node_t *& PARAM_INOUT root_node_ptr,
+		PFX_RB_BST_INIT_TYPE::node_t* PARAM_INOUT ref_node_ptr)
 {
 	typedef PFX_RB_BST_INIT_TYPE::node_t node_t;
 	node_t* temp_node_ptr;
-	bool check_color		= false;
-	bool check_color_	= false;
+	bool check_color = false;
+	bool check_color_ = false;
 
 	RETURN_INVALID_RESULT ((null == ref_node_ptr),PFX_STATUS_OK);
 
@@ -976,8 +967,8 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 
 		if (parent_node_ptr->get_left_node() == ref_node_ptr)
 		{
-			temp_node_ptr	= parent_node_ptr->get_right_node_ref ();
-			check_color			= is_rbt_color_red (temp_node_ptr);
+			temp_node_ptr = parent_node_ptr->get_right_node_ref ();
+			check_color = is_rbt_color_red (temp_node_ptr);
 
 			if (check_color)
 			{
@@ -998,8 +989,8 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 				continue;
 			}
 
-			check_color		= is_rbt_color_black (temp_node_ptr->get_left_node_ref ()) ;
-			check_color_		= is_rbt_color_black (temp_node_ptr->get_right_node_ref ());
+			check_color = is_rbt_color_black (temp_node_ptr->get_left_node_ref ());
+			check_color_ = is_rbt_color_black (temp_node_ptr->get_right_node_ref ());
 
 			if (check_color && check_color_)
 			{
@@ -1008,7 +999,7 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 			}
 			else
 			{
-				check_color = is_rbt_color_black (temp_node_ptr->get_right_node_ref ()) ;
+				check_color = is_rbt_color_black (temp_node_ptr->get_right_node_ref ());
 
 				if (check_color)
 				{
@@ -1040,8 +1031,8 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 		}
 		else if (parent_node_ptr->get_right_node() == ref_node_ptr)
 		{
-			temp_node_ptr	=  parent_node_ptr->get_left_node_ref ();
-			check_color			= is_rbt_color_red (temp_node_ptr);
+			temp_node_ptr = parent_node_ptr->get_left_node_ref ();
+			check_color = is_rbt_color_red (temp_node_ptr);
 
 			if (check_color)
 			{
@@ -1052,7 +1043,7 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 				set_rbt_color_red (parent_node_ptr);
 				rbt_right_rotate (root_node_ptr, null, parent_node_ptr);
 
-				temp_node_ptr =  parent_node_ptr->get_left_node_ref ();
+				temp_node_ptr = parent_node_ptr->get_left_node_ref ();
 			}
 
 			if (null == temp_node_ptr)
@@ -1061,8 +1052,8 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 				continue;
 			}
 
-			check_color		= is_rbt_color_black (temp_node_ptr->get_left_node_ref ()) ;
-			check_color_		= is_rbt_color_black (temp_node_ptr->get_right_node_ref ());
+			check_color = is_rbt_color_black (temp_node_ptr->get_left_node_ref ());
+			check_color_ = is_rbt_color_black (temp_node_ptr->get_right_node_ref ());
 
 			if (check_color && check_color_)
 			{
@@ -1071,7 +1062,7 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 			}
 			else
 			{
-				check_color = is_rbt_color_black (temp_node_ptr->get_left_node_ref ()) ;
+				check_color = is_rbt_color_black (temp_node_ptr->get_left_node_ref ());
 
 				if (check_color)
 				{
@@ -1111,12 +1102,12 @@ PFX_INLINE result_t PFX_RB_BST_INIT :: rbt_remove_rotate_fixup
 
 //移除
 PFX_CBST_RM_TEMPLATE_DEFINES
-PFX_CBST_RM_TYPE::node_t* PFX_CBST_RM ::find_remove_replace_node 
-	(PFX_CBST_RM_TYPE::node_t* PARAM_IN remove_node_ptr,
-	PFX_CBST_RM_TYPE::node_t*& PARAM_OUT sub_remove_node_ptr,
-	const PFX_CBST_RM_TYPE::node_t* PARAM_IN null_node_ptr /*= null*/)
+PFX_CBST_RM_TYPE::node_t* PFX_CBST_RM ::find_remove_replace_node
+(PFX_CBST_RM_TYPE::node_t* PARAM_IN remove_node_ptr,
+		PFX_CBST_RM_TYPE::node_t*& PARAM_OUT sub_remove_node_ptr,
+		const PFX_CBST_RM_TYPE::node_t* PARAM_IN null_node_ptr /*= null*/)
 {
-	typedef PFX_CBST_RM_TYPE::node_t		node_t;
+	typedef PFX_CBST_RM_TYPE::node_t node_t;
 	typedef PFX_CBST_RM_TYPE::minmax_t minmax_t;
 
 	const node_t* sub_remove_ref_node_ptr = null;
@@ -1139,21 +1130,21 @@ PFX_CBST_RM_TYPE::node_t* PFX_CBST_RM ::find_remove_replace_node
 		{
 			sub_remove_ref_node_ptr = tmp_sub_remove_node_ptr->get_left_node ();
 		}
-		else 
+		else
 		{
 			sub_remove_ref_node_ptr = tmp_sub_remove_node_ptr->get_right_node ();
 		}
 	}
 
 	sub_remove_node_ptr = (node_t*)tmp_sub_remove_node_ptr;
-	return  (node_t*)sub_remove_ref_node_ptr;
+	return (node_t*)sub_remove_ref_node_ptr;
 }
 
 PFX_CBST_RM_TEMPLATE_DEFINES
-PFX_CBST_RM_TYPE::node_t* PFX_CBST_RM ::remove_node 
-	(PFX_CBST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_CBST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
-	result_t& __status)
+PFX_CBST_RM_TYPE::node_t* PFX_CBST_RM ::remove_node
+(PFX_CBST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_CBST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
+		result_t& __status)
 {
 	__status = remove_node(root_node_ptr, remove_node_ptr);
 	if (PFX_STATUS_OK == __status)
@@ -1167,12 +1158,12 @@ PFX_CBST_RM_TYPE::node_t* PFX_CBST_RM ::remove_node
 }
 
 PFX_CBST_RM_TEMPLATE_DEFINES
-result_t PFX_CBST_RM ::remove_node 
-	(PFX_CBST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_CBST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
-	const PFX_CBST_RM_TYPE::node_t* PARAM_IN null_node_ptr /*= null*/)
+result_t PFX_CBST_RM ::remove_node
+(PFX_CBST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_CBST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
+		const PFX_CBST_RM_TYPE::node_t* PARAM_IN null_node_ptr /*= null*/)
 {
-	typedef PFX_CBST_RM_TYPE::node_t		node_t;
+	typedef PFX_CBST_RM_TYPE::node_t node_t;
 	typedef PFX_CBST_RM_TYPE::minmax_t minmax_t;
 
 	RETURN_INVALID_RESULT (null == remove_node_ptr,PFX_STATUS_INVALID_PARAMS);
@@ -1182,24 +1173,24 @@ result_t PFX_CBST_RM ::remove_node
 	node_t* sub_remove_node_ptr;
 	result_t status = PFX_STATUS_OK;
 
-	sub_romove_ref_node_ptr = find_remove_replace_node 
-									(remove_node_ptr, sub_remove_node_ptr, null_node_ptr);
+	sub_romove_ref_node_ptr = find_remove_replace_node
+	(remove_node_ptr, sub_remove_node_ptr, null_node_ptr);
 
-	status =	remove_node_internal (root_node_ptr, remove_node_ptr, sub_remove_node_ptr,
-		sub_romove_ref_node_ptr, null_node_ptr);
+	status = remove_node_internal (root_node_ptr, remove_node_ptr, sub_remove_node_ptr,
+			sub_romove_ref_node_ptr, null_node_ptr);
 	return status;
 }
 
 PFX_CBST_RM_TEMPLATE_DEFINES
-result_t PFX_CBST_RM ::remove_node_internal 
-	(PFX_CBST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_CBST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
-	PFX_CBST_RM_TYPE::node_t* PARAM_INOUT sub_remove_node_ptr,
-	PFX_CBST_RM_TYPE::node_t* PARAM_INOUT sub_remove_node_ref_ptr,
-	const PFX_CBST_RM_TYPE::node_t* PARAM_IN null_node_ptr /*= null*/)
+result_t PFX_CBST_RM ::remove_node_internal
+(PFX_CBST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_CBST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
+		PFX_CBST_RM_TYPE::node_t* PARAM_INOUT sub_remove_node_ptr,
+		PFX_CBST_RM_TYPE::node_t* PARAM_INOUT sub_remove_node_ref_ptr,
+		const PFX_CBST_RM_TYPE::node_t* PARAM_IN null_node_ptr /*= null*/)
 {
-	typedef PFX_CBST_RM_TYPE::node_t	node_t;
-	typedef PFX_CBST_RM_TYPE::init_t		init_t;
+	typedef PFX_CBST_RM_TYPE::node_t node_t;
+	typedef PFX_CBST_RM_TYPE::init_t init_t;
 
 	node_t* tmp_root_node_ptr = root_node_ptr;
 	node_t* parant_node_ptr = null;
@@ -1207,8 +1198,8 @@ result_t PFX_CBST_RM ::remove_node_internal
 
 	FOR_ONE_LOOP_BEGIN
 	// 处理替换节点
-	if (sub_remove_node_ptr == tmp_root_node_ptr) 
-	{                             
+	if (sub_remove_node_ptr == tmp_root_node_ptr)
+	{
 		parant_node_ptr = tmp_root_node_ptr->get_parent_node_ref ();
 		if (null != parant_node_ptr)
 		{
@@ -1235,7 +1226,7 @@ result_t PFX_CBST_RM ::remove_node_internal
 		BREAK_LOOP (status,PFX_STATUS_OK);
 	}
 
-	parant_node_ptr =  sub_remove_node_ptr->get_parent_node_ref ();
+	parant_node_ptr = sub_remove_node_ptr->get_parent_node_ref ();
 	if (sub_remove_node_ptr == parant_node_ptr->get_left_node ())
 	{
 		parant_node_ptr->set_left_node (sub_remove_node_ref_ptr);
@@ -1271,14 +1262,12 @@ result_t PFX_CBST_RM ::remove_node_internal
 		}
 	}
 
-
 	// 将remove node相关的指针复制
-	sub_remove_node_ptr->set_left_node		 (remove_node_ptr->get_left_node_ref ());
-	sub_remove_node_ptr->set_right_node	 (remove_node_ptr->get_right_node_ref ());
+	sub_remove_node_ptr->set_left_node (remove_node_ptr->get_left_node_ref ());
+	sub_remove_node_ptr->set_right_node (remove_node_ptr->get_right_node_ref ());
 	sub_remove_node_ptr->set_parent_node (remove_node_ptr->get_parent_node_ref ());
 
-
-	if (remove_node_ptr == tmp_root_node_ptr) // 移除节点是根节点
+	if (remove_node_ptr == tmp_root_node_ptr)// 移除节点是根节点
 	{
 		root_node_ptr = sub_remove_node_ptr;		// 将根节点替换为psub_node
 	}
@@ -1301,8 +1290,8 @@ result_t PFX_CBST_RM ::remove_node_internal
 	}
 
 	// 更新现在新的左右节点的父节点指针
-	node_t* left_node_ptr		= sub_remove_node_ptr->get_left_node_ref ();
-	node_t* right_node_ptr		= sub_remove_node_ptr->get_right_node_ref ();
+	node_t* left_node_ptr = sub_remove_node_ptr->get_left_node_ref ();
+	node_t* right_node_ptr = sub_remove_node_ptr->get_right_node_ref ();
 
 	if (null_node_ptr)
 	{
@@ -1338,27 +1327,27 @@ result_t PFX_CBST_RM ::remove_node_internal
 
 // AVL移除节点
 PFX_AVL_BST_RM_TEMPLATE_DEFINES
-PFX_AVL_BST_RM_TYPE::node_t* PFX_AVL_BST_RM ::remove_node 
-	(PFX_AVL_BST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_AVL_BST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
-	result_t& __status)
+PFX_AVL_BST_RM_TYPE::node_t* PFX_AVL_BST_RM ::remove_node
+(PFX_AVL_BST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_AVL_BST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
+		result_t& __status)
 {
-	typedef PFX_AVL_BST_RM_TYPE::node_t				node_t;
-	typedef PFX_AVL_BST_RM_TYPE::bst_remove_t	bst_remove_t;
-	typedef PFX_AVL_BST_RM_TYPE::init_t					init_t;
+	typedef PFX_AVL_BST_RM_TYPE::node_t node_t;
+	typedef PFX_AVL_BST_RM_TYPE::bst_remove_t bst_remove_t;
+	typedef PFX_AVL_BST_RM_TYPE::init_t init_t;
 
-	result_t	status;
-	node_t*	temp_node_ptr = null;
-	node_t*	parent_node_ptr;
+	result_t status;
+	node_t* temp_node_ptr = null;
+	node_t* parent_node_ptr;
 	node_t* sub_romove_ref_node_ptr;
 	node_t* sub_remove_node_ptr;
 
 	RETURN_INVALID_BY_ACT_RESULT ((null == remove_node_ptr),
-		__status = PFX_STATUS_INVALID_PARAMS,null);
+			__status = PFX_STATUS_INVALID_PARAMS,null);
 
-	sub_romove_ref_node_ptr = 
-		bst_remove_t :: find_remove_replace_node
-		(remove_node_ptr,sub_remove_node_ptr,null);
+	sub_romove_ref_node_ptr =
+	bst_remove_t :: find_remove_replace_node
+	(remove_node_ptr,sub_remove_node_ptr,null);
 
 	if (sub_remove_node_ptr)
 	{
@@ -1366,8 +1355,8 @@ PFX_AVL_BST_RM_TYPE::node_t* PFX_AVL_BST_RM ::remove_node
 	}
 
 	status = bst_remove_t :: remove_node_internal
-		(root_node_ptr, remove_node_ptr, 
-		sub_remove_node_ptr, sub_romove_ref_node_ptr, null);
+	(root_node_ptr, remove_node_ptr,
+			sub_remove_node_ptr, sub_romove_ref_node_ptr, null);
 
 	__status = status;
 
@@ -1415,32 +1404,32 @@ PFX_AVL_BST_RM_TYPE::node_t* PFX_AVL_BST_RM ::remove_node
 
 // 黑红树移除节点
 PFX_RB_BST_RM_TEMPLATE_DEFINES
-PFX_RB_BST_RM_TYPE::node_t* PFX_RB_BST_RM ::remove_node 
-	(PFX_RB_BST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_RB_BST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
-	result_t& __status)
+PFX_RB_BST_RM_TYPE::node_t* PFX_RB_BST_RM ::remove_node
+(PFX_RB_BST_RM_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_RB_BST_RM_TYPE::node_t* PARAM_INOUT remove_node_ptr,
+		result_t& __status)
 {
-	typedef PFX_RB_BST_RM_TYPE::node_t				node_t;
-	typedef PFX_RB_BST_RM_TYPE::bst_remove_t	bst_remove_t;
-	typedef PFX_RB_BST_RM_TYPE::init_t					init_t;
+	typedef PFX_RB_BST_RM_TYPE::node_t node_t;
+	typedef PFX_RB_BST_RM_TYPE::bst_remove_t bst_remove_t;
+	typedef PFX_RB_BST_RM_TYPE::init_t init_t;
 
-	result_t	status;
-	bool		is_red_node;
+	result_t status;
+	bool is_red_node;
 
 	node_t* sub_romove_ref_node_ptr;
 	node_t* sub_remove_node_ptr;
 
 	RETURN_INVALID_BY_ACT_RESULT (null == remove_node_ptr,
-		__status = PFX_STATUS_INVALID_PARAMS,null);
+			__status = PFX_STATUS_INVALID_PARAMS,null);
 
-	sub_romove_ref_node_ptr = 
-		bst_remove_t :: find_remove_replace_node
-		(remove_node_ptr, sub_remove_node_ptr, null);
+	sub_romove_ref_node_ptr =
+	bst_remove_t :: find_remove_replace_node
+	(remove_node_ptr, sub_remove_node_ptr, null);
 
 	if (sub_remove_node_ptr == root_node_ptr)
 	{
 		status = bst_remove_t :: remove_node_internal
-			(root_node_ptr, remove_node_ptr, sub_remove_node_ptr, sub_romove_ref_node_ptr, null);
+		(root_node_ptr, remove_node_ptr, sub_remove_node_ptr, sub_romove_ref_node_ptr, null);
 
 		__status = status;
 
@@ -1459,7 +1448,7 @@ PFX_RB_BST_RM_TYPE::node_t* PFX_RB_BST_RM ::remove_node
 	is_red_node = init_t :: is_rbt_color_red (sub_remove_node_ptr);
 
 	status = bst_remove_t :: remove_node_internal
-		(root_node_ptr, remove_node_ptr, sub_remove_node_ptr, sub_romove_ref_node_ptr, null);
+	(root_node_ptr, remove_node_ptr, sub_remove_node_ptr, sub_romove_ref_node_ptr, null);
 
 	if (null != sub_remove_node_ptr && sub_remove_node_ptr != remove_node_ptr)
 	{
@@ -1481,15 +1470,14 @@ PFX_RB_BST_RM_TYPE::node_t* PFX_RB_BST_RM ::remove_node
 	return remove_node_ptr;
 }
 
-
 // 通过节点查找结点
 PFX_CBST_NFIND_TEMPLATE_DEFINES
-PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_node 
-	(const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN key_node_ptr,
-	const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN root_node_ptr)
+PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_node
+(const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN key_node_ptr,
+		const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN root_node_ptr)
 {
-	typedef PFX_CBST_NFIND_TYPE::node_t								node_t;
-	typedef PFX_CBST_NFIND_TYPE::compare_two_node_t	compare_two_node_t;
+	typedef PFX_CBST_NFIND_TYPE::node_t node_t;
+	typedef PFX_CBST_NFIND_TYPE::compare_two_node_t compare_two_node_t;
 
 	RETURN_INVALID_RESULT (!key_node_ptr, null);
 
@@ -1515,18 +1503,18 @@ PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_node
 }
 //
 PFX_CBST_NFIND_TEMPLATE_DEFINES
-PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_near_node  
-	(const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN key_node_ptr,
-	const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN root_node_ptr,
-	int& PARAM_INOUT last_cmp_result)
+PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_near_node
+(const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN key_node_ptr,
+		const PFX_CBST_NFIND_TYPE::node_t* PARAM_IN root_node_ptr,
+		int& PARAM_INOUT last_cmp_result)
 {
-	typedef PFX_CBST_NFIND_TYPE::node_t								node_t;
-	typedef PFX_CBST_NFIND_TYPE::compare_two_node_t	compare_two_node_t;
+	typedef PFX_CBST_NFIND_TYPE::node_t node_t;
+	typedef PFX_CBST_NFIND_TYPE::compare_two_node_t compare_two_node_t;
 
 	RETURN_INVALID_RESULT (!key_node_ptr, null);
 
-	const node_t* near_node_ptr		= null;
-	const node_t* traval_node_ptr	= root_node_ptr;
+	const node_t* near_node_ptr = null;
+	const node_t* traval_node_ptr = root_node_ptr;
 
 	int cmp_result = 0;
 	while (traval_node_ptr)
@@ -1552,12 +1540,12 @@ PFX_INLINE const PFX_CBST_NFIND_TYPE::node_t* PFX_CBST_NFIND ::find_near_node
 }
 
 PFX_CBST_ITR_FIND_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_ITR_FIND_TYPE::const_iterator_t*	PFX_CBST_ITR_FIND::find_node 
-	(const PFX_CBST_ITR_FIND_TYPE::node_t* PARAM_IN key_node_ptr, 
-	PFX_CBST_ITR_FIND_TYPE::const_iterator_t& itr)
+PFX_INLINE PFX_CBST_ITR_FIND_TYPE::const_iterator_t* PFX_CBST_ITR_FIND::find_node
+(const PFX_CBST_ITR_FIND_TYPE::node_t* PARAM_IN key_node_ptr,
+		PFX_CBST_ITR_FIND_TYPE::const_iterator_t& itr)
 {
-	typedef PFX_CBST_ITR_FIND_TYPE::node_find_t	node_find_t;
-	typedef PFX_CBST_ITR_FIND_TYPE::node_t			node_t;
+	typedef PFX_CBST_ITR_FIND_TYPE::node_find_t node_find_t;
+	typedef PFX_CBST_ITR_FIND_TYPE::node_t node_t;
 	const node_t* find_node_ptr = node_find_t::find_node (key_node_ptr, itr.root_node());
 	if (find_node_ptr)
 	{
@@ -1571,13 +1559,13 @@ PFX_INLINE PFX_CBST_ITR_FIND_TYPE::const_iterator_t*	PFX_CBST_ITR_FIND::find_nod
 }
 
 PFX_CBST_ITR_FIND_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_ITR_FIND_TYPE::const_iterator_t*	PFX_CBST_ITR_FIND::find_near_node 
-	(const PFX_CBST_ITR_FIND_TYPE::node_t* PARAM_IN key_node_ptr, 
-	PFX_CBST_ITR_FIND_TYPE::const_iterator_t& itr, 
-	int& PARAM_INOUT last_cmp_result)
+PFX_INLINE PFX_CBST_ITR_FIND_TYPE::const_iterator_t* PFX_CBST_ITR_FIND::find_near_node
+(const PFX_CBST_ITR_FIND_TYPE::node_t* PARAM_IN key_node_ptr,
+		PFX_CBST_ITR_FIND_TYPE::const_iterator_t& itr,
+		int& PARAM_INOUT last_cmp_result)
 {
-	typedef PFX_CBST_ITR_FIND_TYPE::node_find_t	node_find_t;
-	typedef PFX_CBST_ITR_FIND_TYPE::node_t			node_t;
+	typedef PFX_CBST_ITR_FIND_TYPE::node_find_t node_find_t;
+	typedef PFX_CBST_ITR_FIND_TYPE::node_t node_t;
 	const node_t* find_node_ptr = node_find_t::find_near_node (key_node_ptr, itr.root_node(), last_cmp_result);
 	if (find_node_ptr)
 	{
@@ -1591,18 +1579,18 @@ PFX_INLINE PFX_CBST_ITR_FIND_TYPE::const_iterator_t*	PFX_CBST_ITR_FIND::find_nea
 }
 
 PFX_CBST_ELEM_FIND_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_node 
-	(const PFX_CBST_ELEM_FIND_TYPE::element_t& PARAM_IN __key, 
-	PFX_CBST_ELEM_FIND_TYPE::const_iterator_t& itr)
+PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t* PFX_CBST_ELEM_FIND::find_node
+(const PFX_CBST_ELEM_FIND_TYPE::element_t& PARAM_IN __key,
+		PFX_CBST_ELEM_FIND_TYPE::const_iterator_t& itr)
 {
 	//typedef PFX_CBST_ELEM_FIND_TYPE::node_find_t							node_find_t;
-	typedef PFX_CBST_ELEM_FIND_TYPE::node_t									node_t;
-	typedef PFX_CBST_ELEM_FIND_TYPE::compare_two_elemen_t	cmp_t;
+	typedef PFX_CBST_ELEM_FIND_TYPE::node_t node_t;
+	typedef PFX_CBST_ELEM_FIND_TYPE::compare_two_elemen_t cmp_t;
 
-	const node_t* find_node_ptr =  itr.root_node();
+	const node_t* find_node_ptr = itr.root_node();
 	while (find_node_ptr)
 	{
-		int cmp_result = cmp_t::compare (find_node_ptr->get_item(), __key);
+		int cmp_result =  cmp_t::compare (find_node_ptr->get_item(), __key);
 		if (cmp_result > 0)
 		{
 			find_node_ptr = find_node_ptr->get_left_node ();
@@ -1629,17 +1617,17 @@ PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_n
 }
 
 PFX_CBST_ELEM_FIND_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_near_node 
-	(const PFX_CBST_ELEM_FIND_TYPE::element_t& PARAM_IN __key, 
-	PFX_CBST_ELEM_FIND_TYPE::const_iterator_t& itr,
-	int& PARAM_INOUT last_cmp_result)
+PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t* PFX_CBST_ELEM_FIND::find_near_node
+(const PFX_CBST_ELEM_FIND_TYPE::element_t& PARAM_IN __key,
+		PFX_CBST_ELEM_FIND_TYPE::const_iterator_t& itr,
+		int& PARAM_INOUT last_cmp_result)
 {
-	typedef PFX_CBST_ELEM_FIND_TYPE::node_find_t							node_find_t;
-	typedef PFX_CBST_ELEM_FIND_TYPE::node_t									node_t;
-	typedef PFX_CBST_ELEM_FIND_TYPE::compare_two_elemen_t	cmp_t;
-	
-	const node_t* near_node_ptr		= null;
-	const node_t* traval_node_ptr	= itr.root_node() ;
+	//typedef PFX_CBST_ELEM_FIND_TYPE::node_find_t							node_find_t;
+	typedef PFX_CBST_ELEM_FIND_TYPE::node_t node_t;
+	typedef PFX_CBST_ELEM_FIND_TYPE::compare_two_elemen_t cmp_t;
+
+	const node_t* near_node_ptr = null;
+	const node_t* traval_node_ptr = itr.root_node();
 
 	int cmp_result = 0;
 	while (traval_node_ptr)
@@ -1673,12 +1661,12 @@ PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t*	PFX_CBST_ELEM_FIND::find_n
 }
 
 PFX_CBST_ELEM_FINDX_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t*	PFX_CBST_ELEM_FINDX::find_node
+PFX_INLINE PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t* PFX_CBST_ELEM_FINDX::find_node
 (const PFX_CBST_ELEM_FINDX_TYPE::key_t& PARAM_IN __key,
-PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t& itr)
+		PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t& itr)
 {
-	typedef PFX_CBST_ELEM_FINDX_TYPE::node_t				node_t;
-	typedef PFX_CBST_ELEM_FINDX_TYPE::compare_two_elemen_t	cmp_t;
+	typedef PFX_CBST_ELEM_FINDX_TYPE::node_t node_t;
+	typedef PFX_CBST_ELEM_FINDX_TYPE::compare_two_elemen_t cmp_t;
 
 	const node_t* find_node_ptr = itr.root_node();
 	while (find_node_ptr)
@@ -1710,13 +1698,13 @@ PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t& itr)
 }
 
 PFX_CBST_ELEM_FINDX_TEMPLATE_DEFINES
-PFX_INLINE PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t*	PFX_CBST_ELEM_FINDX::find_near_node
+PFX_INLINE PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t* PFX_CBST_ELEM_FINDX::find_near_node
 (const PFX_CBST_ELEM_FINDX_TYPE::key_t& PARAM_IN __key,
-PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t& itr,
-int& PARAM_INOUT last_cmp_result)
+		PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t& itr,
+		int& PARAM_INOUT last_cmp_result)
 {
-	typedef PFX_CBST_ELEM_FINDX_TYPE::node_t				node_t;
-	typedef PFX_CBST_ELEM_FINDX_TYPE::compare_two_elemen_t	cmp_t;
+	typedef PFX_CBST_ELEM_FINDX_TYPE::node_t node_t;
+	typedef PFX_CBST_ELEM_FINDX_TYPE::compare_two_elemen_t cmp_t;
 
 	const node_t* near_node_ptr = null;
 	const node_t* traval_node_ptr = itr.root_node();
@@ -1752,12 +1740,11 @@ int& PARAM_INOUT last_cmp_result)
 	}
 }
 
-
 // 插入
 PFX_CBST_INSERT_TEMPLATE_DEFINES
 PFX_INLINE const PFX_CBST_INSERT_TYPE::node_t* PFX_CBST_INSERT::add_node
-		(PFX_CBST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr, 
-		PFX_CBST_INSERT_TYPE::node_t* PARAM_INOUT add_node_ptr, 
+(PFX_CBST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_CBST_INSERT_TYPE::node_t* PARAM_INOUT add_node_ptr,
 		result_t& PARAM_OUT status_)
 {
 	typedef PFX_CBST_INSERT_TYPE::node_t node_t;
@@ -1767,21 +1754,21 @@ PFX_INLINE const PFX_CBST_INSERT_TYPE::node_t* PFX_CBST_INSERT::add_node
 }
 
 PFX_CBST_INSERT_TEMPLATE_DEFINES
-result_t PFX_CBST_INSERT ::add_node 
-	(PFX_CBST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+result_t PFX_CBST_INSERT ::add_node
+(PFX_CBST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
 		PFX_CBST_INSERT_TYPE::node_t* PARAM_INOUT add_node_ptr,
 		PFX_CBST_INSERT_TYPE::node_t*& PARAM_OUT added_node_ptr)
 {
-	typedef PFX_CBST_INSERT_TYPE::node_t								node_t;
-	typedef PFX_CBST_INSERT_TYPE::compare_two_node_t	cmp_t;
-	typedef PFX_CBST_INSERT_TYPE::init_t									init_t;
-	typedef PFX_CBST_INSERT_TYPE::find_t									find_t;
+	typedef PFX_CBST_INSERT_TYPE::node_t node_t;
+	typedef PFX_CBST_INSERT_TYPE::compare_two_node_t cmp_t;
+	typedef PFX_CBST_INSERT_TYPE::init_t init_t;
+	typedef PFX_CBST_INSERT_TYPE::find_t find_t;
 
-	result_t	status = PFX_STATUS_OK;
-	int			cmp_result;
-	node_t*	tmp_root_node_ptr;
-	node_t*	node_to_be_add_ptr;
-	node_t*	parent_node_ptr;
+	result_t status = PFX_STATUS_OK;
+	int cmp_result;
+	node_t* tmp_root_node_ptr;
+	node_t* node_to_be_add_ptr;
+	node_t* parent_node_ptr;
 
 	tmp_root_node_ptr = root_node_ptr;
 
@@ -1796,8 +1783,8 @@ result_t PFX_CBST_INSERT ::add_node
 
 	FOR_ONE_LOOP_BEGIN
 
-	node_to_be_add_ptr	=	(node_t*) find_t::find_near_node
-						(add_node_ptr, tmp_root_node_ptr, cmp_result); 
+	node_to_be_add_ptr = (node_t*) find_t::find_near_node
+	(add_node_ptr, tmp_root_node_ptr, cmp_result);
 
 	// 已经存在一个同样key的节点, added_node_ptr返回的是已有节点的指针
 	if (null != node_to_be_add_ptr && 0 == cmp_result)
@@ -1807,7 +1794,7 @@ result_t PFX_CBST_INSERT ::add_node
 		break;
 	}
 
-	parent_node_ptr = node_to_be_add_ptr->get_parent_node_ref () ;
+	parent_node_ptr = node_to_be_add_ptr->get_parent_node_ref ();
 
 	if (0 > cmp_result)
 	{
@@ -1842,40 +1829,39 @@ result_t PFX_CBST_INSERT ::add_node
 	status = PFX_STATUS_OK;
 	FOR_ONE_LOOP_END
 
-	
 	return status;
 }
 
 // AVL 树插入节点
 PFX_AVL_BST_INSERT_TEMPLATE_DEFINES
-PFX_INLINE const PFX_AVL_BST_INSERT_TYPE::node_t* PFX_AVL_BST_INSERT ::add_node 
-	(PFX_AVL_BST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_AVL_BST_INSERT_TYPE::node_t* PARAM_INOUT add_node_ptr,
-	result_t& PARAM_OUT __status)
+PFX_INLINE const PFX_AVL_BST_INSERT_TYPE::node_t* PFX_AVL_BST_INSERT ::add_node
+(PFX_AVL_BST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_AVL_BST_INSERT_TYPE::node_t* PARAM_INOUT add_node_ptr,
+		result_t& PARAM_OUT __status)
 {
-	typedef PFX_AVL_BST_INSERT_TYPE::node_t								node_t;
-	typedef PFX_AVL_BST_INSERT_TYPE::compare_two_node_t	cmp_t;
-	typedef PFX_AVL_BST_INSERT_TYPE::init_t									init_t;
-	typedef PFX_AVL_BST_INSERT_TYPE::BST_insert_t						BST_insert_t;
+	typedef PFX_AVL_BST_INSERT_TYPE::node_t node_t;
+	typedef PFX_AVL_BST_INSERT_TYPE::compare_two_node_t cmp_t;
+	typedef PFX_AVL_BST_INSERT_TYPE::init_t init_t;
+	typedef PFX_AVL_BST_INSERT_TYPE::BST_insert_t BST_insert_t;
 
-	result_t	status;
-	node_t*	return_node_ptr = null;
+	result_t status;
+	node_t* return_node_ptr = null;
 
 	FOR_ONE_LOOP_BEGIN
 
-	BREAK_LOOP_CONDITION_SETS (!add_node_ptr, 
+	BREAK_LOOP_CONDITION_SETS (!add_node_ptr,
 			status, PFX_STATUS_INVALID_PARAMS);
 
 	status = BST_insert_t ::add_node (root_node_ptr,
-		add_node_ptr, return_node_ptr);
+			add_node_ptr, return_node_ptr);
 
 	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
 
 	init_t :: update_avl_height (add_node_ptr);
 	status = init_t :: avl_update_insert_rotate (root_node_ptr,add_node_ptr);
 
-	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK != status), 
-		return_node_ptr, null);
+	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK != status),
+			return_node_ptr, null);
 
 	FOR_ONE_LOOP_END
 
@@ -1885,37 +1871,37 @@ PFX_INLINE const PFX_AVL_BST_INSERT_TYPE::node_t* PFX_AVL_BST_INSERT ::add_node
 
 // 黑红树插入节点
 PFX_RB_BST_INSERT_TEMPLATE_DEFINES
-PFX_INLINE const PFX_RB_BST_INSERT_TYPE::node_t* PFX_RB_BST_INSERT ::add_node 
-	(PFX_RB_BST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
-	PFX_RB_BST_INSERT_TYPE::node_t* PARAM_INOUT add_node_ptr,
-	result_t& PARAM_OUT __status)
+PFX_INLINE const PFX_RB_BST_INSERT_TYPE::node_t* PFX_RB_BST_INSERT ::add_node
+(PFX_RB_BST_INSERT_TYPE::node_t*& PARAM_INOUT root_node_ptr,
+		PFX_RB_BST_INSERT_TYPE::node_t* PARAM_INOUT add_node_ptr,
+		result_t& PARAM_OUT __status)
 {
-	typedef PFX_RB_BST_INSERT_TYPE::node_t								node_t;
-	typedef PFX_RB_BST_INSERT_TYPE::compare_two_node_t	cmp_t;
-	typedef PFX_RB_BST_INSERT_TYPE::init_t									init_t;
-	typedef PFX_RB_BST_INSERT_TYPE::BST_insert_t					BST_insert_t;
+	typedef PFX_RB_BST_INSERT_TYPE::node_t node_t;
+	typedef PFX_RB_BST_INSERT_TYPE::compare_two_node_t cmp_t;
+	typedef PFX_RB_BST_INSERT_TYPE::init_t init_t;
+	typedef PFX_RB_BST_INSERT_TYPE::BST_insert_t BST_insert_t;
 
-	result_t	status;
-	node_t*	return_node_ptr = null;
+	result_t status;
+	node_t* return_node_ptr = null;
 
 	FOR_ONE_LOOP_BEGIN
 
-	BREAK_LOOP_CONDITION_SETS (!add_node_ptr, 
-				status, PFX_STATUS_INVALID_PARAMS);
+	BREAK_LOOP_CONDITION_SETS (!add_node_ptr,
+			status, PFX_STATUS_INVALID_PARAMS);
 
 	// 插入的初始节点的颜色为红色
 	init_t ::set_rbt_color_red (add_node_ptr);
 
-	status =  BST_insert_t::add_node (root_node_ptr,
-		add_node_ptr,return_node_ptr);
+	status = BST_insert_t::add_node (root_node_ptr,
+			add_node_ptr,return_node_ptr);
 
 	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
 
 	// 平衡变换
 	status = init_t ::rbt_add_rotate_fixup (root_node_ptr,add_node_ptr);
 
-	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK != status), 
-		return_node_ptr, null);
+	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK != status),
+			return_node_ptr, null);
 
 	FOR_ONE_LOOP_END
 
@@ -1926,24 +1912,24 @@ PFX_INLINE const PFX_RB_BST_INSERT_TYPE::node_t* PFX_RB_BST_INSERT ::add_node
 
 // 清除
 PFX_CBST_CLEAN_TEMPLATE_DEFINES
-result_t PFX_CBST_CLEAN::clean 
-	(PFX_CBST_CLEAN_TYPE::node_t*& PARAM_INOUT root_dec_ptr)
+result_t PFX_CBST_CLEAN::clean
+(PFX_CBST_CLEAN_TYPE::node_t*& PARAM_INOUT root_dec_ptr)
 {
-	typedef PFX_CBST_CLEAN_TYPE::node_t									node_t;
-	typedef typename const_bst_posorder_operate< node_t > itr_t;
-	typedef PFX_CBST_CLEAN_TYPE::new_delete_t						new_delete_t;
+	typedef PFX_CBST_CLEAN_TYPE::node_t node_t;
+	typedef const_bst_posorder_operate< node_t > itr_t;
+	typedef PFX_CBST_CLEAN_TYPE::new_delete_t new_delete_t;
 
 	result_t status = PFX_STATUS_OK;
 
 	RETURN_RESULT (null == root_dec_ptr, status);
 
-	const node_t* iterator_begin_ptr	= itr_t::begin (root_dec_ptr);
-	const node_t* iterator_end_ptr		= itr_t::end(root_dec_ptr);
+	const node_t* iterator_begin_ptr = itr_t::begin (root_dec_ptr);
+	const node_t* iterator_end_ptr = itr_t::end(root_dec_ptr);
 
 	const node_t* cur_node_ptr;
 	cur_node_ptr = iterator_begin_ptr;
 
-	do 
+	do
 	{
 		node_t* del_node_ptr = (node_t*) cur_node_ptr;
 
@@ -1975,7 +1961,7 @@ result_t PFX_CBST_CLEAN::clean
 			status = new_delete_t::delete_node (del_node_ptr);
 			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
 		}
-	} while (1);
+	}while (1);
 	root_dec_ptr = null;
 
 	return status;
@@ -1983,20 +1969,20 @@ result_t PFX_CBST_CLEAN::clean
 
 // 克隆
 PFX_CBST_CLONE_TEMPLATE_DEFINES
-result_t PFX_CBST_CLONE ::clone 
-	(PFX_CBST_CLONE_TYPE::node_t*& PARAM_INOUT root_dec_ptr, 
-	const PFX_CBST_CLONE_TYPE::node_t * PARAM_IN other_root_ptr)
+result_t PFX_CBST_CLONE ::clone
+(PFX_CBST_CLONE_TYPE::node_t*& PARAM_INOUT root_dec_ptr,
+		const PFX_CBST_CLONE_TYPE::node_t * PARAM_IN other_root_ptr)
 {
-	typedef PFX_CBST_CLONE_TYPE::node_t				node_t;
-	typedef PFX_CBST_CLONE_TYPE::init_t					init_t;
-	typedef PFX_CBST_CLONE_TYPE::clean_t				clean_t;
-	typedef PFX_CBST_CLONE_TYPE::new_delete_t	new_delete_t;
+	typedef PFX_CBST_CLONE_TYPE::node_t node_t;
+	typedef PFX_CBST_CLONE_TYPE::init_t init_t;
+	typedef PFX_CBST_CLONE_TYPE::clean_t clean_t;
+	typedef PFX_CBST_CLONE_TYPE::new_delete_t new_delete_t;
 
 	RETURN_RESULT (other_root_ptr == root_dec_ptr,PFX_STATUS_OK);
 	RETURN_RESULT (!root_dec_ptr, PFX_STATUS_UNIQUE);
 	RETURN_RESULT (null == other_root_ptr,PFX_STATUS_OK);
 
-	result_t	status;
+	result_t status;
 	node_t* temp_dec_node_ptr;
 	const node_t* temp_src_node_ptr;
 	node_t* new_node_ptr = new_delete_t::new_node ();
@@ -2063,15 +2049,15 @@ result_t PFX_CBST_CLONE ::clone
 
 PFX_CBST_COPY_TEMPLATE_DEFINES
 result_t PFX_CBST_COPY::copy
-	(PFX_CBST_COPY_TYPE::node_t*& PARAM_INOUT root_dec_ptr, 
-	const PFX_CBST_COPY_TYPE::node_t * PARAM_IN other_root_ptr)
+(PFX_CBST_COPY_TYPE::node_t*& PARAM_INOUT root_dec_ptr,
+		const PFX_CBST_COPY_TYPE::node_t * PARAM_IN other_root_ptr)
 {
-	typedef PFX_CBST_COPY_TYPE::node_t					node_t;
-	typedef PFX_CBST_COPY_TYPE::insert_t				insert_t;
-	typedef PFX_CBST_COPY_TYPE::clean_t					clean_t;
-	typedef PFX_CBST_COPY_TYPE::new_delete_t		new_delete_t;
+	typedef PFX_CBST_COPY_TYPE::node_t node_t;
+	typedef PFX_CBST_COPY_TYPE::insert_t insert_t;
+	typedef PFX_CBST_COPY_TYPE::clean_t clean_t;
+	typedef PFX_CBST_COPY_TYPE::new_delete_t new_delete_t;
 
-	typedef typename const_bst_preorder_operate < node_t > itr_t;
+	typedef const_bst_preorder_operate < node_t > itr_t;
 
 	RETURN_RESULT (other_root_ptr == root_dec_ptr, PFX_STATUS_OK);
 	RETURN_RESULT (!root_dec_ptr, PFX_STATUS_UNIQUE);
@@ -2079,16 +2065,16 @@ result_t PFX_CBST_COPY::copy
 
 	result_t status = PFX_STATUS_OK;
 
-	itr_t::st_iterator_t iterator_begin;
-	itr_t::st_iterator_t iterator_end;
+	typename itr_t::st_iterator_t iterator_begin;
+	typename itr_t::st_iterator_t iterator_end;
 
-	itr_t::st_iterator_t*  iterator_begin_ptr	= itr_t::begin (other_root_ptr, iterator_begin);
-	itr_t::st_iterator_t*  iterator_end_ptr		= itr_t::end (other_root_ptr, iterator_end);
+	typename itr_t::st_iterator_t* iterator_begin_ptr = itr_t::begin (other_root_ptr, iterator_begin);
+	typename itr_t::st_iterator_t* iterator_end_ptr = itr_t::end (other_root_ptr, iterator_end);
 
 	const node_t* cur_node_ptr;
 	cur_node_ptr = iterator_begin_ptr->m_cur_node_ptr;
 	const node_t* add_node_ptr = null;
-	do 
+	do
 	{
 		//node_t* copy_node_ptr = (node_t*) cur_node_ptr;
 		//BREAK_LOOP_CONDITION (null == copy_node_ptr);
@@ -2112,8 +2098,8 @@ result_t PFX_CBST_COPY::copy
 			BREAK_LOOP (status, PFX_STATUS_OK);
 		}
 
-		iterator_begin_ptr	= itr_t::increase(iterator_begin);
-		cur_node_ptr			= iterator_begin_ptr->m_cur_node_ptr;
+		iterator_begin_ptr = itr_t::increase(iterator_begin);
+		cur_node_ptr = iterator_begin_ptr->m_cur_node_ptr;
 
 		if (cur_node_ptr)
 		{
@@ -2139,7 +2125,7 @@ result_t PFX_CBST_COPY::copy
 			}
 		}
 
-	} while (1);
+	}while (1);
 
 	if (PFX_STATUS_OK != status)
 	{
@@ -2148,8 +2134,6 @@ result_t PFX_CBST_COPY::copy
 
 	return status;
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////
 PECKER_END

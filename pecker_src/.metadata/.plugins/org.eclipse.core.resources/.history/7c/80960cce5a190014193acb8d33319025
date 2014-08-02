@@ -1,0 +1,9 @@
+package com.burnningsun.pfx_framework;
+
+import android.app.NativeActivity;
+
+public class PFXNativeActivityBase extends NativeActivity 
+{
+	
+
+}

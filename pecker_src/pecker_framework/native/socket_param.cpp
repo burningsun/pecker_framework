@@ -14,8 +14,8 @@ comm_block::~comm_block()
 	dispose();
 }
 int comm_block::init(unsigned int __buffer_size,
-					bool force_newbuffer // = false
-											)
+		bool force_newbuffer // = false
+)
 {
 	int status;
 	if (!__buffer_size)
@@ -44,8 +44,8 @@ int comm_block::init(unsigned int __buffer_size,
 		m_buffer = new char[__buffer_size];
 		if (m_buffer)
 		{
-			m_buffer_size	= __buffer_size;
-			m_active_size	= __buffer_size;
+			m_buffer_size = __buffer_size;
+			m_active_size = __buffer_size;
 			status = PFX_STATUS_OK;
 		}
 		else
@@ -63,14 +63,14 @@ int comm_block::dispose()
 	{
 		delete [] m_buffer;
 	}
-	m_buffer		= null;
-	m_buffer_size	= 0;
-	m_active_size 	= 0;
+	m_buffer = null;
+	m_buffer_size = 0;
+	m_active_size = 0;
 	return PFX_STATUS_OK;
 }
 
 net_comm_data::net_comm_data():
-		m_flag(0)
+m_flag(0)
 {
 	ZeroMemory(&m_target_ip_addr,sizeof(ip_addr_info_t));
 	m_target_ip_addr.m_socket_info.m_addr_family = AF_INET;
@@ -81,9 +81,9 @@ net_comm_data::~net_comm_data()
 	dispose();
 }
 
-int net_comm_data::init(unsigned int __buffer_size, 
-											bool force_newbuffer // = false
-											)
+int net_comm_data::init(unsigned int __buffer_size,
+		bool force_newbuffer // = false
+)
 {
 	int status = PFX_STATUS_OK;
 	status = m_data_block.init(__buffer_size, force_newbuffer);
@@ -100,11 +100,10 @@ int net_comm_data::dispose()
 //#define LOCAL_IP_ADDR "192.168.148.128"
 #define LOCAL_IP_ADDR "192.168.15.10"
 
-
-char* st_net_system::get_local_udpip_info (ip_addr_info_t& __ipinfo, 
-	unsigned int& select_num,
-	bool bfind_host //= true
-	)
+char* st_net_system::get_local_udpip_info (ip_addr_info_t& __ipinfo,
+		unsigned int& select_num,
+		bool bfind_host //= true
+)
 {
 	static char sLocalName[256];
 
@@ -112,9 +111,9 @@ char* st_net_system::get_local_udpip_info (ip_addr_info_t& __ipinfo,
 	LOG_OUT ("host name = %s\n", sLocalName);
 	if (!bfind_host)
 	{
-		__ipinfo.m_socket_info.m_ipv4addr.sin_family	= AF_INET;
+		__ipinfo.m_socket_info.m_ipv4addr.sin_family = AF_INET;
 		inet_str_2_addr(AF_INET,LOCAL_IP_ADDR, &__ipinfo.m_socket_info.m_ipv4addr.sin_addr);
-		__ipinfo.m_socket_info.m_ipv4addr.sin_port		= htons(PORT_NUM);
+		__ipinfo.m_socket_info.m_ipv4addr.sin_port = htons(PORT_NUM);
 		__ipinfo.m_socket_size = sizeof (sockaddr_in);
 
 		LOG_OUT ("local ip addr = %s\n", inet_ntoa(__ipinfo.m_socket_info.m_ipv4addr.sin_addr));
@@ -133,7 +132,7 @@ char* st_net_system::get_local_udpip_info (ip_addr_info_t& __ipinfo,
 
 	DWORD dwRetval;
 	dwRetval = getaddrinfo(sLocalName, NULL, &__hints, &result_addr_info_ptr);
-	if (dwRetval) 
+	if (dwRetval)
 	{
 		LOG_OUT("getaddrinfo failed with error: %d\n", dwRetval);
 		break;
@@ -144,10 +143,10 @@ char* st_net_system::get_local_udpip_info (ip_addr_info_t& __ipinfo,
 		LOG_OUT ("get local host info fail!",0);
 		break;
 	}
-	struct addrinfo*	ptr = NULL;
-	int							loacal_ip_count = 0;
-	struct addrinfo		select_local_addr_info;
-	for(ptr=result_addr_info_ptr; ptr != NULL ;ptr=ptr->ai_next) 
+	struct addrinfo* ptr = NULL;
+	int loacal_ip_count = 0;
+	struct addrinfo select_local_addr_info;
+	for(ptr=result_addr_info_ptr; ptr != NULL;ptr=ptr->ai_next)
 	{
 		if (loacal_ip_count == select_num)
 		{
@@ -172,7 +171,6 @@ char* st_net_system::get_local_udpip_info (ip_addr_info_t& __ipinfo,
 	FOR_ONE_LOOP_END
 
 	return sLocalName;
-
 
 }
 

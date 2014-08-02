@@ -1,0 +1,13 @@
+PFX_LOCAL_PATH := $(call my-dir)
+
+LOCAL_SUB_FILES :=  
+
+
+LOCAL_SRC_FILES := \
+					$(PFX_LOCAL_PATH)/pfx_defines.cpp \
+					pfx_api_info.cpp \
+					pfx_hal_info.cpp \
+				   $(LOCAL_SUB_FILES)
+				   
+#LOCAL_CPP_EXTENSION :=  .cpp
+

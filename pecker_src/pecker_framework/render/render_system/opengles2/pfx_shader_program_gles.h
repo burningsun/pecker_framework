@@ -8,9 +8,9 @@
 #ifndef		PFX_SHADER_PROGRAM_GLES_H_
 #define		PFX_SHADER_PROGRAM_GLES_H_
 
-#include <gl2.h>
+#include <GLES2/gl2.h>
 #include "../pfx_shader_program.h"
-#include "pfx_hal_info_gles2.h"
+#include "../../../pfx_hal_info_gles2.h"
 
 
 
@@ -89,23 +89,26 @@ public:
 		return  m_shaderID;
 	}
 
-	static PFX_INLINE enum_int_t	get_type()  //PFX_SHADER_TYPE_t
-	{
-		return PFXST_UNKOWN_SHADER;
-	}
+	static PFX_INLINE enum_int_t get_type();
 	static PFX_INLINE u64_t		get_version() 
 	{
 		return cshader_method_gles2::get_version();
 	}
 };
 
+template <const GLenum SHADER_TYPE >
+PFX_INLINE enum_int_t cnative_shader_gles2< SHADER_TYPE >::get_type()  //PFX_SHADER_TYPE_t
+{
+	return PFXST_UNKOWN_SHADER;
+}
+
 template<>
-enum_int_t cnative_shader_gles2< GL_VERTEX_SHADER >::get_type()  
+PFX_INLINE enum_int_t cnative_shader_gles2< GL_VERTEX_SHADER >::get_type()
 {
 	return PFXST_VERTEXT_SHADER;
 }
 template<>
-enum_int_t cnative_shader_gles2< GL_FRAGMENT_SHADER >::get_type()	
+PFX_INLINE enum_int_t cnative_shader_gles2< GL_FRAGMENT_SHADER >::get_type()
 {
 	return PFXST_PIXEL_SHADER;
 }
@@ -120,10 +123,11 @@ class  PFX_RENDER_SYS_TEMPLATE_API cshader_gles2 : public creference_base< cnati
 protected:
 	typedef  cnative_shader_gles2< SHADER_TYPE > ref_element_t;
 	typedef  creference_base< cnative_shader_gles2< SHADER_TYPE > > ref_t;
+	typedef typename ref_t::element_t element_t;
 public:
 	PFX_INLINE ref_element_t* get_native_shader()
 	{
-		return 	get_reference();
+		return 	ref_t::get_reference();
 	}
 	PFX_INLINE long_t	compile_shader(const char_t* PARAM_IN str_shader_codes,
 		usize__t buf_size,
@@ -132,7 +136,7 @@ public:
 		const void* PARAM_IN param_ptr = null)
 	{
 		release_reference();
-		ref_element_t* ref_ptr = create_ref_element();
+		ref_element_t* ref_ptr = ref_t::create_ref_element();
 		if (ref_ptr)
 		{
 			return ref_ptr->compile_shader(str_shader_codes, buf_size, status, source_count);
@@ -144,7 +148,7 @@ public:
 	}
 	PFX_INLINE long_t	get_native_handle()
 	{
-		ref_element_t* ref_ptr = get_reference();
+		ref_element_t* ref_ptr = ref_t::get_reference();
 		if (ref_ptr)
 		{
 			return ref_ptr->get_native_handle();

@@ -12,13 +12,20 @@ typedef win_thread  thread_t;
 PECKER_END
 
 #else 
-#if ((OS_CONFIG == OS_LINUX) || (OS_CONFIG == OS_ANDROID))
+#if (OS_CONFIG == OS_LINUX)
 #include "linux_thread.h"
 
 PECKER_BEGIN
 typedef linux_thread thread_t;
 PECKER_END
+#else
+#if (OS_CONFIG == OS_ANDROID)
+#include "android_thread.h"
 
+PECKER_BEGIN
+typedef android_thread thread_t;
+PECKER_END
+#endif
 #endif 
 #endif
 

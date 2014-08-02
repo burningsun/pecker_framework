@@ -15,15 +15,44 @@
 #define PFX_Interface struct
 
 //#define PFX_INLINE inline
-#define PFX_INLINE __inline //msvc
+
+
+
+
+
+
+#ifdef __GNUC__
+
+#define PFX_EXPORT_API
+#define PFX_IMPORT_API
+#define PFX_INLINE inline
 #define PFX_INLINE_CODE PFX_INLINE //有些编译器不支持c/cpp文件内写inline
+
+#else
+#ifdef _MSC_VER
+#define PFX_EXPORT_API __declspec(dllexport) 
+#define PFX_IMPORT_API __declspec(dllimport)
 
 // VC不支持指定类型的异常抛出声明，加上后忽略warning
 #pragma warning (disable:4290)
+#ifndef __cplusplus
+#define PFX_INLINE __inline //msvc
+#else
+#define PFX_INLINE inline
+#endif // __cplusplus
 
-// msvc
-#define PFX_EXPORT_API __declspec(dllexport) 
-#define PFX_IMPORT_API __declspec(dllimport)
+#define PFX_INLINE_CODE PFX_INLINE //有些编译器不支持c/cpp文件内写inline
+
+#else
+//#ifdef
+//#endif
+
+#endif //_MSC_VER
+#endif //__GNUC__
+
+
+
+
 
 #ifdef PFX_CORE_EXPORT
 #define PFX_CORE_API			PFX_EXPORT_API
@@ -630,14 +659,14 @@ struct PFX_DATA_API __type_id
 	static boolean_t __IS_type (const object_id_t& type_a, const object_id_t& test_type);
 };
 
-template < class this_type_t, 
-					class base_type_t = this_type_t >
+template < class __this_type_t,
+			class __base_type_t = __this_type_t >
 class PFX_DATA_TEMPLATE_API cobject_id
 {
 public:
-	typedef this_type_t										this_type_t;
-	typedef base_type_t									base_type_t;
-	typedef typename cobject_id< this_type_t, base_type_t >	cobject_id_t;
+	typedef __this_type_t							this_type_t;
+	typedef __base_type_t							base_type_t;
+	typedef  cobject_id< this_type_t, base_type_t >	cobject_id_t;
 public:
 	static uint_t final_type_id ()
 	{

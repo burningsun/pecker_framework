@@ -16,17 +16,17 @@ void print_vec (const vec_t* vec_ptr)
 {
 	if (null == vec_ptr)
 	{
-		PECKER_LOG_ ("null vec\n");
+		PECKER_LOG_ ("null vec\n",0);
 	}
 	else
 	{
-		PECKER_LOG_ ("vec = [")
+		PECKER_LOG_ ("vec = [",0);
 			for (uindex_t i=0; i<dim_v; ++i)
 			{
 					float_t x = (*vec_ptr)[i];
 					PECKER_LOG_ (" %lf ",x);
 			}
-			PECKER_LOG_("]\n");
+			PECKER_LOG_("]\n",0);
 	}
 };
 
@@ -35,11 +35,11 @@ void print_mat (const mat_t* mat_ptr)
 {
 	if (null == mat_ptr)
 	{
-		PECKER_LOG_ ("null mat\n");
+		PECKER_LOG_ ("null mat\n",0);
 	}
 	else
 	{
-		PECKER_LOG_ ("mat = [\n")
+		PECKER_LOG_ ("mat = [\n",0);
 			for (uindex_t i=0; i<dim_v; ++i)
 			{
 				for (uindex_t j=0; j<dim_v; ++j)
@@ -47,9 +47,9 @@ void print_mat (const mat_t* mat_ptr)
 					float_t x = (*(*mat_ptr)[i])[j];
 					PECKER_LOG_ (" %lf ",x);
 				}
-				PECKER_LOG_("\n");
+				PECKER_LOG_("\n",0);
 			}
-			PECKER_LOG_("]\n");
+			PECKER_LOG_("]\n",0);
 	}
 };
 
@@ -58,11 +58,11 @@ void print_mat_alg (const mat_t* mat_ptr,usize__t x,usize__t y)
 {
 	if (null == mat_ptr)
 	{
-		PECKER_LOG_ ("null mat\n");
+		PECKER_LOG_ ("null mat\n",0);
 	}
 	else
 	{
-		PECKER_LOG_ ("mat = [\n")
+		PECKER_LOG_ ("mat = [\n",0);
 			for (uindex_t i=0; i<dim_v; ++i)
 			{
 				if (x == i){continue;}
@@ -72,9 +72,9 @@ void print_mat_alg (const mat_t* mat_ptr,usize__t x,usize__t y)
 					float_t x = (*(*mat_ptr)[i])[j];
 					PECKER_LOG_ (" %lf ",x);
 				}
-				PECKER_LOG_("\n");
+				PECKER_LOG_("\n",0);
 			}
-			PECKER_LOG_("]\n");
+			PECKER_LOG_("]\n",0);
 	}
 };
 void matrix_test ()
@@ -94,7 +94,7 @@ void matrix_test ()
 
 
 	//////////////////////////////////////////////////////////////////////////
-	PECKER_LOG_ ("vec4 test!\n");
+	PECKER_LOG_ ("vec4 test!\n",0);
 	vector4 vec4_0 (1,2,3,4);
 	vector4 vec4_1 (1,1,1,1);
 	vector4 vec = vector4::mul(vec4_1, 4);
@@ -121,35 +121,35 @@ void matrix_test ()
 	};
 
 
-	PECKER_LOG_ ("mat2 test!\n");
+	PECKER_LOG_ ("mat2 test!\n",0);
 	SMat2 mat2_0(vec2_array,3);
 	print_mat <SMat2, 2> (&mat2_0);
 
 	SMat2 mat2_1(vec2_array2,3);
 	print_mat <SMat2, 2>(&mat2_1);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat2, 2>(&mat2_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	mat2_1.mul_replace(mat2_0);
 	print_mat <SMat2, 2>(&mat2_1);
 	
-	PECKER_LOG_ ("\n");
+	PECKER_LOG_ ("\n",0);
 	SMat2X mat2x_0(mat2_0);
 	SMat2X mat2x_1(mat2_1);
 	print_mat <SMat2X, 2>(&mat2x_1);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat2X, 2>(&mat2x_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	mat2x_1.mul_replace(mat2x_0);
 	print_mat <SMat2X, 2>(&mat2x_1);
 
-	PECKER_LOG_ (" \n");
+	PECKER_LOG_ (" \n",0);
 	vector2 vec2(1, 2);
 	vector2 vec2_result = SMat2::mul(vec2, mat2_0);
 	print_vec <vector2, 2> (&vec2);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat2, 2>(&mat2_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	print_vec <vector2, 2> (&vec2_result);
 
 	vec2_result = SMat2X::mul (vec2, mat2x_0);
@@ -172,13 +172,13 @@ void matrix_test ()
 	SMat2 mat2_extern;
 	//mat2_extern.indentify_replace(1);
 	mat2_0.inverse_matrix(mat2_invert, mat2_extern);
-	PECKER_LOG_ ("invert mat\n");
+	PECKER_LOG_ ("invert mat\n",0);
 	print_mat <SMat2, 2> (&mat2_invert);
 
 	SMat2X matx2_invert(mat2_invert);
 	SMat2X matx2_extern(mat2_extern);
 	mat2x_0.inverse_matrix(matx2_invert, matx2_extern);
-	PECKER_LOG_ ("invert matx\n");
+	PECKER_LOG_ ("invert matx\n",0);
 	print_mat <SMat2X, 2> (&matx2_invert);
 
 	SMat2::matrix_alg_t::matrix_t mat2_ = SMat2::matrix_reference(mat2_0.m_mat);
@@ -225,35 +225,35 @@ void matrix_test ()
 		vector3(fvec3_3, 3)
 	};
 
-	PECKER_LOG_ ("mat3 test!\n");
+	PECKER_LOG_ ("mat3 test!\n",0);
 	SMat3 mat3_0(vec3_array,3);
 	print_mat <SMat3, 3> (&mat3_0);
 
 	SMat3 mat3_1(vec3_array,3);
 	print_mat <SMat3, 3>(&mat3_1);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat3, 3>(&mat3_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	mat3_1.mul_replace(mat3_0);
 	print_mat <SMat3, 3>(&mat3_1);
 
-	PECKER_LOG_ ("\n");
+	PECKER_LOG_ ("\n",0);
 	SMat3X mat3x_0(mat3_0);
 	SMat3X mat3x_1(mat3_1);
 	print_mat <SMat3X, 3>(&mat3x_1);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat3X, 3>(&mat3x_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	mat3x_1.mul_replace(mat3x_0);
 	print_mat <SMat3X, 3>(&mat3x_1);
 
-	PECKER_LOG_ (" \n");
+	PECKER_LOG_ (" \n",0);
 	vector3 vec3(1, 2, 3);
 	vector3 vec3_result = SMat3::mul(vec3, mat3_0);
 	print_vec <vector3, 3> (&vec3);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat3, 3>(&mat3_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	print_vec <vector3, 3> (&vec3_result);
 	vec3_result = SMat3X::mul (vec3, mat3x_0);
 	print_vec <vector3, 3> (&vec3_result);
@@ -274,13 +274,13 @@ void matrix_test ()
 	SMat3 mat3_extern;
 	//mat3_extern.indentify_replace(1);
 	mat3_0.inverse_matrix(mat3_invert, mat3_extern);
-	PECKER_LOG_ ("invert mat\n");
+	PECKER_LOG_ ("invert mat\n",0);
 	print_mat <SMat3, 3> (&mat3_invert);
 
 	SMat3X matx3_invert(mat3_invert);
 	SMat3X matx3_extern(mat3_extern);
 	mat3x_0.inverse_matrix(matx3_invert, matx3_extern);
-	PECKER_LOG_ ("invert matx\n");
+	PECKER_LOG_ ("invert matx\n",0);
 	print_mat <SMat3X, 3> (&matx3_invert);
 
 	SMat3::matrix_alg_t::matrix_t mat3_ = SMat3::matrix_reference(mat3_0.m_mat);
@@ -313,7 +313,7 @@ void matrix_test ()
 
 	}
 	//////////////////////////////////////////////////////////////////////////
-	PECKER_LOG_ ("mat4 test!\n");
+	PECKER_LOG_ ("mat4 test!\n",0);
 	SMat4 mat4_0(1, 2, 3, 4,
 								3, 2, 1, 4,
 								1, 2, 1, 5,
@@ -321,23 +321,23 @@ void matrix_test ()
 	SMat4 mat4_1(mat4_0);
 	print_mat <SMat4, 4> (&mat4_0);
 
-	PECKER_LOG_ ("\n");
+	PECKER_LOG_ ("\n",0);
 	SMat4X mat4x_0(mat4_0);
 	SMat4X mat4x_1(mat4_1);
 	print_mat <SMat4X, 4>(&mat4x_1);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat4X, 4>(&mat4x_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	mat4x_1.mul_replace(mat4x_0);
 	print_mat <SMat4X, 4>(&mat4x_1);
 
-	PECKER_LOG_ (" \n");
+	PECKER_LOG_ (" \n",0);
 	vector4 vec4(1, 2, 3, 4);
 	vector4 vec4_result = SMat4::mul(vec4, mat4_0);
 	print_vec <vector4, 4> (&vec4);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat4, 4>(&mat4_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	print_vec <vector4, 4> (&vec4_result);
 
 	vec4_result = SMat4X::mul (vec4, mat4x_0);
@@ -358,7 +358,7 @@ void matrix_test ()
 	SMat4 mat_extern;
 	//mat_extern.indentify_replace(1);
 	mat4_0.inverse_matrix(mat_invert, mat_extern);
-	PECKER_LOG_ ("invert mat\n");
+	PECKER_LOG_ ("invert mat\n",0);
 	print_mat <SMat4, 4> (&mat_invert);
 
 	
@@ -366,14 +366,14 @@ void matrix_test ()
 	SMat4X matx_invert(mat_invert);
 	SMat4X matx_extern(mat_extern);
 	mat4x_0.inverse_matrix(matx_invert, matx_extern);
-	PECKER_LOG_ ("invert matx\n");
+	PECKER_LOG_ ("invert matx\n",0);
 	print_mat <SMat4X, 4> (&matx_invert);
 
 	SMat4::matrix_alg_t::matrix_t mat_ = SMat4::matrix_reference(mat4_0.m_mat);
 	SMat4::matrix_alg_t::matrix_t mat_inv = SMat4::matrix_reference(mat_invert.m_mat);
 
 	SMat4::matrix_alg_t::inverse_matrix_for_3sp(mat_,mat_inv);
-	PECKER_LOG_ ("invert mat 3d sp\n");
+	PECKER_LOG_ ("invert mat 3d sp\n",0);
 	print_mat <SMat4, 4> (&mat_invert);
 
 	SMat4::matrix_ex_t mat_ex_tmp(mat4_0.m_mat);
@@ -405,7 +405,7 @@ void matrix_test ()
 		
 	}
 	
-	PECKER_LOG_ ("mat5 test!\n");
+	PECKER_LOG_ ("mat5 test!\n",0);
 	float_t fvec1_5[] = {1,2,3,4,5};
 	float_t fvec2_5[] = {3,2,1,4,3};
 	float_t fvec3_5[] = {3,2,1,5,1};
@@ -431,29 +431,29 @@ void matrix_test ()
 
 	SMat5 mat5_1(vec5_array,5);
 	print_mat <SMat5, 5>(&mat5_1);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat5, 5>(&mat5_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	mat5_1.mul_replace(mat5_0);
 	print_mat <SMat5, 5>(&mat5_1);
 
-	PECKER_LOG_ ("\n");
+	PECKER_LOG_ ("\n",0);
 	SMat5X mat5x_0(mat5_0);
 	SMat5X mat5x_1(mat5_1);
 	print_mat <SMat5X, 5>(&mat5x_1);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat5X, 5>(&mat5x_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	mat5x_1.mul_replace(mat5x_0);
 	print_mat <SMat5X, 5>(&mat5x_1);
 
-	PECKER_LOG_ (" \n");
+	PECKER_LOG_ (" \n",0);
 	vector5 vec5(vec5_array[0]);
 	vector5 vec5_result = SMat5::mul(vec5, mat5_0);
 	print_vec <vector5, 5> (&vec5);
-	PECKER_LOG_ (" X \n");
+	PECKER_LOG_ (" X \n",0);
 	print_mat <SMat5, 5>(&mat5_0);
-	PECKER_LOG_ (" = \n");
+	PECKER_LOG_ (" = \n",0);
 	print_vec <vector5, 5> (&vec5_result);
 	vec5_result = SMat5X::mul (vec5, mat5x_0);
 	print_vec <vector5, 5> (&vec5_result);
@@ -475,13 +475,13 @@ void matrix_test ()
 	SMat5 mat5_extern;
 	mat5_0.inverse_matrix(mat5_invert, mat5_extern);
 
-	PECKER_LOG_ ("invert mat\n");
+	PECKER_LOG_ ("invert mat\n",0);
 	print_mat <SMat5, 5> (&mat5_invert);
 
 	SMat5X matx5_invert(mat5_invert);
 	SMat5X matx5_extern(mat5_extern);
 	mat5x_0.inverse_matrix(matx5_invert, matx5_extern);
-	PECKER_LOG_ ("invert matx\n");
+	PECKER_LOG_ ("invert matx\n",0);
 	print_mat <SMat5X, 5> (&matx5_invert);
 
 	SMat5::matrix_alg_t::matrix_t mat5_ = SMat5::matrix_reference(mat5_0.m_mat);

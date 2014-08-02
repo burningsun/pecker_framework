@@ -27,7 +27,7 @@ public:
 	}
 	inline SOCKET get_socket () const
 	{
-		m_socket;
+		return m_socket;
 	}
 	inline const ip_addr_info_t& get_local_ip () const
 	{

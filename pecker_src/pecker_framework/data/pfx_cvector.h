@@ -2,7 +2,7 @@
  * pfx_cvector.h
  *
  *  Created on: 2013-8-25
-*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 
 #ifndef		PFX_CVECTOR_H_
@@ -16,11 +16,11 @@ PECKER_BEGIN
 template < class dim_type, const usize__t dim_count >
 struct vector_data
 {
-	typedef typename dim_type dim_t;
-	typedef typename vector_data< dim_t, dim_count > vector_t;
+	typedef dim_type dim_t;
+	typedef vector_data< dim_t, dim_count > vector_t;
 
 	dim_t m_value[(0 == dim_count)?1:dim_count];
-	
+
 	static PFX_INLINE usize__t vector_dim_count ()
 	{
 		return dim_count;
@@ -39,12 +39,12 @@ template < class dim_type, const usize__t dim_count, const enum_int_t optional_t
 class VectorX
 {
 public:
-	typedef typename vector_data< dim_type, dim_count >::vector_t			vector_t;
-	typedef typename vector_t::dim_t																	dim_t; 
-	typedef typename VectorX< dim_type, dim_count, optional_type  >		cvector_t;
-	typedef typename vector_base_op_traits < vector_t, optional_type >::vec_alg_t	vec_alg_t;
-	typedef typename vec_alg_t::matrix_t															matrix_t;
-	typedef typename vec_alg_t::matrix_ex_t														matrix_ex_t;
+	typedef typename vector_data< dim_type, dim_count >::vector_t vector_t;
+	typedef typename vector_t::dim_t dim_t;
+	typedef VectorX< dim_type, dim_count, optional_type > cvector_t;
+	typedef typename vector_base_op_traits < vector_t, optional_type >::vec_alg_t vec_alg_t;
+	typedef typename vec_alg_t::matrix_t matrix_t;
+	typedef typename vec_alg_t::matrix_ex_t matrix_ex_t;
 
 protected:
 	vector_t m_vec;
@@ -72,61 +72,60 @@ public:
 	PFX_INLINE dim_t dot (const cvector_t& vec_b);
 	PFX_INLINE dim_t dot (const vector_t& vec_b);
 
-
 public:
-static PFX_INLINE	cvector_t mul (const cvector_t& vec_a, dim_t dim_b);
-static PFX_INLINE	cvector_t div	(const cvector_t& vec_a, dim_t dim_b);
+	static PFX_INLINE cvector_t mul (const cvector_t& vec_a, dim_t dim_b);
+	static PFX_INLINE cvector_t div (const cvector_t& vec_a, dim_t dim_b);
 
-static PFX_INLINE	cvector_t mul (const vector_t& vec_a, dim_t dim_b);
-static PFX_INLINE	cvector_t div (const vector_t& vec_a, dim_t dim_b);
+	static PFX_INLINE cvector_t mul (const vector_t& vec_a, dim_t dim_b);
+	static PFX_INLINE cvector_t div (const vector_t& vec_a, dim_t dim_b);
 
-static PFX_INLINE	cvector_t add (const cvector_t& vec_a, const cvector_t& vec_b);
-static PFX_INLINE	cvector_t sub (const cvector_t& vec_a, const cvector_t& vec_b);
+	static PFX_INLINE cvector_t add (const cvector_t& vec_a, const cvector_t& vec_b);
+	static PFX_INLINE cvector_t sub (const cvector_t& vec_a, const cvector_t& vec_b);
 
-static PFX_INLINE	cvector_t add (const cvector_t& vec_a, const vector_t& vec_b);
-static PFX_INLINE	cvector_t sub (const cvector_t& vec_a, const vector_t& vec_b);
+	static PFX_INLINE cvector_t add (const cvector_t& vec_a, const vector_t& vec_b);
+	static PFX_INLINE cvector_t sub (const cvector_t& vec_a, const vector_t& vec_b);
 
-static PFX_INLINE	cvector_t add (const vector_t& vec_a, const vector_t& vec_b);
-static PFX_INLINE	cvector_t sub (const vector_t& vec_a, const vector_t& vec_b);
+	static PFX_INLINE cvector_t add (const vector_t& vec_a, const vector_t& vec_b);
+	static PFX_INLINE cvector_t sub (const vector_t& vec_a, const vector_t& vec_b);
 
-static PFX_INLINE vector_t* vector_pointer (cvector_t* vec)
-{
-	return (vector_t*)vec;
-}
-static PFX_INLINE const vector_t* vector_pointer (const cvector_t* vec)
-{
-	return (const vector_t*)m_vec;
-}
-static PFX_INLINE cvector_t* vector_pointer (vector_t* vec)
-{
-	return (cvector_t*)vec;
-}
-static PFX_INLINE const cvector_t* vector_pointer (const vector_t* vec)
-{
-	return (cvector_t*)vec;
-}
+	static PFX_INLINE vector_t* vector_pointer (cvector_t* vec)
+	{
+		return (vector_t*)vec;
+	}
+	static PFX_INLINE const vector_t* vector_pointer (const cvector_t* vec)
+	{
+		return (const vector_t*)vec;
+	}
+	static PFX_INLINE cvector_t* vector_pointer (vector_t* vec)
+	{
+		return (cvector_t*)vec;
+	}
+	static PFX_INLINE const cvector_t* vector_pointer (const vector_t* vec)
+	{
+		return (cvector_t*)vec;
+	}
 
-static PFX_INLINE vector_t& vector_ref (cvector_t& vec)
-{
-	return vec.m_vec;
-}
-static PFX_INLINE const vector_t& vector_ref (const cvector_t& vec)
-{
-	return m_vec.vec;
-}
-static PFX_INLINE cvector_t& vector_ref (vector_t& vec)
-{
-	return (cvector_t&)vec;
-}
-static PFX_INLINE const cvector_t& vector_ref (const vector_t& vec)
-{
-	return (cvector_t&)vec;
-}
+	static PFX_INLINE vector_t& vector_ref (cvector_t& vec)
+	{
+		return vec.m_vec;
+	}
+	static PFX_INLINE const vector_t& vector_ref (const cvector_t& vec)
+	{
+		return (const vector_t&)vec;
+	}
+	static PFX_INLINE cvector_t& vector_ref (vector_t& vec)
+	{
+		return (cvector_t&)vec;
+	}
+	static PFX_INLINE const cvector_t& vector_ref (const vector_t& vec)
+	{
+		return (cvector_t&)vec;
+	}
 
-static PFX_INLINE typename vec_alg_t::vector_t& vector_reference (cvector_t& vec);
-static PFX_INLINE const typename vec_alg_t::vector_t& vector_reference (const cvector_t& vec);
-static PFX_INLINE typename vec_alg_t::matrix_t matrix_reference (cvector_t& vec);
-static PFX_INLINE const typename vec_alg_t::matrix_t matrix_reference (const cvector_t& vec);
+	static PFX_INLINE typename vec_alg_t::vector_t& vector_reference (cvector_t& vec);
+	static PFX_INLINE const typename vec_alg_t::vector_t& vector_reference (const cvector_t& vec);
+	static PFX_INLINE typename vec_alg_t::matrix_t matrix_reference (cvector_t& vec);
+	static PFX_INLINE const typename vec_alg_t::matrix_t matrix_reference (const cvector_t& vec);
 
 public:
 	static PFX_INLINE usize__t vector_dim_count ()
@@ -148,7 +147,7 @@ public:
 		{
 			return error_dim_value();
 		}
-		
+
 	}
 	PFX_INLINE const dim_t& operator[] (uindex_t i) const
 	{
@@ -163,15 +162,14 @@ public:
 	}
 };
 
-
-
 //////////////////////////////////////////////////////////////////////////
 #define PFX_CVEC_TEMPLATE template < class dim_type, const usize__t dim_count, const enum_int_t optional_type > 
 #define PFX_CVEC VectorX< dim_type, dim_count, optional_type  >
 #define PFX_CVEC_TYPE typename VectorX< dim_type, dim_count, optional_type  >
 
 PFX_CVEC_TEMPLATE
-PFX_CVEC::VectorX (){;}
+PFX_CVEC::VectorX ()
+{	;}
 
 PFX_CVEC_TEMPLATE
 PFX_CVEC::VectorX (PFX_CVEC_TYPE::dim_t val)
@@ -184,31 +182,31 @@ PFX_CVEC::VectorX (PFX_CVEC_TYPE::dim_t val1, PFX_CVEC_TYPE::dim_t val2)
 {
 	switch (dim_count)
 	{
-	case 0:
-	case 1:
+		case 0:
+		case 1:
 		m_vec[0] = val1;
 		break;
-	default:
+		default:
 		m_vec[0] = val1;
 		m_vec[1] = val2;
 		break;
 	}
 }
 PFX_CVEC_TEMPLATE
-PFX_CVEC::VectorX (PFX_CVEC_TYPE::dim_t val1, 
-	PFX_CVEC_TYPE::dim_t val2, PFX_CVEC_TYPE::dim_t val3)
+PFX_CVEC::VectorX (PFX_CVEC_TYPE::dim_t val1,
+		PFX_CVEC_TYPE::dim_t val2, PFX_CVEC_TYPE::dim_t val3)
 {
 	switch (dim_count)
 	{
-	case 0:
-	case 1:
+		case 0:
+		case 1:
 		m_vec[0] = val1;
 		break;
-	case 2:
+		case 2:
 		m_vec[0] = val1;
 		m_vec[1] = val2;
 		break;
-	default:
+		default:
 		m_vec[0] = val1;
 		m_vec[1] = val2;
 		m_vec[2] = val3;
@@ -216,25 +214,25 @@ PFX_CVEC::VectorX (PFX_CVEC_TYPE::dim_t val1,
 	}
 }
 PFX_CVEC_TEMPLATE
-PFX_CVEC::VectorX (PFX_CVEC_TYPE::dim_t val1, PFX_CVEC_TYPE::dim_t val2, 
-PFX_CVEC_TYPE::dim_t val3, PFX_CVEC_TYPE::dim_t val4)
+PFX_CVEC::VectorX (PFX_CVEC_TYPE::dim_t val1, PFX_CVEC_TYPE::dim_t val2,
+		PFX_CVEC_TYPE::dim_t val3, PFX_CVEC_TYPE::dim_t val4)
 {
 	switch (dim_count)
 	{
-	case 0:
-	case 1:
+		case 0:
+		case 1:
 		m_vec[0] = val1;
 		break;
-	case 2:
+		case 2:
 		m_vec[0] = val1;
 		m_vec[1] = val2;
 		break;
-	case 3:
+		case 3:
 		m_vec[0] = val1;
 		m_vec[1] = val2;
 		m_vec[2] = val3;
 		break;
-	default:
+		default:
 		m_vec[0] = val1;
 		m_vec[1] = val2;
 		m_vec[2] = val3;
@@ -329,8 +327,8 @@ PFX_INLINE PFX_CVEC_TYPE::cvector_t& PFX_CVEC::sub_replace (const PFX_CVEC_TYPE:
 }
 
 PFX_CVEC_TEMPLATE
-PFX_INLINE PFX_CVEC_TYPE::cvector_t& PFX_CVEC::cross (const PFX_CVEC_TYPE::cvector_t& vec_b, 
-PFX_CVEC_TYPE::cvector_t& vec_result)
+PFX_INLINE PFX_CVEC_TYPE::cvector_t& PFX_CVEC::cross (const PFX_CVEC_TYPE::cvector_t& vec_b,
+		PFX_CVEC_TYPE::cvector_t& vec_result)
 {
 	if (3 == dim_count || 4 == dim_count)
 	{
@@ -345,8 +343,8 @@ PFX_CVEC_TYPE::cvector_t& vec_result)
 }
 
 PFX_CVEC_TEMPLATE
-PFX_INLINE PFX_CVEC_TYPE::vector_t& PFX_CVEC::cross (const PFX_CVEC_TYPE::vector_t& vec_b, 
-PFX_CVEC_TYPE::vector_t& vec_result)
+PFX_INLINE PFX_CVEC_TYPE::vector_t& PFX_CVEC::cross (const PFX_CVEC_TYPE::vector_t& vec_b,
+		PFX_CVEC_TYPE::vector_t& vec_result)
 {
 	if (3 == dim_count || 4 == dim_count)
 	{
@@ -364,7 +362,7 @@ PFX_CVEC_TYPE::vector_t& vec_result)
 PFX_CVEC_TEMPLATE
 PFX_INLINE PFX_CVEC_TYPE::dim_t PFX_CVEC::dot (const PFX_CVEC_TYPE::cvector_t& vec_b)
 {
-	typedef PFX_CVEC_TYPE::dim_t		dim_t; 
+	typedef PFX_CVEC_TYPE::dim_t dim_t;
 	typedef PFX_CVEC_TYPE::vec_alg_t vec_alg_t;
 	dim_t result_;
 	vec_alg_t::vector_dot (m_vec, vec_b.m_vec, dim_count, result_);
@@ -374,7 +372,7 @@ PFX_INLINE PFX_CVEC_TYPE::dim_t PFX_CVEC::dot (const PFX_CVEC_TYPE::cvector_t& v
 PFX_CVEC_TEMPLATE
 PFX_INLINE PFX_CVEC_TYPE::dim_t PFX_CVEC::dot (const PFX_CVEC_TYPE::vector_t& vec_b)
 {
-	typedef PFX_CVEC_TYPE::dim_t		dim_t; 
+	typedef PFX_CVEC_TYPE::dim_t dim_t;
 	typedef PFX_CVEC_TYPE::vec_alg_t vec_alg_t;
 	dim_t result_;
 	vec_alg_t::vector_dot (m_vec, vec_b, dim_count, result_);
@@ -471,7 +469,6 @@ PFX_INLINE PFX_CVEC_TYPE::cvector_t PFX_CVEC::sub (const PFX_CVEC_TYPE::vector_t
 	return retn_vec;
 }
 
-
 PFX_CVEC_TEMPLATE
 PFX_INLINE PFX_CVEC_TYPE::vec_alg_t::vector_t& PFX_CVEC::vector_reference (PFX_CVEC_TYPE::cvector_t& vec)
 {
@@ -495,7 +492,6 @@ PFX_INLINE const PFX_CVEC_TYPE::vec_alg_t::matrix_t PFX_CVEC::matrix_reference (
 {
 	return (const PFX_CVEC_TYPE::vec_alg_t::matrix_t)(&vec.m_vec);
 }
-
 
 PECKER_END
 

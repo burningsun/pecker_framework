@@ -21,17 +21,17 @@ typedef enum enumSTRING_CMP_TYPE
 	STRING_CMP_TYPE_COUNT
 }STRING_CMP_TYPE_t;
 
-template < class element_t, 
-					class elem_compare = pecker_value_compare < element_t > >
+template < class __element,
+					class elem_compare = pecker_value_compare < __element > >
 struct find_string_operate
 {
-	typedef element_t				element_t;
+	typedef __element				element_t;
 	typedef elem_compare		elem_compare_t;
 
-	typedef typename const element_t* cmptype_a_t;
-	typedef typename const element_t* cmptype_b_t;
+	typedef  const element_t* cmptype_a_t;
+	typedef  const element_t* cmptype_b_t;
 
-	typedef typename find_string_operate< element_t, elem_compare_t >	find_string_t;
+	typedef  find_string_operate< element_t, elem_compare_t >	find_string_t;
 
 	static PFX_INLINE int same_string (const element_t* PARAM_IN str_string_ptr,
 																				usize__t str_size,
@@ -61,7 +61,7 @@ struct find_string_operate
 
 template < class stringA, 
 					class stringB = stringA, 
-					class elem_compare = pecker_value_compare < stringA::element_t > >
+					class elem_compare = pecker_value_compare < typename stringA::element_t > >
 struct find_cstrstring_operate
 {
 	typedef stringA		stringa_t;
@@ -70,8 +70,8 @@ struct find_cstrstring_operate
 	typedef typename stringa_t::const_iterator_t		const_iteratorA_t;
 	typedef typename stringb_t::const_iterator_t		const_iteratorB_t;
 
-	typedef typename const stringa_t& cmptype_a_t;
-	typedef typename const stringb_t& cmptype_b_t;
+	typedef const stringa_t& cmptype_a_t;
+	typedef const stringb_t& cmptype_b_t;
 
 	typedef typename stringa_t::element_t			element_t;
 	typedef elem_compare										elem_compare_t;

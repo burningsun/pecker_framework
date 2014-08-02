@@ -1,0 +1,247 @@
+
+**** Build of configuration Default for project PFX_framework ****
+
+C:\android\android-ndk-r10\ndk-build.cmd DEBUG=1 V=1 
+del /f/q .\libs\armeabi-v7a\libPFX_framework.so      >NUL 2>NUL
+[armeabi-v7a] Compile++ thumb: PFX_framework <= pfx_render_state_gles.cpp
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++ -MMD -MP -MF ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_render_state_gles.o.d -fpic -ffunction-sections -funwind-tables -fstack-protector -no-canonical-prefixes -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=softfp -fno-exceptions -fno-rtti -mthumb -Os -g -DNDEBUG -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -O0 -UNDEBUG -marm -fno-omit-frame-pointer -IC:/android/android-ndk-r10/sources/cxx-stl/system/include -Ijni -DANDROID  -Wa,--noexecstack -Wformat -Werror=format-security      -IC:/android/android-ndk-r10/platforms/android-17/arch-arm/usr/include -c  jni/pecker_framework/render/render_system/opengles2/pfx_render_state_gles.cpp -o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_render_state_gles.o 
+[armeabi-v7a] Compile++ thumb: PFX_framework <= pfx_display_context_gles.cpp
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++ -MMD -MP -MF ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.o.d -fpic -ffunction-sections -funwind-tables -fstack-protector -no-canonical-prefixes -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=softfp -fno-exceptions -fno-rtti -mthumb -Os -g -DNDEBUG -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -O0 -UNDEBUG -marm -fno-omit-frame-pointer -IC:/android/android-ndk-r10/sources/cxx-stl/system/include -Ijni -DANDROID  -Wa,--noexecstack -Wformat -Werror=format-security      -IC:/android/android-ndk-r10/platforms/android-17/arch-arm/usr/include -c  jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp -o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.o 
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp: In static member function 'static result_t pecker_sdk::cdisplay_context_gles::select_config(EGLint&, EGLDisplay, const window_contex_t&, void*&, pecker_sdk::cdisplay_context_gles::configs_stack_t&, pecker_sdk::cdisplay_context_gles::EGLconfig_list_t&)':
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:160:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:169:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:184:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp: In static member function 'static result_t pecker_sdk::cdisplay_context_gles::init_egl_context(pecker_sdk::window_contex_t&, pecker_sdk::EGL_device_t&, EGLint&, pecker_sdk::cdisplay_context_gles::configs_stack_t&, pecker_sdk::cdisplay_context_gles::cOn_render_view_t*)':
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:249:14: warning: format '%d' expects argument of type 'int', but argument 4 has type 'result_t {aka long int}' [-Wformat]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp: In static member function 'static result_t pecker_sdk::cdisplay_context_gles::create_egl_device(pecker_sdk::window_contex_t&, pecker_sdk::EGL_device_t&, EGLint&, pecker_sdk::cdisplay_context_gles::cOn_render_view_t*)':
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:402:18: warning: deprecated conversion from string constant to 'char_t* {aka char*}' [-Wwrite-strings]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:424:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:460:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:478:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:490:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:502:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:505:18: warning: deprecated conversion from string constant to 'char_t* {aka char*}' [-Wwrite-strings]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:520:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:552:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp: In static member function 'static result_t pecker_sdk::cdisplay_context_gles::destroy_egl_device(pecker_sdk::EGL_device_t&, EGLint&, pecker_sdk::cdisplay_context_gles::cOn_render_view_t*)':
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:582:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:592:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:598:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:610:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:616:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:627:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp:633:3: warning: too many arguments for format [-Wformat-extra-args]
+[armeabi-v7a] Compile++ thumb: PFX_framework <= pfx_cmatrix_test.cpp
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++ -MMD -MP -MF ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_test/pfx_cmatrix_test.o.d -fpic -ffunction-sections -funwind-tables -fstack-protector -no-canonical-prefixes -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=softfp -fno-exceptions -fno-rtti -mthumb -Os -g -DNDEBUG -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -O0 -UNDEBUG -marm -fno-omit-frame-pointer -IC:/android/android-ndk-r10/sources/cxx-stl/system/include -Ijni -DANDROID  -Wa,--noexecstack -Wformat -Werror=format-security      -IC:/android/android-ndk-r10/platforms/android-17/arch-arm/usr/include -c  jni/pecker_test/pfx_cmatrix_test.cpp -o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_test/pfx_cmatrix_test.o 
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void matrix_test()':
+jni/pecker_test/pfx_cmatrix_test.cpp:97:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:124:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:130:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:132:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:136:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:140:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:142:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:146:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:150:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:152:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:175:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:181:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:228:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:234:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:236:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:240:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:244:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:246:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:250:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:254:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:256:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:277:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:283:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:316:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:324:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:328:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:330:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:334:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:338:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:340:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:361:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:369:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:376:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:408:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:434:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:436:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:440:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:444:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:446:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:450:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:454:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:456:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:478:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:484:2: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixX<float, 2u>, unsigned int dim_v = 2u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:126:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:126:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixEX_unsafe<float, 2u>, unsigned int dim_v = 2u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:139:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:139:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_vec(const vec_t*) [with vec_t = pecker_sdk::VectorX<float, 2u>, unsigned int dim_v = 2u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:149:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:19:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:23:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:149:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:29:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat_alg(const mat_t*, usize__t, usize__t) [with mat_t = pecker_sdk::SquareMatrixX<float, 2u>, unsigned int dim_v = 2u, usize__t = unsigned int]':
+jni/pecker_test/pfx_cmatrix_test.cpp:192:40:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:61:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:65:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:75:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:77:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixX<float, 3u>, unsigned int dim_v = 3u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:230:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:230:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixEX_unsafe<float, 3u>, unsigned int dim_v = 3u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:243:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:243:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_vec(const vec_t*) [with vec_t = pecker_sdk::VectorX<float, 3u>, unsigned int dim_v = 3u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:253:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:19:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:23:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:253:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:29:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat_alg(const mat_t*, usize__t, usize__t) [with mat_t = pecker_sdk::SquareMatrixX<float, 3u>, unsigned int dim_v = 3u, usize__t = unsigned int]':
+jni/pecker_test/pfx_cmatrix_test.cpp:294:40:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:61:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:65:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:75:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:77:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixX<float, 4u>, unsigned int dim_v = 4u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:322:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:322:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixEX_unsafe<float, 4u>, unsigned int dim_v = 4u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:327:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:327:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_vec(const vec_t*) [with vec_t = pecker_sdk::VectorX<float, 4u>, unsigned int dim_v = 4u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:337:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:19:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:23:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:337:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:29:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat_alg(const mat_t*, usize__t, usize__t) [with mat_t = pecker_sdk::SquareMatrixX<float, 4u>, unsigned int dim_v = 4u, usize__t = unsigned int]':
+jni/pecker_test/pfx_cmatrix_test.cpp:386:40:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:61:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:65:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:75:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:77:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixX<float, 5u>, unsigned int dim_v = 5u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:430:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:430:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat(const mat_t*) [with mat_t = pecker_sdk::SquareMatrixEX_unsafe<float, 5u>, unsigned int dim_v = 5u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:443:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:38:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:42:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:443:32:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:50:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:52:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_vec(const vec_t*) [with vec_t = pecker_sdk::VectorX<float, 5u>, unsigned int dim_v = 5u]':
+jni/pecker_test/pfx_cmatrix_test.cpp:453:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:19:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:23:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:453:31:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:29:4: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp: In function 'void print_mat_alg(const mat_t*, usize__t, usize__t) [with mat_t = pecker_sdk::SquareMatrixX<float, 5u>, unsigned int dim_v = 5u, usize__t = unsigned int]':
+jni/pecker_test/pfx_cmatrix_test.cpp:495:40:   instantiated from here
+jni/pecker_test/pfx_cmatrix_test.cpp:61:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:65:3: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:75:5: warning: too many arguments for format [-Wformat-extra-args]
+jni/pecker_test/pfx_cmatrix_test.cpp:77:4: warning: too many arguments for format [-Wformat-extra-args]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12:0,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h: In member function 'const vector_t* const& pecker_sdk::square_matrix_data_table<dim_type, dim_count>::operator[](uindex_t) const [with dim_type = float, unsigned int dim_count = 2u, pecker_sdk::square_matrix_data_table<dim_type, dim_count>::vector_t = pecker_sdk::vector_data<float, 2u>, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:603:3:   instantiated from 'pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t& pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::mul_replace(const cmatrix_ex_t&, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t*) [with dim_type = float, unsigned int dim_count = 2u, unsigned int optional_type = 0u, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t = pecker_sdk::SquareMatrixEX_unsafe<float, 2u>, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t = pecker_sdk::square_matrix_base_op_alg<pecker_sdk::SquareMatrixX<float, 2u>, 0u>::cw_buffer]'
+jni/pecker_test/pfx_cmatrix_test.cpp:143:29:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:61:17: warning: returning reference to temporary [enabled by default]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cvector.h:12:0,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:12,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h: In static member function 'static const vector_t* const& pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_at_const(pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t** const&, uindex_t) [with vector_type = pecker_sdk::vector_data<float, 2u>, unsigned int optional_type = 0u, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t = pecker_sdk::vector_data<float, 2u>, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 2u>**, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:2201:5:   instantiated from 'static pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_algebraic_cofactor_det(pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t&, usize__t, usize__t, usize__t, u32_t) [with square_matrix_type = pecker_sdk::SquareMatrixX<float, 2u>, unsigned int optional_type = 0u, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t = float, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 2u>**, usize__t = unsigned int, u32_t = unsigned int]'
+jni/pecker_test/pfx_cmatrix_test.cpp:201:32:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:423:19: warning: returning reference to temporary [enabled by default]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12:0,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h: In member function 'const vector_t* const& pecker_sdk::square_matrix_data_table<dim_type, dim_count>::operator[](uindex_t) const [with dim_type = float, unsigned int dim_count = 3u, pecker_sdk::square_matrix_data_table<dim_type, dim_count>::vector_t = pecker_sdk::vector_data<float, 3u>, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:603:3:   instantiated from 'pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t& pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::mul_replace(const cmatrix_ex_t&, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t*) [with dim_type = float, unsigned int dim_count = 3u, unsigned int optional_type = 0u, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t = pecker_sdk::SquareMatrixEX_unsafe<float, 3u>, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t = pecker_sdk::square_matrix_base_op_alg<pecker_sdk::SquareMatrixX<float, 3u>, 0u>::cw_buffer]'
+jni/pecker_test/pfx_cmatrix_test.cpp:247:29:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:61:17: warning: returning reference to temporary [enabled by default]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cvector.h:12:0,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:12,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h: In static member function 'static const vector_t* const& pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_at_const(pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t** const&, uindex_t) [with vector_type = pecker_sdk::vector_data<float, 3u>, unsigned int optional_type = 0u, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t = pecker_sdk::vector_data<float, 3u>, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 3u>**, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:2201:5:   instantiated from 'static pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_algebraic_cofactor_det(pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t&, usize__t, usize__t, usize__t, u32_t) [with square_matrix_type = pecker_sdk::SquareMatrixX<float, 3u>, unsigned int optional_type = 0u, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t = float, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 3u>**, usize__t = unsigned int, u32_t = unsigned int]'
+jni/pecker_test/pfx_cmatrix_test.cpp:303:32:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:423:19: warning: returning reference to temporary [enabled by default]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12:0,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h: In member function 'const vector_t* const& pecker_sdk::square_matrix_data_table<dim_type, dim_count>::operator[](uindex_t) const [with dim_type = float, unsigned int dim_count = 4u, pecker_sdk::square_matrix_data_table<dim_type, dim_count>::vector_t = pecker_sdk::vector_data<float, 4u>, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:603:3:   instantiated from 'pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t& pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::mul_replace(const cmatrix_ex_t&, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t*) [with dim_type = float, unsigned int dim_count = 4u, unsigned int optional_type = 0u, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t = pecker_sdk::SquareMatrixEX_unsafe<float, 4u>, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t = pecker_sdk::square_matrix_base_op_alg<pecker_sdk::SquareMatrixX<float, 4u>, 0u>::cw_buffer]'
+jni/pecker_test/pfx_cmatrix_test.cpp:331:29:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:61:17: warning: returning reference to temporary [enabled by default]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cvector.h:12:0,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:12,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h: In static member function 'static const vector_t* const& pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_at_const(pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t** const&, uindex_t) [with vector_type = pecker_sdk::vector_data<float, 4u>, unsigned int optional_type = 0u, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t = pecker_sdk::vector_data<float, 4u>, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 4u>**, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:2201:5:   instantiated from 'static pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_algebraic_cofactor_det(pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t&, usize__t, usize__t, usize__t, u32_t) [with square_matrix_type = pecker_sdk::SquareMatrixX<float, 4u>, unsigned int optional_type = 0u, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t = float, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 4u>**, usize__t = unsigned int, u32_t = unsigned int]'
+jni/pecker_test/pfx_cmatrix_test.cpp:395:32:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:423:19: warning: returning reference to temporary [enabled by default]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12:0,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h: In member function 'const vector_t* const& pecker_sdk::square_matrix_data_table<dim_type, dim_count>::operator[](uindex_t) const [with dim_type = float, unsigned int dim_count = 5u, pecker_sdk::square_matrix_data_table<dim_type, dim_count>::vector_t = pecker_sdk::vector_data<float, 5u>, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:603:3:   instantiated from 'pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t& pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::mul_replace(const cmatrix_ex_t&, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t*) [with dim_type = float, unsigned int dim_count = 5u, unsigned int optional_type = 0u, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cmatrix_ex_t = pecker_sdk::SquareMatrixEX_unsafe<float, 5u>, pecker_sdk::SquareMatrixEX_unsafe<dim_type, dim_count, optional_type>::cw_buffer_t = pecker_sdk::square_matrix_base_op_alg<pecker_sdk::SquareMatrixX<float, 5u>, 0u>::cw_buffer]'
+jni/pecker_test/pfx_cmatrix_test.cpp:447:29:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:61:17: warning: returning reference to temporary [enabled by default]
+In file included from jni/pecker_test/../pecker_framework/data/pfx_cvector.h:12:0,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix.h:12,
+                 from jni/pecker_test/../pecker_framework/data/pfx_cmatrix_codes.h:12,
+                 from jni/pecker_test/pfx_cmatrix_test.cpp:10:
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h: In static member function 'static const vector_t* const& pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_at_const(pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t** const&, uindex_t) [with vector_type = pecker_sdk::vector_data<float, 5u>, unsigned int optional_type = 0u, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::vector_t = pecker_sdk::vector_data<float, 5u>, pecker_sdk::vector_base_op_alg<vector_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 5u>**, uindex_t = unsigned int]':
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:2201:5:   instantiated from 'static pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_algebraic_cofactor_det(pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t&, usize__t, usize__t, usize__t, u32_t) [with square_matrix_type = pecker_sdk::SquareMatrixX<float, 5u>, unsigned int optional_type = 0u, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::dim_t = float, pecker_sdk::square_matrix_base_op_alg<square_matrix_type, optional_type>::matrix_ex_t = pecker_sdk::vector_data<float, 5u>**, usize__t = unsigned int, u32_t = unsigned int]'
+jni/pecker_test/pfx_cmatrix_test.cpp:501:32:   instantiated from here
+jni/pecker_test/../pecker_framework/data/pfx_cvector_alg_codes.h:423:19: warning: returning reference to temporary [enabled by default]
+[armeabi-v7a] SharedLibrary  : libPFX_framework.so
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-g++ -Wl,-soname,libPFX_framework.so -shared --sysroot=C:/android/android-ndk-r10/platforms/android-17/arch-arm ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/pfx_defines.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/pfx_api_info.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/pfx_hal_info.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/pfx_hal_info_gles2.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/native/pfx_file_io.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/native/pecker_stream.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/native/pecker_tick.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/native/syn_lock.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/native/socket_param.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/native/udp_socket.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/native/asyn_udp_comm.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/pfx_image.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_buffer_object_gles.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_shader_program_gles.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_render_state_gles.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_test/pfx_cmatrix_test.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/pecker_test/main.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/android_native_app_glue.o ./obj/local/armeabi-v7a/objs-debug/PFX_framework/PFX_framework.o ./obj/local/armeabi-v7a/libstdc++.a -lgcc -no-canonical-prefixes -march=armv7-a -Wl,--fix-cortex-a8  -Wl,--no-undefined -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now  -LC:/android/android-ndk-r10/platforms/android-17/arch-arm/usr/lib -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid -lstdc++ -lc -lm -o ./obj/local/armeabi-v7a/libPFX_framework.so
+[armeabi-v7a] Install        : libPFX_framework.so => libs/armeabi-v7a/libPFX_framework.so
+copy /b/y ".\obj\local\armeabi-v7a\libPFX_framework.so" ".\libs\armeabi-v7a\libPFX_framework.so" > NUL
+C:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.6/prebuilt/windows-x86_64/bin/arm-linux-androideabi-strip --strip-unneeded  ./libs/armeabi-v7a/libPFX_framework.so
+
+**** Build Finished ****

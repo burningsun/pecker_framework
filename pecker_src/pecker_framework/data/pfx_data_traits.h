@@ -13,20 +13,21 @@ PECKER_BEGIN
 template < typename obj_type >
 struct PFX_DATA_TEMPLATE_API object_reference_type
 {
-	typedef typename	 obj_type								obj_type_t;
+	typedef obj_type obj_type_t;
+
 	//typedef DEFUALT_ALLOCATOR ( obj_type )		allocator_t;
 };
 template < typename obj_type >
 struct PFX_DATA_TEMPLATE_API object_reference_type < obj_type* >
 {
-	typedef typename	 obj_type								obj_type_t;
+	typedef obj_type obj_type_t;
 
 	//typedef DEFUALT_ALLOCATOR ( obj_type )		allocator_t;
 };
 template < typename obj_type >
 struct PFX_DATA_TEMPLATE_API object_reference_type < const obj_type* >
 {
-	typedef typename	 obj_type								obj_type_t;
+	typedef obj_type obj_type_t;
 
 	//typedef DEFUALT_ALLOCATOR ( obj_type )		allocator_t;
 };

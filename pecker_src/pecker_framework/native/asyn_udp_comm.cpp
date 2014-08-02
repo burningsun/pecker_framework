@@ -159,8 +159,9 @@ int asyn_udp_comm::listen ()
 int asyn_udp_comm::close()
 {
 	m_opened = false;
-	m_recv_thread.wait_thread_exit(2000);
 	m_udp_socket.close();
+	m_recv_thread.wait_thread_exit(2000);
+
 	return PFX_STATUS_OK;
 }
 

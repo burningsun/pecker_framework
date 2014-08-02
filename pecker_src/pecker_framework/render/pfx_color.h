@@ -446,9 +446,9 @@ color PFX_COLOR_TEMPLATE_PARAMS :: color (const color_value& color_val) : m_valu
 PFX_COLOR_TEMPLATE_DEFINES
 color PFX_COLOR_TEMPLATE_PARAMS :: color (bitfield_t RGBA) : 
 color PFX_COLOR_TEMPLATE_PARAMS ( (const color_chanel_t )((RGBA >> 24)&0xFF),
-	const color_chanel_t ((RGBA >> 16)&0xFF) ,
-	const color_chanel_t ((RGBA >> 8)&0xFF),
-	const color_chanel_t (RGBA&0xFF))
+	(const color_chanel_t) ((RGBA >> 16)&0xFF) ,
+	(const color_chanel_t) ((RGBA >> 8)&0xFF),
+	(const color_chanel_t) (RGBA&0xFF))
 {
 	;
 }

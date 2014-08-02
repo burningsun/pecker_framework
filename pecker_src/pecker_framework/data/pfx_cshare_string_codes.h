@@ -51,12 +51,12 @@ result_t	PFX_CSHARE_STRING::init_string (usize__t __size)
 	}
 	else
 	{
-		cshare_block_t::lock_object_t __lock;
+		typename cshare_block_t::lock_object_t __lock;
 
 		m_block.lock_bits(__lock);
 		FOR_ONE_LOOP_BEGIN
 
-		cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
+		typename cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
 		if (lock_ptr)
 		{
 			status = lock_ptr->init_buffer (__size);
@@ -94,12 +94,12 @@ result_t	PFX_CSHARE_STRING::init_string (const PFX_CSHARE_STRING_TYPE::element_t
 
 	result_t status;
 
-	cshare_block_t::lock_object_t __lock;
+	typename cshare_block_t::lock_object_t __lock;
 	m_block.lock_bits(__lock);
 
 	FOR_ONE_LOOP_BEGIN
 
-	cshare_block_t::leakable_object_t * lock_ptr =  __lock.lock_modify_object();
+	typename cshare_block_t::leakable_object_t * lock_ptr =  __lock.lock_modify_object();
 	BREAK_LOOP_CONDITION_SETS (!lock_ptr, status, PFX_STATUS_ERROR_);
 	if (buffer_size > get_string_buffer_size())
 	{
@@ -170,12 +170,12 @@ result_t	PFX_CSHARE_STRING::resize_string (usize__t __size)
 		result_t status;
 		usize__t succeed_size;
 		
-		cshare_block_t::lock_object_t __lock;
+		typename cshare_block_t::lock_object_t __lock;
 		m_block.lock_bits(__lock);
 		
 		FOR_ONE_LOOP_BEGIN
 		
-		cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
+		typename cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
 		BREAK_LOOP_CONDITION_SETS (!lock_ptr, status, PFX_STATUS_ERROR_);
 
 		status = new_block.init_buffer (__size);
@@ -222,13 +222,13 @@ result_t	PFX_CSHARE_STRING::garbage_collection (GarbageCollectionMODE_t mode, //
 	result_t status;
 	usize__t succeed_size;
 
-	cshare_block_t::lock_object_t __lock;
+	typename cshare_block_t::lock_object_t __lock;
 	m_block.lock_bits(__lock);
 
 	FOR_ONE_LOOP_BEGIN
 
 
-	cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
+	typename cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
 	BREAK_LOOP_CONDITION_SETS (!lock_ptr, status, PFX_STATUS_ERROR_);
 
 	status = new_block.init_buffer (new_size);
@@ -346,12 +346,12 @@ result_t	PFX_CSHARE_STRING::insert_string (uindex_t __offset,
 	cblock_t new_block;
 	usize__t succeed_size;
 
-	cshare_block_t::lock_object_t __lock;
+	typename cshare_block_t::lock_object_t __lock;
 	m_block.lock_bits(__lock);
 	
 	FOR_ONE_LOOP_BEGIN
 
-	cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
+	typename cshare_block_t::leakable_object_t* lock_ptr =  __lock.lock_modify_object();
 	BREAK_LOOP_CONDITION_SETS (!lock_ptr, status, PFX_STATUS_ERROR_);
 
 	if (!this->m_block.is_shared() && 
@@ -549,7 +549,7 @@ PFX_INLINE usize__t	PFX_CSHARE_STRING::get_string_buffer_size () const
 	typedef PFX_CSHARE_STRING_TYPE::cblock_t					cblock_t;
 	typedef PFX_CSHARE_STRING_TYPE::cshare_block_t	cshare_block_t;
 
-	const cshare_block_t::leakable_object_t& block_ref = 
+	const typename cshare_block_t::leakable_object_t& block_ref =
 		this->m_block.const_reference();
 	if (this->m_this_string_ptr)
 	{
@@ -601,9 +601,9 @@ PFX_INLINE usize__t	PFX_CSHARE_STRING::set_charbuffer_at (uindex_t index_,
 	typedef PFX_CSHARE_STRING_TYPE::element_t				element_t;
 	typedef PFX_CSHARE_STRING_TYPE::cshare_block_t		cshare_block_t;
 	result_t status;
-	cshare_block_t::lock_object_t __lock;
+	typename cshare_block_t::lock_object_t __lock;
 	m_block.lock_bits(__lock);
-	cshare_block_t::leakable_object_t* lock_ptr = __lock.lock_modify_object();
+	typename cshare_block_t::leakable_object_t* lock_ptr = __lock.lock_modify_object();
 	if (lock_ptr)
 	{
 		status = block_operate< element_t >::set_buffer (this->m_this_string_ptr, this->m_size, char_buffer, buf_size, index_);

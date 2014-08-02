@@ -8,9 +8,9 @@
 #ifndef PFX_DISPLAY_CONTEXT_GLES_H_
 #define PFX_DISPLAY_CONTEXT_GLES_H_
 
-#include <gl2.h>
+#include <GLES2/gl2.h>
 #include <EGL/egl.h>
-#include "pfx_hal_info_gles2.h"
+#include "../../../pfx_hal_info_gles2.h"
 #include "pfx_render_state_gles.h"
 #include "../../../Include/native"
 #include "../../pfx_on_context_view.h"

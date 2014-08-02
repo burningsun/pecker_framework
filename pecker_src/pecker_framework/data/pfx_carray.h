@@ -18,9 +18,9 @@ PECKER_BEGIN
 template < class element_ >
 PFX_Interface PFX_DATA_TEMPLATE_API IPfx_array
 {
-	typedef typename	element_															element_t;
-	typedef typename	element_															item_type_t;
-	typedef typename	IPfx_array < item_type_t >							IArray_t;
+	typedef element_															element_t;
+	typedef element_															item_type_t;
+	typedef IPfx_array < item_type_t >							IArray_t;
 
 	virtual ~IPfx_array () {;};
 
@@ -77,12 +77,12 @@ class PFX_DATA_TEMPLATE_API carray :
 	public IPfx_array < typename __alloc::element_t >
 {
 public:
-	typedef typename __alloc										allocator_t;
+	typedef  __alloc										allocator_t;
 	typedef typename allocator_t::element_t			element_t;
-	typedef typename element_t								item_type_t;
-	typedef typename IPfx_array < element_t >		IArray_t;
-	typedef typename cblock< allocator_t >				cblock_t;
-	typedef typename carray< allocator_t >				carray_t;
+	typedef  element_t								item_type_t;
+	typedef  IPfx_array < element_t >		IArray_t;
+	typedef  cblock< allocator_t >				cblock_t;
+	typedef  carray< allocator_t >				carray_t;
 
 
 protected:
@@ -128,9 +128,10 @@ public:
 public:
 	typedef class carray_const_iterator
 	{
-		friend carray_t;
+		//friend carray_t;
+		friend class carray< __alloc >;
 	public:
-		typedef element_t							element_t;
+		typedef typename carray_t::element_t			element_t;
 		typedef carray_const_iterator		iterator_t;
 	private:
 		const element_t*	 m_cur_ptr;
@@ -566,15 +567,15 @@ class PFX_DATA_TEMPLATE_API carray_mbs :
 	public IPfx_array < typename __alloc::element_t >
 {
 public:
-	typedef typename __alloc										allocator_t;
-	typedef typename __alloc_block							block_allocator_t;
+	typedef  __alloc										allocator_t;
+	typedef  __alloc_block							block_allocator_t;
 	typedef typename allocator_t::element_t			element_t;
-	typedef typename element_t								item_type_t;
-	typedef typename IPfx_array < element_t >		IArray_t;
-	typedef typename cblock< allocator_t >				cblock_t;
-	typedef typename carray< block_allocator_t >	block_array_t;
+	typedef  element_t								item_type_t;
+	typedef  IPfx_array < element_t >		IArray_t;
+	typedef  cblock< allocator_t >				cblock_t;
+	typedef  carray< block_allocator_t >	block_array_t;
 
-	typedef typename carray_mbs < allocator_t, block_allocator_t > carray_t;
+	typedef  carray_mbs < allocator_t, block_allocator_t > carray_t;
 protected:
 	block_array_t	m_blocks;
 	usize__t				m_size;
@@ -591,7 +592,7 @@ public:
 	{
 		if (&__other != this)
 		{
-			carray ();
+			carray_mbs ();
 			result_t status = __other.copy_to(this);
 			if (PFX_STATUS_OK != status)
 			{
@@ -617,9 +618,10 @@ public:
 	///////////////////////////////////////////////////////
 	typedef class carray_const_iterator
 	{
-		friend carray_t;
+		friend class carray_mbs < __alloc, __alloc_block >;
+		//friend carray_t;
 	public:
-		typedef element_t							element_t;
+		typedef typename carray_t::element_t			element_t;
 		typedef carray_const_iterator		iterator_t;
 	private:
 		const carray_t*	m_array;

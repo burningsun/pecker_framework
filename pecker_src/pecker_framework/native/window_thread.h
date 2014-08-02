@@ -108,7 +108,7 @@ public:
 		return PFX_STATUS_OK;
 	}
 
-	inline result_t force_terminal_thread()
+	inline result_t terminal_thread()
 	{
 		if (m_thread_handle)
 		{
