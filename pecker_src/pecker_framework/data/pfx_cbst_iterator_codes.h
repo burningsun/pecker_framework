@@ -29,7 +29,7 @@ const PFX_CBST_IN_ITR_OP_TYPE::node_t* PFX_CBST_IN_ITR_OP ::begin
 {
 	typedef PFX_CBST_IN_ITR_OP_TYPE::node_t node_t;
 	typedef BST_node_minmax< node_t > minmax_t;
-	return typename minmax_t::min_node(root_node_ptr);
+	return  minmax_t::min_node(root_node_ptr);
 }
 
 PFX_CBST_ITR_OP_TEMPLATE_DEFINES
@@ -38,7 +38,7 @@ const PFX_CBST_IN_ITR_OP_TYPE::node_t* PFX_CBST_IN_ITR_OP ::end
 {
 	typedef PFX_CBST_IN_ITR_OP_TYPE::node_t node_t;
 	typedef BST_node_minmax< node_t > minmax_t;
-	return typename minmax_t::max_node(root_node_ptr);
+	return  minmax_t::max_node(root_node_ptr);
 }
 
 PFX_CBST_ITR_OP_TEMPLATE_DEFINES
@@ -66,12 +66,12 @@ const PFX_CBST_IN_ITR_OP_TYPE::node_t* PFX_CBST_IN_ITR_OP::increase
 		BREAK_LOOP_CONDITION_SETS (!right_node_ptr,
 				return_node_ptr, null);
 
-		BREAK_LOOP(return_node_ptr, typename minmax_t::min_node (right_node_ptr));
+		BREAK_LOOP(return_node_ptr,  minmax_t::min_node (right_node_ptr));
 	}
 
 	if (null != right_node_ptr)
 	{
-		BREAK_LOOP(return_node_ptr, typename minmax_t::min_node (right_node_ptr));
+		BREAK_LOOP(return_node_ptr,  minmax_t::min_node (right_node_ptr));
 	}
 
 	parent_node_ptr = current_node_ptr->get_parent_node ();
@@ -138,12 +138,12 @@ const PFX_CBST_IN_ITR_OP_TYPE::node_t* PFX_CBST_IN_ITR_OP::decrease
 	if (current_node_ptr == root_node_ptr)
 	{
 		BREAK_LOOP_CONDITION_SETS (!left_node_ptr,return_node_ptr,null);
-		BREAK_LOOP(return_node_ptr, typename minmax_t::max_node(left_node_ptr));
+		BREAK_LOOP(return_node_ptr,  minmax_t::max_node(left_node_ptr));
 	}
 
 	if (null != left_node_ptr)
 	{
-		BREAK_LOOP (return_node_ptr, typename minmax_t::max_node(left_node_ptr));
+		BREAK_LOOP (return_node_ptr,  minmax_t::max_node(left_node_ptr));
 	}
 
 	parent_node_ptr = current_node_ptr->get_parent_node ();

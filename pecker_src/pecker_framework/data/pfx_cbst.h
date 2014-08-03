@@ -1130,7 +1130,8 @@ public:
 		const_iterator_ex_t* __itr_ptr = find_elem_t::find_node(__key, __itr);
 		if (__itr_ptr)
 		{
-			set_itr_internal(__itr_ptr->cur_node(), itr);
+			// 尼玛跪了，gcc 4.8 4.9派生类用基类方法要赤裸裸的告诉编译器
+			bst_t::set_itr_internal(__itr_ptr->cur_node(), itr);
 			return &itr;
 		}
 		else

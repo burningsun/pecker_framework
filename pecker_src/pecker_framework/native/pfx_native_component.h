@@ -17,6 +17,11 @@
 
 PECKER_BEGIN
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
+
 typedef struct PFX_NATIVE_API st_activity_init_state
 {
 	unsigned m_native_style : 1; // 0 使用m_reverd前的字段初始化，
@@ -85,7 +90,9 @@ PFX_Interface PFX_NATIVE_API IActivity_component
 	virtual	result_t on_event(flag_t message, long_t wParam, long_t lParam) = 0;
 };
 
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 PECKER_END
 

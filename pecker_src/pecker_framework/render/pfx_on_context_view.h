@@ -13,6 +13,11 @@
 #include "pfx_color.h"
 PECKER_BEGIN
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
+
 typedef struct st_display_device_info
 {
 	void*	m_Display;
@@ -232,7 +237,9 @@ public:
 
 };
 
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 PECKER_END
 

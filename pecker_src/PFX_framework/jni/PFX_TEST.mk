@@ -10,7 +10,17 @@ PFX_TEST_LOCAL_SUB_FILES :=
 
 
 PFX_TEST_LOCAL_SRC_FILES := \
+					$(PFX_TEST_LOCAL_PATH)pfx_list_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_string_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_file_inputdata_cmd.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_bst_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_avl_bst_test.cpp \
+                    $(PFX_TEST_LOCAL_PATH)pfx_rb_bst_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_carray_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_stress_test_bst.cpp \
 					$(PFX_TEST_LOCAL_PATH)pfx_cmatrix_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_share_object_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_objectid_test.cpp\
 					$(PFX_TEST_LOCAL_PATH)main.cpp \
 				   $(PFX_TEST_LOCAL_SUB_FILES)
 				   

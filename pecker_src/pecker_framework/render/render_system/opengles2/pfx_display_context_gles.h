@@ -19,7 +19,10 @@
 
 PECKER_BEGIN
 
-
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
 
 typedef struct stEGL_device
 {
@@ -133,7 +136,9 @@ public:
 	result_t close_view();
 };
 
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 PECKER_END
 

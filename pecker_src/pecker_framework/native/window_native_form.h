@@ -19,6 +19,11 @@
 
 PECKER_BEGIN
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
+
 class PFX_NATIVE_API window_native_form
 {
 protected:
@@ -95,6 +100,9 @@ public:
 
 };
 
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 
 PECKER_END

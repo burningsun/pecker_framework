@@ -50,33 +50,32 @@ PFX_INLINE_CODE void print_rb_bst_node (const bst_string_node_t* PARAM_IN node_p
 
 		if (str_ptr)
 		{
-			sprintf_s (strformat,"THIS(%08X) <%%.%ds> L(%08X) R(%08X) P(%08X) COLOR(%s)",
+			sprintf_s (strformat, sizeof (strformat),"THIS(%08X) <%%.%ds> L(%08X) R(%08X) P(%08X) COLOR(%%s)",
 				(ulong_t)node_ptr, string_ref.get_length(),
 				(ulong_t)node_ptr->get_left_node(),
 				(ulong_t)node_ptr->get_right_node(),
-				(ulong_t)node_ptr->get_parent_node(),
-				str_color);
+				(ulong_t)node_ptr->get_parent_node());
 
-			PECKER_LOG_DIRECT_A (strformat,str_ptr);
+			PECKER_LOG_DIRECT_A (strformat,str_ptr,str_color);
 		}
 		else
 		{
-			sprintf_s (strformat,"THIS(%08X) <null> L(%08X) R(%08X) P(%08X) COLOR(%s)",
+			sprintf_s (strformat,sizeof (strformat),"THIS(%08X) <null> L(%08X) R(%08X) P(%08X) COLOR(%s)",
 				(ulong_t)node_ptr, //string_ref.get_length(),
 				(ulong_t)node_ptr->get_left_node(),
 				(ulong_t)node_ptr->get_right_node(),
 				(ulong_t)node_ptr->get_parent_node(),
 				str_color);
-			PECKER_LOG_DIRECT_A (strformat);
+			PECKER_LOG_DIRECT_A (strformat,str_ptr);
 		}
 		
 	}
 	else
 	{
-		PECKER_LOG_ ("null node");
+		PECKER_LOG_STR	 ("null node");
 	}
 
-	PECKER_LOG_ ("\n");
+	PECKER_LOG_STR ("\n");
 }
 
 result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_ptr,usize__t nchars_count)
@@ -135,9 +134,9 @@ result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_p
 		*cmd_type = CMD_NONE;
 		break;
 	case CMD_TRAINORDER:
-		PECKER_LOG_("============\n");
-		PECKER_LOG_DIRECT_A (str_chars_ptr);
-		PECKER_LOG_("============\n");
+		PECKER_LOG_STR("============\n");
+		PECKER_LOG_STR (str_chars_ptr);
+		PECKER_LOG_STR("============\n");
 		if (0 == strncmp(str_chars_ptr,"inorder",strlen("inorder")))
 		{
 			bst_t::const_inorder_itr_t bst_iterator;
@@ -174,9 +173,9 @@ result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_p
 
 		break;
 	case CMD_TRACOVORDDER:
-		PECKER_LOG_("============\n");
-		PECKER_LOG_DIRECT_A (str_chars_ptr);
-		PECKER_LOG_("============\n");
+		PECKER_LOG_STR("============\n");
+		PECKER_LOG_STR (str_chars_ptr);
+		PECKER_LOG_STR("============\n");
 		if (0 == strncmp(str_chars_ptr,"inorder",strlen("inorder")))
 		{
 			bst_t::const_inorder_itr_t bst_iterator;
@@ -213,53 +212,53 @@ result_t rb_bst_cmd_operate_func(CMD_INOUT_t* cmd_type,const char_t* str_chars_p
 
 int rb_bst_test_main()
 {
-	PECKER_LOG_ ("------------------------------rb test--------------------------------\n");
-	PECKER_LOG_ ("*********test_data\\bst_test_data.txt***********\n");
+	PECKER_LOG_STR ("------------------------------rb test--------------------------------\n");
+	PECKER_LOG_STR ("*********test_data\\bst_test_data.txt***********\n");
 	bst_strings.clean();
 	bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_2.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_2.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_2.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_3.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_3.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_3.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_4.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_4.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_4.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_5.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_5.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_5.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_6.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_6.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_6.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_7.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_7.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_7.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_8.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_8.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_8.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_9.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_9.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_9.txt",rb_bst_cmd_operate_func);
 
-	 PECKER_LOG_ ("\n*********test_data\\bst_test_data_10.txt***********\n");
+	 PECKER_LOG_STR ("\n*********test_data\\bst_test_data_10.txt***********\n");
 	 bst_strings.clean();
 	 bst_copy_strings.clean();
 	 file_data_input_for_test_running("test_data\\bst_test_data_10.txt",rb_bst_cmd_operate_func);

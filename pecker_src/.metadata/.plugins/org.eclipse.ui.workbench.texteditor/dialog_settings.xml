@@ -3,28 +3,32 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="325" key="DIALOG_WIDTH"/>
 		<item value="229" key="DIALOG_Y_ORIGIN"/>
-		<item value="444" key="DIALOG_HEIGHT"/>
 		<item value="807" key="DIALOG_X_ORIGIN"/>
+		<item value="444" key="DIALOG_HEIGHT"/>
 		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="print_carray&lt; array_typeB &gt;" key="selection"/>
 		<list key="findhistory">
+			<item value="__print_carray__&lt; array_typeB &gt;::print_carray"/>
+			<item value="__print_carray__&lt; array_typeA &gt;::print_carray"/>
+			<item value="print_carray&lt; array_typeB &gt;"/>
+			<item value="print_carray&lt; array_typeA &gt;"/>
+			<item value="SAMPLE_PRT"/>
 			<item value="clear"/>
 			<item value="clean"/>
 			<item value="cleano"/>
-			<item value="PFX_VEXBUFFER_VALUE_TYPE_t"/>
-			<item value="tree_t::node_t"/>
-			<item value="tree_t"/>
-			<item value="tree::node"/>
-			<item value="linux_thread"/>
 		</list>
 		<list key="replacehistory">
+			<item value="print_carray&lt; array_typeB &gt;"/>
+			<item value="print_carray&lt; array_typeA &gt;"/>
+			<item value="__print_carray__&lt; array_typeB &gt;::print_carray"/>
+			<item value="__print_carray__&lt; array_typeA &gt;::print_carray"/>
 			<item value="android_thread"/>
 		</list>
 	</section>

@@ -195,24 +195,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/main.cpp</locationURI>
 		</link>
 		<link>
-			<name>jni/pecker_test/pfx_array_test.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_array_test.cpp</locationURI>
-		</link>
-		<link>
 			<name>jni/pecker_test/pfx_avl_bst_test.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_avl_bst_test.cpp</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_test/pfx_block_test.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_block_test.cpp</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_test/pfx_bst_stress_test.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_bst_stress_test.cpp</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_test/pfx_bst_test.cpp</name>
