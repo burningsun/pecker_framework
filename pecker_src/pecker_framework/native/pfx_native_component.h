@@ -73,22 +73,6 @@ typedef enum enumACTIVE_STATUS
 }PFX_ACTIVE_STATUS_t;
 
 
-PFX_Interface PFX_NATIVE_API IActivity_component
-{
-	virtual ~IActivity_component(){ ; }
-	virtual void on_create (activity_init_state_t& PARAM_OUT init_state) = 0;
-	virtual void on_start(CNative_form_ptr PARAM_INOUT active_form_ptr) = 0;
-	virtual void on_restart ()	= 0;
-	virtual void on_resume()	= 0;
-	virtual void on_parse()		= 0;
-	virtual void on_stop ()		= 0;
-	virtual void on_destroy()	= 0;
-
-	virtual void on_modify_view() = 0;
-	virtual void on_finish_modify_view() = 0;
-
-	virtual	result_t on_event(flag_t message, long_t wParam, long_t lParam) = 0;
-};
 
 #ifdef _MSC_VER
 #pragma warning(pop)

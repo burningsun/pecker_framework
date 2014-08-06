@@ -191,8 +191,8 @@ LRESULT	window_native_form::on_message(UINT message, WPARAM wParam, LPARAM lPara
 				m_init_state.m_windows_rect.m_height = client_rect.bottom - client_rect.top;
 
 
-
-				m_component_ptr->on_start(this);
+				m_component_ptr->on_init(this);
+				m_component_ptr->on_start();
 				m_activity_status = PFX_ACTIVE_START;
 			}
 			// 非第一次改变窗口的大小

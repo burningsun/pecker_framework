@@ -124,9 +124,17 @@ private:
 	volatile bool	m_bon_exit;
 	volatile bool	m_bhide_complate;
 	volatile bool	m_bexit_complate;
+	volatile bool   m_binit_complate;
+	volatile bool   m_bpause_render;
+	volatile bool	m_bview_start;
 protected:
 	window_contex_t	m_target;
 public:
+	PFX_INLINE volatile bool is_view_start() const
+	{
+		return m_bview_start;
+	}
+
 	PFX_INLINE volatile bool is_on_hideview() const
 	{
 		return m_bon_hideview;
@@ -147,6 +155,22 @@ public:
 	{
 		return m_bexit_complate;
 	}
+	PFX_INLINE volatile bool is_init_complate() const
+	{
+		return m_binit_complate;
+	}
+	PFX_INLINE volatile bool is_on_pause_render() const
+	{
+		return m_bpause_render;
+	}
+	virtual void set_view_start(bool bEnable)
+	{
+		m_bview_start = bEnable;
+	}
+	virtual void set_init_complate(bool bEnable)
+	{
+		m_binit_complate = bEnable;
+	}
 
 	virtual void set_hideview(bool bEnable)
 	{
@@ -164,8 +188,12 @@ public:
 	{
 		m_target = win_context;
 	}
-
+	virtual void set_pause_render(bool bEnable)
+	{
+		m_bpause_render = bEnable;
+	}
 public:
+
 	virtual void on_hide_complate(bool enable)
 	{
 		m_bhide_complate = enable;

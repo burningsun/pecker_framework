@@ -11,7 +11,7 @@
 
 USING_PECKER_SDK
 
-class helloactivity : public IActivity_component
+class helloactivity : public native_form_t::IActivity_component
 {
 private:
 	int m_iresize_count;
@@ -23,7 +23,11 @@ public:
 		init_state.m_fixed_window = 0;
 		init_state.m_strtitle.init_string("hello activity", strlen("hello activity") + 1);
 	}
-	virtual void on_start(CNative_form_ptr PARAM_INOUT active_form_ptr)
+	virtual void on_init(window_native_form* PARAM_INOUT active_form_ptr)
+	{
+		;
+	}
+	virtual void on_start()
 	{
 		m_iresize_count = 0;
 		;
@@ -36,7 +40,7 @@ public:
 	{
 		;
 	}
-	virtual void on_parse()
+	virtual void on_pause()
 	{
 		;
 	}

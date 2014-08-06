@@ -249,9 +249,6 @@
     <ClInclude Include="..\pecker_framework\native\pfx_native_form.h">
       <Filter>native</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\native\pfx_native_component.h">
-      <Filter>native</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\native\window_native_form.h">
       <Filter>native</Filter>
     </ClInclude>

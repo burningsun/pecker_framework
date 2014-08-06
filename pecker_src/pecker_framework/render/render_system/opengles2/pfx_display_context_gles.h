@@ -118,6 +118,18 @@ public:
 	cdisplay_context_gles();
 	~cdisplay_context_gles();
 
+	PFX_INLINE volatile bool is_render_started () const
+	{
+		if (m_on_render_view_ptr)
+		{
+			return m_on_render_view_ptr->is_view_start();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	PFX_INLINE volatile usize__t get_fp1ks() const
 	{
 		return	m_last_fp1ks;

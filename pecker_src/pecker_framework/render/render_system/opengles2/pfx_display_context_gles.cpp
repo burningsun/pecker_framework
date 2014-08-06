@@ -6,6 +6,10 @@
  */
 #include "pfx_display_context_gles.h"
 
+#ifdef __ANDROID__
+#include <android/native_window.h>
+#endif // #ifdef __ANDROID__
+
 PECKER_BEGIN
 cdisplay_context_gles::cdisplay_context_gles() :m_last_status(PFX_STATUS_OK),
 m_on_render_view_ptr(null), m_bshow_window(false), m_egl_context_ID(0), m_limit_frame_time(17)
@@ -446,6 +450,14 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 		return status;
 	}
 
+#if defined(__ANDROID__)
+			EGLint visualID;
+		    eglGetConfigAttrib(__egl_device.m_EGLDisplay, __egl_device.m_EGLConfig, EGL_NATIVE_VISUAL_ID, &visualID);
+
+		    // Change the format of our window to match our config
+    		ANativeWindow_setBuffersGeometry((ANativeWindow*)__context.m_hwnd, 0, 0, visualID);
+#endif //#if defined(__ANDROID__)
+
 	// 创建egl窗口
 	__egl_device.m_EGLWindow = EGL_NO_SURFACE;
 	const EGLint* attrib_list_ptr = null;
@@ -664,15 +676,28 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 	pecker_tick ticker;
 	ticker.init();
 	ticker.start();
-	
+	m_on_render_view_ptr->set_init_complate(false);
+	m_on_render_view_ptr->set_pause_render(false);
+	m_on_render_view_ptr->set_view_start(true);
+	m_on_render_view_ptr->on_exit_complate(false);
+
 	while (m_bshow_window)
 	{
-		m_on_render_view_ptr->on_exit_complate(false);
+		if (m_on_render_view_ptr->is_on_exit())
+		{
+			m_bshow_window = false;
+			PECKER_LOG_INFO("is_on_exit  = %d",true);
+			break;
+		}
+
 		if (m_on_render_view_ptr->is_on_hideview())
 		{
+			PECKER_LOG_INFO("on_hideview 1 = %d",true);
 			SleepMS(100);
 			continue;
 		}
+		m_on_render_view_ptr->set_view_start(true);
+		m_on_render_view_ptr->set_init_complate(false);
 		m_on_render_view_ptr->on_hide_complate(false);
 		back_buffer_t	__backbuffer;
 		window_contex_t __context;
@@ -702,10 +727,14 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		status = create_egl_device(__context, m_egl_device,
 			m_egl_context_ID, m_on_render_view_ptr);
 
+		PECKER_LOG_INFO("create_egl_device status = %d",status);
 		if (PFX_STATUS_OK != status)
 		{
+			PECKER_LOG_ERR("create_egl_device error = %d",status);
 			break;
 		}
+		m_on_render_view_ptr->set_init_complate(true);
+
 
 		// 加载渲染数据
 		esacape_tick = (u64_t)ticker.get_microsecond();
@@ -715,6 +744,8 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			msg_flag,
 			msg_param_buffer_size,
 			msg_params_ptr);
+
+		PECKER_LOG_INFO("m_on_render_view_ptr->on_load ing","tick = %lld",esacape_tick);
 
 		// 处理窗口回传的消息参数
 		on_msg(m_egl_device,
@@ -731,7 +762,15 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			// ES相关的对象，所以在此显示的时候需要重建
 			if (m_on_render_view_ptr->is_on_hideview())
 			{
+				PECKER_LOG_INFO("is_on_hideview %d",true);
 				break;
+			}
+
+			if (m_on_render_view_ptr->is_on_pause_render())
+			{
+				PECKER_LOG_INFO("m_on_render_view_ptr->is_on_pause_render %d",m_on_render_view_ptr->is_on_pause_render());
+				SleepMS(100);
+				continue;
 			}
 
 			//::glViewport(0, 0, __context.m_viewport.m_width, __context.m_viewport.m_height);
@@ -764,6 +803,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			// 渲染出错时，销毁设备重新创建
 			if (status)
 			{
+				PECKER_LOG_ERR("m_on_render_view_ptr->on_render_complete error = %d",status);
 				break;
 			}
 
@@ -773,11 +813,13 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			// 销毁渲染设备，重新创建
 			if (m_on_render_view_ptr->is_on_resize())
 			{
+				PECKER_LOG_INFO("is_on_resize = %d", true);
 				break;
 			}
 			// 通过窗口状态退出渲染线程
 			if (m_on_render_view_ptr->is_on_exit())
 			{
+				PECKER_LOG_INFO("is_on_exit = %d", true);
 				m_bshow_window = false;
 				break;
 			}
@@ -797,7 +839,9 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			{
 				if (frame_render_time < m_limit_frame_time)
 				{
-					SleepMS(m_limit_frame_time - frame_render_time);
+					usize__t sleep_time = m_limit_frame_time - frame_render_time;
+					//PECKER_LOG_INFO("sleep time","%d",sleep_time);
+					SleepMS(sleep_time);
 				}
 				//m_last_fps = 1000000 / m_limit_frame_time;
 			}
@@ -823,12 +867,15 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		status = destroy_egl_device(m_egl_device, m_egl_context_ID, m_on_render_view_ptr);
 		//
 		m_on_render_view_ptr->on_hide_complate(true);
+		PECKER_LOG_INFO("hide_complate = %d",true);
 		if (status)
 		{
+			PECKER_LOG_ERR("destroy_egl_device error = %d",status);
 			break;
 		}
 	}
 	m_on_render_view_ptr->on_exit_complate(true);
+	PECKER_LOG_INFO("exit_complate = %d and then return exit thread",true);
 	return status;
 }
 
@@ -867,9 +914,26 @@ result_t cdisplay_context_gles::show_view(cOn_render_view_t* PARAM_INOUT on_view
 	{
 		return PFX_STATUS_UNIQUE;
 	}
+	result_t status;
 	m_on_render_view_ptr = on_view_callback_ptr;
 	m_bshow_window = true;
-	return m_thread.start_thread(&m_thread_proxy);
+	m_on_render_view_ptr->set_view_start(false);
+
+	status = m_thread.start_thread(&m_thread_proxy);
+	if (PFX_STATUS_OK == status)
+	{
+		usize__t try_count = 5;
+		while (try_count)
+		{
+			if (m_on_render_view_ptr->is_view_start())
+			{
+				break;
+			}
+			SleepMS(20);
+			--try_count;
+		}
+	}
+	return status;
 }
 result_t cdisplay_context_gles::close_view()
 {

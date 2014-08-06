@@ -190,6 +190,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_test/androidactivity_gles2_test.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/androidactivity_gles2_test.cpp</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_test/main.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/main.cpp</locationURI>
@@ -268,11 +273,6 @@
 			<name>jni/pecker_test/pfx_vector_test.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_vector_test.cpp</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_test/pfx_window_form_test.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_window_form_test.cpp</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/data/pecker_data.h</name>
@@ -505,6 +505,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/include/util</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/native/android_native_form.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/native/android_native_form.cpp</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/native/android_native_form.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/native/android_native_form.h</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/native/android_thread.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/native/android_thread.h</locationURI>
@@ -573,11 +583,6 @@
 			<name>jni/pecker_framework/native/pfx_native_activity.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/native/pfx_native_activity.h</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_framework/native/pfx_native_component.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/native/pfx_native_component.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/native/pfx_native_form.h</name>
@@ -698,6 +703,11 @@
 			<name>jni/pecker_framework/render/render_util</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/test_data/androidactivity_gles2_test.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/androidactivity_gles2_test.cpp</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/test_data/bst_test_data.txt</name>

@@ -10,13 +10,13 @@
 #define PFX_NATIVE_ACTIVITY_H_
 
 
-#include "pfx_native_component.h"
+#include "pfx_native_form.h"
 #include "../render/pfx_on_context_view.h"
-
+#include "pfx_log.h"
 PECKER_BEGIN
 
 template < class display_context >
-class PFX_NATIVE_TEMPLATE_API cnative_activity : public IActivity_component
+class PFX_NATIVE_TEMPLATE_API cnative_activity : public native_form_t::IActivity_component
 {
 public:
 	//typedef typename display_context::cOn_render_view_t IOnRenderView_t;
@@ -74,11 +74,12 @@ public:
 		init_state.m_fixed_window = true;
 		init_state.m_windows_rect = viewport_rect_t(100, 100, 800, 600);
 	}
-	virtual void on_start(native_form_t* PARAM_INOUT active_form_ptr)
+	virtual result_t on_init(native_form_t* PARAM_INOUT active_form_ptr)
 	{
+		result_t status;
 		if (!active_form_ptr)
 		{
-			return;
+			return PFX_STATUS_INVALID_PARAMS;
 		}
 		if (m_render_view_ptr)
 		{
@@ -86,6 +87,7 @@ public:
 		}
 		m_display_context.close_view();
 
+		status = PFX_STATUS_UNINIT;
 		if (m_render_view_ptr)
 		{
 			window_contex_t win_context;
@@ -98,19 +100,30 @@ public:
 			m_render_view_ptr->set_hideview(false);
 			m_render_view_ptr->set_exit(false);
 			m_render_view_ptr->set_resize(false);
-			m_display_context.show_view(m_render_view_ptr);	
+			status = m_display_context.show_view(m_render_view_ptr);
+			if (status)
+			{
+				PECKER_LOG_ERR("m_display_context.show_view",
+						"status = %d", status);
+				m_display_context.close_view();
+			}
 		}
-		
+		return status;
 	}
-	virtual void on_restart()
+	virtual void on_start()
 	{
+		return;
+	}
+	virtual result_t on_restart()
+	{
+		result_t status;
 		if (m_render_view_ptr)
 		{
 			m_render_view_ptr->set_hideview(false);
 			m_render_view_ptr->set_exit(false);
 		}
 		m_display_context.close_view();
-
+		status = PFX_STATUS_UNINIT;
 		if (m_render_view_ptr && m_active_form_ptr)
 		{
 			window_contex_t win_context;
@@ -123,8 +136,15 @@ public:
 			m_render_view_ptr->set_hideview(false);
 			m_render_view_ptr->set_exit(false);
 			m_render_view_ptr->set_resize(false);
-			m_display_context.show_view(m_render_view_ptr);
+			status = m_display_context.show_view(m_render_view_ptr);
+			if (status)
+			{
+				PECKER_LOG_ERR("m_display_context.show_view",
+						"status = %d", status);
+				m_display_context.close_view();
+			}
 		}
+		return status;
 	}
 	virtual void on_resume()
 	{
@@ -133,7 +153,7 @@ public:
 			m_render_view_ptr->set_hideview(false);
 		}
 	}
-	virtual void on_parse()
+	virtual void on_pause()
 	{ 
 		if (m_render_view_ptr)
 		{
@@ -144,7 +164,7 @@ public:
 	{
 		if (m_render_view_ptr)
 		{
-			m_render_view_ptr->set_exit(true);
+			m_render_view_ptr->set_hideview(false);
 		}
 	}
 	virtual void on_destroy()
@@ -186,6 +206,31 @@ public:
 	virtual	result_t on_event(flag_t message, long_t wParam, long_t lParam)
 	{
 		return PFX_STATUS_FIN;
+	}
+
+	virtual void on_save_instance_state ()
+	{
+		;
+	}
+	virtual void on_free_instance_state ()
+	{
+		;
+	}
+	virtual void on_focus_changed (boolean_t bfocus)
+	{
+		PECKER_LOG_INFO("on focus %p %d",m_render_view_ptr,bfocus);
+		if (m_render_view_ptr)
+		{
+			//m_render_view_ptr->set_pause_render(!bfocus);
+		}
+	}
+	virtual void on_config_changed()
+	{
+		;
+	}
+	virtual void on_low_memery ()
+	{
+		;
 	}
 };
 

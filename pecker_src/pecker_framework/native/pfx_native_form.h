@@ -16,11 +16,11 @@ PECKER_END
 
 #else 
 #if (OS_CONFIG == OS_ANDROID)
-//#include "android_native_form.h"
-//
-//PECKER_BEGIN
-//typedef android_native_form native_form_t;
-//PECKER_END
+#include "android_native_form.h"
+
+PECKER_BEGIN
+typedef android_native_form native_form_t;
+PECKER_END
 
 #endif 	// #if ((OS_CONFIG == OS_ANDROID))
 #endif	// #if (OS_CONFIG == OS_WINDOWS)

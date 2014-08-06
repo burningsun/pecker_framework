@@ -68,7 +68,6 @@
     <ClInclude Include="..\pecker_framework\native\pfx_native_activity.h" />
     <ClInclude Include="..\pecker_framework\native\window_msgcode_def.h" />
     <ClInclude Include="..\pecker_framework\native\window_native_form.h" />
-    <ClInclude Include="..\pecker_framework\native\pfx_native_component.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_native_form.h" />
     <ClInclude Include="..\pecker_framework\native\socket_param.h" />
     <ClInclude Include="..\pecker_framework\native\syn_lock.h" />

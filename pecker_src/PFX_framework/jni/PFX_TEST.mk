@@ -24,5 +24,7 @@ PFX_TEST_LOCAL_SRC_FILES := \
 					$(PFX_TEST_LOCAL_PATH)main.cpp \
 				   $(PFX_TEST_LOCAL_SUB_FILES)
 				   
+				   #$(PFX_TEST_LOCAL_PATH)androidactivity_gles2_test.cpp\
+				   
 
 
