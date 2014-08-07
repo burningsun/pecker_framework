@@ -150,30 +150,34 @@ public:
 	{
 		if (m_render_view_ptr)
 		{
-			m_render_view_ptr->set_hideview(false);
+			//m_render_view_ptr->set_hideview(false);
 		}
 	}
 	virtual void on_pause()
 	{ 
 		if (m_render_view_ptr)
 		{
-			m_render_view_ptr->set_hideview(true);
+			//m_render_view_ptr->set_hideview(true);
 		}
 	}
 	virtual void on_stop()
 	{
 		if (m_render_view_ptr)
 		{
-			m_render_view_ptr->set_hideview(false);
+			//m_render_view_ptr->set_hideview(true);
 		}
 	}
 	virtual void on_destroy()
 	{
+		result_t status;
 		if (m_render_view_ptr)
 		{
 			m_render_view_ptr->set_exit(true);
 		}
-		m_display_context.close_view();
+		status = m_display_context.close_view();
+
+		PECKER_LOG_INFO("on_destory..close_view = %d",
+				status);
 	}
 
 	virtual void on_modify_view()
@@ -192,14 +196,27 @@ public:
 				SleepMS(100);
 				--time_out_count;
 			}
+			PECKER_LOG_INFO("time_out_count=%d, is_hide_complate=%d",
+					time_out_count,
+					m_render_view_ptr->is_hide_complate());
 		}
 	}
 	virtual void on_finish_modify_view()
 	{
 		if (m_render_view_ptr)
 		{
+			window_contex_t win_context;
+			win_context.m_hwnd = m_active_form_ptr->get_native_window();
+			win_context.m_hdc = m_active_form_ptr->get_native_display();
+			win_context.m_hpixelmap = m_active_form_ptr->get_native_pixelmap();
+			win_context.m_viewport = m_active_form_ptr->get_activity_state().m_windows_rect;
+
+			m_render_view_ptr->set_window_context(win_context);
+
 			m_render_view_ptr->set_hideview(false);
 			m_render_view_ptr->set_resize(false);
+			PECKER_LOG_INFO("is_hide_complate=%d",
+					m_render_view_ptr->is_hide_complate());
 		}
 	}
 

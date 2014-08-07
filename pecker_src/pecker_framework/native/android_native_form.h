@@ -22,6 +22,7 @@
 #include <android/native_window.h>
 #include <android/configuration.h>
 #include <android/looper.h>
+#include <string.h>
 
 
 PECKER_BEGIN
@@ -114,11 +115,20 @@ public:
 		virtual void on_config_changed() = 0;
 		virtual void on_low_memery () = 0;
 	};
+
 	// 事件处理接口
+	PFX_Interface IEvent
+	{
+		virtual ~IEvent(){;}
+		virtual enum_int_t get_type_ID () const = 0;
+		virtual sint_t process (cnative_form_t* PARAM_INOUT app_form_ptr,
+				void* event_ptr) = 0;
+	};
 	PFX_Interface IEvent_source
 	{
 		virtual ~IEvent_source(){;}
 		virtual enum_int_t getID () const = 0;
+		virtual result_t bind_event (IEvent* event_ptr) = 0;
 		virtual result_t process (cnative_form_t* PARAM_INOUT app_form_ptr) = 0;
 	};
 	//
@@ -165,17 +175,52 @@ public:
 	    ~st_Event_pull_source(){;}
 	}Event_pull_source;
 
-public:
-	void print_cur_config();
-
 protected:
 	typedef long (android_native_form::*on_message_translate_callback_t) (proxy_status_t* __proxy_status_ptr);
 	typedef thread_proxy < android_native_form, on_message_translate_callback_t >	thread_proxy_t;
 
+
+	///////////////////////////////////////////
+
+	friend class CInputEvent_source;
+
+	class CInputEvent_source : public IEvent_source
+	{
+	private:
+		IEvent* m_bindEvent;
+	public:
+		CInputEvent_source():m_bindEvent(null){;}
+		~CInputEvent_source(){m_bindEvent = null;}
+		PFX_INLINE enum_int_t getID () const
+		{
+			return FORM_LOOPER_ID_INPUT;
+		}
+		PFX_INLINE result_t bind_event (IEvent* event_ptr)
+		{
+			if (event_ptr && event_ptr->get_type_ID() == getID())
+			{
+				m_bindEvent = event_ptr;
+				return PFX_STATUS_OK;
+			}
+			else
+			{
+				return PFX_STATUS_INVALID_PARAMS;
+			}
+		}
+		result_t process (cnative_form_t* PARAM_INOUT app_form_ptr);
+	};
+
+
+	//////////////////////////////////
 	// NDK相关的回掉函数
+
+public:
+	typedef int (*PFX_main_callback)(pecker_sdk::android_native_form* PARAM_INOUT main_form);
+	static void app_main (PFX_main_callback __PFX_main_func, 
+		ANativeActivity* activity, void* savedState, size_t savedStateSize);
+	
 protected:
-	static long entry_action (proxy_status_t* __proxy_status_ptr);
-	static void app_main (ANativeActivity* activity, void* savedState, size_t savedStateSize);
+	static PFX_main_callback PFX_main_func;
 protected:
 	static void onDestroy(ANativeActivity* activity);
 
@@ -202,24 +247,28 @@ protected:
 	static void onInputQueueCreated(ANativeActivity* activity, AInputQueue* queue);
 
 	static void onInputQueueDestroyed(ANativeActivity* activity, AInputQueue* queue);
+
+
+
+////////////////////////////////////////////////////
+public:
+	void print_cur_config();
+
 // android....
 protected:
 	ANativeActivity* m_attech_activity_ptr;
-	void*            m_savedState;
-	size_t           m_savedStateSize;
 
 	AConfiguration*  m_config_ptr;
 
-	cs_t             mutex;
+	cs_t             m_cs;
 
 	ALooper*         m_looper;
 
-    int msgread;
-    int msgwrite;
+	//enum_int_t 			msgread;
+	//enum_int_t			msgwrite;
     AInputQueue*     	m_inputQueue;
+    CInputEvent_source	m_input_event;
     Event_pull_source   m_input_poll_source;
-    //IEvent_source* m_input_poll_source;
-    //IEvent_source* m_cmd_poll_source;
 
 protected:
 	PFX_INLINE result_t attech_android_activity(ANativeActivity* PARAM_INOUT attech_ptr)
@@ -254,8 +303,8 @@ private:
 	volatile bool m_brunning;
 	volatile bool m_bmust_init_window;
 protected:
-	ANativeWindow*		m_hwmd;
-	long_t				m_hdc;
+	volatile ANativeWindow*		m_hwmd;
+	volatile long_t				m_hdc;
 //	long_t				m_pixelmap;
 protected:
 	thread_proxy_t	m_msg_trans_proxy;
@@ -274,14 +323,15 @@ protected:
 protected:
 	result_t 	on_message(flag_t message, long_t wParam, long_t lParam);
 
-public:
+protected:
 	result_t	create_window(
 			ANativeActivity* PARAM_INOUT activity_ptr,
 			void* savedState,
 			size_t savedStateSize);
-public:
-	static android_native_form& singleton ();
+
+/////////////////////
 protected:
+//public:
 	android_native_form();
 public:
 	virtual ~android_native_form();
@@ -291,6 +341,17 @@ public:
 			android_native_form* parent_form_ptr = null);
 	result_t	dispose();
 
+	PFX_INLINE result_t	set_input_event (IEvent* PARAM_IN event_ptr)
+	{
+		if (event_ptr)
+		{
+			return m_input_event.bind_event(event_ptr);
+		}
+		else
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
+	}
 	PFX_INLINE ALooper* get_looper ()
 	{
 		return m_looper;
@@ -306,7 +367,7 @@ public:
 			return null;
 		}
 	}
-	PFX_INLINE void show ()
+	PFX_INLINE void show_form ()
 	{
 		m_brunning = true;
 	}
@@ -322,15 +383,15 @@ public:
 		return status;
 	}
 
-	PFX_INLINE long_t get_native_window() const
+	PFX_INLINE  long_t get_native_window() const
 	{
 		return (long_t)m_hwmd;
 	}
-	PFX_INLINE long_t get_native_display() const
+	PFX_INLINE  long_t get_native_display() const
 	{
 		return (long_t)m_hdc;
 	}
-	PFX_INLINE long_t get_native_pixelmap() const
+	PFX_INLINE  long_t get_native_pixelmap() const
 	{
 		return 0;//(long_t)m_pixelmap;
 	}
@@ -344,7 +405,7 @@ public:
 
 PECKER_END
 
-//extern int PFX_main(pecker_sdk::android_native_form* PARAM_INOUT main_form);
+
 
 #endif//	(OS_CONFIG == OS_WINDOWS)
 

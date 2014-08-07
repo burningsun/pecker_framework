@@ -1,4 +1,5 @@
 ﻿#include "../pecker_framework/pfx_defines.h"
+#include "../pecker_framework/pfx_app_init.h"
 
 #ifdef __ANDROID__
 #else
@@ -27,7 +28,7 @@ extern void test_object_id ();
 //extern void form_test();
 //extern void gles2_displayview_test();
 
-#ifdef __ANDROID__
+#if (defined(__ANDROID__)|| defined(__APP_MAIN_SHOW__))
 int test_main ()
 #else
 int main ()

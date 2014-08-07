@@ -25,16 +25,43 @@
 #  define LOGV(...)  ((void)0)
 #endif
 
+static int PFX_main_defult(pecker_sdk::android_native_form* PARAM_INOUT main_form)
+{
+	main_form->show_form();
+	return 0;
+}
+
 PECKER_BEGIN
+
+
+android_native_form::PFX_main_callback android_native_form::PFX_main_func =  PFX_main_defult;
+
+result_t android_native_form::CInputEvent_source::process(cnative_form_t* PARAM_INOUT app_form_ptr)
+{
+    AInputEvent* event = NULL;
+    while (AInputQueue_getEvent(app_form_ptr->m_inputQueue, &event) >= 0)
+    {
+        LOGV("New input event: type=%d\n", AInputEvent_getType(event));
+        if (AInputQueue_preDispatchEvent(app_form_ptr->m_inputQueue, event))
+        {
+            continue;
+        }
+        sint_t handled = 0;
+        if (m_bindEvent)
+        {
+        	handled = m_bindEvent->process(app_form_ptr,event);
+
+        };
+        AInputQueue_finishEvent(app_form_ptr->m_inputQueue, event, handled);
+    }
+}
+
 
 android_native_form::android_native_form() :
 m_attech_activity_ptr(null),
-m_savedState(null),
-m_savedStateSize(null),
 m_config_ptr(null),
 m_hwmd(null),
 m_hdc(null),
-//m_pixelmap(null),
 m_activity_status(PFX_ACTIVE_NO_INIT),
 m_component_ptr(null),
 m_started_window(false),
@@ -42,22 +69,22 @@ m_parent_form_ptr(null),
 m_dlg_result(0),
 m_bmust_init_window(true),
 m_inputQueue(null),
-//m_input_poll_source(null),
-//m_cmd_poll_source(null),
-msgread(0),
-msgwrite(0)
+//msgread(0),
+//msgwrite(0),
+m_brunning(false)
 {
 	m_msg_trans_proxy.m_object_ptr		= this;
 	m_msg_trans_proxy.m_callback		= &android_native_form::on_app_entry;
 	m_msg_trans_proxy.m_proxy_status	= null;
 
-	InitCriticalSection(&mutex);
-	;
+	m_input_poll_source.m_event_ptr = &m_input_event;
+	InitCriticalSection(&m_cs);
 }
 
 android_native_form::~android_native_form()
 {
 	dispose();
+	DelCriticalSection(&m_cs);
 }
 
 result_t android_native_form::on_message(flag_t message, long_t wParam, long_t lParam)
@@ -75,38 +102,18 @@ void android_native_form::onDestroy(ANativeActivity* activity)
     LOGV("Destroy: %p\n", activity);
 
  	android_native_form* form_ptr;
- 	critical_section_lock_t __lock;
+ 	//critical_section_lock_t __lock;
  	IActivity_component* android_activity_ptr;
 
      form_ptr = (android_native_form*)activity->instance;
 
      if (!form_ptr){return;}
 
-     __lock.lock(form_ptr->mutex);
-     android_activity_ptr = form_ptr->m_component_ptr;
-     if (android_activity_ptr)
-     {
-    	 android_activity_ptr->on_destroy();
-    	 android_activity_ptr = null;
-     }
-     ::close(form_ptr->msgread);
-     ::close(form_ptr->msgwrite);
+     //__lock.lock(form_ptr->mutex);
 
-     if (form_ptr->m_inputQueue)
-     {
-         AInputQueue_detachLooper(form_ptr->m_inputQueue);
-     }
-     if (form_ptr->m_config_ptr)
-     {
-     	AConfiguration_delete(form_ptr->m_config_ptr);
-     }
-     if (form_ptr->m_attech_activity_ptr)
-     {
-    	 form_ptr->m_attech_activity_ptr = null;
-     }
+     form_ptr->dispose();
 
-     form_ptr->m_activity_status = PFX_ACTIVE_DESTROY;
-     __lock.unlock();
+     //__lock.unlock();
 }
 
 void android_native_form::onStart(ANativeActivity* activity)
@@ -121,7 +128,7 @@ void android_native_form::onStart(ANativeActivity* activity)
 
      if (!form_ptr){return;}
 
-     __lock.lock(form_ptr->mutex);
+     __lock.lock(form_ptr->m_cs);
      android_activity_ptr = form_ptr->m_component_ptr;
      if (android_activity_ptr)
      {
@@ -142,7 +149,7 @@ void android_native_form::onResume(ANativeActivity* activity)
 
      if (!form_ptr){return;}
 
-     __lock.lock(form_ptr->mutex);
+     __lock.lock(form_ptr->m_cs);
      android_activity_ptr = form_ptr->m_component_ptr;
      if (android_activity_ptr)
      {
@@ -168,7 +175,7 @@ void* android_native_form::onSaveInstanceState(ANativeActivity* activity, size_t
 
      if (!form_ptr){return null;}
 
-     __lock.lock(form_ptr->mutex);
+     __lock.lock(form_ptr->m_cs);
      android_activity_ptr = form_ptr->m_component_ptr;
      if (android_activity_ptr)
      {
@@ -190,7 +197,7 @@ void android_native_form::onPause(ANativeActivity* activity)
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
+    __lock.lock(form_ptr->m_cs);
     android_activity_ptr = form_ptr->m_component_ptr;
     if (android_activity_ptr)
     {
@@ -198,8 +205,6 @@ void android_native_form::onPause(ANativeActivity* activity)
     }
     form_ptr->m_activity_status = PFX_ACTIVE_PAUSE;
     __lock.unlock();
-
-    // android_app_set_activity_state((struct android_app*)activity->instance, APP_CMD_PAUSE);
 }
 
 void android_native_form::onStop(ANativeActivity* activity)
@@ -214,7 +219,7 @@ void android_native_form::onStop(ANativeActivity* activity)
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
+    __lock.lock(form_ptr->m_cs);
     android_activity_ptr = form_ptr->m_component_ptr;
     if (android_activity_ptr)
     {
@@ -222,8 +227,6 @@ void android_native_form::onStop(ANativeActivity* activity)
     }
     form_ptr->m_activity_status = PFX_ACTIVE_STOP;
     __lock.unlock();
-
-//    android_app_set_activity_state((struct android_app*)activity->instance, APP_CMD_STOP);
 }
 
 void android_native_form::onConfigurationChanged(ANativeActivity* activity)
@@ -238,7 +241,7 @@ void android_native_form::onConfigurationChanged(ANativeActivity* activity)
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
+    __lock.lock(form_ptr->m_cs);
     android_activity_ptr = form_ptr->m_component_ptr;
     if (android_activity_ptr)
     {
@@ -246,9 +249,6 @@ void android_native_form::onConfigurationChanged(ANativeActivity* activity)
     }
     form_ptr->m_activity_status = PFX_ACTIVE_CONFIG_CHANGED;
     __lock.unlock();
-
-
-    //android_app_write_cmd(android_app, APP_CMD_CONFIG_CHANGED);
 }
 
 void android_native_form::onLowMemory(ANativeActivity* activity)
@@ -263,7 +263,7 @@ void android_native_form::onLowMemory(ANativeActivity* activity)
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
+    __lock.lock(form_ptr->m_cs);
     android_activity_ptr = form_ptr->m_component_ptr;
     if (android_activity_ptr)
     {
@@ -286,7 +286,7 @@ void android_native_form::onWindowFocusChanged(ANativeActivity* activity, int fo
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
+    __lock.lock(form_ptr->m_cs);
     android_activity_ptr = form_ptr->m_component_ptr;
     if (android_activity_ptr)
     {
@@ -315,7 +315,7 @@ void android_native_form::onNativeWindowCreated(ANativeActivity* activity, ANati
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
+    __lock.lock(form_ptr->m_cs);
 
     android_activity_ptr = form_ptr->m_component_ptr;
 	if (android_activity_ptr)
@@ -350,7 +350,7 @@ void android_native_form::onNativeWindowCreated(ANativeActivity* activity, ANati
 
 	form_ptr->m_activity_status = PFX_ACTIVE_WIN_CREATE;
     __lock.unlock();
-    //android_app_set_window((struct android_app*)activity->instance, window);
+    PECKER_LOG_INFO("form_ptr->m_hwmd = %08X",form_ptr->m_hwmd);
 }
 
 void android_native_form::onNativeWindowDestroyed(ANativeActivity* activity, ANativeWindow* window)
@@ -365,7 +365,7 @@ void android_native_form::onNativeWindowDestroyed(ANativeActivity* activity, ANa
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
+    __lock.lock(form_ptr->m_cs);
     android_activity_ptr = form_ptr->m_component_ptr;
     if (android_activity_ptr)
     {
@@ -373,9 +373,6 @@ void android_native_form::onNativeWindowDestroyed(ANativeActivity* activity, ANa
     }
     form_ptr->m_activity_status = PFX_ACTIVE_WIN_DESTROY;
     __lock.unlock();
-
-
-    //android_app_set_window((struct android_app*)activity->instance, NULL);
 }
 
 void android_native_form::onInputQueueCreated(ANativeActivity* activity, AInputQueue* queue)
@@ -390,12 +387,7 @@ void android_native_form::onInputQueueCreated(ANativeActivity* activity, AInputQ
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
-//    android_activity_ptr = form_ptr->m_component_ptr;
-//    if (android_activity_ptr)
-//    {
-//
-//    }
+    __lock.lock(form_ptr->m_cs);
     if (form_ptr->m_inputQueue)
     {
     	 LOGV("detaching input queue to looper");
@@ -410,9 +402,6 @@ void android_native_form::onInputQueueCreated(ANativeActivity* activity, AInputQ
                 &(form_ptr->m_input_poll_source));
     }
     __lock.unlock();
-
-
-    //android_app_set_input((struct android_app*)activity->instance, queue);
 }
 
 void android_native_form::onInputQueueDestroyed(ANativeActivity* activity, AInputQueue* queue)
@@ -428,12 +417,8 @@ void android_native_form::onInputQueueDestroyed(ANativeActivity* activity, AInpu
 
     if (!form_ptr){return;}
 
-    __lock.lock(form_ptr->mutex);
-//    android_activity_ptr = form_ptr->m_component_ptr;
-//    if (android_activity_ptr)
-//    {
-//
-//    }
+    __lock.lock(form_ptr->m_cs);
+
     if (form_ptr->m_inputQueue)
     {
         AInputQueue_detachLooper(form_ptr->m_inputQueue);
@@ -447,8 +432,6 @@ void android_native_form::onInputQueueDestroyed(ANativeActivity* activity, AInpu
                 &(form_ptr->m_input_poll_source));
     }
     __lock.unlock();
-
- //   android_app_set_input((struct android_app*)activity->instance, NULL);
 }
 
 void android_native_form::print_cur_config()
@@ -538,9 +521,10 @@ result_t android_native_form::listen_message()
         	}
         }
 
-		SleepMS(2000);
+		//SleepMS(2000);
 
 	}
+	PECKER_LOG_INFO("end listen_message %d", m_brunning);
 	return PFX_STATUS_OK;
 }
 
@@ -555,12 +539,14 @@ result_t android_native_form::create_window(
 	status = this->attech_android_activity(activity_ptr);
 	if (status)
 	{
+		PECKER_LOG_ERR("attech_android_activity = %d",status);
 		return status;
 	}
 	this->register_android_activity_callback_unsafe(activity_ptr);
 
+	LOGV("this->m_brunning: %d\n", this->m_brunning);
 	critical_section_lock_t __lock;
-	__lock.lock(mutex);
+	__lock.lock(m_cs);
 	if (this->m_brunning)
 	{
 		return status;
@@ -569,18 +555,21 @@ result_t android_native_form::create_window(
 	this->m_brunning = false;
 
 
-	int msgpipe[2];
+//	int msgpipe[2];
 
-	if (pipe(msgpipe))
-	{
-	    LOGE("could not create pipe: %s", strerror(errno));
-	    return PFX_STATUS_FAIL;;
-	}
-	msgread = msgpipe[0];
-	msgwrite = msgpipe[1];
+//	if (pipe(msgpipe))
+//	{
+//	    LOGE("could not create pipe: %s", strerror(errno));
+//	    return PFX_STATUS_FAIL;;
+//	}
+//	msgread = msgpipe[0];
+//	msgwrite = msgpipe[1];
 
 	__lock.unlock();
 
+
+	//LOGV("start_thread: (r=%d w=%d)",msgread, msgwrite);
+	LOGV("start_thread...");
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
@@ -619,47 +608,53 @@ result_t android_native_form::create_window(
 
 	return status;
 }
-
-android_native_form& android_native_form::singleton ()
-{
-	static android_native_form __form;
-	return __form;
-}
-
 	
 result_t android_native_form::dispose()
 {
 	critical_section_lock_t __lock;
-	__lock.lock(mutex);
+	__lock.lock(m_cs);
 	m_brunning = false;
 	m_started_window = false;
 	if (m_component_ptr)
 	{
-		m_component_ptr->on_stop();
 		m_component_ptr->on_destroy();
+		m_component_ptr = null;
 	}
-    ::close(msgread);
-    ::close(msgwrite);
-
+//	if (msgread)
+//	{
+//		::close(msgread);
+//		msgread = 0;
+//	}
+//    if (msgwrite)
+//    {
+//    	::close(msgwrite);
+//    	msgwrite = 0;
+//    }
     if (m_inputQueue)
     {
         AInputQueue_detachLooper(m_inputQueue);
+        m_inputQueue = null;
     }
     if (m_config_ptr)
     {
     	AConfiguration_delete(m_config_ptr);
+    	m_config_ptr = null;
     }
     if (m_attech_activity_ptr)
     {
     	m_attech_activity_ptr = null;
     }
+    m_brunning = false;
 
+    m_activity_status = PFX_ACTIVE_DESTROY;
 
+    PECKER_LOG_INFO("dispose fin %d",0);
 	return PFX_STATUS_OK;
 }
 
 long android_native_form::on_app_entry(proxy_status_t* __proxy_status_ptr)
 {
+	PECKER_LOG_INFO("on_app_entry proxy=%p", __proxy_status_ptr);
 	m_config_ptr = AConfiguration_new();
 	AConfiguration_fromAssetManager(m_config_ptr,
 			m_attech_activity_ptr->assetManager);
@@ -670,7 +665,7 @@ long android_native_form::on_app_entry(proxy_status_t* __proxy_status_ptr)
 	m_started_window = true;
 
 	//
-	int exit_code = 0;//PFX_main (this);
+	int exit_code = PFX_main_func (this);
 
 	PECKER_LOG_INFO("finish PFX_main %d",exit_code);
 	result_t status = listen_message();
@@ -681,27 +676,33 @@ long android_native_form::on_app_entry(proxy_status_t* __proxy_status_ptr)
 	m_started_window = false;
 	status = dispose();
 	PECKER_LOG_INFO("exit app %d", status);
-	exit (0);
-	return null;
+	delete this;
+	exit(0);
+	return 0;
 
 }
 
 
+void android_native_form::app_main (PFX_main_callback __PFX_main_func, ANativeActivity* activity, void* savedState, size_t savedStateSize)
+{
+	PECKER_LOG_INFO("activtiy = %p, savedState= %p savedStateSize = %d",
+			activity, savedState, savedStateSize);
+	android_native_form* form = new pecker_sdk::android_native_form();
+	PECKER_LOG_INFO ("app main form = %p",form);
+	if (__PFX_main_func)
+	{
+		PFX_main_func = __PFX_main_func;
+	}
+	form->create_window(activity, savedState, savedStateSize);
+}
 
 
 PECKER_END
 
 
-//void ANativeActivity_onCreate(ANativeActivity* activity,
-//        void* savedState, size_t savedStateSize)
-//{
-//	pecker_sdk::android_native_form& form = pecker_sdk::android_native_form::singleton();
-//	form.create_window(activity, savedState, savedStateSize);
-//}
 
-void app_dummy() {
 
-}
+
 
 
 

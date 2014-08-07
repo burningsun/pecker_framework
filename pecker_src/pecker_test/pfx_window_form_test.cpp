@@ -23,18 +23,18 @@ public:
 		init_state.m_fixed_window = 0;
 		init_state.m_strtitle.init_string("hello activity", strlen("hello activity") + 1);
 	}
-	virtual void on_init(window_native_form* PARAM_INOUT active_form_ptr)
+	virtual result_t on_init(window_native_form* PARAM_INOUT active_form_ptr)
 	{
-		;
+		return PFX_STATUS_OK;
 	}
 	virtual void on_start()
 	{
 		m_iresize_count = 0;
 		;
 	}
-	virtual void on_restart()
+	virtual result_t on_restart()
 	{
-		;
+		return PFX_STATUS_OK;
 	}
 	virtual void on_resume()
 	{
@@ -68,6 +68,27 @@ public:
 	virtual	result_t on_event(flag_t message, long_t wParam, long_t lParam)
 	{
 		return PFX_STATUS_FIN;
+	}
+
+	virtual void on_save_instance_state()
+	{
+		;
+	}
+	virtual void on_free_instance_state()
+	{
+		;
+	}
+	virtual void on_focus_changed(boolean_t bfocus)
+	{
+		;
+	}
+	virtual void on_config_changed()
+	{
+		;
+	}
+	virtual void on_low_memery()
+	{
+		;
 	}
 };
 

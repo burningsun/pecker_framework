@@ -56,7 +56,9 @@ m_started_window(false),
 m_parent_form_ptr(null),
 m_dlg_result(0),
 m_benter_size_move(false),
-m_bview_change(false)
+m_bview_change(false),
+m_bshow_form(false),
+m_bfull_screen(false)
 {
 	m_msg_trans_proxy.m_object_ptr		= this;
 	m_msg_trans_proxy.m_callback		= &window_native_form::on_message_translate;
@@ -516,14 +518,27 @@ result_t window_native_form::set_visiable(bool bvisiable,
 }
 
 
-
-
-
-
+int window_native_form::app_main(PFX_main_callback PFX_main_func)
+{
+	if (!PFX_main_func)
+	{
+		return -1;
+	}
+	window_native_form form;
+	
+	int exit_code = PFX_main_func(&form);
+	if (form.is_show_form())
+	{
+		form.show_dialog(form.m_bfull_screen);
+	}
+	
+	form.close();
+	form.dispose();
+	return exit_code;
+}
 
 
 PECKER_END
-
 
 
 

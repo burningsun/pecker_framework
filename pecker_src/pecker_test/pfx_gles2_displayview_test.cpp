@@ -62,9 +62,15 @@ public:
 		usize__t& PARAM_OUT param_size,
 		void*& PARAM_OUT param_data_ptr)
 	{
-		__state.clear_color(0.7f, 0.2f, 0.7f, 1.0f);
+		static float_t red_channel = 0.7;
+		__state.clear_color(red_channel, 0.2f, 0.7f, 1.0f);
 		__state.set_clear_mask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//SleepMS(100);
+		red_channel += 0.01;
+		if (red_channel > 1)
+		{
+			red_channel = 0;
+		}
 	}
 
 	virtual void on_load(
@@ -141,4 +147,14 @@ void gles2_displayview_test ()
 	form.close();
 	std::cin >> iwait;
 	form.dispose();
+}
+
+chellogles_activity hellow;
+chello_opengles_render_view hellov;
+int PFX_main(pecker_sdk::native_form_t* PARAM_INOUT main_form)
+{
+	main_form->init(&hellow);
+	hellow.init(&hellov);
+	main_form->show_form();
+	return 0;
 }

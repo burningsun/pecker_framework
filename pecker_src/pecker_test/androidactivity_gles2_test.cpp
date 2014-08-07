@@ -64,10 +64,18 @@ public:
 		usize__t& PARAM_OUT param_size,
 		void*& PARAM_OUT param_data_ptr)
 	{
-		__state.clear_color(0.7f, 0.2f, 0.7f, 1.0f);
+		static float_t red_color = 0.7f;
+		__state.clear_color(red_color, 0.2f, 0.7f, 1.0f);
 		__state.set_clear_mask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		red_color += 0.01;
+		if (red_color >= 1.0)
+		{
+			red_color = 0.0;
+		}
+
 		//SleepMS(100);
-		//PECKER_LOG_INFO("on_view","escape time = %lld",__escape_time);
+		//PECKER_LOG_INFO("on_view escape time = %lld",__escape_time);
 	    u64_t tick;
 	    tick = __escape_time - last_tick;
 	    if (tick > 2000)
@@ -120,7 +128,6 @@ public:
 	virtual void on_message_box(result_t status, const char_t* str_info_ptr,
 		usize__t str_info_length)
 	{
-		//::MessageBoxA(NULL, str_info_ptr, "error!", MB_YESNO);
 		PECKER_LOG_ERR("on_message_box error %s", "str_info_ptr");
 	}
 
@@ -132,6 +139,6 @@ int PFX_main (pecker_sdk::android_native_form* PARAM_INOUT main_form)
 {
 	activity_ptr->init(render_view_ptr);
 	main_form->init(activity_ptr);
-	main_form->show();
+	main_form->show_form();
 	return 0;
 }

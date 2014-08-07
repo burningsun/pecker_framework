@@ -135,6 +135,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/pfx_api_info.h</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/pfx_app_init.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/pfx_app_init.h</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/pfx_configs.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/pfx_configs.h</locationURI>

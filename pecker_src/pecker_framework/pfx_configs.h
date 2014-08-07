@@ -15,7 +15,7 @@
 #define	WINDOW_CE		(1<<4)
 
 #define OS_32BIT
-
+#define __APP_MAIN_SHOW__
 //#define	ANDROID			(1)
 
 #define	OS_WINDOWS		(1)

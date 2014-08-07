@@ -26,8 +26,8 @@
 #define PECKER_LOG_DIRECT_W(X,...){ wprintf(X, __VA_ARGS__);}
 #define PECKER_LOG_DIRECT(X,...){ pfx_printf(X, __VA_ARGS__);}
 #define PECKER_LOG_(X,...){ pfx_printf((pfx_char_type(X)), __VA_ARGS__);}
-#define PECKER_LOG_INFO(X,Y,...){pfx_printf(pfx_char_type("LOG_INFO "));pfx_printf(pfx_char_type(X));pfx_printf(pfx_char_type("\n")); pfx_printf(pfx_char_type(Y), __VA_ARGS__);pfx_printf(pfx_char_type("\n"));}
-#define PECKER_LOG_ERR(X,Y,...){pfx_printf(pfx_char_type("ERROR_INFO "));pfx_printf(pfx_char_type(X));pfx_printf(pfx_char_type("\n"));pfx_printf( pfx_char_type(Y), __VA_ARGS__);pfx_printf(pfx_char_type("\n"));}
+#define PECKER_LOG_INFO(X,...){pfx_printf(pfx_char_type("LOG_INFO "));pfx_printf(__FUNCTION__);pfx_printf(pfx_char_type("\n")); pfx_printf(pfx_char_type(X), __VA_ARGS__);pfx_printf(pfx_char_type("\n"));}
+#define PECKER_LOG_ERR(X,...){pfx_printf(pfx_char_type("ERROR_INFO "));pfx_printf(__FUNCTION__);pfx_printf(pfx_char_type("\n"));pfx_printf( pfx_char_type(X), __VA_ARGS__);pfx_printf(pfx_char_type("\n"));}
 #define PECKER_LOG_ENDLINE { pfx_printf(pfx_char_type("\n......ENDLINE......\n"));}
 #define PECKER_LOG_STR(X) (pfx_printf(pfx_char_type(X)))
 #else

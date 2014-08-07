@@ -1,4 +1,4 @@
-t,1407306659510
+t,1407321751572
 i,C:/android/android-ndk-r10/sources/cxx-stl/system/include
 i,jni
 i,c:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/lib/gcc/arm-linux-androideabi/4.9/include
@@ -12,7 +12,6 @@ d,__SQ_IBIT__,0
 d,__USACCUM_MAX__,0XFFFFP-8UHK
 d,__FLT_EPSILON__,1.1920928955078125e-7F
 d,__DEC64_MANT_DIG__,16
-d,NDEBUG,1
 d,__DBL_MIN__,double(2.2250738585072014e-308L)
 d,__LLFRACT_FBIT__,63
 d,__SCHAR_MAX__,127
@@ -155,7 +154,6 @@ d,__FLOAT_WORD_ORDER__,__ORDER_LITTLE_ENDIAN__
 d,__ATOMIC_CONSUME,1
 d,__DEC64_SUBNORMAL_MIN__,0.000000000000001E-383DD
 d,__INT_FAST32_TYPE__,int
-d,__ARM_NEON,1
 d,__UINT_FAST8_TYPE__,unsigned char
 d,__PTRDIFF_MAX__,2147483647
 d,__GCC_ATOMIC_BOOL_LOCK_FREE,2
@@ -355,7 +353,6 @@ d,__UQQ_FBIT__,8
 d,__UFRACT_MAX__,0XFFFFP-16UR
 d,__STDC_HOSTED__,1
 d,linux,1
-d,__ARM_NEON__,1
 d,__QQ_IBIT__,0
 d,__DECIMAL_DIG__,17
 d,__WCHAR_UNSIGNED__,1

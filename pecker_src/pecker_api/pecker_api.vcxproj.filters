@@ -35,6 +35,9 @@
     <ClCompile Include="..\pecker_framework\native\window_native_form.cpp">
       <Filter>native</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\android_native_form.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -257,6 +260,15 @@
     </ClInclude>
     <ClInclude Include="..\pecker_framework\native\window_msgcode_def.h">
       <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\android_native_form.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\android_thread.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_app_init.h">
+      <Filter>configs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

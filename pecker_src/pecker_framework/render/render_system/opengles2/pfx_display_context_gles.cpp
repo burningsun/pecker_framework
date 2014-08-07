@@ -161,8 +161,7 @@ result_t cdisplay_context_gles::select_config(EGLint PARAM_INOUT &egl_context_ID
 	// 获取egl config的总数
 	if (!eglChooseConfig(hdc, config_list_ptr, NULL, 0, &total_num_configs))
 	{
-		PECKER_LOG_ERR("cdisplay_context_gles::select_config", 
-			"eglChooseConfig(for get total config number), EGL ERROR 0x%x", 
+		PECKER_LOG_ERR("eglChooseConfig(for get total config number), EGL ERROR 0x%x", 
 			::eglGetError());
 		status = PFX_STATUS_FAIL;
 		break;
@@ -170,7 +169,7 @@ result_t cdisplay_context_gles::select_config(EGLint PARAM_INOUT &egl_context_ID
 
 	if (0 == total_num_configs)
 	{
-		PECKER_LOG_ERR("cdisplay_context_gles::select_config", 
+		PECKER_LOG_ERR( 
 			"Choose config error EGL,total number of configs = %d", 
 			total_num_configs);
 		status = PFX_STATUS_FAIL;
@@ -185,7 +184,7 @@ result_t cdisplay_context_gles::select_config(EGLint PARAM_INOUT &egl_context_ID
 	// 设置EGL的配置，配置可能有多个
 	if (!eglChooseConfig(hdc, config_list_ptr, configs_ptr, total_num_configs, &num_configs))
 	{
-		PECKER_LOG_ERR("cdisplay_context_gles::select_config", 
+		PECKER_LOG_ERR(
 			"eglChooseConfig error EGL, EGL ERROR 0x % x", eglGetError());
 		status = PFX_STATUS_FAIL;
 		break;
@@ -411,6 +410,10 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 		}
 		return status;
 	}
+	PECKER_LOG_INFO(
+		" __egl_device.m_EGLDisplay= %08X",
+		(long_t)(__egl_device.m_EGLDisplay));
+
 	// 初始化EGL
 	if (!::eglInitialize(__egl_device.m_EGLDisplay, 
 		&__egl_device.m_MajorVersion, &__egl_device.m_MinorVersion))
@@ -425,8 +428,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 		}
 		return status;
 	}
-	PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
-		"EGL initialized,EGL %d %d", 
+	PECKER_LOG_INFO(
+		" EGL initialized,EGL %d %d",
 		__egl_device.m_MajorVersion, 
 		__egl_device.m_MinorVersion);
 	// 绑定底层渲染API
@@ -434,7 +437,7 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	{
 		status = PFX_STATUS_FAIL;
 		msg_info_len = sprintf_s(msg_temp_buff, sizeof(msg_temp_buff),
-			"Unable to bind API EGL,EGL ERROR 0x%x", ::eglGetError());
+			" Unable to bind API EGL,EGL ERROR 0x%x", ::eglGetError());
 		if (on_view_ptr)
 		{
 			msg_info_ptr = msg_temp_buff;
@@ -443,21 +446,42 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 		return status;
 	}
 
+	PECKER_LOG_INFO(
+		" init_egl_contexting __contextID = %d, on_view_ptr = %p",
+		__contextID,
+		on_view_ptr);
+
 	// 创建EGLContext
 	status = init_egl_context(__context, __egl_device, __contextID, config_list, on_view_ptr);
+
+	PECKER_LOG_INFO(
+		" init_egl_context __contextID = %d, status = %d",
+		__contextID,
+		status);
 	if (PFX_STATUS_OK != status)
 	{
+		PECKER_LOG_ERR(
+				"status = %d",status);
 		return status;
 	}
+
+
+	PECKER_LOG_INFO(
+		" __context.m_hwnd = %08X",
+		__context.m_hwnd);
 
 #if defined(__ANDROID__)
 			EGLint visualID;
 		    eglGetConfigAttrib(__egl_device.m_EGLDisplay, __egl_device.m_EGLConfig, EGL_NATIVE_VISUAL_ID, &visualID);
-
+			PECKER_LOG_INFO(
+				" visualID = %d",
+				visualID);
 		    // Change the format of our window to match our config
     		ANativeWindow_setBuffersGeometry((ANativeWindow*)__context.m_hwnd, 0, 0, visualID);
 #endif //#if defined(__ANDROID__)
 
+   PECKER_LOG_INFO(
+    			" creating surface... %08X",__egl_device.m_EGLWindow);
 	// 创建egl窗口
 	__egl_device.m_EGLWindow = EGL_NO_SURFACE;
 	const EGLint* attrib_list_ptr = null;
@@ -469,9 +493,9 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	// 如果pixmap标志被设置，使用pixmaps的方式创建surface
 	if (__context.m_hpixelmap && __context.m_pixelmap_bit)
 	{
-		PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
-			"open device EGL, using pixmaps,about to create egl surface", 
-			0);
+		PECKER_LOG_INFO("open device EGL, using pixmaps,about to create egl surface (%08X,%d)",
+				__context.m_hpixelmap,
+				__context.m_pixelmap_bit);
 		__egl_device.m_EGLWindow = 
 			::eglCreatePixmapSurface(__egl_device.m_EGLDisplay, 
 			__egl_device.m_EGLConfig, 
@@ -487,8 +511,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 		//	EGL_NATIVE_VISUAL_ID, 
 		//	&egl_visual_id);
 
-		PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
-			"open device EGL,using native window handle,about to create egl surface",
+		PECKER_LOG_INFO(
+			"open device EGL,using native window handle,about to create egl surface,(%d)",
 			0);
 		__egl_device.m_EGLWindow = ::eglCreateWindowSurface
 			(__egl_device.m_EGLDisplay, 
@@ -499,8 +523,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	//使用null创建surface
 	if (EGL_NO_SURFACE == __egl_device.m_EGLWindow)
 	{
-		PECKER_LOG_INFO("cdisplay_context_gles::create_egl_device", 
-			"open device EGL,using null window handle value,about to create egl surface", 
+		PECKER_LOG_INFO(
+			"open device EGL,using null window handle value,about to create egl surface,(%d)",
 			0);
 		__egl_device.m_EGLWindow = ::eglCreateWindowSurface
 			(__egl_device.m_EGLDisplay,
@@ -511,8 +535,8 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	// 多次尝试都创建补成功，放弃继续尝试，退出
 	if (EGL_NO_SURFACE == __egl_device.m_EGLWindow)
 	{
-		PECKER_LOG_ERR("cdisplay_context_gles::create_egl_device", 
-			"create window surface EGL,unable to create surface", 
+		PECKER_LOG_ERR(
+			"create window surface EGL,unable to create surface, %d",
 			0);
 		msg_info_ptr = "create window surface EGL,unable to create surface";
 		msg_info_len = strlen(msg_info_ptr);
@@ -577,6 +601,10 @@ result_t cdisplay_context_gles::destroy_egl_device(
 	EGLint& PARAM_INOUT __contextID,
 	cOn_render_view_t* on_view_ptr)
 {
+	PECKER_LOG_INFO("EGL_NO_DISPLAY=%ld EGL_NO_SURFACE=%ld",
+		(long_t)__egl_device.m_EGLDisplay,
+		(long_t)__egl_device.m_EGLWindow);
+
 	if (EGL_NO_DISPLAY == __egl_device.m_EGLDisplay || 
 		EGL_NO_SURFACE == __egl_device.m_EGLWindow)
 	{
@@ -591,8 +619,7 @@ result_t cdisplay_context_gles::destroy_egl_device(
 	egl_result = ::eglMakeCurrent(__egl_device.m_EGLDisplay, 
 		EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 
-	PECKER_LOG_INFO("cdisplay_context_gles::destroy_egl_device", 
-		"eglMakeCurrent before close render device,ERROR = 0x%x(0x3000 success)", 
+	PECKER_LOG_INFO("eglMakeCurrent before close render device,ERROR = 0x%x(0x3000 success)",
 		::eglGetError());
 
 	if (EGL_NO_CONTEXT != __egl_device.m_EGLContext)
@@ -601,13 +628,13 @@ result_t cdisplay_context_gles::destroy_egl_device(
 		if (egl_result)
 		{
 			__egl_device.m_EGLContext = EGL_NO_CONTEXT;
-			PECKER_LOG_INFO("cdisplay_context_gles::destroy_egl_device", 
+			PECKER_LOG_INFO(
 				"close render device,eglDestroyContext ok!", 
 				0);
 		}
 		else
 		{
-			PECKER_LOG_ERR("cdisplay_context_gles::destroy_egl_device", 
+			PECKER_LOG_ERR(
 				"close render device,eglDestroyContext fail! ERROR = 0x%x", 
 				::eglGetError());
 			status = PFX_STATUS_FAIL;
@@ -692,7 +719,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 
 		if (m_on_render_view_ptr->is_on_hideview())
 		{
-			PECKER_LOG_INFO("on_hideview 1 = %d",true);
+			//PECKER_LOG_INFO("on_hideview 1 = %d",true);
 			SleepMS(100);
 			continue;
 		}
@@ -768,7 +795,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 
 			if (m_on_render_view_ptr->is_on_pause_render())
 			{
-				PECKER_LOG_INFO("m_on_render_view_ptr->is_on_pause_render %d",m_on_render_view_ptr->is_on_pause_render());
+				//PECKER_LOG_INFO("m_on_render_view_ptr->is_on_pause_render %d",m_on_render_view_ptr->is_on_pause_render());
 				SleepMS(100);
 				continue;
 			}
@@ -803,6 +830,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			// 渲染出错时，销毁设备重新创建
 			if (status)
 			{
+				m_on_render_view_ptr->set_hideview(true);
 				PECKER_LOG_ERR("m_on_render_view_ptr->on_render_complete error = %d",status);
 				break;
 			}
@@ -867,7 +895,8 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		status = destroy_egl_device(m_egl_device, m_egl_context_ID, m_on_render_view_ptr);
 		//
 		m_on_render_view_ptr->on_hide_complate(true);
-		PECKER_LOG_INFO("hide_complate = %d",true);
+		PECKER_LOG_INFO("hide_complate = %d, destroy egl device = %d",
+				true, status);
 		if (status)
 		{
 			PECKER_LOG_ERR("destroy_egl_device error = %d",status);

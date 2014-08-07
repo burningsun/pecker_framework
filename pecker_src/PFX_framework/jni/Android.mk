@@ -9,7 +9,7 @@ LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) $(PFX_TEST_LOCAL_SRC_FILES)
 
 
 LOCAL_MODULE    := PFX_framework
-LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES) android_native_app_glue.cpp PFX_framework.cpp
+LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES)# android_native_app_glue.cpp PFX_framework.cpp
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
         LOCAL_ARM_NEON  := true       

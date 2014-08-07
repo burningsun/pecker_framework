@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\pecker_framework\native\android_native_form.cpp" />
     <ClCompile Include="..\pecker_framework\native\asyn_udp_comm.cpp" />
     <ClCompile Include="..\pecker_framework\native\pecker_stream.cpp" />
     <ClCompile Include="..\pecker_framework\native\pecker_tick.cpp" />
@@ -57,6 +58,8 @@
     <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
+    <ClInclude Include="..\pecker_framework\native\android_native_form.h" />
+    <ClInclude Include="..\pecker_framework\native\android_thread.h" />
     <ClInclude Include="..\pecker_framework\native\linux_thread.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_allocator.h" />
     <ClInclude Include="..\pecker_framework\native\pecker_stream.h" />
@@ -77,6 +80,7 @@
     <ClInclude Include="..\pecker_framework\native\window_thread.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_thread.h" />
     <ClInclude Include="..\pecker_framework\pfx_api_info.h" />
+    <ClInclude Include="..\pecker_framework\pfx_app_init.h" />
     <ClInclude Include="..\pecker_framework\pfx_configs.h" />
     <ClInclude Include="..\pecker_framework\pfx_defines.h" />
     <ClInclude Include="..\pecker_framework\pfx_os_hal.h" />
