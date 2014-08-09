@@ -1,0 +1,19 @@
+﻿  png.c
+  pngerror.c
+  pngget.c
+  pngmem.c
+  pngpread.c
+  pngread.c
+  pngrio.c
+  pngrtran.c
+  pngrutil.c
+  pngset.c
+  pngtrans.c
+  pngwio.c
+  pngwrite.c
+  pngwtran.c
+  pngwutil.c
+     Creating library ..\..\..\bin\libpng.lib and object ..\..\..\bin\libpng.exp
+  Generating code
+  Finished generating code
+  libpng.vcxproj -> C:\codes\git\pecker_framework\pecker_framework_c\pecker_src\depends_lib\libpng-1.6.2\projects\vstudio\libpng\..\..\..\bin\libpng.dll
