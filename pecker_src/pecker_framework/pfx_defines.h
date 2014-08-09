@@ -112,6 +112,9 @@
 #define pfx_strlen strlen
 #endif
 
+#define ASCII_STRING(X) #X
+#define UTF16_STRING(X) L ## X
+
 // 状态
 enum PFX_STATUS_CODE
 {

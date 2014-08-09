@@ -25,19 +25,23 @@ extern int bst_stress_test_main (bool bshow = false);
 extern void matrix_test ();
 extern int auto_obj_test ();
 extern void test_object_id ();
-//extern void form_test();
-//extern void gles2_displayview_test();
+
 
 #if (defined(__ANDROID__)|| defined(__APP_MAIN_SHOW__))
 int test_main ()
-#else
-int main ()
-#endif
 {
-	//gles2_displayview_test();
-	//form_test();
-	//bst_stress_test_main(false);
-	//array_test_main ();
+#else
+
+extern void form_test();
+extern void gles2_displayview_test();
+
+int main ()
+{
+	gles2_displayview_test();
+	form_test();
+#endif
+
+
 	list_test();
 	string_test();
 	bst_test_main();

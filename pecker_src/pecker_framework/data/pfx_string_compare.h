@@ -149,6 +149,23 @@ struct PFX_DATA_TEMPLATE_API string_compare
 };
 
 #define pfx_memcmp memcmp
+#define pfx_strcmp strcmp
+
+PFX_INLINE int compare_chr_mem(const char_t* PARAM_IN str1, unsigned int str1_len,
+	const char_t* PARAM_IN str2, unsigned int str2_len)
+{
+	int cmp_result;
+	int min_len = (str2_len > str1_len) ? str1_len : str2_len;
+	cmp_result = pfx_memcmp(str1, str2, min_len);
+	if (0 == cmp_result)
+	{
+		return (str1_len - str2_len);
+	}
+	else
+	{
+		return cmp_result;
+	}
+}
 
 template < class ascii_string_typeA, class ascii_string_typeB = ascii_string_typeA >
 struct PFX_DATA_TEMPLATE_API ascii_string_compare
@@ -161,25 +178,27 @@ struct PFX_DATA_TEMPLATE_API ascii_string_compare
 	{
 		return compare(str1, str2);
 	}
-	static PFX_INLINE int compare (const char_t* PARAM_IN str1, unsigned int str1_len,
-		const char_t* PARAM_IN str2, unsigned int str2_len)
-	{
-		int cmp_result;
-		int min_len = (str2_len > str1_len)?str1_len:str2_len;
-		cmp_result = pfx_memcmp(str1, str2, min_len);
-		if (0 == cmp_result)
-		{
-			return (str1_len - str2_len);
-		}
-		else
-		{
-			return cmp_result;
-		}
-		
-	}
+
 	static PFX_INLINE int compare(const stringa_t& str1,const stringb_t& str2)
 	{
-		return compare(str1.get_string(), str1.get_length(), str2.get_string(), str2.get_length());
+		return compare_chr_mem(str1.get_string(), str1.get_length(), str2.get_string(), str2.get_length());
+	}
+};
+
+template < class ascii_string_typeA >
+struct PFX_DATA_TEMPLATE_API ascii_string_compare_withchars
+{
+	typedef ascii_string_typeA	stringa_t;
+	typedef typename stringa_t::element_t			element_t;
+
+	PFX_INLINE int operator () (const stringa_t& str1, const char* PARAM_IN str2) const
+	{
+		return compare(str1, str2);
+	}
+
+	static PFX_INLINE int compare(const stringa_t& str1, const char* PARAM_IN str2)
+	{
+		return pfx_strcmp(str1.get_string(), str2);
 	}
 };
 

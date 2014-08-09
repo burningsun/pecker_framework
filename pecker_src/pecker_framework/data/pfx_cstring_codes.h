@@ -413,6 +413,12 @@ PFX_INLINE const PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::get_string () const
 }
 
 PFX_CSTRING_TEMPLATE
+PFX_INLINE  PFX_CSTRING_TYPE::element_t*	PFX_CSTRING::get_string() 
+{
+	return this->m_this_string_ptr;
+}
+
+PFX_CSTRING_TEMPLATE
 PFX_INLINE usize__t	PFX_CSTRING::get_length () const
 {
 	return this->m_size;

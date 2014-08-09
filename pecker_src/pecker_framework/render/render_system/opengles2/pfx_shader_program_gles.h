@@ -120,10 +120,17 @@ template <const GLenum SHADER_TYPE >
 class  PFX_RENDER_SYS_TEMPLATE_API cshader_gles2 : public creference_base< cnative_shader_gles2< SHADER_TYPE > >,
 					public Ipfx_shader
 {
+public:
+	typedef cshader_gles2< SHADER_TYPE >  cshader_gles2_t;
 protected:
-	typedef  cnative_shader_gles2< SHADER_TYPE > ref_element_t;
-	typedef  creference_base< cnative_shader_gles2< SHADER_TYPE > > ref_t;
+	typedef cnative_shader_gles2< SHADER_TYPE > ref_element_t;
+	typedef creference_base< cnative_shader_gles2< SHADER_TYPE > > ref_t;
 	typedef typename ref_t::element_t element_t;
+public:
+	static PFX_INLINE cshader_gles2_t* new_shader()
+	{
+		return DYNAMIC_CAST(cshader_gles2_t*)(ref_t::new_reference());
+	}
 public:
 	PFX_INLINE ref_element_t* get_native_shader()
 	{
@@ -212,6 +219,10 @@ public:
 	typedef BST_find_elementx< tree_t,
 		cstring_ascii_t, compare_shader_param_ex_t >			find_t;
 
+	typedef BST_find_elementx< tree_t,
+		const char_t*,
+		compare_shader_param_exchr_t >							find_chr_t;
+
 
 
 public:
@@ -276,6 +287,9 @@ public:
 	long_t  get_location_by_name
 		(const cstring_ascii_t& PARAM_IN str_shader_param_name) const;
 	
+	long_t	get_location_by_name
+		(const char* PARAM_IN str_shader_param_name) const;
+	
 public:
 	PFX_INLINE result_t attach_shader(Ipfx_shader* PARAM_IN shader_ptr)
 	{
@@ -310,6 +324,11 @@ protected:
 	typedef  cnative_shader_program_gles2						ref_element_t;
 	typedef  creference_base< cnative_shader_program_gles2 >	ref_t;
 public:
+	static PFX_INLINE cshader_program_gles2* new_shader_program()
+	{
+		return DYNAMIC_CAST(cshader_program_gles2*)(ref_t::new_reference());
+	}
+public:
 	PFX_INLINE ref_element_t* get_native_shader_pragram()
 	{
 		return 	get_reference();
@@ -329,6 +348,21 @@ public:
 	}
 	PFX_INLINE long_t		get_location_by_name
 		(const cstring_ascii_t& PARAM_IN
+		str_shader_param_name) const
+	{
+		const ref_element_t* ref_ptr = get_reference();
+		if (ref_ptr)
+		{
+			return ref_ptr->get_location_by_name(str_shader_param_name);
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	PFX_INLINE long_t		get_location_by_name
+		(const char_t* PARAM_IN
 		str_shader_param_name) const
 	{
 		const ref_element_t* ref_ptr = get_reference();

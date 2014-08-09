@@ -367,7 +367,8 @@ public:
 			return null;
 		}
 	}
-	PFX_INLINE void show_form ()
+	PFX_INLINE void show_form (bool fullscreen = true//	该参数无效
+		)
 	{
 		m_brunning = true;
 	}

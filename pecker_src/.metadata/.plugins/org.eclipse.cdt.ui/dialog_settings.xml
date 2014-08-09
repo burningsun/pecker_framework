@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item value="true" key="org.eclipse.cdt.ui.formatter_page.show_invisible_characters"/>
-	<item value="0" key="org.eclipse.cdt.uiformatter_page.white_space_tab_page.node"/>
-	<item value="3" key="org.eclipse.cdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
-	<item value="1032" key="org.eclipse.cdt.uiformatter_pagemodify_dialog.preferred_height"/>
 	<item value="61" key="org.eclipse.cdt.uiformatter_page.white_space.c_view.option"/>
-	<item value="true" key="org.eclipse.cdt.ui.codeformatter.create_profile_dialog.open_edit"/>
+	<item value="1032" key="org.eclipse.cdt.uiformatter_pagemodify_dialog.preferred_height"/>
+	<item value="3" key="org.eclipse.cdt.uiformatter_page.line_wrapping_tab_page.last_category_index"/>
+	<item value="0" key="org.eclipse.cdt.uiformatter_page.white_space_tab_page.node"/>
 	<item value="277" key="org.eclipse.cdt.uiformatter_pagemodify_dialog.preferred_x"/>
-	<item value="0" key="org.eclipse.cdt.uiformatter_pagemodify_dialog.preferred_y"/>
+	<item value="true" key="org.eclipse.cdt.ui.codeformatter.create_profile_dialog.open_edit"/>
 	<item value="5" key="org.eclipse.cdt.uiformatter_pagemodify_dialog.last_focus"/>
+	<item value="0" key="org.eclipse.cdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<item value="1367" key="org.eclipse.cdt.uiformatter_pagemodify_dialog.preferred_width"/>
 	<item value="7" key="formatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="59" key="org.eclipse.cdt.uiformatter_page.white_space.c_view.inner"/>
@@ -23,11 +23,11 @@
 	</section>
 	<section name="CRenameRefactoringInputPage">
 		<item value="false" key="exhausiveFileSearch"/>
-		<item value="3" key="scope"/>
 		<item value="false" key="macroDefinition"/>
+		<item value="3" key="scope"/>
 		<item value="false" key="comment"/>
-		<item value="" key="workingset"/>
 		<item value="false" key="references_inv"/>
+		<item value="" key="workingset"/>
 	</section>
 	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration">
 	</section>

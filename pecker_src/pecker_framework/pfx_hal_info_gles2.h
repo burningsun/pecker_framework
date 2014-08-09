@@ -9,6 +9,12 @@
 #define		PFX_HAL_INFO_H_
 
 #include "pfx_defines.h"
+
+
+#ifndef OPENGLES_VERSION
+#define OPENGLES_VERSION (2)
+#endif
+
 #if ((RENDER_SYSTEM_TYPE == OPENGLES_BASE_RENDER_SYSTEM) && RENDER_SYSTEM_VERSION == (2))
 extern "C"
 {

@@ -16,6 +16,9 @@
     <Filter Include="render\render_system\opengles">
       <UniqueIdentifier>{6032e758-74d9-463f-984b-4237aeaf8422}</UniqueIdentifier>
     </Filter>
+    <Filter Include="render\render_system\glsl10">
+      <UniqueIdentifier>{0a7a43ec-e6b5-4591-82f4-b90a1a89171c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\pecker_framework\pfx_configs.h">
@@ -75,6 +78,12 @@
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_display_context_gles.h">
       <Filter>render\render_system\opengles</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\glsl_10\pfx_gles10_shader_source.h">
+      <Filter>render\render_system\glsl10</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_render_allocator.h">
+      <Filter>render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
@@ -98,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_display_context_gles.cpp">
       <Filter>render\render_system\opengles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\glsl_10\pfx_gles10_shader_source.cpp">
+      <Filter>render\render_system\glsl10</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\pfx_image.cpp">
+      <Filter>render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

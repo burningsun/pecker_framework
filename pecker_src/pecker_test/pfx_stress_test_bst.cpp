@@ -534,7 +534,7 @@ int bst_stress_test_main(bool bshow = false)
 	load_file_to_array< array_t > ("test_data\\tst_test_data2.txt", strlen ("test_data\\tst_test_data2.txt"), &incs_array);
 	//load_file_to_array ("test_data\\tst_test_data2.txt",strlen("test_data\\tst_test_data2.txt"),&incs_array);
 
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 
 		PECKER_LOG_STR("====================");

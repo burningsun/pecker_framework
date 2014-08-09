@@ -195,11 +195,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>jni/pecker_test/androidactivity_gles2_test.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/androidactivity_gles2_test.cpp</locationURI>
-		</link>
-		<link>
 			<name>jni/pecker_test/main.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/main.cpp</locationURI>

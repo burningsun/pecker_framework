@@ -6,6 +6,7 @@
  */
 #include "pfx_shader_program_gles.h"
 #include "../../../native/pfx_log.h"
+#include "../../../Include/cstring"
 
 PECKER_BEGIN
 
@@ -29,13 +30,25 @@ GLuint cshader_method_gles2::compile_shader(GLenum __shader_type,
 		::glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled_status);
 		if (!compiled_status)
 		{
+			cstring_ascii_t err_log;
+			usize__t err_log_size;
+			err_log_size = cshader_method_gles2::get_shader_info_lengh(shader);
+			err_log.init_string(err_log_size);
+			cshader_method_gles2::get_shader_info_log(shader, err_log.get_string(), err_log.get_length());
+			PECKER_LOG_ERR("get_shader_info_log = %s", err_log.get_string());
 			::glDeleteShader(shader);
 			shader = 0;
+			compiled_status = PFX_STATUS_FAIL;
 		}
+		else
+		{
+			compiled_status = PFX_STATUS_OK;
+		}
+		
 	}
 	else
 	{
-		compiled_status = -1;
+		compiled_status = PFX_STATUS_FAIL;
 	}
 	return shader;
 }
@@ -183,7 +196,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 					break;
 				}
 
-				node_ptr->get_item_ref().m_name.init_string(length + 1);
+				node_ptr->get_item_ref().m_name.init_string(length);
 
 				// Query uniform info.
 				GLsizei uniform_size = 0;
@@ -194,8 +207,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 				if (uniform_size)
 				{
 					node_ptr->get_item_ref().m_value_type = glspt_to_pfxspt(value_type);
-					node_ptr->get_item_ref().m_name.resize_string(uniform_size);
-					node_ptr->get_item_ref().m_name.reference(uniform_size - 1) = '\0';
+					node_ptr->get_item_ref().m_name.resize_string(strlen(node_ptr->get_item_ref().m_name.get_string()) + 1);
 				}
 
 				node_ptr->get_item_ref().m_type = PFX_UNIFORM_VALUE;
@@ -262,7 +274,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 					break;
 				}
 
-				node_ptr->get_item_ref().m_name.init_string(length + 1);
+				node_ptr->get_item_ref().m_name.init_string(length);
 
 				// Query attribute info.
 				GLsizei attribute_size = 0;
@@ -273,8 +285,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 				if (attribute_size)
 				{
 					node_ptr->get_item_ref().m_value_type = glspt_to_pfxspt(value_type);
-					node_ptr->get_item_ref().m_name.resize_string(attribute_size);
-					node_ptr->get_item_ref().m_name.reference(attribute_size - 1) = '\0';
+					node_ptr->get_item_ref().m_name.resize_string(strlen(node_ptr->get_item_ref().m_name.get_string())+1);
 				}
 
 				node_ptr->get_item_ref().m_type = PFX_VERTEX_VALUE;
@@ -396,7 +407,7 @@ result_t cnative_shader_program_gles2::compile_program()
 {
 	if (m_programID)
 	{
-		return 0;
+		return PFX_STATUS_OK;
 	}
 	else
 	{
@@ -412,24 +423,32 @@ result_t cnative_shader_program_gles2::compile_program()
 		pixel_shader_ptr &&
 		pixel_shader_ptr->get_shader_id())
 	{
-		glAttachShader(m_programID, pixel_shader_ptr->get_shader_id());
+		glAttachShader(m_programID, vertex_shader_ptr->get_shader_id());
 		glAttachShader(m_programID, pixel_shader_ptr->get_shader_id());
 		glLinkProgram(m_programID);
 		GLint linked = 0;
 		glGetProgramiv(m_programID, GL_LINK_STATUS, &linked);
 		if (!linked)
 		{
+			cstring_ascii_t err_log;
+			usize__t err_log_size;
+			err_log_size = cnative_shader_program_gles2::get_program_info_lengh(m_programID);
+			err_log.init_string(err_log_size + 1);
+			cnative_shader_program_gles2::get_program_info_log(m_programID, err_log.get_string(), err_log.get_length());
+			PECKER_LOG_ERR("get_shader_info_log = %s", err_log.get_string());
+
 			glDeleteProgram(m_programID);
 			m_programID = 0;
+			return PFX_STATUS_FAIL;
 		}
 		else
 		{
 			parse_shader_param_table();
+			return PFX_STATUS_OK;
 		}
-		return linked;
 	}
 
-	return -1;
+	return PFX_STATUS_FAIL;
 }
 void cnative_shader_program_gles2::dispose()
 {
@@ -459,6 +478,24 @@ long_t cnative_shader_program_gles2:: get_location_by_name
 	if (__itr_ptr && __itr_ptr->cur_node())
 	{
 		__itr_ptr = find_t::find_node(str_shader_param_name, __itr);
+		if (__itr_ptr && __itr_ptr->cur_node())
+		{
+			return __itr_ptr->cur_node()->get_item().m_location;
+		}
+	}
+	return INVALID_SHADER;
+}
+
+long_t	cnative_shader_program_gles2::get_location_by_name 
+(const char* PARAM_IN str_shader_param_name) const
+{
+	tree_t::const_inorder_itr_t __itr;
+	tree_t::const_inorder_itr_t* __itr_ptr;
+	//result_t status;
+	__itr_ptr = m_shader_param_table.root(__itr);
+	if (__itr_ptr && __itr_ptr->cur_node())
+	{
+		__itr_ptr = find_chr_t::find_node(str_shader_param_name, __itr);
 		if (__itr_ptr && __itr_ptr->cur_node())
 		{
 			return __itr_ptr->cur_node()->get_item().m_location;

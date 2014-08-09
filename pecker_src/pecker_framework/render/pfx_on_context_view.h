@@ -24,6 +24,7 @@ typedef struct st_display_device_info
 	void*	m_Window;
 	void*	m_Context;
 	void*	m_Config;
+	sint_t	m_SwapInterval;
 	sint_t	m_MajorVersion;
 	sint_t	m_MinorVersion;
 }display_device_t;
@@ -210,6 +211,7 @@ public:
 		const display_device_t& PARAM_IN device,
 		render_state& PARAM_INOUT __state,
 		u64_t	__escape_time,
+		const viewport_rect_t& view_port,
 		flag_t& PARAM_OUT msg_type,
 		usize__t& PARAM_OUT param_size,
 		void*& PARAM_OUT param_data_ptr)

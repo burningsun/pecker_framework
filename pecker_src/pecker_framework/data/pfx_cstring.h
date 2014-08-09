@@ -326,6 +326,8 @@ public:
 	virtual PFX_INLINE usize__t get_cache_buffer_size () const;
 
 	virtual PFX_INLINE const element_t* get_string () const;
+	PFX_INLINE element_t* get_string();
+	
 	virtual PFX_INLINE usize__t get_length () const;
 	virtual PFX_INLINE usize__t get_string_buffer_size () const;
 

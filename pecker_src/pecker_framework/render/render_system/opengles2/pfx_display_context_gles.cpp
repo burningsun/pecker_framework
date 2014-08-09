@@ -269,6 +269,12 @@ result_t cdisplay_context_gles::init_egl_context(
 		enum_int_t attrible_cmd;
 		enum_int_t attrible_data;
 
+		attrible_cmd = EGL_CONTEXT_CLIENT_VERSION;
+		attrible_data = OPENGLES_VERSION;
+
+		config_list.push_back(attrible_cmd);
+		config_list.push_back(attrible_data);
+
 		// 获取EGL_IMG_context_priority的扩展配置属性
 		if (cnative_render_state_gles2::is_egl_externsion_supported
 			(__egl_device.m_EGLDisplay, "EGL_IMG_context_priority"))
@@ -485,6 +491,17 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	// 创建egl窗口
 	__egl_device.m_EGLWindow = EGL_NO_SURFACE;
 	const EGLint* attrib_list_ptr = null;
+	config_list.clean();
+//#if defined(EGL_VERSION_1_2)
+//	if (__context.m_alpha_size)
+//	{
+//		config_list.push_back(EGL_ALPHA_FORMAT);
+//		config_list.push_back(EGL_ALPHA_FORMAT_PRE);
+//	}
+//#endif
+	config_list.push_back(EGL_NONE);
+
+
 	if (config_list.get_block_ptr())
 	{
 		attrib_list_ptr = (const EGLint*)config_list.get_block_ptr()->begin();
@@ -505,12 +522,6 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	// 使用指定窗口创建surface
 	if (EGL_NO_SURFACE == __egl_device.m_EGLWindow)
 	{
-		//EGLint egl_visual_id;
-		//::eglGetConfigAttrib(__egl_device.m_EGLDisplay, 
-		//	__egl_device.m_EGLConfig, 
-		//	EGL_NATIVE_VISUAL_ID, 
-		//	&egl_visual_id);
-
 		PECKER_LOG_INFO(
 			"open device EGL,using native window handle,about to create egl surface,(%d)",
 			0);
@@ -569,6 +580,9 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	}
 
 
+//#ifdef EGL_VERSION_1_1
+//	eglSwapInterval(__egl_device.m_EGLDisplay, __egl_device.m_SwapInterval);
+//#endif
 	EGLint width = 0;
 	EGLint height = 0;
 	eglQuerySurface(__egl_device.m_EGLDisplay, 
@@ -735,6 +749,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		display_device_t* display_device_ptr = (display_device_t*)&m_egl_device;
 		u64_t			finish_escape_tick;
 		usize__t		frame_render_time = 0;
+		viewport_rect_t view_port;
 
 		// 初始化窗口的context
 		m_on_render_view_ptr->on_init(__context);
@@ -762,7 +777,9 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		}
 		m_on_render_view_ptr->set_init_complate(true);
 
-
+		//::glViewport(0, 0, __context.m_viewport.m_width, __context.m_viewport.m_height);
+		view_port = viewport_rect_t(0, 0, __context.m_viewport.m_width, __context.m_viewport.m_height);
+		render_state.set_viewport(view_port);
 		// 加载渲染数据
 		esacape_tick = (u64_t)ticker.get_microsecond();
 		m_on_render_view_ptr->on_load(*display_device_ptr,
@@ -800,12 +817,13 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				continue;
 			}
 
-			//::glViewport(0, 0, __context.m_viewport.m_width, __context.m_viewport.m_height);
+			
 			// 渲染回调
 			esacape_tick = (u64_t)ticker.get_microsecond();
 			m_on_render_view_ptr->on_view(*display_device_ptr,
 				render_state,
 				esacape_tick,
+				view_port,
 				msg_flag,
 				msg_param_buffer_size,
 				msg_params_ptr);

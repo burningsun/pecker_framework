@@ -30,6 +30,7 @@ typedef struct stEGL_device
 	EGLSurface	m_EGLWindow;
 	EGLContext	m_EGLContext;
 	EGLConfig	m_EGLConfig;
+	EGLint      m_SwapInterval;
 	EGLint		m_MajorVersion;
 	EGLint		m_MinorVersion;
 
@@ -37,6 +38,7 @@ typedef struct stEGL_device
 		m_EGLWindow(null),
 		m_EGLContext(null),
 		m_EGLConfig(null),
+		m_SwapInterval(1),
 		m_MajorVersion(0),
 		m_MinorVersion(0)
 	{

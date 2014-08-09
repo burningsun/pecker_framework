@@ -48,7 +48,7 @@ public:
 class chello_opengles_render_view : public 	opengles2_activity_t::IOnRenderView_t
 {
 private:
-	u64_t last_tick;
+	u64_t last_tick = 0;
 public:
 	chello_opengles_render_view() : last_tick(0)
 	{

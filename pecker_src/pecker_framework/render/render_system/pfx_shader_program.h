@@ -121,6 +121,20 @@ typedef struct  st_compare_shader_param_by_name
 	}
 }compare_shader_param_ex_t;
 
+typedef struct  st_compare_shader_param_by_chrname
+{
+	PFX_INLINE int operator () (const shader_param_t& value1,
+	const char_t* value2) const
+	{
+		return ascii_string_compare_withchars_t::compare(value1.m_name, value2);
+	}
+	static PFX_INLINE int compare(const shader_param_t& value1,
+		const char_t* value2)
+	{
+		return ascii_string_compare_withchars_t::compare(value1.m_name, value2);
+	}
+}compare_shader_param_exchr_t;
+
 
 PFX_Interface  PFX_RENDER_SYSTEM_API Ipfx_shader
 {
@@ -153,6 +167,10 @@ PFX_Interface Ipfx_shader_program
 	virtual long_t		get_location_by_name
 		(const cstring_ascii_t& PARAM_IN
 		str_shader_param_name) const = 0;
+	virtual long_t		get_location_by_name
+		(const char* PARAM_IN
+		str_shader_param_name) const = 0;
+
 	virtual result_t	attach_shader(Ipfx_shader* PARAM_IN shader_ptr) = 0;
 
 
