@@ -1,0 +1,29 @@
+﻿/*
+* pfx_gles10_shader_source.cpp
+*
+*  Created on: 2014-8-8
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+*/
+
+#include "pfx_gles10_shader_source.h"
+
+PECKER_BEGIN
+
+
+extern const cstring_ascii_t* str_vs[SYSTEM_DEFUAL_GLES10_SHADER_SOURCE_COUNT + 1];
+extern const cstring_ascii_t** str_preci_f_table[SYSTEM_DEFUAL_GLES10_SHADER_FLAOT_PRECISION_COUNT + 1];
+
+bool binit_table = init_shader_source_table();
+const  shader_souce_string_t* get_system_defualt_shader_source(
+	shader_souce_string_t& shader_source_code,
+	SYSTEM_DEFUALT_GLES10_SHADER_SOURCE_t __source_type,
+	SYSTEM_DEFUALT_GLES10_SHADER_FLAOT_PRECISION_t __precision_float //= SSS_MEDIUEM_FLOAT
+	)
+{
+	shader_source_code.m_str_vertext_shader = str_vs[__source_type];
+	shader_source_code.m_str_fragment_shader = str_preci_f_table[__precision_float][__source_type];
+	return 	&shader_source_code;
+}
+
+
+PECKER_END

@@ -8,7 +8,7 @@
 #ifndef		PFX_GLES10_SHADER_SOURCE_H_
 #define		PFX_GLES10_SHADER_SOURCE_H_
 
-#include <gl2.h>
+#include <GLES2/gl2.h>
 
 #include "../../../pfx_defines.h"
 #include "../../../include/cstring"

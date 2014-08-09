@@ -655,6 +655,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/native/window_thread.h</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/render/glsl_10</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/render/opengles2_render_system.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/opengles2_render_system.h</locationURI>
@@ -783,6 +788,16 @@
 			<name>jni/pecker_framework/test_data/tst_test_data5.txt</name>
 			<type>1</type>
 			<location>C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/pecker_framework/test_data/tst_test_data5.txt</location>
+		</link>
+		<link>
+			<name>jni/pecker_framework/render/glsl_10/pfx_gles10_shader_source.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/glsl_10/pfx_gles10_shader_source.cpp</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/render/glsl_10/pfx_gles10_shader_source.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/glsl_10/pfx_gles10_shader_source.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/render/render_system/opengles2</name>

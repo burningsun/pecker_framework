@@ -4,3 +4,5 @@
 1407046778196	Delete resource 'PFX_framework/jni/pecker_test/pfx_block_test.cpp'
 1407137668300	Delete resource 'PFX_framework/jni/pecker_framework/native/pfx_native_component.h'
 1407460694545	Delete resource 'PFX_framework/jni/pecker_test/androidactivity_gles2_test.cpp'
+1407584274564	Delete resource 'PFX_framework/jni/pecker_framework/render/render_system/glsl_10'
+1407585351725	Delete resource 'PFX_framework/jni/pecker_framework/render/glsl_10/pfx_shader_source_table.cpp'
