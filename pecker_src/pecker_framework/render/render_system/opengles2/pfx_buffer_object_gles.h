@@ -82,7 +82,7 @@ public:
 
 	result_t  copy_to(cnative_vertex_cache_buffer& PARAM_INOUT __other);
 	
-	result_t  create_cache_buffer(enum_int_t __value_type,
+	result_t  create_cache_buffer(enum_int_t __value_type,		//PFX_VEXBUFFER_VALUE_TYPE_t
 		usize__t vb_struct_size,
 		usize__t vb_struct_count);
 	
@@ -111,6 +111,12 @@ class PFX_RENDER_SYSTEM_API cvertex_cache_buffer_gles2 : public creference_base<
 protected:
 	typedef  cnative_vertex_cache_buffer ref_element_t;
 	typedef  creference_base< cnative_vertex_cache_buffer > ref_t;
+	typedef  new_reference_method< cvertex_cache_buffer_gles2 > new_t;
+public:
+	static PFX_INLINE cvertex_cache_buffer_gles2* new_vertex_cache()
+	{
+		return new_t::new_reference();
+	}
 public:
 	PFX_INLINE ref_element_t* get_native_buffer()
 	{
@@ -219,8 +225,8 @@ public:
 		{
 			return null;
 		}
-		cvertex_cache_buffer_gles2* new_ptr = (cvertex_cache_buffer_gles2*)ref_t::new_reference();
-
+		//cvertex_cache_buffer_gles2* new_ptr = (cvertex_cache_buffer_gles2*)ref_t::new_t::new_reference();
+		cvertex_cache_buffer_gles2* new_ptr = new_vertex_cache();
 		result_t status = PFX_STATUS_ERROR_;
 		if (new_ptr)
 		{
@@ -285,6 +291,23 @@ private:
 	usize__t						m_vb_struct_size;
 	usize__t						m_vb_struct_attribcount;
 	usize__t						m_bytes_count;
+public:
+	PFX_INLINE enum_int_t last_value_type() const
+	{
+		return m_value_type;
+	}
+	PFX_INLINE usize__t last_struct_size() const
+	{
+		return m_vb_struct_size;
+	}
+	PFX_INLINE usize__t last_struct_attribcount() const
+	{
+		return m_vb_struct_attribcount;
+	}
+	PFX_INLINE usize__t last_update_bytes_count() const
+	{
+		return m_bytes_count;
+	}
 public:
 	cnative_buffer_object_gles2();
 	~cnative_buffer_object_gles2();
@@ -381,6 +404,12 @@ class PFX_RENDER_SYSTEM_API cbuffer_object_gles2 : public creference_base< cnati
 protected:
 	typedef  cnative_buffer_object_gles2 ref_element_t;
 	typedef  creference_base< cnative_buffer_object_gles2 > ref_t;
+	typedef  new_reference_method< cbuffer_object_gles2 > new_t;
+public:
+	static PFX_INLINE cbuffer_object_gles2* new_buffer_object()
+	{
+		return DYNAMIC_CAST(cbuffer_object_gles2*)(new_t::new_reference());
+	}
 public:
 	PFX_INLINE ref_element_t* get_native_buffer()
 	{
@@ -394,7 +423,7 @@ public:
 		{
 			return null;
 		}
-		cbuffer_object_gles2* new_ptr = (cbuffer_object_gles2*)ref_t::new_reference();
+		cbuffer_object_gles2* new_ptr = new_buffer_object();//(cbuffer_object_gles2*)ref_t::new_t::new_reference();
 
 		result_t status = PFX_STATUS_ERROR_;
 		if (new_ptr)
@@ -478,9 +507,9 @@ public:
 	}
 
 protected:
-	PFX_INLINE ref_element_t* create_element()
+	PFX_INLINE element_t* create_element()
 	{
-		return new ref_element_t;
+		return new element_t;
 	}
 	PFX_INLINE result_t dispose_element(element_t*& elem_ptr)
 	{

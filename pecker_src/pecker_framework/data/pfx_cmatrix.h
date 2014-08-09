@@ -250,6 +250,11 @@ public:
 
 	matrix_t m_mat;
 public:
+	PFX_INLINE matrix_t const& reference() const
+	{
+		return m_mat;
+	}
+public:
 	SquareMatrixX ();
 	SquareMatrixX (dim_t val, boolean_t bIndentify = PFX_BOOL_FALSE);
 	SquareMatrixX (dim_t x00, dim_t x01, dim_t x02, dim_t x03,

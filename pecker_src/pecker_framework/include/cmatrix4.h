@@ -20,12 +20,8 @@ typedef matrix3i_t::vector_t			 vector3i_t;
 typedef matrix2i_t::vector_t			 vector2i_t;
 
 
-#if (MATRIX_OPTIMIZATION == INTEL_SSE)
-#else 
-#if (MATRIX_OPTIMIZATION == ARM_NEON)
-#else
-#if (MATRIX_OPTIMIZATION == NO_MATRIX_OPTIMIZATION)
-typedef PFX_CMatrix4x4< float_t > cmatrix4f_method_t;
+#if (MATRIX_OPTIMIZATION_CONFIG == NO_MATRIX_OPTIMIZATION)
+typedef PFX_CMatrix4x4< matrix4f_t > cmatrix4f_method_t;
 
 typedef cmatrix4f_method_t::vector4_t	cvector4f_t;
 typedef cmatrix4f_method_t::vector3_t	cvector3f_t;
@@ -35,7 +31,7 @@ typedef cmatrix4f_method_t::matrix3_t	cmatrix3f_t;
 typedef cmatrix4f_method_t::matrix2_t	cmatrix2f_t;
 
 
-typedef PFX_CMatrix4x4< sint_t > cmatrix4i_method_t;
+typedef PFX_CMatrix4x4< matrix4i_t > cmatrix4i_method_t;
 
 typedef cmatrix4i_method_t::vector4_t	cvector4i_t;
 typedef cmatrix4i_method_t::vector3_t	cvector3i_t;
@@ -44,9 +40,15 @@ typedef cmatrix4i_method_t::matrix4_t	cmatrix4i_t;
 typedef cmatrix4i_method_t::matrix3_t	cmatrix3i_t;
 typedef cmatrix4i_method_t::matrix2_t	cmatrix2i_t;
 
-#endif // #if (MATRIX_OPTIMIZATION == NO_MATRIX_OPTIMIZATION)
-#endif // #if (MATRIX_OPTIMIZATION == ARM_NEON)
-#endif // #if (MATRIX_OPTIMIZATION == INTEL_SSE)
+#endif // #if (MATRIX_OPTIMIZATION_CONFIG == NO_MATRIX_OPTIMIZATION)
+//
+#if (MATRIX_OPTIMIZATION_CONFIG == INTEL_SSE)
+//
+#endif // #if (MATRIX_OPTIMIZATION_CONFIG == ARM_NEON)
+//
+#if (MATRIX_OPTIMIZATION_CONFIG == ARM_NEON)
+//
+#endif // #if (MATRIX_OPTIMIZATION_CONFIG == INTEL_SSE)
 
 
 PECKER_END

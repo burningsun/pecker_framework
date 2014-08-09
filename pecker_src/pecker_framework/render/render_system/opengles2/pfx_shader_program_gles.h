@@ -129,7 +129,7 @@ protected:
 public:
 	static PFX_INLINE cshader_gles2_t* new_shader()
 	{
-		return DYNAMIC_CAST(cshader_gles2_t*)(ref_t::new_reference());
+		return ref_t::new_reference();
 	}
 public:
 	PFX_INLINE ref_element_t* get_native_shader()
@@ -323,10 +323,11 @@ class  cshader_program_gles2 : public creference_base< cnative_shader_program_gl
 protected:
 	typedef  cnative_shader_program_gles2						ref_element_t;
 	typedef  creference_base< cnative_shader_program_gles2 >	ref_t;
+	typedef  new_reference_method< cshader_program_gles2 >      new_t;
 public:
 	static PFX_INLINE cshader_program_gles2* new_shader_program()
 	{
-		return DYNAMIC_CAST(cshader_program_gles2*)(ref_t::new_reference());
+		return new_t::new_reference();
 	}
 public:
 	PFX_INLINE ref_element_t* get_native_shader_pragram()

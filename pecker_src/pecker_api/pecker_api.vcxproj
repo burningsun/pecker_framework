@@ -101,7 +101,7 @@
     <None Include="..\pecker_framework\include\cbst" />
     <None Include="..\pecker_framework\include\clist" />
     <None Include="..\pecker_framework\include\cmatrix" />
-    <None Include="..\pecker_framework\include\cmatrix4" />
+    <None Include="..\pecker_framework\include\cmatrix4.h" />
     <None Include="..\pecker_framework\include\cmp" />
     <None Include="..\pecker_framework\include\config" />
     <None Include="..\pecker_framework\include\cshare_object" />

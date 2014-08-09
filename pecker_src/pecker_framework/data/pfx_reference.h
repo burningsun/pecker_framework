@@ -16,6 +16,8 @@
 
 PECKER_BEGIN
 
+template <class __ref>
+struct new_reference_method;
 
 #define REF_NEW_FLAG (0xAABB)
 //(0xAABBCCDD)
@@ -24,17 +26,29 @@ PECKER_BEGIN
 template < class _ref_obejct >
 class creference_base
 {
+
 public:
 	typedef _ref_obejct									element_t;
 	typedef creference_base< element_t >				ref_t;
 	typedef creference_base< element_t >				clist_node_t;
 	typedef linked_list_operation < clist_node_t >		clist_op_t;
+
 private:
 	ref_t*		m_prev_ptr;
 	ref_t*		m_next_ptr;
 	u16flag_t	m_reference_flag;
 	u16flag_t	m_lock_share_flag;
 	element_t*	m_reference_ptr;
+public:
+	PFX_INLINE void set_new_reference(u16flag_t key)
+	{
+		if (REF_NEW_FLAG == key)
+		{
+			dispose();
+			m_reference_flag = REF_NEW_FLAG;
+			m_reference_ptr = create_element();
+		}
+	}
 protected:
 	PFX_INLINE element_t* get_reference()
 	{
@@ -153,17 +167,17 @@ private:
 		}
 		return status;
 	}
-public:
-	static PFX_INLINE ref_t* new_reference()
-	{
-		ref_t* new_obj = new ref_t;
-		if (new_obj)
-		{
-			new_obj->m_reference_flag = REF_NEW_FLAG;
-			new_obj->m_reference_ptr = new_obj->create_element();
-		}
-		return new_obj;
-	}
+//public:
+//	static PFX_INLINE ref_t* new_reference()
+//	{
+//		ref_t* new_obj = new ref_t;
+//		if (new_obj)
+//		{
+//			new_obj->m_reference_flag = REF_NEW_FLAG;
+//			new_obj->m_reference_ptr = new_obj->create_element();
+//		}
+//		return new_obj;
+//	}
 public:
 	PFX_INLINE bool is_referenced() const
 	{
@@ -294,6 +308,21 @@ protected:
 };
 
 
+template <class __ref>
+struct new_reference_method
+{
+	static PFX_INLINE __ref* new_reference()
+	{
+		__ref* new_obj_ptr;
+		new_obj_ptr = new __ref;
+		
+		if (new_obj_ptr)
+		{
+			new_obj_ptr->set_new_reference (REF_NEW_FLAG);
+		}
+		return new_obj_ptr;
+	}
+};
 
 
 

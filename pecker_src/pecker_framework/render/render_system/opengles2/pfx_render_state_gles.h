@@ -12,7 +12,7 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include "../../../include/util"
-#include "../../../include/cmatrix4"
+#include "../../../include/cmatrix4.h"
 #include "pfx_shader_program_gles.h"
 #include "pfx_buffer_object_gles.h"
 #include "../pfx_texture.h"
@@ -75,6 +75,11 @@ public:
 	{
 		::glViewport(viewport.m_x, viewport.m_y, viewport.m_width, viewport.m_height);
 	}
+
+	PFX_INLINE void draw_arrays(enum_int_t draw_type, uindex_t firstIndex, usize__t draw_count)
+	{
+		::glDrawArrays(draw_type, firstIndex, draw_count);
+	}
 	//////////////////////////////////////////////////////////////////////////
 	// program
 	PFX_INLINE cshader_program_gles2* select_program(cshader_program_gles2* PARAM_INOUT program_ptr, result_t& status)
@@ -104,8 +109,7 @@ public:
 		::glUseProgram(0);
 		if (m_use_program.get_native_handle())
 		{
-			cshader_program_gles2* new_program_ptr =
-			DYNAMIC_CAST(cshader_program_gles2*)(cshader_program_gles2::new_reference());
+			cshader_program_gles2* new_program_ptr = cshader_program_gles2::new_shader_program();
 			if (new_program_ptr)
 			{
 				if (!new_program_ptr->share_to(&m_use_program))
@@ -131,13 +135,21 @@ public:
 		return PFX_STATUS_OK;
 	}
 
+	// vertex direct
 	PFX_INLINE void set_vertex_attrib_array(long_t __attribute_location,
 			IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr,
+			usize__t attri_count,
 			boolean_t bNormalized = PFX_BOOL_FALSE,
 			uindex_t offset = 0, usize__t _size = MAX_UNSIGNED_VALUE)
 	{
 		if (buffer_ptr)
 		{
+			usize__t  vb_struct_attribcount;
+			vb_struct_attribcount = buffer_ptr->vb_struct_attribcount();
+			if (attri_count > vb_struct_attribcount)
+			{
+				attri_count = vb_struct_attribcount;
+			}
 			::glEnableVertexAttribArray((GLuint)__attribute_location);
 			buffer_bits_t bits;
 			buffer_rect_t rect_bit;
@@ -145,17 +157,18 @@ public:
 			rect_bit.m_size = _size;
 			buffer_ptr->lock_cache_buffer(bits, &rect_bit);
 			::glVertexAttribPointer((GLuint)__attribute_location,
-					buffer_ptr->vb_struct_attribcount(),
+					attri_count,
 					PfxVVT_to_GLVVT((PFX_VEXBUFFER_VALUE_TYPE_t)buffer_ptr->get_value_type()),
 					(GLboolean)bNormalized,
-					(GLsizei)bits.m_bytes_count,
+					(GLsizei)buffer_ptr->get_vb_struct_size(),
 					bits.m_bits_ptr);
 			buffer_ptr->unlock_cache_buffer();
 		}
 	}
-
+	// vertex buffer
 	PFX_INLINE void set_vertex_attrib_array(long_t __attribute_location,
 			cbuffer_object_gles2* PARAM_IN buffer_ptr,
+			usize__t attri_count,
 			boolean_t bNormalized = PFX_BOOL_FALSE,
 			long_t offset = 0)
 	{
@@ -165,12 +178,20 @@ public:
 			if (native_buffer_ptr)
 			{
 				native_buffer_ptr->update_data();
+
+				usize__t  vb_struct_attribcount;
+				vb_struct_attribcount = native_buffer_ptr->last_struct_attribcount();
+				if (attri_count > vb_struct_attribcount)
+				{
+					attri_count = vb_struct_attribcount;
+				}
+
 				::glEnableVertexAttribArray((GLuint)__attribute_location);
 				::glVertexAttribPointer((GLuint)__attribute_location,
-						native_buffer_ptr->m_vb_struct_attribcount,
+						attri_count,
 						PfxVVT_to_GLVVT((PFX_VEXBUFFER_VALUE_TYPE_t)native_buffer_ptr->m_value_type),
 						(GLboolean)bNormalized,
-						(GLsizei)native_buffer_ptr->m_bytes_count,
+						(GLsizei)native_buffer_ptr->last_struct_size(),
 						(const char*)offset);
 			}
 
@@ -185,8 +206,7 @@ public:
 	// vbo
 	PFX_INLINE cbuffer_object_gles2* create_buffer()
 	{
-		cbuffer_object_gles2* new_buffer_ptr =
-		(cbuffer_object_gles2*)cbuffer_object_gles2::new_reference();
+		cbuffer_object_gles2* new_buffer_ptr = cbuffer_object_gles2::new_buffer_object();
 		cnative_buffer_object_gles2* native_buffer_ptr = null;
 		if (new_buffer_ptr)
 		{

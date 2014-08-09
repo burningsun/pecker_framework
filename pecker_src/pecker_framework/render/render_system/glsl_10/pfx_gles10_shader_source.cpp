@@ -8,6 +8,25 @@
 #include "pfx_gles10_shader_source.h"
 
 PECKER_BEGIN
+// hello
+static const char_t* chr_hello_VS =
+ASCII_STRING(
+attribute vec4 aPosition;
+void main()
+{
+	gl_Position =  aPosition;
+}
+);
+
+static const char_t* chr_hello_FS =
+ASCII_STRING(
+precision mediump float;
+void main()
+{
+	gl_FragColor = vec4(1.0,0.0,0.0,1.0);
+}
+);
+
 // position color	mvp
 static const char_t* chr_position_Color_MVP_VS =
 ASCII_STRING(
@@ -166,7 +185,9 @@ ASCII_STRING(
 	}
 );
 
-static cstring_ascii_t str_position_Color_MVP_VS,
+static cstring_ascii_t str_hello_VS,
+str_hello_FS,
+str_position_Color_MVP_VS,
 str_position_TexCoord_MVP_VS,
 str_position_Two_TexCoord_MVP_VS,
 str_Color_HIGH_FS,
@@ -181,6 +202,9 @@ str_textcode_two_sample_LOW_FS;
 
 static PFX_INLINE_CODE bool init_shader_source_table()
 {
+	str_hello_VS.init_string(chr_hello_VS, strlen(chr_hello_VS));
+	str_hello_FS.init_string(chr_hello_FS, strlen(chr_hello_FS));
+
 	str_position_Color_MVP_VS.init_string(chr_position_Color_MVP_VS, strlen(chr_position_Color_MVP_VS) + 1);
 	str_position_TexCoord_MVP_VS.init_string(chr_position_TexCoord_MVP_VS, strlen(chr_position_TexCoord_MVP_VS) + 1);
 	str_position_Two_TexCoord_MVP_VS.init_string(chr_position_Two_TexCoord_MVP_VS, strlen(chr_position_Two_TexCoord_MVP_VS) + 1);
@@ -218,16 +242,16 @@ static PFX_INLINE_CODE bool init_shader_source_table()
 
 //////////////////////////////////////////////////////////////////////////
 static const cstring_ascii_t* str_vs[SYSTEM_DEFUAL_GLES10_SHADER_SOURCE_COUNT + 1] =
-{ &str_position_Color_MVP_VS, &str_position_TexCoord_MVP_VS, &str_position_Two_TexCoord_MVP_VS, &str_position_Color_MVP_VS };
+{ &str_hello_VS, &str_position_Color_MVP_VS, &str_position_TexCoord_MVP_VS, &str_position_Two_TexCoord_MVP_VS, &str_position_Color_MVP_VS };
 
-static const cstring_ascii_t* str_h_fs[SYSTEM_DEFUAL_GLES10_SHADER_FLAOT_PRECISION_COUNT + 1] =
-{ &str_Color_HIGH_FS, &str_textcode_sample_HIGH_FS, &str_textcode_two_sample_HIGH_FS, &str_Color_HIGH_FS };
+static const cstring_ascii_t* str_h_fs[SYSTEM_DEFUAL_GLES10_SHADER_SOURCE_COUNT + 1] =
+{ &str_hello_FS, &str_Color_HIGH_FS, &str_textcode_sample_HIGH_FS, &str_textcode_two_sample_HIGH_FS, &str_Color_HIGH_FS };
 
-static const cstring_ascii_t* str_m_fs[SYSTEM_DEFUAL_GLES10_SHADER_FLAOT_PRECISION_COUNT + 1] =
-{ &str_Color_MEDIUM_FS, &str_textcode_sample_MEDIUM_FS, &str_textcode_two_sample_MEDIUM_FS, &str_Color_MEDIUM_FS };
+static const cstring_ascii_t* str_m_fs[SYSTEM_DEFUAL_GLES10_SHADER_SOURCE_COUNT + 1] =
+{ &str_hello_FS, &str_Color_MEDIUM_FS, &str_textcode_sample_MEDIUM_FS, &str_textcode_two_sample_MEDIUM_FS, &str_Color_MEDIUM_FS };
 
-static const cstring_ascii_t* str_l_fs[SYSTEM_DEFUAL_GLES10_SHADER_FLAOT_PRECISION_COUNT + 1] =
-{ &str_Color_LOW_FS, &str_textcode_sample_LOW_FS, &str_textcode_two_sample_LOW_FS, &str_Color_LOW_FS };
+static const cstring_ascii_t* str_l_fs[SYSTEM_DEFUAL_GLES10_SHADER_SOURCE_COUNT + 1] =
+{ &str_hello_FS, &str_Color_LOW_FS, &str_textcode_sample_LOW_FS, &str_textcode_two_sample_LOW_FS, &str_Color_LOW_FS };
 
 static const cstring_ascii_t** str_preci_f_table[SYSTEM_DEFUAL_GLES10_SHADER_FLAOT_PRECISION_COUNT + 1]
 = { str_h_fs, str_m_fs, str_l_fs, str_h_fs };

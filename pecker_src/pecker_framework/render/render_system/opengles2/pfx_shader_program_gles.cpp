@@ -170,6 +170,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 	GLint activeUniforms;
 	cstring_ascii_t str_name;
 
+	status = PFX_STATUS_OK;
 	FOR_ONE_LOOP_BEGIN
 
 	if (!m_programID)

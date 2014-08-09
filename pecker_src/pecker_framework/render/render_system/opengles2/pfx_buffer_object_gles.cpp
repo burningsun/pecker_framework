@@ -174,15 +174,15 @@ result_t cnative_buffer_object_gles2::update_data(buffer_rect_t* PARAM_IN update
 			if (!update_rect_ptr)
 			{
 				glBufferData(target_type,
-					(GLsizeiptr)&bits.m_bytes_count,
+					(GLsizeiptr)bits.m_bytes_count,
 					bits.m_bits_ptr,
 					usage_type);
 			}
 			else
 			{
 				glBufferSubData(target_type,
-					(GLintptr)&update_rect_ptr->m_offset,
-					(GLsizeiptr)&update_rect_ptr->m_size,
+					(GLintptr)update_rect_ptr->m_offset,
+					(GLsizeiptr)update_rect_ptr->m_size,
 					bits.m_bits_ptr);
 			}
 		}

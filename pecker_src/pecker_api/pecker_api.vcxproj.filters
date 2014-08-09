@@ -285,9 +285,6 @@
     <None Include="..\pecker_framework\include\cmatrix">
       <Filter>include</Filter>
     </None>
-    <None Include="..\pecker_framework\include\cmatrix4">
-      <Filter>include</Filter>
-    </None>
     <None Include="..\pecker_framework\include\cmp">
       <Filter>include</Filter>
     </None>
@@ -307,6 +304,9 @@
       <Filter>include</Filter>
     </None>
     <None Include="..\pecker_framework\include\native">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cmatrix4.h">
       <Filter>include</Filter>
     </None>
   </ItemGroup>
