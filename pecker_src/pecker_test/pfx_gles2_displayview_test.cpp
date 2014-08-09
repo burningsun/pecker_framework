@@ -192,6 +192,16 @@ public:
 		void*& PARAM_OUT param_data_ptr)
 	{
 		PECKER_LOG_INFO("on_load escape time = %lld",__escape_time);
+		//PECKER_LOG_STR((const char*)::glGetString(GL_VENDOR));
+		//PECKER_LOG_STR("\n");
+		//PECKER_LOG_STR((const char*)::glGetString(GL_RENDERER));
+		//PECKER_LOG_STR("\n");
+		//PECKER_LOG_STR((const char*)::glGetString(GL_VERSION));
+		//PECKER_LOG_STR("\n");
+		//PECKER_LOG_STR((const char*)::glGetString(GL_SHADING_LANGUAGE_VERSION));
+		//PECKER_LOG_STR("\n");
+		//PECKER_LOG_STR((const char*)::glGetString(GL_EXTENSIONS));
+		//PECKER_LOG_STR("\n");
 
 		shader_souce_string_t __sys_shader_source;
 		cvertex_shader_gles2_t __vs;
