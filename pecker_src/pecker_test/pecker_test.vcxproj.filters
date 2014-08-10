@@ -19,5 +19,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pfx_file_inputdata_cmd.h" />
+    <ClInclude Include="opengles2_test\pfx_hello_triangle_vbo.h">
+      <Filter>opengles2_test</Filter>
+    </ClInclude>
+    <ClInclude Include="opengles2_test\pfx_hello_triangle.h">
+      <Filter>opengles2_test</Filter>
+    </ClInclude>
+    <ClInclude Include="opengles2_test\pfx_opengles2_def.h">
+      <Filter>opengles2_test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="opengles2_test">
+      <UniqueIdentifier>{a6a4fe01-bd77-4eab-ab31-2688f60de958}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

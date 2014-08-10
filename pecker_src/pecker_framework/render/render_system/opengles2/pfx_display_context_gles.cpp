@@ -711,6 +711,7 @@ void cdisplay_context_gles::on_msg(
 }
 long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 {
+	PECKER_LOG_STR("render start....\n");
 	result_t status = PFX_STATUS_OK;
 	cnative_render_state_gles2& render_state = 
 		cnative_render_state_gles2::singletone();
@@ -910,6 +911,8 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		// 销毁渲染设备前回调窗口函数，通知窗口
 		m_on_render_view_ptr->on_closing_render_device(esacape_tick, *display_device_ptr, render_state);
 		//销毁渲染设备
+		PECKER_LOG_INFO("on_closing_render_device ok, destroy_egl_device ing...(tick:%lld)",
+				esacape_tick);
 		status = destroy_egl_device(m_egl_device, m_egl_context_ID, m_on_render_view_ptr);
 		//
 		m_on_render_view_ptr->on_hide_complate(true);
@@ -966,6 +969,7 @@ result_t cdisplay_context_gles::show_view(cOn_render_view_t* PARAM_INOUT on_view
 	m_bshow_window = true;
 	m_on_render_view_ptr->set_view_start(false);
 
+	PECKER_LOG_INFO("show_view %08X",(long_t)on_view_callback_ptr);
 	status = m_thread.start_thread(&m_thread_proxy);
 	if (PFX_STATUS_OK == status)
 	{
@@ -984,9 +988,13 @@ result_t cdisplay_context_gles::show_view(cOn_render_view_t* PARAM_INOUT on_view
 }
 result_t cdisplay_context_gles::close_view()
 {
+
+
 	result_t status;
 	m_bshow_window = false;
 	status = m_thread.wait_thread_exit(5000);
+	m_on_render_view_ptr = null;
+	PECKER_LOG_INFO("=close_view %0d\n", status);
 	return status;
 }
 

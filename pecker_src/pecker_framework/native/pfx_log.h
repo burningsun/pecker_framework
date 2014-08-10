@@ -16,7 +16,7 @@
 #define PECKER_LOG_(X,...) ((void)__android_log_print(ANDROID_LOG_INFO,__func__, (X), __VA_ARGS__))
 #define PECKER_LOG_INFO(X,...) ((void)__android_log_print(ANDROID_LOG_INFO,__func__, (X), __VA_ARGS__))
 #define PECKER_LOG_ERR(X,...) ((void)__android_log_print(ANDROID_LOG_ERROR,__func__, (X), __VA_ARGS__))
-#define PECKER_LOG_STR(X) ((void)__android_log_print(ANDROID_LOG_INFO,__func__,("%s"), (X)))
+#define PECKER_LOG_STR(X) ((void)__android_log_print(ANDROID_LOG_INFO,__func__,(" %s"), (X)))
 #define PECKER_LOG_ENDLINE ((void)__android_log_print(ANDROID_LOG_INFO, ("%s"),("......ENDLINE......")))
 #define PECKER_LOG_DIRECT_A PECKER_LOG_
 #else

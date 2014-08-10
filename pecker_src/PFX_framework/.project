@@ -200,6 +200,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/main.cpp</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_test/opengles2_test</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_test/pfx_avl_bst_test.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_avl_bst_test.cpp</locationURI>
@@ -788,6 +793,21 @@
 			<name>jni/pecker_framework/test_data/tst_test_data5.txt</name>
 			<type>1</type>
 			<location>C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/pecker_framework/test_data/tst_test_data5.txt</location>
+		</link>
+		<link>
+			<name>jni/pecker_test/opengles2_test/pfx_hello_triangle.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/opengles2_test/pfx_hello_triangle.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_test/opengles2_test/pfx_hello_triangle_vbo.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/opengles2_test/pfx_hello_triangle_vbo.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_test/opengles2_test/pfx_opengles2_def.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/opengles2_test/pfx_opengles2_def.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/render/glsl_10/pfx_gles10_shader_source.cpp</name>

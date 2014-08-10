@@ -100,6 +100,9 @@ public:
 			m_render_view_ptr->set_hideview(false);
 			m_render_view_ptr->set_exit(false);
 			m_render_view_ptr->set_resize(false);
+
+			PECKER_LOG_STR("m_display_context.show_view ing\n");
+
 			status = m_display_context.show_view(m_render_view_ptr);
 			if (status)
 			{

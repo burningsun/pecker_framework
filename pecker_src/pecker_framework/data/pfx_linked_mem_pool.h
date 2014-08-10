@@ -154,7 +154,7 @@ class linked_mem_pool : public clinked_mem_pool < pecker_simple_allocator< clist
 
 
 template < class __listnode_allocator >
-class cmemery_pool
+class clinkedlist_memery_pool
 {
 public:
 	typedef __listnode_allocator				allocator_t;
@@ -166,15 +166,33 @@ private:
 	list_t		m_pool;
 	usize__t	m_release_triger;
 public:
-	cmemery_pool() :m_release_triger(DEFUALT_AUTO_RELEASE_POOL_TRIGER)
+	clinkedlist_memery_pool() :m_release_triger(DEFUALT_AUTO_RELEASE_POOL_TRIGER)
 	{
 		InitCriticalSection(&m_locker);
 	}
-	~cmemery_pool()
+	~clinkedlist_memery_pool()
 	{
 		DelCriticalSection(&m_locker);
 	}
 public:
+	PFX_INLINE list_node_t* allocate_node()
+	{
+		list_node_t* node_ptr;
+
+		if (m_pool.size())
+		{
+			critical_section_lock_t __lock;
+			__lock.lock(m_locker);
+			node_ptr = m_pool.pop_back();
+
+		}
+		else
+		{
+			node_ptr = list_t::new_node();
+		}
+
+		return node_ptr;
+	}
 	PFX_INLINE element_t* allocate()
 	{
 		if (m_pool.size())
@@ -190,6 +208,66 @@ public:
 			return &(node_ptr->get_element());
 		}
 	}
+
+	PFX_INLINE result_t dellocate_node(list_node_t*& PARAM_INOUT del_ptr,
+			usize__t triger_count = 0)
+	{
+		result_t status = PFX_STATUS_OK;
+		if (del_ptr)
+		{
+			list_node_t* del_node_ptr = del_ptr;
+
+			critical_section_lock_t __lock;
+			__lock.lock(m_locker);
+			del_node_ptr = m_pool.push_back(del_node_ptr);
+			if (!del_node_ptr)
+			{
+				status = PFX_STATUS_FAIL;
+			}
+			else
+			{
+				del_ptr = null;
+
+				if (!triger_count)
+				{
+					triger_count = m_release_triger;
+				}
+
+				if (triger_count < m_pool.size())
+				{
+					dispose_node(del_node_ptr);
+				}
+			}
+		}
+		else
+		{
+			auto_release_pool(triger_count);
+		}
+
+		return status;
+	}
+
+	PFX_INLINE result_t dellocate(element_t*& PARAM_INOUT del_ptr,
+			usize__t triger_count = 0)
+	{
+		result_t status = PFX_STATUS_OK;
+		if (del_ptr)
+		{
+			list_node_t* del_node_ptr = list_node_t::convert_unsafe(del_ptr);
+			status = dellocate_node (del_node_ptr);
+			if (PFX_STATUS_OK == status)
+			{
+				del_ptr = null;
+			}
+		}
+		else
+		{
+			status = auto_release_pool(triger_count);
+		}
+
+		return status;
+	}
+
 	PFX_INLINE result_t dispose_node(list_node_t*& PARAM_INOUT node_ptr)
 	{
 		if (node_ptr)
@@ -201,19 +279,25 @@ public:
 			return PFX_STATUS_OK;
 		}
 	}
-
-	PFX_INLINE result_t auto_release_pool(usize__t triger_count = 0)
+	PFX_INLINE void set_triger_count (usize__t triger_count = 0)
 	{
-		if (triger_count > 0)
+		if (triger_count)
 		{
 			m_release_triger = triger_count;
+		}
+	}
+	PFX_INLINE result_t auto_release_pool(usize__t triger_count = 0)
+	{
+		if (!triger_count)
+		{
+			triger_count = m_release_triger;
 		}
 
 		critical_section_lock_t __lock;
 		__lock.lock(m_locker);
-		if (m_pool.size() > m_release_triger)
+		if (m_pool.size() > triger_count)
 		{
-			usize__t dispose_count = m_pool.size() - m_release_triger;
+			usize__t dispose_count = m_pool.size() - triger_count;
 			while (dispose_count)
 			{
 				list_node_t* node_ptr = m_pool.pop_back();
@@ -233,34 +317,13 @@ public:
 		return PFX_STATUS_OK;
 	}
 
-	PFX_INLINE result_t dellocate(element_t*& PARAM_INOUT del_ptr)
-	{
-		result_t status = PFX_STATUS_OK;
-		if (del_ptr)
-		{
-			list_node_t* del_node_ptr = list_node_t::convert_unsafe(del_ptr);
 
-			critical_section_lock_t __lock;
-			__lock.lock(m_locker);
-			del_node_ptr = m_pool.push_back(del_node_ptr);
-			if (!del_node_ptr)
-			{
-				status = PFX_STATUS_FAIL;
-			}
-			else
-			{
-				del_ptr = null;
-			}
-
-		}
-		auto_release_pool();
-		return status;
-	}
 
 public:
-	static cmemery_pool& get_reference_pool()
+	// 某些编译器对于模板内使用静态成员的时候，编译会出错，改写这种方式
+	static clinkedlist_memery_pool& get_reference_pool()
 	{
-		static 	cmemery_pool	pool;
+		static 	clinkedlist_memery_pool	pool;
 		return pool;
 	}
 };

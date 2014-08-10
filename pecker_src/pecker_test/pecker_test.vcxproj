@@ -98,6 +98,9 @@
     <ClCompile Include="pfx_window_form_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="opengles2_test\pfx_hello_triangle.h" />
+    <ClInclude Include="opengles2_test\pfx_hello_triangle_vbo.h" />
+    <ClInclude Include="opengles2_test\pfx_opengles2_def.h" />
     <ClInclude Include="pfx_file_inputdata_cmd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

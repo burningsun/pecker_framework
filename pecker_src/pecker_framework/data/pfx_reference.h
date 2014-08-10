@@ -13,13 +13,26 @@
 #include "pfx_clist.h"
 #include "pfx_linked_mem_pool.h"
 #include "../native/pecker_allocator.h"
+#include <new>
+
+#ifdef REF_DEBUG
+#include "../native/pfx_log.h"
+#define REF_LOG_STR PECKER_LOG_STR
+#define REF_LOG_INFO PECKER_LOG_INFO
+#else
+#define REF_LOG_STR(...)
+#define REF_LOG_INFO(...)
+#endif
 
 PECKER_BEGIN
 
 template <class __ref>
 struct new_reference_method;
 
+#define REF_NONE_FLAG (0x0000)
 #define REF_NEW_FLAG (0xAABB)
+#define REF_TMP_STACKDATA_FLAG (0x1122)
+#define REF_DEL_FLAG (0xBBAA)
 //(0xAABBCCDD)
 #define LOCK_SHARE_FLAG (0xCCDD)
 
@@ -32,6 +45,8 @@ public:
 	typedef creference_base< element_t >				ref_t;
 	typedef creference_base< element_t >				clist_node_t;
 	typedef linked_list_operation < clist_node_t >		clist_op_t;
+	typedef pecker_simple_allocator< clist_node_t >     ref_node_alloc_t;
+	typedef clinkedlist_memery_pool< ref_node_alloc_t > ref_pool_t;
 
 private:
 	ref_t*		m_prev_ptr;
@@ -70,7 +85,7 @@ public:
 	creference_base() : m_next_ptr(null), 
 		m_prev_ptr(null), 
 		m_reference_ptr(null), 
-		m_reference_flag(0),
+		m_reference_flag(REF_NONE_FLAG),
 		m_lock_share_flag(0)
 	{
 		m_list_lock_ptr = &ref_lock();
@@ -96,10 +111,12 @@ public:
 			critical_section_lock_t __lock;
 			__lock.lock(m_list_lock_ptr->m_cs);
 			dispose();
+			this->m_reference_flag = REF_DEL_FLAG;
 		}
 		else
 		{
 			dispose();
+			this->m_reference_flag = REF_DEL_FLAG;
 		}
 		
 	}
@@ -152,12 +169,6 @@ private:
 
 	PFX_INLINE result_t dispose()
 	{
-		//critical_section_lock_t __lock;
-		//if (m_list_lock_ptr)
-		//{
-		//	__lock.lock(m_list_lock_ptr->m_cs);
-		//}
-
 		result_t status;
 		status = dispose_reference();
 		if (PFX_STATUS_OK == status)
@@ -167,17 +178,6 @@ private:
 		}
 		return status;
 	}
-//public:
-//	static PFX_INLINE ref_t* new_reference()
-//	{
-//		ref_t* new_obj = new ref_t;
-//		if (new_obj)
-//		{
-//			new_obj->m_reference_flag = REF_NEW_FLAG;
-//			new_obj->m_reference_ptr = new_obj->create_element();
-//		}
-//		return new_obj;
-//	}
 public:
 	PFX_INLINE bool is_referenced() const
 	{
@@ -185,7 +185,8 @@ public:
 	}
 	PFX_INLINE ref_t* create_reference(bool bref_this = true)
 	{
-		if (LOCK_SHARE_FLAG == m_lock_share_flag)
+		if (LOCK_SHARE_FLAG == m_lock_share_flag ||
+			REF_DEL_FLAG == m_lock_share_flag)
 		{
 			return null;
 		}
@@ -194,14 +195,18 @@ public:
 		{
 			__lock.lock(m_list_lock_ptr->m_cs);
 		}
-		if (LOCK_SHARE_FLAG == m_lock_share_flag)
+
+		if (LOCK_SHARE_FLAG == m_lock_share_flag ||
+			REF_DEL_FLAG == m_lock_share_flag)
 		{
 			return null;
 		}
 
+		ref_pool_t& __pool = ref_pool_t::get_reference_pool();
+
 		if (m_reference_ptr)
 		{
-			ref_t* new_obj = new ref_t;
+			ref_t* new_obj = __pool.allocate_node();
 			if (new_obj)
 			{
 				new_obj->m_reference_flag = REF_NEW_FLAG;
@@ -217,7 +222,7 @@ public:
 			}
 			else
 			{
-				ref_t* new_obj = new ref_t;
+				ref_t* new_obj = __pool.allocate_node();
 				if (new_obj)
 				{
 					new_obj->m_reference_flag = REF_NEW_FLAG;
@@ -244,28 +249,57 @@ public:
 	}
 	PFX_INLINE void release_reference()
 	{
+		if (REF_DEL_FLAG == this->m_reference_flag)
+		{
+			return;
+		}
+
+		REF_LOG_STR("release_reference\n");
 		critical_section_lock_t __lock;
 		if (m_list_lock_ptr)
 		{
 			__lock.lock(m_list_lock_ptr->m_cs);
 		}
+
+		REF_LOG_INFO("lock_reference this->m_lock_share_flag = %08X, this->m_reference_flag == %08X",
+				this->m_lock_share_flag,
+				this->m_reference_flag);
+
 		if (LOCK_SHARE_FLAG == this->m_lock_share_flag)
 		{
-			return;
+			REF_LOG_STR("share -ing\n");
+			//return;
 		}
 		else if (REF_NEW_FLAG == this->m_reference_flag)
 		{
-			delete this;
+			ref_pool_t& __pool = ref_pool_t::get_reference_pool();
+			REF_LOG_STR("delete this\n");
+			// 尼玛 GCC虽然编译这不出错，
+			// 但在android上运行会导致一运行delete就挂，
+			// 使用msvc编译在windows下运行正常，没法，只能使用内存池做
+			//delete this;
+			//
+			dispose();
+			// 通过这个标识来屏蔽外面对标识为删除的对象进行操作
+			this->m_reference_flag = REF_DEL_FLAG;
+			ref_t* del_node_ptr = (ref_t*)this;
+			__pool.dellocate_node(del_node_ptr, MAX_UNSIGNED_VALUE);
 		}
-		else
+		else if (REF_DEL_FLAG != this->m_reference_flag)
 		{
+			REF_LOG_STR("dispose\n");
 			dispose();
 		}
 		
+		REF_LOG_STR("return\n");
+		return;
+
 	}
 	PFX_INLINE ref_t* share_to(ref_t* PARAM_INOUT __ref_ptr)
 	{
-		if (!__ref_ptr)
+		if (!__ref_ptr ||
+			REF_DEL_FLAG == m_reference_flag ||
+			REF_DEL_FLAG == __ref_ptr->m_reference_flag)
 		{
 			return null;
 		}
@@ -276,6 +310,13 @@ public:
 			{
 				critical_section_lock_t __lock_ref;
 				__lock_ref.lock(__ref_ptr->m_list_lock_ptr->m_cs);
+
+				if (REF_DEL_FLAG == m_reference_flag ||
+					REF_DEL_FLAG == __ref_ptr->m_reference_flag)
+				{
+					return null;
+				}
+
 				__ref_ptr->m_lock_share_flag = LOCK_SHARE_FLAG;
 				__ref_ptr->dispose();
 				__lock_ref.unlock();
@@ -285,11 +326,20 @@ public:
 				__ref_ptr->m_lock_share_flag = LOCK_SHARE_FLAG;
 				__ref_ptr->dispose();
 			}
+
+
 			critical_section_lock_t __lock;
 			if (this->m_list_lock_ptr)
 			{
 				__lock.lock(this->m_list_lock_ptr->m_cs);
 			}
+
+			if (REF_DEL_FLAG == m_reference_flag ||
+				REF_DEL_FLAG == __ref_ptr->m_reference_flag)
+			{
+				return null;
+			}
+
 	
 			__ref_ptr->m_list_lock_ptr = this->m_list_lock_ptr;
 			ref_t* retn_ptr = this->create_reference(__ref_ptr);
@@ -313,11 +363,17 @@ struct new_reference_method
 {
 	static PFX_INLINE __ref* new_reference()
 	{
+		typedef typename __ref::ref_pool_t ref_pool_t;
 		__ref* new_obj_ptr;
-		new_obj_ptr = new __ref;
+		ref_pool_t& __pool = ref_pool_t::get_reference_pool();
+		new_obj_ptr = (__ref*)__pool.allocate_node();
 		
 		if (new_obj_ptr)
 		{
+			// placement new 对内存重新构造，
+			// 基类强转派生类在不开启编译器RTTI的时候，
+			// 使用new操作符进行派生类初始化（主要是虚表的初始化）
+			new(new_obj_ptr)__ref();
 			new_obj_ptr->set_new_reference (REF_NEW_FLAG);
 		}
 		return new_obj_ptr;
