@@ -13,6 +13,7 @@
 #include "pfx_render_allocator.h"
 #include "../include/carray"
 #include "../include/native"
+#include "../include/cstring"
 
 PECKER_BEGIN
 
@@ -30,12 +31,67 @@ typedef enum enumPFX_IMG_COMPRESSION_FORAMT
 
 typedef struct image_bits
 {
-	byte_t*						m_bits_ptr;
-	usize__t					m_bytes_count;
-	usize__t					m_colorvalue_size;
-	PFX_COLOR_FORMAT_TYPE_t		m_color_format;
-	enum_int_t					m_compression_format;
+	byte_t*		 m_bits_ptr;
+	usize__t	 m_bytes_count;
+	
+	usize__t     m_width;
+	usize__t     m_height;
+
+	enum_int_t   m_color_format;		//	 PFX_COLOR_FORMAT_TYPE_t
+	usize__t     m_stride;	//
+	usize__t	 m_stride_extra;//
+	usize__t	 m_color_depth;
+
+	enum_int_t	 m_compression_format;
+
+	image_bits() :m_width(0), m_height(0),
+		m_color_format(PFX_RGBA8_FMT),
+		m_stride(color_format_size<PFX_RGBA8_FMT>::SIZE()),
+		m_compression_format(PFX_IMG_UNCOMPRESS_FMT),
+		m_stride_extra(0),
+		m_color_depth(0)
+	{
+		
+	}
+
+	~image_bits()
+	{
+		;
+	}
+
 }image_bits_t;
+
+typedef struct st_image_data
+{
+	typedef  carray< imgbuffer_allocator_t > img_buffer_t;
+
+	image_bits   m_img;
+	img_buffer_t m_buffer;
+	uindex_t	 m_imgdata_offset;
+	usize__t     m_pack_size;
+	cstring_ascii_t m_str_compress_type;
+
+	st_image_data() :m_pack_size(0), m_imgdata_offset(0)
+	{
+		;
+	}
+	~st_image_data()
+	{
+		;
+	}
+
+}image_data_t;
+
+
+
+
+
+
+
+
+
+
+
 
 class PFX_RENDER_TEMPLATE_API cnative_image_base
 {

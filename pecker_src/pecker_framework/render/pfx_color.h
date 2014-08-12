@@ -32,6 +32,9 @@ typedef enum enumCOLOR_FORMAT_TYPE
 	PFX_RGBA_4444_FMT,
 	PFX_RGBA_5551_FMT,
 
+	PFX_RGBA16_FMT,
+	PFX_RGB16_FMT,
+
 	PFX_RGB_FLOAT_FMT,
 	PFX_RGB8_FMT,
 	PFX_RGB_565_FMT,
@@ -111,6 +114,8 @@ typedef bitfield_t		bits_color_t;
 typedef u16_t			u16bits_color_t;
 typedef u8_t			u8bits_color_t;
 
+#pragma pack(push)
+#pragma pack(1)
 struct float_RGBA_color
 {
 	typedef float_t value_type;
@@ -140,6 +145,16 @@ struct RGBA8_color
 	unsigned m_alpha	:8;
 };
 
+struct RGBA16_color
+{
+	typedef u16_t value_type;
+
+	unsigned m_red : 16;
+	unsigned m_green : 16;
+	unsigned m_blue : 16;
+	unsigned m_alpha : 16;
+};
+
 struct RBG8_color
 {
 	typedef u8_t value_type;
@@ -147,7 +162,16 @@ struct RBG8_color
 	unsigned m_red		:8;
 	unsigned m_green	:8;
 	unsigned m_blue		:8;
-	unsigned m_alpha	:8;
+	//unsigned m_alpha	:8;
+};
+
+struct RGB16_color
+{
+	typedef u16_t value_type;
+
+	unsigned m_red : 16;
+	unsigned m_green : 16;
+	unsigned m_blue : 16;
 };
 
 struct RGBA_4444_color
@@ -200,6 +224,7 @@ struct LUMINANCE_ALPHA_88_color
 	u8_t m_luminance;
 	u8_t m_alpha;
 };
+#pragma pack(pop)
 
 PFX_INLINE usize__t max_color_size()
 {
@@ -266,6 +291,18 @@ template <  >
 struct color_value_reference < PFX_LUMINANCE_ALPHA_88_FMT >
 {
 	typedef LUMINANCE_ALPHA_88_color	color_value;
+};
+
+template <  >
+struct color_value_reference < PFX_RGB16_FMT >
+{
+	typedef RGB16_color	color_value;
+};
+
+template <  >
+struct color_value_reference < PFX_RGBA16_FMT >
+{
+	typedef RGBA16_color	color_value;
 };
 
 template <  >

@@ -90,6 +90,7 @@
     <ClCompile Include="pfx_file_inputdata_cmd.cpp" />
     <ClCompile Include="pfx_gles2_displayview_test.cpp" />
     <ClCompile Include="pfx_list_test.cpp" />
+    <ClCompile Include="pfx_load_image.cpp" />
     <ClCompile Include="pfx_objectid_test.cpp" />
     <ClCompile Include="pfx_rb_bst_test.cpp" />
     <ClCompile Include="pfx_share_object_test.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="pfx_window_form_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="opengles2_test\pfx_hello_lena.h" />
     <ClInclude Include="opengles2_test\pfx_hello_triangle.h" />
     <ClInclude Include="opengles2_test\pfx_hello_triangle_vbo.h" />
     <ClInclude Include="opengles2_test\pfx_opengles2_def.h" />

@@ -119,7 +119,7 @@ result_t cnative_image_base::lock_bits(image_bits_t& bits,
 {
 	LockCriticalSection(&m_locker);
 	bits.m_color_format = m_color_format;
-	bits.m_colorvalue_size = m_color_size;
+	bits.m_stride = m_color_size;
 	bits.m_compression_format = m_compression_format;
 	if (!lock_rect_ptr)
 	{

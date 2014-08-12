@@ -28,7 +28,7 @@
    /* We must ensure that zlib uses 'const' in declarations. */
 #  define ZLIB_CONST
 #endif
-#include "zlib.h"
+#include "../zlib-1.2.8/zlib.h"
 #ifdef const
    /* zlib.h sometimes #defines const to nothing, undo this. */
 #  undef const

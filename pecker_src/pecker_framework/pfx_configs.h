@@ -42,9 +42,6 @@
 #endif //AUTO_DETECT_TARGET_OS
 
 
-
-
-
 typedef enum enumBASE_RENDER_SYSTEM_TYPE
 {
    UNKOWN_BASE_RENDER_SYSTEM = 0,

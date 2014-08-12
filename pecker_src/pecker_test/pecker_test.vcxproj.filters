@@ -16,6 +16,7 @@
     <ClCompile Include="pfx_stress_test_bst.cpp" />
     <ClCompile Include="pfx_window_form_test.cpp" />
     <ClCompile Include="pfx_gles2_displayview_test.cpp" />
+    <ClCompile Include="pfx_load_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pfx_file_inputdata_cmd.h" />
@@ -26,6 +27,9 @@
       <Filter>opengles2_test</Filter>
     </ClInclude>
     <ClInclude Include="opengles2_test\pfx_opengles2_def.h">
+      <Filter>opengles2_test</Filter>
+    </ClInclude>
+    <ClInclude Include="opengles2_test\pfx_hello_lena.h">
       <Filter>opengles2_test</Filter>
     </ClInclude>
   </ItemGroup>

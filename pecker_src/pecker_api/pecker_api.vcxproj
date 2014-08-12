@@ -16,6 +16,7 @@
     <ClCompile Include="..\pecker_framework\native\pecker_stream.cpp" />
     <ClCompile Include="..\pecker_framework\native\pecker_tick.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_file_io.cpp" />
+    <ClCompile Include="..\pecker_framework\native\pfx_resource_reader_windows.cpp" />
     <ClCompile Include="..\pecker_framework\native\socket_param.cpp" />
     <ClCompile Include="..\pecker_framework\native\syn_lock.cpp" />
     <ClCompile Include="..\pecker_framework\native\udp_socket.cpp" />
@@ -23,6 +24,7 @@
     <ClCompile Include="..\pecker_framework\pfx_api_info.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_defines.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image.cpp" />
+    <ClCompile Include="..\pecker_framework\render\pfx_image_png.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +71,8 @@
     <ClInclude Include="..\pecker_framework\native\pfx_file_io.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_log.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_native_activity.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_resource_reader.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_windows.h" />
     <ClInclude Include="..\pecker_framework\native\window_msgcode_def.h" />
     <ClInclude Include="..\pecker_framework\native\window_native_form.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_native_form.h" />
@@ -86,6 +90,7 @@
     <ClInclude Include="..\pecker_framework\pfx_os_hal.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_color.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_image.h" />
+    <ClInclude Include="..\pecker_framework\render\pfx_image_png.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_on_context_view.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_render_allocator.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_render_traits.h" />
@@ -158,6 +163,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)\depends_lib\libpng-1.6.2\bin\zlib.lib;$(SolutionDir)\depends_lib\libpng-1.6.2\bin\libpng.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

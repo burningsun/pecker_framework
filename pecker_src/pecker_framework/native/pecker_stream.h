@@ -12,6 +12,7 @@
 
 #include "../pfx_defines.h"
 #include "syn_lock.h"
+#include "../include/cstring"
 
 
 #include <stdio.h>
@@ -59,7 +60,7 @@ public:
 	result_t read_char (char_t &read_value);
 	result_t read_float (float_t &read_value);
 	result_t read_double (double_t &read_value);
-	usize__t	  read_chars (char_t* read_buffer_ptr,usize__t read_buffer_size);
+	usize__t read_chars (char_t* read_buffer_ptr,usize__t read_buffer_size);
 };
 
 
@@ -85,6 +86,9 @@ public:
 	result_t write_double (double_t write_value);
 	usize__t  write_chars (char_t* write_buffer_ptr,usize__t write_buffer_size);
 };
+
+result_t bytes_to_hexstring(const byte_t* PARAM_IN bytes_buffer_ptr,
+	usize__t bytes_count, cstring_ascii_t& PARAM_OUT _dec_str);
 
 
 PECKER_END

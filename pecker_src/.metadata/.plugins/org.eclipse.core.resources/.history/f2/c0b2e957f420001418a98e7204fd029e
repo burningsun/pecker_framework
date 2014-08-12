@@ -1,0 +1,11 @@
+ZLIB_LOCAL_PATH := $(realpath $(call my-dir)/../../)/depends_lib/zlib-1.2.8/
+
+PFX_LOCAL_SRC_FILES := \
+					$(PFX_LOCAL_PATH)pfx_defines.cpp \
+					$(PFX_LOCAL_PATH)pfx_api_info.cpp \
+					$(PFX_LOCAL_PATH)pfx_hal_info.cpp \
+					$(PFX_LOCAL_PATH)pfx_hal_info_gles2.cpp \
+				   $(PFX_LOCAL_SUB_FILES)
+				   
+
+

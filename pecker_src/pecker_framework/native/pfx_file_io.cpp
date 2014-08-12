@@ -321,12 +321,12 @@ result_t pecker_file::open(const char_t* pstr_path,nsize__t path_length, flag_t 
 		//string_length = 1;
 	}
 
-	if(nOpenType | PFO_OPEN_BINARY)
+	if(nOpenType & PFO_OPEN_BINARY)
 	{
 		sprintf_s(str_open_type + string_length, sizeof(str_open_type)-string_length, "b");
 	}
 
-	if(nOpenType | PFO_OPEN_TEXT)
+	if(nOpenType & PFO_OPEN_TEXT)
 	{
 		sprintf_s(str_open_type + string_length, sizeof(str_open_type)-string_length, "t");
 	}

@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "opengles2_test/pfx_hello_triangle.h"
 #include "opengles2_test/pfx_hello_triangle_vbo.h"
+#include "opengles2_test/pfx_hello_lena.h"
 
 
 
@@ -44,8 +45,10 @@ public:
 
 chello_triangle_render_view_gles2 hello_tri;
 chello_triangle_vbo_render_view_gles2 hello_tri_vbo;
+chello_lena_view_gles2 lena_v;
 
-#define test_view 	hello_tri_vbo
+#define test_view 	lena_v
+//hello_tri_vbo
 
 #if (defined(__ANDROID__)|| defined(__APP_MAIN_SHOW__))
 chellogles_activity hellow;

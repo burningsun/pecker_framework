@@ -38,6 +38,12 @@
     <ClCompile Include="..\pecker_framework\native\android_native_form.cpp">
       <Filter>native</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\pfx_resource_reader_windows.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\pfx_image_png.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -269,6 +275,15 @@
     </ClInclude>
     <ClInclude Include="..\pecker_framework\pfx_app_init.h">
       <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_windows.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_resource_reader.h">
+      <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\pfx_image_png.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
