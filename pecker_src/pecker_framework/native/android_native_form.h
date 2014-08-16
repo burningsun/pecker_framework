@@ -12,7 +12,7 @@
 #include "../pfx_defines.h"
 
 #include "../data/pfx_region.h"
-#include "../include/cstring"
+#include "../include/cstring_pfx.h"
 #include "pfx_thread.h"
 
 #if (OS_CONFIG == OS_ANDROID)
@@ -213,7 +213,9 @@ protected:
 
 	//////////////////////////////////
 	// NDK相关的回掉函数
-
+public:
+	static const cstring_ascii_t& get_app_path ();
+	static struct AAssetManager* get_app_assertManager ();
 public:
 	typedef int (*PFX_main_callback)(pecker_sdk::android_native_form* PARAM_INOUT main_form);
 	static void app_main (PFX_main_callback __PFX_main_func, 

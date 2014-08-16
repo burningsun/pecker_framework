@@ -247,6 +247,9 @@ void android_native_form::onConfigurationChanged(ANativeActivity* activity)
     android_activity_ptr = form_ptr->m_component_ptr;
     if (android_activity_ptr)
     {
+    	 AConfiguration_fromAssetManager(form_ptr->m_config_ptr,
+    	                    activity->assetManager);
+
     	android_activity_ptr->on_config_changed();
     }
     form_ptr->m_activity_status = PFX_ACTIVE_CONFIG_CHANGED;
@@ -536,6 +539,8 @@ result_t android_native_form::listen_message()
 }
 
 
+
+
 result_t android_native_form::create_window(
 		ANativeActivity* activity_ptr,
 		void* savedState,
@@ -563,6 +568,7 @@ result_t android_native_form::create_window(
 
 
 	__lock.unlock();
+
 
 
 	LOGV("start_thread...");
@@ -670,6 +676,18 @@ long android_native_form::on_app_entry(proxy_status_t* __proxy_status_ptr)
 
 }
 
+static cstring_ascii_t gstr_app_path;
+static struct AAssetManager* gAsset_manager = null;
+
+const cstring_ascii_t& android_native_form::get_app_path()
+{
+	return gstr_app_path;
+}
+
+struct AAssetManager* android_native_form::get_app_assertManager()
+{
+	return gAsset_manager;
+}
 
 void android_native_form::app_main (PFX_main_callback __PFX_main_func, ANativeActivity* activity, void* savedState, size_t savedStateSize)
 {
@@ -681,6 +699,26 @@ void android_native_form::app_main (PFX_main_callback __PFX_main_func, ANativeAc
 	{
 		PFX_main_func = __PFX_main_func;
 	}
+
+	JNIEnv* env = activity->env;
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "getPackageCodePath",
+			"()Ljava/lang/String;");
+	jobject jstring_object = env->CallObjectMethod(activity->clazz, methodID);
+	jboolean isCopy;
+
+	const char* chr_path = env->GetStringUTFChars((jstring) jstring_object, &isCopy);
+
+	usize__t path_size = env->GetStringLength((jstring) jstring_object);
+	gstr_app_path.init_string(chr_path, path_size);
+	gstr_app_path.append_string("\0",1);
+	gstr_app_path.resize_string(path_size);
+
+	env->ReleaseStringUTFChars((jstring) jstring_object,chr_path);
+
+
+	gAsset_manager = activity->assetManager;
+
 	form.create_window(activity, savedState, savedStateSize);
 }
 

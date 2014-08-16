@@ -1,0 +1,11 @@
+PNGLIB_LOCAL_PATH := $(realpath $(call my-dir)/../../../)/depends_lib/libpng-1.6.2/
+
+PNG_LOCAL_SRC_FILES := \
+					$(PNGLIB_LOCAL_PATH)pfx_defines.cpp \
+					$(PNGLIB_LOCAL_PATH)pfx_api_info.cpp \
+					$(PNGLIB_LOCAL_PATH)pfx_hal_info.cpp \
+					$(PNGLIB_LOCAL_PATH)pfx_hal_info_gles2.cpp \
+
+				   
+
+

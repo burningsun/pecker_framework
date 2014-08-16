@@ -77,7 +77,7 @@ public:
 		chr_name = "sTexture";
 		long_t tex = m_program.get_location_by_name(chr_name);
 
-		cmatrix4f_t mvp(1.0,0.0,0.0,0.0,
+		cmatrix4f_t mvp((float_t)view_port.m_height / (float_t)view_port.m_width, 0.0, 0.0, 0.0,
 			0.0, 1.0, 0.0, 0.0,
 			0.0, 0.0, 1.0, 0.0,
 			0.0, 0.0, 0.0, 1.0
@@ -103,7 +103,15 @@ public:
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glGenTextures(1, &m_texture2D);
 
-			load_img("test_res\\lena_rgba.png", m_img);
+#if (OS_CONFIG == OS_WINDOWS)
+			const char* lena_path = "test_res\\lena_rgba.png";
+#else
+			const char* lena_path = "test_res/lena_rgba.png";
+#endif //#if (OS_CONFIG == OS_WINDOWS)
+
+
+
+			load_img(lena_path, m_img);
 			glBindTexture(GL_TEXTURE_2D, m_texture2D);
 			
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_img.m_img.m_width,

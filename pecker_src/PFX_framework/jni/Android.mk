@@ -16,9 +16,10 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
         LOCAL_ARM_NEON  := true       
 endif # TARGET_ARCH_ABI == armeabi-v7a
 
-ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-        LOCAL_ARM_NEON  := true
-endif # TARGET_ARCH_ABI == arm64-v8a
+#插，gcc 4.9不能使用64bit arm的neon指令
+#ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+#        LOCAL_ARM_NEON  := true
+#endif # TARGET_ARCH_ABI == arm64-v8a
 
 
 LOCAL_LDLIBS    := 
@@ -44,9 +45,9 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
         LOCAL_ARM_NEON  := true       
 endif # TARGET_ARCH_ABI == armeabi-v7a
 
-ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-        LOCAL_ARM_NEON  := true
-endif # TARGET_ARCH_ABI == arm64-v8a
+#ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+#        LOCAL_ARM_NEON  := true
+#endif # TARGET_ARCH_ABI == arm64-v8a
 
 
 LOCAL_LDLIBS    := -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid 

@@ -12,4 +12,5 @@ PFX_NATIVE_LOCAL_SRC_FILES := \
 					$(PFX_NATIVE_LOCAL_PATH)udp_socket.cpp \
 					$(PFX_NATIVE_LOCAL_PATH)asyn_udp_comm.cpp \
 					$(PFX_NATIVE_LOCAL_PATH)android_native_form.cpp \
+					$(PFX_NATIVE_LOCAL_PATH)pfx_resource_reader_android.cpp \
 				   $(PFX_NATIVE_LOCAL_SUB_FILES)

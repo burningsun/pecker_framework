@@ -44,6 +44,9 @@
     <ClCompile Include="..\pecker_framework\render\pfx_image_png.cpp">
       <Filter>render</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\pfx_zip_file.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -285,6 +288,9 @@
     <ClInclude Include="..\pecker_framework\render\pfx_image_png.h">
       <Filter>render</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_zip_file.h">
+      <Filter>native</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />
@@ -306,9 +312,6 @@
     <None Include="..\pecker_framework\include\cshare_object">
       <Filter>include</Filter>
     </None>
-    <None Include="..\pecker_framework\include\cstring">
-      <Filter>include</Filter>
-    </None>
     <None Include="..\pecker_framework\include\cvector">
       <Filter>include</Filter>
     </None>
@@ -322,6 +325,9 @@
       <Filter>include</Filter>
     </None>
     <None Include="..\pecker_framework\include\cmatrix4.h">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cstring_pfx.h">
       <Filter>include</Filter>
     </None>
   </ItemGroup>

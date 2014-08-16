@@ -17,6 +17,7 @@
     <ClCompile Include="..\pecker_framework\native\pecker_tick.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_file_io.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_resource_reader_windows.cpp" />
+    <ClCompile Include="..\pecker_framework\native\pfx_zip_file.cpp" />
     <ClCompile Include="..\pecker_framework\native\socket_param.cpp" />
     <ClCompile Include="..\pecker_framework\native\syn_lock.cpp" />
     <ClCompile Include="..\pecker_framework\native\udp_socket.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="..\pecker_framework\native\pfx_native_activity.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_resource_reader.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_windows.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_zip_file.h" />
     <ClInclude Include="..\pecker_framework\native\window_msgcode_def.h" />
     <ClInclude Include="..\pecker_framework\native\window_native_form.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_native_form.h" />
@@ -110,7 +112,7 @@
     <None Include="..\pecker_framework\include\cmp" />
     <None Include="..\pecker_framework\include\config" />
     <None Include="..\pecker_framework\include\cshare_object" />
-    <None Include="..\pecker_framework\include\cstring" />
+    <None Include="..\pecker_framework\include\cstring_pfx.h" />
     <None Include="..\pecker_framework\include\cvector" />
     <None Include="..\pecker_framework\include\native" />
     <None Include="..\pecker_framework\include\util" />

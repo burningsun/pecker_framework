@@ -110,16 +110,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>jni/depends_lib/pnglib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>jni/pecker_framework/data</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -255,6 +245,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_list_test.cpp</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_test/pfx_load_image.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_load_image.cpp</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_test/pfx_matrix_test.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_matrix_test.cpp</locationURI>
@@ -288,251 +283,6 @@
 			<name>jni/pecker_test/pfx_vector_test.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_vector_test.cpp</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/png.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/png.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/png.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/png.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngconf.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngconf.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngdebug.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngdebug.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngerror.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngerror.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngget.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngget.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pnginfo.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pnginfo.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pnglibconf.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pnglibconf.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngmem.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngmem.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngpread.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngpread.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngpriv.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngpriv.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngread.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngread.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngrio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngrio.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngrtran.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngrtran.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngrutil.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngrutil.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngset.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngset.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngstruct.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngstruct.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngtest.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngtest.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngtrans.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngtrans.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngwio.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngwio.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngwrite.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngwrite.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngwtran.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngwtran.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/pnglib/pngwutil.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/libpng-1.6.2/pngwutil.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/adler32.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/adler32.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/compress.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/compress.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/crc32.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/crc32.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/crc32.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/crc32.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/deflate.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/deflate.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/deflate.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/deflate.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/gzclose.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/gzclose.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/gzguts.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/gzguts.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/gzlib.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/gzlib.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/gzread.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/gzread.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/gzwrite.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/gzwrite.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/infback.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/infback.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/inffast.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/inffast.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/inffast.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/inffast.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/inffixed.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/inffixed.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/inflate.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/inflate.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/inflate.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/inflate.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/inftrees.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/inftrees.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/inftrees.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/inftrees.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/trees.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/trees.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/trees.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/trees.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/uncompr.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/uncompr.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/zconf.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/zconf.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/zlib.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/zlib.h</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/zutil.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/zutil.c</locationURI>
-		</link>
-		<link>
-			<name>jni/depends_lib/zlib/zutil.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/depends_lib/zlib-1.2.8/zutil.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/data/pecker_data.h</name>
@@ -965,6 +715,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/pfx_image.h</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/render/pfx_image_png.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/pfx_image_png.cpp</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/render/pfx_image_png.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/pfx_image_png.h</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/render/pfx_on_context_view.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/pfx_on_context_view.h</locationURI>
@@ -1073,6 +833,11 @@
 			<name>jni/pecker_framework/test_data/tst_test_data5.txt</name>
 			<type>1</type>
 			<location>C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/pecker_framework/test_data/tst_test_data5.txt</location>
+		</link>
+		<link>
+			<name>jni/pecker_test/opengles2_test/pfx_hello_lena.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/opengles2_test/pfx_hello_lena.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_test/opengles2_test/pfx_hello_triangle.h</name>

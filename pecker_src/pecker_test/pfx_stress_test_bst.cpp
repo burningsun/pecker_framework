@@ -464,19 +464,19 @@ result_t load_file_to_array(const char_t* PARAM_IN str_path_ptr,
 			pecker_tick tick_count;
 
 			array_ptr->clean ();
-			status = pecker_file::is_file_exists (str_path_ptr, path_len);
+			status = pecker_file::is_file_exists (str_path_ptr);
 			RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
 
-			status = file.open(str_path_ptr,path_len,PFO_OPEN_READ);
+			status = file.open(str_path_ptr,PFO_OPEN_READ);
 			RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
 
 			tick_count.init();
 			tick_count.start();
 			if (file.get_file_size() > 0)
 			{
-				usize__t read_size = 0;
+				usize__t read_size = file.get_file_size();
 				file_buffer_ptr = new char_t [file.get_file_size()];
-				file.read_to_memery((byte_t*)file_buffer_ptr,file.get_file_size(),read_size);
+				file.read_to_memery((byte_t*)file_buffer_ptr,read_size);
 				read_stream.bind_read_buffer(file_buffer_ptr,read_size);
 			}
 			PECKER_LOG_ ("load file tick = %lf ms\n",tick_count.get_microsecond());

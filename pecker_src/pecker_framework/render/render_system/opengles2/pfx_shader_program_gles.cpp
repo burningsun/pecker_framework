@@ -6,7 +6,7 @@
  */
 #include "pfx_shader_program_gles.h"
 #include "../../../native/pfx_log.h"
-#include "../../../Include/cstring"
+#include "../../../Include/cstring_pfx.h"
 
 PECKER_BEGIN
 

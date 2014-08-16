@@ -12,7 +12,7 @@
 
 #include "../pfx_defines.h"
 #include "syn_lock.h"
-#include "../include/cstring"
+#include "../include/cstring_pfx.h"
 
 
 #include <stdio.h>

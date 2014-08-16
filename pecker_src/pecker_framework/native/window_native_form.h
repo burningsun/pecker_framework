@@ -13,7 +13,7 @@
 
 //#include "pfx_native_component.h"
 #include "../data/pfx_region.h"
-#include "../include/cstring"
+#include "../include/cstring_pfx.h"
 #include "pfx_thread.h"
 
 #if (OS_CONFIG == OS_WINDOWS)

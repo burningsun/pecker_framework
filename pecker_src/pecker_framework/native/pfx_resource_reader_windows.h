@@ -10,17 +10,30 @@
 
 #include "../pfx_defines.h"
 #include "pfx_file_io.h"
+#include "../include/cstring_pfx.h"
+
 #if (OS_CONFIG == OS_WINDOWS)
 
 PECKER_BEGIN
 
-class cresource_reader_windows
+class PFX_NATIVE_API cresource_reader_windows
 {
 private:
-
+	cstring_ascii_t m_root_dir_path;
+	pecker_file m_hfile;
+public:
+	static	result_t get_application_path(cstring_ascii_t& PARAM_OUT str_app_path);
 public:
 	cresource_reader_windows();
 	virtual ~cresource_reader_windows();
+
+	result_t set_resource_dir_path(const char_t* PARAM_IN str_dir_path);
+	result_t open_resource(const char_t* PARAM_IN str_resource_path);
+	result_t seek(long_t offset, sint_t origin);
+	result_t read_to_memery(byte_t* PARAM_INOUT memery_buffer_ptr, 
+		usize__t& PARAM_INOUT memery_buffer_size);
+	usize__t get_size() const;
+	result_t close();
 
 };
 

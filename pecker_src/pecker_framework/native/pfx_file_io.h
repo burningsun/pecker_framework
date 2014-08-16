@@ -9,6 +9,7 @@
 #define		PFX_FILE_IO_H_
 
 #include "../pfx_defines.h"
+#include <time.h>
 //#include <stdio.h>
 
 #define  MAX_PATH_NAME 1024
@@ -18,7 +19,9 @@ PFX_C_EXTERN_BEGIN
 typedef struct st_file
 {
 	handle_t	m_hfile;
-	size_t				m_file_size;
+	time_t      m_create_time;
+	time_t      m_lastmodify_time;
+	size_t		m_file_size;
 }file_t;
 
 typedef struct st_file_data_buffer
@@ -101,28 +104,28 @@ typedef enum enumFILE_ORIGIN
 class PFX_NATIVE_API pecker_file
 {
 protected:
-	file_t	m_file;
+	file_t	m_file;  
 public:
-	static result_t				set_install_apkfile_path (const char_t* str_path_ptr,nsize__t path_length);
-	static const char_t*	get_install_apkfile_path (nsize__t& path_length);
-	static handle_t			get_private_apkfile_manager ();
-	static result_t				is_file_exists (const char_t* pstr_path,nsize__t path_length);
-	static flag_t					get_file_rw_mode (const char_t* pstr_path,nsize__t path_length);
+	static result_t			is_file_exists (const char_t* pstr_path);
+	static flag_t			get_file_rw_mode (const char_t* pstr_path);
 public:
 	pecker_file();
 	virtual ~pecker_file();
 
-	result_t			open (const char_t* pstr_path,nsize__t path_length, flag_t nOpenType);
+	result_t			open (const char_t* pstr_path, flag_t nOpenType);
 	result_t			close();
 
-	result_t			read_to_memery (byte_t* PARAM_INOUT memery_buffer_ptr,usize__t memery_buffer_size,
-												usize__t& PARAM_INOUT read_buffer_size);
+	result_t			read_to_memery (byte_t* PARAM_INOUT memery_buffer_ptr,usize__t& PARAM_INOUT memery_buffer_size);
 
-	usize__t				write_to_file(const byte_t*  memery_buffer_ptr, usize__t memery_buffer_size,result_t& PARAM_INOUT error_code_s);
+	usize__t			write_to_file(const byte_t*  memery_buffer_ptr, usize__t memery_buffer_size,result_t& PARAM_INOUT error_code_s);
 
 	result_t			seek (long_t offset,sint_t origin);
 
-	nsize__t				get_file_size();
+	nsize__t			get_file_size();
+	PFX_INLINE nsize__t	get_readonly_file_size()  const
+	{
+		return m_file.m_file_size;
+	}
 
 	sint_t				test_error ();
 
@@ -130,7 +133,7 @@ public:
 
 	sint_t				eof ();
 
-	file_t*				get_handle () const;
+	file_t*				get_handle ();
 	
 };
 

@@ -11,7 +11,7 @@
 #include <GLES2/gl2.h>
 
 #include "../../../pfx_defines.h"
-#include "../../../include/cstring"
+#include "../../../include/cstring_pfx.h"
 
 PECKER_BEGIN
 

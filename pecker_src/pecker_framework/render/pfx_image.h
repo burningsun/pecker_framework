@@ -13,7 +13,7 @@
 #include "pfx_render_allocator.h"
 #include "../include/carray"
 #include "../include/native"
-#include "../include/cstring"
+#include "../include/cstring_pfx.h"
 
 PECKER_BEGIN
 

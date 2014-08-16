@@ -12,22 +12,29 @@
 
 // 用于打包的只读资源
 
-PECKER_BEGIN
+
 
 #if (OS_CONFIG == OS_WINDOWS)
 #include "pfx_resource_reader_windows.h"
 
-typedef cresource_reader_windows 	 cresource_reader_t;
+PECKER_BEGIN
+typedef cresource_reader_windows     cresource_reader_t;
+typedef cresource_reader_t 	         casset_reader_t;
+PECKER_END
 
 #endif // #if (OS_CONFIG == OS_WINDOWS)
 
 #if (OS_CONFIG == OS_ANDROID)
 #include "pfx_resource_reader_android.h"
+
+PECKER_BEGIN
 typedef cresource_reader_android	cresource_reader_t;
+typedef casset_reader_android	    casset_reader_t;
+PECKER_END
 
 #endif // #if (OS_CONFIG == OS_ANDROID)
 
-PECKER_END
+
 
 
 #endif			//PFX_RESOURCE_READER_WINDOWS_H_

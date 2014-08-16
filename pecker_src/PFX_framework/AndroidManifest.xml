@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="18" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -38,7 +40,9 @@
         <!-- Our activity is the built-in NativeActivity framework class.
              This will take care of integrating with our NDK code. -->
          
+        <!-- android:name="android.app.NativeActivity" -->
 
+     	   <!--  android:name="com.burnningsun.pfx_framework.PFXNativeActivityBase" -->
      	<activity             
      	    android:name="com.burnningsun.pfx_framework.PFXNativeActivityBase"
             android:configChanges="orientation|keyboardHidden|screenSize|navigation"
