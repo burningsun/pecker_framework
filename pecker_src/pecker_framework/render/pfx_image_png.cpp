@@ -21,6 +21,8 @@ PECKER_BEGIN
 #define PNG_LOG_ERR   PECKER_LOG_ERR
 #define PNG_LOG_INFO  PECKER_LOG_INFO
 
+#define PNG_DECODE_PACK (8)
+
 typedef struct
 {
 	unsigned char* data;
@@ -44,7 +46,7 @@ static void PngReaderCallback(png_structp png_ptr, png_bytep data, png_size_t le
 }
 
 #define BUFFER_INIT8 73
-result_t load_png_image_from_memery(image_data_t& PARAM_INOUT __imgdata,
+result_t load_png_image_from_memory(image_data_t& PARAM_INOUT __imgdata,
 	const byte_t* PARAM_IN __src_data_ptr, usize__t __src_buffer_size,
 	 bool bNormal )//= true);
 {
@@ -153,7 +155,7 @@ result_t load_png_image_from_memery(image_data_t& PARAM_INOUT __imgdata,
 	result_t status;
 	usize__t img_size;
 	img_size = width * height * pixel_bytes_stride;
-	status = __imgdata.m_buffer.init(img_size);
+	status = __imgdata.m_buffer.init(img_size + PNG_DECODE_PACK);
 
 	if (status)
 	{
@@ -161,8 +163,18 @@ result_t load_png_image_from_memery(image_data_t& PARAM_INOUT __imgdata,
 		return PFX_STATUS_MEM_LOW;
 	}
 
+	lpointer_t buffer_loc = (lpointer_t)__imgdata.m_buffer.get_block_buffer();
+	lpointer_t offset = buffer_loc % PNG_DECODE_PACK;
+	if (offset)
+	{
+		offset = PNG_DECODE_PACK - offset;
+	}
+	buffer_loc += offset;
+	
 
-	byte_t* color_bytes_ptr = __imgdata.m_buffer.get_block_ptr()->begin();
+	byte_t* color_bytes_ptr;
+
+	color_bytes_ptr = (byte_t*)buffer_loc;
 
 
 	png_bytep * row_pointers = new png_bytep[height];
@@ -211,8 +223,8 @@ result_t load_png_image_from_memery(image_data_t& PARAM_INOUT __imgdata,
 	__imgdata.m_img.m_stride_extra = 0;
 	__imgdata.m_img.m_width = width;
 	__imgdata.m_img.m_height = height;
-	__imgdata.m_pack_size = 1;
-	__imgdata.m_imgdata_offset = 0;
+	__imgdata.m_pack_size = PNG_DECODE_PACK;
+	__imgdata.m_imgdata_offset = offset;
 	__imgdata.m_img.m_compression_format = PFX_IMG_UNCOMPRESS_FMT;
 	__imgdata.m_img.m_color_depth = pixeldepth;
 	
@@ -355,7 +367,7 @@ result_t  load_png_image_from_STDIO(image_data_t& PARAM_INOUT __imgdata,
 	result_t status;
 	usize__t img_size;
 	img_size = width * height * pixel_bytes_stride;
-	status = __imgdata.m_buffer.init(img_size);
+	status = __imgdata.m_buffer.init(img_size + PNG_DECODE_PACK);
 
 	if (status)
 	{
@@ -363,8 +375,18 @@ result_t  load_png_image_from_STDIO(image_data_t& PARAM_INOUT __imgdata,
 		return PFX_STATUS_MEM_LOW;
 	}
 
+	lpointer_t buffer_loc = (lpointer_t)__imgdata.m_buffer.get_block_buffer();
+	lpointer_t offset = buffer_loc % PNG_DECODE_PACK;
+	if (offset)
+	{
+		offset = PNG_DECODE_PACK - offset;
+	}
+	buffer_loc += offset;
 
-	byte_t* color_bytes_ptr = __imgdata.m_buffer.get_block_ptr()->begin();
+
+	byte_t* color_bytes_ptr;
+
+	color_bytes_ptr = (byte_t*)buffer_loc;
 
 
 	png_bytep * row_pointers = new png_bytep[height];
@@ -413,8 +435,8 @@ result_t  load_png_image_from_STDIO(image_data_t& PARAM_INOUT __imgdata,
 	__imgdata.m_img.m_stride_extra = 0;
 	__imgdata.m_img.m_width = width;
 	__imgdata.m_img.m_height = height;
-	__imgdata.m_pack_size = 1;
-	__imgdata.m_imgdata_offset = 0;
+	__imgdata.m_pack_size = PNG_DECODE_PACK;
+	__imgdata.m_imgdata_offset = offset;
 	__imgdata.m_img.m_compression_format = PFX_IMG_UNCOMPRESS_FMT;
 	__imgdata.m_img.m_color_depth = pixeldepth;
 
@@ -472,6 +494,108 @@ result_t PFX_RENDER_API load_png_image_from_file(image_data_t& PARAM_INOUT __img
 
 	return status;
 	
+}
+
+result_t cPng_Image_reader::load_image(image_data_t& PARAM_INOUT __imgdata,
+	image_data_t::img_buffer_t* PARAM_INOUT __cache_buffer //= null
+	)
+{
+	result_t status;
+	switch (m_loader_type)
+	{
+	case IMG_FORM_MEMORY:
+		status = load_png_image_from_memory(__imgdata, m_src_data_ptr, m_src_data_size, m_bNormal);
+		m_src_data_ptr = null;
+		m_src_data_size = 0;
+		m_loader_type = IMG_LOADER_UNKNOWN;
+		break;
+	case IMG_FORM_ASSET_READER:
+		{
+		  casset_reader_t* reader_ptr = m_aset_reader.get_native_object();
+		  if (!reader_ptr)
+		  {
+			  status = PFX_STATUS_UNINIT;
+			  break;
+		  }
+		  status = reader_ptr->open_resource(m_asset_file_name.get_string());
+		  if (status)
+		  {
+			  break;
+		  }
+
+#if (OS_CONFIG == OS_ANDROID)
+		  if (__cache_buffer)
+		  {
+			  usize__t read_size;
+			  read_size = reader_ptr->get_size();
+			  status = __cache_buffer->resize(read_size);
+			  if (status)
+			  {
+				  reader_ptr->close();
+				  break;
+			  }
+			  status = reader_ptr->read_to_memery(__cache_buffer->get_block_buffer(), read_size);
+			  if (status)
+			  {
+				  reader_ptr->close();
+				  break;
+			  }
+			  status = load_png_image_from_memory(__imgdata, __cache_buffer->get_block_buffer(), read_size);
+		  }
+		  else
+		  {
+			  usize__t read_size;
+			  image_data_t::img_buffer_t _cache_buffer;
+			  read_size = reader_ptr->get_size();
+			  status = _cache_buffer.init(read_size);
+			  if (status)
+			  {
+				  reader_ptr->close();
+				  break;
+			  }
+			  status = reader_ptr->read_to_memery(_cache_buffer.get_block_buffer(), read_size);
+			  if (status)
+			  {
+				  reader_ptr->close();
+				  break;
+			  }
+			  status = load_png_image_from_memory(__imgdata, _cache_buffer.get_block_buffer(), read_size);
+		  }
+#else	// #if (OS_CONFIG == OS_ANDROID)
+
+#if (OS_CONFIG == OS_WINDOWS)
+		  status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), m_bNormal);
+#else	// #if (OS_CONFIG == OS_WINDOWS)
+		  status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), m_bNormal);
+#endif	// #if (OS_CONFIG == OS_WINDOWS)
+#endif // #if (OS_CONFIG == OS_ANDROID)
+
+		  reader_ptr->close();
+		}
+
+		break;
+	case  IMG_FORM_RESOURCE_READER:
+	   {
+			cresource_reader_t* reader_ptr = m_res_reader.get_native_object();
+			if (!reader_ptr)
+			{
+				status = PFX_STATUS_UNINIT;
+				break;
+			}
+			status = reader_ptr->open_resource(m_resource_file_name.get_string());
+			if (status)
+			{
+				break;
+			}
+			status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), m_bNormal);
+			reader_ptr->close();
+	   }
+		break;
+	default:
+		status = PFX_STATUS_UNINIT;
+		break;
+	}
+	return status;
 }
 
 PECKER_END

@@ -274,6 +274,14 @@ public:
 	{
 		return &m_block;
 	}
+	PFX_INLINE const element_t* get_block_buffer() const
+	{
+		return m_block.begin();
+	}
+	PFX_INLINE element_t* get_block_buffer() 
+	{
+		return m_block.begin();
+	}
 public:
 	void swap (carray_t& __other)
 	{
@@ -298,6 +306,7 @@ public:
 	{
 		return m_block;
 	}
+	
 public:
 	virtual result_t						init (usize__t element_count, usize__t allocate_step_size = 0)
 	{

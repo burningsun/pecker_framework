@@ -355,6 +355,20 @@ public:
 protected:
 	virtual element_t* create_element(){ return null; }
 	virtual result_t dispose_element(element_t*& elem_ptr){ return PFX_STATUS_ERROR_; }
+
+	//virtual element_t* create_element()
+	//{
+	//	return new element_t;
+	//}
+	//virtual result_t dispose_element(element_t*& elem_ptr)
+	//{
+	//	if (elem_ptr)
+	//	{
+	//		delete elem_ptr;
+	//		elem_ptr = null;
+	//	}
+	//	return PFX_STATUS_OK;
+	//}
 };
 
 
@@ -380,6 +394,49 @@ struct new_reference_method
 	}
 };
 
+
+template < class __native_object >
+class  simple_reference_object :
+	public creference_base < __native_object >
+{
+public:
+	typedef __native_object                             native_object_t;
+	typedef simple_reference_object < native_object_t > reference_object_t;
+protected:
+	typedef __native_object                     ref_element_t;
+	typedef creference_base < __native_object > ref_t;
+	typedef typename ref_t::element_t           element_t;
+	typedef new_reference_method< reference_object_t > new_t;
+protected:
+	PFX_INLINE ref_element_t* create_element()
+	{
+		return new ref_element_t;
+	}
+	PFX_INLINE result_t dispose_element(element_t*& elem_ptr)
+	{
+		if (elem_ptr)
+		{
+			delete elem_ptr;
+			elem_ptr = null;
+		}
+		return PFX_STATUS_OK;
+	}
+public:
+	static PFX_INLINE reference_object_t* new_object()
+	{
+		return new_t::new_reference();
+	}
+public:
+	PFX_INLINE ref_element_t* get_native_object()
+	{
+		return 	ref_t::get_reference();
+	}
+
+	PFX_INLINE void	 release_reference()
+	{
+		ref_t::release_reference();
+	}
+};
 
 
 PECKER_END

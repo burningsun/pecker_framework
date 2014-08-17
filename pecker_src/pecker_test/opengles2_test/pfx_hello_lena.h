@@ -11,6 +11,7 @@
 #define PFX_HELLO_LENA_H_
 
 extern result_t load_img(const char_t* pfile_name, image_data_t& __img);
+extern result_t load_png_img(const char_t* pfile_name, cImage& __img);
 
 class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 {
@@ -23,6 +24,7 @@ private:
 	cshader_program_gles2			m_program;
 	cvertex_cache_buffer_gles2 		m_vertexattbi_buffer;
 	image_data_t m_img;
+	cImage m_cimg;
 	GLuint m_texture2D;
 public:
 	chello_lena_view_gles2() :m_texture2D(0)
@@ -93,14 +95,14 @@ public:
 
 		if (!m_texture2D)
 		{
-			GLubyte pixels[4 * 4] =
-			{
-				255, 0, 0, 100,// Red
-				0, 255, 0, 255,// Green
-				0, 0, 255, 200,// Blue
-				255, 255, 0, 255, // Yellow
-			};
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			//GLubyte pixels[4 * 4] =
+			//{
+			//	255, 0, 0, 100,// Red
+			//	0, 255, 0, 255,// Green
+			//	0, 0, 255, 200,// Blue
+			//	255, 255, 0, 255, // Yellow
+			//};
+
 			glGenTextures(1, &m_texture2D);
 
 #if (OS_CONFIG == OS_WINDOWS)
@@ -109,16 +111,29 @@ public:
 			const char* lena_path = "test_res/lena_rgba.png";
 #endif //#if (OS_CONFIG == OS_WINDOWS)
 
-
-
-			load_img(lena_path, m_img);
 			glBindTexture(GL_TEXTURE_2D, m_texture2D);
-			
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_img.m_img.m_width,
-				m_img.m_img.m_height, 0, GL_RGBA,
-				GL_UNSIGNED_BYTE, m_img.m_img.m_bits_ptr);
 
-			// 测试纹理定位用
+			//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+			load_png_img(lena_path, m_cimg);
+			const image_data_t& img = m_cimg.get_image_direct();
+			glPixelStorei(GL_UNPACK_ALIGNMENT, img.m_pack_size);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.m_img.m_width,
+				img.m_img.m_height, 0, GL_RGBA,
+				GL_UNSIGNED_BYTE, img.m_img.m_bits_ptr);
+
+			//load_img(lena_path, m_img);
+			//glPixelStorei(GL_UNPACK_ALIGNMENT, m_img.m_pack_size);
+
+			//
+
+			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_img.m_img.m_width,
+			//	m_img.m_img.m_height, 0, GL_RGBA,
+			//	GL_UNSIGNED_BYTE, m_img.m_img.m_bits_ptr);
+
+
+
+			//// 测试纹理定位用
 			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2,
 			//	2, 0, GL_RGBA,
 			//	GL_UNSIGNED_BYTE, pixels);

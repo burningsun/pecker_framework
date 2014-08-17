@@ -14,6 +14,8 @@
 #include "../include/carray"
 #include "../include/native"
 #include "../include/cstring_pfx.h"
+#include "../native/pfx_resource_reader.h"
+#include "../data/pfx_reference.h"
 
 PECKER_BEGIN
 
@@ -29,7 +31,7 @@ typedef enum enumPFX_IMG_COMPRESSION_FORAMT
 	PFX_PFX_IMG_CPS_FMT_COUNT
 }PFX_IMG_COMPRESSION_FORAMT_t;
 
-typedef struct image_bits
+typedef struct PFX_RENDER_API image_bits
 {
 	byte_t*		 m_bits_ptr;
 	usize__t	 m_bytes_count;
@@ -61,7 +63,7 @@ typedef struct image_bits
 
 }image_bits_t;
 
-typedef struct st_image_data
+typedef struct PFX_RENDER_API st_image_data
 {
 	typedef  carray< imgbuffer_allocator_t > img_buffer_t;
 
@@ -71,6 +73,14 @@ typedef struct st_image_data
 	usize__t     m_pack_size;
 	cstring_ascii_t m_str_compress_type;
 
+	result_t dispose()
+	{
+		m_img.m_bits_ptr = null;
+		m_img.m_bytes_count = 0;
+		m_img.m_height = 0;
+		m_img.m_width = 0;
+		return m_buffer.dispose();
+	}
 	st_image_data() :m_pack_size(0), m_imgdata_offset(0)
 	{
 		;
@@ -82,78 +92,150 @@ typedef struct st_image_data
 
 }image_data_t;
 
+typedef enum enumIMG_LOAD_TYPE
+{
+   IMG_LOADER_UNKNOWN = 0,
+   IMG_FORM_MEMORY,
+   IMG_FORM_ASSET_READER,
+   IMG_FORM_RESOURCE_READER,
+   IMG_LOAD_TYPE_COUNT
+}IMG_LOAD_TYPE_t;
 
+PFX_Interface Image_reader
+{
+	virtual  ~Image_reader(){ ; }
 
+	virtual void  set_normal(bool bNormal = true) = 0;
 
+	virtual result_t  select_load_form_memory(const byte_t* PARAM_IN __src_data_ptr,
+		usize__t __src_buffer_size) = 0;
 
+	virtual result_t  attach_asset_reader(sasset_reader_t& PARAM_INOUT __reader) = 0;
+	virtual void  detach_asset_reader() = 0;
 
+	virtual result_t  attach_resource_reader(sresource_reader_t& PARAM_INOUT __reader) = 0;
+	virtual void detach_resource_reader() = 0;
 
+	virtual result_t  select_load_form_asset_reader(const char_t* PARAM_IN str_file_name) = 0;
 
+	virtual result_t  select_load_form_resource_reader(const char_t* PARAM_IN str_file_name) = 0;
 
+	virtual result_t  load_image(image_data_t& PARAM_INOUT __imgdata,
+		image_data_t::img_buffer_t* PARAM_INOUT __cache_buffer = null) = 0;
 
+};
 
+PFX_Interface Image_adapter
+{
+	virtual  ~Image_adapter(){ ; }
 
-class PFX_RENDER_TEMPLATE_API cnative_image_base
+	virtual result_t convert(const image_data_t& PARAM_IN __img_src,
+		image_data_t& PARAM_OUT __img_des,
+		usize__t pack_size = 0,
+		image_data_t::img_buffer_t* PARAM_INOUT __cache_buffer = null) = 0;
+
+	virtual result_t set_convert_param(const image_bits_t* PARAM_IN __img_des_param = 0) = 0;
+};
+
+class PFX_RENDER_API cImage_reader_base : public Image_reader
 {
 protected:
-	PFX_COLOR_FORMAT_TYPE_t			m_color_format;
-	enum_int_t						m_compression_format;
-	carray< imgbuffer_allocator_t > m_image_data;
-	cs_t							m_locker;
-	usize__t						m_image_width;
-	usize__t						m_image_height;
-	usize__t						m_color_size;
+	IMG_LOAD_TYPE_t m_loader_type;
+	bool            m_bNormal;
+
+	const byte_t*   m_src_data_ptr;
+	usize__t        m_src_data_size;
+
+	cstring_ascii_t m_asset_file_name;
+	cstring_ascii_t m_resource_file_name;
+
+	sresource_reader_t m_res_reader;
+	sasset_reader_t    m_aset_reader;
+
+	cs_t m_locker;
 public:
-	cnative_image_base();
-	virtual ~cnative_image_base();
+	cImage_reader_base();
+	virtual ~cImage_reader_base();
 
-	result_t create_image(usize__t width, usize__t height, usize__t max_bytes_count = 0);
+	virtual void  set_normal(bool bNormal = true);
 
+	virtual result_t  select_load_form_memory(const byte_t* PARAM_IN __src_data_ptr,
+		usize__t __src_buffer_size);
 
-	virtual result_t load_image_form_memery(const byte_t* PARAM_IN bits_ptr,
-		usize__t bits_count,
-		usize__t width, usize__t height, PFX_COLOR_FORMAT_TYPE_t color_format, 
-		boolean_t to_decompress = PFX_BOOL_FALSE);
+	virtual result_t  attach_asset_reader(sasset_reader_t& PARAM_INOUT __reader);
+	virtual void  detach_asset_reader();
 
-	virtual result_t load_image_form_file(const char_t* PARAM_IN str_image_file_path,
-		usize__t file_path_length,
-		boolean_t to_decompress = PFX_BOOL_FALSE);
+	virtual result_t  attach_resource_reader(sresource_reader_t& PARAM_INOUT __reader);
+	virtual void detach_resource_reader();
 
-	virtual result_t copy_to(cnative_image_base* PARAM_INOUT __other_ptr);
-	virtual result_t compress();
-	virtual result_t dispose();
-	result_t clean_image();
+	virtual result_t  select_load_form_asset_reader(const char_t* PARAM_IN str_file_name);
 
-	result_t lock_bits(image_bits_t& bits,
-		buffer_rect_t* PARAM_IN bits_rect_ptr);
-	result_t unlock();
+	virtual result_t  select_load_form_resource_reader(const char_t* PARAM_IN str_file_name);
+
+	virtual result_t  load_image(image_data_t& PARAM_INOUT __imgdata,
+		image_data_t::img_buffer_t* PARAM_INOUT __cache_buffer = null);
 };
 
-template < enum_int_t image_compression_format >
-struct PFX_Image
+class PFX_RENDER_API cImage
 {
-	static PFX_INLINE result_t load_image_form_memery (byte_t* PARAM_IN bits_ptr,
-		image_bits_t& PARAM_INOUT image_bits_, boolean_t to_decompress)
+private:
+	image_data_t m_image;
+	critical_section_lock_ins_t m_locker;
+public:
+	
+	PFX_INLINE const image_data_t& get_image_direct() const
 	{
-		return PFX_STATUS_DENIED;
+		return m_image;
 	}
-	static PFX_INLINE result_t load_image_form_resource_table (const char_t* PARAM_IN str_image_name,
-		usize__t image_name_length,image_bits_t& PARAM_INOUT image_bits_, 
-		boolean_t to_decompress)
+	PFX_INLINE result_t load_image(Image_reader* PARAM_IN loader_ptr)
 	{
-		return PFX_STATUS_DENIED; 
+		if (loader_ptr)
+		{
+			return loader_ptr->load_image(m_image);
+		}
+		else
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
 	}
-	static PFX_INLINE result_t load_image_form_file (const char_t* PARAM_IN str_image_file_path,
-		usize__t file_path_length,image_bits_t& PARAM_INOUT image_bits_, 
-		boolean_t to_decompress)
+	PFX_INLINE result_t lock_image()
 	{
-		return PFX_STATUS_DENIED; 
+		return m_locker.lock();
 	}
-	static PFX_INLINE result_t release_image (image_bits_t& PARAM_INOUT image_bits_)
+	PFX_INLINE result_t unlock_image()
 	{
-		return PFX_STATUS_DENIED; 
+		return m_locker.unlock();
+	}
+
+	result_t begin_modify_bits(image_bits_t& bits,
+		buffer_rect_t* PARAM_IN lock_rect_ptr = null);
+
+	result_t end_modify_bits();
+
+	result_t copy_to(cImage& PARAM_OUT __img);
+
+	result_t create(
+		usize__t   width,
+		usize__t   height,
+		enum_int_t color_format,		//	 PFX_COLOR_FORMAT_TYPE_t
+		usize__t   stride,
+		usize__t   color_depth,
+		enum_int_t compression_format,
+		usize__t   image_buffer_size = 0);
+
+	PFX_INLINE result_t dispose()
+	{
+		return m_image.dispose();
 	}
 };
+
+
+typedef simple_reference_object< cImage > sImage_t;
+
+
+
+
+
 
 PECKER_END
 

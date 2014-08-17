@@ -126,10 +126,11 @@ protected:
 	typedef cnative_shader_gles2< SHADER_TYPE > ref_element_t;
 	typedef creference_base< cnative_shader_gles2< SHADER_TYPE > > ref_t;
 	typedef typename ref_t::element_t element_t;
+	typedef  new_reference_method< cshader_gles2_t > new_t;
 public:
 	static PFX_INLINE cshader_gles2_t* new_shader()
 	{
-		return ref_t::new_reference();
+		return new_t::new_reference();
 	}
 public:
 	PFX_INLINE ref_element_t* get_native_shader()

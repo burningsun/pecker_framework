@@ -1,0 +1,112 @@
+﻿/*
+ * pfx_resource_reader_windows.h
+ *
+ *  Created on: 2014-8-10
+ *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ */
+
+#ifndef		PFX_RESOURCE_READER_WINDOWS_H_
+#define		PFX_RESOURCE_READER_WINDOWS_H_
+
+#include "../pfx_defines.h"
+#include "pfx_file_io.h"
+#include "../include/cstring_pfx.h"
+
+#if (OS_CONFIG == OS_ANDROID)
+
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
+
+PECKER_BEGIN
+
+class cresource_reader_android
+{
+private:
+	cstring_ascii_t m_root_dir_path;
+	pecker_file m_hfile;
+public:
+	static result_t get_application_path(cstring_ascii_t& PARAM_OUT str_app_path);
+public:
+	cresource_reader_android();
+	virtual ~cresource_reader_android();
+
+	result_t set_resource_dir_path(const char_t* PARAM_IN str_dir_path);
+	result_t open_resource(const char_t* PARAM_IN str_resource_path);
+	result_t seek(long_t offset, sint_t origin);
+	result_t read_to_memery(byte_t* PARAM_INOUT memery_buffer_ptr,
+			usize__t& PARAM_INOUT memery_buffer_size);
+	usize__t get_size() const;
+	result_t close();
+public:
+	PFX_INLINE pecker_file& get_file_handle()
+	{
+		return m_hfile;
+	}
+
+};
+
+class casset_reader_android
+{
+private:
+	struct AAsset* m_assettfile;
+protected:
+	static struct AAssetManager* get_app_assertsManager ();
+public:
+	casset_reader_android ();
+	virtual ~casset_reader_android();
+
+	result_t open_resource(const char_t* PARAM_IN str_resource_path);
+	result_t seek(long_t offset, sint_t origin);
+	result_t read_to_memery(byte_t* PARAM_INOUT memery_buffer_ptr,
+			usize__t& PARAM_INOUT memery_buffer_size);
+	usize__t get_size() const;
+	result_t close();
+};
+
+template < class __native_reader >
+class cresource_share_reader_android : public
+		creference_base < __native_reader >
+{
+public:
+	typedef __native_reader native_reader_t;
+	typedef cresource_share_reader_android < __native_reader > share_reader_t;
+protected:
+	typedef __native_reader ref_element_t;
+	typedef creference_base < __native_reader > ref_t;
+	typedef typename ref_t::element_t element_t;
+	typedef new_reference_method< __native_reader > new_t;
+protected:
+	PFX_INLINE ref_element_t* create_element()
+	{
+		return new ref_element_t;
+	}
+	PFX_INLINE result_t dispose_element(element_t*& elem_ptr)
+	{
+		if (elem_ptr)
+		{
+			delete elem_ptr;
+			elem_ptr = null;
+		}
+		return PFX_STATUS_OK;
+	}
+public:
+	static PFX_INLINE share_reader_t* new_vertex_cache()
+	{
+		return new_t::new_reference();
+	}
+public:
+	PFX_INLINE ref_element_t* get_native_reader()
+	{
+		return get_reference();
+	}
+
+	PFX_INLINE void release_reference()
+	{
+		ref_t::release_reference();
+	}
+};
+
+PECKER_END
+#endif	 // #if (OS_CONFIG == OS_WINDOWS)
+
+#endif			//PFX_RESOURCE_READER_WINDOWS_H_

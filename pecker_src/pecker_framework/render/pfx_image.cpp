@@ -10,121 +10,155 @@
 
 PECKER_BEGIN
 
-cnative_image_base::cnative_image_base() :m_compression_format(PFX_IMG_UNCOMPRESS_FMT), 
-m_color_format(PFX_COMPRESS_COLOR_FMT), 
-m_color_size(color_format_size<PFX_COMPRESS_COLOR_FMT>::SIZE()), m_image_height(0), m_image_width(0)
+cImage_reader_base::cImage_reader_base() :m_bNormal(true), m_loader_type(IMG_LOADER_UNKNOWN),
+m_src_data_ptr(null), m_src_data_size(0)
 {
 	InitCriticalSection(&m_locker);
+
 }
-cnative_image_base::~cnative_image_base()
+cImage_reader_base::~cImage_reader_base()
 {
-	dispose();
+	UnlockCriticalSection(&m_locker);
 	DelCriticalSection(&m_locker);
 }
 
-result_t cnative_image_base::create_image(usize__t width, usize__t height, usize__t max_bytes_count //= 0
+void cImage_reader_base::set_normal(bool bNormal //= true
 	)
 {
-	usize__t temp_size = width * height;
+	m_bNormal = bNormal;
+}
 
-	if (max_bytes_count < temp_size)
+result_t cImage_reader_base::select_load_form_memory(const byte_t* PARAM_IN __src_data_ptr,
+	usize__t __src_buffer_size)
+{
+	if (__src_data_ptr && __src_buffer_size)
 	{
-		max_bytes_count = temp_size * max_color_size();
+		m_src_data_ptr = __src_data_ptr;
+		m_src_data_size = __src_buffer_size;
+		m_loader_type = IMG_FORM_MEMORY;
+		return PFX_STATUS_OK;
 	}
-	critical_section_lock_t __lock;
-	__lock.lock(m_locker);
-	return m_image_data.resize(max_bytes_count);
-
-}
-
-
-result_t cnative_image_base::load_image_form_memery(const byte_t* PARAM_IN bits_ptr,
-	usize__t bits_count,
-	usize__t width, usize__t height, PFX_COLOR_FORMAT_TYPE_t color_format,
-	boolean_t to_decompress //= PFX_BOOL_FALSE
-	)
-{
-	if (bits_count > m_image_data.size())
-	{
-		return PFX_STATUS_OUT_OF_MEMORY;
-	}
-	m_image_height = height;
-	m_image_width = width;
-	m_color_format = color_format;
-	m_color_size = max_color_size();
-	usize__t image_size = height * width * m_color_size;
-	critical_section_lock_t __lock;
-	__lock.lock(m_locker);
-	m_image_data.resize(image_size);
-	return m_image_data.set_element_buffers_at(0, bits_ptr, bits_count);
-}
-
-result_t cnative_image_base::load_image_form_file(const char_t* PARAM_IN str_image_file_path,
-	usize__t file_path_length,
-	boolean_t to_decompress //= PFX_BOOL_FALSE
-	)
-{
-	return PFX_STATUS_DENIED;
-}
-
-result_t cnative_image_base::copy_to(cnative_image_base* PARAM_INOUT __other_ptr)
-{
-	if (!__other_ptr)
+	else
 	{
 		return PFX_STATUS_INVALID_PARAMS;
 	}
 
-	if (__other_ptr == this)
+}
+
+result_t  cImage_reader_base::attach_asset_reader(sasset_reader_t& PARAM_INOUT __reader)
+{
+	if (__reader.share_to(&m_aset_reader))
 	{
 		return PFX_STATUS_OK;
 	}
+	else
+	{
+		return PFX_STATUS_INVALID_PARAMS;
+	}
+}
 
-	__other_ptr->clean_image();
-	carray< imgbuffer_allocator_t >::cblock_t* block_ptr = m_image_data.get_block_ptr();
-	critical_section_lock_t __lock;
-	__lock.lock(m_locker);
-	if (!block_ptr || !block_ptr->begin())
+void cImage_reader_base::detach_asset_reader()
+{
+	m_aset_reader.release_reference();
+}
+
+result_t cImage_reader_base::attach_resource_reader(sresource_reader_t& PARAM_INOUT __reader)
+{
+	if (__reader.share_to(&m_res_reader))
 	{
 		return PFX_STATUS_OK;
 	}
-	
-	__other_ptr->create_image(m_image_width, m_image_height, m_image_data.size());
-	return __other_ptr->load_image_form_memery(block_ptr->begin(), m_image_data.size(), 
-		m_image_width, m_image_height, m_color_format);
-}
-result_t cnative_image_base::compress()
-{
-	return PFX_STATUS_OK;
-}
-result_t cnative_image_base::dispose()
-{
-	critical_section_lock_t __lock;
-	__lock.lock(m_locker);
-	m_image_width = 0;
-	m_image_height = 0;
-	return m_image_data.dispose();
+	else
+	{
+		return PFX_STATUS_INVALID_PARAMS;
+	}
 }
 
-result_t cnative_image_base::clean_image()
+void cImage_reader_base::detach_resource_reader()
 {
-	critical_section_lock_t __lock;
-	__lock.lock(m_locker);
-	m_image_width = 0;
-	m_image_height = 0;
-	return m_image_data.clean();
+	m_res_reader.release_reference();
 }
 
-result_t cnative_image_base::lock_bits(image_bits_t& bits,
+
+
+result_t  cImage_reader_base::select_load_form_asset_reader(const char_t* PARAM_IN str_file_name)
+{
+	if (str_file_name)
+	{
+		usize__t file_name_size = strlen(str_file_name);
+		if (!file_name_size)
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
+		result_t status = m_asset_file_name.init_string(str_file_name, file_name_size + 1);
+		if (PFX_STATUS_OK == status)
+		{
+			status = m_asset_file_name.resize_string(file_name_size);
+		}
+		if (PFX_STATUS_OK == status)
+		{
+			m_loader_type = IMG_FORM_ASSET_READER;
+		}
+		return status;
+	}
+	else
+	{
+		return PFX_STATUS_INVALID_PARAMS;
+	}
+}
+
+result_t cImage_reader_base::select_load_form_resource_reader(const char_t* PARAM_IN str_file_name)
+{
+	if (str_file_name)
+	{
+		usize__t file_name_size = strlen(str_file_name);
+		if (!file_name_size)
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
+		result_t status = m_resource_file_name.init_string(str_file_name, file_name_size + 1);
+		if (PFX_STATUS_OK == status)
+		{
+			status = m_resource_file_name.resize_string(file_name_size);
+		}
+		if (PFX_STATUS_OK == status)
+		{
+			m_loader_type = IMG_FORM_RESOURCE_READER;
+		}
+		return status;
+	}
+	else
+	{
+		return PFX_STATUS_INVALID_PARAMS;
+	}
+}
+
+
+result_t  cImage_reader_base::load_image(image_data_t& PARAM_INOUT __imgdata,
+image_data_t::img_buffer_t* PARAM_INOUT __cache_buffer //= null
+)
+{
+	return PFX_STATUS_DENIED;
+}
+
+
+
+
+
+#define CIMAGE_PACK_SIZE (8)
+
+
+result_t cImage::begin_modify_bits(image_bits_t& bits,
 	buffer_rect_t* PARAM_IN lock_rect_ptr)
 {
-	LockCriticalSection(&m_locker);
-	bits.m_color_format = m_color_format;
-	bits.m_stride = m_color_size;
-	bits.m_compression_format = m_compression_format;
+	bits.m_color_format = m_image.m_img.m_color_format;
+	bits.m_stride = m_image.m_img.m_stride;
+	bits.m_compression_format = m_image.m_img.m_compression_format;
+
 	if (!lock_rect_ptr)
 	{
-		bits.m_bytes_count = m_image_data.size();
-		bits.m_bits_ptr = m_image_data.get_block_ptr()->begin();
+		bits.m_bytes_count = m_image.m_img.m_bytes_count;
+		bits.m_bits_ptr = m_image.m_img.m_bits_ptr;
 	}
 	else if (0 == lock_rect_ptr->m_size)
 	{
@@ -133,11 +167,13 @@ result_t cnative_image_base::lock_bits(image_bits_t& bits,
 	}
 	else
 	{
-		bits.m_bits_ptr = m_image_data.get_block_ptr()->pointer(lock_rect_ptr->m_offset);
+		bits.m_bits_ptr = m_image.m_buffer.get_block_ptr()->pointer(lock_rect_ptr->m_offset + 
+			m_image.m_imgdata_offset);
+
 		if (bits.m_bits_ptr)
 		{
 			usize__t remain_size;
-			remain_size = m_image_data.size() - lock_rect_ptr->m_offset;
+			remain_size = m_image.m_img.m_bytes_count - lock_rect_ptr->m_offset;
 			bits.m_bytes_count = (remain_size > lock_rect_ptr->m_size) ?
 				(lock_rect_ptr->m_size) : (remain_size);
 		}
@@ -146,12 +182,109 @@ result_t cnative_image_base::lock_bits(image_bits_t& bits,
 			bits.m_bytes_count = 0;
 		}
 	}
-	return 0;
-}
-result_t cnative_image_base::unlock()
-{
-	UnlockCriticalSection(&m_locker);
 	return PFX_STATUS_OK;
+}
+
+result_t cImage::end_modify_bits()
+{
+	return PFX_STATUS_OK;
+}
+
+result_t cImage::create(
+	usize__t   width,
+	usize__t   height,
+	enum_int_t color_format,		//	 PFX_COLOR_FORMAT_TYPE_t
+	usize__t   stride,
+	usize__t   color_depth,
+	enum_int_t compression_format,
+	usize__t   image_buffer_size //= 0
+	)
+{
+	RETURN_INVALID_RESULT((stride << 3) < color_depth, 
+		PFX_STATUS_INVALID_PARAMS);
+
+	usize__t temp_img_size;
+	temp_img_size = width * height * stride;
+	RETURN_INVALID_RESULT((!temp_img_size),
+		PFX_STATUS_INVALID_PARAMS);
+
+	
+	if (image_buffer_size < (temp_img_size + CIMAGE_PACK_SIZE))
+	{
+		image_buffer_size = temp_img_size + CIMAGE_PACK_SIZE;
+	}
+
+	result_t status;
+	status = m_image.m_buffer.init(image_buffer_size);
+
+	RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+
+	lpointer_t buffer_loc = (lpointer_t)m_image.m_buffer.get_block_buffer();
+	lpointer_t offset = buffer_loc % CIMAGE_PACK_SIZE;
+	if (offset)
+	{
+		offset = CIMAGE_PACK_SIZE - offset;
+	}
+	buffer_loc += offset;
+	m_image.m_img.m_bits_ptr = (byte_t*)buffer_loc;
+	m_image.m_img.m_bytes_count = offset;
+	m_image.m_pack_size = CIMAGE_PACK_SIZE;
+	m_image.m_imgdata_offset = offset;
+	m_image.m_img.m_color_format = color_format;
+	m_image.m_img.m_color_depth = color_depth;
+	m_image.m_img.m_compression_format = compression_format;
+	m_image.m_img.m_stride = stride;
+	m_image.m_img.m_stride_extra = 0;
+	return PFX_STATUS_OK;
+
+}
+
+
+result_t cImage::copy_to(cImage& PARAM_OUT __img)
+{
+	if (&__img == this)
+	{
+		return PFX_STATUS_OK;
+	}
+	else
+	{
+		result_t status;
+		status = __img.m_image.m_buffer.init(m_image.m_img.m_bytes_count + CIMAGE_PACK_SIZE);
+		RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+
+		lpointer_t buffer_loc = (lpointer_t)__img.m_image.m_buffer.get_block_buffer();
+		lpointer_t offset = buffer_loc % CIMAGE_PACK_SIZE;
+		if (offset)
+		{
+			offset = CIMAGE_PACK_SIZE - offset;
+		}
+		buffer_loc += offset;
+
+		__img.m_image.m_img.m_bits_ptr = (byte_t*)buffer_loc;
+		__img.m_image.m_img.m_bytes_count = offset;
+		__img.m_image.m_pack_size = CIMAGE_PACK_SIZE;
+		__img.m_image.m_imgdata_offset = offset;
+
+		
+
+
+		__img.m_image.m_img.m_color_format       = m_image.m_img.m_color_format;
+		__img.m_image.m_img.m_color_depth        = m_image.m_img.m_color_depth;
+		__img.m_image.m_img.m_compression_format = m_image.m_img.m_compression_format;
+		__img.m_image.m_img.m_stride = m_image.m_img.m_stride;
+		__img.m_image.m_img.m_stride_extra = m_image.m_img.m_stride_extra;
+		__img.m_image.m_img.m_width = m_image.m_img.m_width;
+		__img.m_image.m_img.m_height = m_image.m_img.m_height;
+		__img.m_image.m_str_compress_type.init_string(m_image.m_str_compress_type);
+
+
+		image_bits_t bits;
+		__img.begin_modify_bits(bits);
+		memcpy(bits.m_bits_ptr, m_image.m_img.m_bits_ptr, bits.m_bytes_count);
+		__img.end_modify_bits();
+
+		return PFX_STATUS_OK;
+	}
 }
 
 PECKER_END

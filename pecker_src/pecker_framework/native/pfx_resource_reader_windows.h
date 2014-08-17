@@ -11,6 +11,7 @@
 #include "../pfx_defines.h"
 #include "pfx_file_io.h"
 #include "../include/cstring_pfx.h"
+#include "../data/pfx_reference.h"
 
 #if (OS_CONFIG == OS_WINDOWS)
 
@@ -34,11 +35,15 @@ public:
 		usize__t& PARAM_INOUT memery_buffer_size);
 	usize__t get_size() const;
 	result_t close();
-
+public:
+	PFX_INLINE pecker_file& get_file_handle()
+	{
+		return m_hfile;
+	}
 };
 
 
-
+typedef simple_reference_object< cresource_reader_windows > cresource_share_reader_windows_t;
 
 PECKER_END
 #endif	 // #if (OS_CONFIG == OS_WINDOWS)

@@ -10,10 +10,54 @@
 #include "../pecker_framework/native/pfx_resource_reader.h"
 #include "../pecker_framework/native/pfx_log.h"
 
-#define TEST_ASET_RESOURCE
+//#define TEST_ASET_RESOURCE
 
 USING_PECKER_SDK
+result_t load_png_img(const char_t* pfile_name, cImage& __img)
+{
+	cPng_Image_reader __img_reader;
+	sasset_reader_t asset_file;
+	asset_file.create_reference();
+	
 
+	sresource_reader_t res_file;
+	res_file.create_reference();
+	
+
+	casset_reader_t* aset_reader_ptr = asset_file.get_native_object();
+	cresource_reader_t* res_reader_ptr = res_file.get_native_object();
+
+	if (!aset_reader_ptr || !res_reader_ptr)
+	{
+		return PFX_STATUS_MEM_ERR;
+	}
+	
+	__img_reader.attach_asset_reader(asset_file);
+	__img_reader.attach_resource_reader(res_file);
+#if defined(TEST_ASET_RESOURCE)
+	__img_reader.select_load_form_asset_reader(pfile_name);
+#else
+	__img_reader.select_load_form_resource_reader(pfile_name);
+#endif
+	cstring_ascii_t str_app_path;
+	cresource_reader_t::get_application_path(str_app_path);
+	PECKER_LOG_INFO("%s", str_app_path.get_string());
+
+	//hfile.set_resource_dir_path("..\\PFX_framework\\assets\\");
+	//hfile.set_resource_dir_path("C:\\codes\\git\\pecker_framework\\pecker_framework_c\\pecker_src\\PFX_framework\\assets\\");
+	//hfile.set_resource_dir_path("C:\\");
+	//hfile.set_resource_dir_path("..\\");
+#if (OS_CONFIG == OS_WINDOWS)
+	aset_reader_ptr->set_resource_dir_path("..\\PFX_framework\\assets\\");
+	res_reader_ptr->set_resource_dir_path("..\\PFX_framework\\assets\\");
+#endif //#if (OS_CONFIG == OS_WINDOWS)
+#if (OS_CONFIG == OS_ANDROID) && !defined(TEST_ASET_RESOURCE)
+	res_reader_ptr->set_resource_dir_path("/sdcard/");
+#endif // #if (OS_CONFIG == OS_ANDROID)
+
+	return __img.load_image(&__img_reader);
+
+}
 result_t load_img(const char_t* pfile_name,image_data_t& __img)
 {
 //	return load_png_image_from_file(__img, pfile_name);
@@ -70,7 +114,7 @@ result_t load_img(const char_t* pfile_name,image_data_t& __img)
 		return status;
 	}
 
-	load_png_image_from_memery(__img, read_buffer_ptr, read_size);
+	load_png_image_from_memory(__img, read_buffer_ptr, read_size);
 
 	if (read_buffer_ptr)
 	{

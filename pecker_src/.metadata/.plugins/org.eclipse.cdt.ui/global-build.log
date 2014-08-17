@@ -2,26 +2,8 @@
 **** Clean-only build of configuration Default for project PFX_framework ****
 
 C:\android\android-ndk-r10\ndk-build.cmd clean 
-[arm64-v8a] Clean          : PFX_DEPENDS [arm64-v8a]
-[arm64-v8a] Clean          : PFX_framework [arm64-v8a]
-[arm64-v8a] Clean          : stdc++ [arm64-v8a]
-[x86_64] Clean          : PFX_DEPENDS [x86_64]
-[x86_64] Clean          : PFX_framework [x86_64]
-[x86_64] Clean          : stdc++ [x86_64]
-[mips64] Clean          : PFX_DEPENDS [mips64]
-[mips64] Clean          : PFX_framework [mips64]
-[mips64] Clean          : stdc++ [mips64]
 [armeabi-v7a] Clean          : PFX_DEPENDS [armeabi-v7a]
 [armeabi-v7a] Clean          : PFX_framework [armeabi-v7a]
 [armeabi-v7a] Clean          : stdc++ [armeabi-v7a]
-[armeabi] Clean          : PFX_DEPENDS [armeabi]
-[armeabi] Clean          : PFX_framework [armeabi]
-[armeabi] Clean          : stdc++ [armeabi]
-[x86] Clean          : PFX_DEPENDS [x86]
-[x86] Clean          : PFX_framework [x86]
-[x86] Clean          : stdc++ [x86]
-[mips] Clean          : PFX_DEPENDS [mips]
-[mips] Clean          : PFX_framework [mips]
-[mips] Clean          : stdc++ [mips]
 
 **** Build Finished ****

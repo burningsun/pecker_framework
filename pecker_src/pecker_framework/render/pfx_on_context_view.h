@@ -207,6 +207,11 @@ public:
 	cOn_render_view_base(){ ; }
 	virtual ~cOn_render_view_base(){ ; }
 
+	virtual result_t init_view()
+	{
+		return PFX_STATUS_OK;
+	}
+
 	virtual void on_view(
 		const display_device_t& PARAM_IN device,
 		render_state& PARAM_INOUT __state,

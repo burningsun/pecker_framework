@@ -20,6 +20,8 @@
 PECKER_BEGIN
 typedef cresource_reader_windows     cresource_reader_t;
 typedef cresource_reader_t 	         casset_reader_t;
+typedef cresource_share_reader_windows_t sresource_reader_t;
+typedef cresource_share_reader_windows_t sasset_reader_t;
 PECKER_END
 
 #endif // #if (OS_CONFIG == OS_WINDOWS)
@@ -30,6 +32,9 @@ PECKER_END
 PECKER_BEGIN
 typedef cresource_reader_android	cresource_reader_t;
 typedef casset_reader_android	    casset_reader_t;
+typedef sresource_reader_android_t  sresource_reader_t;
+typedef sasset_reader_android_t     sasset_reader_t;
+
 PECKER_END
 
 #endif // #if (OS_CONFIG == OS_ANDROID)
