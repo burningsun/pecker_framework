@@ -9,6 +9,7 @@
 #include "../pecker_framework/native/pfx_log.h"
 #include "../pecker_framework/native/pecker_allocator.h"
 #include "../pecker_framework/data/pfx_cblock.h"
+#include "../pecker_framework/data/pfx_ref_root.h"
 
 USING_PECKER_SDK
 
@@ -83,3 +84,255 @@ int auto_obj_test ()
 
 	return 0;
 }
+
+
+PFX_Interface ITestShareInterface
+{
+	virtual ~ITestShareInterface()
+	{ 
+		; 
+	}
+	virtual ITestShareInterface* new_share(){ return null; }
+	virtual void test() {};
+	virtual void release() {};
+};
+
+
+
+
+class CTestNativeShareObject
+{
+public:
+	
+protected:
+	int m_xxx;
+public:
+	CTestNativeShareObject() :m_xxx(0)
+	{
+		PECKER_LOG_INFO("create...0x%08X", (lpointer_t)this);
+	}
+	~CTestNativeShareObject()
+	{ 
+		PECKER_LOG_INFO("release...0x%08X", (lpointer_t)this);
+	}
+	void test()
+	{
+		PECKER_LOG_INFO("xxx=%d", m_xxx);
+		++m_xxx;
+	}
+};
+
+
+
+
+
+
+class CTestNode;
+typedef pecker_simple_allocator< CTestNode > ref_node_test_alloc_t;
+
+class CTestRef 
+{
+	friend class CTestNode;
+	friend class pecker_simple_allocator< CTestRef >;
+	typedef pecker_simple_allocator< CTestRef >	ref_test_alloc_t;
+	typedef ref_pool_memanger< ref_node_test_alloc_t, ref_test_alloc_t> ref_pool_t;
+private:
+	CTestNativeShareObject  m_native;
+	csyn_list < ref_node_test_alloc_t > m_mem_list;
+	csyn_list < ref_node_test_alloc_t > m_ref_list;
+private:
+	CTestRef()
+	{
+		PECKER_LOG_INFO("create...0x%08X", (lpointer_t)this);
+	}
+public:
+	~CTestRef()
+	{
+		PECKER_LOG_INFO("release...0x%08X", (lpointer_t)this);
+	}
+public:
+	ITestShareInterface* new_share(CTestNode* in_ptr);
+	
+	void test() 
+	{
+		m_native.test();
+	};
+
+	result_t release(CTestNode* in_ptr)
+	{
+		return ref_pool_t::dispose_node(m_mem_list, m_ref_list, in_ptr);
+	};
+
+};
+
+
+class CTestNode :public cref_node< CTestRef, CTestNode >, 
+	public  ITestShareInterface
+{
+	typedef cref_node< CTestRef, CTestNode > base_t;
+	friend class pecker_simple_allocator< CTestNode >;
+private:
+	CTestNode()
+	{
+		PECKER_LOG_INFO("create...0x%08X", (lpointer_t)this);
+	}
+public:
+	virtual ~CTestNode()
+	{
+		PECKER_LOG_INFO("release...0x%08X", (lpointer_t)this);
+		release();
+	}
+	CTestRef* native_ptr()
+	{
+		return base_t::m_ref_ptr;
+	}
+	static CTestNode* new_object()
+	{
+		return CTestRef::ref_pool_t::new_node();
+	}
+	virtual ITestShareInterface* new_share()
+	{
+		if (base_t::m_ref_ptr)
+		{
+			return base_t::m_ref_ptr->new_share(this);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	virtual void test()
+	{
+		if (base_t::m_ref_ptr)
+		{
+			 base_t::m_ref_ptr->test();
+		}
+	};
+	virtual void release()
+	{
+		if (base_t::m_ref_ptr)
+		{
+			result_t status;
+			status = base_t::m_ref_ptr->release(this);
+		}
+	}
+};
+
+ITestShareInterface* CTestRef::new_share(CTestNode* in_ptr)
+{
+	CTestNode* new_node_ptr = ref_pool_t::new_share(m_mem_list, m_ref_list, in_ptr);
+
+	return new_node_ptr;
+}
+
+class ctest_node;
+class ctest_ref;
+
+typedef pecker_simple_allocator< ctest_node > test_node_alloc;
+typedef pecker_simple_allocator< ctest_ref > test_ref_alloc;
+
+class ctest_ref
+{
+	CTestNativeShareObject m_native;
+	DECLARE_FRIEND_CLASS(class ctest_node);
+	DECLARE_FRIEND_CLASS(class pecker_simple_allocator< ctest_ref >);
+	DECLARE_NATIVE_REF_MEMBER(test_node_alloc);
+	DEFINE_NATIVE_REF_POOL(test_node_alloc, test_ref_alloc);
+	DECLARE_NATIVE_CREATE_NEW_NODE(ctest_node, create_new);
+	DECLARE_NATIVE_CREATE_SHARE_NODE(ctest_node, share_new);
+	DECLARE_NATIVE_DISPOSE_SHARE_NODE(ctest_node, dispose_new);
+	void test()
+	{
+		m_native.test();
+	}
+
+	ctest_ref()
+	{
+		PECKER_LOG_INFO("create...0x%08X", (lpointer_t)this);;
+	}
+	virtual ~ctest_ref()
+	{
+		PECKER_LOG_INFO("release...0x%08X", (lpointer_t)this);;
+	}
+};
+
+DECLARE_REF_NODE_CLASS_BEGIN(ctest_node, ctest_ref, ITestShareInterface, base_t)
+
+DECLARE_FRIEND_CLASS(class ctest_ref);
+DECLARE_FRIEND_CLASS(class pecker_simple_allocator< ctest_node >);
+public:
+	DECLARE_REF_CREATE_NEW_NODE(ctest_node, new_object);
+	DECLARE_REF_CREATE_SHARE_NODE(ctest_node, new_share_node);
+	DECLARE_REF_DISPOSE_SHARE_NODE(ctest_node, dispose_node);
+
+	PFX_INLINE ITestShareInterface* new_share()
+	{
+		return new_share_node();
+	}
+
+	virtual void test()
+	{
+		if (base_t::m_ref_ptr)
+		{
+			base_t::m_ref_ptr->test();
+		}
+	};
+
+	virtual void release()
+	{
+		 dispose_node();
+	}
+
+private:
+	ctest_node()
+	{ 
+		PECKER_LOG_INFO("create...0x%08X", (lpointer_t)this);;
+	}
+public:
+	virtual ~ctest_node()
+	{
+		PECKER_LOG_INFO("release...0x%08X", (lpointer_t)this);
+		dispose_node();
+	}
+DECLARE_REF_NODE_CLASS_END;
+
+STATIC_NATIVE_CREATE_NEW_NODE(ctest_ref, ctest_node, create_new);
+NATIVE_CREATE_SHARE_NODE(ctest_ref, ctest_node, share_new);
+NATIVE_DISPOSE_SHARE_NODE(ctest_ref, ctest_node, dispose_new);
+
+STATIC_REF_CREATE_NEW_NODE(ctest_ref, ctest_node, new_object, create_new);
+REF_CREATE_SHARE_NODE(base_t, ctest_node, new_share_node, share_new);
+REF_DISPOSE_SHARE_NODE(base_t, ctest_node, dispose_node, dispose_new);
+
+
+
+void symbiont_object()
+{
+	//CTestNode* share_obj_1 = CTestNode::new_object();
+	//ITestShareInterface* share_obj_2 = share_obj_1->new_share();
+	//ITestShareInterface* share_obj_3 = share_obj_2->new_share();
+
+	//share_obj_1->test();
+	//share_obj_2->test();
+	//share_obj_3->test();
+
+	//share_obj_1->release();
+	//share_obj_2->release();
+	//share_obj_3->release();
+
+	ctest_node* share_obj_1 = ctest_node::new_object();
+	ITestShareInterface* share_obj_2 = share_obj_1->new_share();
+	ITestShareInterface* share_obj_3 = share_obj_2->new_share();
+
+	share_obj_1->test();
+	share_obj_2->test();
+	share_obj_3->test();
+
+	share_obj_1->release();
+	share_obj_2->release();
+	share_obj_3->release();
+};
+
+
+
+

@@ -25,6 +25,7 @@ extern int bst_stress_test_main (bool bshow = false);
 extern void matrix_test ();
 extern int auto_obj_test ();
 extern void test_object_id ();
+extern void symbiont_object();
 
 
 #if (defined(__ANDROID__)|| defined(__APP_MAIN_SHOW__))
@@ -37,20 +38,21 @@ extern void gles2_displayview_test();
 
 int main ()
 {
-	gles2_displayview_test();
-	form_test();
+	//gles2_displayview_test();
+	//form_test();
 #endif
 
+	symbiont_object();
 
-	list_test();
-	string_test();
-	bst_test_main();
-	avl_bst_test_main();
-	rb_bst_test_main();
-	array_test_main ();
-	bst_stress_test_main();
-	matrix_test();
-	auto_obj_test();
-	test_object_id();
+	//list_test();
+	//string_test();
+	//bst_test_main();
+	//avl_bst_test_main();
+	//rb_bst_test_main();
+	//array_test_main ();
+	//bst_stress_test_main();
+	//matrix_test();
+	//auto_obj_test();
+	//test_object_id();
 	return 0;
 }

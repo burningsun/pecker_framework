@@ -151,7 +151,7 @@ result_t cresource_reader_android::open_resource(const char_t* PARAM_IN str_reso
 
 	RETURN_INVALID_RESULT(!str_res_path_size, PFX_STATUS_INVALID_PARAMS);
 
-	if (m_hfile.get_handle())
+	if (m_hfile.get_handle()->m_hfile)
 	{
 		close ();
 	}

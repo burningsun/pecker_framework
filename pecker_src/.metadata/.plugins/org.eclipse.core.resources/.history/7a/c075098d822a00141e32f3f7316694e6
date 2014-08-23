@@ -1,0 +1,226 @@
+﻿/*
+ * pfx_share_object_test.cpp
+ *
+ *  Created on: 2014-3-28
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ */
+#include <stdio.h>
+#include "../pecker_framework/data/pfx_share_object.h"
+#include "../pecker_framework/native/pfx_log.h"
+#include "../pecker_framework/native/pecker_allocator.h"
+#include "../pecker_framework/data/pfx_cblock.h"
+#include "../pecker_framework/data/pfx_symbiont.h"
+
+USING_PECKER_SDK
+
+int auto_obj_test ()
+{
+	typedef  pecker_simple_allocator < uint_t > alloc;
+	uint_t* test_buf = alloc::allocate_objects(10);
+	if (test_buf)
+	{
+		cauto_release_buffer< alloc > auto_release(test_buf);
+	}
+
+	typedef cblock < alloc > cblock_t;
+	cblock_t block;
+	block.init_buffer(100);
+	uindex_t _index = block.size();
+	while (_index)
+	{
+		--_index;
+		block.reference(_index) = _index;
+	}
+
+	block.force_clean();
+
+	typedef cshare_leakable_object < cblock_t > __schare_block_t;
+	__schare_block_t sb1,sb2,sb3;
+	__schare_block_t::lock_object_t lock_obj;
+	
+	sb1.lock_bits(lock_obj);
+	cblock_t* lock_ptr =  lock_obj.lock_modify_object();
+	usize__t __init_size = 100;
+	lock_ptr->resize(__init_size);
+	while (__init_size)
+	{
+		--__init_size;
+		lock_ptr->reference(_index) = __init_size;
+	}
+	sb1.unlock_bits(lock_obj);
+
+	sb1.share(sb2);
+	sb1.share(sb3);
+
+	lock_obj = sb2.lock_bits(lock_obj);
+	lock_ptr = lock_obj.lock_modify_object(PFX_BOOL_TRUE);
+	uint_t tmpbuf[10] = {11,22,33,44,55,66,77,88,99,00};
+	lock_ptr->set_buffer (tmpbuf, sizeof (tmpbuf));
+	sb2.unlock_bits(lock_obj);
+
+	sb2.release_object();
+	sb3.release_object();
+	sb1.release_object();
+
+	PFX_ShareObject< alloc >::cshare_object_t so1,so2,so3;
+	PFX_ShareObject< alloc >::cshare_object_t::lock_object_t lobj;
+	so1.lock_bits(lobj);
+	PFX_ShareObject< alloc >::cshare_object_t::leakable_object_t* lobj_ptr;
+	lobj_ptr = lobj.lock_modify_object();
+	lobj_ptr->init();
+	lobj_ptr->reference() = 20;
+	so1.unlock_bits(lobj);
+	so1.share(so2);
+	so1.share(so3);
+
+	so2.lock_bits(lobj);
+	lobj_ptr = lobj.lock_modify_object(PFX_BOOL_TRUE);
+	lobj_ptr->reference() = 30;
+	so2.unlock_bits(lobj);
+
+	so1.release_object();
+	so2.release_object();
+	so3.release_object();
+
+	return 0;
+}
+
+
+PFX_Interface ITestShareInterface
+{
+	virtual ~ITestShareInterface()
+	{ 
+		; 
+	}
+	virtual ITestShareInterface* new_share(){ return null; }
+	virtual void test() {};
+	virtual void release() {};
+};
+
+class CTestNativeShareObject
+{
+public:
+	
+protected:
+	int m_xxx;
+public:
+	CTestNativeShareObject() :m_xxx(0){ ; }
+	~CTestNativeShareObject(){ ; }
+	void test()
+	{
+		PECKER_LOG_INFO("xxx=%d", m_xxx);
+		++m_xxx;
+	}
+};
+
+
+
+
+typedef pecker_simple_allocator< CTestNativeShareObject > test_host_allocator_t;
+//typedef pecker_simple_allocator< class CTestShare > test_parasite_node_allocator_t;
+//typedef simple_parasite_allocator< test_host_allocator_t, test_parasite_node_allocator_t > test_parasite_allocator_t;
+
+// VS2010 VS2013  TEST_VTABLE_SIZE = sizeof(lpointer_t);
+#define TEST_VTABLE_SIZE ((sizeof(lpointer_t) * 2))
+class CTestShare : public parasite < test_host_allocator_t, ITestShareInterface, TEST_VTABLE_SIZE >,
+	public ITestShareInterface
+{
+public:
+	typedef CTestNativeShareObject element_t;
+	typedef parasite < test_host_allocator_t, ITestShareInterface, TEST_VTABLE_SIZE >
+native_ref_t;
+	friend class pecker_force_adapter< native_ref_t::clist_node_t, CTestShare >;
+protected:
+	CTestShare()
+	{ 
+		native_ref_t::bind_second_class(this); 
+	}
+public:
+	virtual ~CTestShare()
+	{
+		release();
+		PECKER_LOG_INFO("release = %s","..."); 
+	}
+public:
+	static CTestShare* create_new()
+	{
+		PECKER_LOG_INFO("%s", "creating share");
+		CTestShare* new_obj_ptr = null;
+		native_ref_t::clist_node_t* new_ptr = native_ref_t::born();
+		if (new_ptr)
+		{
+			native_ref_t::clist_node_t __last;
+			new_ptr->store(__last.m_base);
+			new_obj_ptr = pecker_force_adapter< byte_t*, CTestShare >::convert_to((byte_t*)new_ptr);
+			new_ptr->restore(__last.m_base);
+		}
+		PECKER_LOG_INFO("create finish 0x%08X", (lpointer_t)new_obj_ptr);
+		return new_obj_ptr;
+	}
+	//static 
+	//DECLARE_PARASITE_NEW_METHOD(CTestShare, native_ref_t, create_new);
+public:
+
+	//DECLARE_PARASITE_SHARE_METHOD(ITestShareInterface, CTestShare, native_ref_t, new_share);
+	//DECLARE_PARASITE_SHARE_SYN_METHOD(ITestShareInterface, CTestShare, native_ref_t, new_synshare);
+	ITestShareInterface* new_share()
+	{
+		PECKER_LOG_INFO("%s", "new share");
+		CTestShare* new_obj_ptr = null;
+		native_ref_t::clist_node_t* new_ptr = division();
+		if (new_ptr)
+		{
+			native_ref_t::clist_node_t __last;
+			new_ptr->store(__last.m_base);
+			new_obj_ptr = pecker_force_adapter< native_ref_t::clist_node_t, CTestShare >::convert_to(new_ptr);
+			new_ptr->restore(__last.m_base);
+		}
+		PECKER_LOG_INFO("new finish %08X", (lpointer_t)new_obj_ptr);
+		return new_obj_ptr;
+	}
+	void test()
+	{
+		native_ref_t::host_t* host_ptr;
+		host_ptr = get_host();
+		if (host_ptr)
+		{
+			host_ptr->test();
+		}
+		
+	}
+	virtual void release()
+	{
+		dispose();
+	}
+
+};
+
+
+
+void symbiont_object()
+{
+	PECKER_LOG_INFO("native_ref_t size=%d, CTestShare size=%d",
+		sizeof(CTestShare::native_ref_t),
+		sizeof (CTestShare));
+
+	
+	CTestShare* obj_ptr = CTestShare::create_new();
+	PECKER_LOG_INFO("creating share_ptr, OBJ =0X%08X", obj_ptr);
+	ITestShareInterface* share_ptr = obj_ptr->new_share();
+	ITestShareInterface* share2_ptr = share_ptr->new_share();
+	ITestShareInterface* share3_ptr;
+
+	share_ptr->test();
+	share_ptr->release();
+	//share_ptr->~ITestShareInterface();
+	share3_ptr = share2_ptr->new_share();
+	share2_ptr->test();
+	share2_ptr->release();
+	obj_ptr->test();
+	obj_ptr->release();
+	share3_ptr->test();
+	share3_ptr->release();
+
+	CTestShare::clean_pool();
+};
+

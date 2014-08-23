@@ -63,7 +63,9 @@
     <LinkIncremental>false</LinkIncremental>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>$(ProjectName)d</TargetName>
+    <OutDir>..\..\..\bind\</OutDir>
+    <IntDir>..\..\..\bind\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Library|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -108,7 +110,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>zlib.lib</AdditionalDependencies>
+      <AdditionalDependencies>zlibd.lib</AdditionalDependencies>
       <Version>16</Version>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
     </Link>

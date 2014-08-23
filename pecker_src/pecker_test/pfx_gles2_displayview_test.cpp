@@ -9,7 +9,7 @@
 #include "opengles2_test/pfx_hello_triangle_vbo.h"
 #include "opengles2_test/pfx_hello_lena.h"
 
-
+extern void symbiont_object();
 
 class  chellogles_activity : public opengles2_activity_t
 {
@@ -18,7 +18,7 @@ private:
 public:
 	chellogles_activity()
 	{
-		;
+
 	}
 	virtual ~chellogles_activity()
 	{
@@ -29,6 +29,8 @@ public:
 		opengles2_activity_t::on_create(init_state);
 		init_state.m_fixed_window = 0;
 		init_state.m_strtitle.init_string("hello activity", strlen("hello activity") + 1);
+
+		symbiont_object();
 	}
 	virtual void on_start()
 	{

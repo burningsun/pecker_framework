@@ -1,0 +1,447 @@
+﻿/*
+ * pfx_symbiont.h
+ *
+ *  Created on: 2014-7-20
+*      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
+ */
+
+#ifndef		PFX_SYSBOINT_H_
+#define		PFX_SYSBOINT_H_
+
+#include "../native/syn_lock.h"
+#include "../native/pfx_disposeable.h"
+#include "pfx_clist.h"
+#include "pfx_linked_mem_pool.h"
+#include "../native/pecker_allocator.h"
+
+
+#ifdef REF_DEBUG
+#include "../native/pfx_log.h"
+#define REF_LOG_STR PECKER_LOG_STR
+#define REF_LOG_INFO PECKER_LOG_INFO
+#else
+#define REF_LOG_STR(...)
+#define REF_LOG_INFO(...)
+#endif
+
+PECKER_BEGIN
+
+template < class __host_allocator, class __parasite_allocator>
+struct simple_parasite_allocator
+{
+	typedef __host_allocator host_allocator_t;
+
+	typedef typename __parasite_allocator::element_t  element_t;
+	typedef __parasite_allocator                      alloc_t;
+
+	static PFX_INLINE element_t* allocate_object()
+	{
+		return alloc_t::allocate_object();
+	}
+	static PFX_INLINE result_t deallocate_object(element_t*& PARAM_INOUT del_element_ptr)
+	{
+		if (del_element_ptr)
+		{
+			return alloc_t::deallocate_object(del_element_ptr);
+		}
+		return  PFX_STATUS_INVALID_PARAMS;
+	}
+};
+
+#define PARASITE_STACK_MEMORY (0)
+#define POOL_PARASITE_MEMORY_NEW (0xABCD)
+#define POOL_PARASITE_MEMORY_DEL (0xEFAB)
+
+#define VTABLE_SIZE (32)
+
+template < class __host_allocator,
+	class __interface_base__,
+	const usize__t _VTABLE_SIZE_ = VTABLE_SIZE >
+class parasite
+{
+
+public:
+	typedef __host_allocator  host_allocator_t;
+
+	typedef typename host_allocator_t::element_t      host_t;
+
+	typedef parasite< __host_allocator, __interface_base__, 
+		_VTABLE_SIZE_ >	 parasite_t;
+
+protected:
+	typedef struct parasite_node
+	{
+		typedef host_t     element_t;
+
+		parasite_t  m_base;
+		// c++由parasite_t使用new运算符强转成对应的派生类的时候，
+		// 如果派生类存在虚表，则必须预留虚表空间，以免new运算后内存崩溃
+		char_t      m_vtable[(_VTABLE_SIZE_ ? _VTABLE_SIZE_ : sizeof(lpointer_t))];
+
+		parasite_node()
+		{
+
+		}
+		~parasite_node()
+		{
+		}
+
+		PFX_INLINE parasite_t* ptr()
+		{
+			return 	&m_base;
+		}
+		PFX_INLINE const parasite_node*	get_prev_node() const
+		{
+			return (const parasite_node*)(m_base.m_prev_ptr);
+		}
+		PFX_INLINE const parasite_node*	get_next_node() const
+		{
+			return (const parasite_node*)(m_base.m_next_ptr);
+		}
+		PFX_INLINE parasite_node*	get_prev_node()
+		{
+			return (parasite_node*)(m_base.m_prev_ptr);
+		}
+		PFX_INLINE parasite_node*	get_next_node()
+		{
+			return (parasite_node*)(m_base.m_next_ptr);
+		}
+
+		PFX_INLINE void	set_prev_node(parasite_node* PARAM_IN node_ptr)
+		{
+			m_base.m_prev_ptr = (parasite_t*)node_ptr;
+		}
+		PFX_INLINE void	set_next_node(parasite_node* PARAM_IN node_ptr)
+		{
+			m_base.m_next_ptr = (parasite_t*)node_ptr;
+		}
+
+		PFX_INLINE result_t store(parasite_t& __last)
+		{
+			if (PARASITE_STACK_MEMORY == __last.m_alloc_flag)
+			{
+				//memcpy(&__last, &m_base, sizeof(parasite_t)- sizeof(__interface_base__*));
+				return PFX_STATUS_OK;
+			}
+			return PFX_STATUS_INVALID_PARAMS;		
+		}
+		PFX_INLINE void restore(parasite_t& __last)
+		{
+			//memcpy(&m_base, &__last, sizeof(parasite_t)-sizeof(__interface_base__*));
+			//ZeroMemory(&__last, sizeof(parasite_t)-sizeof(__interface_base__*));
+		}
+	}clist_node_t;
+protected:
+	typedef linked_list_operation < clist_node_t >    clist_op_t;
+	typedef pecker_simple_allocator< clist_node_t >   node_alloc_t;
+	typedef clinkedlist_memery_pool< node_alloc_t >   parasite_pool_t;
+
+
+protected:
+	friend class pecker_simple_allocator< clist_node_t >;
+
+private:
+	parasite_t*	m_prev_ptr;
+	parasite_t* m_next_ptr;
+	host_t*     m_host_ptr;
+	flag_t		m_alloc_flag;
+	__interface_base__* m_second_class_ptr;
+protected:
+	PFX_INLINE void bind_second_class(__interface_base__* PARAM_IN sub_class_ptr)
+	{
+		m_second_class_ptr = sub_class_ptr;
+	}
+public:
+	PFX_INLINE usize__t get_node_size() const
+	{
+		return sizeof (clist_node_t);
+	}
+	PFX_INLINE flag_t get_alloc_flag() const
+	{
+		return m_alloc_flag;
+	}
+protected:
+	PFX_INLINE void set_alloc_flag(flag_t alloc_flag)
+	{
+		m_alloc_flag = alloc_flag;
+	}
+	
+
+
+protected:
+	parasite() :
+		m_prev_ptr(null), m_next_ptr(null), m_host_ptr(null),
+		m_alloc_flag(PARASITE_STACK_MEMORY),
+		m_second_class_ptr(null)
+	{
+
+	}
+public:
+	virtual ~parasite()
+	{
+		dispose();
+	}
+protected:
+	static PFX_INLINE parasite_pool_t& globle_parasite_pool()
+	{
+		static parasite_pool_t __pool;
+		return __pool;
+	}
+public:
+	static PFX_INLINE void set_pool_auto_release_triger(usize__t count)
+	{
+		globle_parasite_pool().set_triger_count(count);
+	}
+	static PFX_INLINE result_t clean_pool()
+	{
+		return globle_parasite_pool().clean_pool();
+	}
+public:
+	static PFX_INLINE critical_section_lock_ins_t& globle_critical_section()
+	{
+		static critical_section_lock_ins_t __lock;
+		return __lock;
+	}
+	
+protected:
+	static PFX_INLINE clist_node_t* born()
+	{
+		parasite_pool_t& pool = globle_parasite_pool();
+		clist_node_t* new_ptr = pool.allocate_node();
+		if (new_ptr)
+		{
+			new_ptr->m_base.m_alloc_flag = POOL_PARASITE_MEMORY_NEW;
+			new_ptr->m_base.m_host_ptr = host_allocator_t::allocate_object();
+			new_ptr->m_base.m_second_class_ptr = (__interface_base__*)(&(new_ptr->m_base));
+		}
+		return new_ptr;
+	}
+public:
+	PFX_INLINE host_t* get_host()
+	{
+		//critical_section_lock_t __lock;
+		//__lock.lock(globle_critical_section().m_cs);
+		if (POOL_PARASITE_MEMORY_DEL == m_alloc_flag)
+		{
+			return null;
+		}
+		else
+		{
+			return m_host_ptr;
+		}
+		
+	}
+protected:
+	PFX_INLINE result_t dispose()
+	{
+		RETURN_RESULT(POOL_PARASITE_MEMORY_DEL == m_alloc_flag,
+			PFX_STATUS_OK);
+
+		result_t status;
+		clist_node_t* removed_node_ptr;
+
+		removed_node_ptr = clist_op_t::remove_list_node((clist_node_t*)this);
+
+		RETURN_INVALID_RESULT(!removed_node_ptr, PFX_STATUS_MEM_ERR);
+
+		parasite_pool_t& pool = globle_parasite_pool();
+
+
+		if (m_host_ptr)
+		{
+			if (!is_reference())
+			{
+				status = host_allocator_t::deallocate_object(m_host_ptr);
+			}
+			else
+			{
+				status = PFX_STATUS_OK;
+			}
+
+			m_host_ptr = null;
+		}
+		else
+		{
+			status = PFX_STATUS_OK;
+		}
+
+		if (POOL_PARASITE_MEMORY_NEW == m_alloc_flag)
+		{
+			pool.dellocate_node(removed_node_ptr);
+			m_alloc_flag = POOL_PARASITE_MEMORY_DEL;
+		}
+
+		if (m_second_class_ptr)
+		{
+			m_second_class_ptr->~__interface_base__();
+			m_second_class_ptr = null;
+		}
+
+		return status;
+	}
+	
+protected:
+	PFX_INLINE clist_node_t* division()
+	{
+		//critical_section_lock_t __lock;
+		//__lock.lock(globle_critical_section().m_cs);
+		RETURN_RESULT(POOL_PARASITE_MEMORY_DEL == m_alloc_flag, 
+			null);
+
+		clist_node_t* ret_instance_ptr;
+		clist_node_t* new_instance_ptr;
+		parasite_pool_t& pool = globle_parasite_pool();
+		new_instance_ptr = pool.allocate_node();
+
+		if (new_instance_ptr)
+		{			
+			new_instance_ptr->m_base.m_next_ptr = null;
+			new_instance_ptr->m_base.m_prev_ptr = null;
+			
+			ret_instance_ptr = clist_op_t::insert_list_node_back((clist_node_t*)this, new_instance_ptr);
+
+			if (ret_instance_ptr)
+			{
+				new_instance_ptr->m_base.m_host_ptr = this->m_host_ptr;
+				new_instance_ptr->m_base.m_alloc_flag = POOL_PARASITE_MEMORY_NEW;
+			}
+			else
+			{
+				pool.dellocate_node(new_instance_ptr);
+			}
+		}
+		else
+		{
+			ret_instance_ptr = null;
+		}
+		return ret_instance_ptr;
+	}
+	
+	
+protected:
+	PFX_INLINE clist_node_t* division_to(clist_node_t* PARAM_INOUT __other_ptr)
+	{
+		//critical_section_lock_t __lock;
+		//__lock.lock(globle_critical_section().m_cs);
+
+		RETURN_RESULT((null == __other_ptr || 
+			POOL_PARASITE_MEMORY_DEL == m_alloc_flag ||
+			POOL_PARASITE_MEMORY_DEL == __other_ptr->m_alloc_flag),
+			null);
+
+		if (is_same_host(__other_ptr) && __other_ptr != this)
+		{
+			return __other_ptr;
+		}
+
+
+		result_t status;
+		clist_node_t* removed_node_ptr;
+
+		removed_node_ptr = clist_op_t::remove_list_node(__other_ptr);
+
+		RETURN_INVALID_RESULT(!removed_node_ptr, PFX_STATUS_MEM_ERR);
+
+		if (__other_ptr->m_host_ptr)
+		{
+			if (!__other_ptr->is_reference())
+			{
+				status = host_allocator_t::deallocate_object(__other_ptr->m_host_ptr);
+			}
+			__other_ptr->m_host_ptr = null;
+		}
+		else
+		{
+			status = PFX_STATUS_OK;
+		}
+
+
+		clist_node_t* ret_instance_ptr;
+		clist_node_t* new_instance_ptr;
+		new_instance_ptr = (clist_node_t*)__other_ptr;
+
+		if (new_instance_ptr)
+		{
+			new_instance_ptr->m_next_ptr = null;
+			new_instance_ptr->m_prev_ptr = null;
+
+			ret_instance_ptr = clist_op_t::insert_list_node_back((clist_node_t*)this, new_instance_ptr);
+
+			if (ret_instance_ptr)
+			{
+				new_instance_ptr->m_host_ptr = this->m_host_ptr;
+			}
+			else
+			{
+				__other_ptr->m_alloc_flag = POOL_PARASITE_MEMORY_DEL;
+			}
+		}
+
+		return ret_instance_ptr;
+	}
+	PFX_INLINE bool is_same_host(const parasite_t* PARAM_IN __other)	const
+	{
+		return (__other && this->m_host_ptr == __other->m_host_ptr);
+	}
+	PFX_INLINE bool is_reference() const
+	{
+		return !(m_next_ptr || m_prev_ptr);
+	}
+};
+
+#define  DECLARE_PARASITE_SHARE_SYN_METHOD(RETURN_INTERFACE,THIS_TYPE,PARASITE_BASE,METHOD_NAME) \
+	RETURN_INTERFACE* ## METHOD_NAME()\
+{	\
+	THIS_TYPE* new_obj_ptr = null;	\
+	globle_critical_section().lock();\
+	PARASITE_BASE::clist_node_t* new_ptr = division(); \
+	if (new_ptr)  \
+	{					\
+		PARASITE_BASE::clist_node_t __last; \
+		new_ptr->store(__last.m_base);	 \
+		new_obj_ptr = pecker_force_adapter< PARASITE_BASE::clist_node_t, THIS_TYPE >::convert_to(new_ptr); \
+		new_ptr->restore(__last.m_base);  \
+	}  \
+	globle_critical_section().unlock();	\
+	return new_obj_ptr; \
+}
+
+#define  DECLARE_PARASITE_SHARE_METHOD(RETURN_INTERFACE,THIS_TYPE,PARASITE_BASE,METHOD_NAME) \
+	RETURN_INTERFACE* ## METHOD_NAME()\
+{	\
+	THIS_TYPE* new_obj_ptr = null;	\
+    PARASITE_BASE::clist_node_t* new_ptr = division();\
+		if (new_ptr)  \
+		{					\
+			PARASITE_BASE::clist_node_t __last;\
+			new_ptr->store(__last.m_base);	 \
+			new_obj_ptr = pecker_force_adapter< PARASITE_BASE::clist_node_t, THIS_TYPE >::convert_to(new_ptr); \
+			new_ptr->restore(__last.m_base);  \
+		}  \
+		return new_obj_ptr;\
+	}
+
+#define DECLARE_PARASITE_NEW_METHOD(THIS_TYPE, PARASITE_BASE, METHOD_NAME)\
+THIS_TYPE* ## METHOD_NAME() \
+{							 \
+	THIS_TYPE* new_obj_ptr = null;	 \
+    PARASITE_BASE::clist_node_t* new_ptr = PARASITE_BASE::born(); \
+	if (new_ptr)												  \
+	{															   \
+	    PARASITE_BASE::clist_node_t __last;   \
+		new_ptr->store(__last.m_base);		   \
+		new_obj_ptr = pecker_force_adapter< PARASITE_BASE::clist_node_t, THIS_TYPE >::convert_to(new_ptr);\
+		new_ptr->restore(__last.m_base);	   \
+	}										   \
+	return new_obj_ptr;						\
+}
+
+
+
+
+
+
+PECKER_END
+
+
+#endif			//PFX_SYSBOINT_H_

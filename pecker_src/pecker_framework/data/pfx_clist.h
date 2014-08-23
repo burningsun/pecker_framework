@@ -9,6 +9,7 @@
 #define		PFX_CLIST_H_
 
 #include "../pfx_defines.h"
+#include "../native/syn_lock.h"
 
 PECKER_BEGIN
 	template < class __elem >
@@ -73,7 +74,7 @@ template < class __node_type >
 struct linked_list_operation
 {
 	typedef __node_type											list_node_t;
-	typedef typename list_node_t::element_t		element_t;
+	//typedef typename list_node_t::element_t		element_t;
 
 	static  PFX_INLINE result_t init_list_node (list_node_t* PARAM_INOUT node_ptr);
 	static PFX_INLINE  list_node_t*	insert_list_node_back (list_node_t* PARAM_INOUT node_ptr,
@@ -125,7 +126,7 @@ public:
 		iterator_t* retn_ptr = null;
 		if (m_cur_node_ptr && m_cur_node_ptr->get_next_node())
 		{
-			m_cur_node_ptr = m_cur_node_ptr->get_next_node();
+			m_cur_node_ptr = (list_node_t*)m_cur_node_ptr->get_next_node();
 			retn_ptr = this;
 		}
 		return retn_ptr;
@@ -135,7 +136,7 @@ public:
 		iterator_t* retn_ptr = null;
 		if (m_cur_node_ptr && m_cur_node_ptr->get_prev_node())
 		{
-			m_cur_node_ptr = m_cur_node_ptr->get_prev_node();
+			m_cur_node_ptr = (list_node_t*)m_cur_node_ptr->get_prev_node();
 			retn_ptr = this;
 		}
 		return retn_ptr;
@@ -299,28 +300,15 @@ public:
 
 		return inserted_node_ptr;
 	}
-
-	PFX_INLINE list_node_t* remove (iterator_t& __iter)
+	PFX_INLINE list_node_t* remove_unsafe(list_node_t* PARAM_IN be_remove_node_ptr)
 	{
-		if (__iter.get_bind_list() != &(this->m_begn_ptr))
-		{
-			return null;
-		}
-
-		list_node_t* be_remove_node_ptr = __iter.cur_node();
-
-		if (!be_remove_node_ptr)
-		{
-			return null;
-		}
-
 		list_node_t* removed_node_ptr = null;
 		list_node_t* new_begin_ptr = null;
 		list_node_t* new_end_ptr = null;
 
 		if (m_begn_ptr == be_remove_node_ptr)
 		{
-			new_begin_ptr = be_remove_node_ptr->get_next_node ();
+			new_begin_ptr = be_remove_node_ptr->get_next_node();
 		}
 
 		if (m_end_ptr == be_remove_node_ptr)
@@ -343,6 +331,38 @@ public:
 			}
 			--m_size;
 		}
+
+		return removed_node_ptr;
+	}
+	PFX_INLINE list_node_t* remove (iterator_t& __iter, bool bincrease = true)
+	{
+		if (__iter.get_bind_list() != &(this->m_begn_ptr))
+		{
+			return null;
+		}
+
+		list_node_t* be_remove_node_ptr = __iter.cur_node();
+
+
+		if (!be_remove_node_ptr)
+		{
+			return null;
+		}
+
+		list_node_t* removed_node_ptr = remove_unsafe(be_remove_node_ptr);
+
+		if (removed_node_ptr)
+		{
+			if (bincrease)
+			{
+				__iter.increase();
+			}
+			else
+			{
+				__iter.decrease();
+			}
+		}
+
 
 		return removed_node_ptr;
 	}
@@ -474,6 +494,88 @@ public:
 };
 
 
+struct csimple_list_node
+{
+	typedef csimple_list_node list_node_t;
+
+	csimple_list_node* 	m_prev_ptr;
+	csimple_list_node*  m_next_ptr;
+
+	csimple_list_node() : m_prev_ptr(null), m_next_ptr(null)
+	{
+		;
+	}
+	~csimple_list_node()
+	{
+		;
+	}
+
+	PFX_INLINE const list_node_t*	get_prev_node() const
+	{
+		return (const list_node_t*)(m_prev_ptr);
+	}
+	PFX_INLINE const list_node_t*	get_next_node() const
+	{
+		return (const list_node_t*)(m_next_ptr);
+	}
+	PFX_INLINE list_node_t*	get_prev_node()
+	{
+		return (list_node_t*)(m_prev_ptr);
+	}
+	PFX_INLINE list_node_t*	get_next_node()
+	{
+		return (list_node_t*)(m_next_ptr);
+	}
+	PFX_INLINE void	set_prev_node(list_node_t* PARAM_IN node_ptr)
+	{
+		m_prev_ptr = (list_node_t*)node_ptr;
+	}
+	PFX_INLINE void	set_next_node(list_node_t* PARAM_IN node_ptr)
+	{
+		m_next_ptr = (list_node_t*)node_ptr;
+	}
+};
+
+template < class __node_allocator_ >
+class csyn_list : public clinked_list < __node_allocator_ >
+{
+public:
+	typedef __node_allocator_               allocator_t;
+	typedef typename allocator_t::element_t list_node_t;
+	typedef clinked_list < allocator_t >    list_t;
+	typedef csyn_list < allocator_t >       syn_list;
+private:
+	critical_section_lock_ins_t m_lock;
+public:
+	csyn_list(){; }
+	~csyn_list()
+	{	
+		m_lock.lock();
+		list_t::dispose();
+		m_lock.unlock();
+	}
+	PFX_INLINE result_t swap(syn_list& PARAM_INOUT other_list)
+	{
+		result_t status;
+		this->lock();
+		other_list.lock();
+		status = list_t::swap(other_list);
+		other_list.unlock();
+		this->unlock();
+		return status;
+	}
+
+	PFX_INLINE result_t lock()
+	{
+		return m_lock.lock();
+	}
+	PFX_INLINE result_t unlock()
+	{
+		return m_lock.unlock();
+	}
+};
+
+
 // struct linked_list_operation
 #define LINKED_LIST_OPERATION_TEMPLATE_DEF template < class __node_type >
 #define CLST_OP linked_list_operation< __node_type >
@@ -578,6 +680,9 @@ LINKED_LIST_OPERATION_TEMPLATE_DEF
 		return removed_node_ptr;
 }
 //class clinked_list
+
+
+
 
 PECKER_END
 

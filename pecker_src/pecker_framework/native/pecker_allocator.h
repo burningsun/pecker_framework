@@ -9,11 +9,24 @@
 #define PECKER_ALLOCATOR_H_
 
 //#include "../pecker_reference.h"
-//#include <new>
+#include <new>
 #include "../pfx_defines.h"
 //#include "../data/pfx_data_traits.h"
 
 PECKER_BEGIN
+
+template< class source_type, class target_type >
+struct pecker_force_adapter
+{
+	static PFX_INLINE target_type* convert_to(source_type* PARAM_IN __src)
+	{ 
+		if (__src)
+		{
+			return new(__src)target_type();
+		}
+		return null;
+	}
+};
 
 #define PFX_ALLOCATOR_TEMPLATE_DEFINES template < class element_ >
 #define PFX_ALLOCATOR_TEMPLATE_PARAMS < element_ >
