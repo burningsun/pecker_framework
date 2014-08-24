@@ -56,7 +56,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_math.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_ref_root.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_symbiont.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_reference.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_region.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
@@ -113,7 +112,7 @@
     <None Include="..\pecker_framework\include\cmatrix4.h" />
     <None Include="..\pecker_framework\include\cmp" />
     <None Include="..\pecker_framework\include\config" />
-    <None Include="..\pecker_framework\include\cshare_object" />
+    <None Include="..\pecker_framework\include\cshare_object.h" />
     <None Include="..\pecker_framework\include\cstring_pfx.h" />
     <None Include="..\pecker_framework\include\cvector" />
     <None Include="..\pecker_framework\include\native" />

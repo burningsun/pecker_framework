@@ -174,10 +174,14 @@ public:
 	{
 		if (buffer_ptr)
 		{
-			cnative_buffer_object_gles2* native_buffer_ptr = buffer_ptr->get_native_buffer();
-			if (native_buffer_ptr)
+			cnative_buffer_object_gles2* native_buffer_ptr = buffer_ptr->ref_ptr();
+			if (native_buffer_ptr && native_buffer_ptr->get_bufferID())
 			{
-				native_buffer_ptr->update_data();
+				result_t status = native_buffer_ptr->update_data();
+				if (PFX_STATUS_OK != status)
+				{
+					return;
+				}
 
 				usize__t  vb_struct_attribcount;
 				vb_struct_attribcount = native_buffer_ptr->last_struct_attribcount();
@@ -206,26 +210,22 @@ public:
 	// vbo
 	PFX_INLINE cbuffer_object_gles2* create_buffer()
 	{
-		cbuffer_object_gles2* new_buffer_ptr = cbuffer_object_gles2::new_buffer_object();
-		cnative_buffer_object_gles2* native_buffer_ptr = null;
+		cbuffer_object_gles2* new_buffer_ptr = cbuffer_object_gles2::new_buffer();
 		if (new_buffer_ptr)
 		{
-			native_buffer_ptr = new_buffer_ptr->get_native_buffer();
-		}
-		if (native_buffer_ptr)
-		{
-			result_t status;
-			status = native_buffer_ptr->create_buffer_object();
-			if (PFX_STATUS_OK == status)
+			result_t status = PFX_STATUS_FAIL;
+			if (null != new_buffer_ptr->ref_ptr())
 			{
-				return new_buffer_ptr;
+				status = new_buffer_ptr->ref_ptr()->create_buffer_object();
+			}
+
+			if (PFX_STATUS_OK != status)
+			{
+				new_buffer_ptr->dispose_buffer();
+				new_buffer_ptr = null;
 			}
 		}
-		if (new_buffer_ptr)
-		{
-			new_buffer_ptr->release_reference();
-		}
-		return null;
+		return new_buffer_ptr;
 	}
 
 	PFX_INLINE result_t set_buffer_object(cbuffer_object_gles2* PARAM_IN buffer_ptr,
@@ -233,18 +233,13 @@ public:
 	{
 		if (buffer_ptr)
 		{
-			cnative_buffer_object_gles2* native_buffer_ptr = buffer_ptr->get_native_buffer();
-			if (native_buffer_ptr)
-			{
-				return native_buffer_ptr->update_data(rect_bit);
-			}
-			else
-			{
-				return PFX_STATUS_UNINIT;
-			}
+			RETURN_INVALID_RESULT((null == buffer_ptr->ref_ptr()), PFX_STATUS_MEM_ERR);
+			return buffer_ptr->ref_ptr()->update_data(rect_bit);
 		}
-
-		return PFX_STATUS_INVALID_PARAMS;
+		else
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}		
 	}
 
 	//////////////////////////////////////////////////////////////////////////

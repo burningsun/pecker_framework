@@ -19,6 +19,7 @@
 #include "udp_socket.h"
 #include "udp_asyn_comm.h"
 #include "pecker_stream.h"
+#include "pfx_resource_reader.h"
 
 PECKER_BEGIN
 

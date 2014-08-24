@@ -84,6 +84,9 @@
     <ClInclude Include="..\pecker_framework\render\pfx_render_allocator.h">
       <Filter>render</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_render_allocator_gles.h">
+      <Filter>render\render_system\opengles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

@@ -19,14 +19,19 @@ class chello_triangle_render_view_gles2 : public 	opengles2_activity_t::IOnRende
 	}pos_clr_t;
 private:
 	cshader_program_gles2			m_program;
-	cvertex_cache_buffer_gles2 		m_vertexattbi_buffer;
+	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
 public:
-	chello_triangle_render_view_gles2() 
+	chello_triangle_render_view_gles2() :m_vertexattbi_buffer_ptr(null)
 	{
 		;
 	}
 	virtual ~chello_triangle_render_view_gles2()
 	{
+		if (m_vertexattbi_buffer_ptr)
+		{
+			m_vertexattbi_buffer_ptr->dispose_vertex();
+			m_vertexattbi_buffer_ptr = null;
+		}
 	}
 
 	virtual void on_view(
@@ -81,8 +86,8 @@ public:
 
 		__state.set_uniform_attri(mat, mvp.reference());
 
-		__state.set_vertex_attrib_array(pos, &m_vertexattbi_buffer, 4);
-		__state.set_vertex_attrib_array(clr, &m_vertexattbi_buffer, 4, 0, sizeof(vector4f_t));
+		__state.set_vertex_attrib_array(pos, m_vertexattbi_buffer_ptr, 4);
+		__state.set_vertex_attrib_array(clr, m_vertexattbi_buffer_ptr, 4, 0, sizeof(vector4f_t));
 
 		__state.draw_arrays(GL_TRIANGLES, 0, 3);
 		__state.unbind_buffer(pos);
@@ -160,10 +165,19 @@ public:
 	virtual void on_init(window_contex_t& PARAM_OUT win_context)
 	{
 		opengles2_activity_t::IOnRenderView_t::on_init(win_context);
-		m_vertexattbi_buffer.create_cache_buffer(PFXVB_FLOAT, sizeof(pos_clr_t), 3);
+		if (null == m_vertexattbi_buffer_ptr)
+		{
+			m_vertexattbi_buffer_ptr = cvertex_cache_buffer_gles2::create_cache_buffer(PFXVB_FLOAT, sizeof(pos_clr_t), 3);
+		}
+		
+		if (null == m_vertexattbi_buffer_ptr)
+		{
+			PECKER_LOG_ERR("cvertex_cache_buffer_gles2::create_cache_buffer == null,%s", "...");
+			return;
+		}
 		buffer_bits_t lock_buffer_bits;
 		result_t status;
-		status = m_vertexattbi_buffer.lock_cache_buffer(lock_buffer_bits);
+		status = m_vertexattbi_buffer_ptr->lock_cache_buffer(lock_buffer_bits);
 		PECKER_LOG_INFO("m_vertexattbi_buffer.lock_cache_buffer status = %d", status);
 		if (PFX_STATUS_OK == status)
 		{
@@ -182,7 +196,7 @@ public:
 			}
 
 		}
-		m_vertexattbi_buffer.unlock_cache_buffer();
+		m_vertexattbi_buffer_ptr->unlock_cache_buffer();
 	}
 
 	virtual void on_log(result_t status, const char_t* str_info_ptr,

@@ -19,15 +19,26 @@ class chello_triangle_vbo_render_view_gles2 : public 	opengles2_activity_t::IOnR
 	}pos_clr_t;
 private:
 	cshader_program_gles2			m_program;
-	cvertex_cache_buffer_gles2 		m_vertexattbi_buffer;
+	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
 	cbuffer_object_gles2*			m_vertexbufferobject_ptr;
 public:
-	chello_triangle_vbo_render_view_gles2() : m_vertexbufferobject_ptr(null)
+	chello_triangle_vbo_render_view_gles2() : m_vertexbufferobject_ptr(null), m_vertexattbi_buffer_ptr(null)
 	{
 		;
 	}
 	virtual ~chello_triangle_vbo_render_view_gles2()
 	{
+		if (m_vertexattbi_buffer_ptr)
+		{
+			m_vertexattbi_buffer_ptr->dispose_vertex();
+			m_vertexattbi_buffer_ptr = null;
+		}
+
+		if (m_vertexbufferobject_ptr)
+		{
+			m_vertexbufferobject_ptr->dispose_buffer();
+			m_vertexbufferobject_ptr = null;
+		}
 	}
 
 	virtual void on_view(
@@ -83,7 +94,7 @@ public:
 		if (!m_vertexbufferobject_ptr)
 		{
 			m_vertexbufferobject_ptr = __state.create_buffer();
-			m_vertexbufferobject_ptr->set_vbo_buffer(&m_vertexattbi_buffer);
+			m_vertexbufferobject_ptr->set_vbo_buffer(m_vertexattbi_buffer_ptr);
 		}
 	
 		__state.set_vertex_attrib_array(pos, m_vertexbufferobject_ptr, 4);
@@ -159,7 +170,7 @@ public:
 		if (m_vertexbufferobject_ptr)
 		{
 			PECKER_LOG_INFO("m_vertexbufferobject_ptr = %08X",(long_t)m_vertexbufferobject_ptr);
-			m_vertexbufferobject_ptr->release_reference();
+			m_vertexbufferobject_ptr->dispose_buffer();
 			m_vertexbufferobject_ptr = null;
 			PECKER_LOG_INFO("m_vertexbufferobject_ptr->release_reference()(%lld)",__escape_time);
 		}
@@ -173,10 +184,19 @@ public:
 	virtual void on_init(window_contex_t& PARAM_OUT win_context)
 	{
 		opengles2_activity_t::IOnRenderView_t::on_init(win_context);
-		m_vertexattbi_buffer.create_cache_buffer(PFXVB_FLOAT, sizeof(pos_clr_t), 3);
+		if (null == m_vertexattbi_buffer_ptr)
+		{
+			m_vertexattbi_buffer_ptr = cvertex_cache_buffer_gles2::create_cache_buffer(PFXVB_FLOAT, sizeof(pos_clr_t), 3);
+		}
+		if (null == m_vertexattbi_buffer_ptr)
+		{
+			PECKER_LOG_ERR("cvertex_cache_buffer_gles2::create_cache_buffer == null,%s", "...");
+			return;
+		}
+		
 		buffer_bits_t lock_buffer_bits;
 		result_t status;
-		status = m_vertexattbi_buffer.lock_cache_buffer(lock_buffer_bits);
+		status = m_vertexattbi_buffer_ptr->lock_cache_buffer(lock_buffer_bits);
 		PECKER_LOG_INFO("m_vertexattbi_buffer.lock_cache_buffer status = %d", status);
 		if (PFX_STATUS_OK == status)
 		{
@@ -195,7 +215,7 @@ public:
 			}
 
 		}
-		m_vertexattbi_buffer.unlock_cache_buffer();
+		m_vertexattbi_buffer_ptr->unlock_cache_buffer();
 	}
 
 	virtual void on_log(result_t status, const char_t* str_info_ptr,

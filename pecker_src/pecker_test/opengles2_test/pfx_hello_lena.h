@@ -22,17 +22,30 @@ class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 	}pos_texpos_t;
 private:
 	cshader_program_gles2			m_program;
-	cvertex_cache_buffer_gles2 		m_vertexattbi_buffer;
+	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
+	cbuffer_object_gles2*			m_vertexbufferobject_ptr;
 	image_data_t m_img;
 	cImage m_cimg;
 	GLuint m_texture2D;
 public:
-	chello_lena_view_gles2() :m_texture2D(0)
+	chello_lena_view_gles2() :m_texture2D(0), m_vertexattbi_buffer_ptr(null), 
+		m_vertexbufferobject_ptr(null)
 	{
 		;
 	}
 	virtual ~chello_lena_view_gles2()
 	{
+		if (m_vertexattbi_buffer_ptr)
+		{
+			m_vertexattbi_buffer_ptr->dispose_vertex();
+			m_vertexattbi_buffer_ptr = null;
+		}
+
+		if (m_vertexbufferobject_ptr)
+		{
+			m_vertexbufferobject_ptr->dispose_buffer();
+			m_vertexbufferobject_ptr = null;
+		}
 	}
 
 	virtual void on_view(
@@ -87,8 +100,16 @@ public:
 
 		__state.set_uniform_attri(mat, mvp.reference());
 
-		__state.set_vertex_attrib_array(pos, &m_vertexattbi_buffer, 4);
-		__state.set_vertex_attrib_array(texcoord, &m_vertexattbi_buffer, 2, 0, sizeof(vector4f_t));
+		if (!m_vertexbufferobject_ptr)
+		{
+			m_vertexbufferobject_ptr = __state.create_buffer();
+			m_vertexbufferobject_ptr->set_vbo_buffer(m_vertexattbi_buffer_ptr);
+		}
+		__state.set_vertex_attrib_array(pos, m_vertexbufferobject_ptr, 4);
+		__state.set_vertex_attrib_array(texcoord, m_vertexbufferobject_ptr, 4, 0, sizeof(vector4f_t));
+
+		//__state.set_vertex_attrib_array(pos, m_vertexattbi_buffer_ptr, 4);
+		//__state.set_vertex_attrib_array(texcoord, m_vertexattbi_buffer_ptr, 2, 0, sizeof(vector4f_t));
 
 
 		glActiveTexture(GL_TEXTURE0);
@@ -227,6 +248,12 @@ public:
 			glDeleteTextures(1, &m_texture2D);
 			m_texture2D = 0;
 		}
+
+		if (m_vertexbufferobject_ptr)
+		{
+			m_vertexbufferobject_ptr->dispose_buffer();
+			m_vertexbufferobject_ptr = null;
+		}
 	}
 
 
@@ -234,10 +261,19 @@ public:
 	virtual void on_init(window_contex_t& PARAM_OUT win_context)
 	{
 		opengles2_activity_t::IOnRenderView_t::on_init(win_context);
-		m_vertexattbi_buffer.create_cache_buffer(PFXVB_FLOAT, sizeof(pos_texpos_t), 4);
+		if (null == m_vertexattbi_buffer_ptr)
+		{
+			m_vertexattbi_buffer_ptr = cvertex_cache_buffer_gles2::create_cache_buffer(PFXVB_FLOAT, sizeof(pos_texpos_t), 4);
+		}
+		if (null == m_vertexattbi_buffer_ptr)
+		{
+			PECKER_LOG_ERR("cvertex_cache_buffer_gles2::create_cache_buffer == null,%s", "...");
+			return;
+		}
+		
 		buffer_bits_t lock_buffer_bits;
 		result_t status;
-		status = m_vertexattbi_buffer.lock_cache_buffer(lock_buffer_bits);
+		status = m_vertexattbi_buffer_ptr->lock_cache_buffer(lock_buffer_bits);
 		PECKER_LOG_INFO("m_vertexattbi_buffer.lock_cache_buffer status = %d", status);
 		if (PFX_STATUS_OK == status)
 		{
@@ -259,7 +295,7 @@ public:
 			}
 
 		}
-		m_vertexattbi_buffer.unlock_cache_buffer();
+		m_vertexattbi_buffer_ptr->unlock_cache_buffer();
 	}
 
 	virtual void on_log(result_t status, const char_t* str_info_ptr,

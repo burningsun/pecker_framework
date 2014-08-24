@@ -420,6 +420,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/data/pfx_math_table.h</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/data/pfx_ref_root.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/data/pfx_ref_root.h</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/data/pfx_reference.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/data/pfx_reference.h</locationURI>
@@ -448,11 +453,6 @@
 			<name>jni/pecker_framework/data/pfx_string_compare.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/data/pfx_string_compare.h</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_framework/data/pfx_symbiont.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/data/pfx_symbiont.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/data/pfx_util.h</name>
@@ -933,6 +933,11 @@
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/render/render_system/opengles2/pfx_render_allocator_gles.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_render_allocator_gles.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_render_state_gles.cpp</name>

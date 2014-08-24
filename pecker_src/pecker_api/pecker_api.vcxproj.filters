@@ -291,9 +291,6 @@
     <ClInclude Include="..\pecker_framework\native\pfx_zip_file.h">
       <Filter>native</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_symbiont.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_ref_root.h">
       <Filter>data</Filter>
     </ClInclude>
@@ -315,9 +312,6 @@
     <None Include="..\pecker_framework\include\cmp">
       <Filter>include</Filter>
     </None>
-    <None Include="..\pecker_framework\include\cshare_object">
-      <Filter>include</Filter>
-    </None>
     <None Include="..\pecker_framework\include\cvector">
       <Filter>include</Filter>
     </None>
@@ -334,6 +328,9 @@
       <Filter>include</Filter>
     </None>
     <None Include="..\pecker_framework\include\cstring_pfx.h">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\cshare_object.h">
       <Filter>include</Filter>
     </None>
   </ItemGroup>

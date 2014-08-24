@@ -15,6 +15,8 @@
 #include "../native/pecker_allocator.h"
 #include <new>
 
+#undef REF_LOG_STR
+#undef REF_LOG_INFO
 #ifdef REF_DEBUG
 #include "../native/pfx_log.h"
 #define REF_LOG_STR PECKER_LOG_STR
@@ -32,9 +34,11 @@ struct cref_node
 {
 	typedef __node_name_ list_node_t;
 
-	cref_node* 	m_prev_ptr;
-	cref_node*  m_next_ptr;
-	__ref_obj*  m_ref_ptr;
+protected:
+	list_node_t* m_prev_ptr;
+	list_node_t* m_next_ptr;
+public:
+	__ref_obj*   m_ref_ptr;
 
 	cref_node() : m_prev_ptr(null), m_next_ptr(null), m_ref_ptr(null)
 	{
@@ -54,27 +58,27 @@ struct cref_node
 
 	PFX_INLINE const list_node_t*	get_prev_node() const
 	{
-		return (const list_node_t*)(m_prev_ptr);
+		return m_prev_ptr;
 	}
 	PFX_INLINE const list_node_t*	get_next_node() const
 	{
-		return (const list_node_t*)(m_next_ptr);
+		return m_next_ptr;
 	}
 	PFX_INLINE list_node_t*	get_prev_node()
 	{
-		return (list_node_t*)(m_prev_ptr);
+		return m_prev_ptr;
 	}
 	PFX_INLINE list_node_t*	get_next_node()
 	{
-		return (list_node_t*)(m_next_ptr);
+		return m_next_ptr;
 	}
 	PFX_INLINE void	set_prev_node(list_node_t* PARAM_IN node_ptr)
 	{
-		m_prev_ptr = (list_node_t*)node_ptr;
+		m_prev_ptr = node_ptr;
 	}
 	PFX_INLINE void	set_next_node(list_node_t* PARAM_IN node_ptr)
 	{
-		m_next_ptr = (list_node_t*)node_ptr;
+		m_next_ptr = node_ptr;
 	}
 };
 
@@ -91,8 +95,21 @@ struct ref_pool_memanger
 
 	typedef __ref_allocator ref_alloctor_t;
 	typedef typename ref_alloctor_t::element_t ref_t;
+	typedef ref_pool_memanger< __ref_node_allocator, __ref_allocator > ref_pool_memanger_t;
 
-	static PFX_INLINE ref_node_t* new_node()
+	list_t m_mem_pool;
+	list_t m_ref_pool;
+
+	PFX_INLINE result_t  dispose_node(ref_node_t*& PARAM_INOUT __obj_node_ptr)
+	{
+		return ref_pool_memanger_t::dispose_node(m_mem_pool, m_ref_pool, __obj_node_ptr);
+	}
+	PFX_INLINE ref_node_t* new_share(ref_node_t* PARAM_INOUT __obj_node_ptr)
+	{
+		return ref_pool_memanger_t::new_share(m_mem_pool, m_ref_pool, __obj_node_ptr);
+	}
+
+	static PFX_INLINE ref_node_t* create_node()
 	{
 		ref_node_t* new_node_ptr = null;
 		new_node_ptr = node_alloc_t::allocate_object();
@@ -110,6 +127,10 @@ struct ref_pool_memanger
 		{
 			__mem_pool.lock();
 			new_node_ptr = __mem_pool.pop_back();
+			// 后面的dispose_node会调用析构函数，所以导致内存池里面捞出来的对象，虚表缺失
+			// 该静态函数主要用于解决构造函数是private的情况下，对现有内存的构造
+			ref_node_t::reinit(new_node_ptr);
+			
 			__mem_pool.unlock();
 		}
 		else
@@ -159,7 +180,7 @@ struct ref_pool_memanger
 		else
 		{
 			__ref_pool.unlock();
-			
+			status = PFX_STATUS_OK;
 			gc_ptr = __obj_node_ptr;
 			__del_ref = gc_ptr->m_ref_ptr;
 			gc_ptr->m_ref_ptr = null;
@@ -210,10 +231,78 @@ struct ref_pool_memanger
 	}
 };
 
+
+// 由于部分编译器，对于模板使用预定义的类型会出现语法错误，所以使用c常用的宏代替
+// 这部分的设计，当然为了调试方便，下面的代码都做得很精简，功能性代码都封装起来
+
+// 主要这蛋疼玩意是为了兼容像gcc 4.6以下无法直接friend typedef类型的编译器
+#define DECLARE_BE_REF_POOL_MEMANGER_FRIEND(REF_NODE_ALLOC, REF_ALLOC) \
+	friend struct ref_pool_memanger< REF_NODE_ALLOC, REF_ALLOC >; \
+	friend class  clinked_list < REF_NODE_ALLOC >; \
+	friend class  clinked_list_iterator< REF_NODE_ALLOC::element_t >; \
+	friend struct linked_list_operation< REF_NODE_ALLOC::element_t >; \
+
+//friend REF_NODE_ALLOC::element_t* ref_pool_memanger< REF_NODE_ALLOC, REF_ALLOC >::create_node(); \
+
+// 公共继承， cref_node内的东西可以随便访问
 #define  DECLARE_REF_NODE_CLASS_BEGIN(THIS_CLASS_NAME,NATIVE_REF,INTERFACE_NAME,BASE_NAME)	\
 class THIS_CLASS_NAME : public cref_node< NATIVE_REF, THIS_CLASS_NAME >, \
 	public INTERFACE_NAME{ \
 protected: typedef cref_node< NATIVE_REF, THIS_CLASS_NAME > BASE_NAME; \
+public: PFX_INLINE NATIVE_REF* ref_ptr() \
+{                                         \
+	return BASE_NAME::m_ref_ptr;          \
+}										  \
+public: PFX_INLINE const NATIVE_REF* ref_ptr() const\
+{                                         \
+	return BASE_NAME::m_ref_ptr;          \
+}\
+public: static PFX_INLINE THIS_CLASS_NAME* reinit(THIS_CLASS_NAME* PARAM_INOUT __ptr)\
+{								  \
+if (__ptr && null == __ptr->ref_ptr())   \
+   {								\
+      new(__ptr)THIS_CLASS_NAME(); \
+   }								\
+  return __ptr;						\
+}									\
+
+// 保护继承， cref_node内的东西只能自己，派生类，和友元访问
+#define  DECLARE_REF_NODE_CLASS_PROTECTED_BEGIN(THIS_CLASS_NAME,NATIVE_REF,INTERFACE_NAME,BASE_NAME,REF_NODE_ALLOC,REF_ALLOC)	\
+class THIS_CLASS_NAME : protected cref_node< NATIVE_REF, THIS_CLASS_NAME >, \
+	public INTERFACE_NAME{ \
+protected: typedef cref_node< NATIVE_REF, THIS_CLASS_NAME > BASE_NAME; \
+public:	DECLARE_BE_REF_POOL_MEMANGER_FRIEND(REF_NODE_ALLOC, REF_ALLOC); \
+public: PFX_INLINE NATIVE_REF* ref_ptr() \
+{                                         \
+	return BASE_NAME::m_ref_ptr;          \
+}										  \
+public: PFX_INLINE const NATIVE_REF* ref_ptr() const\
+{                                         \
+	return BASE_NAME::m_ref_ptr;          \
+}\
+public: static PFX_INLINE THIS_CLASS_NAME* reinit(THIS_CLASS_NAME* PARAM_INOUT __ptr)\
+{								  \
+if (__ptr && null == __ptr->ref_ptr())   \
+   {								\
+   new(__ptr)THIS_CLASS_NAME(); \
+}								\
+	return __ptr;						\
+}									\
+
+//// 保护继承， cref_node内的东西只能自己，派生类，和友元访问
+//#define  DECLARE_REF_NODE_CLASS_PROTECTED_BEGINx(THIS_CLASS_NAME,NATIVE_REF,INTERFACE_NAME,BASE_NAME,REF_NODE_ALLOC,REF_ALLOC)	\
+//class THIS_CLASS_NAME : protected cref_node< NATIVE_REF, THIS_CLASS_NAME >, \
+//	public INTERFACE_NAME{ \
+//protected: typedef cref_node< NATIVE_REF, THIS_CLASS_NAME > BASE_NAME; \
+//public:	DECLARE_BE_REF_POOL_MEMANGER_FRIEND(REF_NODE_ALLOC, REF_ALLOC); \
+//public: PFX_INLINE NATIVE_REF* ref_ptr() \
+//{                                         \
+//	return BASE_NAME::m_ref_ptr;          \
+//}										  \
+//public: PFX_INLINE const NATIVE_REF* ref_ptr() const\
+//{                                         \
+//	return BASE_NAME::m_ref_ptr;          \
+//}\
 
 #define DECLARE_REF_NODE_CLASS_END };
 
@@ -222,12 +311,9 @@ protected: typedef cref_node< NATIVE_REF, THIS_CLASS_NAME > BASE_NAME; \
 #define DECLARE_FRIEND_CLASS(FRIEND_CLASS)\
 	friend FRIEND_CLASS;
 
-#define DECLARE_NATIVE_REF_MEMBER(NODE_ALLOCATOR)\
-	csyn_list < NODE_ALLOCATOR > m_mem_list; \
-	csyn_list < NODE_ALLOCATOR > m_ref_list;
-
-#define DEFINE_NATIVE_REF_POOL(REF_NODE_ALLOC, REF_ALLOC)\
-	typedef ref_pool_memanger< REF_NODE_ALLOC, REF_ALLOC >	 ref_pool_memanger_t;
+#define DEFINE_NATIVE_REF_POOL(REF_NODE_ALLOC, REF_ALLOC, M_POOL_NAME)\
+	typedef ref_pool_memanger< REF_NODE_ALLOC, REF_ALLOC >	 ref_pool_memanger_t; \
+	protected: ref_pool_memanger_t M_POOL_NAME; \
 
 #define DECLARE_NATIVE_CREATE_NEW_NODE(NODE_NAME,FUNC_NAME)	\
 	static PFX_INLINE NODE_NAME * FUNC_NAME();
@@ -235,25 +321,25 @@ protected: typedef cref_node< NATIVE_REF, THIS_CLASS_NAME > BASE_NAME; \
 #define STATIC_NATIVE_CREATE_NEW_NODE(NATIVE_NAME,NODE_NAME,FUNC_NAME) \
 	PFX_INLINE NODE_NAME * NATIVE_NAME::FUNC_NAME() \
 { \
-	return ref_pool_memanger_t::new_node(); \
+	return ref_pool_memanger_t::create_node(); \
 }  \
 
 #define DECLARE_NATIVE_CREATE_SHARE_NODE(NODE_NAME,FUNC_NAME)	\
 	PFX_INLINE NODE_NAME * FUNC_NAME(NODE_NAME* PARAM_INOUT in_ptr);
 
-#define NATIVE_CREATE_SHARE_NODE(NATIVE_NAME,NODE_NAME,FUNC_NAME)	\
+#define NATIVE_CREATE_SHARE_NODE(NATIVE_NAME,NODE_NAME,FUNC_NAME,M_POOL_NAME)	\
 	NODE_NAME* NATIVE_NAME::FUNC_NAME(NODE_NAME* PARAM_INOUT in_ptr) \
 {										   \
-	return ref_pool_memanger_t::new_share(m_mem_list, m_ref_list, in_ptr); \
+	return M_POOL_NAME.new_share(in_ptr); \
 }										   \
 
 #define DECLARE_NATIVE_DISPOSE_SHARE_NODE(NODE_NAME,FUNC_NAME)	\
 	PFX_INLINE result_t FUNC_NAME(NODE_NAME* PARAM_INOUT in_ptr) \
 
-#define NATIVE_DISPOSE_SHARE_NODE(NATIVE_NAME,NODE_NAME,FUNC_NAME)	\
+#define NATIVE_DISPOSE_SHARE_NODE(NATIVE_NAME,NODE_NAME,FUNC_NAME,M_POOL_NAME)	\
 	result_t NATIVE_NAME::FUNC_NAME(NODE_NAME* PARAM_INOUT in_ptr) \
 {										   \
-	return ref_pool_memanger_t::dispose_node(m_mem_list, m_ref_list, in_ptr); \
+	return M_POOL_NAME.dispose_node(in_ptr); \
 }			 \
 
 // NODE

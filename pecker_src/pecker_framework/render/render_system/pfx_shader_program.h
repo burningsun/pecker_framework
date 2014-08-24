@@ -9,7 +9,7 @@
 #define		PFX_SHADER_PROGRAM_H_
 
 #include "../../include/config"
-#include "../../include/cshare_object"
+#include "../../include/cshare_object.h"
 #include "../../Include/cstring_pfx.h"
 #include "../pfx_render_allocator.h"
 

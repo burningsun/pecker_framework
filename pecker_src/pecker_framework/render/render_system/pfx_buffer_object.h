@@ -9,7 +9,7 @@
 #define		PFX_BUFFER_OBJECT_H_
 
 #include "../../include/config"
-#include "../../include/cshare_object"
+#include "../../include/cshare_object.h"
 #include "../pfx_render_defs.h"
 
 
@@ -61,18 +61,17 @@ typedef enum  enumVexValueType
 
 PFX_Interface IPfx_vertex_cache_buffer
 {
+	virtual ~IPfx_vertex_cache_buffer(){ ; }
+
 	virtual result_t	lock_cache_buffer(buffer_bits_t& PARAM_INOUT bits, 
 											const buffer_rect_t* PARAM_IN lock_rect_ptr = null) = 0;
 	virtual result_t	unlock_cache_buffer () = 0;
-
-	virtual IPfx_vertex_cache_buffer* modify_object() = 0;
 	
-	virtual result_t	create_cache_buffer(enum_int_t __value_type, 
-											usize__t vb_struct_size, 
-											usize__t vb_struct_count) = 0;
+	virtual result_t reset_cache_buffer
+		(enum_int_t __value_type, usize__t vb_struct_size, 
+		usize__t vb_struct_count) = 0;
 	
 	virtual usize__t	vb_struct_attribcount() const = 0;
-	
 	virtual usize__t	get_vb_struct_size() const = 0;
 	virtual enum_int_t	get_value_type() const = 0;//PFX_VEXBUFFER_VALUE_TYPE_t
 
@@ -80,7 +79,8 @@ PFX_Interface IPfx_vertex_cache_buffer
 
 	virtual u64_t get_version() const = 0;
 
-	virtual void		release_reference() = 0;
+	virtual IPfx_vertex_cache_buffer* new_share() = 0;
+	virtual result_t dispose_vertex() = 0;
 };
 
 
@@ -90,14 +90,16 @@ PFX_Interface PFX_RENDER_SYSTEM_API IPfx_buffer_object
 {
 	virtual ~IPfx_buffer_object(){ ; }
 	virtual IPfx_buffer_object* diff_cache_object() = 0;
+
 	virtual result_t set_vbo_buffer(IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr) = 0;
 	virtual result_t set_vbo_type(enum_int_t vbo_type // PFX_BUFFER_OBJECT_TYPE_t
 		) = 0;
 	virtual result_t set_vbo_usage_type(enum_int_t usage_type //PFX_BUFFER_USAGE_TYPE_t
 		) = 0;
-	virtual void release_reference() = 0;
-
 	virtual long_t get_native_location() const = 0;
+
+	virtual IPfx_buffer_object* new_share() = 0;
+	virtual result_t dispose_buffer() = 0;
 
 };
 
