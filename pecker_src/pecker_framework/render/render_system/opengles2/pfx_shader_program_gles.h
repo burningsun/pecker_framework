@@ -11,7 +11,20 @@
 #include <GLES2/gl2.h>
 #include "../pfx_shader_program.h"
 #include "../../../pfx_hal_info_gles2.h"
+#include "../../../Include/native"
+#include "pfx_render_allocator_gles.h"
 
+#define RPROGRAM_DEBUG
+#undef  RPROGRAM_LOG_STR
+#undef  RPROGRAM_LOG_INFO
+#ifdef  RPROGRAM_DEBUG
+
+#define RPROGRAM_LOG_STR PECKER_LOG_STR
+#define RPROGRAM_LOG_INFO PECKER_LOG_INFO
+#else
+#define RPROGRAM_LOG_STR(...)
+#define RPROGRAM_LOG_INFO(...)
+#endif
 
 
 PECKER_BEGIN
@@ -42,19 +55,36 @@ public:
 	static u64_t get_version();
 };
 
-template <const GLenum SHADER_TYPE >
-class PFX_RENDER_SYSTEM_API cnative_shader_gles2
+
+class PFX_RENDER_SYSTEM_API native_shader_gles2
 {
+	DECLARE_FRIEND_CLASS(class shader_gles2);
+	DECLARE_FRIEND_CLASS(SHADER_ALLOC_GLES2);
+
+	DEFINE_NATIVE_REF_POOL(SHADER_NODE_ALLOC_GLES2, SHADER_ALLOC_GLES2, m_ref_pool);
+
+protected:
+	DECLARE_NATIVE_CREATE_NEW_NODE(shader_gles2, create_shader_node);
+	DECLARE_NATIVE_CREATE_SHARE_NODE(shader_gles2, share_shader_node);
+	DECLARE_NATIVE_DISPOSE_SHARE_NODE(shader_gles2, dispose_shader_node);
 protected:
 	typedef cavl_bst_node < shader_param_t > shader_param_node_t;
 
 private:
 	GLuint m_shaderID;
+	PFX_SHADER_TYPE_t m_shaderTYPE;
+	
+private:
+	native_shader_gles2() :m_shaderID(0),
+		m_shaderTYPE(PFXST_UNKOWN_SHADER)
+	{
+		RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this);
+	}
 public:
-	cnative_shader_gles2() :m_shaderID(0){ ; }
-	~cnative_shader_gles2()
+	virtual ~native_shader_gles2()
 	{
 		dispose();
+		RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this);
 	}
 public:
 	PFX_INLINE GLuint get_shader_id() const
@@ -65,11 +95,27 @@ public:
 	{
 		cshader_method_gles2::dispose_shader(m_shaderID);
 	}
-protected:
-
-
 public:
-	PFX_INLINE long_t compile_shader(const char_t* PARAM_IN str_shader_codes,
+	static PFX_INLINE bool check_shader_type(enum_int_t shader_type)
+	{
+		return (PFXST_VERTEXT_SHADER == shader_type || PFXST_PIXEL_SHADER == shader_type);
+	}
+	PFX_INLINE result_t set_shader_type(enum_int_t shader_type)
+	{
+		RETURN_INVALID_RESULT(m_shaderID, PFX_STATUS_DENIED);
+
+		result_t status = PFX_STATUS_INVALID_PARAMS;
+		if (!m_shaderID &&
+			check_shader_type(shader_type))
+		{
+			m_shaderTYPE = (PFX_SHADER_TYPE_t)shader_type;
+			status = PFX_STATUS_OK;
+		}
+		return status;
+	}
+	
+	PFX_INLINE long_t compile_shader(
+		const char_t* PARAM_IN str_shader_codes,
 		usize__t buf_size,
 		result_t& status,
 		GLsizei source_count = 1)
@@ -79,8 +125,23 @@ public:
 			status = PFX_STATUS_OPENED;
 			return m_shaderID;
 		}
+
+		GLenum shader_type;
+		switch (m_shaderTYPE)
+		{
+		case PFXST_VERTEXT_SHADER:
+			shader_type = GL_VERTEX_SHADER;
+			break;
+		case PFXST_PIXEL_SHADER:
+			shader_type = GL_FRAGMENT_SHADER;
+			break;
+		default:
+			status = PFX_STATUS_UNINIT;
+			return 0;
+		}
+
 		m_shaderID = cshader_method_gles2::compile_shader
-			(SHADER_TYPE, str_shader_codes, (GLint*)&buf_size, (GLint&)status, source_count);
+			(shader_type, str_shader_codes, (GLint*)&buf_size, (GLint&)status, source_count);
 		return m_shaderID;
 	}
 
@@ -89,128 +150,84 @@ public:
 		return  m_shaderID;
 	}
 
-	static PFX_INLINE enum_int_t get_type();
-	static PFX_INLINE u64_t		get_version() 
+	PFX_INLINE enum_int_t get_type() const
+	{
+		return m_shaderTYPE;
+	}
+	static PFX_INLINE u64_t		get_version()
 	{
 		return cshader_method_gles2::get_version();
 	}
 };
 
-template <const GLenum SHADER_TYPE >
-PFX_INLINE enum_int_t cnative_shader_gles2< SHADER_TYPE >::get_type()  //PFX_SHADER_TYPE_t
-{
-	return PFXST_UNKOWN_SHADER;
-}
 
-template<>
-PFX_INLINE enum_int_t cnative_shader_gles2< GL_VERTEX_SHADER >::get_type()
-{
-	return PFXST_VERTEXT_SHADER;
-}
-template<>
-PFX_INLINE enum_int_t cnative_shader_gles2< GL_FRAGMENT_SHADER >::get_type()
-{
-	return PFXST_PIXEL_SHADER;
-}
+class PFX_RENDER_SYSTEM_API shader_gles2;
 
-typedef cnative_shader_gles2< GL_VERTEX_SHADER >	cnative_vertex_shder_gles2_t;
-typedef cnative_shader_gles2< GL_FRAGMENT_SHADER >	cnative_pixel_shder_gles2_t;
+DECLARE_REF_NODE_CLASS_PROTECTED_BEGIN(shader_gles2,
+native_shader_gles2, Ipfx_shader, base_t,
+shader_node_alloc_gles2_t,
+native_shader_gles2_t)
 
-template <const GLenum SHADER_TYPE >
-class  PFX_RENDER_SYS_TEMPLATE_API cshader_gles2 : public creference_base< cnative_shader_gles2< SHADER_TYPE > >,
-					public Ipfx_shader
-{
+DECLARE_FRIEND_CLASS(class native_shader_gles2);
+DECLARE_FRIEND_CLASS(SHADER_NODE_ALLOC_GLES2);
+
+//
 public:
-	typedef cshader_gles2< SHADER_TYPE >  cshader_gles2_t;
-protected:
-	typedef cnative_shader_gles2< SHADER_TYPE > ref_element_t;
-	typedef creference_base< cnative_shader_gles2< SHADER_TYPE > > ref_t;
-	typedef typename ref_t::element_t element_t;
-	typedef  new_reference_method< cshader_gles2_t > new_t;
+	DECLARE_REF_CREATE_NEW_NODE(shader_gles2, new_shader);
+	DECLARE_REF_CREATE_SHARE_NODE(shader_gles2, new_share_shader);
+	DECLARE_REF_DISPOSE_SHARE_NODE(shader_gles2, dispose_shader);
+private:
+	shader_gles2(){ RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this); }
 public:
-	static PFX_INLINE cshader_gles2_t* new_shader()
-	{
-		return new_t::new_reference();
-	}
+	virtual ~shader_gles2(){ dispose_shader(); RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this); };
+	
 public:
-	PFX_INLINE ref_element_t* get_native_shader()
-	{
-		return 	ref_t::get_reference();
-	}
-	PFX_INLINE long_t	compile_shader(const char_t* PARAM_IN str_shader_codes,
+	static shader_gles2* new_shader(enum_int_t shader_type);
+	
+	long_t	compile_shader(const char_t* PARAM_IN str_shader_codes,
 		usize__t buf_size,
 		result_t& status,
 		usize__t source_count = 1,
-		const void* PARAM_IN param_ptr = null)
+		const void* PARAM_IN param_ptr = null);
+	
+	long_t	get_native_handle();
+	enum_int_t	get_type() const;
+	u64_t		get_version() const;
+
+	PFX_INLINE Ipfx_shader* new_share()
 	{
-		release_reference();
-		ref_element_t* ref_ptr = ref_t::create_ref_element();
-		if (ref_ptr)
-		{
-			return ref_ptr->compile_shader(str_shader_codes, buf_size, status, source_count);
-		}
-		else
-		{
-			return PFX_STATUS_UNINIT;
-		}
-	}
-	PFX_INLINE long_t	get_native_handle()
-	{
-		ref_element_t* ref_ptr = ref_t::get_reference();
-		if (ref_ptr)
-		{
-			return ref_ptr->get_native_handle();
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	PFX_INLINE enum_int_t	get_type() const
-	{
-		return ref_element_t::get_type();
-	}
-	PFX_INLINE u64_t get_version() const
-	{
-		return ref_element_t::get_version();
-	}
-	PFX_INLINE void	 release_reference()
-	{
-		ref_t::release_reference();
+		return new_shader();
 	}
 
-protected:
-	PFX_INLINE ref_element_t* create_element()
-	{
-		return new ref_element_t;
-	}
-	PFX_INLINE result_t dispose_element(element_t*& elem_ptr)
-	{
-		if (elem_ptr)
-		{
-			delete elem_ptr;
-			elem_ptr = null;
-		}
-		return PFX_STATUS_OK;
-	}
-};
+DECLARE_REF_NODE_CLASS_END
 
-typedef cshader_gles2< GL_VERTEX_SHADER >	cvertex_shader_gles2_t;
-typedef cshader_gles2< GL_FRAGMENT_SHADER >	cpixel_shder_gles2_t;
+//////////////////////////////////////////////////////////////////////////
+STATIC_NATIVE_CREATE_NEW_NODE(native_shader_gles2, shader_gles2, create_shader_node);
+NATIVE_CREATE_SHARE_NODE(native_shader_gles2, shader_gles2, share_shader_node, m_ref_pool);
+NATIVE_DISPOSE_SHARE_NODE(native_shader_gles2, shader_gles2, dispose_shader_node, m_ref_pool);
+//////////////////////////////////////////////////////////////////////////
+STATIC_REF_CREATE_NEW_NODE(native_shader_gles2, shader_gles2,
+	new_shader, create_shader_node);
+REF_CREATE_SHARE_NODE(base_t, shader_gles2, new_share_shader, share_shader_node);
+REF_DISPOSE_SHARE_NODE(base_t, shader_gles2, dispose_shader, dispose_shader_node);
 
 
 
 #define INVALID_SHADER (-1)
-class PFX_RENDER_SYSTEM_API cnative_shader_program_gles2
+class PFX_RENDER_SYSTEM_API native_shader_program_gles2
 {
+	DECLARE_FRIEND_CLASS(class shader_program_gles2);
+	DECLARE_FRIEND_CLASS(SHADER_PROGRAM_ALLOC_GLES2);
+	DEFINE_NATIVE_REF_POOL(SHADER_PROGRAM_NODE_ALLOC_GLES2, SHADER_PROGRAM_ALLOC_GLES2, m_ref_pool);
+protected:
+	DECLARE_NATIVE_CREATE_NEW_NODE(shader_program_gles2, create_program_node);
+	DECLARE_NATIVE_CREATE_SHARE_NODE(shader_program_gles2, share_program_node);
+	DECLARE_NATIVE_DISPOSE_SHARE_NODE(shader_program_gles2, dispose_program_node);
 private:
-	GLuint					m_programID;
-	cpixel_shder_gles2_t	m_pixel_shader;
-	cvertex_shader_gles2_t	m_vertex_shader;
+	GLuint			m_programID;
+	shader_gles2*	m_pixel_shader_ptr;
+	shader_gles2*	m_vertex_shader_ptr;
 public:
-
-
-
 	typedef cavl_bst_node < shader_param_t >					shader_param_node_t;
 	typedef compare_two_node< shader_param_node_t, 
 		shader_param_node_t, compare_shader_param_t >			node_cmp_t;
@@ -223,9 +240,6 @@ public:
 	typedef BST_find_elementx< tree_t,
 		const char_t*,
 		compare_shader_param_exchr_t >							find_chr_t;
-
-
-
 public:
 	static  usize__t  get_program_info_lengh(GLuint __program_id);
 
@@ -233,13 +247,7 @@ public:
 		char_t* log_info_buff_ptr,
 		usize__t log_buff_size);
 protected:
-
-
-
 	tree_t	m_shader_param_table;
-
-
-
 	result_t  parse_shader_param_table();
 	result_t  modify_shader_param_table
 		(enum_int_t param_type,
@@ -251,31 +259,14 @@ public:
 	{
 		return m_shader_param_table;
 	}
+private:
+	 native_shader_program_gles2();
 public:
-	 cnative_shader_program_gles2();
-	 ~cnative_shader_program_gles2();
+	 virtual ~native_shader_program_gles2();
 public:
-	PFX_INLINE result_t attach_pixel_shader(cpixel_shder_gles2_t* PARAM_INOUT shader_ptr)
-	{
-		if (!shader_ptr)
-		{
-			return PFX_STATUS_INVALID_PARAMS;
-		}
-		//m_pixel_shader.release_reference();
-		shader_ptr->share_to(&m_pixel_shader);
-		return PFX_STATUS_OK;
-	}
-	PFX_INLINE result_t attach_vertex_shader(cvertex_shader_gles2_t* PARAM_INOUT shader_ptr)
-	{
-		if (!shader_ptr)
-		{
-			return PFX_STATUS_INVALID_PARAMS;
-		}
-		//m_vertex_shader.release_reference();
-		shader_ptr->share_to(&m_vertex_shader);
-		return PFX_STATUS_OK;
-	}
-	result_t  compile_program();
+	result_t attach_pixel_shader(shader_gles2* PARAM_INOUT shader_ptr);
+	result_t attach_vertex_shader(shader_gles2* PARAM_INOUT shader_ptr);
+	result_t compile_program();
 
 	void  dispose();
 public:
@@ -299,11 +290,11 @@ public:
 		{
 			if (PFXST_VERTEXT_SHADER == shader_ptr->get_type())
 			{
-				return attach_vertex_shader(DYNAMIC_CAST(cvertex_shader_gles2_t*)(shader_ptr));
+				return attach_vertex_shader(DYNAMIC_CAST(shader_gles2*)(shader_ptr));
 			}
 			else if (PFXST_PIXEL_SHADER == shader_ptr->get_type())
 			{
-				return attach_pixel_shader(DYNAMIC_CAST(cpixel_shder_gles2_t*)(shader_ptr));
+				return attach_pixel_shader(DYNAMIC_CAST(shader_gles2*)(shader_ptr));
 			}
 		}
 		return PFX_STATUS_INVALID_PARAMS;
@@ -313,64 +304,99 @@ public:
 		return 	m_programID;
 	}
 
-	static  u64_t	get_version();
+	u64_t	get_version() const;
 };
 
+class PFX_RENDER_SYSTEM_API shader_program_gles2;
 
+DECLARE_REF_NODE_CLASS_PROTECTED_BEGIN(shader_program_gles2,
+native_shader_program_gles2, Ipfx_shader_program, base_t,
+shader_program_node_gles2_t,
+native_shader_program_gles2_t)
+//
+DECLARE_FRIEND_CLASS(class native_shader_program_gles2);
+DECLARE_FRIEND_CLASS(SHADER_PROGRAM_NODE_ALLOC_GLES2);
 
-class  cshader_program_gles2 : public creference_base< cnative_shader_program_gles2 >,
-	public Ipfx_shader_program
-{
-protected:
-	typedef  cnative_shader_program_gles2						ref_element_t;
-	typedef  creference_base< cnative_shader_program_gles2 >	ref_t;
-	typedef  new_reference_method< cshader_program_gles2 >      new_t;
 public:
-	static PFX_INLINE cshader_program_gles2* new_shader_program()
-	{
-		return new_t::new_reference();
-	}
+	DECLARE_REF_CREATE_NEW_NODE(shader_program_gles2, new_program);
+	DECLARE_REF_CREATE_SHARE_NODE(shader_program_gles2, new_share_program);
+	DECLARE_REF_DISPOSE_SHARE_NODE(shader_program_gles2, dispose_program);
+private:
+	shader_program_gles2()	{ RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this); }
+	
 public:
-	PFX_INLINE ref_element_t* get_native_shader_pragram()
+	virtual ~shader_program_gles2() { dispose_program(); RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this); }
+
+public:
+	PFX_INLINE result_t compile_program()
 	{
-		return 	get_reference();
-	}
-	PFX_INLINE result_t	compile_program()
-	{
-		ref_element_t* ref_ptr = get_reference();
-		if (ref_ptr)
+		if (this->ref_ptr())
 		{
-			return ref_ptr->compile_program();
+			return this->ref_ptr()->compile_program();
 		}
 		else
 		{
-			return PFX_STATUS_INVALID_PARAMS;
+			return PFX_STATUS_UNINIT;
 		}
-
 	}
-	PFX_INLINE long_t		get_location_by_name
-		(const cstring_ascii_t& PARAM_IN
+
+	PFX_INLINE long_t get_location_by_name(const cstring_ascii_t& PARAM_IN
 		str_shader_param_name) const
 	{
-		const ref_element_t* ref_ptr = get_reference();
-		if (ref_ptr)
+		if (this->ref_ptr())
 		{
-			return ref_ptr->get_location_by_name(str_shader_param_name);
+			return this->ref_ptr()->get_location_by_name(str_shader_param_name);
 		}
 		else
 		{
-			return 0;
+			return -1;
 		}
 	}
 
-	PFX_INLINE long_t		get_location_by_name
-		(const char_t* PARAM_IN
+	PFX_INLINE long_t get_location_by_name
+		(const char* PARAM_IN
 		str_shader_param_name) const
 	{
-		const ref_element_t* ref_ptr = get_reference();
-		if (ref_ptr)
+		if (this->ref_ptr())
 		{
-			return ref_ptr->get_location_by_name(str_shader_param_name);
+			return this->ref_ptr()->get_location_by_name(str_shader_param_name);
+		}
+		else
+		{
+			return -1;
+		}
+	}
+
+	PFX_INLINE result_t attach_shader(Ipfx_shader* PARAM_IN shader_ptr)
+	{
+		if (this->ref_ptr())
+		{
+			return this->ref_ptr()->attach_shader(shader_ptr);
+		}
+		else
+		{
+			return PFX_STATUS_UNINIT;
+		}
+	}
+
+
+	PFX_INLINE const tree_t*  get_shader_param_table() const
+	{
+		if (this->ref_ptr())
+		{
+			return &(this->ref_ptr()->get_shader_param_table());
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	PFX_INLINE long_t get_native_handle()
+	{
+		if (this->ref_ptr())
+		{
+			return this->ref_ptr()->get_native_handle();
 		}
 		else
 		{
@@ -378,69 +404,49 @@ public:
 		}
 	}
 	
-	PFX_INLINE result_t	attach_shader(Ipfx_shader* PARAM_IN shader_ptr)
-	{
-		ref_element_t* ref_ptr = get_reference();
-		if (ref_ptr)
-		{
-			return ref_ptr->attach_shader(shader_ptr);
-		}
-		else
-		{
-			return PFX_STATUS_INVALID_PARAMS;
-		}
-	}
-
-	virtual  const tree_t* get_shader_param_table() const
-	{
-		const ref_element_t* ref_ptr = get_reference();
-		if (ref_ptr)
-		{
-			return &(ref_ptr->get_shader_param_table());
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	PFX_INLINE long_t	get_native_handle()
-	{
-		ref_element_t* ref_ptr = get_reference();
-		if (ref_ptr)
-		{
-			return ref_ptr->get_native_handle();
-		}
-		else
-		{
-			return 0;
-		}
-	}
-
 	PFX_INLINE u64_t get_version() const
 	{
-		return ref_element_t::get_version();
-	}
-	PFX_INLINE void	 release_reference()
-	{
-		ref_t::release_reference();
+		if (this->ref_ptr())
+		{
+			return this->ref_ptr()->get_version();
+		}
+		else
+		{
+			return 	0;
+		}
 	}
 
-protected:
-	PFX_INLINE ref_element_t* create_element()
+	PFX_INLINE Ipfx_shader_program* new_share()
 	{
-		return new ref_element_t;
+		return new_share_program();
 	}
-	PFX_INLINE result_t dispose_element(element_t*& elem_ptr)
+
+	PFX_INLINE result_t use()
 	{
-		if (elem_ptr)
+		if (this->ref_ptr())
 		{
-			delete elem_ptr;
-			elem_ptr = null;
+			return this->ref_ptr()->use();
 		}
-		return PFX_STATUS_OK;
+		else
+		{
+			return PFX_STATUS_UNINIT;
+		}
 	}
-};
+
+
+DECLARE_REF_NODE_CLASS_END
+
+//////////////////////////////////////////////////////////////////////////
+STATIC_NATIVE_CREATE_NEW_NODE(native_shader_program_gles2, shader_program_gles2, create_program_node);
+NATIVE_CREATE_SHARE_NODE(native_shader_program_gles2, shader_program_gles2, share_program_node, m_ref_pool);
+NATIVE_DISPOSE_SHARE_NODE(native_shader_program_gles2, shader_program_gles2, dispose_program_node, m_ref_pool);
+//////////////////////////////////////////////////////////////////////////
+STATIC_REF_CREATE_NEW_NODE(native_shader_program_gles2, shader_program_gles2,
+	new_program, create_program_node);
+REF_CREATE_SHARE_NODE(base_t, shader_program_gles2, new_share_program, share_program_node);
+REF_DISPOSE_SHARE_NODE(base_t, shader_program_gles2, dispose_program, dispose_program_node);
+
+
 
 #ifdef _MSC_VER
 #pragma warning(pop)

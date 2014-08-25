@@ -60,6 +60,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;$(SolutionDir)depends_lib\OGLES2\Include\;$(SolutionDir)depends_lib\OGLES2\Include\GLES2\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>PFX_RENDER_SYSTEM_EXPORT;PFX_DEBUG_MODE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -68,6 +69,9 @@
       <AdditionalDependencies>$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libEGL.lib;$(SolutionDir)\depends_lib\OGLES2\Windows_x86_32\Lib\libGLESv2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
     </Link>
+    <Bscmake>
+      <PreserveSBR>true</PreserveSBR>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\pecker_framework\pfx_configs.h" />

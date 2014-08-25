@@ -1,6 +1,0 @@
-t,1408186000279
-i,C:/android/android-ndk-r10/sources/cxx-stl/system/include
-i,jni
-i,c:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/lib/gcc/arm-linux-androideabi/4.9/include
-i,c:/android/android-ndk-r10/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/lib/gcc/arm-linux-androideabi/4.9/include-fixed
-i,C:/android/android-ndk-r10/platforms/android-17/arch-arm/usr/include

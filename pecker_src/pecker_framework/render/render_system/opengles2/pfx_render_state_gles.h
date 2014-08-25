@@ -54,9 +54,10 @@ class PFX_RENDER_SYSTEM_API cnative_render_state_gles2
 {
 private:
 	enum_int_t m_texture_unit; //GLenum
-	cshader_program_gles2 m_use_program;
+	shader_program_gles2* m_use_program_ptr;
+	shader_program_gles2* m_old_program_ptr;
 public:
-	~cnative_render_state_gles2();
+	virtual ~cnative_render_state_gles2();
 protected:
 	cnative_render_state_gles2();
 public:
@@ -64,11 +65,11 @@ public:
 public:
 	PFX_INLINE void clear_color(float_t red, float_t green, float_t blue, float_t alpha_value)
 	{
-		glClearColor(red, green, blue, alpha_value);
+		::glClearColor(red, green, blue, alpha_value);
 	}
 	PFX_INLINE void set_clear_mask(bitfield_t bitmask)
 	{
-		glClear(bitmask);
+		::glClear(bitmask);
 	}
 	//
 	PFX_INLINE void set_viewport(const viewport_rect_t& viewport)
@@ -82,46 +83,111 @@ public:
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// program
-	PFX_INLINE cshader_program_gles2* select_program(cshader_program_gles2* PARAM_INOUT program_ptr, result_t& status)
+	PFX_INLINE shader_program_gles2* working_program()
 	{
-		if (!program_ptr)
+		if (m_use_program_ptr)
 		{
-			status = PFX_STATUS_INVALID_PARAMS;
+			return m_use_program_ptr->new_share_program();
+		}
+		else
+		{
 			return null;
 		}
-
-		cshader_program_gles2* old_program_ptr =
-		DYNAMIC_CAST(cshader_program_gles2*)(m_use_program.create_reference(false));
-
-		program_ptr->share_to(&m_use_program);
-
-		cnative_shader_program_gles2* native_program_ptr = m_use_program.get_native_shader_pragram();
-		if (native_program_ptr)
+	}
+	PFX_INLINE shader_program_gles2* last_program()
+	{
+		if (m_old_program_ptr)
 		{
-			status = native_program_ptr->use();
+			return m_old_program_ptr->new_share_program();
 		}
-		return old_program_ptr;
+		else
+		{
+			return null;
+		}
 	}
 
-	PFX_INLINE result_t reset_selected_program()
+	PFX_INLINE result_t select_program(shader_program_gles2* PARAM_INOUT program_ptr)
+	{
+		//
+		RETURN_INVALID_RESULT((!program_ptr), PFX_STATUS_INVALID_PARAMS);
+		
+		// 当前引用与原有引用一样，退出
+		if (m_use_program_ptr &&
+			m_use_program_ptr->ref_ptr() == program_ptr->ref_ptr())
+		{
+			return m_use_program_ptr->use();
+		}
+
+		shader_program_gles2* new_ptr = program_ptr->new_share_program();
+		// 创建引用失败，退出
+		RETURN_INVALID_RESULT((!new_ptr), PFX_STATUS_FAIL);
+		if (!(new_ptr->ref_ptr()))
+		{
+			new_ptr->dispose_program();
+			return PFX_STATUS_FAIL;
+		}
+
+		shader_program_gles2* working_program_ptr = m_use_program_ptr;
+		m_use_program_ptr = new_ptr;
+		result_t status = m_use_program_ptr->use();
+
+		// 保存上次使用过的program值
+		if (PFX_STATUS_OK == status)
+		{
+			if (working_program_ptr)
+			{
+				if (m_old_program_ptr)
+				{
+					m_old_program_ptr->dispose_program();
+				}
+				m_old_program_ptr = working_program_ptr;
+			}
+		}
+		else
+		{
+			working_program_ptr->dispose_program();
+		}
+		return status;
+	}
+	PFX_INLINE result_t revert_select_program()
+	{
+		//恢复上一次使用的program
+		// 如果上次是第一次用，则复位program
+		if (!m_old_program_ptr)
+		{
+			return reset_select_program();
+		}
+
+		// 先用上上一次的program，如果成功，则旧变新
+		result_t status = m_old_program_ptr->use();
+
+		if (PFX_STATUS_OK == status)
+		{
+			shader_program_gles2* tmp_ptr = m_old_program_ptr;
+			m_old_program_ptr = m_use_program_ptr;
+			m_use_program_ptr = tmp_ptr;
+		}
+		return status;
+		
+	}
+	PFX_INLINE result_t reset_state()
+	{
+		return reset_select_program();
+	}
+	PFX_INLINE result_t reset_select_program()
 	{
 		result_t status = PFX_STATUS_OK;
 		::glUseProgram(0);
-		if (m_use_program.get_native_handle())
+
+		if (m_use_program_ptr)
 		{
-			cshader_program_gles2* new_program_ptr = cshader_program_gles2::new_shader_program();
-			if (new_program_ptr)
-			{
-				if (!new_program_ptr->share_to(&m_use_program))
-				{
-					status = PFX_STATUS_FAIL;
-				}
-				new_program_ptr->release_reference();
-			}
-			else
-			{
-				status = PFX_STATUS_MEM_LOW;
-			}
+			m_use_program_ptr->dispose_program();
+			m_use_program_ptr = null;
+		}
+		if (m_old_program_ptr)
+		{
+			m_old_program_ptr->dispose_program();
+			m_old_program_ptr = null;
 		}
 
 		return PFX_STATUS_OK;

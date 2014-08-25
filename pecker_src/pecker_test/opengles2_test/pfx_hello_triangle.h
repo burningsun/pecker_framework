@@ -18,10 +18,11 @@ class chello_triangle_render_view_gles2 : public 	opengles2_activity_t::IOnRende
 		vector4f_t	m_color;
 	}pos_clr_t;
 private:
-	cshader_program_gles2			m_program;
+	shader_program_gles2*			m_program_ptr;
 	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
 public:
-	chello_triangle_render_view_gles2() :m_vertexattbi_buffer_ptr(null)
+	chello_triangle_render_view_gles2() :m_vertexattbi_buffer_ptr(null), 
+		m_program_ptr(null)
 	{
 		;
 	}
@@ -31,6 +32,11 @@ public:
 		{
 			m_vertexattbi_buffer_ptr->dispose_vertex();
 			m_vertexattbi_buffer_ptr = null;
+		}
+		if (m_program_ptr)
+		{
+			m_program_ptr->dispose_program();
+			m_program_ptr = null;
 		}
 	}
 
@@ -58,22 +64,22 @@ public:
 
 		
 		result_t status;
-		cshader_program_gles2* old_program_ptr = __state.select_program(&m_program, status);
+		status= __state.select_program(m_program_ptr);
 		if (PFX_STATUS_OK != status)
 		{
-			__state.select_program(old_program_ptr,status);
+			__state.revert_select_program();
 			return;
 		}
 
 		const char* chr_name;
 		chr_name = "aPosition";
-		long_t pos = m_program.get_location_by_name(chr_name);
+		long_t pos = m_program_ptr->get_location_by_name(chr_name);
 		
 		chr_name = "aColor";
-		long_t clr = m_program.get_location_by_name(chr_name);
+		long_t clr = m_program_ptr->get_location_by_name(chr_name);
 		
 		chr_name = "uFixedViewMatrix";
-		long_t mat = m_program.get_location_by_name(chr_name);
+		long_t mat = m_program_ptr->get_location_by_name(chr_name);
 		
 
 
@@ -92,9 +98,6 @@ public:
 		__state.draw_arrays(GL_TRIANGLES, 0, 3);
 		__state.unbind_buffer(pos);
 		__state.unbind_buffer(clr);
-
-
-		__state.select_program(old_program_ptr, status);
 	}
 
 	virtual void on_load(
@@ -108,8 +111,8 @@ public:
 		PECKER_LOG_INFO("on_load escape time = %lld",__escape_time);
 
 		shader_souce_string_t __sys_shader_source;
-		cvertex_shader_gles2_t __vs;
-		cpixel_shder_gles2_t   __fs;
+		shader_gles2* __vs_ptr = shader_gles2::new_shader(PFXST_VERTEXT_SHADER);
+		shader_gles2* __fs_ptr = shader_gles2::new_shader(PFXST_PIXEL_SHADER);
 		result_t status;
 
 		get_system_defualt_shader_source(__sys_shader_source, //HELLO_SHADER_SOURCE,
@@ -117,26 +120,37 @@ public:
 			SSS_MEDIUEM_FLOAT);
 
 		FOR_ONE_LOOP_BEGIN
+	
+		BREAK_LOOP_CONDITION_SETS(!__vs_ptr || !__fs_ptr, status, PFX_STATUS_MEM_ERR);
 			
 		BREAK_LOOP_CONDITION_SETS(!__sys_shader_source.m_str_fragment_shader ||
 			!__sys_shader_source.m_str_vertext_shader, status, PFX_STATUS_INVALID_VALUE);
 
-		__vs.compile_shader(__sys_shader_source.m_str_vertext_shader->get_string(), 
+		__vs_ptr->compile_shader(__sys_shader_source.m_str_vertext_shader->get_string(), 
 			__sys_shader_source.m_str_vertext_shader->get_length(), 
 			status);
 
 		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
 
-		__fs.compile_shader(__sys_shader_source.m_str_fragment_shader->get_string(), 
+		__fs_ptr->compile_shader(__sys_shader_source.m_str_fragment_shader->get_string(), 
 			__sys_shader_source.m_str_fragment_shader->get_length(), 
 			status);
 
 		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
 
-		m_program.create_reference();
-		m_program.attach_shader(&__vs);
-		m_program.attach_shader(&__fs);
-		status = m_program.compile_program();
+		if (null == m_program_ptr)
+		{
+			m_program_ptr = shader_program_gles2::new_program();
+		}
+		m_program_ptr->attach_shader(__vs_ptr);
+		m_program_ptr->attach_shader(__fs_ptr);
+		status = m_program_ptr->compile_program();
+
+		__vs_ptr->dispose_shader();
+		__fs_ptr->dispose_shader();
+
+		__vs_ptr = null;
+		__fs_ptr = null;
 
 		FOR_ONE_LOOP_END;
 	}
@@ -156,7 +170,11 @@ public:
 		opengles2_activity_t::render_state_t& PARAM_INOUT __state)
 	{
 		PECKER_LOG_INFO("on_closing_render_device escape time = %lld",__escape_time);
-		m_program.release_reference();
+		if (m_program_ptr)
+		{
+			m_program_ptr->dispose_program();
+			m_program_ptr = null;
+		}
 		PECKER_LOG_INFO("m_program.release_reference()(%lld)",__escape_time);
 	}
 

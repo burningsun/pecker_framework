@@ -30,6 +30,27 @@ typedef BUFFER_OBJECT_ALLOC_GLES2 buffer_object_alloc_gles2_t;
 typedef BUFFER_OBJECT_NODE_ALLOC_GLES2 buffer_object_node_alloc_gles2_t;
 
 
+class  native_shader_gles2;
+class  shader_gles2;
+
+#define SHADER_ALLOC_GLES2      class pecker_simple_allocator< native_shader_gles2 > 	 
+typedef SHADER_ALLOC_GLES2 		native_shader_gles2_t;
+
+#define SHADER_NODE_ALLOC_GLES2 class pecker_simple_allocator< shader_gles2 >
+typedef SHADER_NODE_ALLOC_GLES2 shader_node_alloc_gles2_t;
+
+
+class native_shader_program_gles2;
+class shader_program_gles2;
+
+#define SHADER_PROGRAM_ALLOC_GLES2      class pecker_simple_allocator< native_shader_program_gles2 > 	 
+typedef SHADER_PROGRAM_ALLOC_GLES2 		native_shader_program_gles2_t;
+			  
+#define SHADER_PROGRAM_NODE_ALLOC_GLES2 class pecker_simple_allocator< shader_program_gles2 >
+typedef SHADER_PROGRAM_NODE_ALLOC_GLES2 shader_program_node_gles2_t;
+
+
+
 
 PECKER_END
 

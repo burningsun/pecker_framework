@@ -1,4 +1,0 @@
-INDEX VERSION 1.126+C:\codes\git\pecker_framework\pecker_framework_c\pecker_src\.metadata\.plugins\org.eclipse.jdt.core
-1202273904.index
-4220296453.index
-1920304402.index

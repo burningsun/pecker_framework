@@ -7,13 +7,24 @@
 #include "pfx_render_state_gles.h"
 
 PECKER_BEGIN
-cnative_render_state_gles2::cnative_render_state_gles2() :m_texture_unit(-1)
+cnative_render_state_gles2::cnative_render_state_gles2() :
+m_texture_unit(-1), m_use_program_ptr(null), m_old_program_ptr(null)
 {
 	;
 }
 cnative_render_state_gles2::~cnative_render_state_gles2()
 {
-	;
+	if (m_old_program_ptr)
+	{
+		m_old_program_ptr->dispose_program();
+		m_old_program_ptr = null;
+	}
+
+	if (m_use_program_ptr)
+	{
+		m_use_program_ptr->dispose_program();
+		m_use_program_ptr = null;
+	}
 }
 cnative_render_state_gles2& cnative_render_state_gles2::singletone()
 {

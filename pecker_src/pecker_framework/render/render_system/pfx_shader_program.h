@@ -113,7 +113,9 @@ PFX_Interface  PFX_RENDER_SYSTEM_API Ipfx_shader
 	virtual long_t		get_native_handle() = 0;
 	virtual enum_int_t	get_type() const = 0;
 	virtual u64_t		get_version() const = 0;
-	virtual void		release_reference() = 0;
+
+	virtual Ipfx_shader* new_share() = 0;
+	virtual result_t	dispose_shader() = 0;
 };
 
 PFX_Interface Ipfx_shader_program
@@ -131,19 +133,21 @@ PFX_Interface Ipfx_shader_program
 
 	virtual result_t	compile_program() = 0;
 	virtual long_t		get_location_by_name
-		(const cstring_ascii_t& PARAM_IN
-		str_shader_param_name) const = 0;
+		                     (const cstring_ascii_t& PARAM_IN
+		                      str_shader_param_name) const = 0;
 	virtual long_t		get_location_by_name
-		(const char* PARAM_IN
-		str_shader_param_name) const = 0;
+		                     (const char* PARAM_IN
+		                      str_shader_param_name) const = 0;
 
 	virtual result_t	attach_shader(Ipfx_shader* PARAM_IN shader_ptr) = 0;
 
 
 	virtual  const tree_t* get_shader_param_table() const = 0;
-	virtual long_t		get_native_handle() = 0;
-	virtual u64_t		get_version() const = 0;
-	virtual void		release_reference() = 0;
+	virtual long_t		   get_native_handle() = 0;
+	virtual u64_t		   get_version() const = 0;
+									 
+	virtual result_t       dispose_program() = 0;
+	virtual Ipfx_shader_program* new_share() = 0;
 
 };
 

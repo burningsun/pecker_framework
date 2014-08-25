@@ -910,6 +910,9 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 
 		// 销毁渲染设备前回调窗口函数，通知窗口
 		m_on_render_view_ptr->on_closing_render_device(esacape_tick, *display_device_ptr, render_state);
+		
+		render_state.reset_state();
+
 		//销毁渲染设备
 		PECKER_LOG_INFO("on_closing_render_device ok, destroy_egl_device ing...(tick:%lld)",
 				esacape_tick);

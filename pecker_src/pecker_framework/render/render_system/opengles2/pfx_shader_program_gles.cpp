@@ -153,16 +153,93 @@ PFX_INLINE_CODE enum_int_t glspt_to_pfxspt(GLenum __type)
 	return __pfx_type;
 }
 
-cnative_shader_program_gles2::cnative_shader_program_gles2() :m_programID(0)
+
+shader_gles2* shader_gles2::new_shader(enum_int_t shader_type)
 {
-	;
-}
-cnative_shader_program_gles2::~cnative_shader_program_gles2()
-{
-	dispose();
+	if (native_shader_gles2::check_shader_type(shader_type))
+	{
+		shader_gles2* new_ptr = new_shader();
+		if (new_ptr)
+		{
+			result_t status = PFX_STATUS_FAIL;
+			if (new_ptr->ref_ptr())
+			{
+				status = new_ptr->ref_ptr()
+					->set_shader_type(shader_type);
+			}
+			if (PFX_STATUS_OK != status)
+			{
+				new_ptr->dispose_shader();
+				new_ptr = null;
+			}
+		}
+		return new_ptr;
+	}
+	else
+	{
+		return null;
+	}
 }
 
-result_t cnative_shader_program_gles2::parse_shader_param_table()
+long_t	shader_gles2::compile_shader(const char_t* PARAM_IN str_shader_codes,
+	usize__t buf_size,
+	result_t& status,
+	usize__t source_count ,//= 1,
+	const void* PARAM_IN param_ptr //= null
+	)
+{
+	if (this->ref_ptr())
+	{
+		return this->ref_ptr()->compile_shader(str_shader_codes, buf_size, status, source_count);
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+long_t	shader_gles2::get_native_handle()
+{
+	if (this->ref_ptr())
+	{
+		return this->ref_ptr()->get_native_handle();
+	}
+	else
+	{
+		return 0;
+	}
+}
+enum_int_t	shader_gles2::get_type() const
+{
+	if (this->ref_ptr())
+	{
+		return this->ref_ptr()->get_type();
+	}
+	else
+	{
+		return 0;
+	}
+}
+u64_t shader_gles2::get_version() const
+{
+	return native_shader_gles2::get_version();
+}
+
+
+
+native_shader_program_gles2::native_shader_program_gles2() :m_programID(0), 
+m_vertex_shader_ptr(null), m_pixel_shader_ptr(null)
+{
+	RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this);
+}
+native_shader_program_gles2::~native_shader_program_gles2()
+{
+	dispose();
+	RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this);
+	
+}
+
+result_t native_shader_program_gles2::parse_shader_param_table()
 {
 	tree_t temp_tree;
 	result_t status;
@@ -323,7 +400,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 	
 	return status;
 }
-result_t cnative_shader_program_gles2::modify_shader_param_table
+result_t native_shader_program_gles2::modify_shader_param_table
 (enum_int_t param_type,
 enum_int_t param_value_type,
 const cstring_ascii_t& str_name,
@@ -383,14 +460,14 @@ long_t new_location)
 }
 
 
-usize__t PFX_RENDER_SYSTEM_API cnative_shader_program_gles2::get_program_info_lengh(GLuint __program_id)
+usize__t PFX_RENDER_SYSTEM_API native_shader_program_gles2::get_program_info_lengh(GLuint __program_id)
 {
 	GLsizei infoLen = 0;
 	glGetProgramiv(__program_id, GL_INFO_LOG_LENGTH, &infoLen);
 	return infoLen;
 }
 
-usize__t PFX_RENDER_SYSTEM_API cnative_shader_program_gles2::get_program_info_log(GLuint __program_ID,
+usize__t PFX_RENDER_SYSTEM_API native_shader_program_gles2::get_program_info_log(GLuint __program_ID,
 	char_t* log_info_buff_ptr,
 	usize__t log_buff_size)
 {
@@ -404,8 +481,61 @@ usize__t PFX_RENDER_SYSTEM_API cnative_shader_program_gles2::get_program_info_lo
 	return log_buff_size;
 }
 
-result_t cnative_shader_program_gles2::compile_program()
+result_t native_shader_program_gles2::attach_pixel_shader(shader_gles2* PARAM_INOUT shader_ptr)
 {
+	RETURN_INVALID_RESULT((!shader_ptr ||
+		null == shader_ptr->ref_ptr() ||
+		PFXST_PIXEL_SHADER != shader_ptr->get_type()),
+		PFX_STATUS_INVALID_PARAMS);
+
+	RETURN_RESULT((m_pixel_shader_ptr &&
+		m_pixel_shader_ptr->ref_ptr() == shader_ptr->ref_ptr()),
+		PFX_STATUS_OK);
+
+	shader_gles2* new_ptr = shader_ptr->new_share_shader();
+	if (new_ptr)
+	{
+		if (m_pixel_shader_ptr)
+		{
+			m_pixel_shader_ptr->dispose_shader();
+		}
+		m_pixel_shader_ptr = new_ptr;
+		return PFX_STATUS_OK;
+	}
+
+	return PFX_STATUS_FAIL;
+}
+
+result_t native_shader_program_gles2::attach_vertex_shader(shader_gles2* PARAM_INOUT shader_ptr)
+{
+	RETURN_INVALID_RESULT((!shader_ptr ||
+		null == shader_ptr->ref_ptr() ||
+		PFXST_VERTEXT_SHADER != shader_ptr->get_type()),
+		PFX_STATUS_INVALID_PARAMS);
+
+	RETURN_RESULT((m_vertex_shader_ptr &&
+		m_vertex_shader_ptr->ref_ptr() == shader_ptr->ref_ptr()),
+		PFX_STATUS_OK);
+
+	shader_gles2* new_ptr = shader_ptr->new_share_shader();
+	if (new_ptr)
+	{
+		if (m_vertex_shader_ptr)
+		{
+			m_vertex_shader_ptr->dispose_shader();
+		}
+		m_vertex_shader_ptr = new_ptr;
+		return PFX_STATUS_OK;
+	}
+
+	return PFX_STATUS_FAIL;
+}
+
+result_t native_shader_program_gles2::compile_program()
+{
+	RETURN_INVALID_RESULT((null == m_vertex_shader_ptr || null == m_pixel_shader_ptr),
+		PFX_STATUS_UNINIT);
+
 	if (m_programID)
 	{
 		return PFX_STATUS_OK;
@@ -415,8 +545,8 @@ result_t cnative_shader_program_gles2::compile_program()
 		m_programID = glCreateProgram();
 	}
 
-	cnative_vertex_shder_gles2_t* vertex_shader_ptr = m_vertex_shader.get_native_shader();
-	cnative_pixel_shder_gles2_t* pixel_shader_ptr = m_pixel_shader.get_native_shader();
+	native_shader_gles2* vertex_shader_ptr = m_vertex_shader_ptr->ref_ptr();
+	native_shader_gles2* pixel_shader_ptr = m_pixel_shader_ptr->ref_ptr();
 
 	if (m_programID &&
 		vertex_shader_ptr &&
@@ -433,9 +563,9 @@ result_t cnative_shader_program_gles2::compile_program()
 		{
 			cstring_ascii_t err_log;
 			usize__t err_log_size;
-			err_log_size = cnative_shader_program_gles2::get_program_info_lengh(m_programID);
+			err_log_size = native_shader_program_gles2::get_program_info_lengh(m_programID);
 			err_log.init_string(err_log_size + 1);
-			cnative_shader_program_gles2::get_program_info_log(m_programID, err_log.get_string(), err_log.get_length());
+			native_shader_program_gles2::get_program_info_log(m_programID, err_log.get_string(), err_log.get_length());
 			PECKER_LOG_ERR("get_shader_info_log = %s", err_log.get_string());
 
 			glDeleteProgram(m_programID);
@@ -451,17 +581,30 @@ result_t cnative_shader_program_gles2::compile_program()
 
 	return PFX_STATUS_FAIL;
 }
-void cnative_shader_program_gles2::dispose()
+void native_shader_program_gles2::dispose()
 {
-	glDeleteProgram(m_programID);
-	m_programID = 0;
-	m_pixel_shader.release_reference();
-	m_vertex_shader.release_reference();
+	if (m_programID)
+	{
+		::glDeleteProgram(m_programID);
+		m_programID = 0;
+	}
+	if (m_pixel_shader_ptr)
+	{
+		m_pixel_shader_ptr->dispose_shader();
+		m_pixel_shader_ptr = null;
+	
+	}
+	if (m_vertex_shader_ptr)
+	{
+		m_vertex_shader_ptr->dispose_shader();
+		m_vertex_shader_ptr = null;
+	}
+
 }
 
-result_t  cnative_shader_program_gles2::use()
+result_t  native_shader_program_gles2::use()
 {
-	glUseProgram(m_programID);
+	::glUseProgram(m_programID);
 	if (m_programID)
 	{
 		return PFX_STATUS_OK;
@@ -469,12 +612,11 @@ result_t  cnative_shader_program_gles2::use()
 	return PFK_STATUS_SUCCESS;
 }
 
-long_t cnative_shader_program_gles2:: get_location_by_name
+long_t native_shader_program_gles2:: get_location_by_name
 (const cstring_ascii_t& PARAM_IN str_shader_param_name) const
 {
 	tree_t::const_inorder_itr_t __itr;
 	tree_t::const_inorder_itr_t* __itr_ptr;
-	//result_t status;
 	__itr_ptr = m_shader_param_table.root(__itr);
 	if (__itr_ptr && __itr_ptr->cur_node())
 	{
@@ -487,7 +629,7 @@ long_t cnative_shader_program_gles2:: get_location_by_name
 	return INVALID_SHADER;
 }
 
-long_t	cnative_shader_program_gles2::get_location_by_name 
+long_t	native_shader_program_gles2::get_location_by_name
 (const char* PARAM_IN str_shader_param_name) const
 {
 	tree_t::const_inorder_itr_t __itr;
@@ -505,7 +647,7 @@ long_t	cnative_shader_program_gles2::get_location_by_name
 	return INVALID_SHADER;
 }
 
-u64_t cnative_shader_program_gles2::get_version()
+u64_t native_shader_program_gles2::get_version() const
 {
 	return (get_hal_instanse_ID().m_version);
 }
