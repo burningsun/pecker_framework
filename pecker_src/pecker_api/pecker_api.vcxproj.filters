@@ -47,6 +47,9 @@
     <ClCompile Include="..\pecker_framework\native\pfx_zip_file.cpp">
       <Filter>native</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\native\pfx_resource_reader_android.cpp">
+      <Filter>native</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -293,6 +296,9 @@
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_ref_root.h">
       <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_android.h">
+      <Filter>native</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

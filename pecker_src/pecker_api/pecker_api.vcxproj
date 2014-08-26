@@ -16,6 +16,7 @@
     <ClCompile Include="..\pecker_framework\native\pecker_stream.cpp" />
     <ClCompile Include="..\pecker_framework\native\pecker_tick.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_file_io.cpp" />
+    <ClCompile Include="..\pecker_framework\native\pfx_resource_reader_android.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_resource_reader_windows.cpp" />
     <ClCompile Include="..\pecker_framework\native\pfx_zip_file.cpp" />
     <ClCompile Include="..\pecker_framework\native\socket_param.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\pecker_framework\native\pfx_log.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_native_activity.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_resource_reader.h" />
+    <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_android.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_windows.h" />
     <ClInclude Include="..\pecker_framework\native\pfx_zip_file.h" />
     <ClInclude Include="..\pecker_framework\native\window_msgcode_def.h" />

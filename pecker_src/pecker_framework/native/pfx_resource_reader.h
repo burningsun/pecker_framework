@@ -18,10 +18,10 @@
 #include "pfx_resource_reader_windows.h"
 
 PECKER_BEGIN
-typedef cresource_reader_windows     cresource_reader_t;
-typedef cresource_reader_t 	         casset_reader_t;
+typedef cresource_reader_windows         cresource_reader_t;
+typedef casset_reader_windows 	         casset_reader_t;
 typedef cresource_share_reader_windows_t sresource_reader_t;
-typedef cresource_share_reader_windows_t sasset_reader_t;
+typedef casset_share_reader_windows_t    sasset_reader_t;
 PECKER_END
 
 #endif // #if (OS_CONFIG == OS_WINDOWS)

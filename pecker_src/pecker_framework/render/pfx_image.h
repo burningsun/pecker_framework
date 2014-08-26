@@ -110,10 +110,10 @@ PFX_Interface Image_reader
 	virtual result_t  select_load_form_memory(const byte_t* PARAM_IN __src_data_ptr,
 		usize__t __src_buffer_size) = 0;
 
-	virtual result_t  attach_asset_reader(sasset_reader_t& PARAM_INOUT __reader) = 0;
+	virtual result_t  attach_asset_reader(sasset_reader_t* PARAM_INOUT __reader) = 0;
 	virtual void  detach_asset_reader() = 0;
 
-	virtual result_t  attach_resource_reader(sresource_reader_t& PARAM_INOUT __reader) = 0;
+	virtual result_t  attach_resource_reader(sresource_reader_t* PARAM_INOUT __reader) = 0;
 	virtual void detach_resource_reader() = 0;
 
 	virtual result_t  select_load_form_asset_reader(const char_t* PARAM_IN str_file_name) = 0;
@@ -149,8 +149,8 @@ protected:
 	cstring_ascii_t m_asset_file_name;
 	cstring_ascii_t m_resource_file_name;
 
-	sresource_reader_t m_res_reader;
-	sasset_reader_t    m_aset_reader;
+	sresource_reader_t* m_res_reader_ptr;
+	sasset_reader_t*    m_aset_reader_ptr;
 
 	cs_t m_locker;
 public:
@@ -162,10 +162,10 @@ public:
 	virtual result_t  select_load_form_memory(const byte_t* PARAM_IN __src_data_ptr,
 		usize__t __src_buffer_size);
 
-	virtual result_t  attach_asset_reader(sasset_reader_t& PARAM_INOUT __reader);
+	virtual result_t  attach_asset_reader(sasset_reader_t* PARAM_INOUT __reader_ptr);
 	virtual void  detach_asset_reader();
 
-	virtual result_t  attach_resource_reader(sresource_reader_t& PARAM_INOUT __reader);
+	virtual result_t  attach_resource_reader(sresource_reader_t* PARAM_INOUT __reader_ptr);
 	virtual void detach_resource_reader();
 
 	virtual result_t  select_load_form_asset_reader(const char_t* PARAM_IN str_file_name);

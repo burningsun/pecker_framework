@@ -11,7 +11,7 @@
 #include "../pfx_defines.h"
 #include "pfx_file_io.h"
 #include "../include/cstring_pfx.h"
-#include "../data/pfx_reference.h"
+#include "../data/pfx_ref_root.h"
 
 #if (OS_CONFIG == OS_WINDOWS)
 
@@ -42,8 +42,9 @@ public:
 	}
 };
 
-
-typedef simple_reference_object< cresource_reader_windows > cresource_share_reader_windows_t;
+typedef cresource_reader_windows casset_reader_windows;
+typedef simple_reference< cresource_reader_windows >::sref_node cresource_share_reader_windows_t;
+typedef simple_reference< casset_reader_windows >::sref_node casset_share_reader_windows_t;
 
 PECKER_END
 #endif	 // #if (OS_CONFIG == OS_WINDOWS)

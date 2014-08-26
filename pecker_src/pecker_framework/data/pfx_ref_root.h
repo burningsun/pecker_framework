@@ -15,6 +15,7 @@
 #include "../native/pecker_allocator.h"
 #include <new>
 
+#define REF_DEBUG
 #undef REF_LOG_STR
 #undef REF_LOG_INFO
 #ifdef REF_DEBUG
@@ -289,20 +290,6 @@ if (__ptr && null == __ptr->ref_ptr())   \
 	return __ptr;						\
 }									\
 
-//// 保护继承， cref_node内的东西只能自己，派生类，和友元访问
-//#define  DECLARE_REF_NODE_CLASS_PROTECTED_BEGINx(THIS_CLASS_NAME,NATIVE_REF,INTERFACE_NAME,BASE_NAME,REF_NODE_ALLOC,REF_ALLOC)	\
-//class THIS_CLASS_NAME : protected cref_node< NATIVE_REF, THIS_CLASS_NAME >, \
-//	public INTERFACE_NAME{ \
-//protected: typedef cref_node< NATIVE_REF, THIS_CLASS_NAME > BASE_NAME; \
-//public:	DECLARE_BE_REF_POOL_MEMANGER_FRIEND(REF_NODE_ALLOC, REF_ALLOC); \
-//public: PFX_INLINE NATIVE_REF* ref_ptr() \
-//{                                         \
-//	return BASE_NAME::m_ref_ptr;          \
-//}										  \
-//public: PFX_INLINE const NATIVE_REF* ref_ptr() const\
-//{                                         \
-//	return BASE_NAME::m_ref_ptr;          \
-//}\
 
 #define DECLARE_REF_NODE_CLASS_END };
 
@@ -384,7 +371,154 @@ if (BASE_NAME::m_ref_ptr)\
   }		 \
 }\
   
+template < class __share_object >
+struct simple_reference
+{
+	class sref_node;
+	class sref_native;
 
+	typedef class pecker_simple_allocator< sref_native > ref_alloc;
+	typedef class pecker_simple_allocator< sref_node >   node_alloc;
+	typedef class ref_pool_memanger< node_alloc, ref_alloc> ref_pool_t;
+
+	class sref_native
+	{
+		friend class sref_node;
+		friend class pecker_simple_allocator< sref_native >;
+	private:
+		__share_object m_native;
+		ref_pool_t m_ref_pool;
+	public:
+		__share_object& native()
+		{
+			return m_native;
+		}
+
+		const __share_object& native() const
+		{
+			return m_native;
+		}
+
+	private:
+		sref_native()
+		{
+			REF_LOG_INFO("create...0x%08X", (lpointer_t)this);;
+		}
+	public:
+		virtual ~sref_native()
+		{
+			REF_LOG_INFO("release...0x%08X", (lpointer_t)this);;
+		}
+	protected:
+		static sref_node* new_object();
+		sref_node* share_object(sref_node* __ptr);
+		result_t   dispose_node(sref_node* __ptr);
+	};
+
+	class sref_node : public cref_node < sref_native, sref_node >
+	{
+		friend class sref_native;
+		friend class pecker_simple_allocator< sref_node >;
+	protected: 
+		typedef cref_node< sref_native, sref_node > base_t; 
+
+	public: 
+		PFX_INLINE sref_native* ref_ptr() 
+	{                                        
+				return base_t::m_ref_ptr;          
+	}										 
+	public: 
+		PFX_INLINE const sref_native* ref_ptr() const
+	{                                         
+	           return base_t::m_ref_ptr;          
+	}
+	public: 
+		static PFX_INLINE sref_node* reinit(sref_node* PARAM_INOUT __ptr)
+	    {								  
+			   if (__ptr && null == __ptr->ref_ptr())   
+			   {								
+				   new(__ptr)sref_node();
+			   }							
+			   return __ptr;						
+	    }									
+		PFX_INLINE __share_object* native_ptr()
+		{
+			if (this->ref_ptr())
+			{
+				return &(this->ref_ptr()->native());
+			}
+			else
+			{
+				return null;
+			}
+		}
+	private:
+		sref_node()
+		{
+			REF_LOG_INFO("create...0x%08X", (lpointer_t)this);;
+		}
+	public:
+		virtual ~sref_node()
+		{
+			REF_LOG_INFO("release...0x%08X", (lpointer_t)this);
+			dispose_node();
+		}
+
+		static sref_node* new_object()
+		{
+			return sref_native::new_object();
+		}
+
+		sref_node* new_share()
+		{
+			if (this->ref_ptr())
+			{
+				return this->ref_ptr()->share_object(this);
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		result_t dispose_node()
+		{
+			if (this->ref_ptr())
+			{
+				result_t status;
+				status = this->ref_ptr()->dispose_node(this);
+				return status;
+			}
+
+			return PFX_STATUS_OK;
+
+		}
+	};
+
+
+};
+
+template < class __share_object >
+typename simple_reference< __share_object >::sref_node* 
+simple_reference< __share_object >::sref_native::new_object()
+{
+	return ref_pool_t::create_node();
+}
+
+template < class __share_object >
+typename simple_reference< __share_object >::sref_node*
+simple_reference< __share_object >::sref_native::share_object
+(typename simple_reference< __share_object >::sref_node* __ptr)
+{
+	return m_ref_pool.new_share(__ptr);
+}
+
+template < class __share_object >
+result_t simple_reference< __share_object >::sref_native::dispose_node
+(typename simple_reference< __share_object >::sref_node* __ptr)
+{
+	return m_ref_pool.dispose_node(__ptr);
+}
 
 
 

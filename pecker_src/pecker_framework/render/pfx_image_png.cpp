@@ -511,7 +511,12 @@ result_t cPng_Image_reader::load_image(image_data_t& PARAM_INOUT __imgdata,
 		break;
 	case IMG_FORM_ASSET_READER:
 		{
-		  casset_reader_t* reader_ptr = m_aset_reader.get_native_object();
+		  if (null == m_aset_reader_ptr)
+		  {
+			  status = PFX_STATUS_UNINIT;
+			  break;
+		  }
+		  casset_reader_t* reader_ptr = m_aset_reader_ptr->native_ptr();
 		  if (!reader_ptr)
 		  {
 			  status = PFX_STATUS_UNINIT;
@@ -576,7 +581,12 @@ result_t cPng_Image_reader::load_image(image_data_t& PARAM_INOUT __imgdata,
 		break;
 	case  IMG_FORM_RESOURCE_READER:
 	   {
-			cresource_reader_t* reader_ptr = m_res_reader.get_native_object();
+			if (null == m_res_reader_ptr)
+		    {
+		      status = PFX_STATUS_UNINIT;
+		      break;
+		    }
+			cresource_reader_t* reader_ptr = m_res_reader_ptr->native_ptr();
 			if (!reader_ptr)
 			{
 				status = PFX_STATUS_UNINIT;

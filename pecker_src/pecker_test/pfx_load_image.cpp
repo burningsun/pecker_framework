@@ -16,24 +16,30 @@ USING_PECKER_SDK
 result_t load_png_img(const char_t* pfile_name, cImage& __img)
 {
 	cPng_Image_reader __img_reader;
-	sasset_reader_t asset_file;
-	asset_file.create_reference();
+	sasset_reader_t* asset_file_ptr;
+	asset_file_ptr = sasset_reader_t::new_object();
 	
 
-	sresource_reader_t res_file;
-	res_file.create_reference();
+	sresource_reader_t* res_file_ptr;
+	res_file_ptr = sresource_reader_t::new_object();
 	
 
-	casset_reader_t* aset_reader_ptr = asset_file.get_native_object();
-	cresource_reader_t* res_reader_ptr = res_file.get_native_object();
+	casset_reader_t* aset_reader_ptr = asset_file_ptr->native_ptr();
+	cresource_reader_t* res_reader_ptr = res_file_ptr->native_ptr();
+
 
 	if (!aset_reader_ptr || !res_reader_ptr)
 	{
+		asset_file_ptr->dispose_node();
+		res_file_ptr->dispose_node();
 		return PFX_STATUS_MEM_ERR;
 	}
 	
-	__img_reader.attach_asset_reader(asset_file);
-	__img_reader.attach_resource_reader(res_file);
+	__img_reader.attach_asset_reader(asset_file_ptr);
+	__img_reader.attach_resource_reader(res_file_ptr);
+	asset_file_ptr->dispose_node();
+	res_file_ptr->dispose_node();
+
 #if defined(TEST_ASET_RESOURCE)
 	__img_reader.select_load_form_asset_reader(pfile_name);
 #else
@@ -54,6 +60,8 @@ result_t load_png_img(const char_t* pfile_name, cImage& __img)
 #if (OS_CONFIG == OS_ANDROID) && !defined(TEST_ASET_RESOURCE)
 	res_reader_ptr->set_resource_dir_path("/sdcard/");
 #endif // #if (OS_CONFIG == OS_ANDROID)
+
+
 
 	return __img.load_image(&__img_reader);
 

@@ -11,13 +11,23 @@
 PECKER_BEGIN
 
 cImage_reader_base::cImage_reader_base() :m_bNormal(true), m_loader_type(IMG_LOADER_UNKNOWN),
-m_src_data_ptr(null), m_src_data_size(0)
+m_src_data_ptr(null), m_src_data_size(0), m_res_reader_ptr(null), m_aset_reader_ptr(null)
 {
 	InitCriticalSection(&m_locker);
 
 }
 cImage_reader_base::~cImage_reader_base()
 {
+	if (m_res_reader_ptr)
+	{
+		m_res_reader_ptr->dispose_node();
+		m_res_reader_ptr = null;
+	}
+	if (m_aset_reader_ptr)
+	{
+		m_aset_reader_ptr->dispose_node();
+		m_aset_reader_ptr = null;
+	}
 	UnlockCriticalSection(&m_locker);
 	DelCriticalSection(&m_locker);
 }
@@ -45,38 +55,64 @@ result_t cImage_reader_base::select_load_form_memory(const byte_t* PARAM_IN __sr
 
 }
 
-result_t  cImage_reader_base::attach_asset_reader(sasset_reader_t& PARAM_INOUT __reader)
+result_t  cImage_reader_base::attach_asset_reader(sasset_reader_t* PARAM_INOUT __reader)
 {
-	if (__reader.share_to(&m_aset_reader))
+	RETURN_INVALID_RESULT(null == __reader, PFX_STATUS_INVALID_PARAMS);
+	RETURN_RESULT(this->m_aset_reader_ptr &&
+		__reader->ref_ptr() == this->m_aset_reader_ptr->ref_ptr(), PFX_STATUS_OK);
+	sasset_reader_t* new_ptr = __reader->new_share();
+	if (new_ptr)
 	{
+		if (m_aset_reader_ptr)
+		{
+			m_aset_reader_ptr->dispose_node();
+		}
+		m_aset_reader_ptr = new_ptr;
 		return PFX_STATUS_OK;
 	}
 	else
 	{
-		return PFX_STATUS_INVALID_PARAMS;
+		return PFX_STATUS_MEM_ERR;
 	}
 }
 
 void cImage_reader_base::detach_asset_reader()
 {
-	m_aset_reader.release_reference();
+	if (m_aset_reader_ptr)
+	{
+		m_aset_reader_ptr->dispose_node();
+		m_aset_reader_ptr = null;
+	}
 }
 
-result_t cImage_reader_base::attach_resource_reader(sresource_reader_t& PARAM_INOUT __reader)
+result_t cImage_reader_base::attach_resource_reader(sresource_reader_t* PARAM_INOUT __reader)
 {
-	if (__reader.share_to(&m_res_reader))
+	RETURN_INVALID_RESULT(null == __reader, PFX_STATUS_INVALID_PARAMS);
+	RETURN_RESULT(this->m_res_reader_ptr &&
+		__reader->ref_ptr() == this->m_res_reader_ptr->ref_ptr(), PFX_STATUS_OK);
+	sresource_reader_t* new_ptr = __reader->new_share();
+	if (new_ptr)
 	{
+		if (m_res_reader_ptr)
+		{
+			m_res_reader_ptr->dispose_node();
+		}
+		m_res_reader_ptr = new_ptr;
 		return PFX_STATUS_OK;
 	}
 	else
 	{
-		return PFX_STATUS_INVALID_PARAMS;
+		return PFX_STATUS_MEM_ERR;
 	}
 }
 
 void cImage_reader_base::detach_resource_reader()
 {
-	m_res_reader.release_reference();
+	if (m_res_reader_ptr)
+	{
+		m_res_reader_ptr->dispose_node();
+		m_res_reader_ptr = null;
+	}
 }
 
 
