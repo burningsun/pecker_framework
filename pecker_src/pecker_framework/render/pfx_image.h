@@ -230,8 +230,8 @@ public:
 };
 
 
-typedef simple_reference_object< cImage > sImage_t;
-
+//typedef simple_reference< cImage >::sref_node sImage_t;
+typedef simple_ref< cImage > sImage_t;
 
 
 

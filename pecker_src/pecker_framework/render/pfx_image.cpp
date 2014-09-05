@@ -20,12 +20,12 @@ cImage_reader_base::~cImage_reader_base()
 {
 	if (m_res_reader_ptr)
 	{
-		m_res_reader_ptr->dispose_node();
+		m_res_reader_ptr->dispose_object();
 		m_res_reader_ptr = null;
 	}
 	if (m_aset_reader_ptr)
 	{
-		m_aset_reader_ptr->dispose_node();
+		m_aset_reader_ptr->dispose_object();
 		m_aset_reader_ptr = null;
 	}
 	UnlockCriticalSection(&m_locker);
@@ -59,13 +59,13 @@ result_t  cImage_reader_base::attach_asset_reader(sasset_reader_t* PARAM_INOUT _
 {
 	RETURN_INVALID_RESULT(null == __reader, PFX_STATUS_INVALID_PARAMS);
 	RETURN_RESULT(this->m_aset_reader_ptr &&
-		__reader->ref_ptr() == this->m_aset_reader_ptr->ref_ptr(), PFX_STATUS_OK);
-	sasset_reader_t* new_ptr = __reader->new_share();
+		__reader->native_ptr() == this->m_aset_reader_ptr->native_ptr(), PFX_STATUS_OK);
+	sasset_reader_t* new_ptr = __reader->new_ref();
 	if (new_ptr)
 	{
 		if (m_aset_reader_ptr)
 		{
-			m_aset_reader_ptr->dispose_node();
+			m_aset_reader_ptr->dispose_object();
 		}
 		m_aset_reader_ptr = new_ptr;
 		return PFX_STATUS_OK;
@@ -80,7 +80,7 @@ void cImage_reader_base::detach_asset_reader()
 {
 	if (m_aset_reader_ptr)
 	{
-		m_aset_reader_ptr->dispose_node();
+		m_aset_reader_ptr->dispose_object();
 		m_aset_reader_ptr = null;
 	}
 }
@@ -89,13 +89,13 @@ result_t cImage_reader_base::attach_resource_reader(sresource_reader_t* PARAM_IN
 {
 	RETURN_INVALID_RESULT(null == __reader, PFX_STATUS_INVALID_PARAMS);
 	RETURN_RESULT(this->m_res_reader_ptr &&
-		__reader->ref_ptr() == this->m_res_reader_ptr->ref_ptr(), PFX_STATUS_OK);
-	sresource_reader_t* new_ptr = __reader->new_share();
+		__reader->native_ptr() == this->m_res_reader_ptr->native_ptr(), PFX_STATUS_OK);
+	sresource_reader_t* new_ptr = __reader->new_ref();
 	if (new_ptr)
 	{
 		if (m_res_reader_ptr)
 		{
-			m_res_reader_ptr->dispose_node();
+			m_res_reader_ptr->dispose_object();
 		}
 		m_res_reader_ptr = new_ptr;
 		return PFX_STATUS_OK;
@@ -110,7 +110,7 @@ void cImage_reader_base::detach_resource_reader()
 {
 	if (m_res_reader_ptr)
 	{
-		m_res_reader_ptr->dispose_node();
+		m_res_reader_ptr->dispose_object();
 		m_res_reader_ptr = null;
 	}
 }

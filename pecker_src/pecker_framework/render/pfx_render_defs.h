@@ -56,6 +56,8 @@ typedef struct  buffer_rect
 	usize__t m_size;
 }buffer_rect_t;
 
+typedef rectangle_region < usize__t > texture_rect_t;
+
 
 
 

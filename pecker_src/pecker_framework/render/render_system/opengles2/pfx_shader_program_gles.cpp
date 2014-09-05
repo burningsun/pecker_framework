@@ -154,76 +154,10 @@ PFX_INLINE_CODE enum_int_t glspt_to_pfxspt(GLenum __type)
 }
 
 
-shader_gles2* shader_gles2::new_shader(enum_int_t shader_type)
-{
-	if (native_shader_gles2::check_shader_type(shader_type))
-	{
-		shader_gles2* new_ptr = new_shader();
-		if (new_ptr)
-		{
-			result_t status = PFX_STATUS_FAIL;
-			if (new_ptr->ref_ptr())
-			{
-				status = new_ptr->ref_ptr()
-					->set_shader_type(shader_type);
-			}
-			if (PFX_STATUS_OK != status)
-			{
-				new_ptr->dispose_shader();
-				new_ptr = null;
-			}
-		}
-		return new_ptr;
-	}
-	else
-	{
-		return null;
-	}
-}
 
-long_t	shader_gles2::compile_shader(const char_t* PARAM_IN str_shader_codes,
-	usize__t buf_size,
-	result_t& status,
-	usize__t source_count ,//= 1,
-	const void* PARAM_IN param_ptr //= null
-	)
-{
-	if (this->ref_ptr())
-	{
-		return this->ref_ptr()->compile_shader(str_shader_codes, buf_size, status, source_count);
-	}
-	else
-	{
-		return 0;
-	}
-}
 
-long_t	shader_gles2::get_native_handle()
-{
-	if (this->ref_ptr())
-	{
-		return this->ref_ptr()->get_native_handle();
-	}
-	else
-	{
-		return 0;
-	}
-}
-enum_int_t	shader_gles2::get_type() const
-{
-	if (this->ref_ptr())
-	{
-		return this->ref_ptr()->get_type();
-	}
-	else
-	{
-		return 0;
-	}
-}
-u64_t shader_gles2::get_version() const
-{
-	return native_shader_gles2::get_version();
-}
+
+
 
 
 
@@ -484,15 +418,15 @@ usize__t PFX_RENDER_SYSTEM_API native_shader_program_gles2::get_program_info_log
 result_t native_shader_program_gles2::attach_pixel_shader(shader_gles2* PARAM_INOUT shader_ptr)
 {
 	RETURN_INVALID_RESULT((!shader_ptr ||
-		null == shader_ptr->ref_ptr() ||
+		null == shader_ptr->native_ptr() ||
 		PFXST_PIXEL_SHADER != shader_ptr->get_type()),
 		PFX_STATUS_INVALID_PARAMS);
 
 	RETURN_RESULT((m_pixel_shader_ptr &&
-		m_pixel_shader_ptr->ref_ptr() == shader_ptr->ref_ptr()),
+		m_pixel_shader_ptr->native_ptr() == shader_ptr->native_ptr()),
 		PFX_STATUS_OK);
 
-	shader_gles2* new_ptr = shader_ptr->new_share_shader();
+	shader_gles2* new_ptr = shader_ptr->new_ref();
 	if (new_ptr)
 	{
 		if (m_pixel_shader_ptr)
@@ -509,15 +443,15 @@ result_t native_shader_program_gles2::attach_pixel_shader(shader_gles2* PARAM_IN
 result_t native_shader_program_gles2::attach_vertex_shader(shader_gles2* PARAM_INOUT shader_ptr)
 {
 	RETURN_INVALID_RESULT((!shader_ptr ||
-		null == shader_ptr->ref_ptr() ||
+		null == shader_ptr->native_ptr() ||
 		PFXST_VERTEXT_SHADER != shader_ptr->get_type()),
 		PFX_STATUS_INVALID_PARAMS);
 
 	RETURN_RESULT((m_vertex_shader_ptr &&
-		m_vertex_shader_ptr->ref_ptr() == shader_ptr->ref_ptr()),
+		m_vertex_shader_ptr->native_ptr() == shader_ptr->native_ptr()),
 		PFX_STATUS_OK);
 
-	shader_gles2* new_ptr = shader_ptr->new_share_shader();
+	shader_gles2* new_ptr = shader_ptr->new_ref();
 	if (new_ptr)
 	{
 		if (m_vertex_shader_ptr)
@@ -542,11 +476,11 @@ result_t native_shader_program_gles2::compile_program()
 	}
 	else
 	{
-		m_programID = glCreateProgram();
+		m_programID = ::glCreateProgram();
 	}
 
-	native_shader_gles2* vertex_shader_ptr = m_vertex_shader_ptr->ref_ptr();
-	native_shader_gles2* pixel_shader_ptr = m_pixel_shader_ptr->ref_ptr();
+	native_shader_gles2* vertex_shader_ptr = m_vertex_shader_ptr->native_ptr();
+	native_shader_gles2* pixel_shader_ptr = m_pixel_shader_ptr->native_ptr();
 
 	if (m_programID &&
 		vertex_shader_ptr &&

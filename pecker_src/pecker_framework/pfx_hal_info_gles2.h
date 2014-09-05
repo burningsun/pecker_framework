@@ -15,11 +15,17 @@
 #define OPENGLES_VERSION (2)
 #endif
 
+const instance_version_t& get_hal_instanse_ID_gles2();
 #if ((RENDER_SYSTEM_TYPE == OPENGLES_BASE_RENDER_SYSTEM) && RENDER_SYSTEM_VERSION == (2))
 extern "C"
 {
-	const instance_version_t& get_hal_instanse_ID();
+	PFX_INLINE const instance_version_t& get_hal_instanse_ID()
+	{
+		return get_hal_instanse_ID_gles2();
+	}
 }
 #endif
+
+
 
 #endif			//PFX_HAL_INFO_H_

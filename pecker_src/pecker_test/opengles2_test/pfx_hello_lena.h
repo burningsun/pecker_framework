@@ -221,7 +221,7 @@ public:
 
 		if (null == m_program_ptr)
 		{
-			m_program_ptr = shader_program_gles2::new_program();
+			m_program_ptr = __state.create_program();
 		}
 		m_program_ptr->attach_shader(__vs_ptr);
 		m_program_ptr->attach_shader(__fs_ptr);

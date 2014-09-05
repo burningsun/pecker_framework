@@ -69,11 +69,15 @@ bool cnative_render_state_gles2::is_egl_externsion_supported(EGLDisplay egl_disp
 
 //////////////////////////////////////////////////////////////////////////
 // program
+shader_program_gles2* cnative_render_state_gles2::create_program()
+{
+	return shader_program_gles2::create_new_object();
+}
 shader_program_gles2* cnative_render_state_gles2::working_program()
 {
 	if (m_use_program_ptr)
 	{
-		return m_use_program_ptr->new_share_program();
+		return m_use_program_ptr->new_ref();
 	}
 	else
 	{
@@ -85,7 +89,7 @@ shader_program_gles2* cnative_render_state_gles2::last_program()
 {
 	if (m_old_program_ptr)
 	{
-		return m_old_program_ptr->new_share_program();
+		return m_old_program_ptr->new_ref();
 	}
 	else
 	{
@@ -100,15 +104,15 @@ result_t cnative_render_state_gles2::select_program(shader_program_gles2* PARAM_
 
 	// 当前引用与原有引用一样，退出
 	if (m_use_program_ptr &&
-		m_use_program_ptr->ref_ptr() == program_ptr->ref_ptr())
+		m_use_program_ptr->native_ptr() == program_ptr->native_ptr())
 	{
 		return m_use_program_ptr->use();
 	}
 
-	shader_program_gles2* new_ptr = program_ptr->new_share_program();
+	shader_program_gles2* new_ptr = program_ptr->new_ref();
 	// 创建引用失败，退出
 	RETURN_INVALID_RESULT((!new_ptr), PFX_STATUS_FAIL);
-	if (!(new_ptr->ref_ptr()))
+	if (!(new_ptr->native_ptr()))
 	{
 		new_ptr->dispose_program();
 		return PFX_STATUS_FAIL;
@@ -233,7 +237,7 @@ void cnative_render_state_gles2::set_vertex_attrib_array(long_t __attribute_loca
 {
 	if (buffer_ptr)
 	{
-		cnative_buffer_object_gles2* native_buffer_ptr = buffer_ptr->ref_ptr();
+		cnative_buffer_object_gles2* native_buffer_ptr = buffer_ptr->native_ptr();
 		if (native_buffer_ptr && native_buffer_ptr->get_bufferID())
 		{
 			result_t status = native_buffer_ptr->update_data();
@@ -269,15 +273,11 @@ result_t cnative_render_state_gles2::unbind_buffer(long_t __attribute_location)
 // vbo
 cbuffer_object_gles2* cnative_render_state_gles2::create_buffer()
 {
-	cbuffer_object_gles2* new_buffer_ptr = cbuffer_object_gles2::new_buffer();
+	cbuffer_object_gles2* new_buffer_ptr = cbuffer_object_gles2::create_new_object();
 	if (new_buffer_ptr)
 	{
-		result_t status = PFX_STATUS_FAIL;
-		if (null != new_buffer_ptr->ref_ptr())
-		{
-			status = new_buffer_ptr->ref_ptr()->create_buffer_object();
-		}
-
+		result_t status;
+		status = new_buffer_ptr->native().create_buffer_object();
 		if (PFX_STATUS_OK != status)
 		{
 			new_buffer_ptr->dispose_buffer();
@@ -293,8 +293,7 @@ result_t cnative_render_state_gles2::set_buffer_object(cbuffer_object_gles2* PAR
 {
 	if (buffer_ptr)
 	{
-		RETURN_INVALID_RESULT((null == buffer_ptr->ref_ptr()), PFX_STATUS_MEM_ERR);
-		return buffer_ptr->ref_ptr()->update_data(rect_bit);
+		return buffer_ptr->native().update_data(rect_bit);
 	}
 	else
 	{

@@ -9,8 +9,9 @@
 
 #if ((RENDER_SYSTEM_TYPE == OPENGLES_BASE_RENDER_SYSTEM) && RENDER_SYSTEM_VERSION == (2))
 static instance_version_t gInstance_version = { OPENGLES_BASE_RENDER_SYSTEM, 2, 0, 0 };
-const instance_version_t& get_hal_instanse_ID()
+#endif
+
+const instance_version_t& get_hal_instanse_ID_gles2()
 {
 	return gInstance_version;
 }
-#endif

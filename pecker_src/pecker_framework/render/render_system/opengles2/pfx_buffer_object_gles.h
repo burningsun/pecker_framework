@@ -80,20 +80,14 @@ class PFX_RENDER_SYSTEM_API cnative_vertex_cache_buffer
 {
 	DECLARE_FRIEND_CLASS(class cvertex_cache_buffer_gles2);
 	DECLARE_FRIEND_CLASS(VERTEXT_CACHE_ALLOC_GLES2);
-
-	DEFINE_NATIVE_REF_POOL(VERTEXT_CACHE_NODE_ALLOC_GLES2, VERTEXT_CACHE_ALLOC_GLES2,m_ref_pool);
-
-protected:
-	DECLARE_NATIVE_CREATE_NEW_NODE(cvertex_cache_buffer_gles2, create_vertex_node);
-	DECLARE_NATIVE_CREATE_SHARE_NODE(cvertex_cache_buffer_gles2, share_vertex_node);
-	DECLARE_NATIVE_DISPOSE_SHARE_NODE(cvertex_cache_buffer_gles2, dispose_vertex_node);
 private:
 	carray < vexbuffer_allocator_t >	m_vertexs;
 	cs_t								m_locker;
 	enum_int_t						 	m_value_type;
 	usize__t							m_vb_struct_size;
 
-private:
+	
+public:
 	 cnative_vertex_cache_buffer();
 	 cnative_vertex_cache_buffer(const cnative_vertex_cache_buffer& __other);
 	 cnative_vertex_cache_buffer& operator=(const cnative_vertex_cache_buffer& __other);
@@ -132,69 +126,104 @@ public:
 	static u64_t get_version();
 };
 
-class PFX_RENDER_SYSTEM_API cvertex_cache_buffer_gles2;
-
-DECLARE_REF_NODE_CLASS_PROTECTED_BEGIN(cvertex_cache_buffer_gles2, 
-cnative_vertex_cache_buffer, IPfx_vertex_cache_buffer, base_t,
-vertex_cache_node_alloc_gles2_t,
-vertex_cache_alloc_gles2_t)
-
-//friend cnative_vertex_cache_buffer::ref_pool_memanger_t;
-//
-DECLARE_FRIEND_CLASS(class cnative_vertex_cache_buffer);
-DECLARE_FRIEND_CLASS(VERTEXT_CACHE_NODE_ALLOC_GLES2);
-//
-public:
-DECLARE_REF_CREATE_NEW_NODE(cvertex_cache_buffer_gles2, new_vertex_cache);
-DECLARE_REF_CREATE_SHARE_NODE(cvertex_cache_buffer_gles2, new_share_vertex);
-DECLARE_REF_DISPOSE_SHARE_NODE(cvertex_cache_buffer_gles2, dispose_vertex);
-
-protected:
-	typedef  cnative_vertex_cache_buffer ref_element_t;
+class PFX_RENDER_SYSTEM_API cvertex_cache_buffer_gles2 : 
+	public IPfx_vertex_cache_buffer
+{
+	DECLARE_FRIEND_CLASS(VERTEXT_CACHE_NODE_ALLOC_GLES2); 
+	typedef   cnative_vertex_cache_buffer native_t;
 private:
-	cvertex_cache_buffer_gles2(){ RBUFFER_LOG_INFO("create...0x%08X", (lpointer_t)this); }
-	
+	native_t m_native;
+protected:
+	cvertex_cache_buffer_gles2(){ ; }
+	virtual ~cvertex_cache_buffer_gles2()
+	{ 
+		RBUFFER_LOG_INFO("real_dispose (%d)", creference_root::get_ref_count());
+	}
+	virtual PFX_INLINE result_t real_dispose()
+	{
+		return __real_dispose();
+	}
 public:
-	virtual ~cvertex_cache_buffer_gles2(){ dispose_vertex(); RBUFFER_LOG_INFO("release...0x%08X", (lpointer_t)this); }
+	DELARE_REF_METHOD(cvertex_cache_buffer_gles2, 
+		IPfx_vertex_cache_buffer, 
+		vertex_cache_node_alloc_gles2_t);
 public:
-	result_t	lock_cache_buffer(buffer_bits_t& PARAM_INOUT bits,
-		const buffer_rect_t* PARAM_IN lock_rect_ptr = null);
-	
-	result_t	unlock_cache_buffer();
+	PFX_INLINE result_t dispose_vertex()
+	{
+		return dispose_object();
+	}
 
-	result_t	reset_cache_buffer(enum_int_t __value_type,
+	PFX_INLINE IPfx_vertex_cache_buffer* new_share()
+	{
+		return new_ref();
+	}
+
+	PFX_INLINE result_t	lock_cache_buffer(buffer_bits_t& PARAM_INOUT bits,
+		const buffer_rect_t* PARAM_IN lock_rect_ptr = null
+		)
+	{
+		m_native.lock_cache_buffer(bits, lock_rect_ptr);
+		return PFX_STATUS_OK;
+	}
+	PFX_INLINE result_t	unlock_cache_buffer()
+	{
+		m_native.unlock_cache_buffer();
+		return PFX_STATUS_OK;
+	}
+
+	PFX_INLINE result_t	reset_cache_buffer(enum_int_t __value_type,
 		usize__t vb_struct_size,
-		usize__t vb_struct_count);
+		usize__t vb_struct_count)
+	{
+		return m_native.create_cache_buffer(__value_type, vb_struct_size, vb_struct_count);
+	}
 
-	usize__t	vb_struct_attribcount() const;
+	PFX_INLINE usize__t	vb_struct_attribcount() const
+	{
+		return m_native.vb_struct_attribcount();
+	}
 
-	usize__t	get_vb_struct_size() const;
+	PFX_INLINE usize__t	get_vb_struct_size() const
+	{
+		return m_native.get_vb_struct_size();
+	}
+	PFX_INLINE enum_int_t get_value_type() const
+	{
+		return m_native.get_value_type();
+	}
 
-	enum_int_t	get_value_type() const;
+	PFX_INLINE IPfx_vertex_cache_buffer* clone() const
+	{
+		cvertex_cache_buffer_gles2* new_ptr = create_new_object();
 
-	IPfx_vertex_cache_buffer* clone() const;
-	
-	u64_t get_version() const;
+		if (!new_ptr)
+		{
+			return null;
+		}
 
-	IPfx_vertex_cache_buffer* new_share();
+		new_ptr->native() = this->native();
+		return new_ptr;
+	}
 
-	static cvertex_cache_buffer_gles2* create_cache_buffer(enum_int_t __value_type,
+	static PFX_INLINE cvertex_cache_buffer_gles2* create_cache_buffer(enum_int_t __value_type,
 		usize__t vb_struct_size,
-		usize__t vb_struct_count);
+		usize__t vb_struct_count)
+	{
+		cvertex_cache_buffer_gles2* new_ptr = create_new_object();
+		if (new_ptr)
+		{
+			result_t status = new_ptr->native().create_cache_buffer
+				(__value_type, vb_struct_size, vb_struct_count);
+		}
+		return new_ptr;
+	}
 
-DECLARE_REF_NODE_CLASS_END;
-
-//////////////////////////////////////////////////////////////////////////
-STATIC_NATIVE_CREATE_NEW_NODE(cnative_vertex_cache_buffer, cvertex_cache_buffer_gles2, create_vertex_node);
-NATIVE_CREATE_SHARE_NODE(cnative_vertex_cache_buffer, cvertex_cache_buffer_gles2, share_vertex_node, m_ref_pool);
-NATIVE_DISPOSE_SHARE_NODE(cnative_vertex_cache_buffer, cvertex_cache_buffer_gles2, dispose_vertex_node, m_ref_pool);
-//////////////////////////////////////////////////////////////////////////
-STATIC_REF_CREATE_NEW_NODE(cnative_vertex_cache_buffer, cvertex_cache_buffer_gles2, 
-	new_vertex_cache, create_vertex_node);
-REF_CREATE_SHARE_NODE(base_t, cvertex_cache_buffer_gles2, new_share_vertex, share_vertex_node);
-REF_DISPOSE_SHARE_NODE(base_t, cvertex_cache_buffer_gles2, dispose_vertex, dispose_vertex_node);
-
-
+	PFX_INLINE u64_t get_version() const
+	{
+		return native_t::get_version();
+	}
+	
+};
 
 class cnative_render_state_gles2;
 
@@ -202,12 +231,7 @@ class PFX_RENDER_SYSTEM_API cnative_buffer_object_gles2
 {
 	DECLARE_FRIEND_CLASS(class cnative_render_state_gles2);
 	DECLARE_FRIEND_CLASS(class cbuffer_object_gles2);
-	DECLARE_FRIEND_CLASS(BUFFER_OBJECT_ALLOC_GLES2);
-	DEFINE_NATIVE_REF_POOL(BUFFER_OBJECT_NODE_ALLOC_GLES2, BUFFER_OBJECT_ALLOC_GLES2, m_ref_pool);
-protected:
-	DECLARE_NATIVE_CREATE_NEW_NODE(cbuffer_object_gles2, create_buffer_node);
-	DECLARE_NATIVE_CREATE_SHARE_NODE(cbuffer_object_gles2, share_buffer_node);
-	DECLARE_NATIVE_DISPOSE_SHARE_NODE(cbuffer_object_gles2, dispose_buffer_node);
+
 private:
 	GLuint							m_bufferID;
 	cvertex_cache_buffer_gles2*		m_update_data_ptr;
@@ -235,9 +259,8 @@ public:
 	PFX_INLINE usize__t last_update_bytes_count() const
 	{
 		return m_bytes_count;
-	}
-	
-private:
+	}	
+public:
 	cnative_buffer_object_gles2();
 public:
 	virtual ~cnative_buffer_object_gles2();
@@ -258,12 +281,12 @@ public:
 		{
 			// 引用一样，就懒得拷贝了
 			if (m_update_data_ptr &&
-				(buffer_ptr->ref_ptr() == m_update_data_ptr->ref_ptr()))
+				(buffer_ptr->native_ptr() == m_update_data_ptr->native_ptr()))
 			{
 				return PFX_STATUS_OK;
 			}
 			// 创建新的引用，然后将原来的引用去掉
-			cvertex_cache_buffer_gles2* share_ptr = buffer_ptr->new_share_vertex();
+			cvertex_cache_buffer_gles2* share_ptr = buffer_ptr->new_ref();
 			if (share_ptr)
 			{
 				if (m_update_data_ptr)
@@ -343,61 +366,85 @@ PFX_INLINE GLenum PFXBUT_TO_GLBUT(PFX_BUFFER_USAGE_TYPE_t usage_type)
 	return table[usage_type];
 }
 
-class PFX_RENDER_SYSTEM_API cbuffer_object_gles2;
-
-DECLARE_REF_NODE_CLASS_PROTECTED_BEGIN(cbuffer_object_gles2,
-cnative_buffer_object_gles2, IPfx_buffer_object, base_t,
-buffer_object_node_alloc_gles2_t,
-buffer_object_alloc_gles2_t)
-//
-    DECLARE_FRIEND_CLASS(class cnative_buffer_object_gles2);
-    DECLARE_FRIEND_CLASS(BUFFER_OBJECT_NODE_ALLOC_GLES2);
-	//DECLARE_BE_REF_POOL_MEMANGER_FRIEND(BUFFER_OBJECT_NODE_ALLOC_GLES2, BUFFER_OBJECT_ALLOC_GLES2);
-//
-public:
-	DECLARE_REF_CREATE_NEW_NODE(cbuffer_object_gles2, new_buffer);
-	DECLARE_REF_CREATE_SHARE_NODE(cbuffer_object_gles2, new_share_buffer);
-	DECLARE_REF_DISPOSE_SHARE_NODE(cbuffer_object_gles2, dispose_buffer);
+class PFX_RENDER_SYSTEM_API cbuffer_object_gles2 : public IPfx_buffer_object
+{
+	DECLARE_FRIEND_CLASS(BUFFER_OBJECT_NODE_ALLOC_GLES2);
+	typedef  cnative_buffer_object_gles2 native_t;
 protected:
-	typedef  cnative_buffer_object_gles2 ref_element_t;
-	
-private:
-	cbuffer_object_gles2(){ RBUFFER_LOG_INFO("create...0x%08X", (lpointer_t)this); }
-	
+	native_t m_native;
+protected:
+	cbuffer_object_gles2(){ ; }
+	virtual ~cbuffer_object_gles2()
+	{
+		RBUFFER_LOG_INFO("real_dispose (%d)", creference_root::get_ref_count());
+	}
+
+	virtual PFX_INLINE result_t real_dispose()
+	{
+		return __real_dispose();
+	}
 public:
-	virtual ~cbuffer_object_gles2(){ dispose_buffer(); RBUFFER_LOG_INFO("release...0x%08X", (lpointer_t)this); }
-
-public:
-	IPfx_buffer_object* diff_cache_object();
-
-	result_t set_vbo_buffer(IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr);
-	result_t set_vbo_type(enum_int_t vbo_type // PFX_BUFFER_OBJECT_TYPE_t
-		);
-	result_t set_vbo_usage_type(enum_int_t usage_type //PFX_BUFFER_USAGE_TYPE_t
-		);
-
-
-	long_t get_native_location() const;
-
-
-	u64_t get_version() const;
+	DELARE_REF_METHOD(cbuffer_object_gles2, IPfx_buffer_object, 
+		buffer_object_node_alloc_gles2_t);
+	
+	PFX_INLINE result_t dispose_buffer()
+	{
+		return dispose_object();
+	}
 
 	PFX_INLINE IPfx_buffer_object* new_share()
 	{
-		return new_share_buffer();
+		return 	new_ref();
 	}
 
 
-DECLARE_REF_NODE_CLASS_END;
+	PFX_INLINE IPfx_buffer_object* diff_cache_object()
+	{
+		cbuffer_object_gles2* new_ptr = create_object();
+		if (new_ptr)
+		{
+			new_ptr->native().m_bufferID = this->native().m_bufferID;
+		}
+		return new_ptr;
+	}
 
-//////////////////////////////////////////////////////////////////////////
-STATIC_NATIVE_CREATE_NEW_NODE(cnative_buffer_object_gles2, cbuffer_object_gles2, create_buffer_node);
-NATIVE_CREATE_SHARE_NODE(cnative_buffer_object_gles2, cbuffer_object_gles2, share_buffer_node, m_ref_pool);
-NATIVE_DISPOSE_SHARE_NODE(cnative_buffer_object_gles2, cbuffer_object_gles2, dispose_buffer_node, m_ref_pool);
-//////////////////////////////////////////////////////////////////////////
-STATIC_REF_CREATE_NEW_NODE(cnative_buffer_object_gles2, cbuffer_object_gles2, new_buffer, create_buffer_node);
-REF_CREATE_SHARE_NODE(base_t, cbuffer_object_gles2, new_share_buffer, share_buffer_node);
-REF_DISPOSE_SHARE_NODE(base_t, cbuffer_object_gles2, dispose_buffer, dispose_buffer_node);
+	PFX_INLINE result_t set_vbo_buffer(IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr)
+	{
+		if (!buffer_ptr ||
+			buffer_ptr->get_version() != cnative_vertex_cache_buffer::get_version())
+		{
+			return PFX_STATUS_INVALID_VALUE;
+		}
+
+		return m_native.set_vbo_buffer(DYNAMIC_CAST(cvertex_cache_buffer_gles2*)(buffer_ptr));
+	}
+
+	PFX_INLINE result_t set_vbo_type(enum_int_t vbo_type // PFX_BUFFER_OBJECT_TYPE_t
+		)
+	{
+		return m_native.set_vbo_type(vbo_type);
+	}
+
+	PFX_INLINE result_t set_vbo_usage_type(enum_int_t usage_type //PFX_BUFFER_USAGE_TYPE_t
+		)
+	{
+		return m_native.set_vbo_usage_type(usage_type);
+	}
+
+
+	PFX_INLINE long_t get_native_location() const
+	{
+		return m_native.get_bufferID();
+	}
+
+
+	u64_t get_version() const
+	{
+		return native_t::get_version();
+	}
+
+
+};
 
 
 #ifdef _MSC_VER

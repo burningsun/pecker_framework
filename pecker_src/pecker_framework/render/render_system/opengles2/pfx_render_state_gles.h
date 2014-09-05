@@ -83,6 +83,7 @@ public:
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// program
+	shader_program_gles2* create_program();
 	shader_program_gles2* working_program();
 	shader_program_gles2* last_program();
 

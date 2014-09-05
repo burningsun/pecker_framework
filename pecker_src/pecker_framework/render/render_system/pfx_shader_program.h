@@ -102,7 +102,7 @@ typedef compare_ascii_string_node_by_name< shader_param_t >   compare_shader_par
 typedef compare_ascii_string_node_by_chrname< shader_param_t > compare_shader_param_exchr_t;
 
 
-PFX_Interface  PFX_RENDER_SYSTEM_API Ipfx_shader
+PFX_Interface  PFX_RENDER_SYSTEM_API Ipfx_shader : public creference_root
 {
 	virtual ~Ipfx_shader(){ ; }
 	virtual long_t	compile_shader(const char_t* PARAM_IN str_shader_codes,
@@ -118,7 +118,7 @@ PFX_Interface  PFX_RENDER_SYSTEM_API Ipfx_shader
 	virtual result_t	dispose_shader() = 0;
 };
 
-PFX_Interface Ipfx_shader_program
+PFX_Interface Ipfx_shader_program : public creference_root
 {
 	typedef cavl_bst_node < shader_param_t >					shader_param_node_t;
 	typedef compare_two_node< shader_param_node_t,

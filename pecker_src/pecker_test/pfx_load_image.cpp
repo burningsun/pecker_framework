@@ -17,11 +17,11 @@ result_t load_png_img(const char_t* pfile_name, cImage& __img)
 {
 	cPng_Image_reader __img_reader;
 	sasset_reader_t* asset_file_ptr;
-	asset_file_ptr = sasset_reader_t::new_object();
+	asset_file_ptr = sasset_reader_t::create_new_object();
 	
 
 	sresource_reader_t* res_file_ptr;
-	res_file_ptr = sresource_reader_t::new_object();
+	res_file_ptr = sresource_reader_t::create_new_object();
 	
 
 	casset_reader_t* aset_reader_ptr = asset_file_ptr->native_ptr();
@@ -30,15 +30,15 @@ result_t load_png_img(const char_t* pfile_name, cImage& __img)
 
 	if (!aset_reader_ptr || !res_reader_ptr)
 	{
-		asset_file_ptr->dispose_node();
-		res_file_ptr->dispose_node();
+		asset_file_ptr->dispose_object();
+		res_file_ptr->dispose_object();
 		return PFX_STATUS_MEM_ERR;
 	}
 	
 	__img_reader.attach_asset_reader(asset_file_ptr);
 	__img_reader.attach_resource_reader(res_file_ptr);
-	asset_file_ptr->dispose_node();
-	res_file_ptr->dispose_node();
+	asset_file_ptr->dispose_object();
+	res_file_ptr->dispose_object();
 
 #if defined(TEST_ASET_RESOURCE)
 	__img_reader.select_load_form_asset_reader(pfile_name);

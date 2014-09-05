@@ -43,8 +43,11 @@ public:
 };
 
 typedef cresource_reader_windows casset_reader_windows;
-typedef simple_reference< cresource_reader_windows >::sref_node cresource_share_reader_windows_t;
-typedef simple_reference< casset_reader_windows >::sref_node casset_share_reader_windows_t;
+//typedef simple_reference< cresource_reader_windows >::sref_node cresource_share_reader_windows_t;
+//typedef simple_reference< casset_reader_windows >::sref_node casset_share_reader_windows_t;
+
+typedef simple_ref< cresource_reader_windows > cresource_share_reader_windows_t;
+typedef simple_ref< casset_reader_windows > casset_share_reader_windows_t;
 
 PECKER_END
 #endif	 // #if (OS_CONFIG == OS_WINDOWS)

@@ -142,138 +142,8 @@ u64_t cnative_vertex_cache_buffer::get_version()
 
 //////////////////////////////////////////////////////////////////////////
 
-result_t	cvertex_cache_buffer_gles2::lock_cache_buffer(buffer_bits_t& PARAM_INOUT bits,
-	const buffer_rect_t* PARAM_IN lock_rect_ptr //= null
-	)
-{
-	ref_element_t* ref_ptr = this->ref_ptr();//get_reference();
-	if (ref_ptr)
-	{
-		ref_ptr->lock_cache_buffer(bits, lock_rect_ptr);
-		return PFX_STATUS_OK;
-	}
-	else
-	{
-		return PFX_STATUS_UNINIT;
-	}
-}
-result_t	cvertex_cache_buffer_gles2::unlock_cache_buffer()
-{
-	ref_element_t* ref_ptr = this->ref_ptr();
-	if (ref_ptr)
-	{
-		ref_ptr->unlock_cache_buffer();
-		return PFX_STATUS_OK;
-	}
-	else
-	{
-		return PFX_STATUS_UNINIT;
-	}
-}
 
-result_t	cvertex_cache_buffer_gles2::reset_cache_buffer(enum_int_t __value_type,
-	usize__t vb_struct_size,
-	usize__t vb_struct_count)
-{
-	ref_element_t* ref_ptr = this->ref_ptr();
-	if (ref_ptr)
-	{
-		return ref_ptr->create_cache_buffer(__value_type, vb_struct_size, vb_struct_count);
-	}
-	else
-	{
-		return PFX_STATUS_MEM_LOW;
-	}
-}
 
-usize__t	cvertex_cache_buffer_gles2::vb_struct_attribcount() const
-{
-	const ref_element_t* ref_ptr = this->ref_ptr();
-	if (ref_ptr)
-	{
-		return ref_ptr->vb_struct_attribcount();
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-usize__t	cvertex_cache_buffer_gles2::get_vb_struct_size() const
-{
-	const ref_element_t* ref_ptr = this->ref_ptr();
-	if (ref_ptr)
-	{
-		return ref_ptr->get_vb_struct_size();
-	}
-	else
-	{
-		return 0;
-	}
-}
-enum_int_t	cvertex_cache_buffer_gles2::get_value_type() const
-{
-	const ref_element_t* ref_ptr = this->ref_ptr();
-	if (ref_ptr)
-	{
-		return ref_ptr->get_value_type();
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-IPfx_vertex_cache_buffer* cvertex_cache_buffer_gles2::clone() const
-{
-	RETURN_INVALID_RESULT(null == this->ref_ptr(), null);
-
-	cvertex_cache_buffer_gles2* new_ptr = new_vertex_cache();
-
-	if (!new_ptr)
-	{
-		return null;
-	}
-	if (null == new_ptr->ref_ptr())
-	{
-		new_ptr->dispose_vertex();
-		return null;
-	}
-
-	*(new_ptr->ref_ptr()) = *(this->ref_ptr());
-	return new_ptr;
-}
-
-cvertex_cache_buffer_gles2* cvertex_cache_buffer_gles2::create_cache_buffer(enum_int_t __value_type,
-	usize__t vb_struct_size,
-	usize__t vb_struct_count)
-{
-	cvertex_cache_buffer_gles2* new_ptr = new_vertex_cache();
-	if (new_ptr)
-	{
-		result_t status = PFX_STATUS_FAIL;
-		if (new_ptr->ref_ptr())
-		{
-			status = new_ptr->ref_ptr()->create_cache_buffer(__value_type, vb_struct_size, vb_struct_count);
-		}
-		if (PFX_STATUS_OK != status)
-		{
-			new_ptr->dispose_vertex();
-			new_ptr = null;
-		}
-	}
-	return new_ptr;
-}
-
-u64_t cvertex_cache_buffer_gles2::get_version() const
-{
-	return ref_element_t::get_version();
-}
-
-IPfx_vertex_cache_buffer* cvertex_cache_buffer_gles2::new_share()
-{
-	return new_share_vertex();
-}
 
 
 cnative_buffer_object_gles2::cnative_buffer_object_gles2() :m_bufferID(0),
@@ -334,12 +204,12 @@ result_t cnative_buffer_object_gles2::update_data(buffer_rect_t* PARAM_IN update
 		return PFX_STATUS_INVALID_ENUM;
 	}
 	result_t status = PFX_STATUS_OK;
-	glBindBuffer(target_type, m_bufferID);
+	::glBindBuffer(target_type, m_bufferID);
 
 	cnative_vertex_cache_buffer* buffer_ptr = null;
 	if (m_update_data_ptr)
 	{
-		buffer_ptr = m_update_data_ptr->ref_ptr();
+		buffer_ptr = m_update_data_ptr->native_ptr();
 	}
 	if (buffer_ptr)
 	{
@@ -354,14 +224,14 @@ result_t cnative_buffer_object_gles2::update_data(buffer_rect_t* PARAM_IN update
 			m_vb_struct_attribcount = buffer_ptr->vb_struct_attribcount();
 			if (!update_rect_ptr)
 			{
-				glBufferData(target_type,
+				::glBufferData(target_type,
 					(GLsizeiptr)bits.m_bytes_count,
 					bits.m_bits_ptr,
 					usage_type);
 			}
 			else
 			{
-				glBufferSubData(target_type,
+				::glBufferSubData(target_type,
 					(GLintptr)update_rect_ptr->m_offset,
 					(GLsizeiptr)update_rect_ptr->m_size,
 					bits.m_bits_ptr);
@@ -389,90 +259,8 @@ u64_t cnative_buffer_object_gles2::get_version()
 }
 
 
-IPfx_buffer_object* cbuffer_object_gles2::diff_cache_object()
-{
-	RETURN_INVALID_RESULT(null == this->ref_ptr(), null);
+//////////////////////////////////////////////////////////////////////////
 
-	cbuffer_object_gles2* new_ptr = new_buffer ();
-	if (new_ptr)
-	{
-		if (new_ptr->ref_ptr())
-		{
-			new_ptr->ref_ptr()->m_bufferID = 
-				this->ref_ptr()->m_bufferID;
-		}
-		else
-		{
-			new_ptr->dispose_buffer();
-			new_ptr = null;
-		}
-	}
-	return new_ptr;
-}
-
-result_t cbuffer_object_gles2::set_vbo_buffer(IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr)
-{
-	if (!buffer_ptr ||
-		buffer_ptr->get_version() != cnative_vertex_cache_buffer::get_version())
-	{
-		return PFX_STATUS_INVALID_VALUE;
-	}
-
-	if (this->ref_ptr())
-	{
-		return this->ref_ptr()->set_vbo_buffer
-			(DYNAMIC_CAST(cvertex_cache_buffer_gles2*)(buffer_ptr));
-	}
-	else
-	{
-		return PFX_STATUS_UNINIT;
-	}
-}
-
-result_t cbuffer_object_gles2::set_vbo_type(enum_int_t vbo_type // PFX_BUFFER_OBJECT_TYPE_t
-	)
-{
-	if (this->ref_ptr())
-	{
-		return this->ref_ptr()->set_vbo_type(vbo_type);
-	}
-	else
-	{
-		return PFX_STATUS_UNINIT;
-	}
-}
-
-result_t cbuffer_object_gles2::set_vbo_usage_type(enum_int_t usage_type //PFX_BUFFER_USAGE_TYPE_t
-	)
-{
-	if (this->ref_ptr())
-	{
-		return this->ref_ptr()->set_vbo_usage_type(usage_type);
-	}
-	else
-	{
-		return PFX_STATUS_UNINIT;
-	}
-}
-
-
-long_t cbuffer_object_gles2::get_native_location() const
-{
-	if (this->ref_ptr())
-	{
-		return this->ref_ptr()->get_bufferID();
-	}
-	else
-	{
-		return PFX_STATUS_UNINIT;
-	}
-}
-
-
-u64_t cbuffer_object_gles2::get_version() const
-{
-	return ref_element_t::get_version();
-}
 
 
 

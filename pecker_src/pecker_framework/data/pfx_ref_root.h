@@ -29,6 +29,131 @@
 
 PECKER_BEGIN
 
+class creference_root
+{
+private:
+	usize__t m_reference_count;
+public:
+	usize__t get_ref_count() const
+	{
+		return m_reference_count;
+	}
+protected:
+	creference_root():m_reference_count(0){ ; }
+	virtual ~creference_root()
+	{ 
+		m_reference_count = 0;
+	}
+	virtual result_t real_dispose()
+	{
+		m_reference_count = 0;
+		return PFX_STATUS_OK;
+	}
+public:
+	PFX_INLINE creference_root* share()
+	{
+		++m_reference_count;
+		return this;
+	}
+	PFX_INLINE result_t dispose()
+	{
+		if (0 == m_reference_count)
+		{
+			return real_dispose();
+		}
+		else 
+		{
+			--m_reference_count;
+		}
+	}
+	virtual creference_root* new_object() = 0; 
+};
+
+#define DELARE_REF_METHOD(THIS_CLASS_NAME,INTERFACE_NAME,THIS_ALLOCATOR) __DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) 
+
+#define __DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) \
+protected:\
+PFX_INLINE result_t __real_dispose()\
+{									 \
+	THIS_CLASS_NAME* del_ptr = this;  \
+	REF_LOG_INFO("__real_dispose (%d)", creference_root::get_ref_count()); \
+	return THIS_ALLOCATOR::deallocate_object(del_ptr);\
+}  \
+public:\
+PFX_INLINE THIS_CLASS_NAME* new_ref()  \
+{										\
+		if (creference_root::share())	 \
+		{	\
+			REF_LOG_INFO("new_ref (%d)", creference_root::get_ref_count());\
+			return this;\
+		}	\
+	}	\
+virtual PFX_INLINE THIS_CLASS_NAME * create_object()	\
+{													\
+	return create_new_object();						 \
+}													\
+static PFX_INLINE THIS_CLASS_NAME * create_new_object()\
+{											\
+	return THIS_ALLOCATOR::allocate_object();  \
+}											\
+PFX_INLINE creference_root* new_object() \
+{										 \
+	return create_object();				 \
+}										 \
+PFX_INLINE native_t& native()			 \
+{										 \
+	return m_native;					 \
+}										 \
+PFX_INLINE const native_t& native() const\
+{										  \
+	return m_native;					  \
+}										  \
+PFX_INLINE native_t* native_ptr()			 \
+{										 \
+	return &m_native;					 \
+}										 \
+	PFX_INLINE const native_t* native_ptr() const\
+{										  \
+	return &m_native;					  \
+}										  \
+PFX_INLINE result_t dispose_object()	  \
+{										  \
+	result_t status = creference_root::dispose();\
+	REF_LOG_INFO("dispose (%d)", creference_root::get_ref_count());\
+	return status;	 \
+}
+
+template < class __native_ref >
+class simple_ref : public creference_root
+{
+	typedef simple_ref < __native_ref >	ref_root_t;
+	typedef pecker_simple_allocator< ref_root_t > ref_alloc_t;
+	typedef __native_ref native_t;
+	friend class pecker_simple_allocator< ref_root_t >;
+private:
+	native_t m_native;
+protected:
+	simple_ref()
+	{
+		REF_LOG_INFO("create...0x%08X", (lpointer_t)this);
+	}
+	virtual ~simple_ref()
+	{
+		REF_LOG_INFO("release...0x%08X", (lpointer_t)this);
+	}
+	virtual result_t real_dispose()
+	{
+		return __real_dispose();
+	}
+public:
+	__DELARE_REF_METHOD(ref_root_t, ref_alloc_t);
+};
+
+
+
+
+
+/////////////////////////////////////////////////////////
 
 template< class __ref_obj, class __node_name_ >
 struct cref_node

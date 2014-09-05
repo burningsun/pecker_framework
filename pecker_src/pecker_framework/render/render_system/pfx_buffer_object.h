@@ -59,7 +59,7 @@ typedef enum  enumVexValueType
 
 
 
-PFX_Interface IPfx_vertex_cache_buffer
+PFX_Interface IPfx_vertex_cache_buffer : public creference_root
 {
 	virtual ~IPfx_vertex_cache_buffer(){ ; }
 
@@ -86,7 +86,7 @@ PFX_Interface IPfx_vertex_cache_buffer
 
 
 
-PFX_Interface PFX_RENDER_SYSTEM_API IPfx_buffer_object
+PFX_Interface PFX_RENDER_SYSTEM_API IPfx_buffer_object : public creference_root
 {
 	virtual ~IPfx_buffer_object(){ ; }
 	virtual IPfx_buffer_object* diff_cache_object() = 0;

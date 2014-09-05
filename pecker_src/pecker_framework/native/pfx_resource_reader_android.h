@@ -64,10 +64,14 @@ public:
 	result_t close();
 };
 
-typedef simple_reference< cresource_reader_android >::sref_node sresource_reader_android_t;
-typedef simple_reference< casset_reader_android >::sref_node sasset_reader_android_t;
+//typedef simple_reference< cresource_reader_android >::sref_node sresource_reader_android_t;
+//typedef simple_reference< casset_reader_android >::sref_node sasset_reader_android_t;
 //typedef simple_reference_object< cresource_reader_android > sresource_reader_android_t;
 //typedef simple_reference_object< casset_reader_android >    sasset_reader_android_t;
+
+typedef simple_ref< cresource_reader_android > sresource_reader_android_t;
+typedef simple_ref< casset_reader_android > sasset_reader_android_t;
+
 
 PECKER_END
 #endif	 // #if (OS_CONFIG == OS_WINDOWS)
