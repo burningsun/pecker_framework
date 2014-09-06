@@ -6,12 +6,14 @@
  */
 #include "pfx_opengles2_def.h"
 #include "../../pecker_framework/render/pfx_image_png.h"
+#include "../../pecker_framework/render/render_system/opengles2/pfx_texture_gles.h"
 
 #ifndef PFX_HELLO_LENA_H_
 #define PFX_HELLO_LENA_H_
 
 extern result_t load_img(const char_t* pfile_name, image_data_t& __img);
 extern result_t load_png_img(const char_t* pfile_name, cImage& __img);
+extern sImage_t* load_png_img(const char_t* pfile_name);
 
 class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 {
@@ -21,15 +23,19 @@ class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 		vector2f_t	m_img_pos;
 	}pos_texpos_t;
 private:
-	shader_program_gles2*			m_program_ptr;
+	cshader_program_gles2*			m_program_ptr;
 	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
 	cbuffer_object_gles2*			m_vertexbufferobject_ptr;
 	image_data_t m_img;
 	cImage m_cimg;
 	GLuint m_texture2D;
+	ctexture_surface* m_tex_surface_ptr;
+	ctexture2D_gles*  m_texture2d_ptr;
+
 public:
 	chello_lena_view_gles2() :m_texture2D(0), m_vertexattbi_buffer_ptr(null), 
-		m_vertexbufferobject_ptr(null), m_program_ptr(null)
+		m_vertexbufferobject_ptr(null), m_program_ptr(null), 
+		m_tex_surface_ptr(null), m_texture2d_ptr(null)
 	{
 		;
 	}
@@ -52,6 +58,20 @@ public:
 			m_program_ptr->dispose_program();
 			m_program_ptr = null;
 		}
+
+		if (m_tex_surface_ptr)
+		{
+			m_tex_surface_ptr->dispose_object();
+			m_tex_surface_ptr = null;
+		}
+
+		if (m_texture2d_ptr)
+		{
+			m_texture2d_ptr->dispose_texture();
+			m_texture2d_ptr = null;
+		}
+
+
 	}
 
 	virtual void on_view(
@@ -104,6 +124,27 @@ public:
 			0.0, 0.0, 0.0, 1.0
 			);
 
+		if (null == m_tex_surface_ptr)
+		{
+			m_tex_surface_ptr = __state.create_texture_surface();
+		}
+
+		if (null == m_tex_surface_ptr)
+		{
+			return;
+		}
+
+		if (null == m_texture2d_ptr)
+		{
+			m_texture2d_ptr = __state.create_texture2D();
+		}
+
+		if (null == m_texture2d_ptr)
+		{
+			return;
+		}
+
+
 		__state.set_uniform_attri(mat, mvp.reference());
 
 		if (!m_vertexbufferobject_ptr)
@@ -118,64 +159,88 @@ public:
 		//__state.set_vertex_attrib_array(texcoord, m_vertexattbi_buffer_ptr, 2, 0, sizeof(vector4f_t));
 
 
-		glActiveTexture(GL_TEXTURE0);
+		//glActiveTexture(GL_TEXTURE0);
 
-		if (!m_texture2D)
+		if (0 == m_tex_surface_ptr->get_max_miplevel())
 		{
-			//GLubyte pixels[4 * 4] =
-			//{
-			//	255, 0, 0, 100,// Red
-			//	0, 255, 0, 255,// Green
-			//	0, 0, 255, 200,// Blue
-			//	255, 255, 0, 255, // Yellow
-			//};
-
-			glGenTextures(1, &m_texture2D);
-
 #if (OS_CONFIG == OS_WINDOWS)
 			const char* lena_path = "test_res\\lena_rgba.png";
 #else
 			const char* lena_path = "test_res/lena_rgba.png";
 #endif //#if (OS_CONFIG == OS_WINDOWS)
+			sImage_t* img_ptr = load_png_img(lena_path);
+			m_tex_surface_ptr->update_image(img_ptr, PFX_RGBA_FMT);
+			img_ptr->dispose_object();
+		}
 
-			glBindTexture(GL_TEXTURE_2D, m_texture2D);
-
-			//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-			load_png_img(lena_path, m_cimg);
-			const image_data_t& img = m_cimg.get_image_direct();
-			glPixelStorei(GL_UNPACK_ALIGNMENT, img.m_pack_size);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.m_img.m_width,
-				img.m_img.m_height, 0, GL_RGBA,
-				GL_UNSIGNED_BYTE, img.m_img.m_bits_ptr);
-
-			//load_img(lena_path, m_img);
-			//glPixelStorei(GL_UNPACK_ALIGNMENT, m_img.m_pack_size);
-
-			//
-
-			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_img.m_img.m_width,
-			//	m_img.m_img.m_height, 0, GL_RGBA,
-			//	GL_UNSIGNED_BYTE, m_img.m_img.m_bits_ptr);
-
-
-
-			//// 测试纹理定位用
-			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2,
-			//	2, 0, GL_RGBA,
-			//	GL_UNSIGNED_BYTE, pixels);
-			// Set the filtering mode
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		if (m_texture2d_ptr->check_status())
+		{
+			m_texture2d_ptr->bind_texture();
 		}
 		else
-		{
-			glBindTexture(GL_TEXTURE_2D, m_texture2D);
+		{ 
+			m_texture2d_ptr->update_surface(m_tex_surface_ptr);
+			m_texture2d_ptr->set_texture_filter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			m_texture2d_ptr->set_texture_filter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		}
 
 
+//		if (!m_texture2D)
+//		{
+//			//GLubyte pixels[4 * 4] =
+//			//{
+//			//	255, 0, 0, 100,// Red
+//			//	0, 255, 0, 255,// Green
+//			//	0, 0, 255, 200,// Blue
+//			//	255, 255, 0, 255, // Yellow
+//			//};
+//
+//			glGenTextures(1, &m_texture2D);
+//
+//#if (OS_CONFIG == OS_WINDOWS)
+//			const char* lena_path = "test_res\\lena_rgba.png";
+//#else
+//			const char* lena_path = "test_res/lena_rgba.png";
+//#endif //#if (OS_CONFIG == OS_WINDOWS)
+//
+//			glBindTexture(GL_TEXTURE_2D, m_texture2D);
+//
+//			//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//
+//			load_png_img(lena_path, m_cimg);
+//			const image_data_t& img = m_cimg.get_image_direct();
+//			glPixelStorei(GL_UNPACK_ALIGNMENT, img.m_pack_size);
+//			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.m_img.m_width,
+//				img.m_img.m_height, 0, GL_RGBA,
+//				GL_UNSIGNED_BYTE, img.m_img.m_bits_ptr);
+//
+//			//load_img(lena_path, m_img);
+//			//glPixelStorei(GL_UNPACK_ALIGNMENT, m_img.m_pack_size);
+//
+//			//
+//
+//			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_img.m_img.m_width,
+//			//	m_img.m_img.m_height, 0, GL_RGBA,
+//			//	GL_UNSIGNED_BYTE, m_img.m_img.m_bits_ptr);
+//
+//
+//
+//			//// 测试纹理定位用
+//			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2,
+//			//	2, 0, GL_RGBA,
+//			//	GL_UNSIGNED_BYTE, pixels);
+//			// Set the filtering mode
+//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//		}
+//		else
+//		{
+//			glBindTexture(GL_TEXTURE_2D, m_texture2D);
+//		}
+
+		__state.set_texture(tex, m_texture2d_ptr, 1);
 		
-		glUniform1i(tex, 0);
+		//glUniform1i(tex, 0);
 
 		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 		__state.unbind_buffer(pos);
@@ -194,8 +259,8 @@ public:
 		PECKER_LOG_INFO("on_load escape time = %lld",__escape_time);
 
 		shader_souce_string_t __sys_shader_source;
-		shader_gles2* __vs_ptr = shader_gles2::new_shader(PFXST_VERTEXT_SHADER);
-		shader_gles2* __fs_ptr = shader_gles2::new_shader(PFXST_PIXEL_SHADER);
+		cshader_gles2* __vs_ptr = __state.create_shader(PFXST_VERTEXT_SHADER);
+		cshader_gles2* __fs_ptr = __state.create_shader(PFXST_PIXEL_SHADER);
 		result_t status;
 
 		get_system_defualt_shader_source(__sys_shader_source,
@@ -235,6 +300,8 @@ public:
 
 
 
+
+
 		FOR_ONE_LOOP_END;
 	}
 
@@ -271,6 +338,12 @@ public:
 			m_vertexbufferobject_ptr->dispose_buffer();
 			m_vertexbufferobject_ptr = null;
 		}
+
+		if (m_texture2d_ptr)
+		{
+			m_texture2d_ptr->dispose_render_target();
+		}
+		
 
 		
 	}

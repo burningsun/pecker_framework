@@ -56,9 +56,9 @@ public:
 };
 
 
-class PFX_RENDER_SYSTEM_API native_shader_gles2
+class PFX_RENDER_SYSTEM_API cnative_shader_gles2
 {
-	DECLARE_FRIEND_CLASS(class shader_gles2);
+	DECLARE_FRIEND_CLASS(class cshader_gles2);
 protected:
 	typedef cavl_bst_node < shader_param_t > shader_param_node_t;
 
@@ -66,13 +66,13 @@ private:
 	GLuint m_shaderID;
 	PFX_SHADER_TYPE_t m_shaderTYPE;	
 public:
-	native_shader_gles2() :m_shaderID(0),
+	cnative_shader_gles2() :m_shaderID(0),
 		m_shaderTYPE(PFXST_UNKOWN_SHADER)
 	{
 		RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this);
 	}
 public:
-	virtual ~native_shader_gles2()
+	virtual ~cnative_shader_gles2()
 	{
 		dispose();
 		RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this);
@@ -152,20 +152,20 @@ public:
 };
 
 
-class PFX_RENDER_SYSTEM_API shader_gles2 : public Ipfx_shader
+class PFX_RENDER_SYSTEM_API cshader_gles2 : public Ipfx_shader
 {
-	typedef   native_shader_gles2 native_t;
+	typedef   cnative_shader_gles2 native_t;
 	DECLARE_FRIEND_CLASS(SHADER_NODE_ALLOC_GLES2);
 private:
 	native_t m_native;
 public:
-	DELARE_REF_METHOD(shader_gles2, Ipfx_shader, shader_node_alloc_gles2_t);
+	DELARE_REF_METHOD(cshader_gles2, Ipfx_shader, shader_node_alloc_gles2_t);
 protected:
-	shader_gles2()
+	cshader_gles2()
 	{ 
 		RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this);
 	}
-	virtual ~shader_gles2()
+	virtual ~cshader_gles2()
 	{
 		RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this);
 	}
@@ -174,9 +174,9 @@ protected:
 		return __real_dispose();
 	}
 public:
-	PFX_INLINE static shader_gles2* new_shader(enum_int_t shader_type)
+	PFX_INLINE static cshader_gles2* new_shader(enum_int_t shader_type)
 	{
-		shader_gles2*  new_obj_ptr = create_new_object();
+		cshader_gles2*  new_obj_ptr = create_new_object();
 		if (new_obj_ptr)
 		{
 			result_t status;
@@ -226,13 +226,13 @@ public:
 
 
 #define INVALID_SHADER (-1)
-class PFX_RENDER_SYSTEM_API native_shader_program_gles2
+class PFX_RENDER_SYSTEM_API cnative_shader_program_gles2
 {
-	DECLARE_FRIEND_CLASS(class shader_program_gles2);
+	DECLARE_FRIEND_CLASS(class cshader_program_gles2);
 private:
 	GLuint			m_programID;
-	shader_gles2*	m_pixel_shader_ptr;
-	shader_gles2*	m_vertex_shader_ptr;
+	cshader_gles2*	m_pixel_shader_ptr;
+	cshader_gles2*	m_vertex_shader_ptr;
 public:
 	typedef cavl_bst_node < shader_param_t >					shader_param_node_t;
 	typedef compare_two_node< shader_param_node_t, 
@@ -267,12 +267,12 @@ public:
 	}
 	
 public:
-	 native_shader_program_gles2();
+	 cnative_shader_program_gles2();
 public:
-	 virtual ~native_shader_program_gles2();
+	 virtual ~cnative_shader_program_gles2();
 public:
-	result_t attach_pixel_shader(shader_gles2* PARAM_INOUT shader_ptr);
-	result_t attach_vertex_shader(shader_gles2* PARAM_INOUT shader_ptr);
+	result_t attach_pixel_shader(cshader_gles2* PARAM_INOUT shader_ptr);
+	result_t attach_vertex_shader(cshader_gles2* PARAM_INOUT shader_ptr);
 	result_t compile_program();
 
 	void  dispose();
@@ -297,11 +297,11 @@ public:
 		{
 			if (PFXST_VERTEXT_SHADER == shader_ptr->get_type())
 			{
-				return attach_vertex_shader(DYNAMIC_CAST(shader_gles2*)(shader_ptr));
+				return attach_vertex_shader(DYNAMIC_CAST(cshader_gles2*)(shader_ptr));
 			}
 			else if (PFXST_PIXEL_SHADER == shader_ptr->get_type())
 			{
-				return attach_pixel_shader(DYNAMIC_CAST(shader_gles2*)(shader_ptr));
+				return attach_pixel_shader(DYNAMIC_CAST(cshader_gles2*)(shader_ptr));
 			}
 		}
 		return PFX_STATUS_INVALID_PARAMS;
@@ -314,18 +314,18 @@ public:
 	u64_t	get_version() const;
 };
 
-class PFX_RENDER_SYSTEM_API shader_program_gles2 : public Ipfx_shader_program
+class PFX_RENDER_SYSTEM_API cshader_program_gles2 : public Ipfx_shader_program
 {
 	DECLARE_FRIEND_CLASS(SHADER_PROGRAM_NODE_ALLOC_GLES2);
-	typedef native_shader_program_gles2 native_t;
+	typedef cnative_shader_program_gles2 native_t;
 private:
 	native_t m_native;
 protected:
-	shader_program_gles2()	
+	cshader_program_gles2()	
 	{ 
 		RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this); 
 	}
-	virtual ~shader_program_gles2() 
+	virtual ~cshader_program_gles2() 
 	{ 
 		RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this); 
 	}
@@ -334,7 +334,7 @@ protected:
 		return __real_dispose();
 	}
 public:
-	DELARE_REF_METHOD(shader_program_gles2, 
+	DELARE_REF_METHOD(cshader_program_gles2, 
 		Ipfx_shader_program, 
 		shader_program_node_gles2_t);
 public:

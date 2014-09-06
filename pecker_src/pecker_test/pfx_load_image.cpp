@@ -13,6 +13,24 @@
 //#define TEST_ASET_RESOURCE
 
 USING_PECKER_SDK
+result_t load_png_img(const char_t* pfile_name, cImage& __img);
+
+sImage_t* load_png_img(const char_t* pfile_name)
+{
+	sImage_t* img_ptr = sImage_t::create_new_object();
+
+	result_t status = load_png_img(pfile_name, img_ptr->native());
+	if (PFX_STATUS_OK == status)
+	{
+		return img_ptr;
+	}
+	else
+	{
+		img_ptr->dispose_object();
+		return null;
+	}
+}
+
 result_t load_png_img(const char_t* pfile_name, cImage& __img)
 {
 	cPng_Image_reader __img_reader;
@@ -39,7 +57,7 @@ result_t load_png_img(const char_t* pfile_name, cImage& __img)
 	__img_reader.attach_resource_reader(res_file_ptr);
 	asset_file_ptr->dispose_object();
 	res_file_ptr->dispose_object();
-
+	//__img_reader.set_color_format(PFX_BGRA_FMT);
 #if defined(TEST_ASET_RESOURCE)
 	__img_reader.select_load_form_asset_reader(pfile_name);
 #else

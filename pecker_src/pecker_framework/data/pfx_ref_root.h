@@ -69,7 +69,30 @@ public:
 	virtual creference_root* new_object() = 0; 
 };
 
-#define DELARE_REF_METHOD(THIS_CLASS_NAME,INTERFACE_NAME,THIS_ALLOCATOR) __DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) 
+#define DELARE_REF_METHOD(THIS_CLASS_NAME,INTERFACE_NAME,THIS_ALLOCATOR) __NATIVE_DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) 
+
+#define __NATIVE_REF_METHOD				\
+public: \
+PFX_INLINE native_t& native()			 \
+{										 \
+return m_native;					 \
+}										 \
+PFX_INLINE const native_t& native() const\
+{										  \
+return m_native;					  \
+}										  \
+PFX_INLINE native_t* native_ptr()			 \
+{										 \
+return &m_native;					 \
+}										 \
+PFX_INLINE const native_t* native_ptr() const\
+{										  \
+return &m_native;					  \
+}										  \
+
+#define __NATIVE_DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) \
+	__DELARE_REF_METHOD(THIS_CLASS_NAME, THIS_ALLOCATOR)\
+	__NATIVE_REF_METHOD
 
 #define __DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) \
 protected:\
@@ -100,28 +123,12 @@ PFX_INLINE creference_root* new_object() \
 {										 \
 	return create_object();				 \
 }										 \
-PFX_INLINE native_t& native()			 \
-{										 \
-	return m_native;					 \
-}										 \
-PFX_INLINE const native_t& native() const\
-{										  \
-	return m_native;					  \
-}										  \
-PFX_INLINE native_t* native_ptr()			 \
-{										 \
-	return &m_native;					 \
-}										 \
-	PFX_INLINE const native_t* native_ptr() const\
-{										  \
-	return &m_native;					  \
-}										  \
 PFX_INLINE result_t dispose_object()	  \
 {										  \
 	result_t status = creference_root::dispose();\
 	REF_LOG_INFO("dispose (%d)", creference_root::get_ref_count());\
 	return status;	 \
-}
+} \
 
 template < class __native_ref >
 class simple_ref : public creference_root
@@ -146,7 +153,7 @@ protected:
 		return __real_dispose();
 	}
 public:
-	__DELARE_REF_METHOD(ref_root_t, ref_alloc_t);
+	__NATIVE_DELARE_REF_METHOD(ref_root_t, ref_alloc_t);
 };
 
 

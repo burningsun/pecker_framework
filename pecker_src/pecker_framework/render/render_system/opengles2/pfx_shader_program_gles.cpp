@@ -161,19 +161,19 @@ PFX_INLINE_CODE enum_int_t glspt_to_pfxspt(GLenum __type)
 
 
 
-native_shader_program_gles2::native_shader_program_gles2() :m_programID(0), 
+cnative_shader_program_gles2::cnative_shader_program_gles2() :m_programID(0), 
 m_vertex_shader_ptr(null), m_pixel_shader_ptr(null)
 {
 	RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this);
 }
-native_shader_program_gles2::~native_shader_program_gles2()
+cnative_shader_program_gles2::~cnative_shader_program_gles2()
 {
 	dispose();
 	RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this);
 	
 }
 
-result_t native_shader_program_gles2::parse_shader_param_table()
+result_t cnative_shader_program_gles2::parse_shader_param_table()
 {
 	tree_t temp_tree;
 	result_t status;
@@ -334,7 +334,7 @@ result_t native_shader_program_gles2::parse_shader_param_table()
 	
 	return status;
 }
-result_t native_shader_program_gles2::modify_shader_param_table
+result_t cnative_shader_program_gles2::modify_shader_param_table
 (enum_int_t param_type,
 enum_int_t param_value_type,
 const cstring_ascii_t& str_name,
@@ -394,14 +394,14 @@ long_t new_location)
 }
 
 
-usize__t PFX_RENDER_SYSTEM_API native_shader_program_gles2::get_program_info_lengh(GLuint __program_id)
+usize__t PFX_RENDER_SYSTEM_API cnative_shader_program_gles2::get_program_info_lengh(GLuint __program_id)
 {
 	GLsizei infoLen = 0;
 	glGetProgramiv(__program_id, GL_INFO_LOG_LENGTH, &infoLen);
 	return infoLen;
 }
 
-usize__t PFX_RENDER_SYSTEM_API native_shader_program_gles2::get_program_info_log(GLuint __program_ID,
+usize__t PFX_RENDER_SYSTEM_API cnative_shader_program_gles2::get_program_info_log(GLuint __program_ID,
 	char_t* log_info_buff_ptr,
 	usize__t log_buff_size)
 {
@@ -415,7 +415,7 @@ usize__t PFX_RENDER_SYSTEM_API native_shader_program_gles2::get_program_info_log
 	return log_buff_size;
 }
 
-result_t native_shader_program_gles2::attach_pixel_shader(shader_gles2* PARAM_INOUT shader_ptr)
+result_t cnative_shader_program_gles2::attach_pixel_shader(cshader_gles2* PARAM_INOUT shader_ptr)
 {
 	RETURN_INVALID_RESULT((!shader_ptr ||
 		null == shader_ptr->native_ptr() ||
@@ -426,7 +426,7 @@ result_t native_shader_program_gles2::attach_pixel_shader(shader_gles2* PARAM_IN
 		m_pixel_shader_ptr->native_ptr() == shader_ptr->native_ptr()),
 		PFX_STATUS_OK);
 
-	shader_gles2* new_ptr = shader_ptr->new_ref();
+	cshader_gles2* new_ptr = shader_ptr->new_ref();
 	if (new_ptr)
 	{
 		if (m_pixel_shader_ptr)
@@ -440,7 +440,7 @@ result_t native_shader_program_gles2::attach_pixel_shader(shader_gles2* PARAM_IN
 	return PFX_STATUS_FAIL;
 }
 
-result_t native_shader_program_gles2::attach_vertex_shader(shader_gles2* PARAM_INOUT shader_ptr)
+result_t cnative_shader_program_gles2::attach_vertex_shader(cshader_gles2* PARAM_INOUT shader_ptr)
 {
 	RETURN_INVALID_RESULT((!shader_ptr ||
 		null == shader_ptr->native_ptr() ||
@@ -451,7 +451,7 @@ result_t native_shader_program_gles2::attach_vertex_shader(shader_gles2* PARAM_I
 		m_vertex_shader_ptr->native_ptr() == shader_ptr->native_ptr()),
 		PFX_STATUS_OK);
 
-	shader_gles2* new_ptr = shader_ptr->new_ref();
+	cshader_gles2* new_ptr = shader_ptr->new_ref();
 	if (new_ptr)
 	{
 		if (m_vertex_shader_ptr)
@@ -465,7 +465,7 @@ result_t native_shader_program_gles2::attach_vertex_shader(shader_gles2* PARAM_I
 	return PFX_STATUS_FAIL;
 }
 
-result_t native_shader_program_gles2::compile_program()
+result_t cnative_shader_program_gles2::compile_program()
 {
 	RETURN_INVALID_RESULT((null == m_vertex_shader_ptr || null == m_pixel_shader_ptr),
 		PFX_STATUS_UNINIT);
@@ -479,8 +479,8 @@ result_t native_shader_program_gles2::compile_program()
 		m_programID = ::glCreateProgram();
 	}
 
-	native_shader_gles2* vertex_shader_ptr = m_vertex_shader_ptr->native_ptr();
-	native_shader_gles2* pixel_shader_ptr = m_pixel_shader_ptr->native_ptr();
+	cnative_shader_gles2* vertex_shader_ptr = m_vertex_shader_ptr->native_ptr();
+	cnative_shader_gles2* pixel_shader_ptr = m_pixel_shader_ptr->native_ptr();
 
 	if (m_programID &&
 		vertex_shader_ptr &&
@@ -497,9 +497,9 @@ result_t native_shader_program_gles2::compile_program()
 		{
 			cstring_ascii_t err_log;
 			usize__t err_log_size;
-			err_log_size = native_shader_program_gles2::get_program_info_lengh(m_programID);
+			err_log_size = cnative_shader_program_gles2::get_program_info_lengh(m_programID);
 			err_log.init_string(err_log_size + 1);
-			native_shader_program_gles2::get_program_info_log(m_programID, err_log.get_string(), err_log.get_length());
+			cnative_shader_program_gles2::get_program_info_log(m_programID, err_log.get_string(), err_log.get_length());
 			PECKER_LOG_ERR("get_shader_info_log = %s", err_log.get_string());
 
 			glDeleteProgram(m_programID);
@@ -515,7 +515,7 @@ result_t native_shader_program_gles2::compile_program()
 
 	return PFX_STATUS_FAIL;
 }
-void native_shader_program_gles2::dispose()
+void cnative_shader_program_gles2::dispose()
 {
 	if (m_programID)
 	{
@@ -536,7 +536,7 @@ void native_shader_program_gles2::dispose()
 
 }
 
-result_t  native_shader_program_gles2::use()
+result_t  cnative_shader_program_gles2::use()
 {
 	::glUseProgram(m_programID);
 	if (m_programID)
@@ -546,7 +546,7 @@ result_t  native_shader_program_gles2::use()
 	return PFK_STATUS_SUCCESS;
 }
 
-long_t native_shader_program_gles2:: get_location_by_name
+long_t cnative_shader_program_gles2:: get_location_by_name
 (const cstring_ascii_t& PARAM_IN str_shader_param_name) const
 {
 	tree_t::const_inorder_itr_t __itr;
@@ -563,7 +563,7 @@ long_t native_shader_program_gles2:: get_location_by_name
 	return INVALID_SHADER;
 }
 
-long_t	native_shader_program_gles2::get_location_by_name
+long_t	cnative_shader_program_gles2::get_location_by_name
 (const char* PARAM_IN str_shader_param_name) const
 {
 	tree_t::const_inorder_itr_t __itr;
@@ -581,7 +581,7 @@ long_t	native_shader_program_gles2::get_location_by_name
 	return INVALID_SHADER;
 }
 
-u64_t native_shader_program_gles2::get_version() const
+u64_t cnative_shader_program_gles2::get_version() const
 {
 	return (get_hal_instanse_ID().m_version);
 }

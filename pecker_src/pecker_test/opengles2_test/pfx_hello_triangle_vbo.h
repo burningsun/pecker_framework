@@ -18,7 +18,7 @@ class chello_triangle_vbo_render_view_gles2 : public 	opengles2_activity_t::IOnR
 		vector4f_t	m_color;
 	}pos_clr_t;
 private:
-	shader_program_gles2*			m_program_ptr;
+	cshader_program_gles2*			m_program_ptr;
 	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
 	cbuffer_object_gles2*			m_vertexbufferobject_ptr;
 public:
@@ -126,8 +126,8 @@ public:
 		PECKER_LOG_INFO("on_load escape time = %lld",__escape_time);
 
 		shader_souce_string_t __sys_shader_source;
-		shader_gles2* __vs_ptr = shader_gles2::new_shader(PFXST_VERTEXT_SHADER);
-		shader_gles2* __fs_ptr = shader_gles2::new_shader(PFXST_PIXEL_SHADER);
+		cshader_gles2* __vs_ptr = __state.create_shader(PFXST_VERTEXT_SHADER);
+		cshader_gles2* __fs_ptr = __state.create_shader(PFXST_PIXEL_SHADER);
 		result_t status;
 
 		get_system_defualt_shader_source(__sys_shader_source, //HELLO_SHADER_SOURCE,

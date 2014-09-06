@@ -13,6 +13,9 @@
 #include "../pfx_render_defs.h"
 #include "../pfx_color.h"
 #include "../pfx_image.h"
+#include "../../include/cshare_object.h"
+#include "../pfx_render_allocator.h"
+
 PECKER_BEGIN
 	
 typedef enum enumTEXTURE_TYPE
@@ -80,72 +83,102 @@ typedef enum enumTEXTURE_PARAMS
 	PFX_TEXTURE_PARAMS_COUNT
 }PFX_TEXTURE_PARAMS_t;
 
-typedef struct texture_bits
+
+typedef struct st_mip_image
 {
-	//pfx_byte_t*										m_bits_ptr;
-	//pfx_usize_t										m_bytes_count;
-	//pfx_sint_t											m_border;		
-	//PFX_COLOR_FORMAT_TYPE_t		m_color_format;
-	image_bits_t										m_image_bits;
-	enum_int_t										m_texture_color_format; //PFX_TEXTURE_PARAMS_t
-	rectangle_region < usize__t >		m_texture_region;
-	boolean_t											m_enable_active;
-}texture_bits_t;
+	sImage_t*  m_image_ptr;
+	enum_int_t m_rcolor_type;
+	st_mip_image() :m_image_ptr(null),
+		m_rcolor_type(PFX_RGBA8_FMT)
+	{
+		;
+	}
+	~st_mip_image()
+	{
+		if (m_image_ptr)
+		{
+			m_image_ptr->dispose_object();
+			m_image_ptr = null;
+		}
+		m_rcolor_type = PFX_RGBA8_FMT;
+	}
+
+}mip_image_t;
 
 typedef struct texture_param
 {
 	enum_int_t	m_name;
 	enum_int_t	m_param_value;
 }texture_param_t;
-
-PFX_Interface Ipfx_update_texture_layer_usermode
+			
+class PFX_RENDER_API ctexture_surface : 
+	public creference_root
 {
-	virtual result_t update_texture_layer (texture_bits_t* PARAM_INOUT lock_bits_ptr) = 0;
+	DECLARE_FRIEND_CLASS(TEXTURE_SURFACE_ALLOC);
+protected:
+	typedef  carray < mip_image_allocator_t > mip_images_t;
+private:
+	mip_images_t m_mip_images;	
+protected:
+	ctexture_surface();
+	virtual ~ctexture_surface();
+	virtual result_t real_dispose()
+	{
+		return __real_dispose();
+	}
+public:
+	__DELARE_REF_METHOD(ctexture_surface, texture_surface_allocator_t);
+
+	 result_t      update_image(sImage_t* image_ptr,
+	                   enum_int_t render_color_type,
+	                    uindex_t mip_level = 0);
+
+	 result_t      update_image_with_copy(sImage_t* image_ptr,
+	                   enum_int_t render_color_type,
+	                    uindex_t mip_level = 0);
+
+
+	 result_t      auto_mipmap(usize__t max_mip_level);
+
+	 result_t      clean();
+
+	 PFX_INLINE usize__t get_max_miplevel() const
+	 {
+		 return m_mip_images.size();
+	 }
+	 PFX_INLINE mip_image_t*  get_image(uindex_t mip_level)
+	 {
+		 return m_mip_images.get_element_ptr_at(mip_level);
+	 }
 };
 
-
-PFX_Interface Ipfx_texture_layer
+PFX_Interface IPfx_texture : public creference_root
 {
-	//virtual result_t								lock_texture (texture_bits_t* & PARAM_INOUT lock_bits_ptr) = 0;
-	//virtual result_t								unlock_texture () = 0;
+	virtual ~IPfx_texture(){ ; }
+															   
+	virtual result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null, 
+		                               enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE) = 0;
 
-	//// 使用 lock_and_unlock_texture 等价于lock_texture和unlock_texture配合使用
-	//virtual result_t								update_texture (Ipfx_update_texture_layer_usermode* PARAM_IN usermode_settings_ptr) = 0;
 
-	//virtual uindex_t							get_layer_level () const = 0;
-	////
-	//virtual result_t								bind_texture () = 0;
-	//virtual const PFX_Interface		IPfx_texture* get_texture () const = 0;
-};
-
-PFX_Interface IPfx_texture
-{
-	virtual result_t   update_image(enum_int_t surface_type, // PFX_TEXTURE_SURFACE_TYPE_t
-	                                sImage_t* image_ptr,
-	                                enum_int_t render_color_type,
-									uindex_t mip_level = 0) = 0;
-
-	virtual sImage_t*  get_image(uindex_t mip_level) = 0;
-	virtual enum_int_t get_texture_layer_type() const = 0; //PFX_TEXTURE_TYPE_t
-	virtual enum_int_t get_render_system_type() const = 0;
 	virtual result_t   update_rect(const texture_rect_t& __rect,
-		const byte_t* buffer_ptr,
-		usize__t bytes_count,
-		uindex_t miplevel = 0,
-		bool bmodify_ram_image = false) = 0;
+		                           const byte_t* buffer_ptr,
+		                           usize__t bytes_count,
+								   enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE,//PFX_TEXTURE_SURFACE_TYPE_t
+		                           uindex_t miplevel = 0) = 0;
 
-	virtual result_t set_texture_filter(enum_int_t param_name, enum_int_t __param);
-	virtual result_t clone_image() = 0;
-	virtual result_t auto_mipmap() = 0;
+	virtual bool     check_status() const = 0;
+
+	virtual result_t dispose_texture() = 0;
+
+	virtual result_t dispose_render_target() = 0;
+											  
+	virtual ctexture_surface* get_surface(enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE) = 0;
+
+	virtual result_t set_texture_filter(enum_int_t param_name, enum_int_t __param) = 0;
+
 	virtual result_t bind_texture() = 0;
-	virtual usize__t get_max_miplevel() const = 0;
 	virtual long_t   get_native_handle() const = 0;
-	//virtual enum_int_t						get_texture_type () const = 0; //enum_int_t
-	//virtual enum_int_t						get_render_system_type () const = 0;
-
-	//virtual result_t								attach_texture_layer (Ipfx_texture_layer* PARAM_IN texture_layer_ptr) = 0;
-	//virtual result_t								bind_texture () = 0;
-	//virtual Ipfx_texture_layer*		get_texture_layer (uindex_t mipLevel) = 0;
+	virtual u64_t    get_version() const = 0;
 };
 
 

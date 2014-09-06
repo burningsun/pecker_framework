@@ -22,7 +22,12 @@ typedef pecker_simple_allocator< byte_t > vexbuffer_allocator_t;
 typedef pecker_simple_allocator< byte_t > imgbuffer_allocator_t;
 typedef pecker_simple_allocator< enum_int_t > configbuffer_allocator_t;
 
+struct st_mip_image;
+typedef pecker_simple_allocator< st_mip_image > mip_image_allocator_t;
 
+class ctexture_surface;
+#define TEXTURE_SURFACE_ALLOC class pecker_simple_allocator< ctexture_surface >
+typedef TEXTURE_SURFACE_ALLOC texture_surface_allocator_t;
 
 PECKER_END
 

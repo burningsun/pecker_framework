@@ -11,7 +11,7 @@
 PECKER_BEGIN
 
 cImage_reader_base::cImage_reader_base() :m_bNormal(true), m_loader_type(IMG_LOADER_UNKNOWN),
-m_src_data_ptr(null), m_src_data_size(0), m_res_reader_ptr(null), m_aset_reader_ptr(null)
+m_src_data_ptr(null), m_src_data_size(0), m_res_reader_ptr(null), m_aset_reader_ptr(null), m_color_format(PFX_RGBA_FMT)
 {
 	InitCriticalSection(&m_locker);
 

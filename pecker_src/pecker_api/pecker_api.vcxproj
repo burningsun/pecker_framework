@@ -27,6 +27,7 @@
     <ClCompile Include="..\pecker_framework\pfx_defines.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image_png.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_system\pfx_texture.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>

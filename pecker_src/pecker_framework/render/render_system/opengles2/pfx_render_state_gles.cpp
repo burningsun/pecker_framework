@@ -8,7 +8,8 @@
 
 PECKER_BEGIN
 cnative_render_state_gles2::cnative_render_state_gles2() :
-m_texture_unit(-1), m_use_program_ptr(null), m_old_program_ptr(null)
+//m_texture_unit(-1), 
+m_use_program_ptr(null), m_old_program_ptr(null)
 {
 	;
 }
@@ -68,12 +69,19 @@ bool cnative_render_state_gles2::is_egl_externsion_supported(EGLDisplay egl_disp
 }
 
 //////////////////////////////////////////////////////////////////////////
-// program
-shader_program_gles2* cnative_render_state_gles2::create_program()
+// shader
+cshader_gles2* cnative_render_state_gles2::create_shader(enum_int_t shader_type)
 {
-	return shader_program_gles2::create_new_object();
+	return cshader_gles2::new_shader(shader_type);
 }
-shader_program_gles2* cnative_render_state_gles2::working_program()
+
+//////////////////////////////////////////////////////////////////////////
+// program
+cshader_program_gles2* cnative_render_state_gles2::create_program()
+{
+	return cshader_program_gles2::create_new_object();
+}
+cshader_program_gles2* cnative_render_state_gles2::working_program()
 {
 	if (m_use_program_ptr)
 	{
@@ -85,7 +93,7 @@ shader_program_gles2* cnative_render_state_gles2::working_program()
 	}
 }
 
-shader_program_gles2* cnative_render_state_gles2::last_program()
+cshader_program_gles2* cnative_render_state_gles2::last_program()
 {
 	if (m_old_program_ptr)
 	{
@@ -97,7 +105,7 @@ shader_program_gles2* cnative_render_state_gles2::last_program()
 	}
 }
 
-result_t cnative_render_state_gles2::select_program(shader_program_gles2* PARAM_INOUT program_ptr)
+result_t cnative_render_state_gles2::select_program(cshader_program_gles2* PARAM_INOUT program_ptr)
 {
 	//
 	RETURN_INVALID_RESULT((!program_ptr), PFX_STATUS_INVALID_PARAMS);
@@ -109,7 +117,7 @@ result_t cnative_render_state_gles2::select_program(shader_program_gles2* PARAM_
 		return m_use_program_ptr->use();
 	}
 
-	shader_program_gles2* new_ptr = program_ptr->new_ref();
+	cshader_program_gles2* new_ptr = program_ptr->new_ref();
 	// 创建引用失败，退出
 	RETURN_INVALID_RESULT((!new_ptr), PFX_STATUS_FAIL);
 	if (!(new_ptr->native_ptr()))
@@ -118,7 +126,7 @@ result_t cnative_render_state_gles2::select_program(shader_program_gles2* PARAM_
 		return PFX_STATUS_FAIL;
 	}
 
-	shader_program_gles2* working_program_ptr = m_use_program_ptr;
+	cshader_program_gles2* working_program_ptr = m_use_program_ptr;
 	m_use_program_ptr = new_ptr;
 	result_t status = m_use_program_ptr->use();
 
@@ -155,7 +163,7 @@ result_t cnative_render_state_gles2::revert_select_program()
 
 	if (PFX_STATUS_OK == status)
 	{
-		shader_program_gles2* tmp_ptr = m_old_program_ptr;
+		cshader_program_gles2* tmp_ptr = m_old_program_ptr;
 		m_old_program_ptr = m_use_program_ptr;
 		m_use_program_ptr = tmp_ptr;
 	}

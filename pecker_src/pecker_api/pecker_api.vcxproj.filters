@@ -50,6 +50,9 @@
     <ClCompile Include="..\pecker_framework\native\pfx_resource_reader_android.cpp">
       <Filter>native</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\pfx_texture.cpp">
+      <Filter>render\render_system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">

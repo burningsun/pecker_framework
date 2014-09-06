@@ -895,6 +895,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/pfx_shader_program.h</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/render/render_system/pfx_texture.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/pfx_texture.cpp</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/render/render_system/pfx_texture.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/pfx_texture.h</locationURI>
@@ -923,6 +928,11 @@
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_buffer_object_gles.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_buffer_object_gles.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/render/render_system/opengles2/pfx_color_gles.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_color_gles.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.cpp</name>

@@ -16,6 +16,7 @@
 #include "../include/cstring_pfx.h"
 #include "../native/pfx_resource_reader.h"
 #include "../data/pfx_reference.h"
+#include "pfx_render_defs.h"
 
 PECKER_BEGIN
 
@@ -152,10 +153,24 @@ protected:
 	sresource_reader_t* m_res_reader_ptr;
 	sasset_reader_t*    m_aset_reader_ptr;
 
+	enum_int_t m_color_format;//PFX_INTERNAL_COLOR_FORMAT_TYPE_t
+
 	cs_t m_locker;
 public:
 	cImage_reader_base();
 	virtual ~cImage_reader_base();
+	PFX_INLINE void set_color_format(enum_int_t fmt)
+	{
+		if (fmt < PFX_UNKNOWN_COLOR_INFMT)
+		{
+			m_color_format = fmt;
+		}
+	}
+
+	PFX_INLINE enum_int_t get_color_format() const
+	{
+		return m_color_format;
+	}
 
 	virtual void  set_normal(bool bNormal = true);
 
@@ -181,6 +196,18 @@ class PFX_RENDER_API cImage
 private:
 	image_data_t m_image;
 	critical_section_lock_ins_t m_locker;
+public:
+	cImage(){ ; }
+	cImage(const cImage& __other)
+	{
+		cImage();
+		cImage& other_ref = (cImage&)__other;
+		other_ref.copy_to(*this);
+	}
+	~cImage()
+	{
+		;
+	}
 public:
 	
 	PFX_INLINE const image_data_t& get_image_direct() const

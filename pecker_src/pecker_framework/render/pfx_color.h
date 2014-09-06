@@ -21,8 +21,11 @@ typedef enum enumINTERNAL_COLOR_FORMAT_TYPE
 	PFX_LUMINANCE_FMT,
 	PFX_LUMINANCE_ALPHA_FMT,
 
+	PFX_BGRA_FMT,
+	PFX_BGR_FMT,
+
 	PFX_UNKNOWN_COLOR_INFMT,
-	INTERNAL_COLOR_FORMAT_TYPE_t
+	INTERNAL_COLOR_FORMAT_TYPE_COUNT
 }PFX_INTERNAL_COLOR_FORMAT_TYPE_t;
 
 typedef enum enumCOLOR_FORMAT_TYPE
@@ -42,6 +45,18 @@ typedef enum enumCOLOR_FORMAT_TYPE
 	PFX_ALPHA_8_FMT,
 	PFX_LUMINANCE_8_FMT,
 	PFX_LUMINANCE_ALPHA_88_FMT,
+
+	PFX_BGRA_FLOAT_FMT,
+	PFX_BGRA8_FMT,
+	PFX_BGRA_4444_FMT,
+	PFX_BGRA_5551_FMT,
+
+	PFX_BGRA16_FMT,
+	PFX_BGR16_FMT,
+
+	PFX_BGR_FLOAT_FMT,
+	PFX_BGR8_FMT,
+	PFX_BGR_565_FMT,
 
 	PFX_COMPRESS_COLOR_FMT,
 	PFX_UNKNOW_COLOR_FMT,
@@ -66,49 +81,72 @@ struct  color_internal_format < FORMAT >\
 	}\
 };
 COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_FLOAT_FMT, PFX_RGBA_FMT)
-COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA8_FMT, PFX_RGBA_FMT)
-COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_4444_FMT, PFX_RGBA_FMT)
-COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_5551_FMT, PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA8_FMT,      PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_4444_FMT,  PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA_5551_FMT,  PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGBA16_FMT,     PFX_RGBA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB16_FMT,      PFX_RGB_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB_FLOAT_FMT,  PFX_RGB_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB8_FMT,       PFX_RGB_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB_565_FMT,    PFX_RGB_FMT)
 
-COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB_FLOAT_FMT,PFX_RGB_FMT)
-COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB8_FMT,PFX_RGB_FMT)
-COLOR_INTERNAL_FORMAT_TRAITS(PFX_RGB_565_FMT,PFX_RGB_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGRA_FLOAT_FMT, PFX_BGRA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGRA8_FMT,      PFX_BGRA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGRA_4444_FMT,  PFX_BGRA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGRA_5551_FMT,  PFX_BGRA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGRA16_FMT,     PFX_BGRA_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGR16_FMT,      PFX_BGR_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGR_FLOAT_FMT,  PFX_BGR_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGR8_FMT,       PFX_BGR_FMT)
+COLOR_INTERNAL_FORMAT_TRAITS(PFX_BGR_565_FMT,    PFX_BGR_FMT)
+
 
 COLOR_INTERNAL_FORMAT_TRAITS(PFX_ALPHA_8_FMT, PFX_ALPHA_FMT)
 COLOR_INTERNAL_FORMAT_TRAITS(PFX_LUMINANCE_8_FMT, PFX_LUMINANCE_FMT)
 COLOR_INTERNAL_FORMAT_TRAITS(PFX_LUMINANCE_ALPHA_88_FMT, PFX_LUMINANCE_ALPHA_FMT)
 
-//PFX_INLINE pfx_enum_int_t get_internal_format (pfx_enum_int_t color_format)
-//{
-//	pfx_enum_int_t retn_format;
-//	switch (color_format)
-//	{
-//		case PFX_RGBA_FLOAT_FMT:
-//		case PFX_RGBA8_FMT:
-//		case PFX_RGBA_4444_FMT:
-//		case PFX_RGBA_5551_FMT:
-//			retn_format = PFX_RGBA_FMT;
-//			break;
-//		case PFX_RGB_FLOAT_FMT:
-//		case PFX_RGB8_FMT:
-//		case PFX_RGB_565_FMT:
-//			retn_format = PFX_RGB_FMT;
-//			break;
-//		case PFX_ALPHA_8_FMT:
-//			retn_format = PFX_ALPHA_FMT;
-//			break;
-//		case PFX_LUMINANCE_8_FMT:
-//			retn_format = PFX_LUMINANCE_FMT;
-//			break;
-//		case PFX_LUMINANCE_ALPHA_88_FMT:
-//			retn_format = PFX_LUMINANCE_ALPHA_FMT;
-//			break;
-//		default:
-//			retn_format = PFX_UNKNOW_COLOR_INFMT;
-//			break;
-//	}
-//	return retn_format;
-//}
+PFX_INLINE enum_int_t get_internal_format(enum_int_t color_format)
+{
+	enum_int_t retn_format;
+	switch (color_format)
+	{
+	case PFX_RGBA_FLOAT_FMT:
+	case PFX_RGBA8_FMT:
+	case PFX_RGBA_4444_FMT:
+	case PFX_RGBA_5551_FMT:
+		retn_format = PFX_RGBA_FMT;
+		break;
+	case PFX_RGB_FLOAT_FMT:
+	case PFX_RGB8_FMT:
+	case PFX_RGB_565_FMT:
+		retn_format = PFX_RGB_FMT;
+		break;
+	case PFX_ALPHA_8_FMT:
+		retn_format = PFX_ALPHA_FMT;
+		break;
+	case PFX_LUMINANCE_8_FMT:
+		retn_format = PFX_LUMINANCE_FMT;
+		break;
+	case PFX_LUMINANCE_ALPHA_88_FMT:
+		retn_format = PFX_LUMINANCE_ALPHA_FMT;
+		break;
+	case PFX_BGRA_FLOAT_FMT:
+	case PFX_BGRA8_FMT:
+	case PFX_BGRA_4444_FMT:
+	case PFX_BGRA_5551_FMT:
+		retn_format = PFX_BGRA_FMT;
+		break;
+	case PFX_BGR_FLOAT_FMT:
+	case PFX_BGR8_FMT:
+	case PFX_BGR_565_FMT:
+		retn_format = PFX_RGB_FMT;
+		break;
+	default:
+		retn_format = PFX_UNKNOWN_COLOR_INFMT;
+		break;
+	}
+	return retn_format;
+}
 
 typedef bitfield_t		bits_color_t;
 typedef u16_t			u16bits_color_t;
@@ -149,9 +187,9 @@ struct RGBA16_color
 {
 	typedef u16_t value_type;
 
-	unsigned m_red : 16;
+	unsigned m_red   : 16;
 	unsigned m_green : 16;
-	unsigned m_blue : 16;
+	unsigned m_blue  : 16;
 	unsigned m_alpha : 16;
 };
 
@@ -162,7 +200,6 @@ struct RBG8_color
 	unsigned m_red		:8;
 	unsigned m_green	:8;
 	unsigned m_blue		:8;
-	//unsigned m_alpha	:8;
 };
 
 struct RGB16_color
@@ -202,6 +239,89 @@ struct RGB_565_color
 	unsigned m_green	:6;
 	unsigned m_blue		:5;
 };
+
+//////////////////////////////////////////////////////////////////////////
+struct float_BGRA_color
+{
+	typedef float_t value_type;
+
+	float_t m_blue;
+	float_t m_green;
+	float_t m_red;
+	float_t m_alpha;
+};
+
+struct float_BGR_color
+{
+	typedef float_t value_type;
+
+	float_t m_blue;
+	float_t m_green;
+	float_t m_red;
+};
+
+struct BGRA8_color
+{
+	typedef u8_t value_type;
+
+	unsigned m_blue  : 8;
+	unsigned m_green : 8;
+	unsigned m_red   : 8;	
+	unsigned m_alpha : 8;
+};
+
+struct BGRA16_color
+{
+	typedef u16_t value_type;
+	unsigned m_blue  : 16;
+	unsigned m_green : 16;
+	unsigned m_red   : 16;
+	unsigned m_alpha : 16;
+};
+
+struct BGR8_color
+{
+	typedef u8_t value_type;
+	unsigned m_blue  : 8;
+	unsigned m_green : 8;
+	unsigned m_red   : 8;
+};
+
+struct BGR16_color
+{
+	typedef u16_t value_type;
+
+	unsigned m_blue  : 16;
+	unsigned m_green : 16;
+	unsigned m_red   : 16;
+};
+
+struct BGRA_4444_color
+{
+	typedef u8_t value_type;
+	unsigned m_blue  : 4;
+	unsigned m_green : 4;
+	unsigned m_red   : 4;
+	unsigned m_alpha : 4;
+};
+
+struct BGRA_5551_color
+{
+	typedef u8_t value_type;
+	unsigned m_blue  : 5;
+	unsigned m_green : 5;
+	unsigned m_red   : 5;
+	unsigned m_alpha : 1;
+};
+
+struct BGR_565_color
+{
+	typedef u8_t value_type;
+	unsigned m_blue  : 5;
+	unsigned m_green : 6;
+	unsigned m_red   : 5;
+};
+//////////////////////////////////////////////////////////////////////////
 
 struct ALPHA_8_color
 {
@@ -309,6 +429,53 @@ template <  >
 struct color_value_reference < PFX_COMPRESS_COLOR_FMT >
 {
 	typedef byte_t	color_value;
+};
+
+template <  >
+struct color_value_reference < PFX_BGRA_FLOAT_FMT >
+{
+	typedef float_BGRA_color	color_value;
+};
+template <  >
+struct color_value_reference < PFX_BGR_FLOAT_FMT >
+{
+	typedef float_BGR_color color_value;
+};
+template <  >
+struct color_value_reference < PFX_BGRA8_FMT >
+{
+	typedef BGRA8_color	color_value;
+};
+template <  >
+struct color_value_reference < PFX_BGR8_FMT >
+{
+	typedef BGRA8_color color_value;
+};
+template <  >
+struct color_value_reference < PFX_BGRA_4444_FMT >
+{
+	typedef BGRA_4444_color	color_value;
+};
+template <  >
+struct color_value_reference < PFX_BGRA_5551_FMT >
+{
+	typedef BGRA_5551_color	color_value;
+};
+template <  >
+struct color_value_reference < PFX_BGR_565_FMT >
+{
+	typedef BGR_565_color	color_value;
+};
+template <  >
+struct color_value_reference < PFX_BGR16_FMT >
+{
+	typedef BGR16_color	color_value;
+};
+
+template <  >
+struct color_value_reference < PFX_BGRA16_FMT >
+{
+	typedef BGRA16_color	color_value;
 };
 
 template< const enum_int_t  color_format >

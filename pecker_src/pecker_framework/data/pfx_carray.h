@@ -282,6 +282,10 @@ public:
 	{
 		return m_block.begin();
 	}
+	PFX_INLINE element_t* get_element_ptr_at(uindex_t index_)
+	{
+		return m_block.pointer(index_);
+	}
 public:
 	void swap (carray_t& __other)
 	{

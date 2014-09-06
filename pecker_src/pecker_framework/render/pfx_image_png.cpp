@@ -48,7 +48,9 @@ static void PngReaderCallback(png_structp png_ptr, png_bytep data, png_size_t le
 #define BUFFER_INIT8 73
 result_t load_png_image_from_memory(image_data_t& PARAM_INOUT __imgdata,
 	const byte_t* PARAM_IN __src_data_ptr, usize__t __src_buffer_size,
-	 bool bNormal )//= true);
+	 bool bNormal, //= true
+	 bool bRGB_color// = true
+	 )
 {
 	RETURN_INVALID_RESULT((null == __src_data_ptr || __src_buffer_size < 8), 
 		PFX_STATUS_INVALID_PARAMS);
@@ -144,6 +146,11 @@ result_t load_png_image_from_memory(image_data_t& PARAM_INOUT __imgdata,
 		png_set_tRNS_to_alpha(png_ptr);
 	}
 
+	if (!bRGB_color)
+	{
+		png_set_bgr(png_ptr);
+	}
+	
 	//png_read_update_info(png_ptr, info_ptr);
 	uindex_t pixel_bytes_stride = pixeldepth >> 3;
 	if (0 != pixeldepth % 8)
@@ -259,7 +266,9 @@ result_t load_png_image_from_memory(image_data_t& PARAM_INOUT __imgdata,
 
 
 result_t  load_png_image_from_STDIO(image_data_t& PARAM_INOUT __imgdata,
-	pecker_file& hfile, bool bNormal //= true
+	pecker_file& hfile, 
+	bool bNormal, //= true
+	bool bRGB_color// = true
 	)
 {
 	RETURN_INVALID_RESULT(!hfile.get_handle(), PFX_STATUS_INVALID_PARAMS);
@@ -356,6 +365,10 @@ result_t  load_png_image_from_STDIO(image_data_t& PARAM_INOUT __imgdata,
 		png_set_tRNS_to_alpha(png_ptr);
 	}
 
+	if (!bRGB_color)
+	{
+		png_set_bgr(png_ptr);
+	}
 	//png_read_update_info(png_ptr, info_ptr);
 	uindex_t pixel_bytes_stride = pixeldepth >> 3;
 	if (0 != pixeldepth % 8)
@@ -472,7 +485,9 @@ result_t  load_png_image_from_STDIO(image_data_t& PARAM_INOUT __imgdata,
 
 
 result_t PFX_RENDER_API load_png_image_from_file(image_data_t& PARAM_INOUT __imgdata,
-	const char_t* PARAM_IN str_file_name, bool bNormal //= true
+	const char_t* PARAM_IN str_file_name, 
+	bool bNormal, //= true
+	bool bRGB_color// = true
 	)
 {
 	RETURN_INVALID_RESULT(!str_file_name, PFX_STATUS_INVALID_PARAMS);
@@ -488,7 +503,7 @@ result_t PFX_RENDER_API load_png_image_from_file(image_data_t& PARAM_INOUT __img
 
 	usize__t file_size = hfile.get_file_size();
 
-	status = load_png_image_from_STDIO(__imgdata, hfile, bNormal);
+	status = load_png_image_from_STDIO(__imgdata, hfile, bNormal,bRGB_color);
 
 	hfile.close();
 
@@ -500,11 +515,18 @@ result_t cPng_Image_reader::load_image(image_data_t& PARAM_INOUT __imgdata,
 	image_data_t::img_buffer_t* PARAM_INOUT __cache_buffer //= null
 	)
 {
+	bool bRGA_color = true;
+	if (PFX_BGR_FMT == cImage_reader_base::get_color_format() ||
+		PFX_BGRA_FMT == cImage_reader_base::get_color_format())
+	{
+		bRGA_color = false;
+	}
 	result_t status;
 	switch (m_loader_type)
 	{
 	case IMG_FORM_MEMORY:
-		status = load_png_image_from_memory(__imgdata, m_src_data_ptr, m_src_data_size, m_bNormal);
+		status = load_png_image_from_memory(__imgdata, m_src_data_ptr, 
+			m_src_data_size, m_bNormal, bRGA_color);
 		m_src_data_ptr = null;
 		m_src_data_size = 0;
 		m_loader_type = IMG_LOADER_UNKNOWN;
@@ -545,7 +567,8 @@ result_t cPng_Image_reader::load_image(image_data_t& PARAM_INOUT __imgdata,
 				  reader_ptr->close();
 				  break;
 			  }
-			  status = load_png_image_from_memory(__imgdata, __cache_buffer->get_block_buffer(), read_size);
+			  status = load_png_image_from_memory(__imgdata, __cache_buffer->get_block_buffer(), 
+				  read_size, bRGA_color);
 		  }
 		  else
 		  {
@@ -564,14 +587,17 @@ result_t cPng_Image_reader::load_image(image_data_t& PARAM_INOUT __imgdata,
 				  reader_ptr->close();
 				  break;
 			  }
-			  status = load_png_image_from_memory(__imgdata, _cache_buffer.get_block_buffer(), read_size);
+			  status = load_png_image_from_memory(__imgdata, _cache_buffer.get_block_buffer(), 
+				  read_size, bRGA_color);
 		  }
 #else	// #if (OS_CONFIG == OS_ANDROID)
 
 #if (OS_CONFIG == OS_WINDOWS)
-		  status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), m_bNormal);
+		  status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(),
+			  m_bNormal, bRGA_color);
 #else	// #if (OS_CONFIG == OS_WINDOWS)
-		  status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), m_bNormal);
+		  status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), 
+			  m_bNormal, bRGA_color);
 #endif	// #if (OS_CONFIG == OS_WINDOWS)
 #endif // #if (OS_CONFIG == OS_ANDROID)
 
@@ -597,7 +623,8 @@ result_t cPng_Image_reader::load_image(image_data_t& PARAM_INOUT __imgdata,
 			{
 				break;
 			}
-			status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), m_bNormal);
+			status = load_png_image_from_STDIO(__imgdata, reader_ptr->get_file_handle(), m_bNormal, 
+				bRGA_color);
 			reader_ptr->close();
 	   }
 		break;

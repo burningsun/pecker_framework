@@ -18,6 +18,7 @@
 #include "../pfx_texture.h"
 #include "../../pfx_render_defs.h"
 #include "../../pfx_on_context_view.h"
+#include "pfx_texture_gles.h"
 
 PECKER_BEGIN
 
@@ -53,9 +54,9 @@ PFX_INLINE EGLint PFX_CPLV_TO_EGL_CPLV(PFX_CONTEX_PREPRIORITY_t __priority)
 class PFX_RENDER_SYSTEM_API cnative_render_state_gles2
 {
 private:
-	enum_int_t m_texture_unit; //GLenum
-	shader_program_gles2* m_use_program_ptr;
-	shader_program_gles2* m_old_program_ptr;
+	//enum_int_t m_texture_unit; //GLenum
+	cshader_program_gles2* m_use_program_ptr;
+	cshader_program_gles2* m_old_program_ptr;
 public:
 	virtual ~cnative_render_state_gles2();
 protected:
@@ -82,12 +83,15 @@ public:
 		::glDrawArrays(draw_type, firstIndex, draw_count);
 	}
 	//////////////////////////////////////////////////////////////////////////
+	// shader
+	cshader_gles2* create_shader(enum_int_t shader_type);
+	//////////////////////////////////////////////////////////////////////////
 	// program
-	shader_program_gles2* create_program();
-	shader_program_gles2* working_program();
-	shader_program_gles2* last_program();
+	cshader_program_gles2* create_program();
+	cshader_program_gles2* working_program();
+	cshader_program_gles2* last_program();
 
-	result_t select_program(shader_program_gles2* PARAM_INOUT program_ptr);
+	result_t select_program(cshader_program_gles2* PARAM_INOUT program_ptr);
 	result_t revert_select_program();
 	result_t reset_state();
 	result_t reset_select_program();
@@ -134,16 +138,34 @@ public:
 		return PFX_STATUS_OK;
 	}
 
-	//////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
 	// texture
-	//PFX_INLINE result_t set_texture(long_t __location, texture, enum_int_t unit_number = 0)
-	//{
-	//	if (unit_number != m_texture_unit)
-	//	{
-	//		::glActiveTexture(unit_number);
-	//		m_texture_unit = unit_number;
-	//	}
-	//}
+	PFX_INLINE result_t set_texture(long_t __location,
+		IPfx_texture* PARAM_IN texture_ptr, 
+		enum_int_t unit_number = 0)
+	{
+		if (null == texture_ptr || texture_ptr->get_version() != cnative_texture2D_gles::get_version()
+			|| unit_number > 31 || unit_number < 0)
+		{
+			return PFX_STATUS_INVALID_PARAMS;
+		}
+
+		result_t status;
+		::glActiveTexture(unit_number + GL_TEXTURE0);
+		status = texture_ptr->bind_texture();
+		::glUniform1i(__location, unit_number);
+		return status;
+	}
+
+	PFX_INLINE ctexture_surface* create_texture_surface()
+	{
+		return ctexture_surface::create_new_object();
+	}
+
+	PFX_INLINE ctexture2D_gles* create_texture2D()
+	{
+		return ctexture2D_gles::create_new_object();
+	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// float
