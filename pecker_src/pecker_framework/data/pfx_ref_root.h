@@ -64,6 +64,7 @@ public:
 		else 
 		{
 			--m_reference_count;
+			return PFX_STATUS_OK;
 		}
 	}
 	virtual creference_root* new_object() = 0; 
@@ -110,6 +111,10 @@ PFX_INLINE THIS_CLASS_NAME* new_ref()  \
 			REF_LOG_INFO("new_ref (%d)", creference_root::get_ref_count());\
 			return this;\
 		}	\
+        else\
+       {\
+	      return null;\
+	    }\
 	}	\
 virtual PFX_INLINE THIS_CLASS_NAME * create_object()	\
 {													\
