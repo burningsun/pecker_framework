@@ -8,6 +8,13 @@
 #ifndef		PFX_CONFIGS_H_
 #define		PFX_CONFIGS_H_
 
+//CPU ARCH
+#define CPU_ARM_ARCH
+#define CPU_ARM_NEON_ARCH
+//#define CPU_X86_ARCH
+//#define CPU_X86_SSE_ARCH
+
+// OS
 #define	WINDOW_XP		(1)
 #define	WINDOW_7_8		(1<<1)
 #define	WINDOW_RT		(1<<2)

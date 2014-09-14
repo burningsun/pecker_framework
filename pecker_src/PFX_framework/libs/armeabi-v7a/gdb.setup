@@ -1,0 +1,2 @@
+set solib-search-path ./obj/local/armeabi-v7a
+directory C:/android/android-ndk-r10/platforms/android-17/arch-arm/usr/include C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/depends_lib/Ne10//common/ C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/depends_lib/Ne10//inc C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/depends_lib/Ne10//modules/math jni C:/android/android-ndk-r10/sources/cxx-stl/system/include

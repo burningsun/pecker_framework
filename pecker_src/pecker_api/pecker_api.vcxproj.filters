@@ -93,9 +93,6 @@
     <ClInclude Include="..\pecker_framework\data\pfx_clist.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_math.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h">
       <Filter>data</Filter>
     </ClInclude>
@@ -302,6 +299,27 @@
     </ClInclude>
     <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_android.h">
       <Filter>native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_simd_std.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_simd_sse.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_simd_neon.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_math_method.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_math.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_vector4_param.h">
+      <Filter>data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,52 +1,28 @@
 ﻿/*
- * pfx_math.h
- *
- *  Created on: 2013-10-1
+* pfx_math.h
+*
+*  Created on: 2014-9-13
 *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
- */
-
+*/
 #ifndef		PFX_MATH_H_
 #define		PFX_MATH_H_
 
-
 #include "../pfx_defines.h"
 
-PFX_C_EXTERN_BEGIN
+#include "pfx_math_method.h"
 
-PFX_INLINE s64_t pfx_pow_N (sint_t X, sint_t EXP)
-{
-	s64_t value_ = 1;
-	index_t i = 1;
+#include "pfx_vector4_param.h"
 
-	s64_t TEMPX = X;
+#if (MATRIX_OPTIMIZATION_CONFIG == NO_MATRIX_OPTIMIZATION)
+#include "pfx_simd_std.h"
+#endif
 
-	if (0 == EXP)
-	{
-		return 1;
-	}
-	while (EXP > 0)
-	{
-		if (EXP > i)
-		{
-			TEMPX *= X;
+#if (MATRIX_OPTIMIZATION_CONFIG == INTEL_SSE)
+#include "pfx_simd_sse.h"
+#endif
 
-			value_ *= TEMPX;
-			++i;
-			EXP -=  i;
-		}
-		else
-		{
-			TEMPX = X;
-			i = 1;
-			value_ *= TEMPX;
-			EXP -=  i;
-		}
-	}
-
-	return value_;
-}
-
-PFX_C_EXTERN_END
-
+#if (MATRIX_OPTIMIZATION_CONFIG == ARM_NEON)
+#include "pfx_simd_neon.h"
+#endif
 
 #endif			//PFX_MATH_H_

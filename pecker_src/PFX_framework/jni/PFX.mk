@@ -2,10 +2,13 @@ PFX_LOCAL_PATH := $(realpath $(call my-dir)/../../)/pecker_framework/
 PFX_DIR_PATH := $(call my-dir)
 NATIVE_MK := native.mk
 RENDER_MK := render.mk
+DATA_MK := data.mk
+include $(PFX_DIR_PATH)/$(DATA_MK)
 include $(PFX_DIR_PATH)/$(NATIVE_MK)
 include $(PFX_DIR_PATH)/$(RENDER_MK)
 
-PFX_LOCAL_SUB_FILES := $(PFX_NATIVE_LOCAL_SRC_FILES)\
+PFX_LOCAL_SUB_FILES := $(PFX_DATA_LOCAL_SRC_FILES)\
+                        $(PFX_NATIVE_LOCAL_SRC_FILES)\
 						$(PFX_RENDER_LOCAL_SRC_FILES)
  
 
