@@ -1,15 +1,1 @@
-﻿  adler32.c
-  compress.c
-  crc32.c
-  deflate.c
-  infback.c
-  inffast.c
-  inflate.c
-  inftrees.c
-  trees.c
-  uncompr.c
-  zutil.c
-  Generating Code...
-     Creating library ..\..\..\bind\zlibd.lib and object ..\..\..\bind\zlibd.exp
-     Creating library ..\..\..\bind\zlibd.lib and object ..\..\..\bind\zlibd.exp
-  zlib.vcxproj -> C:\codes\git\pecker_framework\pecker_framework_c\pecker_src\depends_lib\libpng-1.6.2\projects\vstudio\zlib\..\..\..\bind\zlibd.dll
+﻿

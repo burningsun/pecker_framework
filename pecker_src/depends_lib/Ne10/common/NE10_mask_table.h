@@ -38,15 +38,22 @@
 #define DIV_LOOKUP_TABLE_SIZE    255
 
 /* mask table for dsp module */
+#ifdef CPU_ARM_ARCH
+
 extern const ne10_uint32_t ne10_qMaskTable32[Q_MASK_TABLE_SIZE] asm ("ne10_qMaskTable32");
 extern const ne10_uint32_t ne10_dMaskTable32[D_MASK_TABLE_SIZE] asm ("ne10_dMaskTable32");
 extern const ne10_uint32_t ne10_divLookUpTable[DIV_LOOKUP_TABLE_SIZE] \
 asm ("ne10_divLookUpTable");
+#endif // CPU_ARM_ARCH
 
 /* mask table for imgproc module */
 #define NE10_VRESIZE_LINEAR_MASK_TABLE_SIZE    7
+
+#ifdef CPU_ARM_ARCH
 extern const ne10_uint64_t ne10_img_vresize_linear_mask_residual_table[NE10_VRESIZE_LINEAR_MASK_TABLE_SIZE] \
 asm ("ne10_vresize_mask_residual_table");
+#endif // CPU_ARM_ARCH
 
-#endif
+#endif // NE10_VRESIZE_LINEAR_MASK_TABLE_SIZE
+
 

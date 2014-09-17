@@ -29,6 +29,9 @@
  * NE10 Library : common/factor.h
  */
 
+typedef unsigned long ne_pointer_t;
+
+
 // Typebuilding MACROs
 // - Slight difference between toolchain versions on intrinsics
 #define FLOAT32_2x3(x1,y1,x2,y2,x3,y3) \
@@ -83,41 +86,41 @@
 // A few macros to check pointers and their address range to make sure there's
 //  no unwanted overlap between any two of them
 #define NE10_CHECKPOINTER_DstSrcCst_OPERATION \
-   if ( (void *)dst < (void *)src ) \
-    { assert ( (void *)dst + count <= (void *)src ); } \
-   else if ( (void *)dst > (void *)src ) \
-    { assert ( (void *)src + count <= (void *)dst ); }
+   if ( (ne_pointer_t)dst < (ne_pointer_t)src ) \
+    { assert ( (ne_pointer_t)dst + count <= (ne_pointer_t)src ); } \
+   else if ( (ne_pointer_t)dst > (ne_pointer_t)src ) \
+    { assert ( (ne_pointer_t)src + count <= (ne_pointer_t)dst ); }
 
 #define NE10_CHECKPOINTER_DstSrc_OPERATION NE10_CHECKPOINTER_DstSrcCst_OPERATION
 
 #define NE10_CHECKPOINTER_3POINTER_OPERATION(arg1, arg2, arg3) \
-   if ( (void *)arg1 < (void *)arg2 ) \
-    { assert ( (void *)arg1 + count <= (void *)arg2 ); } \
-   else if ( (void *)arg1 > (void *)arg2 ) \
-    { assert ( (void *)arg2 + count <= (void *)arg1 ); } \
-   if ( (void *)arg1 < (void *)arg3 ) \
-    { assert ( (void *)arg1 + count <= (void *)arg3 ); } \
-   else if ( (void *)arg1 > (void *)arg3 ) \
-    { assert ( (void *)arg3 + count <= (void *)arg1 ); } \
-   if ( (void *)arg3 < (void *)arg2 ) \
-    { assert ( (void *)arg3 + count <= (void *)arg2 ); } \
-   else if ( (void *)arg3 > (void *)arg2 ) \
-    { assert ( (void *)arg2 + count <= (void *)arg3 ); }
+   if ( (ne_pointer_t)arg1 < (ne_pointer_t)arg2 ) \
+    { assert ( (ne_pointer_t)arg1 + count <= (ne_pointer_t)arg2 ); } \
+   else if ( (ne_pointer_t)arg1 > (ne_pointer_t)arg2 ) \
+    { assert ( (ne_pointer_t)arg2 + count <= (ne_pointer_t)arg1 ); } \
+   if ( (ne_pointer_t)arg1 < (ne_pointer_t)arg3 ) \
+    { assert ( (ne_pointer_t)arg1 + count <= (ne_pointer_t)arg3 ); } \
+   else if ( (ne_pointer_t)arg1 > (ne_pointer_t)arg3 ) \
+    { assert ( (ne_pointer_t)arg3 + count <= (ne_pointer_t)arg1 ); } \
+   if ( (ne_pointer_t)arg3 < (ne_pointer_t)arg2 ) \
+    { assert ( (ne_pointer_t)arg3 + count <= (ne_pointer_t)arg2 ); } \
+   else if ( (ne_pointer_t)arg3 > (ne_pointer_t)arg2 ) \
+    { assert ( (ne_pointer_t)arg2 + count <= (ne_pointer_t)arg3 ); }
 
 #define NE10_CHECKPOINTER_4POINTER_OPERATION(arg1, arg2, arg3, arg4) \
    NE10_CHECKPOINTER_3POINTER_OPERATION(arg1, arg2, arg3) \
-   if ( (void *)arg1 < (void *)arg4 ) \
-    { assert ( (void *)arg1 + count <= (void *)arg4 ); } \
-   else if ( (void *)arg1 > (void *)arg4 ) \
-    { assert ( (void *)arg4 + count <= (void *)arg1 ); } \
-   if ( (void *)arg2 < (void *)arg4 ) \
-    { assert ( (void *)arg2 + count <= (void *)arg4 ); } \
-   else if ( (void *)arg2 > (void *)arg4 ) \
-    { assert ( (void *)arg4 + count <= (void *)arg2 ); } \
-   if ( (void *)arg4 < (void *)arg3 ) \
-    { assert ( (void *)arg4 + count <= (void *)arg3 ); } \
-   else if ( (void *)arg4 > (void *)arg3 ) \
-    { assert ( (void *)arg3 + count <= (void *)arg4 ); }
+   if ( (ne_pointer_t)arg1 < (ne_pointer_t)arg4 ) \
+    { assert ( (ne_pointer_t)arg1 + count <= (ne_pointer_t)arg4 ); } \
+   else if ( (ne_pointer_t)arg1 > (ne_pointer_t)arg4 ) \
+    { assert ( (ne_pointer_t)arg4 + count <= (ne_pointer_t)arg1 ); } \
+   if ( (ne_pointer_t)arg2 < (ne_pointer_t)arg4 ) \
+    { assert ( (ne_pointer_t)arg2 + count <= (ne_pointer_t)arg4 ); } \
+   else if ( (ne_pointer_t)arg2 > (ne_pointer_t)arg4 ) \
+    { assert ( (ne_pointer_t)arg4 + count <= (ne_pointer_t)arg2 ); } \
+   if ( (ne_pointer_t)arg4 < (ne_pointer_t)arg3 ) \
+    { assert ( (ne_pointer_t)arg4 + count <= (ne_pointer_t)arg3 ); } \
+   else if ( (ne_pointer_t)arg4 > (ne_pointer_t)arg3 ) \
+    { assert ( (ne_pointer_t)arg3 + count <= (ne_pointer_t)arg4 ); }
 
 
 

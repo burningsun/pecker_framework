@@ -56,6 +56,7 @@ ne10_sourcev7_files := \
 
     
     ne10_csource_files := \
+    $(NE10LIB_LOCAL_PATH)common/versionheader_c.c \
     $(NE10LIB_LOCAL_PATH)modules/math/NE10_abs.c \
     $(NE10LIB_LOCAL_PATH)modules/math/NE10_addc.c \
     $(NE10LIB_LOCAL_PATH)modules/math/NE10_addmat.c \

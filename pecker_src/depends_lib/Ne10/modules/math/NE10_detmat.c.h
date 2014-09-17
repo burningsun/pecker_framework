@@ -37,7 +37,7 @@
 
 #include <assert.h>
 
-static inline ne10_float32_t DET2x2( ne10_mat2x2f_t * mat )
+static __inline__ ne10_float32_t DET2x2( ne10_mat2x2f_t * mat )
 {
     // 2x2 matrix layout
     //  c1r1 c2r1
@@ -47,7 +47,7 @@ static inline ne10_float32_t DET2x2( ne10_mat2x2f_t * mat )
              -(mat->c2.r1 * mat->c1.r2) );
 }
 
-static inline ne10_float32_t DET3x3( ne10_mat3x3f_t * mat )
+static __inline__ ne10_float32_t DET3x3(ne10_mat3x3f_t * mat)
 {
     // 3x3 matrix layout
     //  c1r1 c2r1 c3r1
@@ -62,7 +62,7 @@ static inline ne10_float32_t DET3x3( ne10_mat3x3f_t * mat )
             + (mat->c3.r1*DET2x2( &subm31 ));
 }
 
-static inline ne10_float32_t DET4x4( ne10_mat4x4f_t * mat )
+static __inline__ ne10_float32_t DET4x4(ne10_mat4x4f_t * mat)
 {
     // 4x4 matrix layout
     //  c1r1 c2r1 c3r1 c4r1

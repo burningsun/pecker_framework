@@ -32,6 +32,8 @@
 /////////////////////////////////////////////////////////
 // version information
 /////////////////////////////////////////////////////////
+#ifndef NE_VERSION_HEADER_H_
+#define NE_VERSION_HEADER_H_
 
 #define VERSION_MAJOR      0
 #define VERSION_MINOR      9
@@ -40,3 +42,14 @@
 #define PHASE              1
 #define COPYRIGHT_YEAR     2012
 #define COPYRIGHT_HOLDER   "ARM Ltd."
+
+#ifdef __cplusplus
+extern "C" 
+{
+#endif
+	unsigned int Ne_Version(unsigned int* major, unsigned int* minor);
+#ifdef __cplusplus
+};
+#endif
+
+#endif //NE_VERSION_HEADER_H_

@@ -35,7 +35,7 @@
 
 #include <assert.h>
 
-inline void swap (ne10_float32_t *a, ne10_float32_t *b)
+__inline__ void swap(ne10_float32_t *a, ne10_float32_t *b)
 {
     ne10_float32_t tmp = *a;
     *a = *b;

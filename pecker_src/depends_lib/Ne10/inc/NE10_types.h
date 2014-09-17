@@ -43,6 +43,15 @@
 #include <string.h>
 #include <assert.h>
 
+#undef __inline__
+#ifdef _MSC_VER
+#define __inline__ __inline
+#else  // _MSC_VER
+//__GUNC__
+#define __inline__ inline
+#endif //_MSC_VER
+
+
 /////////////////////////////////////////////////////////
 // constant values that are used across the library
 /////////////////////////////////////////////////////////
@@ -99,20 +108,27 @@ typedef struct
 // definitions for matrix
 /////////////////////////////////////////////////////////
 
+#pragma pack(push)
+#pragma pack(1)
 typedef struct
 {
     ne10_float32_t r1;
     ne10_float32_t r2;
-} __attribute__ ( (packed)) ne10_mat_row2f;
+} //__attribute__ ( (packed))  VC不支持这种写法
+ne10_mat_row2f;
 
 typedef struct
 {
     ne10_mat_row2f c1;
     ne10_mat_row2f c2;
 
-} __attribute__ ( (packed)) ne10_mat2x2f_t;   // a 2x2 matrix
+} //__attribute__ ( (packed)) 
+ne10_mat2x2f_t;   // a 2x2 matrix
+#pragma pack(pop)
 
-static inline void createColumnMajorMatrix2x2 (ne10_mat2x2f_t * outMat, ne10_float32_t m11, ne10_float32_t m21, ne10_float32_t m12, ne10_float32_t m22)
+
+
+static __inline__ void createColumnMajorMatrix2x2 (ne10_mat2x2f_t * outMat, ne10_float32_t m11, ne10_float32_t m21, ne10_float32_t m12, ne10_float32_t m22)
 {
     assert (NULL != outMat);
 
@@ -122,13 +138,16 @@ static inline void createColumnMajorMatrix2x2 (ne10_mat2x2f_t * outMat, ne10_flo
     outMat->c2.r2 = m22;
 }
 
+#pragma pack(push)
+#pragma pack(1)
 
 typedef struct
 {
     ne10_float32_t r1;
     ne10_float32_t r2;
     ne10_float32_t r3;
-} __attribute__ ( (packed)) ne10_mat_row3f;
+} //__attribute__ ( (packed)) 
+ne10_mat_row3f;
 
 typedef struct
 {
@@ -136,9 +155,12 @@ typedef struct
     ne10_mat_row3f c2;
     ne10_mat_row3f c3;
 
-} __attribute__ ( (packed)) ne10_mat3x3f_t;   // a 3x3 matrix
+} //__attribute__ ( (packed)) 
+ne10_mat3x3f_t;   // a 3x3 matrix
 
-static inline void createColumnMajorMatrix3x3 (ne10_mat3x3f_t * outMat, ne10_float32_t m11, ne10_float32_t m21, ne10_float32_t m31,
+#pragma pack(pop)
+
+static __inline void createColumnMajorMatrix3x3 (ne10_mat3x3f_t * outMat, ne10_float32_t m11, ne10_float32_t m21, ne10_float32_t m31,
         ne10_float32_t m12, ne10_float32_t m22, ne10_float32_t m32,
         ne10_float32_t m13, ne10_float32_t m23, ne10_float32_t m33)
 {
@@ -158,13 +180,17 @@ static inline void createColumnMajorMatrix3x3 (ne10_mat3x3f_t * outMat, ne10_flo
 }
 
 
+#pragma pack(push)
+#pragma pack(1)
 typedef struct
 {
     ne10_float32_t r1;
     ne10_float32_t r2;
     ne10_float32_t r3;
     ne10_float32_t r4;
-} __attribute__ ( (packed)) ne10_mat_row4f;
+} //__attribute__ ( (packed))
+ne10_mat_row4f;
+
 
 typedef struct
 {
@@ -173,9 +199,11 @@ typedef struct
     ne10_mat_row4f c3;
     ne10_mat_row4f c4;
 
-} __attribute__ ( (packed)) ne10_mat4x4f_t;   // a 4x4 matrix
+} //__attribute__ ( (packed)) 
+ne10_mat4x4f_t;   // a 4x4 matrix
+#pragma pack(pop)
 
-static inline void createColumnMajorMatrix4x4 (ne10_mat4x4f_t * outMat, ne10_float32_t m11, ne10_float32_t m21, ne10_float32_t m31, ne10_float32_t m41,
+static __inline__ void createColumnMajorMatrix4x4(ne10_mat4x4f_t * outMat, ne10_float32_t m11, ne10_float32_t m21, ne10_float32_t m31, ne10_float32_t m41,
         ne10_float32_t m12, ne10_float32_t m22, ne10_float32_t m32, ne10_float32_t m42,
         ne10_float32_t m13, ne10_float32_t m23, ne10_float32_t m33, ne10_float32_t m43,
         ne10_float32_t m14, ne10_float32_t m24, ne10_float32_t m34, ne10_float32_t m44)

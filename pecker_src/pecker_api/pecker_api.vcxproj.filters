@@ -360,5 +360,6 @@
     <None Include="..\pecker_framework\include\cshare_object.h">
       <Filter>include</Filter>
     </None>
+    <None Include="depend_lib.def" />
   </ItemGroup>
 </Project>

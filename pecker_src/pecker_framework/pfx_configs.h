@@ -8,12 +8,18 @@
 #ifndef		PFX_CONFIGS_H_
 #define		PFX_CONFIGS_H_
 
+
+
 //CPU ARCH
-#define CPU_ARM_ARCH
-#define CPU_ARM_NEON_ARCH
+
+
+//#define CPU_ARM_ARCH
+//#define CPU_ARM_NEON_ARCH
 //#define CPU_X86_ARCH
 //#define CPU_X86_SSE_ARCH
 
+
+#define AUTO_DETECT_TARGET_OS
 // OS
 #define	WINDOW_XP		(1)
 #define	WINDOW_7_8		(1<<1)
@@ -38,16 +44,28 @@
 #endif
 
 //CONFIGS
-#define AUTO_DETECT_TARGET_OS
+
 
 #ifdef AUTO_DETECT_TARGET_OS
 #ifdef _MSC_VER
 #define OS_CONFIG				OS_WINDOWS
 #define OS_VERSION_CONFIG		WINDOW_7_8
+
+#undef 	CPU_X86_ARCH
+#undef  CPU_X86_SSE_ARCH
+#define CPU_X86_ARCH
+#define CPU_X86_SSE_ARCH
+
 #else
 #ifdef __GNUC__
 #define OS_CONFIG				OS_ANDROID
 #define OS_VERSION_CONFIG		(17)
+
+#undef CPU_ARM_ARCH
+#undef CPU_ARM_NEON_ARCH
+#define CPU_ARM_ARCH
+#define CPU_ARM_NEON_ARCH
+
 #endif
 #endif
 
