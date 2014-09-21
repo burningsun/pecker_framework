@@ -28,7 +28,6 @@ extern void test_object_id ();
 extern void symbiont_object();
 
 
-
 #if (defined(__ANDROID__)|| defined(__APP_MAIN_SHOW__))
 int test_main ()
 {
@@ -43,7 +42,7 @@ int main ()
 	//form_test();
 #endif
 
-	//symbiont_object();
+	symbiont_object();
 
 	//list_test();
 	//string_test();
@@ -55,7 +54,5 @@ int main ()
 	//matrix_test();
 	//auto_obj_test();
 	//test_object_id();
-
-//	abs_float32_neon(xxx,ddd,3);
 	return 0;
 }

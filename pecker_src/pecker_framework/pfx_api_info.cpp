@@ -7,13 +7,8 @@
 
 #include "pfx_api_info.h"
 
-//$(SolutionDir)\depends_lib\Ne10\bin\Ne10d.lib
-
 static pfx_version_t gVersion = {1,0,0,0};
 const pfx_version_t& get_pecker_api_version ()
 {
 	return gVersion;
 }
-
-
-

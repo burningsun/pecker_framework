@@ -27,11 +27,14 @@
 #define PFX_IMPORT_API
 #define PFX_INLINE inline
 #define PFX_INLINE_CODE PFX_INLINE //有些编译器不支持c/cpp文件内写inline
-
+#define PFX_FORCE_INLINE inline __attribute__((__always_inline__, __nodebug__))
+#define PFX_RESTRICT __restrict__
 #else
 #ifdef _MSC_VER
 #define PFX_EXPORT_API __declspec(dllexport) 
 #define PFX_IMPORT_API __declspec(dllimport)
+
+#define PFX_RESTRICT __restrict
 
 // VC不支持指定类型的异常抛出声明，加上后忽略warning
 #pragma warning (disable:4290)
@@ -41,17 +44,17 @@
 #define PFX_INLINE inline
 #endif // __cplusplus
 
+#define PFX_FORCE_INLINE __forceinline 
+
 #define PFX_INLINE_CODE PFX_INLINE //有些编译器不支持c/cpp文件内写inline
 
 #else
 //#ifdef
 //#endif
-
 #endif //_MSC_VER
+
+
 #endif //__GNUC__
-
-
-
 
 
 #ifdef PFX_CORE_EXPORT
@@ -59,6 +62,14 @@
 #define PFX_TEMPLATE_API	PFX_EXPORT_API
 #else
 #define PFX_CORE_API			PFX_IMPORT_API
+#define PFX_TEMPLATE_API
+#endif
+
+#ifdef PFX_MATH_EXPORT
+#define PFX_MATH_API			PFX_EXPORT_API
+#define PFX_TEMPLATE_API	PFX_EXPORT_API
+#else
+#define PFX_MATH_API			PFX_IMPORT_API
 #define PFX_TEMPLATE_API
 #endif
 

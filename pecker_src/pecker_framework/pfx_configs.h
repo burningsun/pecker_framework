@@ -10,17 +10,37 @@
 
 
 
-//CPU ARCH
+#ifdef __GNUC__
+
+//arm-linux-gcc -E -dM bl.c
+#if (defined(__i386__) || defined(__x86_64__))
+#define CPU_X86_ARCH
+#define CPU_X86_SSE_ARCH
+#endif
+
+#if (defined(__ARM_ARCH) || defined(__arm__) || defined (__ARM_EABI__))
+#define CPU_ARM_ARCH
+#define CPU_ARM_NEON_ARCH
+#endif
 
 
-//#define CPU_ARM_ARCH
-//#define CPU_ARM_NEON_ARCH
-//#define CPU_X86_ARCH
-//#define CPU_X86_SSE_ARCH
+#endif
+
+#ifdef _MSC_VER
+
+#if (defined(_M_IX86) || defined(_M_X64))
+#define CPU_X86_ARCH
+#define CPU_X86_SSE_ARCH
+#endif
+
+#if defined(_M_ARM)
+#define CPU_ARM_ARCH
+#define CPU_ARM_NEON_ARCH
+#endif
+
+#endif
 
 
-#define AUTO_DETECT_TARGET_OS
-// OS
 #define	WINDOW_XP		(1)
 #define	WINDOW_7_8		(1<<1)
 #define	WINDOW_RT		(1<<2)
@@ -35,7 +55,7 @@
 #define	OS_ANDROID		(1<<1)
 #define	OS_LINUX		(1<<2)
 
-#ifdef __GUNC__
+#ifdef __GNUC__
 #define NO_END_VTABLE
 #endif
 
@@ -44,28 +64,16 @@
 #endif
 
 //CONFIGS
-
+#define AUTO_DETECT_TARGET_OS
 
 #ifdef AUTO_DETECT_TARGET_OS
 #ifdef _MSC_VER
 #define OS_CONFIG				OS_WINDOWS
 #define OS_VERSION_CONFIG		WINDOW_7_8
-
-#undef 	CPU_X86_ARCH
-#undef  CPU_X86_SSE_ARCH
-#define CPU_X86_ARCH
-#define CPU_X86_SSE_ARCH
-
 #else
 #ifdef __GNUC__
 #define OS_CONFIG				OS_ANDROID
 #define OS_VERSION_CONFIG		(17)
-
-#undef CPU_ARM_ARCH
-#undef CPU_ARM_NEON_ARCH
-#define CPU_ARM_ARCH
-#define CPU_ARM_NEON_ARCH
-
 #endif
 #endif
 

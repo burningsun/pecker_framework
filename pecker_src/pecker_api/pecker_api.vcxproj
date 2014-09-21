@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\pecker_framework\math\pfx_simd_init.cpp" />
+    <ClCompile Include="..\pecker_framework\math\pfx_simd_neon.cpp" />
     <ClCompile Include="..\pecker_framework\native\android_native_form.cpp" />
     <ClCompile Include="..\pecker_framework\native\asyn_udp_comm.cpp" />
     <ClCompile Include="..\pecker_framework\native\pecker_stream.cpp" />
@@ -24,6 +26,7 @@
     <ClCompile Include="..\pecker_framework\native\udp_socket.cpp" />
     <ClCompile Include="..\pecker_framework\native\window_native_form.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_api_info.cpp" />
+    <ClCompile Include="..\pecker_framework\pfx_cpu_x86.cpp" />
     <ClCompile Include="..\pecker_framework\pfx_defines.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image_png.cpp" />
@@ -56,20 +59,27 @@
     <ClInclude Include="..\pecker_framework\data\pfx_iterator.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_linked_mem_pool.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_math_method.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_ref_root.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_reference.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_region.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_neon.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_sse.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_std.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
-    <ClInclude Include="..\pecker_framework\data\pfx_vector4_param.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_math.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_math_method.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fabs_std.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fadd_std.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fdiv_std.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fmat_std.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fmul_std.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fsub_std.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_neon.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_optimization.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_param.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_std.h" />
     <ClInclude Include="..\pecker_framework\native\android_native_form.h" />
     <ClInclude Include="..\pecker_framework\native\android_thread.h" />
     <ClInclude Include="..\pecker_framework\native\linux_thread.h" />
@@ -98,6 +108,9 @@
     <ClInclude Include="..\pecker_framework\pfx_api_info.h" />
     <ClInclude Include="..\pecker_framework\pfx_app_init.h" />
     <ClInclude Include="..\pecker_framework\pfx_configs.h" />
+    <ClInclude Include="..\pecker_framework\pfx_cpuid.h" />
+    <ClInclude Include="..\pecker_framework\pfx_cpu_arm.h" />
+    <ClInclude Include="..\pecker_framework\pfx_cpu_x86.h" />
     <ClInclude Include="..\pecker_framework\pfx_defines.h" />
     <ClInclude Include="..\pecker_framework\pfx_os_hal.h" />
     <ClInclude Include="..\pecker_framework\render\pfx_color.h" />
@@ -126,7 +139,6 @@
     <None Include="..\pecker_framework\include\cvector" />
     <None Include="..\pecker_framework\include\native" />
     <None Include="..\pecker_framework\include\util" />
-    <None Include="depend_lib.def" />
     <None Include="readme.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -176,9 +188,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)\depends_bin\zlibd.lib;$(SolutionDir)\depends_bin\libpngd.lib;$(SolutionDir)\depends_lib\Ne10\bin\Ne10d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ModuleDefinitionFile>depend_lib.def</ModuleDefinitionFile>
+      <AdditionalDependencies>$(SolutionDir)\depends_lib\libpng-1.6.2\bind\zlibd.lib;$(SolutionDir)\depends_lib\libpng-1.6.2\bind\libpngd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -199,8 +209,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <Profile>true</Profile>
-      <AdditionalDependencies>$(SolutionDir)\depends_bin\zlib.lib;$(SolutionDir)\depends_bin\libpng.lib;$(SolutionDir)\depends_lib\Ne10\bin\Ne10.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>depend_lib.def</ModuleDefinitionFile>
+      <AdditionalDependencies>$(SolutionDir)\depends_lib\libpng-1.6.2\bin\zlib.lib;$(SolutionDir)\depends_lib\libpng-1.6.2\bin\libpng.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSBR>true</PreserveSBR>

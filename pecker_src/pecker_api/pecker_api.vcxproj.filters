@@ -53,6 +53,15 @@
     <ClCompile Include="..\pecker_framework\render\render_system\pfx_texture.cpp">
       <Filter>render\render_system</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\math\pfx_simd_init.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\math\pfx_simd_neon.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\pfx_cpu_x86.cpp">
+      <Filter>configs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -76,6 +85,9 @@
     <Filter Include="include">
       <UniqueIdentifier>{a732ba44-a170-4e28-aa15-0b22dcd37341}</UniqueIdentifier>
     </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{0ad75788-dc32-48e1-8ccb-582ec19e3ebc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\pecker_framework\data\pecker_value_compare.h">
@@ -91,6 +103,9 @@
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_clist.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_math.h">
       <Filter>data</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\data\pfx_math_table.h">
@@ -300,26 +315,53 @@
     <ClInclude Include="..\pecker_framework\native\pfx_resource_reader_android.h">
       <Filter>native</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_optimization.h">
-      <Filter>data</Filter>
+    <ClInclude Include="..\pecker_framework\math\pfx_math.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_std.h">
-      <Filter>data</Filter>
+    <ClInclude Include="..\pecker_framework\math\pfx_math_method.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_sse.h">
-      <Filter>data</Filter>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fabs_std.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_simd_neon.h">
-      <Filter>data</Filter>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fadd_std.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_math_method.h">
-      <Filter>data</Filter>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fdiv_std.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_math.h">
-      <Filter>data</Filter>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fmat_std.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\pecker_framework\data\pfx_vector4_param.h">
-      <Filter>data</Filter>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fmul_std.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_fsub_std.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_neon.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_optimization.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_param.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_sse.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_std.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_cpu_arm.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_cpu_x86.h">
+      <Filter>configs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\pfx_cpuid.h">
+      <Filter>configs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -360,6 +402,5 @@
     <None Include="..\pecker_framework\include\cshare_object.h">
       <Filter>include</Filter>
     </None>
-    <None Include="depend_lib.def" />
   </ItemGroup>
 </Project>

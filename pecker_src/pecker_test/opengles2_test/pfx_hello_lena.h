@@ -8,15 +8,13 @@
 #include "../../pecker_framework/render/pfx_image_png.h"
 #include "../../pecker_framework/render/render_system/opengles2/pfx_texture_gles.h"
 
-#include "../../pecker_framework/data/pfx_math.h"
-
-
 #ifndef PFX_HELLO_LENA_H_
 #define PFX_HELLO_LENA_H_
 
 extern result_t load_img(const char_t* pfile_name, image_data_t& __img);
 extern result_t load_png_img(const char_t* pfile_name, cImage& __img);
 extern sImage_t* load_png_img(const char_t* pfile_name);
+extern void math_matrix_test();
 
 class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 {
@@ -259,13 +257,9 @@ public:
 		usize__t& PARAM_OUT param_size,
 		void*& PARAM_OUT param_data_ptr)
 	{
-
-		float xxx[3] = {1,2,3};
-		float ddd[3];
-		array_add_std_t::operate(ddd,xxx,3.0,3);
-		PECKER_LOG_INFO("xxxxxxx%f %f %f",ddd[0],ddd[1],ddd[2]);
-
 		PECKER_LOG_INFO("on_load escape time = %lld",__escape_time);
+
+		math_matrix_test();
 
 		shader_souce_string_t __sys_shader_source;
 		cshader_gles2* __vs_ptr = __state.create_shader(PFXST_VERTEXT_SHADER);

@@ -9,6 +9,8 @@
 #include "../pecker_framework/native/pecker_allocator.h"
 #include "../pecker_framework/data/pfx_cmatrix_codes.h"
 
+#include "../pecker_framework/math/pfx_math.h"
+
 USING_PECKER_SDK
 
 template < class vec_t, const usize__t dim_v >
@@ -513,3 +515,135 @@ void matrix_test ()
 
 	return;
 }
+
+
+void math_matrix_test()
+{
+	float* print_ptr;
+
+	SIMD_FLOAT(matrixA[12]) = { 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 }; //3行4列
+	SIMD_FLOAT(matrixB[8]) = { 1, 1, 2, 2, 3, 3, 4, 4 };  //4行2列
+	SIMD_FLOAT(matrixTAG[6]); //3*2
+
+	PECKER_LOG_INFO("sizeof(matrixA) = %d, %08X", sizeof(matrixA), (lpointer_t)(matrixA));
+	PECKER_LOG_INFO("sizeof(matrixB) = %d, %08X", sizeof(matrixB), (lpointer_t)(matrixB));
+	PECKER_LOG_INFO("sizeof(matrixTAG) = %d, %08X", sizeof(matrixTAG), (lpointer_t)(matrixTAG));
+
+	PECKER_LOG_STR("row first\n");
+	matrix_operate_unsafe_std_t::dot_row_first(matrixTAG, matrixA, matrixB, 3, 4, 2);
+	print_ptr = matrixTAG;
+	for (uindex_t i = 0; i < 2; ++i)
+	{
+		PECKER_LOG_STR("[");
+		for (uindex_t j = 0; j < 3; ++j)
+		{
+			PECKER_LOG_(" %f ", print_ptr[j]);
+		}
+		print_ptr += 3;
+		PECKER_LOG_STR("]\n");
+	}
+	PECKER_LOG_STR("\n");
+	PECKER_LOG_STR("col first\n");
+	matrix_operate_unsafe_std_t::dot_col_first(matrixTAG, matrixA, matrixB, 3, 4, 2);
+	print_ptr = matrixTAG;
+	for (uindex_t i = 0; i < 2; ++i)
+	{
+		PECKER_LOG_STR("[");
+		for (uindex_t j = 0; j < 3; ++j)
+		{
+			PECKER_LOG_(" %f ", print_ptr[j]);
+		}
+		print_ptr += 3;
+		PECKER_LOG_STR("]\n");
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//float matrixA4x4[16] __attribute__ ((aligned (16))) = { 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4 };
+	//float matrixB4x4[16]  __attribute__ ((aligned (16))) = { 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8 };
+	//float matrixTAG4x4[16]  __attribute__ ((aligned (16)));
+	SIMD_FLOAT(matrixA4x4[16]) = { 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4 };
+	SIMD_FLOAT(matrixB4x4[16]) = { 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8 };
+	SIMD_FLOAT(matrixTAG4x4[16]);
+
+	float_t* __matrixA4x4[4] = { matrixA4x4, &matrixA4x4[4], &matrixA4x4[8], &matrixA4x4[12] };
+	float_t* __matrixB4x4[4] = { matrixB4x4, &matrixB4x4[4], &matrixB4x4[8], &matrixB4x4[12] };
+	float_t* __matrixTAG4x4[4] = { matrixTAG4x4, &matrixTAG4x4[4], &matrixTAG4x4[8], &matrixTAG4x4[12] };;
+
+	PECKER_LOG_INFO("sizeof(matrixA4x4) = %d, %08X", sizeof(matrixA4x4), (lpointer_t)(matrixA4x4));
+	PECKER_LOG_INFO("sizeof(matrixB4x4) = %d, %08X", sizeof(matrixB4x4), (lpointer_t)(matrixB4x4));
+	PECKER_LOG_INFO("sizeof(matrixTAG4x4) = %d, %08X", sizeof(matrixTAG4x4), (lpointer_t)(matrixTAG4x4));
+
+	PECKER_LOG_STR("row first\n");
+	matrix_operate_unsafe_std_t::dot_row_first(matrixTAG4x4, matrixA4x4, matrixB4x4, 4, 4, 4);
+	print_ptr = matrixTAG4x4;
+	for (uindex_t i = 0; i < 4; ++i)
+	{
+		PECKER_LOG_STR("[");
+		for (uindex_t j = 0; j < 4; ++j)
+		{
+			PECKER_LOG_(" %f ", print_ptr[j]);
+		}
+		print_ptr += 4;
+		PECKER_LOG_STR("]\n");
+	}
+	PECKER_LOG_STR("\n");
+	PECKER_LOG_STR("row first\n");
+	matrix_operate_unsafe_std_t::dot_row_first(__matrixTAG4x4, __matrixA4x4, __matrixB4x4, 4, 4, 4);
+	print_ptr = matrixTAG4x4;
+	for (uindex_t i = 0; i < 4; ++i)
+	{
+		PECKER_LOG_STR("[");
+		for (uindex_t j = 0; j < 4; ++j)
+		{
+			PECKER_LOG_(" %f ", print_ptr[j]);
+		}
+		print_ptr += 4;
+		PECKER_LOG_STR("]\n");
+	}
+	PECKER_LOG_STR("\n");
+
+	PECKER_LOG_STR("col first\n");
+	matrix_operate_unsafe_std_t::dot_col_first(matrixTAG4x4, matrixA4x4, matrixB4x4, 4, 4, 4);
+	print_ptr = matrixTAG4x4;
+	for (uindex_t i = 0; i < 4; ++i)
+	{
+		PECKER_LOG_STR("[");
+		for (uindex_t j = 0; j < 4; ++j)
+		{
+			PECKER_LOG_(" %f ", print_ptr[j]);
+		}
+		print_ptr += 4;
+		PECKER_LOG_STR("]\n");
+	}
+	PECKER_LOG_STR("\n");
+
+	//PECKER_LOG_("col first ma\n");
+	//matrix_operate_unsafe_std_t::dot_col_first_ma(matrixTAG4x4, matrixA4x4, matrixB4x4, 4, 4, 4);
+	//print_ptr = matrixTAG4x4;
+	//for (uindex_t i = 0; i < 4; ++i)
+	//{
+	//	PECKER_LOG_("[");
+	//	for (uindex_t j = 0; j < 4; ++j)
+	//	{
+	//		PECKER_LOG_(" %f ", print_ptr[j]);
+	//	}
+	//	print_ptr += 4;
+	//	PECKER_LOG_("]\n");
+	//}
+	//PECKER_LOG_("\n");
+
+	PECKER_LOG_STR("col first\n");
+	matrix_operate_unsafe_std_t::dot_col_first(__matrixTAG4x4, __matrixA4x4, __matrixB4x4, 4, 4, 4);
+	print_ptr = matrixTAG4x4;
+	for (uindex_t i = 0; i < 4; ++i)
+	{
+		PECKER_LOG_STR("[");
+		for (uindex_t j = 0; j < 4; ++j)
+		{
+			PECKER_LOG_(" %f ", print_ptr[j]);
+		}
+		print_ptr += 4;
+		PECKER_LOG_STR("]\n");
+	}
+}
+
