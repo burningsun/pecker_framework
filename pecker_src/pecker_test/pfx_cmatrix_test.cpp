@@ -573,6 +573,14 @@ void math_matrix_test()
 	PECKER_LOG_INFO("sizeof(matrixB4x4) = %d, %08X", sizeof(matrixB4x4), (lpointer_t)(matrixB4x4));
 	PECKER_LOG_INFO("sizeof(matrixTAG4x4) = %d, %08X", sizeof(matrixTAG4x4), (lpointer_t)(matrixTAG4x4));
 
+	PECKER_LOG_INFO("matrixA4x4 row first det = %f", matrix_operate_unsafe_std_t::det4x4_row_first((*(MATRIX4F_t*)matrixA4x4)));
+	PECKER_LOG_INFO("matrixA4x4 col first det = %f", matrix_operate_unsafe_std_t::det4x4_col_first((*(MATRIX4F_t*)matrixA4x4)));
+
+	SIMD_MATRIX4F(matrixD4x4) = { 1, 2, 3, 4, 20, 30, 4, 5, 9, 4, 5, 1, 100, 200, 30, 40 };
+	PECKER_LOG_INFO("matrixD4x4 row first det = %f", matrix_operate_unsafe_std_t::det4x4_row_first(matrixD4x4));
+	PECKER_LOG_INFO("matrixD4x4 col first det = %f", matrix_operate_unsafe_std_t::det4x4_col_first(matrixD4x4));
+
+
 	PECKER_LOG_STR("row first\n");
 	matrix_operate_unsafe_std_t::dot_row_first(matrixTAG4x4, matrixA4x4, matrixB4x4, 4, 4, 4);
 	print_ptr = matrixTAG4x4;
