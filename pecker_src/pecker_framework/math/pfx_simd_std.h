@@ -18,7 +18,13 @@
 #include "pfx_simd_fsub_std.h"
 #include "pfx_simd_fmul_std.h"
 #include "pfx_simd_fdiv_std.h"
-#include "pfx_simd_fmat_std.h"
+#include "pfx_simd_fmatdot_std.h"
+#include "pfx_simd_fmatdet_std.h"
+#include "pfx_simd_fmatinv_std.h"
+#include "pfx_simd_fmatcross_std.h"
+#include "pfx_simd_fmatnormalize_std.h"
+#include "pfx_simd_fmattrans_std.h"
+#include "pfx_simd_fmatset_std.h"
 
 
 

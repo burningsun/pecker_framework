@@ -575,9 +575,39 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fdiv_std.h</locationURI>
 		</link>
 		<link>
-			<name>jni/pecker_framework/math/pfx_simd_fmat_std.h</name>
+			<name>jni/pecker_framework/math/pfx_simd_fmatcross_std.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmat_std.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmatcross_std.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/math/pfx_simd_fmatdet_std.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmatdet_std.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/math/pfx_simd_fmatdot_std.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmatdot_std.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/math/pfx_simd_fmatinv_std.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmatinv_std.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/math/pfx_simd_fmatnormalize_std.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmatnormalize_std.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/math/pfx_simd_fmatset_std.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmatset_std.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/math/pfx_simd_fmattrans_std.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/math/pfx_simd_fmattrans_std.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/math/pfx_simd_fmul_std.h</name>
