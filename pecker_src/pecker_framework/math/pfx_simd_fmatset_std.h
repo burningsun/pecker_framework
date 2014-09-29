@@ -15,6 +15,7 @@
 #include "pfx_simd_fmatcross_std.h"
 #include "pfx_simd_fmatnormalize_std.h"
 #include "pfx_simd_fmatdot_std.h"
+#include "pfx_simd_fmatinv_std.h"
 
 #include <math.h>
 
@@ -293,66 +294,66 @@ typedef struct st_matrix_set_unsafe_std
 		static SIMD_MATRIX4F(__mat) = { MAT4_IDENTITY(1.0) };
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_indentity(MATRIX4F_t& PARAM_OUT __mat, float_t _val = 1.0)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_indentity(MATRIX4F_t& PARAM_OUT __mat, float_t _val = 1.0)
 	{
 		mat4x4_set_col_major(__mat, MAT4_IDENTITY(_val));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_scale(MATRIX4F_t& PARAM_OUT __mat,
-		                                                  float_t x, float_t y, float_t z)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_scale(MATRIX4F_t& PARAM_OUT __mat,
+		                                             float_t x, float_t y, float_t z)
 	{
 		mat4x4_set_col_major(__mat, MAT4_SCALE(x,y,z));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_translate_col_major(MATRIX4F_t& PARAM_OUT __mat,
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_translate_col_major(MATRIX4F_t& PARAM_OUT __mat,
 		                                                    float_t x, float_t y, float_t z)
 	{
 		mat4x4_set_col_major(__mat, MAT_TRANSLATE(x,y,z));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_translate_row_major(MATRIX4F_t& PARAM_OUT __mat,
-		                                                     float_t x, float_t y, float_t z)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_translate_row_major(MATRIX4F_t& PARAM_OUT __mat,
+		                                                float_t x, float_t y, float_t z)
 	{
 		mat4x4_set_row_major(__mat, MAT_TRANSLATE(x, y, z));
 		return &__mat;
 	}
 
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_rotateX_col_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_rotateX_col_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
 	{
 		float_t fSin = ::sin(rad);
 		float_t fCos = ::cos(rad);
 		mat4x4_set_col_major(__mat, MAT4_ROTATE_X(fCos, fSin));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_rotateX_row_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_rotateX_row_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
 	{
 		float_t fSin = ::sin(rad);
 		float_t fCos = ::cos(rad);
 		mat4x4_set_row_major(__mat, MAT4_ROTATE_X(fCos, fSin));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_rotateY_col_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_rotateY_col_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
 	{
 		float_t fSin = ::sin(rad);
 		float_t fCos = ::cos(rad);
 		mat4x4_set_col_major(__mat, MAT4_ROTATE_Y(fCos, fSin));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_rotateY_row_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_rotateY_row_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
 	{
 		float_t fSin = ::sin(rad);
 		float_t fCos = ::cos(rad);
 		mat4x4_set_row_major(__mat, MAT4_ROTATE_Y(fCos, fSin));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_rotateZ_col_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_rotateZ_col_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
 	{
 		float_t fSin = ::sin(rad);
 		float_t fCos = ::cos(rad);
 		mat4x4_set_col_major(__mat, MAT4_ROTATE_Z(fCos, fSin));
 		return &__mat;
 	}
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_rotateZ_row_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_rotateZ_row_major(MATRIX4F_t& PARAM_OUT __mat, float_t rad)
 	{
 		float_t fSin = ::sin(rad);
 		float_t fCos = ::cos(rad);
@@ -364,7 +365,7 @@ typedef struct st_matrix_set_unsafe_std
 #define PFX_VEC(__vec,x)  __vec.m_vec[(x)]
 
 #define PFXMAT(__mat,row,col) __mat.m_mat[col].m_vec[row]
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_LookAtLH_col_major(MATRIX4F_t& PARAM_OUT __mat,
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_LookAtLH_col_major(MATRIX4F_t& PARAM_OUT __mat,
 		const VECTOR3F_t& vPosition, const VECTOR3F_t& vLookAt, const VECTOR3F_t& vUp)
 	{
 		VECTOR3F_t ZAxis;
@@ -401,7 +402,7 @@ typedef struct st_matrix_set_unsafe_std
 
 	}
 
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_LookAtRH_col_major(MATRIX4F_t& PARAM_OUT __mat,
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_LookAtRH_col_major(MATRIX4F_t& PARAM_OUT __mat,
 		const VECTOR3F_t& vPosition, const VECTOR3F_t& vLookAt, const VECTOR3F_t& vUp)
 	{
 		VECTOR3F_t ZAxis;
@@ -437,11 +438,135 @@ typedef struct st_matrix_set_unsafe_std
 		PFXMAT(__mat, 3, 3) =  1.0f;
 
 	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_orthogonalRH_opengl(MATRIX4F_t& PARAM_OUT __mat,
+		float_t width, float_t height,
+		float_t nearPlane, float_t farPlane)
+	{
+		float_t  rcpnmf = (nearPlane - farPlane);
+		if (matrix_inv_unsafe_std_t::is_near_zero(width) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
+		{
+			// 没法算
+			mat4x4_indentity(__mat);
+			return null;
+		}
+
+		mat4x4_set_col_major(__mat,
+			      (2.0 / width),         0.0,                           0.0,                           0.0,
+			             0.0, (2.0 / height),                           0.0,                           0.0,
+						 0.0,           0.0,                     2.0/rcpnmf,  (nearPlane+farPlane)/rcpnmf,
+						 0.0,           0.0,                            0.0,                           1.0
+						 );
+		return &__mat;
+	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_orthogonalLH_opengl(MATRIX4F_t& PARAM_OUT __mat,
+		float_t width, float_t height,
+		float_t nearPlane, float_t farPlane)
+	{
+		MATRIX4F_t* mat_ptr = mat4x4_orthogonalRH_opengl(__mat, width, height, nearPlane, farPlane);
+		if (mat_ptr)
+		{
+			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
+			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+		}
+		return mat_ptr;
+	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspectiveRH_opengl(MATRIX4F_t& PARAM_OUT __mat, 
+		float_t width, float_t height,
+		float_t nearPlane, float_t farPlane)
+	{
+		float_t  rcpnmf = (nearPlane - farPlane);
+		if (matrix_inv_unsafe_std_t::is_near_zero(width) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
+		{
+			// 没法算
+			mat4x4_indentity(__mat);
+			return null;
+		}
+
+		float_t n2, n2divheight, n2divwidth;
+
+		n2          = 2.0f * nearPlane;
+		rcpnmf      = 1.0f / rcpnmf;
+
+		mat4x4_set_col_major(__mat,
+			      (n2 / width),         0.0,                           0.0,                    0.0,
+			             0.0, (n2 / height),                           0.0,                    0.0,
+						 0.0,           0.0, (farPlane + nearPlane*rcpnmf),   (farPlane*rcpnmf)*n2,
+						 0.0,           0.0,                           -1.0,                    0.0
+						 );
+		return &__mat;
+	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspectiveLH_opengl(MATRIX4F_t& PARAM_OUT __mat,
+		float_t width, float_t height,
+		float_t nearPlane, float_t farPlane)
+	{
+		MATRIX4F_t* mat_ptr = mat4x4_perspectiveRH_opengl(__mat, width, height, nearPlane, farPlane);
+		if (mat_ptr)
+		{
+			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
+			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+		}
+		return mat_ptr;
+	}
+
+	// 	 aspect = height / width
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspective_fov_RH_opengl(MATRIX4F_t& PARAM_OUT __mat,
+		float_t fovy, float_t aspect,
+		float_t nearPlane, float_t farPlane)
+	{
+		float_t  rcpnmf = (nearPlane - farPlane);
+		float_t  height = ::tan(fovy / 2.0);
+		float_t  width;
+
+		if (matrix_inv_unsafe_std_t::is_near_zero(aspect) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
+		{
+			// 没法算
+			mat4x4_indentity(__mat);
+			return null;
+		}
+		height = 1.0 / height; // cot(fovy/2.0)
+		width = height / aspect;	  //
+
+		mat4x4_set_col_major(__mat,
+			width,    0.0,                             0.0,                                  0.0,
+			0.0,   height,                             0.0,                                  0.0,
+			0.0,      0.0, (farPlane + nearPlane) / rcpnmf, 2.0f * nearPlane * farPlane / rcpnmf,
+			0.0,      0.0,                            -1.0,                                   0.0
+			);
+		return &__mat;
+	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspective_fov_LH_opengl(MATRIX4F_t& PARAM_OUT __mat,
+		float_t fovy, float_t aspect,
+		float_t nearPlane, float_t farPlane)
+	{
+		MATRIX4F_t* mat_ptr = mat4x4_perspective_fov_RH_opengl(__mat, fovy, aspect, nearPlane, farPlane);
+		if (mat_ptr)
+		{
+			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
+			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+		}
+		return mat_ptr;
+	}
+
+
 #undef PFXMAT
 
 
 #define PFXMAT(__mat,row,col) __mat.m_mat[row].m_vec[col]
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_LookAtLH_row_major(MATRIX4F_t& PARAM_OUT __mat,
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_LookAtLH_row_major(MATRIX4F_t& PARAM_OUT __mat,
 		const VECTOR3F_t& vPosition, const VECTOR3F_t& vLookAt, const VECTOR3F_t& vUp)
 	{
 		VECTOR3F_t ZAxis;
@@ -478,7 +603,7 @@ typedef struct st_matrix_set_unsafe_std
 
 	}
 
-	static PFX_FORCE_INLINE const MATRIX4F_t* mat4x4_LookAtRH_row_major(MATRIX4F_t& PARAM_OUT __mat,
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_LookAtRH_row_major(MATRIX4F_t& PARAM_OUT __mat,
 		const VECTOR3F_t& vPosition, const VECTOR3F_t& vLookAt, const VECTOR3F_t& vUp)
 	{
 		VECTOR3F_t ZAxis;
@@ -514,6 +639,129 @@ typedef struct st_matrix_set_unsafe_std
 		PFXMAT(__mat, 3, 3) =  1.0f;
 
 	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_orthogonalRH_directX(MATRIX4F_t& PARAM_OUT __mat,
+		float_t width, float_t height,
+		float_t nearPlane, float_t farPlane)
+	{
+		float_t  rcpnmf = (nearPlane - farPlane);
+		if (matrix_inv_unsafe_std_t::is_near_zero(width) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
+		{
+			// 没法算
+			mat4x4_indentity(__mat);
+			return null;
+		}
+
+		mat4x4_set_col_major(__mat,
+			      (2.0 / width),         0.0,                           0.0,                           0.0,
+			             0.0, (2.0 / height),                           0.0,                           0.0,
+						 0.0,           0.0,                     1.0/rcpnmf,              nearPlane/rcpnmf,
+						 0.0,           0.0,                            0.0,                           1.0
+						 );
+		return &__mat;
+	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_orthogonalLH_directX(MATRIX4F_t& PARAM_OUT __mat,
+		float_t width, float_t height,
+		float_t nearPlane, float_t farPlane)
+	{
+		MATRIX4F_t* mat_ptr = mat4x4_orthogonalRH_directX(__mat, width, height, nearPlane, farPlane);
+		if (mat_ptr)
+		{
+			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
+			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+		}
+		return mat_ptr;
+	}
+
+	static PFX_FORCE_INLINE MATRIX4F_t* mat4x4_perspectiveRH_directX(MATRIX4F_t& PARAM_OUT __mat, 
+		float_t width, float_t height,
+		float_t nearPlane, float_t farPlane)
+	{
+		float_t  rcpnmf = (nearPlane - farPlane);
+		if (matrix_inv_unsafe_std_t::is_near_zero(width) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
+		{
+			// 没法算
+		    mat4x4_indentity(__mat);
+			return null;
+		}
+
+		float_t n2, n2divheight, n2divwidth;
+
+		n2          = 2.0f * nearPlane;
+		rcpnmf      = 1.0f / rcpnmf;
+
+	    mat4x4_set_row_major(__mat,
+	        (n2 / width),         0.0,                           0.0,                         0.0,
+	               0.0, (n2 / height),                           0.0,                         0.0,
+				 0.0,           0.0,               farPlane / rcpnmf, (nearPlane*farPlane*rcpnmf),
+				 0.0,           0.0,                            -1.0,                        0.0
+				 );
+		return &__mat;
+	}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspectiveLH_directX(MATRIX4F_t& PARAM_OUT __mat,
+			float_t width, float_t height,
+			float_t nearPlane, float_t farPlane)
+		{
+			MATRIX4F_t* mat_ptr = mat4x4_perspectiveRH_directX(__mat, width, height, nearPlane, farPlane);
+			if (mat_ptr)
+			{
+				PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
+				PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+			}
+			return mat_ptr;
+		}
+
+		// 	 aspect = height / width
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspective_fov_RH_directX(MATRIX4F_t& PARAM_OUT __mat,
+			float_t fovy, float_t aspect,
+			float_t nearPlane, float_t farPlane)
+		{
+			float_t  rcpnmf = (nearPlane - farPlane);
+			float_t  height =  ::tan(fovy / 2.0);
+			float_t  width;
+
+			if (matrix_inv_unsafe_std_t::is_near_zero(aspect) ||
+				matrix_inv_unsafe_std_t::is_near_zero(height) ||
+				matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+				)
+			{
+				// 没法算
+				mat4x4_indentity(__mat);
+				return null;
+			}
+			height = 1.0 / height; // cot(fovy/2.0)
+			width = height / aspect;	  //
+
+
+			mat4x4_set_col_major(__mat,
+				width,    0.0,               0.0,                           0.0,
+				  0.0, height,               0.0,                           0.0,
+				  0.0,    0.0, farPlane / rcpnmf, nearPlane * farPlane / rcpnmf,
+				  0.0,    0.0,              -1.0,                           0.0
+				);
+			return &__mat;
+		}
+
+	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspective_fov_LH_directX(MATRIX4F_t& PARAM_OUT __mat,
+			float_t fovy, float_t aspect,
+			float_t nearPlane, float_t farPlane)
+		{
+			MATRIX4F_t* mat_ptr = mat4x4_perspective_fov_RH_directX(__mat, fovy, aspect, nearPlane, farPlane);
+			if (mat_ptr)
+			{
+				PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
+				PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+			}
+			return mat_ptr;
+		}
 #undef PFXMAT
 
 
