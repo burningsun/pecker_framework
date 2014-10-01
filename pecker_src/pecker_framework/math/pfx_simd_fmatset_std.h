@@ -261,23 +261,23 @@ typedef struct st_matrix_set_unsafe_std
 	                      0.0, 0.0, (Z), 0.0, \
 	                      0.0, 0.0, 0.0, 1.0
 
-#define MAT3_ROTATE(fCos, fSin)(fCos), -(fSin),  0.0,\
-	                           (fSin),  (fCos),  0.0, \
+#define MAT3_ROTATE(fCos, fSin)(fCos), (fSin),  0.0,\
+	                           -(fSin),  (fCos),  0.0, \
 	                              0.0,     0.0,  1.0
 
 
 #define MAT4_ROTATE_X(fCos, fSin)   1.0,     0.0,     0.0, 0.0,\
-	                                0.0,  (fCos), -(fSin), 0.0,\
-	                                0.0,  (fSin),  (fCos), 0.0,\
+	                                0.0,  (fCos),  -(fSin), 0.0,\
+	                                0.0,  (fSin),   (fCos), 0.0,\
 	                                0.0,     0.0,     0.0, 1.0
 
 #define MAT4_ROTATE_Y(fCos, fSin)(fCos),     0.0,  (fSin), 0.0,\
 	                                0.0,     1.0,     0.0, 0.0, \
-							   - (fSin),     0.0,  (fCos), 0.0, \
+							     -(fSin),     0.0,  (fCos), 0.0, \
 	                                0.0,     0.0,     0.0, 1.0
 
-#define MAT4_ROTATE_Z(fCos, fSin)(fCos), -(fSin),     0.0, 0.0,\
-	                             (fSin),  (fCos),     0.0, 0.0, \
+#define MAT4_ROTATE_Z(fCos, fSin)(fCos),  (fSin),     0.0, 0.0,\
+	                             -(fSin),  (fCos),     0.0, 0.0, \
 	                                0.0,     0.0,     1.0, 0.0, \
 	                                0.0,     0.0,     0.0, 1.0
 
@@ -371,35 +371,37 @@ typedef struct st_matrix_set_unsafe_std
 		VECTOR3F_t ZAxis;
 		VECTOR3F_t XAxis;
 		VECTOR3F_t YAxis;
-		array_fsub_unsafe_std_t::operate(&ZAxis, &vLookAt, &vPosition, 1);
-		vector_cross_unsafe_std_t::cross(XAxis, vUp, ZAxis);
-		vector_cross_unsafe_std_t::cross(YAxis, ZAxis, XAxis);
-
-		vector_normalize_unsafe_std_t::normalize(XAxis);
-		vector_normalize_unsafe_std_t::normalize(YAxis);
+		VECTOR3F_t NormailUP;
+		vector_normalize_unsafe_std_t::normalize(NormailUP, vUp);
+		array_fsub_unsafe_std_t::operate(&ZAxis, &vPosition, &vLookAt, 1);
 		vector_normalize_unsafe_std_t::normalize(ZAxis);
 
+		vector_cross_unsafe_std_t::cross(XAxis, NormailUP, ZAxis);
+		vector_cross_unsafe_std_t::cross(YAxis, ZAxis, XAxis);
 
-		PFXMAT(__mat, 0, 0) = PFX_VEC(XAxis, DIMENSION_X);
+
+
+		PFXMAT(__mat, 0, 0) = -PFX_VEC(XAxis, DIMENSION_X);
 		PFXMAT(__mat, 0, 1) = PFX_VEC(YAxis, DIMENSION_X);
-		PFXMAT(__mat, 0, 2) = PFX_VEC(ZAxis, DIMENSION_X);
+		PFXMAT(__mat, 0, 2) = -PFX_VEC(ZAxis, DIMENSION_X);
 		PFXMAT(__mat, 0, 3) = 0.0f;
 
-		PFXMAT(__mat, 1, 0) = PFX_VEC(XAxis, DIMENSION_Y);
+		PFXMAT(__mat, 1, 0) = -PFX_VEC(XAxis, DIMENSION_Y);
 		PFXMAT(__mat, 1, 1) = PFX_VEC(YAxis, DIMENSION_Y);
-		PFXMAT(__mat, 1, 2) = PFX_VEC(ZAxis, DIMENSION_Y);
+		PFXMAT(__mat, 1, 2) = -PFX_VEC(ZAxis, DIMENSION_Y);
 		PFXMAT(__mat, 1, 3) = 0.0f;
 
-		PFXMAT(__mat, 2, 0) = PFX_VEC(XAxis, DIMENSION_Z);
+		PFXMAT(__mat, 2, 0) = -PFX_VEC(XAxis, DIMENSION_Z);
 		PFXMAT(__mat, 2, 1) = PFX_VEC(YAxis, DIMENSION_Z);
-		PFXMAT(__mat, 2, 2) = PFX_VEC(ZAxis, DIMENSION_Z);
+		PFXMAT(__mat, 2, 2) = -PFX_VEC(ZAxis, DIMENSION_Z);
 		PFXMAT(__mat, 2, 3) = 0.0f;
 
-		PFXMAT(__mat, 3, 0) = -matrix_dot_unsafe_std_t::dot(XAxis, vPosition);
+		PFXMAT(__mat, 3, 0) = matrix_dot_unsafe_std_t::dot(XAxis, vPosition);
 		PFXMAT(__mat, 3, 1) = -matrix_dot_unsafe_std_t::dot(YAxis, vPosition);
-		PFXMAT(__mat, 3, 2) = -matrix_dot_unsafe_std_t::dot(ZAxis, vPosition);
-		PFXMAT(__mat, 3, 3) =  1.0f;
+		PFXMAT(__mat, 3, 2) = matrix_dot_unsafe_std_t::dot(ZAxis, vPosition);
+		PFXMAT(__mat, 3, 3) = 1.0f;
 
+		return &__mat;
 	}
 
 	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_LookAtRH_col_major(MATRIX4F_t& PARAM_OUT __mat,
@@ -408,35 +410,36 @@ typedef struct st_matrix_set_unsafe_std
 		VECTOR3F_t ZAxis;
 		VECTOR3F_t XAxis;
 		VECTOR3F_t YAxis;
+		VECTOR3F_t NormailUP;
+		vector_normalize_unsafe_std_t::normalize(NormailUP, vUp);
 		array_fsub_unsafe_std_t::operate(&ZAxis, &vLookAt, &vPosition, 1);
-		vector_cross_unsafe_std_t::cross(XAxis, vUp, ZAxis);
+		vector_normalize_unsafe_std_t::normalize(ZAxis);
+
+		vector_cross_unsafe_std_t::cross(XAxis, NormailUP, ZAxis);
 		vector_cross_unsafe_std_t::cross(YAxis, ZAxis, XAxis);
 
-		vector_normalize_unsafe_std_t::normalize(XAxis);
-		vector_normalize_unsafe_std_t::normalize(YAxis);
-		vector_normalize_unsafe_std_t::normalize(ZAxis);
 
 
 		PFXMAT(__mat, 0, 0) = -PFX_VEC(XAxis, DIMENSION_X);
-		PFXMAT(__mat, 0, 1) =  PFX_VEC(YAxis, DIMENSION_X);
+		PFXMAT(__mat, 0, 1) = PFX_VEC(YAxis, DIMENSION_X);
 		PFXMAT(__mat, 0, 2) = -PFX_VEC(ZAxis, DIMENSION_X);
-		PFXMAT(__mat, 0, 3) =  0.0f;
+		PFXMAT(__mat, 0, 3) = 0.0f;
 
 		PFXMAT(__mat, 1, 0) = -PFX_VEC(XAxis, DIMENSION_Y);
-		PFXMAT(__mat, 1, 1) =  PFX_VEC(YAxis, DIMENSION_Y);
+		PFXMAT(__mat, 1, 1) = PFX_VEC(YAxis, DIMENSION_Y);
 		PFXMAT(__mat, 1, 2) = -PFX_VEC(ZAxis, DIMENSION_Y);
-		PFXMAT(__mat, 1, 3) =  0.0f;
+		PFXMAT(__mat, 1, 3) = 0.0f;
 
 		PFXMAT(__mat, 2, 0) = -PFX_VEC(XAxis, DIMENSION_Z);
-		PFXMAT(__mat, 2, 1) =  PFX_VEC(YAxis, DIMENSION_Z);
+		PFXMAT(__mat, 2, 1) = PFX_VEC(YAxis, DIMENSION_Z);
 		PFXMAT(__mat, 2, 2) = -PFX_VEC(ZAxis, DIMENSION_Z);
-		PFXMAT(__mat, 2, 3) =  0.0f;
+		PFXMAT(__mat, 2, 3) = 0.0f;
 
-		PFXMAT(__mat, 3, 0) =  matrix_dot_unsafe_std_t::dot(XAxis, vPosition);
+		PFXMAT(__mat, 3, 0) = matrix_dot_unsafe_std_t::dot(XAxis, vPosition);
 		PFXMAT(__mat, 3, 1) = -matrix_dot_unsafe_std_t::dot(YAxis, vPosition);
-		PFXMAT(__mat, 3, 2) =  matrix_dot_unsafe_std_t::dot(ZAxis, vPosition);
-		PFXMAT(__mat, 3, 3) =  1.0f;
-
+		PFXMAT(__mat, 3, 2) = matrix_dot_unsafe_std_t::dot(ZAxis, vPosition);
+		PFXMAT(__mat, 3, 3) = 1.0f;
+		return &__mat;
 	}
 
 	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_orthogonalRH_opengl(MATRIX4F_t& PARAM_OUT __mat,
@@ -455,10 +458,10 @@ typedef struct st_matrix_set_unsafe_std
 		}
 
 		mat4x4_set_col_major(__mat,
-			      (2.0 / width),         0.0,                           0.0,                           0.0,
-			             0.0, (2.0 / height),                           0.0,                           0.0,
-						 0.0,           0.0,                     2.0/rcpnmf,  (nearPlane+farPlane)/rcpnmf,
-						 0.0,           0.0,                            0.0,                           1.0
+			      (2.0 / width),         0.0,                           0.0,  0.0,
+			             0.0, (2.0 / height),                           0.0,  0.0,
+						 0.0,           0.0,                     2.0/rcpnmf,  0.0,
+						 0.0,           0.0,    (nearPlane+farPlane)/rcpnmf,  1.0
 						 );
 		return &__mat;
 	}
@@ -467,13 +470,24 @@ typedef struct st_matrix_set_unsafe_std
 		float_t width, float_t height,
 		float_t nearPlane, float_t farPlane)
 	{
-		MATRIX4F_t* mat_ptr = mat4x4_orthogonalRH_opengl(__mat, width, height, nearPlane, farPlane);
-		if (mat_ptr)
+		float_t  rcpnmf = (nearPlane - farPlane);
+		if (matrix_inv_unsafe_std_t::is_near_zero(width) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
 		{
-			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
-			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+			// 没法算
+			mat4x4_indentity(__mat);
+			return null;
 		}
-		return mat_ptr;
+
+		mat4x4_set_col_major(__mat,
+			      (2.0 / width),         0.0,                           0.0,  0.0,
+			             0.0, (2.0 / height),                           0.0,  0.0,
+						 0.0,           0.0,                   - 2.0/rcpnmf,  0.0,
+						 0.0,           0.0,   -(nearPlane+farPlane)/rcpnmf,  1.0
+						 );
+		return &__mat;
 	}
 
 	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspectiveRH_opengl(MATRIX4F_t& PARAM_OUT __mat, 
@@ -491,16 +505,14 @@ typedef struct st_matrix_set_unsafe_std
 			return null;
 		}
 
-		float_t n2, n2divheight, n2divwidth;
-
+		float_t n2;
 		n2          = 2.0f * nearPlane;
-		rcpnmf      = 1.0f / rcpnmf;
 
 		mat4x4_set_col_major(__mat,
-			      (n2 / width),         0.0,                           0.0,                    0.0,
-			             0.0, (n2 / height),                           0.0,                    0.0,
-						 0.0,           0.0, (farPlane + nearPlane*rcpnmf),   (farPlane*rcpnmf)*n2,
-						 0.0,           0.0,                           -1.0,                    0.0
+			      (n2 / width),         0.0,                           0.0,   0.0,
+			             0.0, (n2 / height),                           0.0,   0.0,
+						 0.0,           0.0, (farPlane + nearPlane)/rcpnmf,  -1.0,
+						 0.0,           0.0,          (farPlane*n2/rcpnmf),   0.0
 						 );
 		return &__mat;
 	}
@@ -509,16 +521,30 @@ typedef struct st_matrix_set_unsafe_std
 		float_t width, float_t height,
 		float_t nearPlane, float_t farPlane)
 	{
-		MATRIX4F_t* mat_ptr = mat4x4_perspectiveRH_opengl(__mat, width, height, nearPlane, farPlane);
-		if (mat_ptr)
+		float_t  rcpnmf = (nearPlane - farPlane);
+		if (matrix_inv_unsafe_std_t::is_near_zero(width) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
 		{
-			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
-			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+			// 没法算
+			mat4x4_indentity(__mat);
+			return null;
 		}
-		return mat_ptr;
+
+		float_t n2;
+		n2 = 2.0f * nearPlane;
+		mat4x4_set_col_major(__mat,
+			      (n2 / width),         0.0,                           0.0,   0.0,
+			             0.0, (n2 / height),                           0.0,   0.0,
+						 0.0,           0.0, -(farPlane + nearPlane)/rcpnmf,  1.0,
+						 0.0,           0.0,          -(farPlane*n2/rcpnmf),   0.0
+						 );
+
+		return &__mat;
 	}
 
-	// 	 aspect = height / width
+	// 	 aspect = width / height 
 	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspective_fov_RH_opengl(MATRIX4F_t& PARAM_OUT __mat,
 		float_t fovy, float_t aspect,
 		float_t nearPlane, float_t farPlane)
@@ -540,10 +566,10 @@ typedef struct st_matrix_set_unsafe_std
 		width = height / aspect;	  //
 
 		mat4x4_set_col_major(__mat,
-			width,    0.0,                             0.0,                                  0.0,
-			0.0,   height,                             0.0,                                  0.0,
-			0.0,      0.0, (farPlane + nearPlane) / rcpnmf, 2.0f * nearPlane * farPlane / rcpnmf,
-			0.0,      0.0,                            -1.0,                                   0.0
+			width,    0.0,                                  0.0,    0.0,
+			0.0,   height,                                  0.0,    0.0,
+			0.0,      0.0,      (farPlane + nearPlane) / rcpnmf,   -1.0,
+			0.0,      0.0, 2.0f * nearPlane * farPlane / rcpnmf,    0.0
 			);
 		return &__mat;
 	}
@@ -552,13 +578,29 @@ typedef struct st_matrix_set_unsafe_std
 		float_t fovy, float_t aspect,
 		float_t nearPlane, float_t farPlane)
 	{
-		MATRIX4F_t* mat_ptr = mat4x4_perspective_fov_RH_opengl(__mat, fovy, aspect, nearPlane, farPlane);
-		if (mat_ptr)
+		float_t  rcpnmf = (nearPlane - farPlane);
+		float_t  height = ::tan(fovy / 2.0);
+		float_t  width;
+
+		if (matrix_inv_unsafe_std_t::is_near_zero(aspect) ||
+			matrix_inv_unsafe_std_t::is_near_zero(height) ||
+			matrix_inv_unsafe_std_t::is_near_zero(rcpnmf)
+			)
 		{
-			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
-			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+			// 没法算
+			mat4x4_indentity(__mat);
+			return null;
 		}
-		return mat_ptr;
+		height = 1.0 / height; // cot(fovy/2.0)
+		width = height / aspect;	  //
+
+		mat4x4_set_col_major(__mat,
+			width,    0.0,                                  0.0,     0.0,
+			0.0,   height,                                  0.0,     0.0,
+			0.0,      0.0, -(farPlane + nearPlane)/rcpnmf,           1.0,
+			0.0,      0.0, -(2.0f * farPlane*nearPlane/rcpnmf),      0.0
+			);
+		return &__mat;
 	}
 
 
@@ -572,13 +614,13 @@ typedef struct st_matrix_set_unsafe_std
 		VECTOR3F_t ZAxis;
 		VECTOR3F_t XAxis;
 		VECTOR3F_t YAxis;
-		array_fsub_unsafe_std_t::operate(&ZAxis, &vLookAt, &vPosition, 1);
-		vector_cross_unsafe_std_t::cross(XAxis, vUp, ZAxis);
-		vector_cross_unsafe_std_t::cross(YAxis, ZAxis, XAxis);
-
-		vector_normalize_unsafe_std_t::normalize(XAxis);
-		vector_normalize_unsafe_std_t::normalize(YAxis);
+		VECTOR3F_t NormailUP;
+		vector_normalize_unsafe_std_t::normalize(NormailUP, vUp);
+		array_fsub_unsafe_std_t::operate(&ZAxis, &vPosition, &vLookAt, 1);
 		vector_normalize_unsafe_std_t::normalize(ZAxis);
+
+		vector_cross_unsafe_std_t::cross(XAxis, NormailUP, ZAxis);
+		vector_cross_unsafe_std_t::cross(YAxis, ZAxis, XAxis);
 
 
 		PFXMAT(__mat, 0, 0) = PFX_VEC(XAxis, DIMENSION_X);
@@ -600,7 +642,7 @@ typedef struct st_matrix_set_unsafe_std
 		PFXMAT(__mat, 3, 1) = -matrix_dot_unsafe_std_t::dot(YAxis, vPosition);
 		PFXMAT(__mat, 3, 2) = -matrix_dot_unsafe_std_t::dot(ZAxis, vPosition);
 		PFXMAT(__mat, 3, 3) = 1.0f;
-
+		return &__mat;
 	}
 
 	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_LookAtRH_row_major(MATRIX4F_t& PARAM_OUT __mat,
@@ -609,13 +651,13 @@ typedef struct st_matrix_set_unsafe_std
 		VECTOR3F_t ZAxis;
 		VECTOR3F_t XAxis;
 		VECTOR3F_t YAxis;
-		array_fsub_unsafe_std_t::operate(&ZAxis, &vLookAt, &vPosition, 1);
-		vector_cross_unsafe_std_t::cross(XAxis, vUp, ZAxis);
-		vector_cross_unsafe_std_t::cross(YAxis, ZAxis, XAxis);
-
-		vector_normalize_unsafe_std_t::normalize(XAxis);
-		vector_normalize_unsafe_std_t::normalize(YAxis);
+		VECTOR3F_t NormailUP;
+		vector_normalize_unsafe_std_t::normalize(NormailUP, vUp);
+		array_fsub_unsafe_std_t::operate(&ZAxis, &vPosition, &vLookAt, 1);
 		vector_normalize_unsafe_std_t::normalize(ZAxis);
+
+		vector_cross_unsafe_std_t::cross(XAxis, NormailUP, ZAxis);
+		vector_cross_unsafe_std_t::cross(YAxis, ZAxis, XAxis);
 
 
 		PFXMAT(__mat, 0, 0) = -PFX_VEC(XAxis, DIMENSION_X);
@@ -637,7 +679,7 @@ typedef struct st_matrix_set_unsafe_std
 		PFXMAT(__mat, 3, 1) = -matrix_dot_unsafe_std_t::dot(YAxis, vPosition);
 		PFXMAT(__mat, 3, 2) =  matrix_dot_unsafe_std_t::dot(ZAxis, vPosition);
 		PFXMAT(__mat, 3, 3) =  1.0f;
-
+		return &__mat;
 	}
 
 	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_orthogonalRH_directX(MATRIX4F_t& PARAM_OUT __mat,
@@ -655,11 +697,11 @@ typedef struct st_matrix_set_unsafe_std
 			return null;
 		}
 
-		mat4x4_set_col_major(__mat,
-			      (2.0 / width),         0.0,                           0.0,                           0.0,
-			             0.0, (2.0 / height),                           0.0,                           0.0,
-						 0.0,           0.0,                     1.0/rcpnmf,              nearPlane/rcpnmf,
-						 0.0,           0.0,                            0.0,                           1.0
+		mat4x4_set_row_major(__mat,
+			      (2.0 / width),         0.0,                           0.0,     0.0,
+			             0.0, (2.0 / height),                           0.0,     0.0,
+						 0.0,           0.0,                     1.0/rcpnmf,     0.0,
+						 0.0,           0.0,               nearPlane/rcpnmf,     1.0
 						 );
 		return &__mat;
 	}
@@ -672,7 +714,7 @@ typedef struct st_matrix_set_unsafe_std
 		if (mat_ptr)
 		{
 			PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
-			PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+			PFXMAT(__mat, 3, 2) = -PFXMAT(__mat, 3, 2);
 		}
 		return mat_ptr;
 	}
@@ -695,13 +737,12 @@ typedef struct st_matrix_set_unsafe_std
 		float_t n2, n2divheight, n2divwidth;
 
 		n2          = 2.0f * nearPlane;
-		rcpnmf      = 1.0f / rcpnmf;
 
 	    mat4x4_set_row_major(__mat,
-	        (n2 / width),         0.0,                           0.0,                         0.0,
-	               0.0, (n2 / height),                           0.0,                         0.0,
-				 0.0,           0.0,               farPlane / rcpnmf, (nearPlane*farPlane*rcpnmf),
-				 0.0,           0.0,                            -1.0,                        0.0
+	        (n2 / width),         0.0,                           0.0,  0.0,
+	               0.0, (n2 / height),                           0.0,  0.0,
+				 0.0,           0.0,               farPlane / rcpnmf, -1.0,
+				 0.0,           0.0,     (nearPlane*farPlane/ rcpnmf),  0.0
 				 );
 		return &__mat;
 	}
@@ -715,11 +756,12 @@ typedef struct st_matrix_set_unsafe_std
 			{
 				PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
 				PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+				PFXMAT(__mat, 3, 2) = -PFXMAT(__mat, 3, 2);
 			}
 			return mat_ptr;
 		}
 
-		// 	 aspect = height / width
+		// 	 aspect = width / height 
 	static PFX_FORCE_INLINE  MATRIX4F_t* mat4x4_perspective_fov_RH_directX(MATRIX4F_t& PARAM_OUT __mat,
 			float_t fovy, float_t aspect,
 			float_t nearPlane, float_t farPlane)
@@ -741,11 +783,11 @@ typedef struct st_matrix_set_unsafe_std
 			width = height / aspect;	  //
 
 
-			mat4x4_set_col_major(__mat,
-				width,    0.0,               0.0,                           0.0,
-				  0.0, height,               0.0,                           0.0,
-				  0.0,    0.0, farPlane / rcpnmf, nearPlane * farPlane / rcpnmf,
-				  0.0,    0.0,              -1.0,                           0.0
+			mat4x4_set_row_major(__mat,
+				width,    0.0,                            0.0,   0.0,
+				  0.0, height,                            0.0,   0.0,
+				  0.0,    0.0,              farPlane / rcpnmf, 	-1.0,
+				  0.0,    0.0,  nearPlane * farPlane / rcpnmf,   0.0
 				);
 			return &__mat;
 		}
@@ -759,6 +801,7 @@ typedef struct st_matrix_set_unsafe_std
 			{
 				PFXMAT(__mat, 2, 2) = -PFXMAT(__mat, 2, 2);
 				PFXMAT(__mat, 2, 3) = -PFXMAT(__mat, 2, 3);
+				PFXMAT(__mat, 3, 2) = -PFXMAT(__mat, 3, 2);
 			}
 			return mat_ptr;
 		}

@@ -93,7 +93,7 @@ typedef struct st_matrix_inv_unsafe_std
 
 	}
 
-	static PFX_FORCE_INLINE MATRIX4F_t* inverse3x3_extern_col_major(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+	static PFX_FORCE_INLINE MATRIX4F_t* inverse3x3_externAC01_col_major(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
 		MATRIX4F_t& PFX_RESTRICT src)
 	{
 		// MAT = [ A , C]
@@ -163,7 +163,13 @@ typedef struct st_matrix_inv_unsafe_std
 		return &dst;
 
 	}
-
+	static 	PFX_FORCE_INLINE MATRIX4F_t* inverse3x3_externA0C1_col_major(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+		MATRIX4F_t& PFX_RESTRICT src)
+	{
+		// MAT = [ A , 0]
+		//       [ C,  1]
+		return inverse3x3_externAC01_row_major(dst, src);
+	}
 	static PFX_FORCE_INLINE MATRIX4F_t* inverse4x4(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
 		MATRIX4F_t& PFX_RESTRICT src)
 	{
@@ -225,7 +231,7 @@ typedef struct st_matrix_inv_unsafe_std
 #undef PFXMAT
 
 #define PFXMAT(__mat,row,col) __mat.m_mat[row].m_vec[col]
-	static PFX_FORCE_INLINE MATRIX4F_t* inverse3x3_extern_row_major(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+	static PFX_FORCE_INLINE MATRIX4F_t* inverse3x3_externAC01_row_major(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
 		MATRIX4F_t& PFX_RESTRICT src)
 	{
 		// MAT = [ A , C]
@@ -293,7 +299,17 @@ typedef struct st_matrix_inv_unsafe_std
 		return &dst;
 
 	}
+
+	static 	PFX_FORCE_INLINE MATRIX4F_t* inverse3x3_externA0C1_row_major(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+		MATRIX4F_t& PFX_RESTRICT src)
+	{
+		// MAT = [ A , 0]
+		//       [ C,  1]
+		return inverse3x3_externAC01_col_major(dst, src);
+	}
 #undef PFXMAT
+
+
 
 }matrix_inv_unsafe_std_t;
 

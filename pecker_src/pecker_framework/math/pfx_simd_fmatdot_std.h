@@ -24,9 +24,9 @@ typedef struct st_matrix_dot_unsafe_std
 {
 
 
-	static PFX_FORCE_INLINE float_t* mul (float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
-	                                     float_t* PFX_RESTRICT PARAM_INOUT mat1_ptr,
-	                                     float_t* PFX_RESTRICT PARAM_INOUT mat2_ptr,
+	static PFX_FORCE_INLINE float_t* mul (float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	                                     const float_t* PFX_RESTRICT PARAM_IN mat1_ptr,
+	                                     const float_t* PFX_RESTRICT PARAM_IN mat2_ptr,
 	                                     usize__t mat1_row_dim_count,
 	                                     usize__t mid_dim_count,
 	                                     usize__t mat2_col_dim_count)
@@ -43,9 +43,9 @@ typedef struct st_matrix_dot_unsafe_std
 		}
 	}
 
-	static PFX_FORCE_INLINE float_t** mul(float_t** PFX_RESTRICT PARAM_INOUT dst_ptr,
-										  const float_t* const* PFX_RESTRICT PARAM_INOUT mat1_ptr,
-										  const float_t* const* PFX_RESTRICT PARAM_INOUT mat2_ptr,
+	static PFX_FORCE_INLINE float_t** mul(float_t** PFX_RESTRICT PARAM_OUT dst_ptr,
+										  const float_t* const* PFX_RESTRICT PARAM_IN mat1_ptr,
+										  const float_t* const* PFX_RESTRICT PARAM_IN mat2_ptr,
 		                                  usize__t mat1_row_dim_count,
 		                                  usize__t mid_dim_count,
 		                                  usize__t mat2_col_dim_count)
@@ -63,25 +63,25 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE float_t* mul(float_t* PARAM_INOUT dst_ptr,
-	    const float_t cst,
+	    float_t cst,
 	    usize__t count)
 	{
 		return array_fmul_unsafe_std_t::operate(dst_ptr, cst, count);
 	}
 	static PFX_FORCE_INLINE VECTOR2F_t* mul(VECTOR2F_t* PARAM_INOUT dst_ptr,
-		const float_t cst,
+		float_t cst,
 		usize__t count)
 	{
 		return array_fmul_unsafe_std_t::operate(dst_ptr, cst, count);
 	}
 	static PFX_FORCE_INLINE VECTOR3F_t* mul(VECTOR3F_t* PARAM_INOUT dst_ptr,
-		const float_t cst,
+		float_t cst,
 		usize__t count)
 	{
 		return array_fmul_unsafe_std_t::operate(dst_ptr, cst, count);
 	}
 	static PFX_FORCE_INLINE VECTOR4F_t* mul(VECTOR4F_t* PARAM_INOUT dst_ptr,
-		const float_t cst,
+		float_t cst,
 		usize__t count)
 	{
 		return array_fmul_unsafe_std_t::operate(dst_ptr, cst, count);
@@ -114,8 +114,8 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 #undef PFX_VEC 
 
-	static PFX_FORCE_INLINE float_t dot(float_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT vectrans_ptr,
+	static PFX_FORCE_INLINE float_t dot(const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN vectrans_ptr,
 		usize__t count)
 	{
 		SIMD_FLOAT(var) = 0.0;
@@ -127,8 +127,8 @@ typedef struct st_matrix_dot_unsafe_std
 		return var;
 	}
 
-	static PFX_FORCE_INLINE float_t dot(VECTOR2F_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
-		const VECTOR2F_t* PFX_RESTRICT PARAM_INOUT vectrans_ptr,
+	static PFX_FORCE_INLINE float_t dot(const VECTOR2F_t* PFX_RESTRICT PARAM_IN vec_ptr,
+		const VECTOR2F_t* PFX_RESTRICT PARAM_IN vectrans_ptr,
 		usize__t count)
 	{
 		SIMD_VECTOR2F(temp_vec[2]) = { { 0.0, 0.0 }, { 0.0, 0.0 } };
@@ -142,8 +142,8 @@ typedef struct st_matrix_dot_unsafe_std
 		return (temp_vec[1].m_vec[0] + temp_vec[1].m_vec[1]);
 	}
 
-	static PFX_FORCE_INLINE float_t dot(VECTOR3F_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
-		const VECTOR3F_t* PFX_RESTRICT PARAM_INOUT vectrans_ptr,
+	static PFX_FORCE_INLINE float_t dot(const VECTOR3F_t* PFX_RESTRICT PARAM_IN vec_ptr,
+		const VECTOR3F_t* PFX_RESTRICT PARAM_IN vectrans_ptr,
 		usize__t count)
 	{
 		SIMD_VECTOR3F(temp_vec[2]) = { { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 } };
@@ -158,8 +158,8 @@ typedef struct st_matrix_dot_unsafe_std
 			temp_vec[1].m_vec[2]);
 	}
 
-	static PFX_FORCE_INLINE float_t dot(VECTOR4F_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
-		VECTOR4F_t* PFX_RESTRICT PARAM_INOUT vectrans_ptr,
+	static PFX_FORCE_INLINE float_t dot(const VECTOR4F_t* PFX_RESTRICT PARAM_IN vec_ptr,
+		const VECTOR4F_t* PFX_RESTRICT PARAM_IN vectrans_ptr,
 		usize__t count)
 	{
 		SIMD_VECTOR4F(temp_vec[2]) = {{ 0.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 0.0 }};
@@ -175,8 +175,8 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE float_t one_dot_row_major(
-		float_t* PFX_RESTRICT PARAM_INOUT vec_ptr,		
-		float_t* PFX_RESTRICT PARAM_INOUT matrix_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN vec_ptr,		
+		const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
 		uindex_t col_index,
 		usize__t row_dim_count,
 		usize__t col_dim_count)
@@ -195,8 +195,8 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE float_t one_dot_col_major(
-		float_t* PFX_RESTRICT PARAM_INOUT matrix_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
 		uindex_t row_index,
 		usize__t row_dim_count,
 		usize__t col_dim_count)
@@ -215,8 +215,8 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE float_t one_dot_row_major(
-		const float_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
-		const float_t* const * PFX_RESTRICT PARAM_INOUT matrix_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+		const float_t* const * PFX_RESTRICT PARAM_IN matrix_ptr,
 		uindex_t col_index,
 		usize__t row_dim_count)
 	{
@@ -232,8 +232,8 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE float_t one_dot_col_major(
-		const float_t* const* PFX_RESTRICT PARAM_INOUT matrix_ptr,
-		const float_t* PFX_RESTRICT PARAM_INOUT  vec_ptr,
+		const float_t* const* PFX_RESTRICT PARAM_IN matrix_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN  vec_ptr,
 		uindex_t row_index,
 		usize__t col_dim_count)
 	{
@@ -253,9 +253,9 @@ typedef struct st_matrix_dot_unsafe_std
 	//////////////////////////////////////////////////////////////////////////
 	// 行优先
 	static PFX_FORCE_INLINE float_t* vector_mul_matirx_row_major
-		(float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT matrix_ptr,
+		(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
 		usize__t row_dim_count,
 		usize__t col_dim_count)
 	{
@@ -269,9 +269,9 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE float_t* vector_mul_matirx_row_major
-		(float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
-		const float_t* PFX_RESTRICT PARAM_INOUT vec_ptr,
-		const float_t* const* PFX_RESTRICT PARAM_INOUT matrix_ptr,
+		(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+		const float_t* const* PFX_RESTRICT PARAM_IN matrix_ptr,
 		usize__t row_dim_count,
 		usize__t col_dim_count)
 	{
@@ -284,9 +284,9 @@ typedef struct st_matrix_dot_unsafe_std
 		return dst_ptr;
 	}
 
-	static PFX_FORCE_INLINE float_t* mul_row_major(float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT mat1_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT mat2_ptr,
+	static PFX_FORCE_INLINE float_t* mul_row_major(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN mat1_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN mat2_ptr,
 		usize__t mat1_row_dim_count,
 		usize__t mid_dim_count,
 		usize__t mat2_col_dim_count)
@@ -307,9 +307,9 @@ typedef struct st_matrix_dot_unsafe_std
 		return dst_ptr;
 	}
 
-	static PFX_FORCE_INLINE float_t** mul_row_major(float_t** PFX_RESTRICT PARAM_INOUT dst_ptr,
-		const float_t* const * PFX_RESTRICT PARAM_INOUT src1_ptr,
-		const float_t* const * PFX_RESTRICT PARAM_INOUT src2_ptr,
+	static PFX_FORCE_INLINE float_t** mul_row_major(float_t** PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* const * PFX_RESTRICT PARAM_IN src1_ptr,
+		const float_t* const * PFX_RESTRICT PARAM_IN src2_ptr,
 		usize__t src1_row_dim_count,
 		usize__t mid_dim_count,
 		usize__t src2_col_dim_count)
@@ -333,11 +333,11 @@ typedef struct st_matrix_dot_unsafe_std
 	//////////////////////////////////////////////////////////////////////////
 	// 列优先
 	static PFX_FORCE_INLINE float_t* matirx_mul_vector_col_major
-		(float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT matrix_ptr,
+		(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
 		usize__t row_dim_count,
 		usize__t col_dim_count,
-		float_t* PFX_RESTRICT PARAM_INOUT vec_ptr)
+		const float_t* PFX_RESTRICT PARAM_IN vec_ptr)
 	{
 		for (uindex_t ritr = row_dim_count; ritr != 0;)
 		{
@@ -350,11 +350,11 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE float_t* matirx_mul_vector_col_major
-		(float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
-		const float_t* const * PFX_RESTRICT PARAM_INOUT matrix_ptr,
+		(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* const * PFX_RESTRICT PARAM_IN matrix_ptr,
 		usize__t row_dim_count,
 		usize__t col_dim_count,
-		const float_t* PFX_RESTRICT PARAM_INOUT vec_ptr)
+		const float_t* PFX_RESTRICT PARAM_IN vec_ptr)
 	{
 		for (uindex_t ritr = row_dim_count; ritr != 0;)
 		{
@@ -364,9 +364,9 @@ typedef struct st_matrix_dot_unsafe_std
 		return dst_ptr;
 	}
 
-	static PFX_FORCE_INLINE float_t* mul_col_major(float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT src1_ptr,
-		float_t* PFX_RESTRICT PARAM_INOUT src2_ptr,
+	static PFX_FORCE_INLINE float_t* mul_col_major(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN src1_ptr,
+		const float_t* PFX_RESTRICT PARAM_IN src2_ptr,
 		usize__t src1_col_dim_count,
 		usize__t mid_dim_count,
 		usize__t src2_row_dim_count)
@@ -386,9 +386,9 @@ typedef struct st_matrix_dot_unsafe_std
 		return dst_ptr;
 	}
 
-	static PFX_FORCE_INLINE float_t** mul_col_major(float_t** PFX_RESTRICT PARAM_INOUT dst_ptr,
-		const float_t* const * PFX_RESTRICT PARAM_INOUT src1_ptr,
-		const float_t* const * PFX_RESTRICT PARAM_INOUT src2_ptr,
+	static PFX_FORCE_INLINE float_t** mul_col_major(float_t** PFX_RESTRICT PARAM_OUT dst_ptr,
+		const float_t* const * PFX_RESTRICT PARAM_IN src1_ptr,
+		const float_t* const * PFX_RESTRICT PARAM_IN src2_ptr,
 		usize__t src1_col_dim_count,
 		usize__t mid_dim_count,
 		usize__t src2_row_dim_count)
@@ -425,7 +425,7 @@ typedef struct st_matrix_dot_unsafe_std
 	//   M31, M32, M33, M34
 	//   M41, M42, M43, M44
  //////////////////////////////////////////////////////////////////////////
-// 假定以列优先的数据，方阵行优先列还列有优先，效率一样
+// 假定以列优先的数据，方阵行优先列还列有优先，结果一样
 #define M11_S1 src1.m_mat[0].m_vec[0]
 #define M11_S2 src2.m_mat[0].m_vec[0]
 #define M11_D   dst.m_mat[0].m_vec[0]
@@ -480,9 +480,9 @@ typedef struct st_matrix_dot_unsafe_std
 #define M44_D   dst.m_mat[3].m_vec[3]
 
 	static PFX_FORCE_INLINE MATRIX2F_t* mul
-	(MATRIX2F_t& PFX_RESTRICT PARAM_INOUT dst,
-	MATRIX2F_t& PFX_RESTRICT PARAM_INOUT src1,
-	MATRIX2F_t& PFX_RESTRICT PARAM_INOUT src2)
+	(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+	const MATRIX2F_t& PFX_RESTRICT PARAM_IN src1,
+	const MATRIX2F_t& PFX_RESTRICT PARAM_IN src2)
 	{
 		M11_D = (M11_S1 * M11_S2) + (M21_S1 * M12_S2);
 		M12_D = (M12_S1 * M11_S2) + (M22_S1 * M12_S2);
@@ -494,9 +494,9 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE MATRIX3F_t* mul
-	(MATRIX3F_t& PFX_RESTRICT PARAM_INOUT dst,
-	MATRIX3F_t& PFX_RESTRICT PARAM_INOUT src1,
-	MATRIX3F_t& PFX_RESTRICT PARAM_INOUT src2)
+	(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+	const MATRIX3F_t& PFX_RESTRICT PARAM_IN src1,
+	const MATRIX3F_t& PFX_RESTRICT PARAM_IN src2)
 	{
 		M11_D = (M11_S1 * M11_S2) + (M21_S1 * M12_S2) + (M31_S1 * M13_S2);
 		M21_D = (M11_S1 * M21_S2) + (M21_S1 * M22_S2) + (M31_S1 * M23_S2);
@@ -514,9 +514,9 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 	static PFX_FORCE_INLINE MATRIX4F_t* mul
-	(MATRIX4F_t& PFX_RESTRICT PARAM_INOUT dst,
-	MATRIX4F_t& PFX_RESTRICT PARAM_INOUT src1,
-	MATRIX4F_t& PFX_RESTRICT PARAM_INOUT src2)
+	(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+	const MATRIX4F_t& PFX_RESTRICT PARAM_IN src1,
+	const MATRIX4F_t& PFX_RESTRICT PARAM_IN src2)
 	{
 		M11_D = (M11_S1 * M11_S2) + (M21_S1 * M12_S2) + (M31_S1 * M13_S2) + (M41_S1 * M14_S2);
 		M21_D = (M11_S1 * M21_S2) + (M21_S1 * M22_S2) + (M31_S1 * M23_S2) + (M41_S1 * M24_S2);
@@ -538,56 +538,19 @@ typedef struct st_matrix_dot_unsafe_std
 		M34_D = (M14_S1 * M31_S2) + (M24_S1 * M32_S2) + (M34_S1 * M33_S2) + (M44_S1 * M34_S2);
 		M44_D = (M14_S1 * M41_S2) + (M24_S1 * M42_S2) + (M34_S1 * M43_S2) + (M44_S1 * M44_S2);
 
+
+		//M13_D = (M13_S1 * M11_S2) + (M23_S1 * M12_S2) + (M33_S1 * M13_S2) + (M43_S1 * M14_S2);
+		//M23_D = (M13_S1 * M21_S2) + (M23_S1 * M22_S2) + (M33_S1 * M23_S2) + (M43_S1 * M24_S2);
+		//M33_D = (M13_S1 * M31_S2) + (M23_S1 * M32_S2) + (M33_S1 * M33_S2) + (M43_S1 * M34_S2);
+		//M43_D = (M13_S1 * M41_S2) + (M23_S1 * M42_S2) + (M33_S1 * M43_S2) + (M43_S1 * M44_S2);
+
+		//M14_D = (M14_S1 * M11_S2) + (M24_S1 * M12_S2) + (M34_S1 * M13_S2) + (M44_S1 * M14_S2);
+		//M24_D = (M14_S1 * M21_S2) + (M24_S1 * M22_S2) + (M34_S1 * M23_S2) + (M44_S1 * M24_S2);
+		//M34_D = (M14_S1 * M31_S2) + (M24_S1 * M32_S2) + (M34_S1 * M33_S2) + (M44_S1 * M34_S2);
+		//M44_D = (M14_S1 * M41_S2) + (M24_S1 * M42_S2) + (M34_S1 * M43_S2) + (M44_S1 * M44_S2);
+
 		return 	&dst;
 	}
-
-	static PFX_FORCE_INLINE MATRIX2F_t* mul
-	(MATRIX2F_t& PFX_RESTRICT PARAM_INOUT dst,
-	MATRIX2F_t* PFX_RESTRICT PARAM_INOUT src1_ptr,
-	usize__t count)
-	{
-		SIMD_MATRIX2F(src2);
-		for (uindex_t itr = 0; itr < count; ++itr)
-		{
-			MATRIX2F_t& src1 = src1_ptr[itr];
-			src2 = dst;
-			mul(dst, src2, src1);
-		}
-		return &dst;
-	}
-
-	static PFX_FORCE_INLINE MATRIX3F_t* mul
-	(MATRIX3F_t& PFX_RESTRICT PARAM_INOUT dst,
-	MATRIX3F_t* PFX_RESTRICT PARAM_INOUT src1_ptr,
-	usize__t count)
-	{
-		SIMD_MATRIX3F(src2);
-		for (uindex_t itr = 0; itr < count; ++itr)
-		{
-			MATRIX3F_t& src1 = src1_ptr[itr];
-			src2 = dst;
-			mul(dst, src2, src1);
-		}
-		return &dst;
-	}
-
-
-	static PFX_FORCE_INLINE MATRIX4F_t* mul
-	(MATRIX4F_t& PFX_RESTRICT PARAM_INOUT dst,
-	MATRIX4F_t* PFX_RESTRICT PARAM_INOUT src1_ptr,
-	usize__t count)
-	{
-		SIMD_MATRIX4F(src2);
-		for (uindex_t itr = 0; itr < count; ++itr)
-		{
-			MATRIX4F_t& src1 = src1_ptr[itr];
-			src2 = dst;
-			mul(dst, src2, src1);
-		}
-		return &dst;
-	}
-
-
 #undef M11_S1
 #undef M11_S2
 #undef M11_D
@@ -639,6 +602,99 @@ typedef struct st_matrix_dot_unsafe_std
 #undef M44_S1
 #undef M44_S2
 #undef M44_D
+
+
+	static PFX_FORCE_INLINE MATRIX2F_t* mul
+		(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX2F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+		usize__t count)
+	{
+		SIMD_MATRIX2F(src2);
+		if (!count)
+		{
+			return null;
+		}
+		dst = src1_ptr[0];
+		for (uindex_t itr = 1; itr < count; ++itr)
+		{
+			const MATRIX2F_t& src1 = src1_ptr[itr];
+			src2 = dst;
+			mul(dst, src2, src1);
+		}
+		return &dst;
+	}
+
+	static PFX_FORCE_INLINE MATRIX3F_t* mul
+		(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX3F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+		usize__t count)
+	{
+		SIMD_MATRIX3F(src2);
+		if (!count)
+		{
+			return null;
+		}
+		dst = src1_ptr[0];
+		for (uindex_t itr = 1; itr < count; ++itr)
+		{
+			const MATRIX3F_t& src1 = src1_ptr[itr];
+			src2 = dst;
+			mul(dst, src2, src1);
+		}
+		return &dst;
+	}
+
+
+	static PFX_FORCE_INLINE MATRIX4F_t* mul
+		(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX4F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+		usize__t count)
+	{
+		SIMD_MATRIX4F(src2);
+
+		if (!count)
+		{
+			return null;
+		}
+		dst = src1_ptr[0];
+		for (uindex_t itr = 1; itr < count; ++itr)
+		{
+			const MATRIX4F_t& src1 = src1_ptr[itr];
+			src2 = dst;
+			mul(dst, src2, src1);
+		}
+		return &dst;
+	}
+
+
+	static PFX_FORCE_INLINE MATRIX2F_t* mul
+		(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX2F_t& PFX_RESTRICT PARAM_IN src1,
+		usize__t count)
+	{
+		SIMD_MATRIX2F(src2);
+		src2 = dst;
+		return mul(dst, src2, src1);
+	}
+
+	static PFX_FORCE_INLINE MATRIX3F_t* mul
+		(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX3F_t& PFX_RESTRICT PARAM_IN src1)
+	{
+		SIMD_MATRIX3F(src2);
+		src2 = dst;
+		return mul(dst, src2, src1);
+	}
+
+
+	static PFX_FORCE_INLINE MATRIX4F_t* mul
+		(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX4F_t& PFX_RESTRICT PARAM_IN src1)
+	{
+		SIMD_MATRIX4F(src2);
+		src2 = dst;
+		return mul(dst, src2, src1);
+	}
 
 }matrix_dot_unsafe_std_t;
 

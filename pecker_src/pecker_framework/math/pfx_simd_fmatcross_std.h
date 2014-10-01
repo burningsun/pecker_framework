@@ -44,14 +44,14 @@ typedef struct st_vector_cross_unsafe_std
 //////////////////////////////////////////////////////////////////////////
 // 叉乘
 #define VEC_D_X    dst.m_vec[DIMENSION_X]
-#define VEC_D_Y    dst.m_vec[DIMENSION_X]
-#define VEC_D_Z    dst.m_vec[DIMENSION_X]
+#define VEC_D_Y    dst.m_vec[DIMENSION_Y]
+#define VEC_D_Z    dst.m_vec[DIMENSION_Z]
 #define VEC_S1_X   src1.m_vec[DIMENSION_X]
-#define VEC_S1_Y   src1.m_vec[DIMENSION_X]
-#define VEC_S1_Z   src1.m_vec[DIMENSION_X]
+#define VEC_S1_Y   src1.m_vec[DIMENSION_Y]
+#define VEC_S1_Z   src1.m_vec[DIMENSION_Z]
 #define VEC_S2_X   src2.m_vec[DIMENSION_X]
-#define VEC_S2_Y   src2.m_vec[DIMENSION_X]
-#define VEC_S2_Z   src2.m_vec[DIMENSION_X]
+#define VEC_S2_Y   src2.m_vec[DIMENSION_Y]
+#define VEC_S2_Z   src2.m_vec[DIMENSION_Z]
 
 	static PFX_FORCE_INLINE VECTOR3F_t* cross
 		(VECTOR3F_t& PFX_RESTRICT PARAM_INOUT dst,

@@ -7,9 +7,12 @@
 #include "pfx_opengles2_def.h"
 #include "../../pecker_framework/render/pfx_image_png.h"
 #include "../../pecker_framework/render/render_system/opengles2/pfx_texture_gles.h"
+#include "../../pecker_framework/math/pfx_math.h"
 
 #ifndef PFX_HELLO_LENA_H_
 #define PFX_HELLO_LENA_H_
+
+
 
 extern result_t load_img(const char_t* pfile_name, image_data_t& __img);
 extern result_t load_png_img(const char_t* pfile_name, cImage& __img);
@@ -24,6 +27,11 @@ class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 		vector2f_t	m_img_pos;
 	}pos_texpos_t;
 private:
+	SIMD_MATRIX4F(m_view_mat_LH);
+	SIMD_MATRIX4F(m_proj_mat_LH);
+	SIMD_MATRIX4F(m_view_mat_RH);
+	SIMD_MATRIX4F(m_proj_mat_RH);
+
 	cshader_program_gles2*			m_program_ptr;
 	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
 	cbuffer_object_gles2*			m_vertexbufferobject_ptr;
@@ -32,11 +40,13 @@ private:
 	GLuint m_texture2D;
 	ctexture_surface* m_tex_surface_ptr;
 	ctexture2D_gles*  m_texture2d_ptr;
+	float_t m_rotateZ;
+	
 
 public:
 	chello_lena_view_gles2() :m_texture2D(0), m_vertexattbi_buffer_ptr(null), 
 		m_vertexbufferobject_ptr(null), m_program_ptr(null), 
-		m_tex_surface_ptr(null), m_texture2d_ptr(null)
+		m_tex_surface_ptr(null), m_texture2d_ptr(null), m_rotateZ(0.0)
 	{
 		;
 	}
@@ -79,6 +89,7 @@ public:
 		const display_device_t& PARAM_IN device,
 		opengles2_activity_t::render_state_t& PARAM_INOUT __state,
 		u64_t	__escape_time,
+		u64_t   __last_frame_render_time,
 		const viewport_rect_t& view_port,
 		flag_t& PARAM_OUT msg_type,
 		usize__t& PARAM_OUT param_size,
@@ -119,11 +130,34 @@ public:
 		chr_name = "sTexture";
 		long_t tex = m_program_ptr->get_location_by_name(chr_name);
 
-		cmatrix4f_t mvp((float_t)view_port.m_height / (float_t)view_port.m_width, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 0.0, 1.0
-			);
+		//cmatrix4f_t mvp((float_t)view_port.m_height / (float_t)view_port.m_width, 0.0, 0.0, 0.0,
+		//	0.0, 1.0, 0.0, 0.0,
+		//	0.0, 0.0, 1.0, 0.0,
+		//	0.0, 0.0, 0.0, 1.0
+		////	);
+		SIMD_MATRIX4F(mvp);
+		SIMD_MATRIX4F(mvp_pro);
+		SIMD_MATRIX4F(mvp_tmp[4]);
+		SIMD_MATRIX4F(mvp__);
+		
+		//matrix_dot_unsafe_std_t::mul(mvp_pro, m_view_mat_LH, m_proj_mat_RH);
+		matrix_dot_unsafe_std_t::mul(mvp_pro, m_proj_mat_LH, m_view_mat_LH);
+		//
+		matrix_set_unsafe_std_t::mat4x4_rotateY_col_major(mvp_tmp[2], m_rotateZ);
+		matrix_set_unsafe_std_t::mat4x4_rotateZ_col_major(mvp_tmp[2], m_rotateZ);
+		matrix_set_unsafe_std_t::mat4x4_translate_col_major(mvp_tmp[1], 0.5, 0.5, 0.0);
+		matrix_set_unsafe_std_t::mat4x4_rotateX_col_major(mvp_tmp[0], m_rotateZ);
+		matrix_set_unsafe_std_t::mat4x4_rotateZ_col_major(mvp_tmp[0], m_rotateZ);
+
+		m_rotateZ += 0.1;
+		if (m_rotateZ > 6.28)
+		{
+			m_rotateZ -= 6.28;
+		}
+		matrix_dot_unsafe_std_t::mul(mvp__, mvp_tmp, 2);
+		matrix_dot_unsafe_std_t::mul(mvp, mvp__, mvp_pro);
+		//matrix_dot_unsafe_std_t::mul(mvp, mvp_pro, mvp__);
+		//mvp = mvp_pro;
 
 		if (null == m_tex_surface_ptr)
 		{
@@ -146,7 +180,7 @@ public:
 		}
 
 
-		__state.set_uniform_attri(mat, mvp.reference());
+		__state.set_uniform_attri(mat, (matrix4f_t&)mvp);//mvp.reference());
 
 		if (!m_vertexbufferobject_ptr)
 		{
@@ -244,6 +278,14 @@ public:
 		//glUniform1i(tex, 0);
 
 		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+
+
+		matrix_dot_unsafe_std_t::mul(mvp_pro, m_proj_mat_RH, m_view_mat_RH);
+		matrix_dot_unsafe_std_t::mul(mvp, mvp__, mvp_pro);
+		//mvp = mvp_pro;
+		__state.set_uniform_attri(mat, (matrix4f_t&)mvp);
+		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+
 		__state.unbind_buffer(pos);
 		__state.unbind_buffer(texcoord);
 
@@ -253,6 +295,7 @@ public:
 		const display_device_t& PARAM_IN device,
 		opengles2_activity_t::render_state_t& PARAM_INOUT __state,
 		u64_t	__escape_time,
+		const viewport_rect_t& view_port,
 		flag_t& PARAM_OUT msg_type,
 		usize__t& PARAM_OUT param_size,
 		void*& PARAM_OUT param_data_ptr)
@@ -300,6 +343,33 @@ public:
 
 		__vs_ptr = null;
 		__fs_ptr = null;
+
+		//VECTOR3F_t vecPos = { 0.0, 0.0, 4.0 };
+		VECTOR3F_t vecPos = { 0.0, 0.0, 2.0 };
+		VECTOR3F_t vecLookAt = { 0.0, 0.0, 0.0 };
+		VECTOR3F_t vecUp = { 0.0, 1.0, 0.0 };
+	    matrix_set_unsafe_std_t::mat4x4_LookAtRH_col_major(m_view_mat_RH, vecPos, vecLookAt, vecUp);
+		matrix_set_unsafe_std_t::mat4x4_LookAtLH_col_major(m_view_mat_LH, vecPos, vecLookAt, vecUp);
+
+		//matrix_set_unsafe_std_t::mat4x4_orthogonalRH_opengl(m_proj_mat_RH,
+		//	2.0 *(float_t)view_port.m_width / (float_t)view_port.m_height, 2.0, 0.1, 1.0);
+
+		//matrix_set_unsafe_std_t::mat4x4_orthogonalLH_opengl(m_proj_mat_LH,
+		//	2.0 *(float_t)view_port.m_width / (float_t)view_port.m_height, 2.0, 0.1, 1.0);
+
+
+
+		matrix_set_unsafe_std_t::mat4x4_perspectiveRH_opengl(m_proj_mat_RH,
+			(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 1.0, 100.0);
+
+		matrix_set_unsafe_std_t::mat4x4_perspectiveLH_opengl(m_proj_mat_LH,
+			(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 1.0, 100.0);
+
+
+		//matrix_set_unsafe_std_t::mat4x4_perspective_fov_RH_opengl(m_proj_mat_RH, 3.14 / 4,
+		//	(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 100.0);
+		//matrix_set_unsafe_std_t::mat4x4_perspective_fov_LH_opengl(m_proj_mat_LH, 3.14 / 4,
+		//	(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 100.0);
 
 
 

@@ -786,6 +786,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		m_on_render_view_ptr->on_load(*display_device_ptr,
 			render_state,
 			esacape_tick,
+			view_port,
 			msg_flag,
 			msg_param_buffer_size,
 			msg_params_ptr);
@@ -811,6 +812,21 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				break;
 			}
 
+			// 窗口变化的时候，对应的窗口帧缓存会变，所以这时候需要
+			// 销毁渲染设备，重新创建
+			if (m_on_render_view_ptr->is_on_resize())
+			{
+				PECKER_LOG_INFO("is_on_resize = %d", true);
+				break;
+			}
+			// 通过窗口状态退出渲染线程
+			if (m_on_render_view_ptr->is_on_exit())
+			{
+				PECKER_LOG_INFO("is_on_exit = %d", true);
+				m_bshow_window = false;
+				break;
+			}
+
 			if (m_on_render_view_ptr->is_on_pause_render())
 			{
 				//PECKER_LOG_INFO("m_on_render_view_ptr->is_on_pause_render %d",m_on_render_view_ptr->is_on_pause_render());
@@ -818,12 +834,36 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				continue;
 			}
 
+			finish_escape_tick = (u64_t)ticker.get_microsecond();
+			if (finish_escape_tick > esacape_tick)
+			{
+				frame_render_time = (usize__t)(finish_escape_tick - esacape_tick);				
+			}
+			else
+			{
+				finish_escape_tick = esacape_tick;
+				frame_render_time  = 0;
+			}
+
+			// 锁帧
+			if (frame_render_time < m_limit_frame_time)
+			{
+				SleepMS(1);
+				continue;
+			}
+			if (0 == frame_render_time)
+			{
+				frame_render_time = 1;
+			}
+			m_last_fp1ks = 1000000 / frame_render_time;
+			//PECKER_LOG_INFO("render time = %ld", frame_render_time);
 			
 			// 渲染回调
 			esacape_tick = (u64_t)ticker.get_microsecond();
 			m_on_render_view_ptr->on_view(*display_device_ptr,
 				render_state,
 				esacape_tick,
+				frame_render_time,
 				view_port,
 				msg_flag,
 				msg_param_buffer_size,
@@ -853,59 +893,6 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				PECKER_LOG_ERR("m_on_render_view_ptr->on_render_complete error = %d",status);
 				break;
 			}
-
-			
-
-			// 窗口变化的时候，对应的窗口帧缓存会变，所以这时候需要
-			// 销毁渲染设备，重新创建
-			if (m_on_render_view_ptr->is_on_resize())
-			{
-				PECKER_LOG_INFO("is_on_resize = %d", true);
-				break;
-			}
-			// 通过窗口状态退出渲染线程
-			if (m_on_render_view_ptr->is_on_exit())
-			{
-				PECKER_LOG_INFO("is_on_exit = %d", true);
-				m_bshow_window = false;
-				break;
-			}
-
-			finish_escape_tick = (u64_t)ticker.get_microsecond();
-			if (finish_escape_tick > esacape_tick)
-			{
-				frame_render_time = (usize__t)(finish_escape_tick - esacape_tick);
-			}
-			else
-			{
-				frame_render_time = m_limit_frame_time;
-			}
-			
-			// 锁帧
-			if (m_limit_frame_time)
-			{
-				if (frame_render_time < m_limit_frame_time)
-				{
-					usize__t sleep_time = m_limit_frame_time - frame_render_time;
-					//PECKER_LOG_INFO("sleep time","%d",sleep_time);
-					SleepMS(sleep_time);
-				}
-				//m_last_fps = 1000000 / m_limit_frame_time;
-			}
-			else
-			{
-				if (frame_render_time)
-				{
-					m_last_fp1ks = 1000000 / frame_render_time;
-				}
-				else
-				{
-					m_last_fp1ks = 0;
-				}
-				
-			}
-
-
 		}
 
 		// 销毁渲染设备前回调窗口函数，通知窗口
@@ -942,6 +929,7 @@ result_t cdisplay_context_gles::render_complete(
 	{
 		egl_result = ::eglSwapBuffers(device.m_EGLDisplay,
 			device.m_EGLWindow);
+		
 	}
 	else
 	{

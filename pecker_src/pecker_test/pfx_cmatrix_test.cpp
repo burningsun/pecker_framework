@@ -696,7 +696,7 @@ void math_matrix_test()
 
 	PECKER_LOG_STR("inv matrix row major\n");
 
-	matrix_inv_unsafe_std_t::inverse3x3_extern_row_major(matrixINV4x4, matrix3DR4x4);
+	matrix_inv_unsafe_std_t::inverse3x3_externAC01_row_major(matrixINV4x4, matrix3DR4x4);
 	print_ptr = (float_t*)&matrixINV4x4;
 	for (uindex_t i = 0; i < 4; ++i)
 	{
@@ -728,7 +728,7 @@ void math_matrix_test()
 	matrix_trans_unsafe_std_t::transpose(matrix3DR4x4);
 	PECKER_LOG_STR("inv matrix col major\n");
 
-	matrix_inv_unsafe_std_t::inverse3x3_extern_col_major(matrixINV4x4, matrix3DR4x4);
+	matrix_inv_unsafe_std_t::inverse3x3_externAC01_col_major(matrixINV4x4, matrix3DR4x4);
 	print_ptr = (float_t*)&matrixINV4x4;
 	for (uindex_t i = 0; i < 4; ++i)
 	{

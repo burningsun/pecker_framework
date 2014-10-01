@@ -216,6 +216,7 @@ public:
 		const display_device_t& PARAM_IN device,
 		render_state& PARAM_INOUT __state,
 		u64_t	__escape_time,
+		u64_t   __last_frame_render_time,
 		const viewport_rect_t& view_port,
 		flag_t& PARAM_OUT msg_type,
 		usize__t& PARAM_OUT param_size,
@@ -228,7 +229,8 @@ public:
 		const display_device_t& PARAM_IN device,
 		render_state& PARAM_INOUT __state,
 		u64_t	__escape_time,
-		flag_t& PARAM_OUT msg_type,
+		const viewport_rect_t& view_port,
+		flag_t& PARAM_OUT msg_type,	
 		usize__t& PARAM_OUT param_size,
 		void*& PARAM_OUT param_data_ptr)
 	{
