@@ -29,9 +29,10 @@ typedef struct st_matrix_dot_unsafe_std
 	                                     const float_t* PFX_RESTRICT PARAM_IN mat2_ptr,
 	                                     usize__t mat1_row_dim_count,
 	                                     usize__t mid_dim_count,
-	                                     usize__t mat2_col_dim_count)
+	                                     usize__t mat2_col_dim_count,
+										 bool brow_major = false)
 	{
-		if (mat1_row_dim_count > mid_dim_count)
+		if (brow_major)
 		{
 			return mul_row_major(dst_ptr, mat1_ptr, mat2_ptr, 
 				mat1_row_dim_count, mid_dim_count, mat2_col_dim_count);
@@ -48,9 +49,10 @@ typedef struct st_matrix_dot_unsafe_std
 										  const float_t* const* PFX_RESTRICT PARAM_IN mat2_ptr,
 		                                  usize__t mat1_row_dim_count,
 		                                  usize__t mid_dim_count,
-		                                  usize__t mat2_col_dim_count)
+		                                  usize__t mat2_col_dim_count,
+										  bool brow_major = false)
 	{
-		if (mat1_row_dim_count > mid_dim_count)
+		if (brow_major)
 		{
 			return mul_row_major(dst_ptr, mat1_ptr, mat2_ptr,
 				mat1_row_dim_count, mid_dim_count, mat2_col_dim_count);
@@ -666,11 +668,86 @@ typedef struct st_matrix_dot_unsafe_std
 		return &dst;
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+
+	static PFX_FORCE_INLINE MATRIX2F_t* mul_end_first
+		(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX2F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+		usize__t count)
+	{
+		SIMD_MATRIX2F(src2);
+		if (!count)
+		{
+			return null;
+		}
+		--count;
+		dst = src1_ptr[count];
+
+		for (uindex_t itr = count; itr !=0; )
+		{
+			--itr;
+			const MATRIX2F_t& src1 = src1_ptr[itr];
+			src2 = dst;
+			mul(dst, src2, src1);
+		}
+		return &dst;
+	}
+
+	static PFX_FORCE_INLINE MATRIX3F_t* mul_end_first
+		(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX3F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+		usize__t count)
+	{
+		SIMD_MATRIX3F(src2);
+		if (!count)
+		{
+			return null;
+		}
+		--count;
+		dst = src1_ptr[count];
+
+		for (uindex_t itr = count; itr != 0;)
+		{
+			--itr;
+			const MATRIX3F_t& src1 = src1_ptr[itr];
+			src2 = dst;
+			mul(dst, src2, src1);
+		}
+		return &dst;
+	}
+
+
+	static PFX_FORCE_INLINE MATRIX4F_t* mul_end_first
+		(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+		const MATRIX4F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+		usize__t count)
+	{
+		SIMD_MATRIX4F(src2);
+
+		if (!count)
+		{
+			return null;
+		}
+		--count;
+		dst = src1_ptr[count];
+
+		for (uindex_t itr = count; itr != 0;)
+		{
+			--itr;
+			const MATRIX4F_t& src1 = src1_ptr[itr];
+			src2 = dst;
+			mul(dst, src2, src1);
+		}
+		return &dst;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+
 
 	static PFX_FORCE_INLINE MATRIX2F_t* mul
 		(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
-		const MATRIX2F_t& PFX_RESTRICT PARAM_IN src1,
-		usize__t count)
+		const MATRIX2F_t& PFX_RESTRICT PARAM_IN src1)
 	{
 		SIMD_MATRIX2F(src2);
 		src2 = dst;
@@ -697,6 +774,264 @@ typedef struct st_matrix_dot_unsafe_std
 	}
 
 }matrix_dot_unsafe_std_t;
+
+
+
+
+
+typedef  float_t* (*mat_mul_mat_sel_func)(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN mat1_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN mat2_ptr,
+	usize__t mat1_row_dim_count,
+	usize__t mid_dim_count,
+	usize__t mat2_col_dim_count,
+	bool brow_major);
+
+typedef  float_t** (*vecmat_mul_vecmat_sel_func)(float_t** PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* const* PFX_RESTRICT PARAM_IN mat1_ptr,
+	const float_t* const* PFX_RESTRICT PARAM_IN mat2_ptr,
+	usize__t mat1_row_dim_count,
+	usize__t mid_dim_count,
+	usize__t mat2_col_dim_count,
+	bool brow_major);
+
+typedef  float_t* (*fmat_mul_const_func)(float_t* PARAM_INOUT dst_ptr,
+	float_t cst,
+	usize__t count);
+
+typedef  VECTOR2F_t* (*vec2mat_mul_const_func)(VECTOR2F_t* PARAM_INOUT dst_ptr,
+	float_t cst,
+	usize__t count);
+
+typedef  VECTOR3F_t* (*vec3mat_mul_const_func)(VECTOR3F_t* PARAM_INOUT dst_ptr,
+	float_t cst,
+	usize__t count);
+
+typedef  VECTOR4F_t* (*vec4mat_mul_const_func)(VECTOR4F_t* PARAM_INOUT dst_ptr,
+	float_t cst,
+	usize__t count);
+
+typedef  float_t (*vec4_dot_func)(const VECTOR4F_t& PARAM_IN vec1,
+	const VECTOR4F_t& PARAM_IN vec2);
+
+typedef  float_t(*vec2_dot_func)(const VECTOR2F_t& PARAM_IN vec1,
+	const VECTOR2F_t& PARAM_IN vec2);
+
+typedef  float_t(*vec3_dot_func)(const VECTOR3F_t& PARAM_IN vec1,
+	const VECTOR3F_t& PARAM_IN vec2);
+
+typedef  float_t(*fvec_dot_func)(const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN vectrans_ptr,
+	usize__t count);
+
+typedef  float_t (*fone_dot_func)(
+	const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
+	uindex_t col_index,
+	usize__t row_dim_count,
+	usize__t col_dim_count);
+
+typedef  float_t(*fvec_one_dot_r_func)(
+	const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+	const float_t* const * PFX_RESTRICT PARAM_IN matrix_ptr,
+	uindex_t col_index,
+	usize__t row_dim_count);
+
+typedef float_t (*one_dot_fvec_c_major)(
+	const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+	uindex_t row_index,
+	usize__t row_dim_count,
+	usize__t col_dim_count);
+
+//////////////////////////////////////////////////////////////////////////
+// 行优先
+typedef  float_t* (*vector_mul_matirx_func)
+(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
+usize__t row_dim_count,
+usize__t col_dim_count);
+
+typedef float_t* (*vector_mul_vecmat_func)
+(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+const float_t* PFX_RESTRICT PARAM_IN vec_ptr,
+const float_t* const* PFX_RESTRICT PARAM_IN matrix_ptr,
+usize__t row_dim_count,
+usize__t col_dim_count);
+
+
+typedef  float_t* (*mat_mul_mat_func)(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN mat1_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN mat2_ptr,
+	usize__t mat1_row_dim_count,
+	usize__t mid_dim_count,
+	usize__t mat2_col_dim_count);
+
+typedef  float_t** (*vecmat_mul_vecmat_func)(float_t** PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* const * PFX_RESTRICT PARAM_IN src1_ptr,
+	const float_t* const * PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t src1_row_dim_count,
+	usize__t mid_dim_count,
+	usize__t src2_col_dim_count);
+
+//////////////////////////////////////////////////////////////////////////
+// 列优先
+typedef  float_t* (*matrix_mul_vector_func)
+(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+const float_t* PFX_RESTRICT PARAM_IN matrix_ptr,
+usize__t row_dim_count,
+usize__t col_dim_count,
+const float_t* PFX_RESTRICT PARAM_IN vec_ptr);
+
+typedef  float_t* (*vecmat_mul_vector_func)
+(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+const float_t* const * PFX_RESTRICT PARAM_IN matrix_ptr,
+usize__t row_dim_count,
+usize__t col_dim_count,
+const float_t* PFX_RESTRICT PARAM_IN vec_ptr);
+
+typedef  MATRIX2F_t* (*mat2_mul_func)
+(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX2F_t& PFX_RESTRICT PARAM_IN src1,
+const MATRIX2F_t& PFX_RESTRICT PARAM_IN src2);
+
+typedef  MATRIX3F_t* (*mat3_mul_func)
+(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX3F_t& PFX_RESTRICT PARAM_IN src1,
+const MATRIX3F_t& PFX_RESTRICT PARAM_IN src2);
+
+typedef  MATRIX4F_t* (*mat4_mul_func)
+(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX4F_t& PFX_RESTRICT PARAM_IN src1,
+const MATRIX4F_t& PFX_RESTRICT PARAM_IN src2);
+
+
+typedef  MATRIX2F_t* (*mat2_mul_replace_func)
+(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX2F_t& PFX_RESTRICT PARAM_IN src1);
+
+typedef  MATRIX3F_t* (*mat3_mul_replace_func)
+(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX3F_t& PFX_RESTRICT PARAM_IN src1);
+
+
+typedef  MATRIX4F_t* (*mat4_mul_replace_func)
+(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX4F_t& PFX_RESTRICT PARAM_IN src1);
+
+typedef  MATRIX2F_t* (*mat2s_mul_func)
+(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX2F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+usize__t count);
+
+typedef  MATRIX3F_t* (*mat3s_mul_func)
+(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX3F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+usize__t count);
+
+
+typedef  MATRIX4F_t* (*mat4s_mul_func)
+(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+const MATRIX4F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+usize__t count);
+
+
+typedef struct st_simd_fmat_dot_unsafe
+{
+	mat_mul_mat_sel_func			   mat_mul_mat_sel							   ;
+	vecmat_mul_vecmat_sel_func		   vecmat_mul_vecmat_sel					   ;
+																				   ;
+	fmat_mul_const_func				   fmat_mul_const							   ;
+	vec2mat_mul_const_func			   vec2mat_mul_const						   ;
+	vec3mat_mul_const_func			   vec3mat_mul_const						   ;
+	vec4mat_mul_const_func			   vec4mat_mul_const						   ;
+																				   ;
+	vec4_dot_func						vec4_dot								   ;
+	vec2_dot_func						vec2_dot								   ;
+	vec3_dot_func						vec3_dot								   ;
+	fvec_dot_func						fvec_dot								   ;
+																				   ;
+	fone_dot_func						fone_dot_row_major						   ;
+	fvec_one_dot_r_func					fvec_one_dot_row_major					   ;
+																				   ;
+	fone_dot_func						fone_dot_col_major						   ;
+	one_dot_fvec_c_major				fvec_one_dot_col_major                     ;
+																				   ;
+	vector_mul_matirx_func				vector_mul_matirx_row_major				   ;
+	vector_mul_vecmat_func              vector_mul_vecmat_row_major                ;
+	vecmat_mul_vecmat_func				vecmat_mul_vecmat_row_major				   ;
+	mat_mul_mat_func					mat_mul_mat_row_major					   ;
+																				   ;
+	matrix_mul_vector_func				matirx_mul_vector_col_major				   ;
+	vecmat_mul_vector_func				vecmat_mul_vector_col_major				   ;
+	vecmat_mul_vecmat_func				vecmat_mul_vecmat_col_major				   ;
+	mat_mul_mat_func					mat_mul_mat_col_major					   ;
+																				   ;
+	mat2_mul_func						mat2_mul								   ;
+	mat3_mul_func						mat3_mul								   ;
+	mat4_mul_func						mat4_mul								   ;
+																				   ;
+	mat2_mul_replace_func				mat2_mul_replace						   ;
+	mat3_mul_replace_func				mat3_mul_replace						   ;
+	mat4_mul_replace_func				mat4_mul_replace						   ;
+																				   ;
+	mat2s_mul_func						mat2s_mul								   ;
+	mat3s_mul_func						mat3s_mul								   ;
+	mat4s_mul_func						mat4s_mul								   ;
+	mat2s_mul_func						mat2s_mul_end_first						   ;
+	mat3s_mul_func						mat3s_mul_end_first						   ;
+	mat4s_mul_func						mat4s_mul_end_first						   ;
+}simd_fmat_dot_unsafe_t;
+
+PFX_INLINE 	simd_fmat_dot_unsafe_t* init_simd_fmat_dot_std(simd_fmat_dot_unsafe_t& __fmat)
+{
+	__fmat.mat_mul_mat_sel			         = matrix_dot_unsafe_std_t::mul;
+	__fmat.vecmat_mul_vecmat_sel			 = matrix_dot_unsafe_std_t::mul;
+
+	__fmat.fmat_mul_const					 = matrix_dot_unsafe_std_t::mul;
+	__fmat.vec2mat_mul_const				 = matrix_dot_unsafe_std_t::mul;
+	__fmat.vec3mat_mul_const				 = matrix_dot_unsafe_std_t::mul;
+	__fmat.vec4mat_mul_const				 = matrix_dot_unsafe_std_t::mul;
+
+	__fmat.vec4_dot							 = matrix_dot_unsafe_std_t::dot;
+	__fmat.vec2_dot							 = matrix_dot_unsafe_std_t::dot;
+	__fmat.vec3_dot							 = matrix_dot_unsafe_std_t::dot;
+	__fmat.fvec_dot							 = matrix_dot_unsafe_std_t::dot;
+
+	__fmat.fone_dot_row_major				 = matrix_dot_unsafe_std_t::one_dot_row_major;
+	__fmat.fvec_one_dot_row_major			 = matrix_dot_unsafe_std_t::one_dot_row_major;
+
+	__fmat.fone_dot_col_major				 = matrix_dot_unsafe_std_t::one_dot_col_major;
+	__fmat.fvec_one_dot_col_major			 = matrix_dot_unsafe_std_t::one_dot_col_major;
+
+	__fmat.vector_mul_matirx_row_major		 = matrix_dot_unsafe_std_t::vector_mul_matirx_row_major;
+	__fmat.vector_mul_vecmat_row_major       = matrix_dot_unsafe_std_t::vector_mul_matirx_row_major;
+	__fmat.vecmat_mul_vecmat_row_major		 = matrix_dot_unsafe_std_t::mul_row_major;
+	__fmat.mat_mul_mat_row_major			 = matrix_dot_unsafe_std_t::mul_row_major;
+
+	__fmat.matirx_mul_vector_col_major		 = matrix_dot_unsafe_std_t::matirx_mul_vector_col_major;
+	__fmat.vecmat_mul_vector_col_major		 = matrix_dot_unsafe_std_t::matirx_mul_vector_col_major;
+	__fmat.vecmat_mul_vecmat_col_major		 = matrix_dot_unsafe_std_t::mul_col_major;
+	__fmat.mat_mul_mat_col_major			 = matrix_dot_unsafe_std_t::mul_col_major;
+
+	__fmat.mat2_mul							 = matrix_dot_unsafe_std_t::mul;
+	__fmat.mat3_mul							 = matrix_dot_unsafe_std_t::mul;
+	__fmat.mat4_mul							 = matrix_dot_unsafe_std_t::mul;
+											 
+	__fmat.mat2_mul_replace					 = matrix_dot_unsafe_std_t::mul;
+	__fmat.mat3_mul_replace					 = matrix_dot_unsafe_std_t::mul;
+	__fmat.mat4_mul_replace					 = matrix_dot_unsafe_std_t::mul;
+											 
+	__fmat.mat2s_mul						 = matrix_dot_unsafe_std_t::mul;
+	__fmat.mat3s_mul						 = matrix_dot_unsafe_std_t::mul;
+	__fmat.mat4s_mul						 = matrix_dot_unsafe_std_t::mul;
+	__fmat.mat2s_mul_end_first				 = matrix_dot_unsafe_std_t::mul_end_first;
+	__fmat.mat3s_mul_end_first				 = matrix_dot_unsafe_std_t::mul_end_first;
+	__fmat.mat4s_mul_end_first				 = matrix_dot_unsafe_std_t::mul_end_first;
+	return &__fmat;
+}
+
 
 PECKER_END
 

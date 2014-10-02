@@ -313,6 +313,47 @@ typedef struct st_matrix_inv_unsafe_std
 
 }matrix_inv_unsafe_std_t;
 
+
+typedef bool (*fis_near_zero_func)(float_t x);
+typedef MATRIX2F_t* (*fmat2_inverse2x2_func)(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+	MATRIX2F_t& PFX_RESTRICT src);
+typedef MATRIX3F_t* (*fmat3_inverse3x3_func)(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+	MATRIX3F_t& PFX_RESTRICT src);
+typedef MATRIX4F_t* (*fmat4_inverse3x3_extern_func)(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+	MATRIX4F_t& PFX_RESTRICT src);
+typedef MATRIX4F_t* (*fmat4_inverse4x4_func)(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+	MATRIX4F_t& PFX_RESTRICT src);
+
+
+typedef struct st_simd_fmat_inverse_unsafe
+{
+	fis_near_zero_func			   	 is_near_zero;
+	fmat2_inverse2x2_func			 inverse2x2;
+	fmat3_inverse3x3_func			 inverse3x3;
+	fmat4_inverse4x4_func			 inverse4x4;
+
+	fmat4_inverse3x3_extern_func	 inverse3x3_externAC01_col_major;
+	fmat4_inverse3x3_extern_func	 inverse3x3_externA0C1_col_major;
+	fmat4_inverse3x3_extern_func	 inverse3x3_externAC01_row_major;
+	fmat4_inverse3x3_extern_func	 inverse3x3_externA0C1_row_major;
+	
+}simd_fmat_inverse_unsafe_t;
+
+
+PFX_INLINE simd_fmat_inverse_unsafe_t*	init_simd_fmat_inv_std(simd_fmat_inverse_unsafe_t& __fmat)
+{
+	__fmat.is_near_zero = matrix_inv_unsafe_std_t::is_near_zero;
+	__fmat.inverse2x2   = matrix_inv_unsafe_std_t::inverse2x2;
+	__fmat.inverse3x3   = matrix_inv_unsafe_std_t::inverse3x3;
+	__fmat.inverse4x4   = matrix_inv_unsafe_std_t::inverse4x4;
+
+	__fmat.inverse3x3_externAC01_col_major = matrix_inv_unsafe_std_t::inverse3x3_externAC01_col_major;
+	__fmat.inverse3x3_externA0C1_col_major = matrix_inv_unsafe_std_t::inverse3x3_externA0C1_col_major;
+	__fmat.inverse3x3_externAC01_row_major = matrix_inv_unsafe_std_t::inverse3x3_externAC01_row_major;
+	__fmat.inverse3x3_externA0C1_row_major = matrix_inv_unsafe_std_t::inverse3x3_externA0C1_row_major;
+	return &__fmat;
+}
+
 PECKER_END
 
 #endif			//PFX_SIMD_FMATINV_H_

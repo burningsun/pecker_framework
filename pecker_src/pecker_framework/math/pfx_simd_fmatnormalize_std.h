@@ -115,6 +115,60 @@ typedef struct st_vector_normalize_unsafe_std
 
 }vector_normalize_unsafe_std_t;
 
+
+								 
+typedef  float_t (*fvector_length_func)(const float_t* PARAM_IN vec_ptr, usize__t dim_count);
+typedef  const float_t* (*fnormalize_func)(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src_ptr, usize__t dim_count);
+typedef  const float_t* (*fnormalize_replace_func)(float_t* PARAM_INOUT vec_ptr, usize__t dim_count);
+typedef  const VECTOR2F_t* (*fvec2_normalize_func)(VECTOR2F_t& PFX_RESTRICT PARAM_OUT dst,
+	const VECTOR2F_t& PFX_RESTRICT PARAM_IN src);
+typedef  const VECTOR2F_t* (*fvec2_normalize_replace_func)(VECTOR2F_t& PARAM_INOUT vec);
+typedef  const VECTOR3F_t* (*fvec3_normalize_func)(VECTOR3F_t& PFX_RESTRICT PARAM_OUT dst,
+	const VECTOR3F_t& PFX_RESTRICT PARAM_IN src);
+typedef  const VECTOR3F_t* (*fvec3_normalize_replace_func)(VECTOR3F_t& PARAM_INOUT vec);
+typedef  const VECTOR4F_t* (*fvec4_normalize_func)(VECTOR4F_t& PFX_RESTRICT PARAM_OUT dst,
+	const VECTOR4F_t& PFX_RESTRICT PARAM_IN src);
+typedef  const VECTOR4F_t* (*fvec4_normalize_replace_func)(VECTOR4F_t& PARAM_INOUT vec);
+typedef  float_t (*vector2_length_func)(const VECTOR2F_t& PARAM_IN vec);
+typedef  float_t (*vector3_length_func)(const VECTOR3F_t& PARAM_IN vec);
+typedef  float_t (*vector4_length_func)(const VECTOR4F_t& PARAM_IN vec);
+
+typedef struct st_simd_fvec_normalize_unsafe
+{
+	fvector_length_func				 fvector_length;
+	fnormalize_func					 fnormalize;
+	fnormalize_replace_func			 fnormalize_replace;
+	fvec2_normalize_func			 fvec2_normalize;
+	fvec2_normalize_replace_func	 fvec2_normalize_replace;
+	fvec3_normalize_func			 fvec3_normalize;
+	fvec3_normalize_replace_func	 fvec3_normalize_replace;
+	fvec4_normalize_func			 fvec4_normalize;
+	fvec4_normalize_replace_func	 fvec4_normalize_replace;
+	vector2_length_func				 vector2_length;
+	vector3_length_func				 vector3_length;
+	vector4_length_func				 vector4_length;
+}simd_fvec_normalize_unsafe_t;
+
+
+PFX_INLINE simd_fvec_normalize_unsafe_t* init_simd_fvec_normalize_std(simd_fvec_normalize_unsafe_t& __fvec)
+{
+	__fvec.fvector_length               = vector_normalize_unsafe_std_t::vector_length;
+	__fvec.fnormalize				    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.fnormalize_replace		    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.fvec2_normalize			    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.fvec2_normalize_replace	    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.fvec3_normalize			    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.fvec3_normalize_replace	    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.fvec4_normalize			    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.fvec4_normalize_replace	    = vector_normalize_unsafe_std_t::normalize;
+	__fvec.vector2_length			    = vector_normalize_unsafe_std_t::vector_length;
+	__fvec.vector3_length			    = vector_normalize_unsafe_std_t::vector_length;
+	__fvec.vector4_length			    = vector_normalize_unsafe_std_t::vector_length;
+
+	return &__fvec;
+}
+
 PECKER_END
 
 #endif			//PFX_SIMD_FMATNORNALIZE_H_

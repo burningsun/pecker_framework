@@ -249,6 +249,123 @@ typedef struct st_array_fmul_unsafe_std
 
 }array_fmul_unsafe_std_t;
 
+typedef float_t* (*fmul_const_replace_func)(float_t*  PARAM_INOUT dst_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef VECTOR2F_t* (*fvec2_mul_const_replace_func)(VECTOR2F_t* PARAM_INOUT dst_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef VECTOR3F_t* (*fvec3_mul_const_replace_func)(VECTOR3F_t* PARAM_INOUT dst_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef VECTOR4F_t* (*fvec4_mul_const_replace_func)(VECTOR4F_t* PARAM_INOUT dst_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef float_t* (*fmul_const_func)(float_t* PFX_RESTRICT  PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef VECTOR2F_t* (*fvec2_mul_const_func)(VECTOR2F_t* PFX_RESTRICT  PARAM_OUT dst_ptr,
+	const VECTOR2F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef VECTOR3F_t* (*fvec3_mul_const_func)(VECTOR3F_t* PFX_RESTRICT  PARAM_OUT dst_ptr,
+	const VECTOR3F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef VECTOR4F_t* (*fvec4_mul_const_func)(VECTOR4F_t* PFX_RESTRICT  PARAM_OUT dst_ptr,
+	const VECTOR4F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef float_t* (*fmul_func)(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+
+typedef VECTOR2F_t* (*fvec2_mul_func)(VECTOR2F_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
+	const VECTOR2F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const VECTOR2F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+
+typedef VECTOR3F_t* (*fvec3_mul_func)(VECTOR3F_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
+	const VECTOR3F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const VECTOR3F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+
+typedef VECTOR4F_t* (*fvec4_mul_func)(VECTOR4F_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
+	const VECTOR4F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const VECTOR4F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+
+typedef float_t* (*fmul_relpace_func)(float_t*  PARAM_INOUT dst_ptr,
+	const float_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+typedef VECTOR2F_t* (*fvec2_mul_relpace_func)(VECTOR2F_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
+	const VECTOR2F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	usize__t count);
+
+typedef VECTOR3F_t* (*fvec3_mul_relpace_func)(VECTOR3F_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
+	const VECTOR3F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	usize__t count);
+
+typedef VECTOR4F_t* (*fvec4_mul_relpace_func)(VECTOR4F_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
+	const VECTOR4F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	usize__t count);
+
+
+typedef struct st_simd_fmul_unsafe
+{
+	fmul_const_replace_func			  fmul_const_replace;
+	fvec2_mul_const_replace_func	  fvec2_mul_const_replace;
+	fvec3_mul_const_replace_func	  fvec3_mul_const_replace;
+	fvec4_mul_const_replace_func	  fvec4_mul_const_replace;
+
+	fmul_const_func					  fmul_const;
+	fvec2_mul_const_func			  fvec2_mul_const;
+	fvec3_mul_const_func			  fvec3_mul_const;
+	fvec4_mul_const_func			  fvec4_mul_const;
+
+	fmul_func						  fmul;
+	fvec2_mul_func					  fvec2_mul;
+	fvec3_mul_func					  fvec3_mul;
+	fvec4_mul_func					  fvec4_mul;
+
+	fmul_relpace_func				  fmul_relpace;
+	fvec2_mul_relpace_func			  fvec2_mul_relpace;
+	fvec3_mul_relpace_func			  fvec3_mul_relpace;
+	fvec4_mul_relpace_func			  fvec4_mul_relpace;
+
+}simd_fmul_unsafe_t;
+
+PFX_INLINE simd_fmul_unsafe_t*	init_simd_fmul_std(simd_fmul_unsafe_t& __fmul)
+{
+	__fmul.fmul_const_replace		 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec2_mul_const_replace	 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec3_mul_const_replace	 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec4_mul_const_replace	 = array_fmul_unsafe_std_t::operate;
+	__fmul.fmul_const				 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec2_mul_const			 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec3_mul_const			 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec4_mul_const			 = array_fmul_unsafe_std_t::operate;
+	__fmul.fmul						 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec2_mul				 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec3_mul				 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec4_mul				 = array_fmul_unsafe_std_t::operate;
+	__fmul.fmul_relpace				 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec2_mul_relpace		 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec3_mul_relpace		 = array_fmul_unsafe_std_t::operate;
+	__fmul.fvec4_mul_relpace		 = array_fmul_unsafe_std_t::operate;
+	return &__fmul;
+}
 PECKER_END
 
 #endif			//PFX_SIMD_FMUL_H_

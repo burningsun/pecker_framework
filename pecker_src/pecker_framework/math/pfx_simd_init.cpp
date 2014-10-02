@@ -12,17 +12,31 @@ PECKER_BEGIN
 
 extern bool PRINTF_CPU_INFO();
 static volatile bool cpu_simd_finded = PRINTF_CPU_INFO();
+static volatile result_t binit_math = math_simd_init();
+
+static simd_fmat_dot_unsafe_t gfmat_dot;
 
 result_t math_simd_init()
 {
+
+	result_t res;
+	if (!cpu_simd_finded)
+	{
+		cpu_simd_finded = PRINTF_CPU_INFO();
+	}
+
 	if (cpu_simd_finded)
 	{
-		return PFX_STATUS_OK;
+		res = PFX_STATUS_OK;
 	}
 	else
 	{
-		return PFX_STATUS_ERROR_;
+		res = PFX_STATUS_FAIL;
 	}
+
+	init_simd_fmat_dot_std(gfmat_dot);
+
+	return res;
 };
 PECKER_END
 

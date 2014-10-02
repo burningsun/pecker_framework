@@ -89,6 +89,31 @@ typedef struct st_vector_cross_unsafe_std
 
 }vector_cross_unsafe_std_t;
 
+
+typedef VECTOR3F_t* (*fvec3_cross_func)
+                                       (VECTOR3F_t& PFX_RESTRICT PARAM_INOUT dst,
+                                       const VECTOR3F_t& PFX_RESTRICT PARAM_INOUT src1,
+                                       const VECTOR3F_t& PFX_RESTRICT PARAM_INOUT src2);
+
+typedef VECTOR4F_t* (*fvec3_extern_cross_func)
+                                      (VECTOR4F_t& PFX_RESTRICT PARAM_INOUT dst,
+                                      const VECTOR4F_t& PFX_RESTRICT PARAM_INOUT src1,
+                                      const VECTOR4F_t& PFX_RESTRICT PARAM_INOUT src2);
+
+
+typedef struct st_simd_fvec_cross_unsafe
+{
+	fvec3_cross_func         fvec3_cross;
+	fvec3_extern_cross_func  fvec3_extern_cross;
+}simd_fvec_cross_unsafe_t;
+
+
+PFX_INLINE simd_fvec_cross_unsafe_t*	init_simd_fvec_cross_std(simd_fvec_cross_unsafe_t& __fcross)
+{
+	__fcross.fvec3_cross         = vector_cross_unsafe_std_t::cross;
+	__fcross.fvec3_extern_cross  = vector_cross_unsafe_std_t::cross;
+	return &__fcross;
+}
 PECKER_END
 
 #endif			//PFX_SIMD_FMATCROSS_H_

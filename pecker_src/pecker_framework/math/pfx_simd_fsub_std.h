@@ -297,6 +297,167 @@ typedef struct st_array_fsub_unsafe_std
 
 }array_fsub_unsafe_std_t;
 
+
+typedef float_t* (*fsub_const_replace_func)(float_t* PFX_RESTRICT PARAM_INOUT dst_ptr,
+	const float_t cst,
+	usize__t count);
+typedef float_t* (*fsub_const_func)(float_t* PFX_RESTRICT  PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const float_t cst,
+	usize__t count);
+
+typedef	VECTOR2F_t* (*fvec2_sub_const_func)(VECTOR2F_t* PFX_RESTRICT  PARAM_OUT dst_ptr,
+	const VECTOR2F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const VECTOR2F_t& cst, usize__t count);
+typedef	VECTOR2F_t* (*fvec2_sub_const_replace_func)(VECTOR2F_t*  PARAM_INOUT dst_ptr,
+	const VECTOR2F_t& cst, usize__t count);
+
+
+typedef	VECTOR3F_t* (*fvec3_sub_const_func)(VECTOR3F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const VECTOR3F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const VECTOR3F_t& cst, usize__t count);
+typedef	VECTOR3F_t* (*fvec3_sub_const_replace_func)(VECTOR3F_t* PARAM_INOUT dst_ptr,
+	const VECTOR3F_t& cst, usize__t count);
+
+
+typedef VECTOR4F_t* (*fvec4_sub_const_func)(VECTOR4F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const VECTOR4F_t* PFX_RESTRICT PARAM_IN src_ptr,
+	const VECTOR4F_t& cst,
+	usize__t count);
+typedef	VECTOR4F_t* (*fvec4_sub_const_replace_func)(VECTOR4F_t* PARAM_INOUT dst_ptr,
+	const VECTOR4F_t& cst,
+	usize__t count);
+
+
+typedef	float_t* (*fsub_func)(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+typedef	float_t* (*fsub_replace_func)(float_t*  PARAM_INOUT dst_ptr,
+	const float_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+
+typedef	VECTOR2F_t* (*fvec2_sub_func)(VECTOR2F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const VECTOR2F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const VECTOR2F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+
+
+typedef	VECTOR2F_t* (*fvec2_sub_replace_func)(VECTOR2F_t*  PARAM_INOUT dst_ptr,
+	const VECTOR2F_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+
+typedef	VECTOR3F_t* (*fvec3_sub_func)(VECTOR3F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const VECTOR3F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const VECTOR3F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+typedef	VECTOR3F_t* (*fvec3_sub_replace_func)(VECTOR3F_t*  PARAM_INOUT dst_ptr,
+	const VECTOR3F_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+typedef	VECTOR4F_t* (*fvec4_sub_func)(VECTOR4F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const VECTOR4F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const VECTOR4F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+typedef	VECTOR4F_t* (*fvec4_sub_relpace_func)(VECTOR4F_t*  PARAM_INOUT dst_ptr,
+	const VECTOR4F_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+
+typedef	MATRIX4F_t* (*fmat4_sub_func)(MATRIX4F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const MATRIX4F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const MATRIX4F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+typedef	MATRIX4F_t* (*fmat4_sub_relpace_func)(MATRIX4F_t*  PARAM_INOUT dst_ptr,
+	const MATRIX4F_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+
+typedef	MATRIX3F_t* (*fmat3_sub_func)(MATRIX3F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const MATRIX3F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const MATRIX3F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+typedef	MATRIX3F_t* (*fmat3_sub_relpace_func)(MATRIX3F_t*  PARAM_INOUT dst_ptr,
+	const MATRIX3F_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+
+
+typedef	MATRIX2F_t* (*fmat2_sub_func)(MATRIX2F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const MATRIX2F_t* PFX_RESTRICT PARAM_IN src1_ptr,
+	const MATRIX2F_t* PFX_RESTRICT PARAM_IN src2_ptr,
+	usize__t count);
+typedef	MATRIX2F_t* (*fmat2_sub_relpace_func)(MATRIX2F_t*  PARAM_INOUT dst_ptr,
+	const MATRIX2F_t*  PARAM_IN src_ptr,
+	usize__t count);
+
+
+typedef struct st_simd_fsub_unsafe
+{
+	fsub_const_replace_func				fsub_const_replace;
+	fsub_const_func						fsub_const;
+
+	fvec2_sub_const_func				fvec2_sub_const;
+	fvec2_sub_const_replace_func		fvec2_sub_const_replace;
+
+	fvec3_sub_const_func				fvec3_sub_const;
+	fvec3_sub_const_replace_func		fvec3_sub_const_replace;
+
+	fvec4_sub_const_func				fvec4_sub_const;
+	fvec4_sub_const_replace_func		fvec4_sub_const_replace;
+
+	fsub_func							fsub;
+	fsub_replace_func					fsub_replace;
+
+	fvec2_sub_func						fvec2_sub;
+	fvec2_sub_replace_func				fvec2_sub_replace;
+
+	fvec3_sub_func						fvec3_sub;
+	fvec3_sub_replace_func				fvec3_sub_replace;
+
+	fvec4_sub_func						fvec4_sub;
+	fvec4_sub_relpace_func				fvec4_sub_relpace;
+
+	fmat4_sub_func						fmat4_sub;
+	fmat4_sub_relpace_func				fmat4_sub_relpace;
+
+	fmat3_sub_func						fmat3_sub;
+	fmat3_sub_relpace_func				fmat3_sub_relpace;
+
+	fmat2_sub_func						fmat2_sub;
+	fmat2_sub_relpace_func				fmat2_sub_relpace;
+}simd_fsub_unsafe_t;
+
+
+PFX_INLINE simd_fsub_unsafe_t*	init_simd_fsub_std(simd_fsub_unsafe_t& __fsub)
+{
+	__fsub.fsub_const_replace        = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fsub_const				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec2_sub_const			 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec2_sub_const_replace	 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec3_sub_const			 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec3_sub_const_replace	 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec4_sub_const			 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec4_sub_const_replace	 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fsub						 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fsub_replace				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec2_sub				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec2_sub_replace		 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec3_sub				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec3_sub_replace		 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec4_sub				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fvec4_sub_relpace		 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fmat4_sub				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fmat4_sub_relpace		 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fmat3_sub				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fmat3_sub_relpace		 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fmat2_sub				 = 	 array_fsub_unsafe_std_t::operate;
+	__fsub.fmat2_sub_relpace		 = 	 array_fsub_unsafe_std_t::operate;
+	return &__fsub;
+}
+
 PECKER_END
 
 #endif			//PFX_SIMD_H_

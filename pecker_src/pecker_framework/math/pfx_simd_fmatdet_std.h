@@ -79,6 +79,29 @@ typedef struct st_matrix_det_unsafe_std
 
 }matrix_det_unsafe_std_t;
 
+
+
+typedef float_t (*fmat_det2x2_func)(const MATRIX2F_t& __mat);
+typedef float_t (*fmat_det3x3_func)(const MATRIX3F_t& __mat);
+typedef float_t (*fmat_det4x4_func)(const MATRIX4F_t& __mat);
+
+
+typedef struct st_simd_fmat_det_unsafe
+{
+	fmat_det2x2_func	fmat_det2x2;
+	fmat_det3x3_func	fmat_det3x3;
+	fmat_det4x4_func	fmat_det4x4;	
+}simd_fmat_det_unsafe_t;
+
+
+PFX_INLINE simd_fmat_det_unsafe_t*	init_simd_fmat_det_std(simd_fmat_det_unsafe_t& __fmat_det)
+{
+	__fmat_det.fmat_det2x2  = matrix_det_unsafe_std_t::det2x2;
+	__fmat_det.fmat_det3x3  = matrix_det_unsafe_std_t::det3x3;
+	__fmat_det.fmat_det4x4  = matrix_det_unsafe_std_t::det4x4;
+	return &__fmat_det;
+}
+
 PECKER_END
 
 #endif			//PFX_SIMD_FMATDET_H_

@@ -816,6 +816,173 @@ typedef struct st_matrix_set_unsafe_std
 
 
 
+typedef float_t* (*load_data_func)(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_OUT src_ptr, usize__t count);
+
+typedef float_t** (*load_vec_data_func)(float_t** PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t** PFX_RESTRICT PARAM_OUT src_ptr, usize__t row, usize__t col);
+
+typedef MATRIX2F_t* (*load_mat2_func)(MATRIX2F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const MATRIX2F_t* PFX_RESTRICT PARAM_OUT src_ptr, usize__t count);
+
+typedef MATRIX3F_t* (*load_mat3_func)(MATRIX3F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const MATRIX3F_t* PFX_RESTRICT PARAM_OUT src_ptr, usize__t count);
+
+typedef MATRIX4F_t* (*load_mat4_func)(MATRIX4F_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const MATRIX4F_t* PFX_RESTRICT PARAM_OUT src_ptr, usize__t count);
+
+typedef MATRIX2F_t* (*mat2x2_set_func)(MATRIX2F_t& PARAM_OUT __mat,
+	float_t m11, float_t m12,
+	float_t m21, float_t m22);
+
+typedef MATRIX3F_t* (*mat3x3_set_func)(MATRIX3F_t& PARAM_OUT __mat,
+	float_t m11, float_t m12, float_t m13,
+	float_t m21, float_t m22, float_t m23,
+	float_t m31, float_t m32, float_t m33);
+
+typedef MATRIX4F_t* (*mat4x4_set_func)(MATRIX4F_t& PARAM_OUT __mat,
+	float_t m11, float_t m12, float_t m13, float_t m14,
+	float_t m21, float_t m22, float_t m23, float_t m24,
+	float_t m31, float_t m32, float_t m33, float_t m34,
+	float_t m41, float_t m42, float_t m43, float_t m44);
+
+typedef const MATRIX4F_t* (*mat4x4_indentity_func)();
+
+typedef  MATRIX4F_t* (*mat4x4_indentity_replace_func)(MATRIX4F_t& PARAM_OUT __mat, float_t _val);
+typedef  MATRIX4F_t* (*mat4x4_scale_func)(MATRIX4F_t& PARAM_OUT __mat,
+	float_t x, float_t y, float_t z);
+
+typedef  MATRIX4F_t* (*mat4x4_translate_func)(MATRIX4F_t& PARAM_OUT __mat,
+	float_t x, float_t y, float_t z);
+
+typedef  MATRIX4F_t* (*mat4x4_rotate_axis_func)(MATRIX4F_t& PARAM_OUT __mat, float_t rad);
+
+typedef  MATRIX4F_t* (*mat4x4_LookAt_func)(MATRIX4F_t& PARAM_OUT __mat,
+	const VECTOR3F_t& vPosition, const VECTOR3F_t& vLookAt, const VECTOR3F_t& vUp);
+
+typedef  MATRIX4F_t* (*mat4x4_orthogonal_func)(MATRIX4F_t& PARAM_OUT __mat,
+	float_t width, float_t height,
+	float_t nearPlane, float_t farPlane);
+
+typedef  MATRIX4F_t* (*mat4x4_perspective_func)(MATRIX4F_t& PARAM_OUT __mat,
+	float_t width, float_t height,
+	float_t nearPlane, float_t farPlane);
+
+// 	 aspect = width / height 
+typedef  MATRIX4F_t* (*mat4x4_perspective_fov_func)(MATRIX4F_t& PARAM_OUT __mat,
+	float_t fovy, float_t aspect,
+	float_t nearPlane, float_t farPlane);
+
+
+typedef struct st_simd_fmat_set_unsafe
+{
+	load_data_func					  load_data;
+	load_vec_data_func				  load_vec_data_row_major;
+	load_mat2_func					  load_mat2;
+	load_mat3_func					  load_mat3;
+	load_mat4_func					  load_mat4;
+
+	mat2x2_set_func					  mat2x2_set_row_major;
+	mat3x3_set_func					  mat3x3_set_row_major;
+	mat4x4_set_func					  mat4x4_set_row_major;
+	load_vec_data_func				  load_vec_data_col_major;
+	mat2x2_set_func					  mat2x2_set_col_major;
+	mat3x3_set_func					  mat3x3_set_col_major;
+	mat4x4_set_func					  mat4x4_set_col_major;
+
+	mat4x4_indentity_func			  mat4x4_indentity;
+	mat4x4_indentity_replace_func	  mat4x4_indentity_replace;
+	mat4x4_scale_func				  mat4x4_scale;
+
+	mat4x4_translate_func			  mat4x4_translate_row_major;
+	mat4x4_rotate_axis_func			  mat4x4_rotateX_row_major;
+	mat4x4_rotate_axis_func			  mat4x4_rotateY_row_major;
+	mat4x4_rotate_axis_func			  mat4x4_rotateZ_row_major;
+
+	mat4x4_translate_func			  mat4x4_translate_col_major;
+	mat4x4_rotate_axis_func			  mat4x4_rotateX_col_major;
+	mat4x4_rotate_axis_func			  mat4x4_rotateY_col_major;
+	mat4x4_rotate_axis_func			  mat4x4_rotateZ_col_major;
+
+
+	mat4x4_LookAt_func				  mat4x4_LookAtLH_row_major;
+	mat4x4_LookAt_func				  mat4x4_LookAtRH_row_major;
+
+	mat4x4_LookAt_func				  mat4x4_LookAtLH_col_major;
+	mat4x4_LookAt_func				  mat4x4_LookAtRH_col_major;
+
+	mat4x4_orthogonal_func			  mat4x4_orthogonalLH_opengl;
+	mat4x4_perspective_func			  mat4x4_perspectiveLH_opengl;
+	mat4x4_perspective_fov_func		  mat4x4_perspective_fov_LH_opengl;
+
+	mat4x4_orthogonal_func			  mat4x4_orthogonalRH_opengl;
+	mat4x4_perspective_func			  mat4x4_perspectiveRH_opengl;
+	mat4x4_perspective_fov_func		  mat4x4_perspective_fov_RH_opengl;
+
+	mat4x4_orthogonal_func			  mat4x4_orthogonalLH_directX;
+	mat4x4_perspective_func			  mat4x4_perspectiveLH_directX;
+	mat4x4_perspective_fov_func		  mat4x4_perspective_fov_LH_directX;
+
+	mat4x4_orthogonal_func			  mat4x4_orthogonalRH_directX;
+	mat4x4_perspective_func			  mat4x4_perspectiveRH_directX;
+	mat4x4_perspective_fov_func		  mat4x4_perspective_fov_RH_directX;
+
+
+}simd_fmat_set_unsafe_t;
+
+PFX_INLINE 	simd_fmat_set_unsafe_t* init_simd_fmat_set_std(simd_fmat_set_unsafe_t& __fmat)
+{
+	__fmat.load_data 						   = matrix_set_unsafe_std_t::load_data 						 ;
+	__fmat.load_vec_data_row_major 			   = matrix_set_unsafe_std_t::load_data_row_major 			     ;
+	__fmat.load_mat2        				   = matrix_set_unsafe_std_t::load_mat2 				         ;
+	__fmat.load_mat3        				   = matrix_set_unsafe_std_t::load_mat3 				         ;
+	__fmat.load_mat4        				   = matrix_set_unsafe_std_t::load_mat4 				         ;
+	__fmat.mat2x2_set_row_major 			   = matrix_set_unsafe_std_t::mat2x2_set_row_major 			 	 ;
+	__fmat.mat3x3_set_row_major 			   = matrix_set_unsafe_std_t::mat3x3_set_row_major 			 	 ;
+	__fmat.mat4x4_set_row_major 			   = matrix_set_unsafe_std_t::mat4x4_set_row_major 			 	 ;
+	__fmat.load_vec_data_col_major 			   = matrix_set_unsafe_std_t::load_data_col_major 			     ;
+	__fmat.mat2x2_set_col_major 			   = matrix_set_unsafe_std_t::mat2x2_set_col_major 			 	 ;
+	__fmat.mat3x3_set_col_major 			   = matrix_set_unsafe_std_t::mat3x3_set_col_major 			 	 ;
+	__fmat.mat4x4_set_col_major 			   = matrix_set_unsafe_std_t::mat4x4_set_col_major 			 	 ;
+																											 ;
+	__fmat.mat4x4_indentity 				   = matrix_set_unsafe_std_t::mat4x4_indentity 				 	 ;
+	__fmat.mat4x4_indentity_replace 		   = matrix_set_unsafe_std_t::mat4x4_indentity 		 	         ;
+	__fmat.mat4x4_scale 					   = matrix_set_unsafe_std_t::mat4x4_scale 					 	 ;
+																											 ;
+	__fmat.mat4x4_translate_row_major 		   = matrix_set_unsafe_std_t::mat4x4_translate_row_major 		 ;
+	__fmat.mat4x4_rotateX_row_major 		   = matrix_set_unsafe_std_t::mat4x4_rotateX_row_major 		 	 ;
+	__fmat.mat4x4_rotateY_row_major 		   = matrix_set_unsafe_std_t::mat4x4_rotateY_row_major 		 	 ;
+	__fmat.mat4x4_rotateZ_row_major 		   = matrix_set_unsafe_std_t::mat4x4_rotateZ_row_major 		 	 ;
+																											 ;
+	__fmat.mat4x4_translate_col_major 		   = matrix_set_unsafe_std_t::mat4x4_translate_col_major 		 ;
+	__fmat.mat4x4_rotateX_col_major 		   = matrix_set_unsafe_std_t::mat4x4_rotateX_col_major 		 	 ;
+	__fmat.mat4x4_rotateY_col_major 		   = matrix_set_unsafe_std_t::mat4x4_rotateY_col_major 		 	 ;
+	__fmat.mat4x4_rotateZ_col_major 		   = matrix_set_unsafe_std_t::mat4x4_rotateZ_col_major 		 	 ;
+																											 ;
+	__fmat.mat4x4_LookAtLH_row_major 		   = matrix_set_unsafe_std_t::mat4x4_LookAtLH_row_major 		 ;
+	__fmat.mat4x4_LookAtRH_row_major 		   = matrix_set_unsafe_std_t::mat4x4_LookAtRH_row_major 		 ;
+																											 ;
+	__fmat.mat4x4_LookAtLH_col_major 		   = matrix_set_unsafe_std_t::mat4x4_LookAtLH_col_major 		 ;
+	__fmat.mat4x4_LookAtRH_col_major 		   = matrix_set_unsafe_std_t::mat4x4_LookAtRH_col_major 		 ;
+																											 ;
+	__fmat.mat4x4_orthogonalLH_opengl 		   = matrix_set_unsafe_std_t::mat4x4_orthogonalLH_opengl 		 ;
+	__fmat.mat4x4_perspectiveLH_opengl 		   = matrix_set_unsafe_std_t::mat4x4_perspectiveLH_opengl 		 ;
+	__fmat.mat4x4_perspective_fov_LH_opengl    = matrix_set_unsafe_std_t::mat4x4_perspective_fov_LH_opengl   ;
+																											 ;
+	__fmat.mat4x4_orthogonalRH_opengl 		   = matrix_set_unsafe_std_t::mat4x4_orthogonalRH_opengl 		 ;
+	__fmat.mat4x4_perspectiveRH_opengl 		   = matrix_set_unsafe_std_t::mat4x4_perspectiveRH_opengl 		 ;
+	__fmat.mat4x4_perspective_fov_RH_opengl    = matrix_set_unsafe_std_t::mat4x4_perspective_fov_RH_opengl   ;
+																											 ;
+	__fmat.mat4x4_orthogonalLH_directX 		   = matrix_set_unsafe_std_t::mat4x4_orthogonalLH_directX 		 ;
+	__fmat.mat4x4_perspectiveLH_directX 	   = matrix_set_unsafe_std_t::mat4x4_perspectiveLH_directX 	 	 ;
+	__fmat.mat4x4_perspective_fov_LH_directX   = matrix_set_unsafe_std_t::mat4x4_perspective_fov_LH_directX  ;
+																											 ;
+	__fmat.mat4x4_orthogonalRH_directX 		   = matrix_set_unsafe_std_t::mat4x4_orthogonalRH_directX 		 ;
+	__fmat.mat4x4_perspectiveRH_directX 	   = matrix_set_unsafe_std_t::mat4x4_perspectiveRH_directX 	 	 ;
+	__fmat.mat4x4_perspective_fov_RH_directX   = matrix_set_unsafe_std_t::mat4x4_perspective_fov_RH_directX  ;
+	return &__fmat;
+}
+
 PECKER_END
 
 #endif			//PFX_SIMD_FMATSET_H_

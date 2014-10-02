@@ -23,7 +23,6 @@ PECKER_BEGIN
 typedef struct st_matrix_trans_unsafe_std
 {
 
-
 	static PFX_FORCE_INLINE const float_t* transpose(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
 	const float_t* PFX_RESTRICT PARAM_IN src_ptr, usize__t dim_count)
 	{
@@ -209,6 +208,54 @@ typedef struct st_matrix_trans_unsafe_std
 #undef 	PFXMAT
 
 }matrix_trans_unsafe_std_t;
+
+
+
+typedef const float_t* (*fmat_transpose_func)(float_t* PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t* PFX_RESTRICT PARAM_IN src_ptr, usize__t dim_count);
+typedef const float_t* const* (*fmat_vec_transpose_func)(float_t** PFX_RESTRICT PARAM_OUT dst_ptr,
+	const float_t** PFX_RESTRICT PARAM_IN src_ptr, usize__t dim_count);
+typedef const float_t* (*fmat_transpose_replace_func)(float_t* PARAM_INOUT mat_ptr, usize__t dim_count);
+typedef const float_t* const* (*fmat_vec_transpose_replace_func)(float_t** PARAM_INOUT mat_ptr, usize__t dim_count);
+typedef const MATRIX2F_t* (*fmat2_transpose_func)(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst,
+	const MATRIX2F_t& PFX_RESTRICT PARAM_IN src);
+typedef const MATRIX2F_t* (*fmat2_transpose_replace_func)(MATRIX2F_t& PFX_RESTRICT PARAM_OUT dst);
+typedef const MATRIX3F_t* (*fmat3_transpose_func)(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst,
+	const MATRIX3F_t& PFX_RESTRICT PARAM_IN src);
+typedef const MATRIX3F_t* (*fmat3_transpose_replace_func)(MATRIX3F_t& PFX_RESTRICT PARAM_OUT dst);
+typedef const MATRIX4F_t* (*fmat4_transpose_func)(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst,
+	const MATRIX4F_t& PFX_RESTRICT PARAM_IN src);
+typedef const MATRIX4F_t* (*fmat4_transpose_replace_func)(MATRIX4F_t& PFX_RESTRICT PARAM_OUT dst);
+
+
+typedef struct st_simd_fmat_transpose_unsafe
+{
+	fmat_transpose_func					fmat_transpose;
+	fmat_vec_transpose_func				fmat_vec_transpose;
+	fmat_transpose_replace_func			fmat_transpose_replace;
+	fmat_vec_transpose_replace_func		fmat_vec_transpose_replace;
+	fmat2_transpose_func				fmat2_transpose;
+	fmat2_transpose_replace_func		fmat2_transpose_replace;
+	fmat3_transpose_func				fmat3_transpose;
+	fmat3_transpose_replace_func		fmat3_transpose_replace;
+	fmat4_transpose_func				fmat4_transpose;
+	fmat4_transpose_replace_func		fmat4_transpose_replace;
+}simd_fmat_transpose_unsafe_t;
+
+PFX_INLINE simd_fmat_transpose_unsafe_t*	init_simd_fmat_trans_std(simd_fmat_transpose_unsafe_t& __fmat)
+{
+	__fmat.fmat_transpose              = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat_vec_transpose          = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat_transpose_replace      = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat_vec_transpose_replace  = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat2_transpose             = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat2_transpose_replace     = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat3_transpose             = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat3_transpose_replace     = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat4_transpose             = matrix_trans_unsafe_std_t::transpose;
+	__fmat.fmat4_transpose_replace     = matrix_trans_unsafe_std_t::transpose;
+	return &__fmat;
+}
 
 PECKER_END
 
