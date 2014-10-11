@@ -44,8 +44,8 @@ typedef struct st_matrix_inv_unsafe_std
 
 		det = 1.0f / det;
 		PFXMAT(dst, 0, 0) =   det * PFXMAT(src, 1, 1);		
-		PFXMAT(dst, 1, 0) = - det * PFXMAT(src, 0, 1);
-		PFXMAT(dst, 0, 1) = - det * PFXMAT(src, 1, 0);
+		PFXMAT(dst, 0, 1) = - det * PFXMAT(src, 0, 1);
+		PFXMAT(dst, 1, 0) = - det * PFXMAT(src, 1, 0);
 		PFXMAT(dst, 1, 1) =   det * PFXMAT(src, 0, 0);
 
 		return &dst;

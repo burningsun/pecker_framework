@@ -88,6 +88,12 @@
     <Filter Include="math">
       <UniqueIdentifier>{0ad75788-dc32-48e1-8ccb-582ec19e3ebc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="math\sse">
+      <UniqueIdentifier>{1fc8fd5a-d419-45c4-b833-baf7d9b2c869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math\neon">
+      <UniqueIdentifier>{0f73a349-fa09-4588-95aa-a54d81437553}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\pecker_framework\data\pecker_value_compare.h">
@@ -379,6 +385,45 @@
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\math\pfx_simd_fmatnormalize_std.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fabs_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fadd_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fdiv_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatcross_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatdet_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatdot_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatinv_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatnormalize_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatset_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmattrans_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmul_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fsub_sse.h">
+      <Filter>math\sse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_param_sse.h">
       <Filter>math</Filter>
     </ClInclude>
   </ItemGroup>

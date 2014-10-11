@@ -84,8 +84,21 @@
     <ClInclude Include="..\pecker_framework\math\pfx_simd_neon.h" />
     <ClInclude Include="..\pecker_framework\math\pfx_simd_optimization.h" />
     <ClInclude Include="..\pecker_framework\math\pfx_simd_param.h" />
+    <ClInclude Include="..\pecker_framework\math\pfx_simd_param_sse.h" />
     <ClInclude Include="..\pecker_framework\math\pfx_simd_sse.h" />
     <ClInclude Include="..\pecker_framework\math\pfx_simd_std.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fabs_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fadd_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fdiv_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatcross_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatdet_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatdot_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatinv_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatnormalize_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmatset_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmattrans_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fmul_sse.h" />
+    <ClInclude Include="..\pecker_framework\math\sse\pfx_simd_fsub_sse.h" />
     <ClInclude Include="..\pecker_framework\native\android_native_form.h" />
     <ClInclude Include="..\pecker_framework\native\android_thread.h" />
     <ClInclude Include="..\pecker_framework\native\linux_thread.h" />
@@ -188,7 +201,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>PFX_NATIVE_EXPORT;PFX_RENDER_EXPORT;PFX_CORE_EXPORT;PFX_DATA_EXPORT;WIN32;_DEBUG;_WINDOWS;_USRDLL;PECKER_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PFX_MATH_EXPORT;PFX_NATIVE_EXPORT;PFX_RENDER_EXPORT;PFX_CORE_EXPORT;PFX_DATA_EXPORT;WIN32;_DEBUG;_WINDOWS;_USRDLL;PECKER_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

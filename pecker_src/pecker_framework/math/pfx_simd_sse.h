@@ -8,7 +8,7 @@
 #define		PFX_SIMD_SSE_H_
 
 #include "../pfx_defines.h"
-#include <intrin.h>
+
 
 PECKER_BEGIN
 

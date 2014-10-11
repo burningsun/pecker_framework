@@ -16,9 +16,11 @@ PECKER_BEGIN
 #ifdef _MSC_VER
 #define PFX_SIMD_INTRIN __declspec(intrin_type)
 #define PFX_SIMD_ALIGN(x) __declspec(align(x))
+#define PFX_SIMD_ALIGN_TYPE(x, TYPE_NAME) __declspec(align(x)) TYPE_NAME 
 #else
 #ifdef __GNUC__
-#define PFX_SIMD_ALIGN(x) __attribute__ ((aligned (x)))
+#define PFX_SIMD_ALIGN(x)  __attribute__ ((aligned (x)))
+#define PFX_SIMD_ALIGN_TYPE(x, TYPE_NAME)  TYPE_NAME  __attribute__ ((aligned (x)))
 #endif
 #define PFX_SIMD_INTRIN 
 #endif
@@ -37,7 +39,7 @@ PECKER_BEGIN
 #ifdef _MSC_VER
 #define DECLARE_SIMD_ALIGN_BUF(TYPE_NAME, DATANAME, ALIGH)	PFX_SIMD_ALIGN(ALIGH)TYPE_NAME  DATANAME
 #else
-#define DECLARE_SIMD_ALIGN_BUF(TYPE_NAME, DATANAME, ALIGH) 
+#define DECLARE_SIMD_ALIGN_BUF(TYPE_NAME, DATANAME, ALIGH)
 #endif
 #endif
 
@@ -87,6 +89,8 @@ typedef st_vector_data< float, 2 > VECTOR2F_t;
 typedef st_vector_data< int, 4 >   VECTOR4I_t;
 typedef st_vector_data< int, 3 >   VECTOR3I_t;
 typedef st_vector_data< int, 2 >   VECTOR2I_t;
+
+//typedef PFX_SIMD_ALIGN_TYPE(PFX_SIMD128BIT_ALIGH, VECTOR4F_t SIMD_VEC4F_t);
 
 //typedef PFX_SIMD_ALIGN(PFX_SIMD128BIT_ALIGH) VECTOR4F_t SIMD_VECTOR4F_t;
 //typedef PFX_SIMD_ALIGN(PFX_SIMD64BIT_ALIGH)  VECTOR3F_t SIMD_VECTOR3F_t;

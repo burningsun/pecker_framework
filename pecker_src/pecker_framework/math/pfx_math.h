@@ -27,8 +27,22 @@
 
 PECKER_BEGIN
 PFX_C_EXTERN_BEGIN
-result_t PFX_MATH_API math_simd_init();
+PFX_MATH_API result_t math_simd_init();
+PFX_MATH_API const simd_fabs_unsafe_t          *  get_simd_fabs_unsafe();
+PFX_MATH_API const simd_fadd_unsafe_t          *  get_simd_fadd_unsafe();
+PFX_MATH_API const simd_fdiv_unsafe_t          *  get_simd_fdiv_unsafe();
+PFX_MATH_API const simd_fvec_cross_unsafe_t    *  get_simd_fvec_cross_unsafe();
+PFX_MATH_API const simd_fmat_det_unsafe_t      *  get_simd_fmat_det_unsafe();
+PFX_MATH_API const simd_fmat_dot_unsafe_t      *  get_simd_fmat_dot_unsafe();
+PFX_MATH_API const simd_fmat_inverse_unsafe_t  *  get_simd_fmat_inverse_unsafe();
+PFX_MATH_API const simd_fvec_normalize_unsafe_t*  get_simd_fvec_normalize_unsafe();
+PFX_MATH_API const simd_fmat_set_unsafe_t      *  get_simd_fmat_set_unsafe();
+PFX_MATH_API const simd_fmat_transpose_unsafe_t*  get_simd_fmat_transpose_unsafe();
+PFX_MATH_API const simd_fmul_unsafe_t          *  get_simd_fmul_unsafe();
+PFX_MATH_API const simd_fsub_unsafe_t          *  get_simd_fsub_unsafe();
 PFX_C_EXTERN_END
+
+
 PECKER_END
 
 #endif			//PFX_MATH_H_
