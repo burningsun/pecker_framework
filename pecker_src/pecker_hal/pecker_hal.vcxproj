@@ -87,6 +87,7 @@
     <ClInclude Include="..\pecker_framework\render\render_system\glsl_10\pfx_gles10_shader_source.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_buffer_object_gles.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_color_gles.h" />
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_framebuffer_object_gles.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_render_allocator_gles.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_render_state_gles.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\pecker_framework\pfx_hal_info_gles2.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_system\glsl_10\pfx_gles10_shader_source.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_buffer_object_gles.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_framebuffer_object_gles.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_render_state_gles.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_shader_program_gles.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_texture_gles.cpp" />

@@ -90,6 +90,9 @@
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_color_gles.h">
       <Filter>render\render_system\opengles</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_framebuffer_object_gles.h">
+      <Filter>render\render_system\opengles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="..\pecker_framework\render\render_system\glsl_10\pfx_gles10_shader_source.cpp">
       <Filter>render\render_system\glsl10</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_framebuffer_object_gles.cpp">
+      <Filter>render\render_system\opengles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

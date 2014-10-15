@@ -39,11 +39,16 @@ class PFX_RENDER_SYSTEM_API cnative_texture2D_gles
 private:
 	GLuint            m_textureID;
 	ctexture_surface* m_surface_ptr;
-	GLint             m_internal_format;
+	GLint             m_color_format;
+	bool              m_bupdate;
+	usize__t          m_render_width;
+	usize__t          m_render_height;
+	
 public:
 	cnative_texture2D_gles();
 	virtual ~cnative_texture2D_gles();
 public:
+	result_t   create_rendertarget(usize__t width, usize__t height, enum_int_t internal_color_format);
 	result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null);
 
 	result_t   update_rect(const texture_rect_t& __rect,
@@ -86,7 +91,7 @@ public:
 
 	PFX_INLINE bool check_status() const
 	{
-		return ((0 != m_textureID) && (m_surface_ptr));
+		return ((0 != m_textureID) && ((m_surface_ptr)||(m_render_height && m_render_width)));
 	}
 
 	static PFX_INLINE u64_t get_version()
@@ -117,6 +122,11 @@ protected:
 		return __real_dispose();
 	}
 public:
+	PFX_INLINE result_t create_rendertarget(usize__t width, usize__t height, enum_int_t color_format)
+	{
+		return m_native.create_rendertarget(width, height, color_format);
+	}
+
 	PFX_INLINE result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null,
 		enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE)
 	{

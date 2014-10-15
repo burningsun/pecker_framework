@@ -155,7 +155,8 @@ public:
 PFX_Interface IPfx_texture : public creference_root
 {
 	virtual ~IPfx_texture(){ ; }
-															   
+	
+	virtual result_t   create_rendertarget(usize__t width, usize__t height, enum_int_t color_format) = 0;
 	virtual result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null, 
 		                               enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE) = 0;
 

@@ -12,7 +12,7 @@
 PECKER_BEGIN
 
 cnative_texture2D_gles::cnative_texture2D_gles() :m_textureID(0), m_surface_ptr(null), 
-m_internal_format(GL_RGBA)
+m_color_format(GL_RGBA), m_render_height(0), m_render_width(0), m_bupdate(true)
 {
 
 }
@@ -22,21 +22,79 @@ cnative_texture2D_gles::~cnative_texture2D_gles()
 
 }
 
+result_t  cnative_texture2D_gles::create_rendertarget(usize__t width, usize__t height, enum_int_t color_format)
+{
 
+	GLint internal_format = PFX_CLR_2_GLES2_CLR(color_format);
+	GLenum enum_bytes_type = PFX_CLR_GET_GLES2_CLR_BITS_TYPE(color_format);
+	RETURN_INVALID_RESULT(color_format < 0 || enum_bytes_type < 0, PFX_STATUS_INVALID_PARAMS);
+
+	if (0 == m_textureID)
+	{
+		::glGenTextures(1, &m_textureID);
+		RETURN_INVALID_RESULT(0 == m_textureID,
+			PFX_STATUS_FAIL);
+		m_bupdate = true;
+	}
+
+	m_color_format = color_format;
+	if (width && height)
+	{
+		if (width != m_render_height && height != m_render_width)
+		{
+			m_bupdate = true;
+		}
+		
+		if (m_bupdate)
+		{
+			bind();
+			::glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width,
+				height, 0, internal_format,
+				enum_bytes_type, null);
+			m_bupdate = false;
+		}
+
+
+		m_render_width = width;
+		m_render_height = height;
+		
+	}
+	else
+	{
+		m_render_width = 0;
+		m_render_height = 0;
+	}
+		
+	
+
+	return PFX_STATUS_OK;
+}
 
 result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN surface_ptr)
 {
-	RETURN_INVALID_RESULT(null == surface_ptr && null == m_surface_ptr, PFX_STATUS_UNINIT);
+	if (null == m_surface_ptr && null == surface_ptr)
+	{
+		if (m_render_height && m_render_width)
+		{
+			return create_rendertarget(m_render_width, m_render_height, m_color_format);
+		}
+		return PFX_STATUS_UNINIT;
+	}
 
 	if (null == surface_ptr && m_surface_ptr)
 	{
 		if (0 == m_textureID)
 		{
 			::glGenTextures(1, &m_textureID);
+			m_bupdate = true;
 		}
+
 		RETURN_INVALID_RESULT(0 == m_textureID, 
 			PFX_STATUS_FAIL);
 
+		RETURN_RESULT(!m_bupdate, PFX_STATUS_OK);
+
+		m_bupdate = false;
 		bind();
 
 		usize__t max_mip_level = m_surface_ptr->get_max_miplevel();
@@ -70,9 +128,10 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 				if (PFX_IMG_UNCOMPRESS_FMT == img.m_img.m_compression_format)
 				{
 					GLenum enum_bytes_type = PFX_CLR_GET_GLES2_CLR_BITS_TYPE(img.m_img.m_color_format);
-					::glTexImage2D(GL_TEXTURE_2D, imip, internal_format, img.m_img.m_width,
-						img.m_img.m_height, 0, img_clr_format,
-						enum_bytes_type, img.m_img.m_bits_ptr);
+						::glTexImage2D(GL_TEXTURE_2D, imip, internal_format, img.m_img.m_width,
+							img.m_img.m_height, 0, img_clr_format,
+							enum_bytes_type, img.m_img.m_bits_ptr);
+
 				}
 				else
 				{
@@ -114,6 +173,9 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 			m_surface_ptr->dispose_object();
 		}
 		m_surface_ptr = new_ptr;
+		m_render_height = 0;
+		m_render_width  = 0;
+		m_bupdate = true;
 	}
 
 
