@@ -144,7 +144,7 @@ public:
 		IPfx_texture* PARAM_IN texture_ptr, 
 		enum_int_t unit_number = 0)
 	{
-		if (null == texture_ptr || texture_ptr->get_version() != cnative_texture2D_gles::get_version()
+		if (null == texture_ptr || texture_ptr->get_version() != cnative_texture2D_gles2::get_version()
 			|| unit_number > 31 || unit_number < 0)
 		{
 			return PFX_STATUS_INVALID_PARAMS;
@@ -162,9 +162,9 @@ public:
 		return ctexture_surface::create_new_object();
 	}
 
-	PFX_INLINE ctexture2D_gles* create_texture2D()
+	PFX_INLINE ctexture2D_gles2* create_texture2D()
 	{
-		return ctexture2D_gles::create_new_object();
+		return ctexture2D_gles2::create_new_object();
 	}
 
 	//////////////////////////////////////////////////////////////////////////

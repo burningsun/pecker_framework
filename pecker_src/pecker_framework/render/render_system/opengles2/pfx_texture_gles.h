@@ -33,22 +33,107 @@ PECKER_BEGIN
 #define RTEX_LOG_ERR(...)
 #endif
 
-
-class PFX_RENDER_SYSTEM_API cnative_texture2D_gles
+PFX_INLINE GLenum PFX_TEXSUR_2_GL_TEXSUR(PFX_TEXTURE_SURFACE_TYPE_t surtype)
 {
+	static GLenum texture_surface_type[PFX_TEXTURE_SURFACE_TYPE_COUNT + 1] =
+	{
+		GL_TEXTURE_2D,
+		GL_TEXTURE_2D,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+		GL_TEXTURE_2D
+	};
+	return texture_surface_type[surtype];
+}
+PFX_INLINE GLenum PFX_TEXFILTER_NAME_2_GLTEXFILTER_NAME(PFX_TEXTURE_PARAMS_NAME_t filtername)
+{
+	static GLenum filter[PFX_TEXTURE_PARAMS_NAME_COUNT + 1] =
+	{
+		GL_TEXTURE_MAG_FILTER,
+		GL_TEXTURE_MIN_FILTER,
+		GL_TEXTURE_WRAP_S,
+		GL_TEXTURE_WRAP_T,
+		GL_TEXTURE_MAG_FILTER
+	};
+	return filter[filtername];
+}
+
+PFX_INLINE GLenum PFX_TEXFILTER_PARAM_2_GLTEXFILTER_PARAM(PFX_TEXTURE_PARAMS_t filter_param)
+{
+	static GLenum filter[PFX_TEXTURE_PARAMS_COUNT + 1] =
+	{
+		GL_NEAREST,
+		GL_LINEAR,
+		GL_NEAREST_MIPMAP_NEAREST,
+		GL_NEAREST_MIPMAP_LINEAR,
+		GL_LINEAR_MIPMAP_NEAREST,
+		GL_LINEAR_MIPMAP_LINEAR,
+		GL_REPEAT,
+		GL_CLAMP_TO_EDGE,
+		GL_MIRRORED_REPEAT,
+		GL_NEAREST
+	};
+	return filter[filter_param];
+}
+
+PFX_INLINE usize__t PFX_TEXFILTER_PARAM_COUNT(PFX_TEXTURE_PARAMS_NAME_t filtername)
+{
+	static usize__t param_count[PFX_TEXTURE_PARAMS_NAME_COUNT + 1] =
+	{
+		1,
+		1,
+		1,
+		1,
+		0
+	};
+	return param_count[filtername];
+}
+
+PFX_INLINE bool CHECK_PFX_TEX_PARAM_OK_GLES2(PFX_TEXTURE_PARAMS_NAME_t filtername,
+	PFX_TEXTURE_PARAMS_t filter_param)
+{
+	return ((PFX_TRN_MAG_FILTER == filtername && filter_param <= PFX_TP_LINEAR) ||
+		(PFX_TRN_MIN_FILTER == filtername &&
+		(
+		(filter_param >= PFX_TP_NEAREST_MIPMAP_NEAREST &&
+		filter_param <= PFX_TP_LINEAR_MIPMAP_LINEAR) || (filter_param <= PFX_TP_LINEAR)
+		)) ||
+		((PFX_TRN_WRAP_S == filtername || PFX_TRN_WRAP_T == filtername)&&
+		(PFX_TP_REPEAT <= filter_param && filter_param <= PFX_TP_MIRRORED_REPEAT))
+		);
+}
+
+
+class PFX_RENDER_SYSTEM_API cnative_texture2D_gles2
+{
+public:
+	static const usize__t MAX_TEXFILTER_PARAM_BUFFER_SIZE = 32;
 private:
-	GLuint            m_textureID;
-	ctexture_surface* m_surface_ptr;
-	GLint             m_color_format;
-	bool              m_bupdate;
-	usize__t          m_render_width;
-	usize__t          m_render_height;
+	GLuint                      m_textureID;
+	GLenum                      m_gl_tex_surface_type;
+	PFX_TEXTURE_SURFACE_TYPE_t  m_tex_surface_type;
+	ctexture_surface*           m_surface_ptr;
+	GLint                       m_color_format;
+	bool                        m_bupdate;
+	usize__t                    m_render_width;
+	usize__t                    m_render_height;
+
+	usize__t                    m_texfilter_param_bufsize;
+	enum_int_t                  m_texfilter_param_buf[MAX_TEXFILTER_PARAM_BUFFER_SIZE];
+	index_t                    m_texfilers[PFX_TEXTURE_PARAMS_NAME_COUNT];
+
 	
 public:
-	cnative_texture2D_gles();
-	virtual ~cnative_texture2D_gles();
-public:
-	result_t   create_rendertarget(usize__t width, usize__t height, enum_int_t internal_color_format);
+	cnative_texture2D_gles2();
+	virtual ~cnative_texture2D_gles2();
+public: 
+	result_t   create_rendertarget();
+	result_t   create_rendertarget(PFX_TEXTURE_SURFACE_TYPE_t sur_type, 
+		usize__t width, usize__t height, enum_int_t internal_color_format);
 	result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null);
 
 	result_t   update_rect(const texture_rect_t& __rect,
@@ -60,11 +145,21 @@ public:
 
 	void dispose();
 
-	void set_texture_filter(enum_int_t param_name, enum_int_t __param);
+	result_t set_texture_filter(enum_int_t param_name, enum_int_t __param);
+	result_t set_texture_filter(enum_int_t param_name, const enum_int_t* __param_ptr);
+
+	result_t reset_texture_filter();
 
 	void dispose_render_target();
 	
-	
+	PFX_INLINE usize__t width() const
+	{
+		return m_render_width;
+	}
+	PFX_INLINE usize__t height() const
+	{
+		return m_render_height;
+	}
 
 	PFX_INLINE long_t   get_native_handle() const
 	{
@@ -100,20 +195,20 @@ public:
 	}
 };
 
-class PFX_RENDER_SYSTEM_API ctexture2D_gles : public IPfx_texture
+class PFX_RENDER_SYSTEM_API ctexture2D_gles2 : public IPfx_texture
 {
-	typedef   cnative_texture2D_gles native_t;
+	typedef   cnative_texture2D_gles2 native_t;
 	DECLARE_FRIEND_CLASS(TEXTURE_2D_NODE_ALLOC_GLES2);
 private:
 	native_t m_native;
 public:
-	DELARE_REF_METHOD(ctexture2D_gles, IPfx_texture, ctexture2D_gles_allocator_t);
+	DELARE_REF_METHOD(ctexture2D_gles2, IPfx_texture, ctexture2D_gles_allocator_t);
 protected:
-	ctexture2D_gles()
+	ctexture2D_gles2()
 	{
 		RTEX_LOG_INFO("create...0x%08X", (lpointer_t)this);
 	}
-	virtual ~ctexture2D_gles()
+	virtual ~ctexture2D_gles2()
 	{
 		RTEX_LOG_INFO("release...0x%08X", (lpointer_t)this);
 	}
@@ -124,7 +219,7 @@ protected:
 public:
 	PFX_INLINE result_t create_rendertarget(usize__t width, usize__t height, enum_int_t color_format)
 	{
-		return m_native.create_rendertarget(width, height, color_format);
+		return m_native.create_rendertarget(PFX_TEXTURE_2D_SURFACE, width, height, color_format);
 	}
 
 	PFX_INLINE result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null,
@@ -133,6 +228,11 @@ public:
 		RETURN_INVALID_RESULT(PFX_TEXTURE_2D_SURFACE != surface_type &&
 			PFX_TEXTURE_DEFUALT_SURFACE != surface_type, PFX_STATUS_INVALID_PARAMS);
 		return m_native.update_surface(surface_ptr);
+	}
+
+	PFX_INLINE result_t update_default()
+	{
+		return m_native.update_surface(null);
 	}
 
 	PFX_INLINE result_t   update_rect(const texture_rect_t& __rect,
@@ -171,8 +271,12 @@ public:
 
 	PFX_INLINE result_t set_texture_filter(enum_int_t param_name, enum_int_t __param)
 	{
-		m_native.set_texture_filter(param_name, __param);
-		return PFX_STATUS_OK;
+		return m_native.set_texture_filter(param_name, __param);
+	}
+
+	PFX_INLINE result_t set_texture_filter(enum_int_t param_name, const enum_int_t* __param_ptr)
+	{
+		return m_native.set_texture_filter(param_name, __param_ptr);
 	}
 
 	PFX_INLINE result_t bind_texture()
@@ -180,6 +284,20 @@ public:
 		m_native.bind();
 		return PFX_STATUS_OK;
 	}
+	PFX_INLINE result_t bind ()
+	{
+		if (m_native.check_status())
+		{
+			m_native.bind();
+			return PFX_STATUS_OK;
+		}
+		else
+		{
+			return update_default();
+		}
+
+	}
+
 	PFX_INLINE long_t   get_native_handle() const
 	{
 		return m_native.get_native_handle();
@@ -191,7 +309,7 @@ public:
 
 };
 
-class PFX_RENDER_SYSTEM_API ctextureCube_gles : public IPfx_texture
+class PFX_RENDER_SYSTEM_API ctextureCube_gles2 : public IPfx_texture
 {
 
 };

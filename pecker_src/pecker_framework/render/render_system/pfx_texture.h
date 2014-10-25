@@ -15,6 +15,7 @@
 #include "../pfx_image.h"
 #include "../../include/cshare_object.h"
 #include "../pfx_render_allocator.h"
+#include "pfx_render_target.h"
 
 PECKER_BEGIN
 	
@@ -152,7 +153,7 @@ public:
 	 }
 };
 
-PFX_Interface IPfx_texture : public creference_root
+PFX_Interface IPfx_texture : public IPfx_rendertarget
 {
 	virtual ~IPfx_texture(){ ; }
 	
@@ -176,6 +177,7 @@ PFX_Interface IPfx_texture : public creference_root
 	virtual ctexture_surface* get_surface(enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE) = 0;
 
 	virtual result_t set_texture_filter(enum_int_t param_name, enum_int_t __param) = 0;
+	virtual result_t set_texture_filter(enum_int_t param_name, const enum_int_t* __param_ptr) = 0;
 
 	virtual result_t bind_texture() = 0;
 	virtual long_t   get_native_handle() const = 0;

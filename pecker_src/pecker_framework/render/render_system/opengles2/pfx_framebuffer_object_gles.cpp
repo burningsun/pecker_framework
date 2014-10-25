@@ -98,7 +98,7 @@ GLenum PFX_FMT_TO_GLRB_FMT(enum_int_t usage_type, enum_int_t PFX_FMT)
 	return res;
 }
 
-cnative_renderbuffer_gles::cnative_renderbuffer_gles() :m_renderbufferID(0),
+cnative_renderbuffer_gles2::cnative_renderbuffer_gles2() :m_renderbufferID(0),
                                                         m_usage_type(PFX_DEPTH_BUFFER_FMT),
 														m_internalformat(PFX_DEPTH_COMPONENT16_FMT),
 														m_width(0),
@@ -106,14 +106,14 @@ cnative_renderbuffer_gles::cnative_renderbuffer_gles() :m_renderbufferID(0),
 {
 
 }
-cnative_renderbuffer_gles::~cnative_renderbuffer_gles()
+cnative_renderbuffer_gles2::~cnative_renderbuffer_gles2()
 {
 	dispose();
 }
 
 
 
-result_t cnative_renderbuffer_gles::store_renderbuffer(enum_int_t usage_type, //  PFX_RENDER_BUFFER_FMT_t
+result_t cnative_renderbuffer_gles2::create_rendertarget(enum_int_t usage_type, //  PFX_RENDER_BUFFER_FMT_t
 enum_int_t format,
 usize__t width, usize__t height)
 {
@@ -137,6 +137,7 @@ usize__t width, usize__t height)
 	}
 	if (m_renderbufferID)
 	{
+		::glBindRenderbuffer(GL_RENDERBUFFER, m_renderbufferID);
 		if (usage_type != m_usage_type || m_internalformat != format || m_width != width || height != m_height)
 		{
 			::glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
@@ -149,7 +150,18 @@ usize__t width, usize__t height)
 	return PFX_STATUS_OK;
 }
 
-result_t cnative_renderbuffer_gles::bind()
+result_t cnative_renderbuffer_gles2::update_default()
+{
+	if (!m_width || !m_height || m_usage_type < PFX_UNKOWN_RENDER_BUFFER_FMT)
+	{
+		return create_rendertarget(m_usage_type, m_internalformat, m_width, m_height);
+	}
+	else
+	{
+		return PFX_STATUS_UNINIT;
+	}
+}
+result_t cnative_renderbuffer_gles2::bind()
 {
 	if (m_renderbufferID)
 	{
@@ -161,7 +173,7 @@ result_t cnative_renderbuffer_gles::bind()
 		return PFX_STATUS_UNINIT;
 	}
 }
-result_t cnative_renderbuffer_gles::dispose()
+result_t cnative_renderbuffer_gles2::dispose()
 {
 	m_usage_type = PFX_DEPTH_BUFFER_FMT;
 	m_internalformat = PFX_DEPTH_COMPONENT16_FMT;
@@ -169,7 +181,7 @@ result_t cnative_renderbuffer_gles::dispose()
 	m_height = 0;
 	return dispose_render_target();
 }
-result_t cnative_renderbuffer_gles::dispose_render_target()
+result_t cnative_renderbuffer_gles2::dispose_render_target()
 {
 	if (m_renderbufferID)
 	{

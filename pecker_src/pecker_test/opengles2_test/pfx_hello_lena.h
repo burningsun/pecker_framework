@@ -39,7 +39,7 @@ private:
 	cImage m_cimg;
 	GLuint m_texture2D;
 	ctexture_surface* m_tex_surface_ptr;
-	ctexture2D_gles*  m_texture2d_ptr;
+	ctexture2D_gles2*  m_texture2d_ptr;
 	float_t m_rotateZ;
 	
 
@@ -206,18 +206,21 @@ public:
 			sImage_t* img_ptr = load_png_img(lena_path);
 			m_tex_surface_ptr->update_image(img_ptr, PFX_RGBA_FMT);
 			img_ptr->dispose_object();
+
+			m_texture2d_ptr->update_surface(m_tex_surface_ptr);
+			m_texture2d_ptr->set_texture_filter(PFX_TRN_MIN_FILTER, PFX_TP_NEAREST);
+			m_texture2d_ptr->set_texture_filter(PFX_TRN_MAG_FILTER, PFX_TP_NEAREST);
 		}
 
-		if (m_texture2d_ptr->check_status())
-		{
-			m_texture2d_ptr->bind_texture();
-		}
-		else
-		{ 
-			m_texture2d_ptr->update_surface(m_tex_surface_ptr);
-			m_texture2d_ptr->set_texture_filter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			m_texture2d_ptr->set_texture_filter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		}
+		//if (m_texture2d_ptr->check_status())
+		//{
+		//	m_texture2d_ptr->bind_texture();
+		//}
+		//else
+		//{ 
+		//	m_texture2d_ptr->update_default();
+		//}
+		m_texture2d_ptr->bind();
 
 
 //		if (!m_texture2D)

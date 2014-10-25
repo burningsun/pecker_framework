@@ -49,9 +49,13 @@ typedef SHADER_PROGRAM_ALLOC_GLES2 		native_shader_program_gles2_t;
 #define SHADER_PROGRAM_NODE_ALLOC_GLES2 class pecker_simple_allocator< cshader_program_gles2 >
 typedef SHADER_PROGRAM_NODE_ALLOC_GLES2 shader_program_node_gles2_t;
 
-class ctexture2D_gles;
-#define  TEXTURE_2D_NODE_ALLOC_GLES2 class pecker_simple_allocator< ctexture2D_gles >
+class ctexture2D_gles2;
+#define  TEXTURE_2D_NODE_ALLOC_GLES2 class pecker_simple_allocator< ctexture2D_gles2 >
 typedef TEXTURE_2D_NODE_ALLOC_GLES2  ctexture2D_gles_allocator_t;
+
+class crenderbuffer_gles2;
+#define RENDERBUFFER_ALLOC_GLES2 class pecker_simple_allocator< crenderbuffer_gles2 >
+typedef RENDERBUFFER_ALLOC_GLES2 crenderbuffer_alloc_gles2_t;
 
 
 

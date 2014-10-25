@@ -11,18 +11,30 @@
 
 PECKER_BEGIN
 
-cnative_texture2D_gles::cnative_texture2D_gles() :m_textureID(0), m_surface_ptr(null), 
-m_color_format(GL_RGBA), m_render_height(0), m_render_width(0), m_bupdate(true)
+
+cnative_texture2D_gles2::cnative_texture2D_gles2() :m_textureID(0), m_surface_ptr(null), 
+m_color_format(GL_RGBA), m_render_height(0), m_render_width(0), m_bupdate(true), 
+m_tex_surface_type(PFX_TEXTURE_2D_SURFACE),
+m_gl_tex_surface_type(GL_TEXTURE_2D),
+m_texfilter_param_bufsize(0)
 {
 
+	for (uindex_t i = PFX_TEXTURE_PARAMS_NAME_COUNT; i != 0;)
+	{
+		--i;
+		m_texfilers[i] = -1;
+	}
 }
-cnative_texture2D_gles::~cnative_texture2D_gles()
+cnative_texture2D_gles2::~cnative_texture2D_gles2()
 {
 	dispose();
 
-}
+} 
 
-result_t  cnative_texture2D_gles::create_rendertarget(usize__t width, usize__t height, enum_int_t color_format)
+
+
+result_t  cnative_texture2D_gles2::create_rendertarget(PFX_TEXTURE_SURFACE_TYPE_t sur_type, 
+	usize__t width, usize__t height, enum_int_t color_format)
 {
 
 	GLint internal_format = PFX_CLR_2_GLES2_CLR(color_format);
@@ -34,10 +46,14 @@ result_t  cnative_texture2D_gles::create_rendertarget(usize__t width, usize__t h
 		::glGenTextures(1, &m_textureID);
 		RETURN_INVALID_RESULT(0 == m_textureID,
 			PFX_STATUS_FAIL);
+		reset_texture_filter();
 		m_bupdate = true;
 	}
 
 	m_color_format = color_format;
+	m_tex_surface_type = sur_type;
+
+	m_gl_tex_surface_type = PFX_TEXSUR_2_GL_TEXSUR(sur_type);
 	if (width && height)
 	{
 		if (width != m_render_height && height != m_render_width)
@@ -48,7 +64,7 @@ result_t  cnative_texture2D_gles::create_rendertarget(usize__t width, usize__t h
 		if (m_bupdate)
 		{
 			bind();
-			::glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width,
+			::glTexImage2D(m_gl_tex_surface_type, 0, internal_format, width,
 				height, 0, internal_format,
 				enum_bytes_type, null);
 			m_bupdate = false;
@@ -64,19 +80,18 @@ result_t  cnative_texture2D_gles::create_rendertarget(usize__t width, usize__t h
 		m_render_width = 0;
 		m_render_height = 0;
 	}
-		
-	
+
 
 	return PFX_STATUS_OK;
 }
 
-result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN surface_ptr)
+result_t   cnative_texture2D_gles2::update_surface(ctexture_surface* PARAM_IN surface_ptr)
 {
 	if (null == m_surface_ptr && null == surface_ptr)
 	{
 		if (m_render_height && m_render_width)
 		{
-			return create_rendertarget(m_render_width, m_render_height, m_color_format);
+			return create_rendertarget(m_tex_surface_type,m_render_width, m_render_height, m_color_format);
 		}
 		return PFX_STATUS_UNINIT;
 	}
@@ -86,7 +101,12 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 		if (0 == m_textureID)
 		{
 			::glGenTextures(1, &m_textureID);
-			m_bupdate = true;
+			reset_texture_filter();
+			m_bupdate = true;			
+		}
+		else
+		{
+			bind();
 		}
 
 		RETURN_INVALID_RESULT(0 == m_textureID, 
@@ -95,7 +115,7 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 		RETURN_RESULT(!m_bupdate, PFX_STATUS_OK);
 
 		m_bupdate = false;
-		bind();
+		
 
 		usize__t max_mip_level = m_surface_ptr->get_max_miplevel();
 		uindex_t imip = 0;
@@ -116,7 +136,7 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 			}
 
 			GLint internal_format = PFX_CLR_T_2_GLES2_CLR(mip_img_ptr->m_rcolor_type);
-
+			m_gl_tex_surface_type = PFX_TEXSUR_2_GL_TEXSUR(m_tex_surface_type);
 
 			cImage& img_ref = simg_ptr->native();
 			const image_data_t& img = img_ref.get_image_direct();
@@ -128,14 +148,14 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 				if (PFX_IMG_UNCOMPRESS_FMT == img.m_img.m_compression_format)
 				{
 					GLenum enum_bytes_type = PFX_CLR_GET_GLES2_CLR_BITS_TYPE(img.m_img.m_color_format);
-						::glTexImage2D(GL_TEXTURE_2D, imip, internal_format, img.m_img.m_width,
+						::glTexImage2D(m_gl_tex_surface_type, imip, internal_format, img.m_img.m_width,
 							img.m_img.m_height, 0, img_clr_format,
 							enum_bytes_type, img.m_img.m_bits_ptr);
 
 				}
 				else
 				{
-					::glCompressedTexImage2D(GL_TEXTURE_2D, imip, internal_format, img.m_img.m_width,
+					::glCompressedTexImage2D(m_gl_tex_surface_type, imip, internal_format, img.m_img.m_width,
 						img.m_img.m_height, 0, img.m_img.m_bytes_count, img.m_img.m_bits_ptr);
 				}
 			}
@@ -145,6 +165,7 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 				RTEX_LOG_ERR("unkown format for opengl es2, pfx format = %d", img.m_img.m_color_format);
 				break;
 			}
+
 			simg_ptr->dispose_object();
 
 		}
@@ -183,7 +204,7 @@ result_t   cnative_texture2D_gles::update_surface(ctexture_surface* PARAM_IN sur
 }
 
 
-result_t   cnative_texture2D_gles::update_rect(const texture_rect_t& __rect,
+result_t   cnative_texture2D_gles2::update_rect(const texture_rect_t& __rect,
 	const byte_t* buffer_ptr,
 	usize__t bytes_count,
 	uindex_t miplevel //= 0
@@ -212,6 +233,7 @@ result_t   cnative_texture2D_gles::update_rect(const texture_rect_t& __rect,
 
 	if (img_clr_format >= 0)
 	{
+		m_gl_tex_surface_type = PFX_TEXSUR_2_GL_TEXSUR(m_tex_surface_type);
 		if (PFX_IMG_UNCOMPRESS_FMT == img.m_img.m_compression_format)
 		{
 			if (__rect.m_width * __rect.m_height * img.m_img.m_stride > bytes_count)
@@ -220,13 +242,13 @@ result_t   cnative_texture2D_gles::update_rect(const texture_rect_t& __rect,
 				return PFX_STATUS_INVALID_PARAMS;
 			}
 			GLenum enum_bytes_type = PFX_CLR_GET_GLES2_CLR_BITS_TYPE(img.m_img.m_color_format);
-			::glTexSubImage2D(GL_TEXTURE_2D, miplevel,
+			::glTexSubImage2D(m_gl_tex_surface_type, miplevel,
 				__rect.m_x, __rect.m_y, __rect.m_width, __rect.m_height,
 				img_clr_format, enum_bytes_type, buffer_ptr);
 		}
 		else
 		{
-			::glCompressedTexSubImage2D(GL_TEXTURE_2D, miplevel,
+			::glCompressedTexSubImage2D(m_gl_tex_surface_type, miplevel,
 				__rect.m_x, __rect.m_y, __rect.m_width, __rect.m_height,
 				img_clr_format, bytes_count, buffer_ptr);
 		}
@@ -242,14 +264,14 @@ result_t   cnative_texture2D_gles::update_rect(const texture_rect_t& __rect,
 }
 
 
-void cnative_texture2D_gles::bind()
+void cnative_texture2D_gles2::bind()
 {
-	::glBindTexture(GL_TEXTURE_2D, m_textureID);
+	::glBindTexture(m_gl_tex_surface_type, m_textureID);
 }
 
 
 
-void cnative_texture2D_gles::dispose_render_target()
+void cnative_texture2D_gles2::dispose_render_target()
 {
 	if (m_textureID)
 	{
@@ -257,7 +279,7 @@ void cnative_texture2D_gles::dispose_render_target()
 		m_textureID = 0;
 	}
 }
-void cnative_texture2D_gles::dispose()
+void cnative_texture2D_gles2::dispose()
 {
 	if (m_textureID)
 	{
@@ -270,17 +292,137 @@ void cnative_texture2D_gles::dispose()
 		m_surface_ptr->dispose_object();
 		m_surface_ptr = null;
 	}
+
+	m_texfilter_param_bufsize = 0;
+
+	for (uindex_t i = PFX_TEXTURE_PARAMS_NAME_COUNT; i != 0;)
+	{
+		--i;
+		m_texfilers[i] = -1;
+	}
+
 }
 
-void cnative_texture2D_gles::set_texture_filter(enum_int_t param_name, enum_int_t __param)
+result_t cnative_texture2D_gles2::set_texture_filter(enum_int_t param_name, enum_int_t __param)
 {
 	if (m_textureID)
 	{
-		::glBindTexture(GL_TEXTURE_2D, m_textureID);
-		::glTexParameteri(GL_TEXTURE_2D, param_name, __param);
+		RETURN_INVALID_RESULT(param_name > PFX_TEXTURE_PARAMS_NAME_COUNT || 
+			__param > PFX_TEXTURE_PARAMS_COUNT ||
+			param_name < 0 ||
+			__param < 0 ||
+			!CHECK_PFX_TEX_PARAM_OK_GLES2((PFX_TEXTURE_PARAMS_NAME_t)param_name, 
+			(PFX_TEXTURE_PARAMS_t)__param), PFX_STATUS_INVALID_PARAMS);
+
+		::glBindTexture(m_gl_tex_surface_type, m_textureID);
+		GLenum glparam_name = PFX_TEXFILTER_NAME_2_GLTEXFILTER_NAME((PFX_TEXTURE_PARAMS_NAME_t)param_name);
+		GLint glparam = PFX_TEXFILTER_PARAM_2_GLTEXFILTER_PARAM((PFX_TEXTURE_PARAMS_t)__param);
+
+		::glTexParameteri(m_gl_tex_surface_type, glparam_name, glparam);
+
+		if (m_texfilers[param_name] < 0 && 
+			m_texfilter_param_bufsize < MAX_TEXFILTER_PARAM_BUFFER_SIZE)
+		{
+			m_texfilter_param_buf[m_texfilter_param_bufsize] = glparam;
+			m_texfilers[param_name] = m_texfilter_param_bufsize;
+			m_texfilter_param_bufsize += PFX_TEXFILTER_PARAM_COUNT((PFX_TEXTURE_PARAMS_NAME_t)param_name);
+		}
+		else if (m_texfilers[param_name] < MAX_TEXFILTER_PARAM_BUFFER_SIZE)
+		{
+			m_texfilter_param_buf[m_texfilers[param_name]] = glparam;
+		}
+
+
+		return PFX_STATUS_OK;
+	}
+	else
+	{
+		return PFX_STATUS_UNINIT;
 	}
 	
 }
 
+result_t cnative_texture2D_gles2::set_texture_filter(enum_int_t param_name, const enum_int_t* __param_ptr)
+{
+	RETURN_INVALID_RESULT(null == __param_ptr, PFX_STATUS_INVALID_PARAMS);
+
+	usize__t param_count = PFX_TEXFILTER_PARAM_COUNT((PFX_TEXTURE_PARAMS_NAME_t)param_name);
+	if (1 == param_count)
+	{
+		return set_texture_filter(param_name, __param_ptr[0]);
+	}
+
+	if (m_textureID)
+	{
+#define MAX_GLES2_PARAMCOUNT (8)
+
+		RETURN_INVALID_RESULT(
+			param_name > PFX_TEXTURE_PARAMS_NAME_COUNT ||
+			param_name < 0, PFX_STATUS_INVALID_PARAMS);
+
+		GLenum glparam_name = PFX_TEXFILTER_NAME_2_GLTEXFILTER_NAME((PFX_TEXTURE_PARAMS_NAME_t)param_name);
+		GLint glparam[MAX_GLES2_PARAMCOUNT];
+
+		for (uindex_t i = param_count; i != 0;)
+		{
+			--i;
+
+			RETURN_INVALID_RESULT(
+				__param_ptr[i] > PFX_TEXTURE_PARAMS_COUNT ||
+				__param_ptr[i] < 0, PFX_STATUS_INVALID_PARAMS);
+
+			glparam[i] = PFX_TEXFILTER_PARAM_2_GLTEXFILTER_PARAM((PFX_TEXTURE_PARAMS_t)__param_ptr[i]);
+		}
+
+		
+
+		::glBindTexture(m_gl_tex_surface_type, m_textureID);
+		::glTexParameteriv(m_gl_tex_surface_type, glparam_name, glparam);
+
+		if (m_texfilers[param_name] < 0 &&
+			m_texfilter_param_bufsize < MAX_TEXFILTER_PARAM_BUFFER_SIZE)
+		{
+		    memcpy(m_texfilter_param_buf + m_texfilter_param_bufsize, glparam, param_count);
+			m_texfilers[param_name] = m_texfilter_param_bufsize;
+			m_texfilter_param_bufsize += param_count;
+		}
+		else if (m_texfilers[param_name] < MAX_TEXFILTER_PARAM_BUFFER_SIZE)
+		{
+			memcpy(m_texfilter_param_buf + m_texfilers[param_name], glparam, param_count);
+		}
+
+
+		return PFX_STATUS_OK;
+	}
+	else
+	{
+		return PFX_STATUS_UNINIT;
+	}
+}
+
+result_t cnative_texture2D_gles2::reset_texture_filter()
+{
+	if (m_textureID)
+	{
+		::glBindTexture(m_gl_tex_surface_type, m_textureID);
+	}
+	else
+	{
+		return PFX_STATUS_UNINIT;
+	}
+	const usize__t max_filter_count = (sizeof(m_texfilers) / sizeof(enum_int_t));
+	for (uindex_t i = 0; i < max_filter_count; ++i)
+	{
+		index_t offset = m_texfilers[i];
+		if (offset < 0)
+		{
+			continue;
+		}
+	    GLenum glparam_name = PFX_TEXFILTER_NAME_2_GLTEXFILTER_NAME((PFX_TEXTURE_PARAMS_NAME_t)i);
+		GLint* glparam_ptr = (GLint*)(&m_texfilter_param_buf[offset]);
+		::glTexParameteriv(m_gl_tex_surface_type, glparam_name, glparam_ptr);
+	}
+	return PFX_STATUS_OK;
+}
 PECKER_END
 

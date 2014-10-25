@@ -109,16 +109,18 @@ typedef enum enumFRAMEBUFFER_FORMAT
 	PFX_FRAMEBUFFER_FORMAT_COUNT
 }PFX_FRAMEBUFFER_FMT_t;
 
-PFX_Interface  IPfx_renderbuffer : public creference_root
+PFX_Interface  IPfx_renderbuffer : public IPfx_rendertarget
 {
 	virtual ~IPfx_renderbuffer(){ ; }
-	virtual result_t store_renderbuffer(enum_int_t usage_type, //  PFX_RENDER_BUFFER_FMT_t
+	virtual result_t create_rendertarget(enum_int_t usage_type, //  PFX_RENDER_BUFFER_FMT_t
 		enum_int_t format,
 		usize__t width, usize__t height) = 0;
 	virtual bool     check_status() const = 0;
 
 	virtual enum_int_t get_usage_type() const = 0;
 	virtual enum_int_t get_format() const = 0;
+
+	virtual result_t bind_renderbuffer() = 0;
 
 	virtual result_t dispose_renderbuffer() = 0;
 	virtual result_t dispose_render_target() = 0;
@@ -127,7 +129,7 @@ PFX_Interface  IPfx_renderbuffer : public creference_root
 	virtual u64_t    get_version() const = 0;
 };
 
-PFX_Interface  IPfx_framebuffer : public creference_root
+PFX_Interface  IPfx_framebuffer : public IPfx_rendertarget
 {
 	virtual ~IPfx_framebuffer(){ ; }
 
@@ -144,7 +146,7 @@ PFX_Interface  IPfx_framebuffer : public creference_root
 
 	virtual bool     check_status() const = 0;
 
-	virtual result_t create_render_target(
+	virtual result_t create_rendertarget(
 		usize__t width = 0, usize__t height = 0,
 		enum_int_t color_format = PFX_TEXTURE_2D,
 		enum_int_t depth_format = PFX_DEPTH_COMPONENT16_FMT,

@@ -93,6 +93,9 @@
     <ClInclude Include="..\pecker_framework\render\render_system\opengles2\pfx_framebuffer_object_gles.h">
       <Filter>render\render_system\opengles</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_target.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

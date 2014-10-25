@@ -426,6 +426,9 @@
     <ClInclude Include="..\pecker_framework\math\pfx_simd_param_sse.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_target.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />
