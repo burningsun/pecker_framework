@@ -18,6 +18,12 @@
 #include "pfx_render_target.h"
 
 PECKER_BEGIN
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#pragma warning(disable:4275)
+#endif
 	
 typedef enum enumTEXTURE_TYPE
 {
@@ -106,11 +112,11 @@ typedef struct st_mip_image
 
 }mip_image_t;
 
-typedef struct texture_param
-{
-	enum_int_t	m_name;
-	enum_int_t	m_param_value;
-}texture_param_t;
+//typedef struct texture_param
+//{
+//	enum_int_t	m_name;
+//	enum_int_t	m_param_value;
+//}texture_param_t;
 			
 class PFX_RENDER_API ctexture_surface : 
 	public creference_root
@@ -184,7 +190,9 @@ PFX_Interface IPfx_texture : public IPfx_rendertarget
 	virtual u64_t    get_version() const = 0;
 };
 
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 PECKER_END
 
 #endif			//PFX_TEXTURE_H_

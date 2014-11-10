@@ -148,7 +148,7 @@ PFX_Interface  IPfx_framebuffer : public IPfx_rendertarget
 
 	virtual result_t create_rendertarget(
 		usize__t width = 0, usize__t height = 0,
-		enum_int_t color_format = PFX_TEXTURE_2D,
+		enum_int_t color_format = PFX_RGB_565_FMT,
 		enum_int_t depth_format = PFX_DEPTH_COMPONENT16_FMT,
 		enum_int_t stencil_format = PFX_STENCIL_INDEX8_FMT
 		) = 0;
@@ -156,7 +156,8 @@ PFX_Interface  IPfx_framebuffer : public IPfx_rendertarget
 	virtual result_t dispose_framebuffer() = 0;
 	virtual result_t dispose_render_target() = 0;
 
-	virtual IPfx_texture* get_texture(uindex_t attachment_index) = 0;
+	virtual IPfx_texture* get_texture(enum_int_t usage_type, 
+		uindex_t attachment_index) = 0;
 
 	virtual result_t bind_framebuffer() = 0;
 

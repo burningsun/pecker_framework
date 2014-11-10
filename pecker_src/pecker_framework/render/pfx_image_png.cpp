@@ -34,7 +34,7 @@ static void PngReaderCallback(png_structp png_ptr, png_bytep data, png_size_t le
 {
 	ImageSource* isource = (ImageSource*)png_get_io_ptr(png_ptr);
 
-	if (isource->offset + length <= isource->size)
+	if (isource->offset + (nsize__t)length <= isource->size)
 	{
 		memcpy(data, isource->data + isource->offset, length);
 		isource->offset += length;

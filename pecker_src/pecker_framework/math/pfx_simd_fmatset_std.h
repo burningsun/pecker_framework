@@ -734,7 +734,7 @@ typedef struct st_matrix_set_unsafe_std
 			return null;
 		}
 
-		float_t n2, n2divheight, n2divwidth;
+		float_t n2;// , n2divheight, n2divwidth;
 
 		n2          = 2.0f * nearPlane;
 

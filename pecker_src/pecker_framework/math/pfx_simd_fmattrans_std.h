@@ -20,6 +20,7 @@
 
 PECKER_BEGIN
 
+
 typedef struct st_matrix_trans_unsafe_std
 {
 
@@ -256,6 +257,7 @@ PFX_INLINE simd_fmat_transpose_unsafe_t*	init_simd_fmat_trans_std(simd_fmat_tran
 	__fmat.fmat4_transpose_replace     = matrix_trans_unsafe_std_t::transpose;
 	return &__fmat;
 }
+
 
 PECKER_END
 

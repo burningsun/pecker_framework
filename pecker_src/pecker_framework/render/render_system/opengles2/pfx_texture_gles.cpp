@@ -68,6 +68,7 @@ result_t  cnative_texture2D_gles2::create_rendertarget(PFX_TEXTURE_SURFACE_TYPE_
 				height, 0, internal_format,
 				enum_bytes_type, null);
 			m_bupdate = false;
+			
 		}
 
 
@@ -80,7 +81,6 @@ result_t  cnative_texture2D_gles2::create_rendertarget(PFX_TEXTURE_SURFACE_TYPE_
 		m_render_width = 0;
 		m_render_height = 0;
 	}
-
 
 	return PFX_STATUS_OK;
 }
@@ -119,6 +119,7 @@ result_t   cnative_texture2D_gles2::update_surface(ctexture_surface* PARAM_IN su
 
 		usize__t max_mip_level = m_surface_ptr->get_max_miplevel();
 		uindex_t imip = 0;
+
 		for (; imip < max_mip_level; ++imip)
 		{
 			mip_image_t* mip_img_ptr; 

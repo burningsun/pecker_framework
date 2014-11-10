@@ -15,6 +15,12 @@
 
 PECKER_BEGIN
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#pragma warning(disable:4275)
+#endif
+
 typedef enum enumSHADER_PARAM_TYPE
 {
 	PFXSPT_UNKNOWN_SHADER_PARAM_TYPE = 0,
@@ -153,7 +159,9 @@ PFX_Interface Ipfx_shader_program : public creference_root
 
 
 
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 PECKER_END
 

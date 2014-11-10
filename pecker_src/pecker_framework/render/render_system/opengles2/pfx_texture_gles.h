@@ -21,6 +21,7 @@ PECKER_BEGIN
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4251)
+#pragma warning(disable:4275)
 #endif
 
 #ifdef RTEX_DEBUG
@@ -124,7 +125,7 @@ private:
 
 	usize__t                    m_texfilter_param_bufsize;
 	enum_int_t                  m_texfilter_param_buf[MAX_TEXFILTER_PARAM_BUFFER_SIZE];
-	index_t                    m_texfilers[PFX_TEXTURE_PARAMS_NAME_COUNT];
+	index_t                     m_texfilers[PFX_TEXTURE_PARAMS_NAME_COUNT];
 
 	
 public:
@@ -158,7 +159,26 @@ public:
 	}
 	PFX_INLINE usize__t height() const
 	{
-		return m_render_height;
+		return m_render_width;
+	}
+
+	PFX_INLINE rect_size_t* get_size(rect_size_t& PARAM_OUT __size,
+		uindex_t level = 0) const
+	{
+		if (m_surface_ptr)
+		{
+			mip_image_t* mip_ptr = m_surface_ptr->get_image(level);
+			if (mip_ptr && mip_ptr->m_image_ptr)
+			{
+				__size.m_width = mip_ptr->m_image_ptr->native().get_image_direct().m_img.m_width;
+				__size.m_height = mip_ptr->m_image_ptr->native().get_image_direct().m_img.m_height;
+				return &__size;
+			}
+		}
+
+		__size.m_width = m_render_width;
+		__size.m_height = m_render_height;
+		return &__size;
 	}
 
 	PFX_INLINE long_t   get_native_handle() const
@@ -192,6 +212,11 @@ public:
 	static PFX_INLINE u64_t get_version()
 	{
 		return (get_hal_instanse_ID_gles2().m_version);
+	}
+
+	PFX_INLINE enum_int_t get_surface_type() const
+	{
+		return m_tex_surface_type;
 	}
 };
 
@@ -306,6 +331,26 @@ public:
 	{
 		return native_t::get_version();
 	}
+
+	PFX_INLINE enum_int_t get_target_type() const
+	{
+		return PFX_TEXTURE_TAG;
+	}
+
+	PFX_INLINE usize__t width() const
+	{
+		return m_native.width();
+	}
+	PFX_INLINE usize__t height() const
+	{
+		return m_native.height();
+	}
+	PFX_INLINE rect_size_t* get_size(rect_size_t& PARAM_OUT __size,
+		uindex_t level = 0) const
+	{
+		return m_native.get_size(__size, level);
+	}
+
 
 };
 

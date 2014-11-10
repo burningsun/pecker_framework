@@ -20,6 +20,12 @@
 
 PECKER_BEGIN
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#pragma warning(disable:4275)
+#endif
+
 typedef enum enumPFX_IMG_COMPRESSION_FORAMT
 {
 	PFX_IMG_UNCOMPRESS_FMT = 0,
@@ -260,7 +266,9 @@ public:
 //typedef simple_reference< cImage >::sref_node sImage_t;
 typedef simple_ref< cImage > sImage_t;
 
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 
 

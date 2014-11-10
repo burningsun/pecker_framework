@@ -15,6 +15,12 @@
 
 PECKER_BEGIN
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#pragma warning(disable:4275)
+#endif
+
 typedef enum enumBufferObjectType
 {
 	PFX_COMM_BUFFER_OBJECT_TYPE = 0,
@@ -103,8 +109,9 @@ PFX_Interface PFX_RENDER_SYSTEM_API IPfx_buffer_object : public creference_root
 
 };
 
-
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 
 PECKER_END

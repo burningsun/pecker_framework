@@ -32,6 +32,7 @@ PECKER_BEGIN
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4251)
+#pragma warning(disable:4275)
 #endif
 
 class PFX_RENDER_SYSTEM_API cshader_method_gles2

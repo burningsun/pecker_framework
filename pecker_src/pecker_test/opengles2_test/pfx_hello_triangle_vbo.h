@@ -59,7 +59,7 @@ public:
 		usize__t& PARAM_OUT param_size,
 		void*& PARAM_OUT param_data_ptr)
 	{
-		static float_t red_channel = 0.7;
+		static float_t red_channel = 0.7f;
 		__state.clear_color(red_channel, 0.2f, 0.7f, 1.0f);
 		__state.set_clear_mask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		::glEnable(GL_BLEND);
@@ -67,7 +67,7 @@ public:
 
 
 		//SleepMS(100);
-		red_channel += 0.01;
+		red_channel += 0.01f;
 		if (red_channel > 1)
 		{
 			red_channel = 0;

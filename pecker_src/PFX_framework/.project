@@ -1025,6 +1025,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/pfx_render_device.h</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/render/render_system/pfx_render_target.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/pfx_render_target.h</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/render/render_system/pfx_shader_program.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/pfx_shader_program.h</locationURI>
@@ -1078,6 +1083,16 @@
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.h</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.cpp</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.h</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_render_allocator_gles.h</name>

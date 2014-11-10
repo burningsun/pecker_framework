@@ -14,50 +14,52 @@ PECKER_BEGIN
 class  cnative_vertex_cache_buffer;
 class  cvertex_cache_buffer_gles2;
 #define VERTEXT_CACHE_ALLOC_GLES2_NAME 	pecker_simple_allocator< cnative_vertex_cache_buffer >
-#define VERTEXT_CACHE_ALLOC_GLES2 class VERTEXT_CACHE_ALLOC_GLES2_NAME 	 
+#define VERTEXT_CACHE_ALLOC_GLES2 struct VERTEXT_CACHE_ALLOC_GLES2_NAME 	 
 typedef VERTEXT_CACHE_ALLOC_GLES2 vertex_cache_alloc_gles2_t;
 
 #define VERTEXT_CACHE_NODE_ALLOC_GLES2_NAME pecker_simple_allocator< cvertex_cache_buffer_gles2 >
-#define VERTEXT_CACHE_NODE_ALLOC_GLES2 class VERTEXT_CACHE_NODE_ALLOC_GLES2_NAME
+#define VERTEXT_CACHE_NODE_ALLOC_GLES2 struct VERTEXT_CACHE_NODE_ALLOC_GLES2_NAME
 typedef VERTEXT_CACHE_NODE_ALLOC_GLES2 vertex_cache_node_alloc_gles2_t;
 
 class cbuffer_object_gles2;
 class cnative_buffer_object_gles2;
 
-#define BUFFER_OBJECT_ALLOC_GLES2 class pecker_simple_allocator< cnative_buffer_object_gles2 > 	 
+#define BUFFER_OBJECT_ALLOC_GLES2 struct pecker_simple_allocator< cnative_buffer_object_gles2 > 	 
 typedef BUFFER_OBJECT_ALLOC_GLES2 buffer_object_alloc_gles2_t;
-#define BUFFER_OBJECT_NODE_ALLOC_GLES2 class pecker_simple_allocator< cbuffer_object_gles2 >
+#define BUFFER_OBJECT_NODE_ALLOC_GLES2 struct pecker_simple_allocator< cbuffer_object_gles2 >
 typedef BUFFER_OBJECT_NODE_ALLOC_GLES2 buffer_object_node_alloc_gles2_t;
 
 
 class  cnative_shader_gles2;
 class  cshader_gles2;
 
-#define SHADER_ALLOC_GLES2      class pecker_simple_allocator< cnative_shader_gles2 > 	 
+#define SHADER_ALLOC_GLES2      struct pecker_simple_allocator< cnative_shader_gles2 > 	 
 typedef SHADER_ALLOC_GLES2 		native_shader_gles2_t;
 
-#define SHADER_NODE_ALLOC_GLES2 class pecker_simple_allocator< cshader_gles2 >
+#define SHADER_NODE_ALLOC_GLES2 struct pecker_simple_allocator< cshader_gles2 >
 typedef SHADER_NODE_ALLOC_GLES2 shader_node_alloc_gles2_t;
 
 
 class cnative_shader_program_gles2;
 class cshader_program_gles2;
 
-#define SHADER_PROGRAM_ALLOC_GLES2      class pecker_simple_allocator< cnative_shader_program_gles2 > 	 
+#define SHADER_PROGRAM_ALLOC_GLES2      struct pecker_simple_allocator< cnative_shader_program_gles2 > 	 
 typedef SHADER_PROGRAM_ALLOC_GLES2 		native_shader_program_gles2_t;
 			  
-#define SHADER_PROGRAM_NODE_ALLOC_GLES2 class pecker_simple_allocator< cshader_program_gles2 >
+#define SHADER_PROGRAM_NODE_ALLOC_GLES2 struct pecker_simple_allocator< cshader_program_gles2 >
 typedef SHADER_PROGRAM_NODE_ALLOC_GLES2 shader_program_node_gles2_t;
 
 class ctexture2D_gles2;
-#define  TEXTURE_2D_NODE_ALLOC_GLES2 class pecker_simple_allocator< ctexture2D_gles2 >
+#define  TEXTURE_2D_NODE_ALLOC_GLES2 struct pecker_simple_allocator< ctexture2D_gles2 >
 typedef TEXTURE_2D_NODE_ALLOC_GLES2  ctexture2D_gles_allocator_t;
 
 class crenderbuffer_gles2;
-#define RENDERBUFFER_ALLOC_GLES2 class pecker_simple_allocator< crenderbuffer_gles2 >
+#define RENDERBUFFER_ALLOC_GLES2 struct pecker_simple_allocator< crenderbuffer_gles2 >
 typedef RENDERBUFFER_ALLOC_GLES2 crenderbuffer_alloc_gles2_t;
 
-
+class cframebuffer_gles2;
+#define FRAMEBUFFER_ALLOC_GLES2 struct pecker_simple_allocator< cframebuffer_gles2 >
+typedef FRAMEBUFFER_ALLOC_GLES2 cframebuffer_alloc_gles2_t;
 
 
 

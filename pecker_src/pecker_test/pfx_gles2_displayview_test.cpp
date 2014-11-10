@@ -8,6 +8,7 @@
 #include "opengles2_test/pfx_hello_triangle.h"
 #include "opengles2_test/pfx_hello_triangle_vbo.h"
 #include "opengles2_test/pfx_hello_lena.h"
+#include "opengles2_test/pfx_hello_lena_fbo.h"
 
 extern void symbiont_object();
 
@@ -48,8 +49,9 @@ public:
 chello_triangle_render_view_gles2 hello_tri;
 chello_triangle_vbo_render_view_gles2 hello_tri_vbo;
 chello_lena_view_gles2 lena_v;
+chello_lena_fbo_view_gles2 lena_fbo_v;
 
-#define test_view lena_v
+#define test_view lena_fbo_v
 //hello_tri_vbo
 
 

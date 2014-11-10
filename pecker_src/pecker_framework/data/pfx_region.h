@@ -12,6 +12,22 @@
 
 PECKER_BEGIN
 
+template <typename rect_size_value >
+struct rectangle_size
+{
+	rect_size_value m_width;
+	rect_size_value m_height;
+
+	rectangle_size() : m_width(0), m_height(0){ ; }
+	rectangle_size(rect_size_value w, rect_size_value h) :
+		 m_width(w), m_height(h)
+	{
+		;
+	}
+};
+
+typedef rectangle_size< usize__t > rect_size_t;
+
 template <typename rect_pos_value >
 struct rectangle_region
 {

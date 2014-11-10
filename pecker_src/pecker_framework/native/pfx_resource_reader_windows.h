@@ -17,6 +17,12 @@
 
 PECKER_BEGIN
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#pragma warning(disable:4275)
+#endif
+
 class PFX_NATIVE_API cresource_reader_windows
 {
 private:
@@ -48,6 +54,10 @@ typedef cresource_reader_windows casset_reader_windows;
 
 typedef simple_ref< cresource_reader_windows > cresource_share_reader_windows_t;
 typedef simple_ref< casset_reader_windows > casset_share_reader_windows_t;
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 PECKER_END
 #endif	 // #if (OS_CONFIG == OS_WINDOWS)

@@ -21,7 +21,7 @@ typedef struct st_matrix_inv_unsafe_sse
 		uint_t res;
 		__m128 r1 = is_near_zero_ss(x);
 		_mm_store_ss((float_t*)&res, r1);
-		return res;
+		return (bool)res;
 	}
 	static PFX_FORCE_INLINE void is_near_zero(__m128 x, uint_t PARAM_OUT res[4])
 	{

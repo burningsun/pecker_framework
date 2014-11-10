@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opengles2_test\pfx_hello_lena.h" />
+    <ClInclude Include="opengles2_test\pfx_hello_lena_fbo.h" />
     <ClInclude Include="opengles2_test\pfx_hello_triangle.h" />
     <ClInclude Include="opengles2_test\pfx_hello_triangle_vbo.h" />
     <ClInclude Include="opengles2_test\pfx_opengles2_def.h" />

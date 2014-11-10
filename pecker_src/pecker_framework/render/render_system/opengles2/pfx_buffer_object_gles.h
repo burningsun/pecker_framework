@@ -33,6 +33,7 @@ PECKER_BEGIN
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4251)
+#pragma warning(disable:4275)
 #endif
 
 PFX_INLINE GLenum PFX_RENDER_SYSTEM_API PfxVVT_to_GLVVT(PFX_VEXBUFFER_VALUE_TYPE_t vex_value_type)

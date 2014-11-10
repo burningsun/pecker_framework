@@ -12,6 +12,7 @@
 #include "../../pecker_framework/render/render_system/glsl_10/pfx_gles10_shader_source.h"
 #include "../../pecker_framework/render/render_system/opengles2/pfx_shader_program_gles.h"
 #include "../../pecker_framework/render/render_system/opengles2/pfx_buffer_object_gles.h"
+#include "../../pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.h"
 #include "../../pecker_framework/include/cmatrix4.h"
 
 #ifndef PFX_OPENGLES2_DEF_H_

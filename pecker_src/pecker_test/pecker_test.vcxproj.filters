@@ -33,6 +33,9 @@
     <ClInclude Include="opengles2_test\pfx_hello_lena.h">
       <Filter>opengles2_test</Filter>
     </ClInclude>
+    <ClInclude Include="opengles2_test\pfx_hello_lena_fbo.h">
+      <Filter>opengles2_test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="opengles2_test">

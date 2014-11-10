@@ -26,7 +26,7 @@ struct st_mip_image;
 typedef pecker_simple_allocator< st_mip_image > mip_image_allocator_t;
 
 class ctexture_surface;
-#define TEXTURE_SURFACE_ALLOC class pecker_simple_allocator< ctexture_surface >
+#define TEXTURE_SURFACE_ALLOC struct pecker_simple_allocator< ctexture_surface >
 typedef TEXTURE_SURFACE_ALLOC texture_surface_allocator_t;
 
 PECKER_END

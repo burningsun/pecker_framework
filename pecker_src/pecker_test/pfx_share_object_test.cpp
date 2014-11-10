@@ -133,7 +133,7 @@ typedef pecker_simple_allocator< CTestNode > ref_node_test_alloc_t;
 class CTestRef 
 {
 	friend class CTestNode;
-	friend class pecker_simple_allocator< CTestRef >;
+	friend struct pecker_simple_allocator< CTestRef >;
 	typedef pecker_simple_allocator< CTestRef >	ref_test_alloc_t;
 	typedef ref_pool_memanger< ref_node_test_alloc_t, ref_test_alloc_t> ref_pool_t;
 private:
@@ -170,7 +170,7 @@ class CTestNode :public cref_node< CTestRef, CTestNode >,
 	public  ITestShareInterface
 {
 	typedef cref_node< CTestRef, CTestNode > base_t;
-	friend class pecker_simple_allocator< CTestNode >;
+	friend struct pecker_simple_allocator< CTestNode >;
 private:
 	CTestNode()
 	{
@@ -243,7 +243,7 @@ class ctest_ref
 {
 	CTestNativeShareObject m_native;
 	DECLARE_FRIEND_CLASS(class ctest_node);
-	DECLARE_FRIEND_CLASS(class pecker_simple_allocator< ctest_ref >);
+	DECLARE_FRIEND_CLASS(struct pecker_simple_allocator< ctest_ref >);
 	DEFINE_NATIVE_REF_POOL(test_node_alloc, test_ref_alloc,m_ref_pool);
 	DECLARE_NATIVE_CREATE_NEW_NODE(ctest_node, create_new);
 	DECLARE_NATIVE_CREATE_SHARE_NODE(ctest_node, share_new);
@@ -266,7 +266,7 @@ class ctest_ref
 //DECLARE_REF_NODE_CLASS_BEGIN(ctest_node, ctest_ref, ITestShareInterface, base_t)
 DECLARE_REF_NODE_CLASS_PROTECTED_BEGIN(ctest_node, ctest_ref, ITestShareInterface, base_t, test_node_alloc, test_ref_alloc)
 DECLARE_FRIEND_CLASS(class ctest_ref);
-DECLARE_FRIEND_CLASS(class pecker_simple_allocator< ctest_node >);
+DECLARE_FRIEND_CLASS(struct pecker_simple_allocator< ctest_node >);
 public:
 	DECLARE_REF_CREATE_NEW_NODE(ctest_node, new_object);
 	DECLARE_REF_CREATE_SHARE_NODE(ctest_node, new_share_node);

@@ -1,7 +1,7 @@
 ﻿/*
- * pfx_gles2_displayview_test.cpp
+ * pfx_hello_lena_fbo.h
  *
- *  Created on: 2014-3-28
+ *  Created on: 2014-11-10
 *      Author: 李镇城  （ cut / cutxyz） (e-mail: cut-12345@hotmail.com/501931049@qq.com)
  */
 #include "pfx_opengles2_def.h"
@@ -9,8 +9,8 @@
 #include "../../pecker_framework/render/render_system/opengles2/pfx_texture_gles.h"
 #include "../../pecker_framework/math/pfx_math.h"
 
-#ifndef PFX_HELLO_LENA_H_
-#define PFX_HELLO_LENA_H_
+#ifndef PFX_HELLO_LENA_FBO_H_
+#define PFX_HELLO_LENA_FBO_H_
 
 
 
@@ -19,7 +19,7 @@ extern result_t load_png_img(const char_t* pfile_name, cImage& __img);
 extern sImage_t* load_png_img(const char_t* pfile_name);
 extern void math_matrix_test();
 
-class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
+class chello_lena_fbo_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 {
 	typedef struct pos_clr
 	{
@@ -27,10 +27,16 @@ class chello_lena_view_gles2 : public 	opengles2_activity_t::IOnRenderView_t
 		vector2f_t	m_img_pos;
 	}pos_texpos_t;
 private:
+	SIMD_MATRIX4F(m_subview_mat_LH);
+	SIMD_MATRIX4F(m_subproj_mat_LH);
+	SIMD_MATRIX4F(m_subview_mat_RH);
+	SIMD_MATRIX4F(m_subproj_mat_RH);
+
 	SIMD_MATRIX4F(m_view_mat_LH);
 	SIMD_MATRIX4F(m_proj_mat_LH);
 	SIMD_MATRIX4F(m_view_mat_RH);
 	SIMD_MATRIX4F(m_proj_mat_RH);
+
 
 	cshader_program_gles2*			m_program_ptr;
 	cvertex_cache_buffer_gles2* 	m_vertexattbi_buffer_ptr;
@@ -40,17 +46,19 @@ private:
 	GLuint m_texture2D;
 	ctexture_surface* m_tex_surface_ptr;
 	ctexture2D_gles2*  m_texture2d_ptr;
+	cframebuffer_gles2* m_framebuffer_ptr;
 	float_t m_rotateZ;
 	
 
 public:
-	chello_lena_view_gles2() :m_texture2D(0), m_vertexattbi_buffer_ptr(null), 
+	chello_lena_fbo_view_gles2() :m_texture2D(0), m_vertexattbi_buffer_ptr(null),
 		m_vertexbufferobject_ptr(null), m_program_ptr(null), 
-		m_tex_surface_ptr(null), m_texture2d_ptr(null), m_rotateZ(0.0)
+		m_tex_surface_ptr(null), m_texture2d_ptr(null), m_rotateZ(0.0),
+		m_framebuffer_ptr(null)
 	{
 		;
 	}
-	virtual ~chello_lena_view_gles2()
+	virtual ~chello_lena_fbo_view_gles2()
 	{
 		if (m_vertexattbi_buffer_ptr)
 		{
@@ -96,10 +104,7 @@ public:
 		void*& PARAM_OUT param_data_ptr)
 	{
 		static float_t red_channel = 0.7f;
-		__state.clear_color(red_channel, 0.2f, 0.7f, 1.0f);
-		__state.set_clear_mask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		::glEnable(GL_BLEND);
-		::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
 
 		red_channel += 0.01f;
@@ -117,6 +122,30 @@ public:
 			return;
 		}
 
+
+		if (null == m_framebuffer_ptr)
+		{
+			m_framebuffer_ptr = __state.create_framebuffer();
+		}
+
+		if (null == m_framebuffer_ptr)
+		{
+			return;
+		}
+
+		status = m_framebuffer_ptr->bind();
+		if (PFX_STATUS_OK != status)
+		{
+			status = m_framebuffer_ptr->create_rendertarget(512, 512);
+		}
+
+		if (PFX_STATUS_OK != status)
+		{
+			return;
+		}
+
+		__state.set_viewport(viewport_rect_t(0, 0, 512, 512));
+
 		const char* chr_name;
 		chr_name = "aPosition";
 		long_t pos = m_program_ptr->get_location_by_name(chr_name);
@@ -130,18 +159,12 @@ public:
 		chr_name = "sTexture";
 		long_t tex = m_program_ptr->get_location_by_name(chr_name);
 
-		//cmatrix4f_t mvp((float_t)view_port.m_height / (float_t)view_port.m_width, 0.0, 0.0, 0.0,
-		//	0.0, 1.0, 0.0, 0.0,
-		//	0.0, 0.0, 1.0, 0.0,
-		//	0.0, 0.0, 0.0, 1.0
-		////	);
 		SIMD_MATRIX4F(mvp);
 		SIMD_MATRIX4F(mvp_pro);
 		SIMD_MATRIX4F(mvp_tmp[4]);
 		SIMD_MATRIX4F(mvp__);
-		
-		//matrix_dot_unsafe_std_t::mul(mvp_pro, m_view_mat_LH, m_proj_mat_RH);
-		matrix_dot_unsafe_std_t::mul(mvp_pro, m_proj_mat_LH, m_view_mat_LH);
+
+		matrix_dot_unsafe_std_t::mul(mvp_pro, m_subproj_mat_LH, m_subview_mat_LH);
 		//
 		matrix_set_unsafe_std_t::mat4x4_rotateY_col_major(mvp_tmp[2], m_rotateZ);
 		matrix_set_unsafe_std_t::mat4x4_rotateZ_col_major(mvp_tmp[2], m_rotateZ);
@@ -156,8 +179,6 @@ public:
 		}
 		matrix_dot_unsafe_std_t::mul(mvp__, mvp_tmp, 2);
 		matrix_dot_unsafe_std_t::mul(mvp, mvp__, mvp_pro);
-		//matrix_dot_unsafe_std_t::mul(mvp, mvp_pro, mvp__);
-		//mvp = mvp_pro;
 
 		if (null == m_tex_surface_ptr)
 		{
@@ -180,7 +201,7 @@ public:
 		}
 
 
-		__state.set_uniform_attri(mat, (matrix4f_t&)mvp);//mvp.reference());
+		__state.set_uniform_attri(mat, (matrix4f_t&)mvp);
 
 		if (!m_vertexbufferobject_ptr)
 		{
@@ -189,12 +210,6 @@ public:
 		}
 		__state.set_vertex_attrib_array(pos, m_vertexbufferobject_ptr, 4);
 		__state.set_vertex_attrib_array(texcoord, m_vertexbufferobject_ptr, 4, 0, sizeof(vector4f_t));
-
-		//__state.set_vertex_attrib_array(pos, m_vertexattbi_buffer_ptr, 4);
-		//__state.set_vertex_attrib_array(texcoord, m_vertexattbi_buffer_ptr, 2, 0, sizeof(vector4f_t));
-
-
-		//glActiveTexture(GL_TEXTURE0);
 
 		if (0 == m_tex_surface_ptr->get_max_miplevel())
 		{
@@ -212,85 +227,55 @@ public:
 			m_texture2d_ptr->set_texture_filter(PFX_TRN_MAG_FILTER, PFX_TP_NEAREST);
 		}
 
-		//if (m_texture2d_ptr->check_status())
-		//{
-		//	m_texture2d_ptr->bind_texture();
-		//}
-		//else
-		//{ 
-		//	m_texture2d_ptr->update_default();
-		//}
+		__state.clear_color(red_channel, 0.2f, 0.7f, 1.0f);
+		__state.set_clear_mask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		::glEnable(GL_BLEND);
+		::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		m_texture2d_ptr->bind();
-
-
-//		if (!m_texture2D)
-//		{
-//			//GLubyte pixels[4 * 4] =
-//			//{
-//			//	255, 0, 0, 100,// Red
-//			//	0, 255, 0, 255,// Green
-//			//	0, 0, 255, 200,// Blue
-//			//	255, 255, 0, 255, // Yellow
-//			//};
-//
-//			glGenTextures(1, &m_texture2D);
-//
-//#if (OS_CONFIG == OS_WINDOWS)
-//			const char* lena_path = "test_res\\lena_rgba.png";
-//#else
-//			const char* lena_path = "test_res/lena_rgba.png";
-//#endif //#if (OS_CONFIG == OS_WINDOWS)
-//
-//			glBindTexture(GL_TEXTURE_2D, m_texture2D);
-//
-//			//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-//
-//			load_png_img(lena_path, m_cimg);
-//			const image_data_t& img = m_cimg.get_image_direct();
-//			glPixelStorei(GL_UNPACK_ALIGNMENT, img.m_pack_size);
-//			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.m_img.m_width,
-//				img.m_img.m_height, 0, GL_RGBA,
-//				GL_UNSIGNED_BYTE, img.m_img.m_bits_ptr);
-//
-//			//load_img(lena_path, m_img);
-//			//glPixelStorei(GL_UNPACK_ALIGNMENT, m_img.m_pack_size);
-//
-//			//
-//
-//			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_img.m_img.m_width,
-//			//	m_img.m_img.m_height, 0, GL_RGBA,
-//			//	GL_UNSIGNED_BYTE, m_img.m_img.m_bits_ptr);
-//
-//
-//
-//			//// 测试纹理定位用
-//			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2,
-//			//	2, 0, GL_RGBA,
-//			//	GL_UNSIGNED_BYTE, pixels);
-//			// Set the filtering mode
-//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//		}
-//		else
-//		{
-//			glBindTexture(GL_TEXTURE_2D, m_texture2D);
-//		}
-
-		__state.set_texture(tex, m_texture2d_ptr, 1);
-		
-		//glUniform1i(tex, 0);
-
+		__state.set_texture(tex, m_texture2d_ptr, 0);
 		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 
-
-		matrix_dot_unsafe_std_t::mul(mvp_pro, m_proj_mat_RH, m_view_mat_RH);
+		matrix_dot_unsafe_std_t::mul(mvp_pro, m_subproj_mat_RH, m_subview_mat_RH);
 		matrix_dot_unsafe_std_t::mul(mvp, mvp__, mvp_pro);
-		//mvp = mvp_pro;
+
 		__state.set_uniform_attri(mat, (matrix4f_t&)mvp);
 		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		__state.unbind_buffer(pos);
 		__state.unbind_buffer(texcoord);
+
+		IPfx_texture* tex_ptr = null;
+		if (m_framebuffer_ptr)
+		{
+			tex_ptr = m_framebuffer_ptr->get_texture(PFX_COLOR_BUFFER_FMT, 0);
+		}
+
+		__state.use_system_framebuffer();
+		__state.set_viewport(view_port);
+		__state.clear_color(0.5f, 0.2f, 0.7f, 1.0f);
+		__state.set_clear_mask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		::glEnable(GL_BLEND);
+		::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		
+
+
+		
+		if (tex_ptr)
+		{
+			matrix_dot_unsafe_std_t::mul(mvp_pro, m_proj_mat_LH, m_view_mat_LH);
+			matrix_dot_unsafe_std_t::mul(mvp, mvp__, mvp_pro);
+			__state.set_uniform_attri(mat, (matrix4f_t&)mvp);
+			__state.set_vertex_attrib_array(pos, m_vertexbufferobject_ptr, 4);
+			__state.set_vertex_attrib_array(texcoord, m_vertexbufferobject_ptr, 4, 0, sizeof(vector4f_t));
+			__state.set_texture(tex, tex_ptr, 2);
+			__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+			__state.unbind_buffer(pos);
+			__state.unbind_buffer(texcoord);
+			tex_ptr->dispose();
+			tex_ptr = null;
+		}
 
 	}
 
@@ -347,35 +332,26 @@ public:
 		__vs_ptr = null;
 		__fs_ptr = null;
 
-		//VECTOR3F_t vecPos = { 0.0, 0.0, 4.0 };
 		VECTOR3F_t vecPos = { 0.0, 0.0, 2.0 };
 		VECTOR3F_t vecLookAt = { 0.0, 0.0, 0.0 };
 		VECTOR3F_t vecUp = { 0.0, 1.0, 0.0 };
-	    matrix_set_unsafe_std_t::mat4x4_LookAtRH_col_major(m_view_mat_RH, vecPos, vecLookAt, vecUp);
+	    matrix_set_unsafe_std_t::mat4x4_LookAtRH_col_major(m_subview_mat_RH, vecPos, vecLookAt, vecUp);
+		matrix_set_unsafe_std_t::mat4x4_LookAtLH_col_major(m_subview_mat_LH, vecPos, vecLookAt, vecUp);
+
+		matrix_set_unsafe_std_t::mat4x4_perspectiveRH_opengl(m_subproj_mat_RH,
+			1.0, 1.0, 1.0, 100.0);
+
+		matrix_set_unsafe_std_t::mat4x4_perspectiveLH_opengl(m_subproj_mat_LH,
+			1.0, 1.0, 1.0, 100.0);
+
+		matrix_set_unsafe_std_t::mat4x4_LookAtRH_col_major(m_view_mat_RH, vecPos, vecLookAt, vecUp);
 		matrix_set_unsafe_std_t::mat4x4_LookAtLH_col_major(m_view_mat_LH, vecPos, vecLookAt, vecUp);
-
-		//matrix_set_unsafe_std_t::mat4x4_orthogonalRH_opengl(m_proj_mat_RH,
-		//	2.0 *(float_t)view_port.m_width / (float_t)view_port.m_height, 2.0, 0.1, 1.0);
-
-		//matrix_set_unsafe_std_t::mat4x4_orthogonalLH_opengl(m_proj_mat_LH,
-		//	2.0 *(float_t)view_port.m_width / (float_t)view_port.m_height, 2.0, 0.1, 1.0);
-
-
 
 		matrix_set_unsafe_std_t::mat4x4_perspectiveRH_opengl(m_proj_mat_RH,
 			(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 1.0, 100.0);
 
 		matrix_set_unsafe_std_t::mat4x4_perspectiveLH_opengl(m_proj_mat_LH,
 			(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 1.0, 100.0);
-
-
-		//matrix_set_unsafe_std_t::mat4x4_perspective_fov_RH_opengl(m_proj_mat_RH, 3.14 / 4,
-		//	(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 100.0);
-		//matrix_set_unsafe_std_t::mat4x4_perspective_fov_LH_opengl(m_proj_mat_LH, 3.14 / 4,
-		//	(float_t)view_port.m_width / (float_t)view_port.m_height, 1.0, 100.0);
-
-
-
 
 
 		FOR_ONE_LOOP_END;
@@ -420,6 +396,10 @@ public:
 			m_texture2d_ptr->dispose_render_target();
 		}
 		
+		if (m_framebuffer_ptr)
+		{
+			m_framebuffer_ptr->dispose_render_target();
+		}
 
 		
 	}
@@ -484,4 +464,4 @@ public:
 };
 
 
-#endif	//PFX_HELLO_LENA_H_
+#endif	//PFX_HELLO_LENA_FBO_H_

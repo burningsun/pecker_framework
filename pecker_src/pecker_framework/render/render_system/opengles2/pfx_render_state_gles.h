@@ -19,6 +19,7 @@
 #include "../../pfx_render_defs.h"
 #include "../../pfx_on_context_view.h"
 #include "pfx_texture_gles.h"
+#include "pfx_framebuffer_object_gles.h"
 
 PECKER_BEGIN
 
@@ -128,15 +129,31 @@ public:
 	{
 		::glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-	//PFX_INLINE result_t bind_framebuffer(framebuffer)
-	//{
 
-	//}
 	PFX_INLINE result_t unbind_framebuffer()
 	{
 		use_system_framebuffer();
 		return PFX_STATUS_OK;
 	}
+
+	PFX_INLINE crenderbuffer_gles2* create_renderbuffer()
+	{
+		return crenderbuffer_gles2::create_new_object();
+	}
+	
+	PFX_INLINE cframebuffer_gles2* create_framebuffer()
+	{
+		return cframebuffer_gles2::create_new_object();
+	}
+
+	PFX_INLINE result_t use_framebuffer(cframebuffer_gles2* PARAM_IN fbuf_ptr)
+	{
+		RETURN_INVALID_RESULT(!fbuf_ptr, PFX_STATUS_INVALID_PARAMS);
+		return fbuf_ptr->bind();
+	}
+
+
+
 
 	////////////////////////////////////////////////////////////////////////
 	// texture

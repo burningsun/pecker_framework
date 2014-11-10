@@ -141,7 +141,7 @@ class simple_ref : public creference_root
 	typedef simple_ref < __native_ref >	ref_root_t;
 	typedef pecker_simple_allocator< ref_root_t > ref_alloc_t;
 	typedef __native_ref native_t;
-	friend class pecker_simple_allocator< ref_root_t >;
+	friend struct pecker_simple_allocator< ref_root_t >;
 private:
 	native_t m_native;
 protected:
@@ -514,14 +514,14 @@ struct simple_reference
 	class sref_node;
 	class sref_native;
 
-	typedef class pecker_simple_allocator< sref_native > ref_alloc;
-	typedef class pecker_simple_allocator< sref_node >   node_alloc;
-	typedef class ref_pool_memanger< node_alloc, ref_alloc> ref_pool_t;
+	typedef struct pecker_simple_allocator< sref_native > ref_alloc;
+	typedef struct pecker_simple_allocator< sref_node >   node_alloc;
+	typedef struct ref_pool_memanger< node_alloc, ref_alloc> ref_pool_t;
 
 	class sref_native
 	{
 		friend class sref_node;
-		friend class pecker_simple_allocator< sref_native >;
+		friend struct pecker_simple_allocator< sref_native >;
 	private:
 		__share_object m_native;
 		ref_pool_t m_ref_pool;
@@ -555,7 +555,7 @@ struct simple_reference
 	class sref_node : public cref_node < sref_native, sref_node >
 	{
 		friend class sref_native;
-		friend class pecker_simple_allocator< sref_node >;
+		friend struct pecker_simple_allocator< sref_node >;
 	protected: 
 		typedef cref_node< sref_native, sref_node > base_t; 
 
