@@ -749,7 +749,9 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 		usize__t		msg_param_buffer_size = 0;
 		display_device_t* display_device_ptr = (display_device_t*)&m_egl_device;
 		u64_t			finish_escape_tick;
+		u64_t           last_frame_tick = 0;
 		usize__t		frame_render_time = 0;
+		usize__t		last_frame_render_time = 0;
 		viewport_rect_t view_port;
 
 		// 初始化窗口的context
@@ -835,6 +837,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			}
 
 			finish_escape_tick = (u64_t)ticker.get_microsecond();
+			
 			if (finish_escape_tick > esacape_tick)
 			{
 				frame_render_time = (usize__t)(finish_escape_tick - esacape_tick);				
@@ -848,7 +851,14 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			// 锁帧
 			if (frame_render_time < m_limit_frame_time)
 			{
-				SleepMS(1);
+				if (last_frame_render_time > m_limit_frame_time + 3)
+				{
+					SleepMS(0);
+				}
+				else
+				{
+					SleepMS(1);
+				}
 				continue;
 			}
 			if (0 == frame_render_time)
@@ -856,6 +866,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 				frame_render_time = 1;
 			}
 			m_last_fp1ks = 1000000 / frame_render_time;
+			last_frame_render_time = frame_render_time;
 			//PECKER_LOG_INFO("render time = %ld", frame_render_time);
 			
 			// 渲染回调
