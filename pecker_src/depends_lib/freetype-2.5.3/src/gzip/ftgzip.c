@@ -47,7 +47,15 @@
 
 #ifdef FT_CONFIG_OPTION_SYSTEM_ZLIB
 
-#include <zlib.h>
+//#include <zlib.h>
+#include "../../../zlib-1.2.8/zlib.h"
+#ifdef _MSC_VER
+#ifdef _DEBUG
+#pragma comment (lib, "../../../../libpng-1.6.2/bind/zlibd.lib")
+#else
+#pragma comment (lib, "../../../../libpng-1.6.2/bin/zlib.lib")
+#endif
+#endif
 
 #else /* !FT_CONFIG_OPTION_SYSTEM_ZLIB */
 

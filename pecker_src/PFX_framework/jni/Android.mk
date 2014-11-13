@@ -3,14 +3,29 @@ PFX_MK := /PFX.mk
 PFX_TEST_MK := /PFX_TEST.mk
 ZLIB_MK := /depends_lib/zlib.mk
 PNGLIB_MK := /depends_lib/pnglib.mk
+FFT2LIB_MK := /depends_lib/freetype2.mk
 
 #±‡“Î“¿¿µø‚
+#include $(CLEAR_VARS)
+#include $(LOCAL_PATH)$(FFT2LIB_MK)#freetype2lib
+#LOCAL_MODULE    := ft2_static
+#LOCAL_C_INCLUDES += $(FT2_LOCAL_EXPORT_C_INCLUDES)
+#LOCAL_CFLAGS  += $(FT2_LOCAL_CFLAGS)
+#LOCAL_SRC_FILES :=   $(FT2LIB_LOCAL_SRC_FILES) 
+#LOCAL_LDLIBS    := # -ldl -llog
+#include $(BUILD_STATIC_LIBRARY)
+
 include $(CLEAR_VARS)
 include $(LOCAL_PATH)$(ZLIB_MK)   #zlib
 include $(LOCAL_PATH)$(PNGLIB_MK) #pnglib
+include $(LOCAL_PATH)$(FFT2LIB_MK)#freetype2lib
 
 LOCAL_MODULE    := PFX_DEPENDS
-LOCAL_SRC_FILES := $(ZLIB_LOCAL_SRC_FILES)  $(PNG_LOCAL_SRC_FILES)
+
+LOCAL_C_INCLUDES += $(FT2_LOCAL_EXPORT_C_INCLUDES)
+LOCAL_CFLAGS  += $(FT2_LOCAL_CFLAGS)
+
+LOCAL_SRC_FILES :=$(ZLIB_LOCAL_SRC_FILES) $(PNG_LOCAL_SRC_FILES) $(FT2LIB_LOCAL_SRC_FILES) 
 
 #LOCAL_CFLAGS += -fshort-wchar
 
@@ -24,10 +39,11 @@ endif # TARGET_ARCH_ABI == armeabi-v7a
 #endif # TARGET_ARCH_ABI == arm64-v8a
 
 
-LOCAL_LDLIBS    := 
-
+LOCAL_LDLIBS    :=  
+#-ldl -llog
 
 include $(BUILD_STATIC_LIBRARY)
+
 
 #±‡“ÎÕº–Œø‚
 include $(CLEAR_VARS)
@@ -37,6 +53,8 @@ include $(LOCAL_PATH)$(PFX_MK)
 include $(LOCAL_PATH)$(PFX_TEST_MK)
 
 LOCAL_STATIC_LIBRARIES := PFX_DEPENDS #∏Ωº”“¿¿µø‚
+
+
 LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) $(PFX_TEST_LOCAL_SRC_FILES)
 
 

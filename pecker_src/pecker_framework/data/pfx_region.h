@@ -32,7 +32,7 @@ struct point_locate
 	pos_value m_xpos;
 	pos_value m_ypos;
 
-	pos_value() : m_xpos(0), m_ypos(0){ ; }
+	point_locate() : m_xpos(0), m_ypos(0){ ; }
 	point_locate(pos_value x, pos_value y) :
 		m_xpos(x), m_ypos(y)
 	{
