@@ -26,7 +26,29 @@ struct rectangle_size
 	}
 };
 
+template <typename pos_value >
+struct point_locate
+{
+	pos_value m_xpos;
+	pos_value m_ypos;
+
+	pos_value() : m_xpos(0), m_ypos(0){ ; }
+	point_locate(pos_value x, pos_value y) :
+		m_xpos(x), m_ypos(y)
+	{
+		;
+	}
+};
+
 typedef rectangle_size< usize__t > rect_size_t;
+typedef point_locate< nsize__t > pointi_t;
+typedef point_locate< float_t > pointf_t;
+
+typedef struct st_screen_info
+{
+	rect_size_t m_screen_size;
+	rect_size_t m_screen_dpi;
+}screen_info_t;
 
 template <typename rect_pos_value >
 struct rectangle_region
@@ -42,6 +64,7 @@ struct rectangle_region
 };
 
 typedef rectangle_region< sint_t > viewport_rect_t;
+typedef rectangle_region< sint_t > int_rect_t;
 
 template < typename linear_pos_value >
 struct linear_region

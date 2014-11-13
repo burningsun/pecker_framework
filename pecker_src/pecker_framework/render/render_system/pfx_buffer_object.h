@@ -95,7 +95,9 @@ PFX_Interface IPfx_vertex_cache_buffer : public creference_root
 PFX_Interface PFX_RENDER_SYSTEM_API IPfx_buffer_object : public creference_root
 {
 	virtual ~IPfx_buffer_object(){ ; }
-	virtual IPfx_buffer_object* diff_cache_object() = 0;
+	//virtual IPfx_buffer_object* diff_cache_object() = 0;
+
+	virtual result_t bind() = 0;
 
 	virtual result_t set_vbo_buffer(IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr) = 0;
 	virtual result_t set_vbo_type(enum_int_t vbo_type // PFX_BUFFER_OBJECT_TYPE_t
@@ -106,6 +108,8 @@ PFX_Interface PFX_RENDER_SYSTEM_API IPfx_buffer_object : public creference_root
 
 	virtual IPfx_buffer_object* new_share() = 0;
 	virtual result_t dispose_buffer() = 0;
+
+	virtual result_t dispose_render_target() = 0;
 
 };
 

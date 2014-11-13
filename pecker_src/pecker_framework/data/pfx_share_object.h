@@ -360,7 +360,7 @@ public:
 				if (!__packet.m_packet_ptr)
 				{
 					status = __packet.init ();
-					BREAK_LOOP_CONDITION (PFX_STATUS_OK != status)
+					BREAK_LOOP_CONDITION (PFX_STATUS_OK > status)
 				}
 				__packet.m_packet_ptr[0] = this->m_packet_ptr[0];
 				status = PFX_STATUS_OK;
@@ -463,7 +463,7 @@ PFX_INLINE result_t CSLEAKABLE_OBJECT::clock_object ::unlock_object ()
 		{
 			FOR_ONE_LOOP_BEGIN
 			status = m_old_object_ptr->release_object();
-			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 			m_old_object_ptr->m_share_obj.swap (m_new_object);
 			FOR_ONE_LOOP_END;
 		}

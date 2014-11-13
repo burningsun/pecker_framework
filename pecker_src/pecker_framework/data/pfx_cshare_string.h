@@ -41,7 +41,7 @@ public:
 		m_size = 0;
 		m_this_string_ptr = null;
 		result_t status = other_.copy_to(*this);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			throw (status);
 		}
@@ -200,7 +200,7 @@ public:
 
 			 itr.m_cur_ptr += offset;
 			 
-			 if (PFX_STATUS_OK != status)
+			 if (PFX_STATUS_OK > status)
 			 {
 				 return status;
 			 }

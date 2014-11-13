@@ -151,7 +151,8 @@ m_vbo_type(PFX_VERTEX_BUFFER_OBJECT_TYPE),
 m_usage_type(PFX_BU_STATIC_DRAW),
 m_value_type(PFXVB_BYTE), m_vb_struct_size(0),
 m_vb_struct_attribcount(0),
-m_update_data_ptr(null)
+m_update_data_ptr(null),
+m_update_data_backup_ptr(null)
 {
 	RBUFFER_LOG_INFO("create...0x%08X", (lpointer_t)this);
 }
@@ -163,6 +164,12 @@ cnative_buffer_object_gles2::~cnative_buffer_object_gles2()
 	{
 		m_update_data_ptr->dispose_vertex();
 		m_update_data_ptr = null;
+	}
+
+	if (m_update_data_backup_ptr)
+	{
+		m_update_data_backup_ptr->dispose_vertex();
+		m_update_data_backup_ptr = null;
 	}
 	RBUFFER_LOG_INFO("release...0x%08X", (lpointer_t)this);
 }
@@ -190,13 +197,47 @@ result_t cnative_buffer_object_gles2::dispose_buffer_object()
 	}
 	return PFX_STATUS_OK;
 }
-	
+
+result_t cnative_buffer_object_gles2::bind_buffer()
+{
+	if (m_bufferID)
+	{
+		GLenum target_type = PFXVBT_TO_GLVBT((PFX_BUFFER_OBJECT_TYPE_t)m_vbo_type);
+		if (-1 == target_type)
+		{
+			return PFX_STATUS_INVALID_ENUM;
+		}
+		::glBindBuffer(target_type, m_bufferID);
+		return PFX_STATUS_OK;
+	}
+	else
+	{
+		return PFX_STATUS_UNINIT;
+	}
+
+}
 result_t cnative_buffer_object_gles2::update_data(buffer_rect_t* PARAM_IN update_rect_ptr //= null
 	)
 {
 	if (!m_bufferID)
 	{
-		return PFX_STATUS_UNINIT;
+		if (m_update_data_backup_ptr)
+		{
+			::glGenBuffers(1, &m_bufferID);
+
+			if (!m_bufferID)
+			{
+				return PFX_STATUS_UNINIT;
+			}
+
+			cvertex_cache_buffer_gles2* temp_ptr = m_update_data_backup_ptr;
+			if (m_update_data_ptr)
+			{
+				m_update_data_ptr->dispose_object();
+				m_update_data_ptr = temp_ptr->new_ref();
+			}
+
+		}
 	}
 	GLenum target_type = PFXVBT_TO_GLVBT((PFX_BUFFER_OBJECT_TYPE_t)m_vbo_type);
 	if (-1 == target_type)

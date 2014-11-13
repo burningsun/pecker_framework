@@ -98,7 +98,7 @@ long asyn_udp_comm::on_recv_thread (proxy_status_t* __proxy_status_ptr)
 
 		status = __comm_data.init(m_MAX_RECV_SIZE);
 
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			m_recv_pool.deallocate (allocate_node_ptr);
 			LOG_OUT ("net_comm_data::init error = %d\n", status);

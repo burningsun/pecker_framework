@@ -35,6 +35,8 @@ PECKER_BEGIN
 
 
 android_native_form::PFX_main_callback android_native_form::PFX_main_func =  PFX_main_defult;
+static screen_info_t* gscreen_info_ptr = null;
+static screen_info_t  gscreen_info;
 
 result_t android_native_form::CInputEvent_source::process(cnative_form_t* PARAM_INOUT app_form_ptr)
 {
@@ -327,6 +329,20 @@ void android_native_form::onNativeWindowCreated(ANativeActivity* activity, ANati
 	{
 		PECKER_LOG_INFO(" form_ptr->m_bmust_init_window = %d",
 				form_ptr->m_bmust_init_window);
+
+		gscreen_info.m_screen_size.m_width = ANativeWindow_getWidth(window);
+		gscreen_info.m_screen_size.m_height = ANativeWindow_getHeight(window);
+
+		if (gscreen_info.m_screen_size.m_width &&
+			gscreen_info.m_screen_size.m_height)
+		{
+			gscreen_info.m_screen_dpi.m_width =
+					AConfiguration_getScreenHeightDp(form_ptr->m_config_ptr);
+			gscreen_info.m_screen_dpi.m_height =
+					AConfiguration_getScreenHeightDp(form_ptr->m_config_ptr);
+			gscreen_info_ptr = &gscreen_info;
+		}
+
 		if (form_ptr->m_bmust_init_window)
 		{
 			result_t status;
@@ -452,7 +468,7 @@ void android_native_form::print_cur_config()
 
     LOGV("Config: mcc=%d mnc=%d lang=%c%c cnt=%c%c orien=%d touch=%d dens=%d "
             "keys=%d nav=%d keysHid=%d navHid=%d sdk=%d size=%d long=%d "
-            "modetype=%d modenight=%d",
+            "modetype=%d modenight=%d wdpi=%d hdpi=%d",
             AConfiguration_getMcc(m_config_ptr),
             AConfiguration_getMnc(m_config_ptr),
             lang[0], lang[1], country[0], country[1],
@@ -467,7 +483,9 @@ void android_native_form::print_cur_config()
             AConfiguration_getScreenSize(m_config_ptr),
             AConfiguration_getScreenLong(m_config_ptr),
             AConfiguration_getUiModeType(m_config_ptr),
-            AConfiguration_getUiModeNight(m_config_ptr));
+            AConfiguration_getUiModeNight(m_config_ptr),
+            AConfiguration_getScreenWidthDp(m_config_ptr),
+            AConfiguration_getScreenHeightDp(m_config_ptr));
 }
 
 result_t	android_native_form::init(IActivity_component* activity_ptr,
@@ -647,13 +665,21 @@ result_t android_native_form::dispose()
 	return PFX_STATUS_OK;
 }
 
+
+const screen_info_t* android_native_form::get_screen_info ()
+{
+	return gscreen_info_ptr;
+}
 long android_native_form::on_app_entry(proxy_status_t* __proxy_status_ptr)
 {
+
 	PECKER_LOG_INFO("on_app_entry proxy=%p", __proxy_status_ptr);
 	m_config_ptr = AConfiguration_new();
 	AConfiguration_fromAssetManager(m_config_ptr,
 			m_attech_activity_ptr->assetManager);
 	print_cur_config();
+
+
 	m_looper = ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
 	//................
 	m_brunning = false;

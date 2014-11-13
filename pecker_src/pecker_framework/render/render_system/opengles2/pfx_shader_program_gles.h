@@ -35,6 +35,25 @@ PECKER_BEGIN
 #pragma warning(disable:4275)
 #endif
 
+
+
+PFX_INLINE GLenum PFX_PRIMODE_2_GLES2_PRIMODE(PFX_PRIMITIVE_MODE_t MODE)
+{
+	static GLenum glmode[] =
+	{
+		GL_POINTS,
+		GL_LINES,
+		GL_LINE_STRIP,
+		GL_LINE_LOOP,
+		GL_TRIANGLES,
+		GL_TRIANGLE_STRIP,
+		GL_TRIANGLE_FAN,
+		GL_LINES
+	};
+
+	return glmode[MODE];
+};
+
 class PFX_RENDER_SYSTEM_API cshader_method_gles2
 {
 public:
@@ -182,7 +201,7 @@ public:
 		{
 			result_t status;
 			status = new_obj_ptr->native().set_shader_type(shader_type);
-			if (PFX_STATUS_OK != status)
+			if (PFX_STATUS_OK > status)
 			{
 				new_obj_ptr->dispose_object();
 				new_obj_ptr = null;

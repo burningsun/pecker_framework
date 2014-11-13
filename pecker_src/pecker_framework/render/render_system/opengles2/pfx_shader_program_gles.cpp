@@ -251,7 +251,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 					}
 
 					temp_tree.add(node_ptr, status);
-					if (PFX_STATUS_OK != status)
+					if (PFX_STATUS_OK > status)
 					{
 						tree_t::release_node(node_ptr);
 						break;
@@ -266,7 +266,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 		}
 	}
 
-	BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 	// Query and store vertex attribute meta-data from the program.
 	GLint activeAttributes;
@@ -316,7 +316,7 @@ result_t cnative_shader_program_gles2::parse_shader_param_table()
 				
 				temp_tree.add(node_ptr, status);
 
-				if (PFX_STATUS_OK != status)
+				if (PFX_STATUS_OK > status)
 				{
 					tree_t::release_node(node_ptr);
 					break;
@@ -377,7 +377,7 @@ long_t new_location)
 		new_node_ptr->get_item_ref().m_type = param_type;
 		new_node_ptr->get_item_ref().m_value_type = param_value_type;
 		m_shader_param_table.add(new_node_ptr, status);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			tree_t::release_node(new_node_ptr);
 		}
@@ -543,7 +543,7 @@ result_t  cnative_shader_program_gles2::use()
 	{
 		return PFX_STATUS_OK;
 	}
-	return PFK_STATUS_SUCCESS;
+	return PFX_STATUS_SUCCESS;
 }
 
 long_t cnative_shader_program_gles2:: get_location_by_name

@@ -8,9 +8,12 @@
 #define PFX_CSTRING___
 PECKER_BEGIN
 typedef cstring < pecker_simple_allocator < char_t > >		cstring_ascii_t;
-typedef cstring < pecker_simple_allocator < widechar_t > >	cstring_unicode16_t;
+typedef cstring < pecker_simple_allocator < utf_char_t > >	cstring_unicode_t;
 typedef ascii_string_compare< cstring_ascii_t >				cascii_string_compare_t;
 typedef ascii_string_compare_withchars< cstring_ascii_t >   ascii_string_compare_withchars_t;
+
+typedef utf_string_compare< cstring_unicode_t >				cutf_string_compare_t;
+typedef utf_string_compare_withchars< cstring_unicode_t >   utf_string_compare_withchars_t;
 
 template < class __ascii_string_cmp_value >
 struct  compare_ascii_string_node
@@ -59,6 +62,57 @@ struct  compare_ascii_string_node_by_chrname
 		const char_t* value2)
 	{
 		return ascii_string_compare_withchars_t::compare(value1.get_name(), value2);
+	}
+};
+
+//////////////////////////////////////////////////////////////////////////
+template < class __utf_string_cmp_value >
+struct  compare_utf_string_node
+{
+	typedef   __utf_string_cmp_value param_type_t;
+
+	PFX_INLINE int operator () (const param_type_t& value1,
+		const param_type_t& value2) const
+	{
+		return cutf_string_compare_t::compare(value1.get_name(), value2.get_name());
+	}
+	static PFX_INLINE int compare(const param_type_t& value1,
+		const param_type_t& value2)
+	{
+		return cutf_string_compare_t::compare(value1.get_name(), value2.get_name());
+	}
+};
+
+template < class __utf_string_cmp_value >
+struct  compare_utf_string_node_by_name
+{
+	typedef   __utf_string_cmp_value param_type_t;
+
+	PFX_INLINE int operator () (const param_type_t& value1,
+		const cstring_ascii_t& value2) const
+	{
+		return cutf_string_compare_t::compare(value1.get_name(), value2);
+	}
+	static PFX_INLINE int compare(const param_type_t& value1,
+		const cstring_unicode_t& value2)
+	{
+		return cutf_string_compare_t::compare(value1.get_name(), value2);
+	}
+};
+
+template < class __utf_string_cmp_value >
+struct  compare_utf_string_node_by_chrname
+{
+	typedef   __utf_string_cmp_value param_type_t;
+	PFX_INLINE int operator () (const param_type_t& value1,
+		const utf_char_t* value2) const
+	{
+		return utf_string_compare_withchars_t::compare(value1.get_name(), value2);
+	}
+	static PFX_INLINE int compare(const param_type_t& value1,
+		const utf_char_t* value2)
+	{
+		return utf_string_compare_withchars_t::compare(value1.get_name(), value2);
 	}
 };
 

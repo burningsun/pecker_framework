@@ -76,7 +76,7 @@ public:
 		
 		result_t status;
 		status = __state.select_program(m_program_ptr);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			__state.revert_select_program();
 			return;
@@ -110,7 +110,7 @@ public:
 		__state.set_vertex_attrib_array(clr, m_vertexbufferobject_ptr, 4, 0, sizeof(vector4f_t));
 
 
-		__state.draw_arrays(GL_TRIANGLES, 0, 3);
+		__state.gl_draw_arrays(GL_TRIANGLES, 0, 3);
 		__state.unbind_buffer(pos);
 		__state.unbind_buffer(clr);
 
@@ -147,13 +147,13 @@ public:
 			__sys_shader_source.m_str_vertext_shader->get_length(), 
 			status);
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 		__fs_ptr->compile_shader(__sys_shader_source.m_str_fragment_shader->get_string(),
 			__sys_shader_source.m_str_fragment_shader->get_length(), 
 			status);
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 		if (null == m_program_ptr)
 		{

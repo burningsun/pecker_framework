@@ -145,6 +145,11 @@
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_target.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_shader_program.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_texture.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_brush.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_camera.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_canvus.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_font.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_pen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\pecker_framework\include\carray" />

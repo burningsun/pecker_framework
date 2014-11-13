@@ -153,7 +153,7 @@ result_t cdisplay_context_gles::select_config(EGLint PARAM_INOUT &egl_context_ID
 	FOR_ONE_LOOP_BEGIN
 	// 转换成egl使用的config
 	status = pfx_config_to_egl_config(egl_context_ID, __contet, config_list);
-	BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 	BREAK_LOOP_CONDITION_SETS(!config_list.get_block_ptr(), status, PFX_STATUS_MEM_LOW);
 
 	EGLint total_num_configs = 0;
@@ -177,7 +177,7 @@ result_t cdisplay_context_gles::select_config(EGLint PARAM_INOUT &egl_context_ID
 	}
 
 	status = __egl_configs.resize(total_num_configs);
-	BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 	EGLConfig* configs_ptr = (EGLConfig*)__egl_configs.get_block_ptr()->begin();
 	EGLint num_configs;
 
@@ -243,7 +243,7 @@ result_t cdisplay_context_gles::init_egl_context(
 			egl_configs);
 
 		// 一旦配置失败就退出
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			log_len = sprintf_s(str_log_buffer,
 				sizeof(str_log_buffer),
@@ -464,7 +464,7 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 		" init_egl_context __contextID = %d, status = %d",
 		__contextID,
 		status);
-	if (PFX_STATUS_OK != status)
+	if (PFX_STATUS_OK > status)
 	{
 		PECKER_LOG_ERR(
 				"status = %d",status);
@@ -688,7 +688,7 @@ result_t cdisplay_context_gles::destroy_egl_device(
 			::eglGetError());
 		status = PFX_STATUS_FAIL;
 	}
-	if (PFX_STATUS_OK != status && on_view_ptr)
+	if (PFX_STATUS_OK > status && on_view_ptr)
 	{
 		on_view_ptr->on_message_box(status,
 			"cdisplay_context_gles::destroy_egl_device",
@@ -773,7 +773,7 @@ long_t cdisplay_context_gles::render(proxy_status_t* PARAM_INOUT status_ptr)
 			m_egl_context_ID, m_on_render_view_ptr);
 
 		PECKER_LOG_INFO("create_egl_device status = %d",status);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			PECKER_LOG_ERR("create_egl_device error = %d",status);
 			break;

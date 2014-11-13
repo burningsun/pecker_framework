@@ -46,6 +46,27 @@ LRESULT WINAPI window_native_form::WndProc(HWND hwnd, UINT message, WPARAM wPara
 	return ::DefWindowProc(hwnd, message, wParam, lParam);
 }
 
+static screen_info_t* gscreen_info_ptr = null;
+static screen_info_t gscreen_info;
+const screen_info_t* window_native_form::get_screen_info()
+{
+	if (!gscreen_info_ptr)
+	{
+		gscreen_info.m_screen_size.m_width  = ::GetSystemMetrics(SM_CXSCREEN);
+		gscreen_info.m_screen_size.m_height = ::GetSystemMetrics(SM_CYSCREEN);
+		gscreen_info.m_screen_dpi.m_width  = 96;
+		gscreen_info.m_screen_dpi.m_height = 96;
+		gscreen_info_ptr = &gscreen_info;
+	}
+	return gscreen_info_ptr;
+}
+
+static void update_screen_dpi(HDC hDC)
+{
+	gscreen_info.m_screen_dpi.m_width = ::GetDeviceCaps(hDC, LOGPIXELSX);
+	gscreen_info.m_screen_dpi.m_height = ::GetDeviceCaps(hDC, LOGPIXELSY);
+}
+
 window_native_form::window_native_form() :m_hwmd(null),
 m_hdc(null),
 m_pixelmap(null),
@@ -140,6 +161,8 @@ LRESULT	window_native_form::on_message(UINT message, WPARAM wParam, LPARAM lPara
 					m_pixelmap = null;
 				}
 				m_hdc = ::GetDC(m_hwmd);
+				update_screen_dpi(m_hdc);
+
 				if (m_init_state.m_pixlmap)
 				{
 					m_pixelmap = ::CreateCompatibleBitmap(m_hdc,
@@ -180,6 +203,8 @@ LRESULT	window_native_form::on_message(UINT message, WPARAM wParam, LPARAM lPara
 					m_pixelmap = null;
 				}
 				m_hdc = ::GetDC(m_hwmd);
+				update_screen_dpi(m_hdc);
+
 				if (m_init_state.m_pixlmap)
 				{
 					m_pixelmap = ::CreateCompatibleBitmap(m_hdc,
@@ -240,6 +265,8 @@ LRESULT	window_native_form::on_message(UINT message, WPARAM wParam, LPARAM lPara
 				m_pixelmap = null;
 			}
 			m_hdc = ::GetDC(m_hwmd);
+			update_screen_dpi(m_hdc);
+
 			if (m_init_state.m_pixlmap)
 			{
 				m_pixelmap = ::CreateCompatibleBitmap(m_hdc,

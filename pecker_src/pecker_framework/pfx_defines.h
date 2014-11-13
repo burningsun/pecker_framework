@@ -124,7 +124,7 @@
 #endif
 
 #define ASCII_STRING(X) #X
-#define UTF16_STRING(X) L ## X
+#define utf_STRING(X) L ## X
 
 // 状态
 enum PFX_STATUS_CODE
@@ -183,7 +183,7 @@ enum PFX_STATUS_CODE
 	PFX_STATUS_ERROR_ = -1,
 	
 	PFX_STATUS_OK = 0,
-	PFK_STATUS_SUCCESS,
+	PFX_STATUS_SUCCESS,
 	
 	PFX_STATUS_OK_COUNT,
 	//PFX_STATUS_CODE_COUNT = (PFX_STATUS_OK_COUNT - PFX_STATUS_ERROR_COUNT)
@@ -259,8 +259,9 @@ typedef double						double_t;
 
 typedef void*						handle_t;
 typedef void*						pvoid_t;
-typedef char							char_t;
-typedef wchar_t					widechar_t;
+typedef char						char_t;
+
+typedef wchar_t					    utf_char_t;
 typedef char*						charstr_t;
 
 typedef s32_t				sint_t;

@@ -160,13 +160,19 @@ public:
 
 	PFX_INLINE result_t bind()
 	{
+		
 		if (m_native.check_status())
 		{
 			return m_native.bind();
 		}
 		else
 		{
-			return m_native.update_default();
+			result_t status = m_native.update_default();
+			if (status >= PFX_STATUS_OK)
+			{
+				status = PFX_STATUS_SUCCESS;
+			}
+			return status;
 		}
 	}
 

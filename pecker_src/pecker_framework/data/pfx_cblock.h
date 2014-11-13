@@ -294,7 +294,7 @@ PFX_INLINE result_t  block_to_block (const cblock< __allocA >& __blockA,
 		FOR_ONE_LOOP_BEGIN
 		status = __blockB.init_buffer(__blockA.size());
 
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		
 		status = __blockB.set_buffer_direct(__blockA.begin(), __blockA.size());
 		FOR_ONE_LOOP_END
@@ -317,7 +317,7 @@ PFX_INLINE result_t  block_to_block_direct (const __cblockA& __blockA,
 		FOR_ONE_LOOP_BEGIN
 		status = __blockB.init_buffer(__blockA.size());
 
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 
 		status = __blockB.set_buffer_direct(__blockA.begin(), __blockA.size());
 		FOR_ONE_LOOP_END
@@ -461,7 +461,7 @@ PFX_INLINE result_t PFX_CBLOCK::init_buffer (const PFX_CBLOCK_TYPE::element_t* b
 	FOR_ONE_LOOP_BEGIN
 	
 	status = init_buffer(__size);
-	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 	usize__t succeed_size;
 	succeed_size = set_buffer(buf_ptr, __size);
 	if (__size != succeed_size)
@@ -487,7 +487,7 @@ PFX_INLINE result_t PFX_CBLOCK::resize(usize__t __size)
 		cblock_t tmp_block;
 		FOR_ONE_LOOP_BEGIN
 		status = tmp_block.init_buffer(__size);
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		tmp_block.set_buffer_direct(m_block_ptr,m_size);
 		this->swap(tmp_block);
 		FOR_ONE_LOOP_END

@@ -253,7 +253,7 @@ result_t cImage::create(
 	result_t status;
 	status = m_image.m_buffer.init(image_buffer_size);
 
-	RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+	RETURN_INVALID_RESULT(PFX_STATUS_OK > status, status);
 
 	lpointer_t buffer_loc = (lpointer_t)m_image.m_buffer.get_block_buffer();
 	lpointer_t offset = buffer_loc % CIMAGE_PACK_SIZE;
@@ -286,7 +286,7 @@ result_t cImage::copy_to(cImage& PARAM_OUT __img)
 	{
 		result_t status;
 		status = __img.m_image.m_buffer.init(m_image.m_img.m_bytes_count + CIMAGE_PACK_SIZE);
-		RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+		RETURN_INVALID_RESULT(PFX_STATUS_OK > status, status);
 
 		lpointer_t buffer_loc = (lpointer_t)__img.m_image.m_buffer.get_block_buffer();
 		lpointer_t offset = buffer_loc % CIMAGE_PACK_SIZE;

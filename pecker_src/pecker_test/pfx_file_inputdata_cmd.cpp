@@ -19,9 +19,9 @@ result_t file_data_input_for_test_running(const char_t* pfile_name,cmd_operate_f
 	RETURN_INVALID_RESULT((null == pfile_name || null == cmd_operate_method),PFX_STATUS_INVALID_PARAMS);
 
 	status = pfx_check_file_exists(pfile_name);
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status),status);
 	status = pfx_open_file(&hfile,pfile_name,"r");
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status),status);
 
 	
 	while(1)

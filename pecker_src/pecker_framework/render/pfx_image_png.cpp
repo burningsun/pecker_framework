@@ -496,10 +496,10 @@ result_t PFX_RENDER_API load_png_image_from_file(image_data_t& PARAM_INOUT __img
 	result_t status = PFX_STATUS_OK;
 
 	status = hfile.is_file_exists(str_file_name);
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status), status);
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status), status);
 		  
 	status = hfile.open(str_file_name,  PFO_OPEN_READ | PFO_OPEN_BINARY);
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status), status);
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status), status);
 
 	usize__t file_size = hfile.get_file_size();
 

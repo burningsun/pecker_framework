@@ -236,6 +236,7 @@ class PFX_RENDER_SYSTEM_API cnative_buffer_object_gles2
 private:
 	GLuint							m_bufferID;
 	cvertex_cache_buffer_gles2*		m_update_data_ptr;
+	cvertex_cache_buffer_gles2*		m_update_data_backup_ptr;
 	enum_int_t						m_vbo_type;
 	enum_int_t						m_usage_type;
 
@@ -276,6 +277,7 @@ public:
 		return m_bufferID;
 	}
 public:
+	result_t bind_buffer();
 	PFX_INLINE result_t set_vbo_buffer(cvertex_cache_buffer_gles2* PARAM_IN buffer_ptr)
 	{
 		if (buffer_ptr)
@@ -292,10 +294,16 @@ public:
 			{
 				if (m_update_data_ptr)
 				{
-					m_update_data_ptr->dispose_vertex();
+					m_update_data_ptr->dispose_object();
 				}
-				
 				m_update_data_ptr = share_ptr;
+
+				if (m_update_data_backup_ptr)
+				{
+					m_update_data_backup_ptr->dispose_object();
+					m_update_data_backup_ptr = m_update_data_ptr->new_ref();
+				}
+
 				return PFX_STATUS_OK;
 			}
 			else
@@ -398,16 +406,34 @@ public:
 		return 	new_ref();
 	}
 
-
-	PFX_INLINE IPfx_buffer_object* diff_cache_object()
+	PFX_INLINE result_t dispose_render_target()
 	{
-		cbuffer_object_gles2* new_ptr = create_object();
-		if (new_ptr)
-		{
-			new_ptr->native().m_bufferID = this->native().m_bufferID;
-		}
-		return new_ptr;
+		return m_native.dispose_buffer_object();
 	}
+
+	PFX_INLINE result_t bind()
+	{
+		result_t status = PFX_STATUS_FAIL;
+		status = m_native.bind_buffer();
+		if (PFX_STATUS_UNINIT == status)
+		{
+			status = m_native.update_data();
+			if (status >= PFX_STATUS_OK)
+			{
+				status = PFX_STATUS_SUCCESS;
+			}
+		}
+		return status;
+	}
+	//PFX_INLINE IPfx_buffer_object* diff_cache_object()
+	//{
+	//	cbuffer_object_gles2* new_ptr = create_object();
+	//	if (new_ptr)
+	//	{
+	//		new_ptr->native().m_bufferID = this->native().m_bufferID;
+	//	}
+	//	return new_ptr;
+	//}
 
 	PFX_INLINE result_t set_vbo_buffer(IPfx_vertex_cache_buffer* PARAM_IN buffer_ptr)
 	{

@@ -25,7 +25,7 @@ result_t	PFX_CSHARE_STRING::init_string(const PFX_CSHARE_STRING_TYPE::cstring_t&
 	usize__t succeed_size;
 	FOR_ONE_LOOP_BEGIN
 	status = init_string(__otherstr.get_length ());
-	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 	succeed_size = set_charbuffer_at(0,__otherstr.get_string(), __otherstr.get_length());
 	if (succeed_size != __otherstr.get_length())
 	{
@@ -60,7 +60,7 @@ result_t	PFX_CSHARE_STRING::init_string (usize__t __size)
 		if (lock_ptr)
 		{
 			status = lock_ptr->init_buffer (__size);
-			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 			this->m_this_string_ptr = lock_ptr->begin();
 			this->m_size = __size;
 		}
@@ -109,7 +109,7 @@ result_t	PFX_CSHARE_STRING::init_string (const PFX_CSHARE_STRING_TYPE::element_t
 	{
 		status = lock_ptr->set_buffer(str_chars_buffer_ptr, buffer_size);
 	}
-	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 	this->m_this_string_ptr = lock_ptr->begin();
 	FOR_ONE_LOOP_END
 
@@ -179,7 +179,7 @@ result_t	PFX_CSHARE_STRING::resize_string (usize__t __size)
 		BREAK_LOOP_CONDITION_SETS (!lock_ptr, status, PFX_STATUS_ERROR_);
 
 		status = new_block.init_buffer (__size);
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		succeed_size = new_block.set_buffer_direct (this->m_this_string_ptr, get_length());
 		BREAK_LOOP_CONDITION_SETS (succeed_size != get_length(), status, PFX_STATUS_FAIL);
 		new_block.swap(*lock_ptr);
@@ -232,7 +232,7 @@ result_t	PFX_CSHARE_STRING::garbage_collection (GarbageCollectionMODE_t mode, //
 	BREAK_LOOP_CONDITION_SETS (!lock_ptr, status, PFX_STATUS_ERROR_);
 
 	status = new_block.init_buffer (new_size);
-	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 
 	succeed_size = new_block.set_buffer_direct (this->m_this_string_ptr, get_length());
 	BREAK_LOOP_CONDITION_SETS (succeed_size != get_length(), status, PFX_STATUS_FAIL);
@@ -412,7 +412,7 @@ result_t	PFX_CSHARE_STRING::insert_string (uindex_t __offset,
 	else
 	{
 		status = new_block.init_buffer ((this->get_length()+buffer_size));
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		succeed_size = new_block.set_buffer_direct (this->m_this_string_ptr, __offset);
 		BREAK_LOOP_CONDITION_SETS (succeed_size != __offset, status, PFX_STATUS_FAIL);
 		succeed_size = new_block.set_buffer_direct_down (str_chars_buffer_ptr, __offset, buffer_size);
@@ -646,7 +646,7 @@ const  PFX_CSHARE_STRING_TYPE::IString_t * PFX_CSHARE_STRING::sub_string (uindex
 		status = sub_string_ptr->init_string (sub_string_buffer(index_), 
 			(index_ > get_length())?(0):(get_length() - index_));
 
-		RETURN_RESULT (PFX_STATUS_OK != status, null);
+		RETURN_RESULT (PFX_STATUS_OK > status, null);
 		return sub_string_ptr;
 	//}
 
@@ -672,7 +672,7 @@ const PFX_CSHARE_STRING_TYPE::IString_t*	PFX_CSHARE_STRING::sub_string (uindex_t
 		}
 		result_t status;
 		status = sub_string_ptr->init_string (sub_string_buffer(index_), new_size);
-		RETURN_RESULT (PFX_STATUS_OK != status, null);
+		RETURN_RESULT (PFX_STATUS_OK > status, null);
 		return sub_string_ptr;
 	//}
 
@@ -700,7 +700,7 @@ PFX_CSHARE_STRING_TYPE::cstring_t& PARAM_OUT __sub_string)
 	//	new_size = __sub_string.get_length ();
 	//}
 	//status = __sub_string.init_string (sub_string_buffer(index_),new_size);
-	//RETURN_RESULT (PFX_STATUS_OK != status, null);
+	//RETURN_RESULT (PFX_STATUS_OK > status, null);
 	return &__sub_string;
 }
 
@@ -721,7 +721,7 @@ const PFX_CSHARE_STRING_TYPE::cstring_t*	PFX_CSHARE_STRING::sub_string (uindex_t
 	//result_t status;
 	//usize__t new_size = (index_ > get_length())?(0):(get_length() - index_);
 	//status = __sub_string.init_string (sub_string_buffer(index_),new_size);
-	//RETURN_INVALID_RESULT (PFX_STATUS_OK != status, null);
+	//RETURN_INVALID_RESULT (PFX_STATUS_OK > status, null);
 	return &__sub_string;
 }
 

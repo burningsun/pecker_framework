@@ -885,7 +885,7 @@ public:
 			result_t status;
 			m_root_ptr = null;
 			status = clone(other_tree);
-			if (PFX_STATUS_OK != status)
+			if (PFX_STATUS_OK > status)
 			{
 				throw (status);
 			}
@@ -1156,7 +1156,7 @@ public:
 		{
 			new_node_ptr->set_item (__key);
 			retn_node_ptr = add_node(new_node_ptr, __status);
-			if (PFX_STATUS_OK != __status)
+			if (PFX_STATUS_OK > __status)
 			{
 				release_node(retn_node_ptr);
 			}

@@ -311,16 +311,21 @@ public:
 	}
 	PFX_INLINE result_t bind ()
 	{
+		result_t status = PFX_STATUS_FAIL;
 		if (m_native.check_status())
 		{
 			m_native.bind();
-			return PFX_STATUS_OK;
+			status = PFX_STATUS_OK;
 		}
 		else
 		{
-			return update_default();
+			status = update_default();
+			if (PFX_STATUS_OK <= status)
+			{
+				status = PFX_STATUS_SUCCESS;
+			}
 		}
-
+		return status;
 	}
 
 	PFX_INLINE long_t   get_native_handle() const

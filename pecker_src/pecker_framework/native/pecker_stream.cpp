@@ -422,7 +422,7 @@ usize__t pecker_write_stream_to_memery::write_chars (char_t* write_buffer_ptr,us
 			--iwritesize;
 			break;
 		}
-		if (PFX_STATUS_OK != write_char(write_char_value))
+		if (PFX_STATUS_OK > write_char(write_char_value))
 		{
 			break;
 		}
@@ -445,7 +445,7 @@ result_t bytes_to_hexstring(const byte_t* PARAM_IN bytes_buffer_ptr,
 	string_size = bytes_count * 2 + 1;
 	status = _dec_str.init_string(string_size);
 	
-	RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+	RETURN_INVALID_RESULT(PFX_STATUS_OK > status, status);
 
 	char_t* chr_ptr; 
 	uindex_t __index;

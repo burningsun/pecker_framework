@@ -95,8 +95,8 @@ PFX_INLINE int cmp_a_and_b_string_a_ex(const char_t* pstr_a,
 	return (nstr_a_len - nstr_b_len);
 }
 
-PFX_INLINE int cmp_a_and_b_string_w(const widechar_t* pstr_a,nsize__t nstr_a_len,
-	const widechar_t* pstr_b,nsize__t nstr_b_len)
+PFX_INLINE int cmp_a_and_b_string_w(const utf_char_t* pstr_a,nsize__t nstr_a_len,
+	const utf_char_t* pstr_b,nsize__t nstr_b_len)
 {
 	nsize__t min_len = 0;
 	index_t i;
@@ -121,8 +121,8 @@ PFX_INLINE int cmp_a_and_b_string_w(const widechar_t* pstr_a,nsize__t nstr_a_len
 	return (nstr_a_len - nstr_b_len);
 }
 
-PFX_INLINE int cmp_a_and_b_string_w_ex(const widechar_t* pstr_a,
-	nsize__t nstr_a_len,const widechar_t* pstr_b,
+PFX_INLINE int cmp_a_and_b_string_w_ex(const utf_char_t* pstr_a,
+	nsize__t nstr_a_len,const utf_char_t* pstr_b,
 	nsize__t nstr_b_len,nsize__t* psame_count)
 {
 	nsize__t min_len = 0;

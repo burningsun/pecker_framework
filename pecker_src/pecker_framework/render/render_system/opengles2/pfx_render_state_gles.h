@@ -78,8 +78,11 @@ public:
 	{
 		::glViewport(viewport.m_x, viewport.m_y, viewport.m_width, viewport.m_height);
 	}
-
-	PFX_INLINE void draw_arrays(enum_int_t draw_type, uindex_t firstIndex, usize__t draw_count)
+	PFX_INLINE void draw_arrays(PFX_PRIMITIVE_MODE_t draw_type, uindex_t firstIndex, usize__t draw_count)
+	{
+		::glDrawArrays(PFX_PRIMODE_2_GLES2_PRIMODE(draw_type), firstIndex, draw_count);
+	}
+	PFX_INLINE void gl_draw_arrays(enum_int_t draw_type, uindex_t firstIndex, usize__t draw_count)
 	{
 		::glDrawArrays(draw_type, firstIndex, draw_count);
 	}

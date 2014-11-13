@@ -111,7 +111,7 @@ public:
 		
 		result_t status;
 		status = __state.select_program(m_program_ptr);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			__state.revert_select_program();
 			return;
@@ -280,14 +280,14 @@ public:
 		
 		//glUniform1i(tex, 0);
 
-		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+		__state.gl_draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 
 
 		matrix_dot_unsafe_std_t::mul(mvp_pro, m_proj_mat_RH, m_view_mat_RH);
 		matrix_dot_unsafe_std_t::mul(mvp, mvp__, mvp_pro);
 		//mvp = mvp_pro;
 		__state.set_uniform_attri(mat, (matrix4f_t&)mvp);
-		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+		__state.gl_draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		__state.unbind_buffer(pos);
 		__state.unbind_buffer(texcoord);
@@ -325,13 +325,13 @@ public:
 			__sys_shader_source.m_str_vertext_shader->get_length(), 
 			status);
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 		__fs_ptr->compile_shader(__sys_shader_source.m_str_fragment_shader->get_string(), 
 			__sys_shader_source.m_str_fragment_shader->get_length(), 
 			status);
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 		if (null == m_program_ptr)
 		{

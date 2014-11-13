@@ -256,6 +256,7 @@ protected:
 public:
 	void print_cur_config();
 
+	static const screen_info_t* get_screen_info ();
 // android....
 protected:
 	ANativeActivity* m_attech_activity_ptr;

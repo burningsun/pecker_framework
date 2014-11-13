@@ -281,7 +281,7 @@ result_t cnative_framebuffer_gles2::attach_renderbuffer(
 	
 	 
 	result_t status = render_buffer->bind();
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status),
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status),
 		status);
 
 	if (usage_type < PFX_UNKOWN_RENDER_BUFFER_FMT &&
@@ -375,7 +375,7 @@ result_t cnative_framebuffer_gles2::attach_texture(
 	}
 
 	result_t status = texture2D_ptr->bind();
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status),
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status),
 		status);
 
 	if (usage_type < PFX_STENCIL_BUFFER_FMT &&
@@ -492,13 +492,13 @@ result_t cnative_framebuffer_gles2::create_rendertarget(
 	BREAK_LOOP_CONDITION(null == tex2d_ptr);
 
 	status = tex2d_ptr->create_rendertarget(width, height, color_format);
-	BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 	tex2d_ptr->set_texture_filter(PFX_TRN_MIN_FILTER, PFX_TP_NEAREST);
 	tex2d_ptr->set_texture_filter(PFX_TRN_MAG_FILTER, PFX_TP_NEAREST);
 
 	status = attach_texture(PFX_COLOR_BUFFER_FMT, tex2d_ptr);
-	BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 	if (depth_format >= 0)
 	{
@@ -507,10 +507,10 @@ result_t cnative_framebuffer_gles2::create_rendertarget(
 
 		status = depth_ptr->create_rendertarget(PFX_DEPTH_BUFFER_FMT, 
 			depth_format, width, height);
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 		
 		status = attach_renderbuffer(depth_ptr);
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 	}
 
 	if (stencil_format >= 0)
@@ -520,10 +520,10 @@ result_t cnative_framebuffer_gles2::create_rendertarget(
 
 		status = stencil_ptr->create_rendertarget(PFX_STENCIL_BUFFER_FMT,
 			stencil_format, width, height);
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 		status = attach_renderbuffer(stencil_ptr);
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 	}
 
 	status = PFX_STATUS_OK;
@@ -597,14 +597,20 @@ result_t cnative_framebuffer_gles2::dispose_render_target()
 }
 result_t cnative_framebuffer_gles2::bind()
 {
+	result_t status = PFX_STATUS_FAIL;
 	if (PFX_STATUS_OK == complete_attachment())
 	{
-		return PFX_STATUS_OK;
+		status = PFX_STATUS_OK;
 	}
 	else
 	{
-		return update_default();
+		status = update_default();
+		if (status >= PFX_STATUS_OK)
+		{
+			status = PFX_STATUS_SUCCESS;
+		}
 	}
+	return status;
 }
 result_t cnative_framebuffer_gles2::bind_framebuffer()
 {
@@ -634,13 +640,13 @@ result_t cnative_framebuffer_gles2::update_default()
 		{
 			status = m_fbo_tag.m_render_target_ptr[i]->update_default();
 		}
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			break;
 		}
 	}
 
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status), status);
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status), status);
 
 	//////////////////////////////////////////////////////////////////////////
 	enum_int_t tag_type = PFX_UNKOWN_TAG;
@@ -667,7 +673,7 @@ result_t cnative_framebuffer_gles2::update_default()
 			status = PFX_STATUS_INVALID_VALUE;
 		}
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 	}
 
 
@@ -691,7 +697,7 @@ result_t cnative_framebuffer_gles2::update_default()
 			status = PFX_STATUS_INVALID_VALUE;
 		}
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 	}
 
 
@@ -708,7 +714,7 @@ result_t cnative_framebuffer_gles2::update_default()
 			status = PFX_STATUS_INVALID_VALUE;
 		}
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 	}
 
 

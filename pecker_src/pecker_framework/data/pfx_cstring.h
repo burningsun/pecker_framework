@@ -128,7 +128,7 @@ public:
 		m_size = 0;
 		m_this_string_ptr = m_cache_buffer;
 		result_t status = other_.copy_to(*this);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			throw (status);
 		}

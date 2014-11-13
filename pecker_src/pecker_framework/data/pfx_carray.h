@@ -105,7 +105,7 @@ public:
 		{
 			carray ();
 			result_t status = __other.copy_to(this);
-			if (PFX_STATUS_OK != status)
+			if (PFX_STATUS_OK > status)
 			{
 				throw (status);
 			}
@@ -449,7 +449,7 @@ public:
 				__other.m_block.swap(new_block);
 				status = __other.init(m_size);
 
-				if (PFX_STATUS_OK != status)
+				if (PFX_STATUS_OK > status)
 				{
 					__other.m_block.swap(new_block);
 					break;
@@ -484,7 +484,7 @@ public:
 		{
 			status = other_ptr->resize (m_size);
 		}
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		status = other_ptr->set_element_buffers_at(0, this->m_block.begin(), m_size);
 		FOR_ONE_LOOP_END
 		return status;
@@ -497,7 +497,7 @@ public:
 		uindex_t i = m_size;
 		FOR_ONE_LOOP_BEGIN
 		status = resize(m_size+1);
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		m_block.reference_unsafe(i) = elem;
 		FOR_ONE_LOOP_END
 		return status;
@@ -607,7 +607,7 @@ public:
 		{
 			carray_mbs ();
 			result_t status = __other.copy_to(this);
-			if (PFX_STATUS_OK != status)
+			if (PFX_STATUS_OK > status)
 			{
 				throw (status);
 			}
@@ -823,7 +823,7 @@ public:
 			{
 				cblock_t& __block =  m_blocks.get_element_at(i);
 				status = __block.init_buffer(allocate_step_size);
-				BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+				BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 			}
 		}
 		else
@@ -834,7 +834,7 @@ public:
 				--i;
 				cblock_t& __block =  m_blocks.get_element_at(i);
 				status = __block.init_buffer(allocate_step_size);
-				BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+				BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 			}
 		}
 		FOR_ONE_LOOP_END
@@ -887,7 +887,7 @@ public:
 		{
 			cblock_t& __block =  m_blocks.get_element_at(i);
 			status = __block.resize(allocate_step_size);
-			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		}
 		FOR_ONE_LOOP_END
 		if (PFX_STATUS_OK == status)
@@ -918,7 +918,7 @@ public:
 		//usize__t cur_block_count = m_blocks.size ();
 		FOR_ONE_LOOP_BEGIN
 		status = m_blocks.resize (m_blocks.get_buffer_size());
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		for (uindex_t i=new_block_size; i<m_blocks.size(); ++i)
 		{
 			cblock_t& __block =  m_blocks.get_element_at(i);
@@ -976,9 +976,9 @@ public:
 			_block_count = m_size / new_step + ((m_size % new_step)?1:0);
 			FOR_ONE_LOOP_BEGIN
 			status = new_array.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
-			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 			status = new_array.init(m_size, new_step);
-			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 			uindex_t i = m_size;
 			while (i)
 			{
@@ -1021,9 +1021,9 @@ public:
 
 			FOR_ONE_LOOP_BEGIN
 			status = new_array.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
-			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 			status = new_array.init(m_size);
-			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 			uindex_t i = m_size;
 			while (i)
 			{
@@ -1038,9 +1038,9 @@ public:
 			__other.set_max_elements_count(this->get_max_elements_count());
 			FOR_ONE_LOOP_BEGIN
 			status = __other.m_blocks.set_auto_step(this->m_blocks.get_auto_step());
-			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 			status = __other.init(m_size, this->get_auto_step());
-			BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 			uindex_t i = m_size;
 			while (i)
 			{
@@ -1071,7 +1071,7 @@ public:
 		{
 			status = other_ptr->resize (m_size);
 		}
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		status = other_ptr->set_element_buffers_at(0, this->m_blocks.get_block().begin()->begin(), m_size);
 		FOR_ONE_LOOP_END
 		return status;
@@ -1084,7 +1084,7 @@ public:
 		uindex_t i = m_size;
 		FOR_ONE_LOOP_BEGIN
 		status = resize(m_size+1);
-		BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		get_element_at(i) = elem;
 		FOR_ONE_LOOP_END
 		return status;

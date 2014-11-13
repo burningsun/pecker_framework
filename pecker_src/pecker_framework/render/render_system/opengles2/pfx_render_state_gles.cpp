@@ -249,7 +249,7 @@ void cnative_render_state_gles2::set_vertex_attrib_array(long_t __attribute_loca
 		if (native_buffer_ptr && native_buffer_ptr->get_bufferID())
 		{
 			result_t status = native_buffer_ptr->update_data();
-			if (PFX_STATUS_OK != status)
+			if (PFX_STATUS_OK > status)
 			{
 				return;
 			}
@@ -286,7 +286,7 @@ cbuffer_object_gles2* cnative_render_state_gles2::create_buffer()
 	{
 		result_t status;
 		status = new_buffer_ptr->native().create_buffer_object();
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			new_buffer_ptr->dispose_buffer();
 			new_buffer_ptr = null;

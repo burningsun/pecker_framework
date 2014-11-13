@@ -33,7 +33,7 @@ result_t   ctexture_surface::update_image(sImage_t* image_ptr,
 	if (null == mip_image_ptr)
 	{
 		status = m_mip_images.resize(mip_level + 1);
-		RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+		RETURN_INVALID_RESULT(PFX_STATUS_OK > status, status);
 		mip_image_ptr = get_image(mip_level);
 	}
 	sImage_t* new_ptr = image_ptr->new_ref();
@@ -63,14 +63,14 @@ result_t   ctexture_surface::update_image_with_copy(sImage_t* image_ptr,
 	if (null == mip_image_ptr)
 	{
 		status = m_mip_images.resize(mip_level + 1);
-		RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+		RETURN_INVALID_RESULT(PFX_STATUS_OK > status, status);
 		mip_image_ptr = get_image(mip_level);
 	}
 	sImage_t* new_ptr = image_ptr->create_object();
 	RETURN_INVALID_RESULT(null == new_ptr, PFX_STATUS_FAIL);
 	
 	status= image_ptr->native().copy_to(new_ptr->native());
-	RETURN_INVALID_RESULT(PFX_STATUS_OK != status, status);
+	RETURN_INVALID_RESULT(PFX_STATUS_OK > status, status);
 
 	if (mip_image_ptr->m_image_ptr)
 	{

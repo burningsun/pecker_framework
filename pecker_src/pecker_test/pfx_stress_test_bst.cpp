@@ -134,7 +134,7 @@ boolean_t bshow = true)
 		status = PFX_STATUS_OK;
 		bst_node_ptr = __bst.new_node();
 		status = bst_node_ptr->get_item_ref().init_string (elem);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			PECKER_LOG_ ("init string in node error = %d\n",status);
 			arr_itr_ptr = arr_itr_ptr->increase();
@@ -147,7 +147,7 @@ boolean_t bshow = true)
 		{
 			PECKER_LOG_ ("add node null error= %d\n",status);
 		}
-		else if (PFX_STATUS_OK != status)
+		else if (PFX_STATUS_OK > status)
 		{
 			PECKER_LOG_ ("add node error= %d\n",status);
 		}
@@ -195,7 +195,7 @@ boolean_t bshow = true)
 		status = PFX_STATUS_OK;
 
 		status = key_node.get_item_ref().init_string (elem);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			PECKER_LOG_ ("init string in node error = %d\n",status);
 		}
@@ -258,7 +258,7 @@ boolean_t bshow = true)
 		status = PFX_STATUS_OK;
 
 		status = key_node.get_item_ref().init_string (elem);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			PECKER_LOG_ ("init string in node error = %d\n",status);
 		}
@@ -282,7 +282,7 @@ boolean_t bshow = true)
 			}
 
 			status = __bst.release_node(removed_node_ptr);
-			if (PFX_STATUS_OK != status)
+			if (PFX_STATUS_OK > status)
 			{
 				PECKER_LOG_("release node error = %d\n", status);
 			}
@@ -395,7 +395,7 @@ boolean_t bshow = true)
 			}
 
 			status = __bst.release_node(removed_node_ptr);
-			if (PFX_STATUS_OK != status)
+			if (PFX_STATUS_OK > status)
 			{
 				PECKER_LOG_("release node error = %d\n", status);
 			}
@@ -465,10 +465,10 @@ result_t load_file_to_array(const char_t* PARAM_IN str_path_ptr,
 
 			array_ptr->clean ();
 			status = pecker_file::is_file_exists (str_path_ptr);
-			RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
+			RETURN_INVALID_RESULT((PFX_STATUS_OK > status),status);
 
 			status = file.open(str_path_ptr,PFO_OPEN_READ);
-			RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
+			RETURN_INVALID_RESULT((PFX_STATUS_OK > status),status);
 
 			tick_count.init();
 			tick_count.start();
@@ -496,7 +496,7 @@ result_t load_file_to_array(const char_t* PARAM_IN str_path_ptr,
 
 				usize__t old_array_size = array_ptr->size ();
 				status = array_ptr->resize (old_array_size + 1);
-				if (PFX_STATUS_OK != status)
+				if (PFX_STATUS_OK > status)
 				{
 					PECKER_LOG_ ("array resize error = %d/n",status);
 					break;

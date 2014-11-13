@@ -429,6 +429,21 @@
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_target.h">
       <Filter>render\render_system</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_brush.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_camera.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_canvus.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_font.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_pen.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />

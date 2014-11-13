@@ -111,16 +111,16 @@ result_t load_img(const char_t* pfile_name,image_data_t& __img)
 #endif // #if (OS_CONFIG == OS_ANDROID)
 
 	status = hfile.open_resource(pfile_name);
-	RETURN_INVALID_RESULT((PFX_STATUS_OK != status), status);
+	RETURN_INVALID_RESULT((PFX_STATUS_OK > status), status);
 	usize__t file_size = hfile.get_size();
 
 
 	//RETURN_INVALID_RESULT((null == pfile_name),PFX_STATUS_INVALID_PARAMS);
 
 	//status = hfile.is_file_exists(pfile_name);
-	//RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
+	//RETURN_INVALID_RESULT((PFX_STATUS_OK > status),status);
 	//status = hfile.open(pfile_name, PFO_OPEN_READ | PFO_OPEN_BINARY);
-	//RETURN_INVALID_RESULT((PFX_STATUS_OK != status),status);
+	//RETURN_INVALID_RESULT((PFX_STATUS_OK > status),status);
 	//usize__t file_size = hfile.get_readonly_file_size();//.get_file_size();
 
 	byte_t* read_buffer_ptr = new byte_t[file_size];
@@ -135,7 +135,7 @@ result_t load_img(const char_t* pfile_name,image_data_t& __img)
 	usize__t read_size = file_size;
 	status = hfile.read_to_memery(read_buffer_ptr, read_size);
 
-	if (PFX_STATUS_OK != status)
+	if (PFX_STATUS_OK > status)
 	{
 		return status;
 	}

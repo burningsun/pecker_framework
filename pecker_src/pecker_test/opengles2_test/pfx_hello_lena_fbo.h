@@ -116,7 +116,7 @@ public:
 		
 		result_t status;
 		status = __state.select_program(m_program_ptr);
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			__state.revert_select_program();
 			return;
@@ -134,12 +134,12 @@ public:
 		}
 
 		status = m_framebuffer_ptr->bind();
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			status = m_framebuffer_ptr->create_rendertarget(512, 512);
 		}
 
-		if (PFX_STATUS_OK != status)
+		if (PFX_STATUS_OK > status)
 		{
 			return;
 		}
@@ -234,13 +234,13 @@ public:
 
 		m_texture2d_ptr->bind();
 		__state.set_texture(tex, m_texture2d_ptr, 0);
-		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+		__state.gl_draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		matrix_dot_unsafe_std_t::mul(mvp_pro, m_subproj_mat_RH, m_subview_mat_RH);
 		matrix_dot_unsafe_std_t::mul(mvp, mvp__, mvp_pro);
 
 		__state.set_uniform_attri(mat, (matrix4f_t&)mvp);
-		__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+		__state.gl_draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		__state.unbind_buffer(pos);
 		__state.unbind_buffer(texcoord);
@@ -270,7 +270,7 @@ public:
 			__state.set_vertex_attrib_array(pos, m_vertexbufferobject_ptr, 4);
 			__state.set_vertex_attrib_array(texcoord, m_vertexbufferobject_ptr, 4, 0, sizeof(vector4f_t));
 			__state.set_texture(tex, tex_ptr, 2);
-			__state.draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
+			__state.gl_draw_arrays(GL_TRIANGLE_STRIP, 0, 4);
 			__state.unbind_buffer(pos);
 			__state.unbind_buffer(texcoord);
 			tex_ptr->dispose();
@@ -310,13 +310,13 @@ public:
 			__sys_shader_source.m_str_vertext_shader->get_length(), 
 			status);
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 		__fs_ptr->compile_shader(__sys_shader_source.m_str_fragment_shader->get_string(), 
 			__sys_shader_source.m_str_fragment_shader->get_length(), 
 			status);
 
-		BREAK_LOOP_CONDITION(PFX_STATUS_OK != status);
+		BREAK_LOOP_CONDITION(PFX_STATUS_OK > status);
 
 		if (null == m_program_ptr)
 		{

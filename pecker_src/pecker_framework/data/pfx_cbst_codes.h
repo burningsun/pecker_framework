@@ -1360,7 +1360,7 @@ PFX_AVL_BST_RM_TYPE::node_t* PFX_AVL_BST_RM ::remove_node
 
 	__status = status;
 
-	if (PFX_STATUS_OK != status)
+	if (PFX_STATUS_OK > status)
 	{
 		return remove_node_ptr;
 	}
@@ -1394,7 +1394,7 @@ PFX_AVL_BST_RM_TYPE::node_t* PFX_AVL_BST_RM ::remove_node
 	status = init_t :: avl_update_fixed (root_node_ptr,temp_node_ptr);
 
 	__status = status;
-	if (PFX_STATUS_OK != status)
+	if (PFX_STATUS_OK > status)
 	{
 		return null;
 	}
@@ -1457,7 +1457,7 @@ PFX_RB_BST_RM_TYPE::node_t* PFX_RB_BST_RM ::remove_node
 
 	__status = status;
 
-	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status),null);
+	RETURN_INVALID_RESULT ((PFX_STATUS_OK > status),null);
 
 	RETURN_RESULT ((is_red_node || null == root_node_ptr), remove_node_ptr);
 
@@ -1465,7 +1465,7 @@ PFX_RB_BST_RM_TYPE::node_t* PFX_RB_BST_RM ::remove_node
 
 	__status = status;
 
-	RETURN_INVALID_RESULT ((PFX_STATUS_OK != status), null);
+	RETURN_INVALID_RESULT ((PFX_STATUS_OK > status), null);
 
 	return remove_node_ptr;
 }
@@ -1855,12 +1855,12 @@ PFX_INLINE const PFX_AVL_BST_INSERT_TYPE::node_t* PFX_AVL_BST_INSERT ::add_node
 	status = BST_insert_t ::add_node (root_node_ptr,
 			add_node_ptr, return_node_ptr);
 
-	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 
 	init_t :: update_avl_height (add_node_ptr);
 	status = init_t :: avl_update_insert_rotate (root_node_ptr,add_node_ptr);
 
-	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK != status),
+	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK > status),
 			return_node_ptr, null);
 
 	FOR_ONE_LOOP_END
@@ -1895,12 +1895,12 @@ PFX_INLINE const PFX_RB_BST_INSERT_TYPE::node_t* PFX_RB_BST_INSERT ::add_node
 	status = BST_insert_t::add_node (root_node_ptr,
 			add_node_ptr,return_node_ptr);
 
-	BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+	BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 
 	// 平衡变换
 	status = init_t ::rbt_add_rotate_fixup (root_node_ptr,add_node_ptr);
 
-	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK != status),
+	BREAK_LOOP_CONDITION_SETS ((PFX_STATUS_OK > status),
 			return_node_ptr, null);
 
 	FOR_ONE_LOOP_END
@@ -1959,7 +1959,7 @@ result_t PFX_CBST_CLEAN::clean
 			}
 
 			status = new_delete_t::delete_node (del_node_ptr);
-			BREAK_LOOP_CONDITION (PFX_STATUS_OK != status);
+			BREAK_LOOP_CONDITION (PFX_STATUS_OK > status);
 		}
 	}while (1);
 	root_dec_ptr = null;
@@ -2040,7 +2040,7 @@ result_t PFX_CBST_CLONE ::clone
 		temp_src_node_ptr = temp_src_node_ptr->get_parent_node_ref ();
 	}while(temp_dec_node_ptr);
 
-	if (PFX_STATUS_OK != status)
+	if (PFX_STATUS_OK > status)
 	{
 		clean_t::clean (root_dec_ptr);
 	}
@@ -2127,7 +2127,7 @@ result_t PFX_CBST_COPY::copy
 
 	}while (1);
 
-	if (PFX_STATUS_OK != status)
+	if (PFX_STATUS_OK > status)
 	{
 		clean_t::clean (root_dec_ptr);
 	}

@@ -187,6 +187,8 @@ public:
 	typedef int (*PFX_main_callback)(pecker_sdk::window_native_form* PARAM_INOUT main_form);
 	static 	int app_main(PFX_main_callback PFX_main_func);
 
+	static const screen_info_t* get_screen_info();
+
 public:
 	void 		show(bool fullscreen = false);
 	result_t	show_dialog(bool fullscreen = false);
