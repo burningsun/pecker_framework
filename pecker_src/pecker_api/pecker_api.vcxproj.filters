@@ -62,6 +62,9 @@
     <ClCompile Include="..\pecker_framework\pfx_cpu_x86.cpp">
       <Filter>configs</Filter>
     </ClCompile>
+    <ClCompile Include="..\pecker_framework\render\render_util\pfx_freetypefont.cpp">
+      <Filter>render\render_util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="configs">
@@ -466,6 +469,9 @@
       <Filter>render\render_util</Filter>
     </ClInclude>
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_text_pen.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_freetypefont.h">
       <Filter>render\render_util</Filter>
     </ClInclude>
   </ItemGroup>

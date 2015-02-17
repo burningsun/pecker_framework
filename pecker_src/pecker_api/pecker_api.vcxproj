@@ -31,6 +31,7 @@
     <ClCompile Include="..\pecker_framework\render\pfx_image.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image_png.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_system\pfx_texture.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_util\pfx_freetypefont.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_canvus.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_font.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_fontcache.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_freetypefont.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_line_pen.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_pen.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_text_pen.h" />
@@ -216,12 +218,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>PFX_MATH_EXPORT;PFX_NATIVE_EXPORT;PFX_RENDER_EXPORT;PFX_CORE_EXPORT;PFX_DATA_EXPORT;WIN32;_DEBUG;_WINDOWS;_USRDLL;PECKER_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;$(SolutionDir)\depends_lib\freetype-2.5.3\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)\depends_lib\libpng-1.6.2\bind\zlibd.lib;$(SolutionDir)\depends_lib\libpng-1.6.2\bind\libpngd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\depends_lib\libpng-1.6.2\bind\zlibd.lib;$(SolutionDir)\depends_lib\libpng-1.6.2\bind\libpngd.lib;$(SolutionDir)\depends_lib\freetype-2.5.3\objs\win32\vc2010\freetype253_D.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -234,7 +236,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>PFX_NATIVE_EXPORT;PFX_RENDER_EXPORT;PFX_CORE_EXPORT;PFX_DATA_EXPORT;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)pecker_framework\;$(SolutionDir)\depends_lib\freetype-2.5.3\include</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
@@ -243,7 +245,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <Profile>true</Profile>
-      <AdditionalDependencies>$(SolutionDir)\depends_lib\libpng-1.6.2\bin\zlib.lib;$(SolutionDir)\depends_lib\libpng-1.6.2\bin\libpng.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\depends_lib\libpng-1.6.2\bin\zlib.lib;$(SolutionDir)\depends_lib\libpng-1.6.2\bin\libpng.lib;$(SolutionDir)\depends_lib\freetype-2.5.3\objs\win32\vc2010\freetype253.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSBR>true</PreserveSBR>

@@ -15,6 +15,41 @@ typedef ascii_string_compare_withchars< cstring_ascii_t >   ascii_string_compare
 typedef utf_string_compare< cstring_unicode_t >				cutf_string_compare_t;
 typedef utf_string_compare_withchars< cstring_unicode_t >   utf_string_compare_withchars_t;
 
+
+PFX_INLINE 	cstring_ascii_t& SET_STRING(cstring_ascii_t& str, const char_t* charstr_ptr, result_t& status)
+{
+	if (null == charstr_ptr)
+	{
+		status = str.init_string((usize__t)0);
+	}
+	else
+	{
+		cstring_ascii_t::const_iterator_t itr;
+		char_t nullchar = 0;
+		status = str.init_string(charstr_ptr, strlen(charstr_ptr) + 1);
+		str.end(itr);
+		str.set_at(itr, nullchar);
+	}
+	return str;
+}
+
+PFX_INLINE 	cstring_unicode_t& SET_STRING(cstring_unicode_t& str, const utf_char_t* charstr_ptr, result_t& status)
+{
+	if (null == charstr_ptr)
+	{
+		status = str.init_string((usize__t)0);
+	}
+	else
+	{
+		cstring_unicode_t::const_iterator_t itr;
+		utf_char_t nullchar = 0;
+		status = str.init_string(charstr_ptr, wcslen(charstr_ptr) + 1);
+		str.end(itr);
+		str.set_at(itr, nullchar);
+	}
+	return str;
+}
+
 template < class __ascii_string_cmp_value >
 struct  compare_ascii_string_node
 {

@@ -24,7 +24,7 @@ typedef struct st_fontcache_rect
 	rect_sizef_t       m_font_rect;
 	nsize__t           m_rank;
 	double_t           m_last_tick;
-	IPfx_font*         m_font_ptr;
+	font_info_t        m_font_info;
 	cstring_unicode_t  m_font_text;
 }fontcache_rect_t;
 

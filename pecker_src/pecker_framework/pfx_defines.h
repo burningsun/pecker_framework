@@ -205,6 +205,7 @@ enum PFX_STATUS_CODE
 #define MAX_UNSIGNED_VALUE (-1)
 #define PECKER_PI (3.141592653)
 #define PECKER_TWO_PI (6.283185306)
+#define DEGREE_TO_RAD(X) ((double_t)(X)/180.0*PECKER_PI)
 
 
 #ifdef __cplusplus

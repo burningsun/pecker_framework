@@ -246,8 +246,9 @@ public:
 		if (itr.m_begin_ptr == this->m_this_string_ptr)
 		{
 			if (itr.m_cur_ptr)
-			{
-				*itr.m_cur_ptr = __char;
+			{	 
+				element_t* val_ptr = (element_t*)itr.m_cur_ptr;
+				*val_ptr = __char;
 				return PFX_STATUS_OK;
 			}
 			else
@@ -263,7 +264,9 @@ public:
 			{
 				begin(itr);
 				itr.m_cur_ptr += offset;
-				*itr.m_cur_ptr = __char;
+				//*itr.m_cur_ptr = __char;
+				element_t* val_ptr = (element_t*)itr.m_cur_ptr;
+				*val_ptr = __char;
 				return PFX_STATUS_OK;
 			}
 			else
