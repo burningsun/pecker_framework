@@ -1,0 +1,12 @@
+a.site_hot:visited {
+	color: red; text-decoration: none;
+}
+a.site_hot:active {
+	color: red; text-decoration: none;
+}
+a.site_hot:link {
+	color: red; text-decoration: none;
+}
+a.site_hot:hover {
+	color: red; text-decoration: underline;
+}

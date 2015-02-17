@@ -152,8 +152,8 @@ public:
 		itr.m_begin_ptr = this->m_this_string_ptr;
 		return &itr;
 	}
-	PFX_INLINE result_t						set_at (const_iterator_t& PARAM_INOUT itr, 
-																		const element_t& __char, boolean_t __autofixed = PFX_BOOL_FALSE)
+	PFX_INLINE result_t				set_at (const_iterator_t& PARAM_INOUT itr, 
+									const element_t& __char, boolean_t __autofixed = PFX_BOOL_FALSE)
 	{
 		if (itr.m_begin_ptr != this->m_this_string_ptr)
 		{

@@ -41,7 +41,9 @@
     <ClInclude Include="..\pecker_framework\data\pfx_cblock.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst_codes.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_cbst_iterator.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cbst_iterator_codes.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_cgraphics.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_clist.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cmatrix4.h" />
@@ -50,6 +52,8 @@
     <ClInclude Include="..\pecker_framework\data\pfx_cshare_string_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cstring.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cstring_codes.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_ctst.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_ctst_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cvector.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cvector_alg.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_cvector_alg_codes.h" />
@@ -66,6 +70,7 @@
     <ClInclude Include="..\pecker_framework\data\pfx_share_object.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_cmp_codes.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_string_compare.h" />
+    <ClInclude Include="..\pecker_framework\data\pfx_tenary_search_tree.h" />
     <ClInclude Include="..\pecker_framework\data\pfx_util.h" />
     <ClInclude Include="..\pecker_framework\math\pfx_math.h" />
     <ClInclude Include="..\pecker_framework\math\pfx_math_method.h" />
@@ -149,7 +154,10 @@
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_camera.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_canvus.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_font.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_fontcache.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_line_pen.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_pen.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_text_pen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\pecker_framework\include\carray" />

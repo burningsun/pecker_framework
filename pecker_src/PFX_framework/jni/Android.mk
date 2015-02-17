@@ -20,6 +20,7 @@ include $(LOCAL_PATH)$(ZLIB_MK)   #zlib
 include $(LOCAL_PATH)$(PNGLIB_MK) #pnglib
 include $(LOCAL_PATH)$(FFT2LIB_MK)#freetype2lib
 
+#LOCAL_MODULE    := PFX_DEPENDS_prebuild
 LOCAL_MODULE    := PFX_DEPENDS
 
 LOCAL_C_INCLUDES += $(FT2_LOCAL_EXPORT_C_INCLUDES)
@@ -42,7 +43,13 @@ endif # TARGET_ARCH_ABI == armeabi-v7a
 LOCAL_LDLIBS    :=  
 #-ldl -llog
 
-include $(BUILD_STATIC_LIBRARY)
+#include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
+
+#include $(CLEAR_VARS)
+#LOCAL_MODULE := PFX_DEPENDS
+#LOCAL_SRC_FILES := PFX_DEPENDS_prebuild.a
+#include $(PREBUILT_STATIC_LIBRARIES)
 
 
 #±‡“ÎÕº–Œø‚
@@ -52,7 +59,8 @@ include $(CLEAR_VARS)
 include $(LOCAL_PATH)$(PFX_MK)
 include $(LOCAL_PATH)$(PFX_TEST_MK)
 
-LOCAL_STATIC_LIBRARIES := PFX_DEPENDS #∏Ωº”“¿¿µø‚
+#LOCAL_STATIC_LIBRARIES := PFX_DEPENDS #∏Ωº”“¿¿µø‚
+LOCAL_SHARED_LIBRARIES := PFX_DEPENDS #∏Ωº”“¿¿µø‚
 
 
 LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) $(PFX_TEST_LOCAL_SRC_FILES)

@@ -30,7 +30,7 @@ PECKER_BEGIN
 
 #define PFX_CBST_RM_TEMPLATE_DEFINES template < class node_type_ >
 #define PFX_CBST_RM						BST_node_remove< node_type_	>
-#define PFX_CBST_RM_TYPE				typename BST_node_remove< node_type_	>
+#define PFX_CBST_RM_TYPE				typename BST_node_remove< node_type_ >
 
 #define PFX_AVL_BST_RM_TEMPLATE_DEFINES template < class node_type_ >
 #define PFX_AVL_BST_RM					AVL_BST_node_remove< node_type_	>
@@ -52,9 +52,17 @@ PECKER_BEGIN
 #define PFX_CBST_ELEM_FIND					BST_find_element< tree_type >
 #define PFX_CBST_ELEM_FIND_TYPE		typename BST_find_element< tree_type >
 
+#define PFX_CBST_ELEM_FIND_NODE_TEMPLATE_DEFINES template < class node_type_, class key_element, class key_cmp_node_t>
+#define PFX_CBST_ELEM_FIND_NODE             BST_find_element_node< node_type_, key_element, key_cmp_node_t >
+#define PFX_CBST_ELEM_FIND_NODE_TYPE typename BST_find_element_node< node_type_, key_element, key_cmp_node_t >
+
 #define PFX_CBST_ELEM_FINDX_TEMPLATE_DEFINES template < class tree_type, class key_element, class key_cmp_node_t>
 #define PFX_CBST_ELEM_FINDX					BST_find_elementx< tree_type, key_element, key_cmp_node_t >
-#define PFX_CBST_ELEM_FINDX_TYPE		typename BST_find_elementx< tree_type, key_element, key_cmp_node_t >
+#define PFX_CBST_ELEM_FINDX_TYPE		typename BST_find_elementx< tree_type, key_element, key_cmp_node_t > 
+
+#define PFX_CBST_STR_FIND_NODE_TEMPLATE_DEFINES template < class node_type_, class string_type, class string_cmp_node_t >
+#define PFX_CBST_STR_FIND_NODE	            BST_find_string_node < node_type_, string_type, string_cmp_node_t >
+#define PFX_CBST_STR_FIND_NODE_TYPE		typename BST_find_string_node < node_type_, string_type, string_cmp_node_t >
 
 #define PFX_CBST_INSERT_TEMPLATE_DEFINES template < class node_type_, class compare_two_node_ >
 #define PFX_CBST_INSERT							BST_insert_node< node_type_, compare_two_node_ >
@@ -1660,6 +1668,72 @@ PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t* PFX_CBST_ELEM_FIND::find_n
 	}
 }
 
+PFX_CBST_ELEM_FIND_NODE_TEMPLATE_DEFINES
+PFX_INLINE const PFX_CBST_ELEM_FIND_NODE_TYPE::node_t*
+PFX_CBST_ELEM_FIND_NODE::find_node(const PFX_CBST_ELEM_FIND_NODE_TYPE::key_t& PARAM_IN __key, 
+const PFX_CBST_ELEM_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr)
+{
+	typedef PFX_CBST_ELEM_FIND_NODE_TYPE::node_t node_t;
+	typedef PFX_CBST_ELEM_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
+
+	const node_t* find_node_ptr = root_node_ptr
+	while (find_node_ptr)
+	{
+		int cmp_result = cmp_t::compare(find_node_ptr->get_item(), __key);
+		if (cmp_result > 0)
+		{
+			find_node_ptr = find_node_ptr->get_left_node();
+		}
+		else if (cmp_result < 0)
+		{
+			find_node_ptr = find_node_ptr->get_right_node();
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return find_node_ptr;
+}
+
+PFX_CBST_ELEM_FIND_NODE_TEMPLATE_DEFINES
+PFX_INLINE const PFX_CBST_ELEM_FIND_NODE_TYPE::node_t*
+PFX_CBST_ELEM_FIND_NODE::find_near_node
+(const PFX_CBST_ELEM_FIND_NODE_TYPE::key_t& PARAM_IN __key,
+const PFX_CBST_ELEM_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr,
+int& PARAM_INOUT last_cmp_result)
+{
+	typedef PFX_CBST_ELEM_FIND_NODE_TYPE::node_t               node_t;
+	typedef PFX_CBST_ELEM_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
+
+	const node_t* near_node_ptr = null;
+	const node_t* traval_node_ptr = root_node_ptr;
+
+	int cmp_result = 0;
+	while (traval_node_ptr)
+	{
+		int cmp_result = cmp_t::compare(traval_node_ptr->get_item(), __key);
+		near_node_ptr = traval_node_ptr;
+
+		if (cmp_result < 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_left_node();
+		}
+		else if (cmp_result > 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_right_node();
+		}
+		else
+		{
+			break;
+		}
+	}
+	last_cmp_result = cmp_result;
+	return near_node_ptr;
+}
+
+
 PFX_CBST_ELEM_FINDX_TEMPLATE_DEFINES
 PFX_INLINE PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t* PFX_CBST_ELEM_FINDX::find_node
 (const PFX_CBST_ELEM_FINDX_TYPE::key_t& PARAM_IN __key,
@@ -1738,6 +1812,141 @@ PFX_INLINE PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t* PFX_CBST_ELEM_FINDX::find
 	{
 		return null;
 	}
+}
+
+PFX_CBST_STR_FIND_NODE_TEMPLATE_DEFINES
+PFX_INLINE const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PFX_CBST_STR_FIND_NODE::
+find_node(const PFX_CBST_STR_FIND_NODE_TYPE::key_char_t* PARAM_IN __chars_ptr,
+usize__t chars_count,
+const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr)
+{
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::node_t node_t;
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
+
+	const node_t* find_node_ptr = root_node_ptr
+	while (find_node_ptr)
+	{
+		int cmp_result = cmp_t::compare(find_node_ptr->get_item(), __chars_ptr, chars_count);
+		if (cmp_result > 0)
+		{
+			find_node_ptr = find_node_ptr->get_left_node();
+		}
+		else if (cmp_result < 0)
+		{
+			find_node_ptr = find_node_ptr->get_right_node();
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return find_node_ptr;
+}
+
+PFX_CBST_STR_FIND_NODE_TEMPLATE_DEFINES
+PFX_INLINE const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PFX_CBST_STR_FIND_NODE::find_near_node
+(const PFX_CBST_STR_FIND_NODE_TYPE::key_char_t* PARAM_IN __chars_ptr,
+usize__t chars_count,
+const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr,
+int& PARAM_INOUT last_cmp_result)
+{
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::node_t node_t;
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
+
+	const node_t* near_node_ptr = null;
+	const node_t* traval_node_ptr = root_node_ptr;
+
+	int cmp_result = 0;
+	while (traval_node_ptr)
+	{
+		int cmp_result = cmp_t::compare(traval_node_ptr->get_item(), 
+			__chars_ptr, 
+			chars_count);
+
+		near_node_ptr = traval_node_ptr;
+
+		if (cmp_result < 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_left_node();
+		}
+		else if (cmp_result > 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_right_node();
+		}
+		else
+		{
+			break;
+		}
+	}
+	last_cmp_result = cmp_result;
+	return near_node_ptr;
+}
+
+PFX_CBST_STR_FIND_NODE_TEMPLATE_DEFINES
+PFX_INLINE const PFX_CBST_STR_FIND_NODE_TYPE::node_t*
+PFX_CBST_STR_FIND_NODE::find_node(
+const PFX_CBST_STR_FIND_NODE_TYPE::key_t& PARAM_IN __key, 
+const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr)
+{
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::node_t node_t;
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
+
+	const node_t* find_node_ptr = root_node_ptr
+	while (find_node_ptr)
+	{
+		int cmp_result = cmp_t::compare(find_node_ptr->get_item(), __key);
+		if (cmp_result > 0)
+		{
+			find_node_ptr = find_node_ptr->get_left_node();
+		}
+		else if (cmp_result < 0)
+		{
+			find_node_ptr = find_node_ptr->get_right_node();
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return find_node_ptr;
+}
+
+PFX_CBST_STR_FIND_NODE_TEMPLATE_DEFINES
+PFX_INLINE const PFX_CBST_STR_FIND_NODE_TYPE::node_t*
+PFX_CBST_STR_FIND_NODE::find_near_node
+(const PFX_CBST_STR_FIND_NODE_TYPE::key_t& PARAM_IN __key,
+const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr,
+int& PARAM_INOUT last_cmp_result)
+{
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::node_t               node_t;
+	typedef PFX_CBST_STR_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
+
+	const node_t* near_node_ptr = null;
+	const node_t* traval_node_ptr = root_node_ptr;
+
+	int cmp_result = 0;
+	while (traval_node_ptr)
+	{
+		int cmp_result = cmp_t::compare(traval_node_ptr->get_item(), __key);
+		near_node_ptr = traval_node_ptr;
+
+		if (cmp_result < 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_left_node();
+		}
+		else if (cmp_result > 0)
+		{
+			traval_node_ptr = traval_node_ptr->get_right_node();
+		}
+		else
+		{
+			break;
+		}
+	}
+	last_cmp_result = cmp_result;
+	return near_node_ptr;
 }
 
 // 插入

@@ -179,6 +179,8 @@ enum PFX_STATUS_CODE
 	PFX_STATUS_INCOMPLETE,
 	PFX_STATUS_NOT_SUPPORTED,
 
+	PFX_STATUS_NOT_ENOUGH_NODE,
+
 	PFX_STATUS_FAIL	  = -2,
 	PFX_STATUS_ERROR_ = -1,
 	
@@ -219,7 +221,7 @@ enum PFX_STATUS_CODE
 
 #ifdef __cplusplus
 #define PECKER_BEGIN namespace pecker_sdk{
-#define PECKER_END  }
+#define PECKER_END }
 #define PECKER_SDK ::pecker_sdk::
 #define USING_PECKER_SDK using namespace pecker_sdk;
 #else // __cplusplus

@@ -1,0 +1,1275 @@
+body {
+	margin: 0px; color: rgb(51, 51, 51); font-family: tahoma,宋体; font-size: 12px;
+}
+td {
+	font-size: 12px; -ms-word-wrap: break-word;
+}
+div {
+	font-size: 12px; -ms-word-wrap: break-word;
+}
+input {
+	border-width: 1px; font-size: 12px;
+}
+button {
+	border-width: 1px; font-size: 12px;
+}
+select {
+	border-width: 1px; font-size: 12px;
+}
+textarea {
+	border: 1px solid rgb(204, 204, 204); border-image: none; font-size: 12px;
+}
+form {
+	margin: 0px;
+}
+img {
+	border: 0px currentColor; border-image: none; _vertical-align: middle;
+}
+button {
+	background: url("btnBg.gif") repeat-x 0px 0px rgb(255, 248, 197); border: 1px solid rgb(180, 201, 26); border-image: none; height: 20px; color: rgb(0, 136, 0); line-height: 20px;
+}
+input.btn {
+	background: url("btnBg.gif") repeat-x 0px 0px rgb(255, 248, 197); border: 1px solid rgb(180, 201, 26); border-image: none; height: 20px; color: rgb(0, 136, 0); line-height: 20px;
+}
+.twidth {
+	background: rgb(255, 255, 255); margin: 0px auto; width: 970px; -ms-overflow-x: hidden;
+}
+.mR {
+	margin-right: 5px;
+}
+.grid {
+	border: 1px solid rgb(204, 204, 204); border-image: none; border-collapse: collapse;
+}
+.gridHead {
+	background: rgb(236, 244, 255); height: 28px; text-align: center; font-size: 12px; font-weight: bold;
+}
+.grid td {
+	border-color: rgb(204, 204, 204);
+}
+.gridHead td {
+	border: 1px solid rgb(204, 204, 204); border-image: none;
+}
+a:link {
+	color: rgb(96, 96, 96); text-decoration: none;
+}
+a:visited {
+	color: rgb(96, 96, 96); text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+ul.nl {
+	list-style: none; margin: 0px; padding: 0px;
+}
+ul.nl li {
+	background: url("iwms.gif") no-repeat 0px 0px; line-height: 22px; padding-left: 15px;
+}
+ul li.fixed {
+	background: url("iwms.gif") no-repeat 0px -50px;
+}
+ul li.lock {
+	background: url("iwms.gif") no-repeat 0px -100px;
+}
+ul.nl li img {
+	_margin: 6px 0;
+}
+a.nLink {
+	background: url("iwms.gif") no-repeat 0px 0px; line-height: 22px; padding-left: 15px; font-size: 14px;
+}
+a.nLock {
+	background: url("iwms.gif") no-repeat 0px -100px; line-height: 22px; padding-left: 15px; font-size: 14px;
+}
+a.nFix {
+	background: url("iwms.gif") no-repeat 0px -50px; line-height: 22px; padding-left: 15px; font-size: 14px;
+}
+.sep {
+	background: none; list-style: none; padding: 0px; height: 15px;
+}
+ul.dnl {
+	list-style: none; margin: 0px; padding: 0px;
+}
+ul.dnl li {
+	line-height: 22px;
+}
+ul.dnl li img {
+	_margin: 6px 0;
+}
+ul.dnl .diggN {
+	background: url("digg.gif") no-repeat -300px 0px; width: 30px; text-align: center; color: rgb(115, 105, 72); line-height: 18px; font-family: arial; text-decoration: none; margin-right: 5px; float: left; cursor: pointer;
+}
+ul.dnl a:hover .diggN {
+	background-position: -400px 0px;
+}
+table.nl {
+	width: 100%; table-layout: fixed; -ms-word-wrap: break-word;
+}
+table.nl thead td {
+	height: 23px; text-align: center; border-bottom-color: rgb(189, 215, 255); border-bottom-width: 1px; border-bottom-style: solid;
+}
+table.nl tr {
+	height: 25px; line-height: 25px;
+}
+table.nl .nLink {
+	font-size: 14px;
+}
+.sList {
+	list-style: none; margin: 0px; padding: 0px;
+}
+.sList a {
+	background: url("iwms.gif") no-repeat 0px -250px; line-height: 20px; padding-left: 20px;
+}
+.sList a.sOpen {
+	background: url("iwms.gif") no-repeat 0px -300px;
+}
+.sList .gray {
+	font-family: arial; font-size: 8pt;
+}
+a.sNav {
+	background: url("iwms.gif") no-repeat 0px -350px; padding: 2px 20px; line-height: 20px; font-weight: bold;
+}
+a.highlight:link {
+	color: red;
+}
+a.highlight:visited {
+	color: red;
+}
+a.highlight:hover {
+	color: red;
+}
+#slImg {
+	margin: 0px auto; border: 1px solid rgb(153, 153, 153); border-image: none;
+}
+a.slOn {
+	background: rgb(171, 171, 171); padding: 2px 3px; border: 1px solid rgb(171, 171, 171); border-image: none; color: rgb(255, 255, 255);
+}
+a.slOff {
+	background: rgb(255, 255, 255); padding: 2px 3px; border: 1px solid rgb(166, 210, 255); border-image: none; color: rgb(51, 153, 255);
+}
+#slNum {
+	float: right;
+}
+#slNum ul {
+	list-style: none; margin: 0px; padding: 0px;
+}
+#slNum li {
+	padding-left: 2px; float: left;
+}
+#slNum li a {
+	font-family: arial; text-decoration: none; display: block;
+}
+#slLink {
+	padding: 3px; line-height: 20px; overflow: hidden; white-space: nowrap; -ms-word-break: keep-all; -ms-text-overflow: ellipsis;
+}
+#slTitle {
+	padding-top: 4px; margin-right: auto; margin-left: auto;
+}
+#firstHeadline {
+	background: url("bg.gif") repeat-x 0px -1100px; margin: 5px; padding: 5px; line-height: 1.5; position: relative;
+}
+#firstHeadline a.title {
+	color: rgb(116, 85, 161) !important; line-height: 2; font-size: 16px; font-weight: bold;
+}
+a.thisclass:link {
+	font-weight: bold; text-decoration: none;
+}
+a.thisclass:visited {
+	font-weight: bold; text-decoration: none;
+}
+a.thisclass:hover {
+	font-weight: bold; text-decoration: none;
+}
+.aTitle {
+	padding-top: 10px; font-size: 16px; font-weight: bold; position: relative;
+}
+.subTitle {
+	font-size: 14px; font-weight: bold;
+}
+#content {
+	margin: 20px auto; width: 96%; text-align: justify; line-height: 1.6; font-family: tahoma,宋体; font-size: 14px;
+}
+#content td {
+	line-height: 1.6; font-family: tahoma,宋体; font-size: 14px;
+}
+#content div {
+	line-height: 1.6; font-family: tahoma,宋体; font-size: 14px;
+}
+#content a:visited {
+	color: rgb(179, 43, 213); text-decoration: underline;
+}
+#content a:link {
+	color: rgb(179, 43, 213); text-decoration: underline;
+}
+div.conInfo {
+	padding: 3px 10px; line-height: 1.5;
+}
+ul.conInfo {
+	list-style: none; margin: 0px; padding: 3px 10px; line-height: 1.5;
+}
+ul.conInfo li {
+	width: 50%; float: left;
+}
+.icoNew1 {
+	background: url("pic.gif") 0px 0px; width: 10px; height: 10px;
+}
+.icoNew2 {
+	background: url("pic.gif") 0px -10px; width: 10px; height: 10px;
+}
+.icoNew3 {
+	background: url("pic.gif") 0px -20px; width: 10px; height: 10px;
+}
+.icoMore {
+	background: url("pic.gif") 0px -30px; width: 28px; height: 5px; margin-right: 5px;
+}
+.icoRss {
+	background: url("pic.gif") 0px -40px; width: 33px; height: 13px;
+}
+.icoWap {
+	background: url("pic.gif") 0px -60px; width: 33px; height: 13px;
+}
+.icoEditor {
+	background: url("pic.gif") 0px -80px; width: 10px; height: 10px;
+}
+.alignTop {
+	vertical-align: top;
+}
+.alignCenterTop {
+	text-align: center; vertical-align: top;
+}
+#sitehead {
+	overflow: hidden; _width: 100%;
+}
+#sitehead .l {
+	display: none;
+}
+#sitehead .r {
+	display: none;
+}
+#middle {
+	overflow: hidden;
+}
+#footer {
+	margin: 10px 0px; text-align: center; line-height: 1.5;
+}
+#navbar {
+	overflow: hidden; _width: 100%;
+}
+#navbar .m {
+	background: url("bg.gif") repeat-x 0px -200px rgb(107, 188, 237); border: 0px solid rgb(171, 171, 171); border-image: none; text-align: center; line-height: 30px;
+}
+#navbar .l {
+	display: none;
+}
+#navbar .r {
+	display: none;
+}
+#navbar a:link {
+	background: url("iwms.gif") no-repeat 0px -150px; padding: 0px 6px 0px 8px; color: rgb(255, 255, 255); text-decoration: none;
+}
+#navbar a:visited {
+	background: url("iwms.gif") no-repeat 0px -150px; padding: 0px 6px 0px 8px; color: rgb(255, 255, 255); text-decoration: none;
+}
+#navbar a:hover {
+	
+}
+#navbar a.first {
+	background: none !important;
+}
+#navsub {
+	overflow: hidden; _width: 100%;
+}
+#navsub .m {
+	height: 25px; text-align: left; line-height: 25px;
+}
+#navsub .l {
+	display: none;
+}
+#navsub .r {
+	display: none;
+}
+#oRollV {
+	padding: 5px; overflow: hidden;
+}
+#oRollV a {
+	padding: 5px 0px; text-align: center; float: left;
+}
+#oRollV img {
+	border-width: 0px; margin: 2px;
+}
+div.bulletin {
+	height: 25px; line-height: 25px; overflow: hidden;
+}
+.bulletin ul {
+	margin: 0px; padding: 0px;
+}
+.bulletin div {
+	padding: 0px 10px; height: 25px; line-height: 25px !important; -ms-overflow-y: hidden;
+}
+.bulletin li {
+	background: url("iwms.gif") no-repeat 0px -700px; list-style: none; padding-left: 10px; margin-right: 20px; float: left; white-space: nowrap;
+}
+.bulletin li em {
+	color: rgb(153, 153, 153); font-size: 0.83em; margin-left: 5px;
+}
+.gray {
+	color: gray !important; font-size: 12px; text-decoration: none;
+}
+.time {
+	color: red; font-size: 12px;
+}
+.hit {
+	color: green; font-size: 12px;
+}
+.tdbg {
+	background: rgb(250, 250, 252);
+}
+.tdbg-dark {
+	background: rgb(245, 249, 255);
+}
+.scl {
+	list-style: none; margin: 0px; padding: 0px;
+}
+.scl li {
+	margin-right: 5px; display: inline;
+}
+.hr {
+	height: 4px; clear: both; border-top-color: rgb(204, 238, 255); border-top-width: 1px; border-top-style: solid; _overflow: hidden;
+}
+.inputbg {
+	background: url("inputBorder.gif") no-repeat left top; border: 1px solid rgb(213, 222, 233); border-image: none;
+}
+.quote {
+	background: rgb(252, 252, 252); border-width: 1px 1px 1px 4px; border-style: solid; border-color: rgb(238, 238, 238); margin: 10px 10px 10px 2em; padding: 5px; border-image: none; font-family: Arial,宋体;
+}
+.qcode {
+	background: rgb(252, 252, 252); border-width: 1px 1px 1px 4px; border-style: solid; border-color: rgb(238, 238, 238); margin: 10px 10px 10px 2em; padding: 5px; border-image: none; font-family: Arial,宋体;
+}
+.menuskin a:hover {
+	text-decoration: none;
+}
+.menuitems {
+	line-height: 22px; margin-left: 3px; -ms-word-break: keep-all;
+}
+.menuskin {
+	font: 12px/normal verdana; border: 1px solid rgb(204, 204, 204); border-image: none; text-align: left; position: absolute; font-size-adjust: none; font-stretch: normal; background-image: url("menu.gif"); background-color: rgb(255, 255, 255);
+}
+#mouseoverstyle {
+	background: url("menu.gif") no-repeat -250px; line-height: 22px; margin-left: 3px;
+}
+#mouseoverstyle a {
+	color: rgb(102, 102, 102) !important;
+}
+.menuskin a {
+	color: rgb(102, 102, 102) !important; padding-right: 8px; padding-left: 10px; text-decoration: none;
+}
+.mframe {
+	margin-bottom: 4px;
+}
+.mframe .tm {
+	background: url("bg.gif") repeat-x; border: 1px solid rgb(171, 171, 171); border-image: none; height: 25px; line-height: 25px;
+}
+.mframe .tl {
+	display: none;
+}
+.mframe .tr {
+	display: none;
+}
+.mframe span.tt {
+	color: rgb(96, 96, 96); padding-left: 10px; font-size: 14px; font-weight: bold;
+}
+.mframe .mm {
+	background: rgb(250, 250, 252); border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentColor rgb(171, 171, 171) rgb(171, 171, 171); padding: 3px; border-image: none;
+}
+.mframe .ml {
+	display: none;
+}
+.mframe .mr {
+	display: none;
+}
+.mframe .bm {
+	display: none;
+}
+.mframe .bl {
+	display: none;
+}
+.mframe .br {
+	display: none;
+}
+.mframe ul.nl a {
+	font-size: 14px;
+}
+.mframe ul.pl a {
+	font-size: 14px;
+}
+.lframe {
+	margin-bottom: 4px; _width: 100%;
+}
+.lframe .tm {
+	background: url("bg.gif") repeat-x; border: 1px solid rgb(171, 171, 171); border-image: none; height: 25px; line-height: 25px;
+}
+.lframe .tl {
+	display: none;
+}
+.lframe .tr {
+	display: none;
+}
+.lframe span.tt {
+	color: rgb(96, 96, 96); padding-left: 10px; font-size: 14px; font-weight: bold;
+}
+.lframe .mm {
+	border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentColor rgb(171, 171, 171) rgb(171, 171, 171); padding: 5px 3px; border-image: none;
+}
+.lframe .ml {
+	display: none;
+}
+.lframe .mr {
+	display: none;
+}
+.lframe .bm {
+	display: none;
+}
+.lframe .bl {
+	display: none;
+}
+.lframe .br {
+	display: none;
+}
+.imgnews {
+	margin-bottom: 4px; _width: 100%;
+}
+.imgnews .tm {
+	background: url("bg.gif") 0px -100px rgb(236, 242, 252); border: 1px solid rgb(171, 171, 171); border-image: none; height: 23px; line-height: 23px;
+}
+.imgnews .tl {
+	display: none;
+}
+.imgnews .tr {
+	display: none;
+}
+.imgnews span.tt {
+	color: rgb(96, 96, 96); padding-left: 10px; font-size: 9pt; font-weight: bold;
+}
+.imgnews .mm {
+	padding: 3px; overflow: hidden; border-right-color: rgb(171, 171, 171); border-left-color: rgb(171, 171, 171); border-right-width: 1px; border-left-width: 1px; border-right-style: solid; border-left-style: solid;
+}
+.imgnews .ml {
+	display: none;
+}
+.imgnews .mr {
+	display: none;
+}
+.imgnews .bm {
+	background: rgb(171, 171, 171); height: 1px; _overflow: hidden;
+}
+.imgnews .bl {
+	display: none;
+}
+.imgnews .br {
+	display: none;
+}
+.dayhot .tm {
+	background: rgb(241, 247, 252); border-width: 0px 0px 1px; height: 24px; line-height: 24px; border-bottom-color: rgb(230, 241, 251); border-bottom-style: solid;
+}
+.dayhot .tl {
+	display: none;
+}
+.dayhot .tr {
+	display: none;
+}
+.dayhot span.tt {
+	color: rgb(51, 51, 51); padding-left: 10px; font-size: 12px; font-weight: bold;
+}
+.dayhot .mm {
+	border-width: 0px; padding: 3px;
+}
+.dayhot .ml {
+	display: none;
+}
+.dayhot .mr {
+	display: none;
+}
+.dayhot .bm {
+	background: none; height: 1px; _overflow: hidden;
+}
+.dayhot .bl {
+	display: none;
+}
+.dayhot .br {
+	display: none;
+}
+.dateR {
+	padding-right: 5px; float: right;
+}
+.moreR {
+	padding-right: 8px; float: right; _margin-top: 4px;
+}
+#siteNav {
+	padding: 5px; overflow: auto; _zoom: 1;
+}
+.navChild {
+	padding-left: 20px;
+}
+.navChild ul {
+	list-style: none; margin: 0px; padding: 0px; line-height: 150%;
+}
+.navChild ul li {
+	float: left;
+}
+.imgList {
+	padding: 5px 0px; text-align: center; line-height: 1.8; overflow: hidden; display: block;
+}
+.imgList ul {
+	list-style: none; margin: 0px; padding: 0px;
+}
+.imgList li {
+	float: left;
+}
+.imgList li img {
+	background: rgb(255, 255, 255); margin: auto; padding: 3px; border: 1px solid rgb(221, 221, 221); border-image: none; display: block; _vertical-align: bottom;
+}
+a.imgLink img {
+	background: rgb(255, 255, 255); margin: auto; padding: 3px; border: 1px solid rgb(221, 221, 221); border-image: none; display: block; _vertical-align: bottom;
+}
+a.imgLink {
+	margin: 5px auto; line-height: 1.8;
+}
+.imgList li a:hover img {
+	background: rgb(246, 246, 246); padding: 3px;
+}
+a.imgLink:hover img {
+	background: rgb(246, 246, 246); padding: 3px;
+}
+#softLinks {
+	list-style: none; margin: 0px; padding: 0px 10px; line-height: 1.5;
+}
+#softLinks li {
+	background: url("iwms.gif") no-repeat 0px -200px; padding-left: 18px;
+}
+.summary {
+	
+}
+.summary .cont {
+	color: rgb(102, 102, 102); overflow: hidden; position: relative;
+}
+.summary .title {
+	background: rgb(240, 250, 255); padding: 2px; overflow: hidden; font-size: 14px; font-weight: bold; position: relative;
+}
+.summary .sum {
+	padding: 3px 15px;
+}
+.summary .foot {
+	padding: 3px 8px 3px 18px; color: rgb(153, 153, 153); overflow: hidden;
+}
+.summary .foot span {
+	color: rgb(255, 137, 12); padding-right: 40px;
+}
+.summary .imgDiv {
+	margin: 10px;
+}
+.summary .imgDiv img {
+	display: inline;
+}
+.summary .hr {
+	margin: 5px 0px; clear: both;
+}
+.sResult {
+	
+}
+.sResult .title {
+	padding: 5px 0px; width: 100%;
+}
+.sResult .title a {
+	font-size: 14px; font-weight: bold; text-decoration: underline;
+}
+.sResult .sum {
+	padding: 3px 15px;
+}
+.sResult .foot {
+	padding: 3px 15px; color: rgb(153, 153, 153);
+}
+.sResult .foot span {
+	color: rgb(255, 137, 12); padding-right: 20px;
+}
+.wrapper {
+	overflow: hidden;
+}
+.tl {
+	float: left;
+}
+.bl {
+	float: left;
+}
+.tr {
+	float: right;
+}
+.br {
+	float: right;
+}
+.ml {
+	padding-bottom: 10000px; margin-bottom: -10000px; float: left;
+}
+.l {
+	padding-bottom: 10000px; margin-bottom: -10000px; float: left;
+}
+.mr {
+	padding-bottom: 10000px; margin-bottom: -10000px; float: right;
+}
+.r {
+	padding-bottom: 10000px; margin-bottom: -10000px; float: right;
+}
+.vldMsg {
+	background: infobackground; padding: 4px; border: 1px solid rgb(221, 221, 221); border-image: none; color: red; display: none;
+}
+.reCont .reHead {
+	background: rgb(249, 249, 249); padding: 3px 5px; color: rgb(102, 102, 102); border-bottom-color: rgb(171, 171, 171); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.reCont .reLayer {
+	color: rgb(153, 153, 153); font-size: 12px; float: right;
+}
+.reCont .reBody {
+	padding: 5px 10px 5px 25px; line-height: 1.5;
+}
+.reCont .reFun {
+	background: url("bg.gif") repeat-x 0px -400px; height: 25px; line-height: 25px; padding-left: 25px;
+}
+.reCont .reName {
+	font-weight: bold;
+}
+.reCont .reDate {
+	color: rgb(153, 153, 153); font-size: 12px;
+}
+.reCont fieldset {
+	border: 1px solid rgb(227, 227, 227); border-image: none; margin-bottom: 5px;
+}
+.reCont fieldset div {
+	padding: 5px; color: rgb(153, 153, 153);
+}
+.reCont legend {
+	background: rgb(247, 253, 255); padding: 1px 5px; border: 1px solid rgb(227, 227, 227); border-image: none;
+}
+.reCont2 .reFun {
+	background: url("bg.gif") repeat-x 0px -500px; height: 25px; line-height: 25px; padding-left: 25px;
+}
+.reCont2 .reFoot {
+	background: rgb(231, 242, 251); height: 1px; _overflow: hidden;
+}
+.face1 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face2 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face3 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face4 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face5 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face6 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face7 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face8 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face9 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face10 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face11 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face12 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face13 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face14 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face15 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face16 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face17 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face18 {
+	background: url("face.gif") no-repeat 0px 0px; width: 15px; height: 15px;
+}
+.face2 {
+	background-position: -30px 0px;
+}
+.face3 {
+	background-position: -60px 0px;
+}
+.face4 {
+	background-position: -90px 0px;
+}
+.face5 {
+	background-position: -120px 0px;
+}
+.face6 {
+	background-position: -150px 0px;
+}
+.face7 {
+	background-position: -180px 0px;
+}
+.face8 {
+	background-position: -210px 0px;
+}
+.face9 {
+	background-position: -240px 0px;
+}
+.face10 {
+	background-position: -270px 0px;
+}
+.face11 {
+	background-position: -300px 0px;
+}
+.face12 {
+	background-position: -330px 0px;
+}
+.face13 {
+	background-position: -360px 0px;
+}
+.face14 {
+	background-position: -390px 0px;
+}
+.face15 {
+	background-position: -420px 0px;
+}
+.face16 {
+	background-position: -450px 0px;
+}
+.face17 {
+	background-position: -480px 0px;
+}
+.face18 {
+	background-position: -510px 0px;
+}
+.aj_msg {
+	background: rgb(255, 255, 255); font: 9pt/normal 宋体 arial; padding: 4px 5px; border: 1px solid rgb(202, 217, 234); border-image: none; color: rgb(64, 64, 64); white-space: nowrap; position: absolute; font-size-adjust: none; font-stretch: normal;
+}
+.aj_msgTop {
+	background: rgb(255, 241, 168); border: 0px currentColor; border-image: none; color: rgb(102, 102, 102); -webkit-border-bottom-left-radius: 8px; -webkit-border-bottom-right-radius: 8px; -moz-border-radius-bottomleft: 8px; -moz-border-radius-bottomright: 8px;
+}
+.aj_form {
+	background: url("bg.gif") repeat-x 0px -700px rgb(255, 255, 255); padding: 5px; border: 1px solid rgb(202, 217, 234); border-image: none; display: none; position: absolute;
+}
+.aj_title {
+	padding: 4px 0px 5px 20px; font-weight: bold; margin-bottom: 10px; border-bottom-color: rgb(153, 238, 255); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.aj_close {
+	text-align: right; padding-right: 10px;
+}
+.pager {
+	padding: 5px; height: 25px; clear: both; font-family: verdana; font-size: 12px; -ms-word-break: keep-all;
+}
+.pager ul {
+	margin: 0px; padding: 0px; line-height: 1.2em; list-style-type: none;
+}
+.pager li {
+	margin: 0px 5px 0px 0px; color: rgb(153, 153, 153); float: left;
+}
+.pager li.p_total {
+	background: rgb(250, 250, 252); padding: 3px 5px; border: 1px solid rgb(221, 221, 221); border-image: none; color: rgb(136, 175, 63); font-weight: bold;
+}
+.pager li.p_current {
+	background: rgb(178, 224, 93); padding: 3px 5px; border: 1px solid rgb(178, 224, 93); border-image: none; color: rgb(250, 250, 252);
+}
+.pager li.p_nolink {
+	padding: 3px 5px; border: 1px solid rgb(243, 243, 243); border-image: none; color: rgb(204, 204, 204);
+}
+.pager li a:link {
+	background: rgb(250, 250, 252); padding: 3px 5px; border: 1px solid rgb(221, 221, 221); border-image: none; color: rgb(136, 175, 63); text-decoration: none !important; float: left;
+}
+.pager li a:visited {
+	background: rgb(250, 250, 252); padding: 3px 5px; border: 1px solid rgb(221, 221, 221); border-image: none; color: rgb(136, 175, 63); text-decoration: none !important; float: left;
+}
+.pager li a:hover {
+	background: rgb(241, 255, 214); border-color: rgb(133, 189, 30); color: rgb(99, 132, 37);
+}
+.pager li a:active {
+	background: rgb(241, 255, 214); border-color: rgb(133, 189, 30); color: rgb(99, 132, 37);
+}
+.pager li input {
+	background: url("inputBorder.gif"); padding: 2px 0px; border: 1px solid rgb(221, 221, 221); border-image: none; width: 3em; height: 1.3em; text-align: center; color: rgb(153, 153, 153); font-family: verdana; font-size: 12px; float: left;
+}
+#digg {
+	padding: 10px 5px; clear: both; float: right;
+}
+.digg {
+	list-style: none; margin: 0px; padding: 0px; width: 51px; text-align: center;
+}
+.digg1 {
+	background: url("digg.gif"); height: 52px; color: rgb(115, 105, 72); line-height: 52px; font-family: sans-serif; font-size: 16px; font-weight: bold;
+}
+.digg2 {
+	width: 51px; height: 25px; line-height: 25px; font-size: 12px; margin-top: 2px; float: left;
+}
+.digg2 a {
+	background: url("digg.gif") -100px 0px; color: rgb(15, 92, 195); text-decoration: none; display: block;
+}
+.digg2 a:hover {
+	background: url("digg.gif") -200px 0px; color: rgb(51, 51, 51);
+}
+.diggC {
+	padding: 0px 5px 5px; float: left;
+}
+.diggC .digg1 {
+	background: url("digg.gif") -500px 0px; height: 40px; line-height: 40px;
+}
+.diggC .digg2 {
+	height: 22px; line-height: 22px;
+}
+.diggC .digg2 a {
+	background: url("digg.gif") -600px 0px;
+}
+.diggC .digg2 a:hover {
+	background: url("digg.gif") -700px 0px;
+}
+.nearNews {
+	padding: 5px 0px; color: rgb(153, 153, 153); overflow: hidden; clear: both; _zoom: 1;
+}
+.nextNews {
+	overflow: hidden; white-space: nowrap; -ms-text-overflow: ellipsis;
+}
+.prevNews {
+	overflow: hidden; white-space: nowrap; -ms-text-overflow: ellipsis;
+}
+.prevNews {
+	width: 50%; float: left;
+}
+.nextNews {
+	text-align: right;
+}
+.prevNews a {
+	background: url("iwms.gif") no-repeat 0px -400px; padding: 0px 20px; float: left;
+}
+.nextNews a {
+	background: url("iwms.gif") no-repeat right -450px; padding: 0px 20px; float: right;
+}
+.fav {
+	background: url("iwms.gif") no-repeat 0px -500px; padding-left: 20px;
+}
+.mail {
+	background: url("iwms.gif") no-repeat 0px -550px; padding-left: 20px;
+}
+.print {
+	background: url("iwms.gif") no-repeat 0px -600px; padding-left: 20px;
+}
+.edit {
+	background: url("iwms.gif") no-repeat 0px -650px; padding-left: 20px;
+}
+.hotTags {
+	padding: 0px 10px; text-align: left; line-height: 1.5;
+}
+.hotTags a {
+	margin-right: 6px; -ms-word-wrap: break-word;
+}
+a.sel {
+	background: url("btnBg.gif") no-repeat right -50px; border: 1px solid rgb(91, 155, 225); border-image: none; color: rgb(51, 51, 51); text-indent: 5px; overflow: hidden; font-size: 12px; text-decoration: none !important; position: absolute; cursor: pointer;
+}
+a.sel span {
+	line-height: 22px; overflow: hidden; margin-right: 20px; display: block; white-space: nowrap;
+}
+ul.sel {
+	border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentColor rgb(153, 153, 153) rgb(153, 153, 153); list-style: none; margin: 0px; padding: 0px; border-image: none; display: block; position: absolute;
+}
+ul.sel li {
+	background: rgb(255, 255, 255); color: rgb(102, 102, 102); line-height: 22px; text-indent: 5px; overflow: hidden; font-size: 12px; white-space: nowrap; cursor: pointer;
+}
+ul.sel li.over {
+	background: rgb(240, 240, 240); color: rgb(51, 51, 51);
+}
+ul.sel li.chk {
+	background: rgb(223, 237, 250); color: rgb(51, 51, 51);
+}
+.psFrm {
+	margin-bottom: 4px;
+}
+.psFrm .tm {
+	background: url("bg.gif") repeat-x; padding: 0px 10px; border: 1px solid rgb(171, 171, 171); border-image: none; height: 25px; line-height: 25px;
+}
+.psFrm .tl {
+	display: none;
+}
+.psFrm .tr {
+	display: none;
+}
+.psFrm span.tt {
+	color: rgb(96, 96, 96); font-weight: bold;
+}
+.psFrm .mm {
+	background: rgb(255, 255, 255); padding: 3px; border-right-color: rgb(171, 171, 171); border-left-color: rgb(171, 171, 171); border-right-width: 1px; border-left-width: 1px; border-right-style: solid; border-left-style: solid;
+}
+.psFrm .ml {
+	display: none;
+}
+.psFrm .mr {
+	display: none;
+}
+.psFrm .bm {
+	background: rgb(171, 171, 171); height: 1px; _overflow: hidden;
+}
+.psFrm .bl {
+	display: none;
+}
+.psFrm .br {
+	display: none;
+}
+.psCont {
+	width: 100%;
+}
+.psCont div.psTitle {
+	background: url("post.gif") no-repeat left 0px rgb(249, 252, 255); padding: 3px 10px 3px 20px; line-height: 1.5em; font-size: 14px; font-weight: bold; border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.psCont div.psTitle a {
+	
+}
+.psCont legend a {
+	
+}
+.psCont div.psBody {
+	padding: 5px 10px 5px 20px; font-size: 14px;
+}
+.psCont div.psFun {
+	background: url("bg.gif") repeat-x 0px -400px; height: 25px; line-height: 25px; padding-left: 20px;
+}
+.psCont span.psName {
+	background: url("post.gif") no-repeat left -100px; padding: 0px 10px 0px 20px; color: rgb(255, 0, 0); line-height: 1.6em; font-size: 12px; margin-left: 10px;
+}
+.psCont span.psDate {
+	background: url("post.gif") no-repeat left -150px; padding: 0px 10px 0px 20px; color: rgb(153, 153, 153); line-height: 1.6em; font-size: 12px;
+}
+.psCont span.psSort {
+	background: url("post.gif") no-repeat left -200px; padding: 0px 10px 0px 20px; color: rgb(153, 153, 153); line-height: 1.6em; font-size: 12px;
+}
+.psCont span.psHits {
+	background: url("post.gif") no-repeat left -550px; padding: 0px 10px 0px 20px; color: rgb(153, 153, 153); font-size: 12px;
+}
+.psCont span.psReply {
+	background: url("post.gif") no-repeat left -500px; padding: 0px 10px 0px 20px; color: rgb(153, 153, 153); font-size: 12px;
+}
+.psCont fieldset {
+	padding: 0px 10px; border: 1px solid rgb(227, 227, 227); border-image: none; margin-bottom: 5px;
+}
+.psCont fieldset div {
+	padding: 0px 0px 4px;
+}
+.psCont legend {
+	background: url("post.gif") no-repeat left -50px rgb(247, 253, 255); padding: 1px 5px 1px 20px; border: 1px solid rgb(227, 227, 227); border-image: none; font-size: 12px;
+}
+.psCont legend a {
+	color: rgb(102, 102, 102);
+}
+.psCont fieldset .psPBody {
+	color: rgb(153, 153, 153); display: none;
+}
+.psCont2 {
+	table-layout: fixed;
+}
+.psCont2 thead td {
+	background: rgb(253, 253, 253); text-align: center; color: rgb(102, 102, 102); font-size: 12px; font-weight: bold;
+}
+.psCont2 tr {
+	background-color: rgb(255, 255, 255);
+}
+.psCont2 tr td {
+	line-height: 1.5em; border-top-color: white; border-bottom-color: rgb(243, 243, 243); border-top-width: 1px; border-bottom-width: 1px; border-top-style: solid; border-bottom-style: solid;
+}
+.psCont2 td.psTitle {
+	background-position: left 0px; padding: 3px 10px 3px 24px; font-size: 14px; background-image: url("post.gif"); background-attachment: scroll; background-repeat: no-repeat; background-size: auto; background-origin: padding-box; background-clip: border-box; background-color: inherit; break-word: break-all;
+}
+.psCont2 td.psName {
+	text-align: center; color: rgb(102, 102, 102); font-size: 12px;
+}
+.psCont2 td.psDate {
+	text-align: center; color: rgb(102, 102, 102); font-size: 12px;
+}
+.psCont2 td.psHits {
+	text-align: center; color: rgb(102, 102, 102); font-size: 12px;
+}
+.psCont2 td.psReply {
+	text-align: center; color: rgb(102, 102, 102); font-size: 12px;
+}
+.psCont2 tr.psBg2 {
+	background-color: rgb(250, 252, 253);
+}
+.psCont div.psFix div.psTitle {
+	background-position: left -600px;
+}
+.psCont2 tr.psFix td.psTitle {
+	background-position: left -600px;
+}
+.psIntro .sName {
+	background: url("post.gif") no-repeat right -350px; padding: 0px 20px 0px 10px; border: 1px solid rgb(221, 221, 221); border-image: none; line-height: 25px; font-weight: bold; float: left; cursor: pointer;
+}
+.psIntro .sBlank {
+	height: 26px; text-align: right; line-height: 26px; overflow: hidden; padding-right: 10px; border-bottom-color: rgb(221, 221, 221); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.psIntro .sIntro {
+	border-width: 0px 1px 1px; border-style: solid; border-color: rgb(221, 221, 221); padding: 5px 10px; border-image: none; text-align: left; color: rgb(153, 153, 153); overflow: hidden; font-size: 12px; display: none; _zoom: 1;
+}
+.psIntro .sIntro * {
+	line-height: 1.5; font-size: 12px;
+}
+.psIntro .sIntro a {
+	color: rgb(102, 102, 102);
+}
+.psOpen {
+	background: url("post.gif") center -250px; width: 20px; height: 20px; display: block;
+}
+.psClose {
+	background: url("post.gif") center -250px; width: 20px; height: 20px; display: block;
+}
+.psClose {
+	background: url("post.gif") center -300px;
+}
+.psStep {
+	margin: 10px 5px;
+}
+.psStep a {
+	background: url("post.gif") no-repeat left -450px; line-height: 1.5em; padding-left: 20px;
+}
+.psStep a.stFirst {
+	background: none; padding-left: 0px;
+}
+.psSelList {
+	background: url("post.gif") no-repeat 0px -750px; padding-left: 20px;
+}
+.psSelList2 {
+	background: url("post.gif") no-repeat 0px -800px; padding-left: 20px;
+}
+.psSelVerify {
+	background: url("post.gif") no-repeat 0px -850px; padding-left: 20px;
+}
+ul.pl {
+	list-style: none; margin: 0px; padding: 0px;
+}
+ul.pl li {
+	background: url("iwms.gif") no-repeat 0px 0px; line-height: 22px; padding-left: 15px;
+}
+ul.pl li img {
+	_margin: 6px 0;
+}
+.psR {
+	color: rgb(102, 102, 102); font-size: 12px; float: right;
+}
+.shadow {
+	background: rgb(221, 221, 221);
+}
+.popAdm a {
+	color: rgb(102, 102, 102); line-height: 20px; font-size: 12px; display: block;
+}
+.popFix a {
+	background: url("post.gif") no-repeat left -700px; color: rgb(102, 102, 102); line-height: 20px; padding-left: 20px; font-size: 12px; display: block;
+}
+.popFix a.psChk {
+	background-position: left -650px;
+}
+.topBar {
+	background: url("bg.gif") 0px -600px; width: 100%; height: 28px; line-height: 28px; border-bottom-color: rgb(230, 230, 230); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.topBar .twidth {
+	background: none; height: 100%;
+}
+#topUser a {
+	background: url("iwms.gif") no-repeat 0px -750px; padding-left: 15px;
+}
+.popMine a {
+	color: rgb(102, 102, 102); line-height: 20px; font-size: 12px; display: block;
+}
+a.remind {
+	color: red;
+}
+.aj_sel {
+	background: rgb(255, 255, 255); font: 9pt/normal 宋体 arial; padding: 4px 5px; border: 1px solid rgb(204, 204, 204); border-image: none; color: rgb(51, 51, 51); white-space: nowrap; position: absolute; font-size-adjust: none; font-stretch: normal;
+}
+.clink {
+	background: url("btnBg.gif") no-repeat right -50px; padding: 2px 20px 2px 5px; border: 1px solid rgb(185, 216, 247); border-image: none; color: rgb(51, 51, 51); text-indent: 5px; overflow: hidden; font-size: 12px; text-decoration: none; cursor: pointer;
+}
+.cmenu img.opened {
+	background: url("cmenu.gif") no-repeat; width: 15px; height: 10px;
+}
+.cmenu img.closed {
+	background: url("cmenu.gif") no-repeat 0px -100px; width: 15px; height: 10px;
+}
+.cmenu img.space {
+	width: 15px; height: 10px;
+}
+.cmenu {
+	background: rgb(249, 251, 254); padding: 10px 0px; width: 200px; height: 300px; color: rgb(170, 170, 170); overflow: auto;
+}
+.cmenu ul {
+	list-style: none; margin: 0px; padding: 0px 12px; line-height: 20px;
+}
+#msCon {
+	border: 1px solid rgb(204, 204, 204); border-image: none; width: 500px; height: 400px;
+}
+.msLeft {
+	width: 160px; height: 100%; border-right-color: pink; border-right-width: 1px; border-right-style: solid; float: left;
+}
+.msRight {
+	width: 339px; height: 100%; float: left;
+}
+.msHead {
+	background: rgb(238, 238, 238); width: 100%; text-align: center; line-height: 29px; border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid; cursor: pointer;
+}
+.msContact {
+	background: rgb(255, 255, 255); width: 160px; height: 340px; -ms-overflow-x: hidden;
+}
+.msContact a {
+	width: 140px; line-height: 25px; padding-left: 20px; float: left;
+}
+.msContact a.msCur {
+	background: rgb(238, 238, 255);
+}
+#msFriend {
+	display: none;
+}
+#msList {
+	height: 280px; line-height: 150%; -ms-overflow-y: auto; -ms-word-wrap: break-word;
+}
+.msMsg {
+	padding: 5px 10px;
+}
+.msMe {
+	color: rgb(66, 180, 117);
+}
+.msSender {
+	color: rgb(0, 110, 254);
+}
+.msBody {
+	padding-left: 1em;
+}
+.msUnread {
+	font-weight: bold;
+}
+#msForm {
+	padding: 5px; height: 110px;
+}
+#msForm textarea {
+	width: 323px; height: 80px;
+}
+#msSubmit {
+	padding: 3px 20px; text-align: right;
+}
+.boxy-body {
+	background: none;
+}
+.boxy-wrapper {
+	position: absolute;
+}
+.fixed.boxy-wrapper {
+	position: fixed;
+}
+.boxy-modal-blackout {
+	left: 0px; top: 0px; position: absolute; background-color: black;
+}
+.boxy-wrapper {
+	empty-cells: show;
+}
+.boxy-wrapper .boxy-top-left {
+	padding: 0px; width: 2px; height: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .boxy-top-right {
+	padding: 0px; width: 2px; height: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .boxy-bottom-right {
+	padding: 0px; width: 2px; height: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .boxy-bottom-left {
+	padding: 0px; width: 2px; height: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .boxy-top {
+	padding: 0px; height: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .boxy-bottom {
+	padding: 0px; height: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .boxy-left {
+	padding: 0px; width: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .boxy-right {
+	padding: 0px; width: 2px; opacity: 0.2; background-color: rgb(102, 102, 102);
+}
+.boxy-wrapper .title-bar {
+	background: url("bg.gif") repeat-x 0px -1500px; padding: 10px; font-weight: bold; position: relative;
+}
+.boxy-wrapper .dragging.title-bar {
+	cursor: move;
+}
+.boxy-wrapper .title-bar h2 {
+	margin: 0px; padding: 0px; color: rgb(102, 102, 102); line-height: 1; font-size: 14px;
+}
+.boxy-wrapper .title-bar .close {
+	top: 10px; right: 6px; color: rgb(102, 102, 102); line-height: 1; font-size: 90%; position: absolute;
+}
+.boxy-inner {
+	padding: 0px; background-color: white;
+}
+.boxy-content {
+	padding: 10px;
+}
+.boxy-wrapper .question {
+	padding: 10px 20px; width: 350px; min-height: 80px;
+}
+.boxy-wrapper .answers {
+	padding: 0px 20px 10px 0px; text-align: right;
+}
+.htmlarea textarea {
+	width: 100%; height: 255px; font-size: 12px;
+}
+#li_all {
+	margin: 0px; padding: 0px; width: 600px; overflow: hidden; clear: both;
+}
+#li_2 {
+	text-align: center;
+}
+.linua {
+	text-align: center;
+}
+.linux8 {
+	text-align: center;
+}
+.linux801 {
+	text-align: center;
+}
+.linub {
+	padding-left: 10px; float: right; display: block;
+}
+.linuzb {
+	width: 301px; height: 163px; text-align: center;
+}
+.linu3 {
+	text-align: center;
+}
+.linux3 {
+	text-align: center;
+}
+.linuxy1 {
+	border: 1px dashed rgb(255, 0, 0); border-image: none; width: 303px; height: 603px;
+}
+.linux902 {
+	border: 1px solid rgb(255, 0, 0); width: 298px; height: 80px;
+}
+.linux903 {
+	height: 302px; text-align: center;
+}
+.linuxy3 {
+	text-align: center;
+}
+.linuzs {
+	width: 301px; height: 254px; text-align: center;
+}

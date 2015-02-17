@@ -1,0 +1,1637 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0064)http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" ""><HTML><HEAD 
+id="Head"><META content="IE=5.0000" http-equiv="X-UA-Compatible">
+<TITLE>	 使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转) - 前进的路上 - C++博客 </TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<META name="keywords" id="metaKeywords" content="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)"><LINK 
+href="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/common.css" 
+rel="stylesheet" type="text/css"><LINK id="MainCss" href="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/style.css" 
+rel="stylesheet" type="text/css"><LINK title="RSS" id="RSSLink" href="http://www.cppblog.com/wc250en007/rss.aspx" 
+rel="alternate" type="application/rss+xml">
+<META name="GENERATOR" content="MSHTML 11.00.9600.17631"></HEAD> 
+<BODY>
+<FORM name="Form1" id="Form1" onsubmit="javascript:return WebForm_OnSubmit();" 
+action="150809.html" method="post">
+<DIV><INPUT name="__EVENTTARGET" id="__EVENTTARGET" type="hidden"> <INPUT name="__EVENTARGUMENT" id="__EVENTARGUMENT" type="hidden"> 
+<INPUT name="__VIEWSTATE" id="&#10;__VIEWSTATE" type="hidden"> </DIV>
+<SCRIPT type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</SCRIPT>
+ 
+<SCRIPT src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/WebResource.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT language="JavaScript">
+									function ctlent(evt,id)
+											{
+												if(evt.ctrlKey && evt.keyCode == 13)
+												{	
+													try
+													{
+														TempSave(id);
+													}
+													catch(ex)
+													{
+													}
+													finally
+													{
+													    __doPostBack('AjaxHolder$PostComment$btnSubmit','')
+													}
+												}
+		
+												}</SCRIPT>
+												 
+<SCRIPT language="JavaScript">function SetReplyAuhor(author){document.getElementById('AjaxHolder_PostComment_tbComment').value+="@"+author+"\n";document.getElementById('AjaxHolder_PostComment_tbComment').focus();return false}</SCRIPT>
+ 
+<SCRIPT src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ScriptResource.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ScriptResource(1).js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ScriptResource(2).js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</SCRIPT>
+         <!--done--> 
+<DIV id="header"><!--done--> 
+<DIV class="header">
+<DIV class="headerText"><A class="headermaintitle" id="Header1_HeaderTitle" 
+href="http://www.cppblog.com/wc250en007/">前进的路上</A><BR>		前进的路上
+	 </DIV></DIV></DIV>
+<DIV id="mylinks"><!--done--> <A class="menu" id="MyLinks1_HomeLink" href="http://www.cppblog.com/">C++博客</A>&nbsp;&nbsp;&nbsp;
+<A class="menu" id="MyLinks1_MyHomeLink" href="http://www.cppblog.com/wc250en007/">首页</A>&nbsp;&nbsp;&nbsp;
+<A class="menu" id="MyLinks1_NewPostLink" href="http://www.cppblog.com/wc250en007/admin/EditPosts.aspx?opt=1">新随笔</A>&nbsp;&nbsp;&nbsp;
+<A class="menu" id="MyLinks1_ContactLink" accesskey="9" href="http://www.cppblog.com/wc250en007/contact.aspx?id=1">联系</A>&nbsp;&nbsp;&nbsp;
+<A class="menu" id="MyLinks1_Syndication" href="http://www.cppblog.com/wc250en007/Rss.aspx">聚合</A><A 
+id="MyLinks1_XMLLink" href="http://www.cppblog.com/wc250en007/Rss.aspx"><IMG 
+style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml.gif"></A>&nbsp;&nbsp;&nbsp;
+<A class="menu" id="MyLinks1_Admin" href="http://www.cppblog.com/wc250en007/admin/EditPosts.aspx">管理</A> 
+</DIV>
+<DIV id="mytopmenu"><!--done--> 
+<DIV class="blogStats">随笔 - 133&nbsp; 文章 - 46&nbsp; trackbacks - 0 </DIV></DIV>
+<DIV id="leftcontent">
+<DIV id="leftcontentcontainer">
+<TABLE title="日历" class="Cal" id="Calendar1_entryCal" style="border: 0px currentColor; border-image: none; border-collapse: collapse;" 
+border="0" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR>
+    <TD style="background-color: transparent;" colspan="7">
+      <TABLE class="CalTitle" style="width: 100%; border-collapse: collapse;" 
+      border="0" cellspacing="0">
+        <TBODY>
+        <TR>
+          <TD class="CalNextPrev" style="width: 15%;"><A title="转到上一个月" style="color: black;" 
+            href="javascript:__doPostBack('Calendar1$entryCal','V5479')">&lt;</A></TD>
+          <TD align="center" style="width: 70%;">2015年2月</TD>
+          <TD align="right" class="CalNextPrev" style="width: 15%;"><A title="转到下一个月" 
+            style="color: black;" href="javascript:__doPostBack('Calendar1$entryCal','V5538')">&gt;</A></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TH align="center" class="CalDayHeader" abbr="日" scope="col">日</TH>
+    <TH align="center" class="CalDayHeader" abbr="一" scope="col">一</TH>
+    <TH align="center" class="CalDayHeader" abbr="二" scope="col">二</TH>
+    <TH align="center" class="CalDayHeader" abbr="三" scope="col">三</TH>
+    <TH align="center" class="CalDayHeader" abbr="四" scope="col">四</TH>
+    <TH align="center" class="CalDayHeader" abbr="五" scope="col">五</TH>
+    <TH align="center" class="CalDayHeader" abbr="六" scope="col">六</TH></TR>
+  <TR>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">25</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">26</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">27</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">28</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">29</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">30</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">31</TD></TR>
+  <TR>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">1</TD>
+    <TD align="center" style="width: 14%;">2</TD>
+    <TD align="center" style="width: 14%;">3</TD>
+    <TD align="center" style="width: 14%;">4</TD>
+    <TD align="center" style="width: 14%;">5</TD>
+    <TD align="center" style="width: 14%;">6</TD>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">7</TD></TR>
+  <TR>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">8</TD>
+    <TD align="center" style="width: 14%;">9</TD>
+    <TD align="center" style="width: 14%;">10</TD>
+    <TD align="center" style="width: 14%;">11</TD>
+    <TD align="center" style="width: 14%;">12</TD>
+    <TD align="center" style="width: 14%;">13</TD>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">14</TD></TR>
+  <TR>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">15</TD>
+    <TD align="center" style="width: 14%;">16</TD>
+    <TD align="center" class="CalTodayDay" style="width: 14%;">17</TD>
+    <TD align="center" style="width: 14%;">18</TD>
+    <TD align="center" style="width: 14%;">19</TD>
+    <TD align="center" style="width: 14%;">20</TD>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">21</TD></TR>
+  <TR>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">22</TD>
+    <TD align="center" style="width: 14%;">23</TD>
+    <TD align="center" style="width: 14%;">24</TD>
+    <TD align="center" style="width: 14%;">25</TD>
+    <TD align="center" style="width: 14%;">26</TD>
+    <TD align="center" style="width: 14%;">27</TD>
+    <TD align="center" class="CalWeekendDay" style="width: 14%;">28</TD></TR>
+  <TR>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">1</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">2</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">3</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">4</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">5</TD>
+    <TD align="center" class="CalOtherMonthDay" style="width: 14%;">6</TD>
+    <TD align="center" class="CalOtherMonthDay" 
+  style="width: 14%;">7</TD></TR></TBODY></TABLE><BR>
+<H3>常用链接</H3>
+<UL>
+  <LI><A id="SingleColumn1_ctl00_repeaterLinks_ctl01_lnkLinkItem" href="http://www.cppblog.com/wc250en007/MyPosts.html">我的随笔</A></LI>
+  <LI><A id="SingleColumn1_ctl00_repeaterLinks_ctl02_lnkLinkItem" href="http://www.cppblog.com/wc250en007/MyComments.html">我的评论</A></LI>
+  <LI><A id="SingleColumn1_ctl00_repeaterLinks_ctl03_lnkLinkItem" href="http://www.cppblog.com/wc250en007/OtherPosts.html">我参与的随笔</A></LI></UL>
+<H3>留言簿<SPAN style="font-size: 11px; font-weight: normal;">(7)</SPAN></H3>
+<UL>
+  <LI><A id="SingleColumn1__ef9791_lnkMessages" href="http://www.cppblog.com/wc250en007/Contact.aspx?id=1">给我留言</A>
+	 
+  <LI><A id="SingleColumn1__ef9791_lnkPublicMsgView" href="http://www.cppblog.com/wc250en007/default.aspx?opt=msg">查看公开留言</A>
+	 
+  <LI><A id="SingleColumn1__ef9791_lnkPrivateMsgView" href="http://www.cppblog.com/wc250en007/admin/MyMessages.aspx">查看私人留言</A>
+  	 </LI></UL><!--done-->		 
+<H1 class="catListTitle">随笔分类</H1>
+<UL class="catList">
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_Link" 
+  href="http://www.cppblog.com/wc250en007/category/19612.html">box2D(1)</A><A 
+  title="Subscribe to box2D(1)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/19612.html/rss"><IMG title="Subscribe to box2D(1)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_Link" 
+  href="http://www.cppblog.com/wc250en007/category/14000.html">C++(19)</A><A 
+  title="Subscribe to C++(19)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/14000.html/rss"><IMG title="Subscribe to C++(19)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_Link" 
+  href="http://www.cppblog.com/wc250en007/category/14059.html">CEGUI(1)</A><A 
+  title="Subscribe to CEGUI(1)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/14059.html/rss"><IMG title="Subscribe to CEGUI(1)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_Link" 
+  href="http://www.cppblog.com/wc250en007/category/19588.html">cocos2d(15)</A><A 
+  title="Subscribe to cocos2d(15)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/19588.html/rss"><IMG title="Subscribe to cocos2d(15)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_Link" 
+  href="http://www.cppblog.com/wc250en007/category/14563.html">DX(9)</A><A 
+  title="Subscribe to DX(9)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/14563.html/rss"><IMG title="Subscribe to DX(9)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_Link" 
+  href="http://www.cppblog.com/wc250en007/category/16812.html">FreeType(5)</A><A 
+  title="Subscribe to FreeType(5)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/16812.html/rss"><IMG title="Subscribe to FreeType(5)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13860.html">GameDevelop(3)</A><A 
+  title="Subscribe to GameDevelop(3)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13860.html/rss"><IMG title="Subscribe to GameDevelop(3)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_Link" 
+  href="http://www.cppblog.com/wc250en007/category/16924.html">HLSL(3)</A><A 
+  title="Subscribe to HLSL(3)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/16924.html/rss"><IMG title="Subscribe to HLSL(3)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_Link" 
+  href="http://www.cppblog.com/wc250en007/category/18815.html">Linux(21)</A><A 
+  title="Subscribe to Linux(21)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/18815.html/rss"><IMG title="Subscribe to Linux(21)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_Link" 
+  href="http://www.cppblog.com/wc250en007/category/17204.html">Lua(2)</A><A 
+  title="Subscribe to Lua(2)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/17204.html/rss"><IMG title="Subscribe to Lua(2)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl11_Link" 
+  href="http://www.cppblog.com/wc250en007/category/14867.html">LUA(3)</A><A 
+  title="Subscribe to LUA(3)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl11_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/14867.html/rss"><IMG title="Subscribe to LUA(3)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl12_Link" 
+  href="http://www.cppblog.com/wc250en007/category/17338.html">LuaPlus(4)</A><A 
+  title="Subscribe to LuaPlus(4)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl12_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/17338.html/rss"><IMG title="Subscribe to LuaPlus(4)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl13_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13987.html">OGRE(3)</A><A 
+  title="Subscribe to OGRE(3)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl13_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13987.html/rss"><IMG title="Subscribe to OGRE(3)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl14_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13981.html">OpenGL(4)</A><A 
+  title="Subscribe to OpenGL(4)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl14_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13981.html/rss"><IMG title="Subscribe to OpenGL(4)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl15_Link" 
+  href="http://www.cppblog.com/wc250en007/category/16826.html">SQL(6)</A><A 
+  title="Subscribe to SQL(6)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl15_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/16826.html/rss"><IMG title="Subscribe to SQL(6)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl16_Link" 
+  href="http://www.cppblog.com/wc250en007/category/18239.html">Toolkit(7)</A><A 
+  title="Subscribe to Toolkit(7)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl16_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/18239.html/rss"><IMG title="Subscribe to Toolkit(7)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl17_Link" 
+  href="http://www.cppblog.com/wc250en007/category/14838.html">UI(5)</A><A 
+  title="Subscribe to UI(5)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl17_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/14838.html/rss"><IMG title="Subscribe to UI(5)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl18_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13856.html">VC(6)</A><A 
+  title="Subscribe to VC(6)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl18_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13856.html/rss"><IMG title="Subscribe to VC(6)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl19_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13970.html">地图编辑器(1)</A><A 
+  title="Subscribe to 地图编辑器(1)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl19_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13970.html/rss"><IMG title="Subscribe to 地图编辑器(1)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl20_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13986.html">计算机图形学基础(1)</A><A 
+  title="Subscribe to 计算机图形学基础(1)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl20_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13986.html/rss"><IMG title="Subscribe to 计算机图形学基础(1)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl21_Link" 
+  href="http://www.cppblog.com/wc250en007/category/15865.html">批处理(1)</A><A 
+  title="Subscribe to 批处理(1)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl21_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/15865.html/rss"><IMG title="Subscribe to 批处理(1)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl22_Link" 
+  href="http://www.cppblog.com/wc250en007/category/15941.html">日常问题(5)</A><A 
+  title="Subscribe to 日常问题(5)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl22_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/15941.html/rss"><IMG title="Subscribe to 日常问题(5)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl23_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13912.html">图像读取(6)</A><A 
+  title="Subscribe to 图像读取(6)" class="listitem" id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl23_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13912.html/rss"><IMG title="Subscribe to 图像读取(6)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI></UL>
+<H1 class="catListTitle">随笔档案</H1>
+<UL class="catList">
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/11.html">2012年11月 
+  (2)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl02_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/10.html">2012年10月 
+  (4)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl03_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/09.html">2012年9月 
+  (1)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl04_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/08.html">2012年8月 
+  (9)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl05_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/07.html">2012年7月 
+  (20)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl06_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/06.html">2012年6月 
+  (12)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl07_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/04.html">2012年4月 
+  (4)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl08_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/03.html">2012年3月 
+  (5)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl09_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2012/01.html">2012年1月 
+  (2)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl10_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/12.html">2011年12月 
+  (5)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl11_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/11.html">2011年11月 
+  (2)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl12_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/09.html">2011年9月 
+  (2)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl13_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/08.html">2011年8月 
+  (5)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl14_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/07.html">2011年7月 
+  (10)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl15_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/06.html">2011年6月 
+  (2)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl16_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/05.html">2011年5月 
+  (6)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl17_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/04.html">2011年4月 
+  (3)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl18_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/02.html">2011年2月 
+  (1)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl19_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2011/01.html">2011年1月 
+  (2)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl20_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2010/12.html">2010年12月 
+  (4)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl21_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2010/10.html">2010年10月 
+  (1)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl22_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2010/09.html">2010年9月 
+  (6)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl23_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2010/08.html">2010年8月 
+  (3)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl24_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2010/07.html">2010年7月 
+  (2)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl25_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2010/06.html">2010年6月 
+  (12)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl26_Link" 
+  href="http://www.cppblog.com/wc250en007/archive/2010/05.html">2010年5月 
+  (8)</A></LI></UL>
+<H1 class="catListTitle">文章分类</H1>
+<UL class="catList">
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl01_Link" 
+  href="http://www.cppblog.com/wc250en007/category/13857.html">VC(2)</A><A 
+  title="Subscribe to VC(2)" class="listitem" id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl01_RssLink" 
+  href="http://www.cppblog.com/wc250en007/category/13857.html/rss"><IMG title="Subscribe to VC(2)" 
+  style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml(1).gif"></A></LI></UL>
+<H1 class="catListTitle">文章档案</H1>
+<UL class="catList">
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl03_LinkList_ctl01_Link" 
+  href="http://www.cppblog.com/wc250en007/archives/2010/06.html">2010年6月 
+  (1)</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl03_LinkList_ctl02_Link" 
+  href="http://www.cppblog.com/wc250en007/archives/2010/05.html">2010年5月 
+  (1)</A></LI></UL>
+<H1 class="catListTitle">cocos2d-x</H1>
+<UL class="catList">
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl04_LinkList_ctl01_Link" 
+  href="http://www.cocos2dev.com/">cocos2d开发网</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl04_LinkList_ctl02_Link" 
+  href="http://www.cnblogs.com/zilongshanren">cocos2d子龙山人</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl04_LinkList_ctl03_Link" 
+  href="http://4137613.blog.51cto.com/">老G 的BLOG</A></LI></UL>
+<H1 class="catListTitle">OGRE</H1>
+<UL class="catList">
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl01_Link" 
+  href="http://www.ogre3d.org/docs/api/html/">OGRE API</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl02_Link" 
+  href="http://ogre3d.cn/wiki/index.php?title=%E9%A6%96%E9%A1%B5">OGRE 
+  中文Wiki</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl03_Link" 
+  href="http://sourceforge.net/">SourceForge</A></LI>
+  <LI style="margin-top: 2px;">NB的代码下载网站</LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl04_Link" 
+  href="http://www.cnblogs.com/mavaL/archive/2011/01/05/1925976.html">放风筝的程序员</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl05_Link" 
+  href="http://www.game798.com/">游艺网</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl06_Link" 
+  href="http://bbs.edu-edu.com.cn/">自考论坛</A></LI>
+  <LI style="margin-top: 2px;">自考论坛</LI></UL>
+<H1 class="catListTitle">OPenGL</H1>
+<UL class="catList">
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl06_LinkList_ctl01_Link" 
+  href="http://www.gametutorials.com/gtstore/c-1-opengl-tutorials.aspx">gametutorials.com</A></LI>
+  <LI style="margin-top: 2px;">教程很详细</LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl06_LinkList_ctl02_Link" 
+  href="http://www.ozone3d.net/tutorials/index_glsl.php">GLSL</A></LI>
+  <LI style="margin-top: 2px;">可以使用赋值开发工具RenderMonkey</LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl06_LinkList_ctl03_Link" 
+  href="http://www.cnblogs.com/lookof/archive/2010/02/07/1665486.html">地形学习</A></LI>
+  <LI class="catListItem"><A class="listitem" id="SingleColumn1_Categories_CatList_ctl06_LinkList_ctl04_Link" 
+  href="http://sourceforge.net/">搜代码</A></LI></UL>
+<SCRIPT language="JavaScript">
+function SearchGoogle(key,evt,site)
+		{
+			if(evt.keyCode==13 || evt.keyCode==0 || evt.type =='click')
+			{
+				key.focus();
+				var keystr = encodeURIComponent(key.value);
+				url = "http://www.google.com/search?q=";
+				url = url+keystr;
+				url += "&ie=UTF-8&oe=GB2312&hl=zh-CN&domains="+site+"&sitesearch="+site;
+				window.location=url;
+				return false;
+			}
+		}
+</SCRIPT>
+ 
+<H3>搜索</H3>
+<UL>
+  <LI>
+  <LI><INPUT name="q" id="q" style="width: 130px;" onkeydown="return SearchGoogle(document.getElementById('q'),event,'www.cppblog.com/wc250en007')" type="text">&nbsp;<INPUT name="sa" onclick="SearchGoogle(document.getElementById('q'),event,'www.cppblog.com/wc250en007')" type="button" value="搜索">
+  	 </LI></UL>
+<H3>最新评论	 <A id="SingleColumn1__1ef3be4_RSSHyperlink1" href="http://www.cppblog.com/wc250en007/CommentsRSS.aspx"><IMG 
+style="border-width: 0px;" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/xml.gif"></A></H3>
+<DIV class="RecentComment">
+<UL>
+  <LI style="-ms-word-break: break-all;"><A id="SingleColumn1__1ef3be4_CommentList_ctl01_Hyperlink1" 
+  href="http://www.cppblog.com/wc250en007/archive/2014/11/02/193320.html#208755">1.&nbsp;re: 
+  cocos2d-x android游戏使用自己的字体</A>			 </LI>
+  <LI style="-ms-word-break: break-all;">win32 和 ios不行啊，只有android可以			 </LI>
+  <LI style="text-align: right; margin-right: 4px;">--叛逆神佛</LI>
+  <LI style="-ms-word-break: break-all;"><A id="SingleColumn1__1ef3be4_CommentList_ctl02_Hyperlink1" 
+  href="http://www.cppblog.com/wc250en007/archive/2014/10/29/188048.html#208707">2.&nbsp;re: 
+  cocos2d-x 贝塞尔曲线之游戏应用</A>			 </LI>
+  <LI style="-ms-word-break: break-all;">@learner<BR>ArrowDirection 
+  每帧调用updateDirection			 </LI>
+  <LI style="text-align: right; margin-right: 4px;">				--wishe</LI>
+  <LI style="-ms-word-break: break-all;"><A id="SingleColumn1__1ef3be4_CommentList_ctl03_Hyperlink1" 
+  href="http://www.cppblog.com/wc250en007/archive/2014/10/17/193320.html#208601">3.&nbsp;re: 
+  cocos2d-x android游戏使用自己的字体[未登录]</A>			 </LI>
+  <LI style="-ms-word-break: break-all;">天差地别			 </LI>
+  <LI style="text-align: right; margin-right: 4px;">--lee</LI>
+  <LI style="-ms-word-break: break-all;"><A id="SingleColumn1__1ef3be4_CommentList_ctl04_Hyperlink1" 
+  href="http://www.cppblog.com/wc250en007/archive/2014/09/24/172086.html#208396">4.&nbsp;re: 
+  win7 下如何安装sql2000数据库(图)</A>			 </LI>
+  <LI 
+  style="-ms-word-break: break-all;">您好，该文章中有几处出现了“工作室名称”、“姓名”、“QQ号码”等信息，麻烦帮忙删除下吧，谢谢。
+  			 </LI>
+  <LI style="text-align: right; margin-right: 4px;">--技术</LI>
+  <LI style="-ms-word-break: break-all;"><A id="SingleColumn1__1ef3be4_CommentList_ctl05_Hyperlink1" 
+  href="http://www.cppblog.com/wc250en007/archive/2014/04/10/161554.html#206529">5.&nbsp;re: 
+  解决QT：unable to find a qt build，to solve this problem specify a qt build</A>
+  			 </LI>
+  <LI style="-ms-word-break: break-all;">				tks			 </LI>
+  <LI style="text-align: right; margin-right: 4px;">				--xx</LI></UL></DIV>
+<H3>阅读排行榜</H3>
+<DIV class="RecentComment">
+<UL style="-ms-word-break: break-all;">
+  <LI><A id="SingleColumn1__fb9ccb_TopList_ctl01_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2012/04/20/172086.aspx">1.&nbsp;win7 
+  下如何安装sql2000数据库(图)(13825)</A>			 </LI>
+  <LI><A id="SingleColumn1__fb9ccb_TopList_ctl02_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2011/04/18/144455.aspx">2.&nbsp;for_each的用法(10578)</A>
+  			 </LI>
+  <LI><A id="SingleColumn1__fb9ccb_TopList_ctl03_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2012/10/15/193320.aspx">3.&nbsp;cocos2d-x 
+  android游戏使用自己的字体(9937)</A>			 </LI>
+  <LI><A id="SingleColumn1__fb9ccb_TopList_ctl04_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2012/08/26/188362.aspx">4.&nbsp;cocos2d-x 
+  给Sprite添加Mask（遮罩)(8949)</A>			 </LI>
+  <LI><A id="SingleColumn1__fb9ccb_TopList_ctl05_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2012/07/12/182999.aspx">5.&nbsp; 
+  cocos2d-x 使用box2d来做碰撞检测（且仅用来做碰撞检测）(二)(7758)</A>			 </LI></UL></DIV>
+<H3>评论排行榜</H3>
+<DIV class="RecentComment">
+<UL style="-ms-word-break: break-all;">
+  <LI><A id="SingleColumn1__eab23d_TopList_ctl01_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2010/12/18/136844.aspx">1.&nbsp;UI中包裹物品排序(7)</A>
+  			 </LI>
+  <LI><A id="SingleColumn1__eab23d_TopList_ctl02_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2010/12/18/136841.aspx">2.&nbsp;游戏消息效率之switch...case 
+  &amp;&amp; if...else (6)</A>			 </LI>
+  <LI><A id="SingleColumn1__eab23d_TopList_ctl03_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2012/08/24/188048.aspx">3.&nbsp;cocos2d-x 
+  贝塞尔曲线之游戏应用(6)</A>			 </LI>
+  <LI><A id="SingleColumn1__eab23d_TopList_ctl04_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2012/10/15/193320.aspx">4.&nbsp;cocos2d-x 
+  android游戏使用自己的字体(4)</A>			 </LI>
+  <LI><A id="SingleColumn1__eab23d_TopList_ctl05_Hyperlink1" href="http://www.cppblog.com/wc250en007/archive/2012/07/12/182999.aspx">5.&nbsp; 
+  cocos2d-x 使用box2d来做碰撞检测（且仅用来做碰撞检测）(二)(3)</A>			 </LI></UL></DIV></DIV></DIV>
+<DIV id="centercontent"><!--done--> 
+<DIV class="post">
+<DIV class="postTitle"><A class="postTitle2" id="viewpost1_TitleUrl" href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html">使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)</A>
+	 </DIV><SPAN style="font:/normal Simsun; color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: normal; word-spacing: 0px; white-space: normal; border-collapse: separate; orphans: 2; widows: 2; font-size-adjust: none; font-stretch: normal; webkit-border-horizontal-spacing: 0px; webkit-border-vertical-spacing: 0px; webkit-text-decorations-in-effect: none; webkit-text-size-adjust: auto; webkit-text-stroke-width: 0px;"><SPAN 
+style="color: rgb(51, 51, 51); line-height: 19px; font-family: verdana, sans-serif; font-size: 13px; border-collapse: collapse; webkit-border-horizontal-spacing: 2px; webkit-border-vertical-spacing: 2px;">
+<H1><SPAN style="font-family: 宋体;">使用</SPAN><STRONG style="color: black; background-color: rgb(255, 255, 102);">FreeType</STRONG><SPAN 
+style="font-family: 宋体;">实现矢量字体的粗体、斜体、<STRONG style="color: black; background-color: rgb(160, 255, 255);">描边</STRONG>、阴影效果</SPAN></H1>
+<P>&nbsp;</P>
+<H2><SPAN style="font-family: 黑体;">前言：</SPAN></H2>
+<P style="text-indent: 21pt;"><STRONG style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG>是一个跨平台、开源的字体渲染器，网上很多文章介绍，本人就不啰嗦了。本文重点在于实现文章标题所属的各种效果，不是<STRONG 
+style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG>的基本使用方法介绍文档，所以对于<STRONG 
+style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG>不熟悉的同学们请先学习下<STRONG 
+style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG>的基本用法，才可以使用本文中所提及的方法。</P>
+<H2><SPAN style="font-family: 黑体;">正文：</SPAN></H2>
+<P style="text-indent: 21pt;">用<STRONG style="color: black; background-color: rgb(255, 255, 102);">FreeType</STRONG>实现矢量字体的粗体、斜体、<STRONG 
+style="color: black; background-color: rgb(160, 255, 255);">描边</STRONG>、阴影效果不是一件容易的事，本人认为皆因<STRONG 
+style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG>的接口太过于底层化，<STRONG 
+style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG>没有对其进行上层包装，所以要实现这些对于软件/游戏来说的基本效果，都是件挺麻烦的事情。不过，问题总是会有解决方法的，这些效果的实现，请听本人一个个道来：</P>
+<H3><SPAN>1.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">加粗</SPAN></H3>
+<P><SPAN style="font-family: 宋体;">加粗可以使用</SPAN><STRONG style="color: black; background-color: rgb(255, 255, 102);">FreeType</STRONG><SPAN 
+style="font-family: 宋体;">中的一个</SPAN>API<SPAN 
+style="font-family: 宋体;">来实现</SPAN>FT_Outline_Embolden<SPAN style="font-family: 宋体;">，但是这个</SPAN>API<SPAN 
+style="font-family: 宋体;">不支持水平垂直方向加粗量的分别设置，所以，需要参照</SPAN>FT_Outline_Embolden<SPAN 
+style="font-family: 宋体;">的实现重新编写一个函数，</SPAN>GDI++<SPAN 
+style="font-family: 宋体;">已经做了这个事情，引用它的代码：</SPAN></P>
+<P>&nbsp;</P>
+<DIV style="padding: 4px 5px 4px 4px; border: 1px solid rgb(204, 204, 204); width: 544px; font-size: 13px; -ms-word-break: break-all; background-color: rgb(238, 238, 238);"><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">&nbsp;就是FT_Outline_Embolden</SPAN><SPAN style="color: rgb(0, 128, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 0);">FT_Error&nbsp;Old_FT_Outline_Embolden(&nbsp;FT_Outline</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">*</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;outline,&nbsp;FT_Pos&nbsp;strength&nbsp;)<BR><IMG 
+align="top" id="Codehighlighter1_99_1815_Open_Image" onclick="this.style.display='none'; Codehighlighter1_99_1815_Open_Text.style.display='none'; Codehighlighter1_99_1815_Closed_Image.style.display='inline'; Codehighlighter1_99_1815_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockStart.gif"></SPAN><SPAN 
+id="Codehighlighter1_99_1815_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">*</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;points;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector&nbsp;&nbsp;&nbsp;&nbsp;v_prev,&nbsp;v_first,&nbsp;v_next,&nbsp;v_cur;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Angle&nbsp;&nbsp;&nbsp;&nbsp;rotate,&nbsp;angle_in,&nbsp;angle_out;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c,&nbsp;n,&nbsp;first;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orientation;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">!</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">outline&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Invalid_Argument;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;strength&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">/=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">2</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;strength&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Ok;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;orientation&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Outline_Get_Orientation(&nbsp;outline&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;orientation&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_ORIENTATION_NONE&nbsp;)<BR><IMG align="top" 
+id="Codehighlighter1_457_552_Open_Image" onclick="this.style.display='none'; Codehighlighter1_457_552_Open_Text.style.display='none'; Codehighlighter1_457_552_Closed_Image.style.display='inline'; Codehighlighter1_457_552_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_457_552_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">n_contours&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Invalid_Argument;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Ok;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;orientation&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_ORIENTATION_TRUETYPE&nbsp;)<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rotate&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">FT_ANGLE_PI2;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rotate&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_ANGLE_PI2;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;points&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">points;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;first&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">for</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;c&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;&nbsp;c&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">n_contours;&nbsp;c</SPAN><SPAN style="color: rgb(0, 0, 0);">++</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" id="Codehighlighter1_746_1793_Open_Image" 
+onclick="this.style.display='none'; Codehighlighter1_746_1793_Open_Text.style.display='none'; Codehighlighter1_746_1793_Closed_Image.style.display='inline'; Codehighlighter1_746_1793_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_746_1793_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">int</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;last&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">contours[c];<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_first&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;points[first];<BR><IMG align="top" alt="" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_prev&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;points[last];<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_cur&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_first;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">for</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;first;&nbsp;n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;last;&nbsp;n</SPAN><SPAN style="color: rgb(0, 0, 0);">++</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" id="Codehighlighter1_898_1769_Open_Image" 
+onclick="this.style.display='none'; Codehighlighter1_898_1769_Open_Text.style.display='none'; Codehighlighter1_898_1769_Closed_Image.style.display='inline'; Codehighlighter1_898_1769_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_898_1769_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">,&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Angle&nbsp;&nbsp;&nbsp;&nbsp;angle_diff;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Pos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Fixed&nbsp;&nbsp;&nbsp;&nbsp;scale;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;last&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_next&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;points[n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">1</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">];<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_next&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_first;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" id="Codehighlighter1_1061_1096_Open_Image" onclick="this.style.display='none'; Codehighlighter1_1061_1096_Open_Text.style.display='none'; Codehighlighter1_1061_1096_Closed_Image.style.display='inline'; Codehighlighter1_1061_1096_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_1061_1096_Open_Text"><SPAN 
+style="color: rgb(0, 128, 0);">/*</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">&nbsp;compute&nbsp;the&nbsp;in&nbsp;and&nbsp;out&nbsp;vectors&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">*/</SPAN></SPAN><SPAN style="color: rgb(0, 0, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.x&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_prev.x;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.y&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_prev.y;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_next.x&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.x;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_next.y&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.y;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angle_in&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Atan2(&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x,&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angle_out&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Atan2(&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x,&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angle_diff&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Angle_Diff(&nbsp;angle_in,&nbsp;angle_out&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Cos(&nbsp;angle_diff&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">/</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">2</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;scale&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0x4000L</SPAN>&nbsp;<SPAN style="color: rgb(0, 0, 0);">&amp;&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;scale&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&gt;</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">0x4000L</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" id="Codehighlighter1_1479_1595_Open_Image" 
+onclick="this.style.display='none'; Codehighlighter1_1479_1595_Open_Text.style.display='none'; Codehighlighter1_1479_1595_Closed_Image.style.display='inline'; Codehighlighter1_1479_1595_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_1479_1595_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_DivFix(&nbsp;strength,&nbsp;scale&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector_From_Polar(&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">,&nbsp;d,&nbsp;angle_in&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;angle_diff&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">/</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">2</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;rotate&nbsp;);<BR><IMG align="top" alt="" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outline</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">points[n].x&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.x&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;strength&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">伀偙傟傪僐儊儞僩倾偻僩偟偨偩偗<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">outline-&gt;points[n].y&nbsp;=&nbsp;v_cur.y&nbsp;+&nbsp;strength&nbsp;+&nbsp;in.y;</SPAN><SPAN 
+style="color: rgb(0, 128, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_prev&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_cur&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_next;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;last&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">1</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Ok;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockEnd.gif">}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">&nbsp;垂直加粗</SPAN><SPAN style="color: rgb(0, 128, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 0);">FT_Error&nbsp;Vert_FT_Outline_Embolden(&nbsp;FT_Outline</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">*</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;outline,&nbsp;FT_Pos&nbsp;strength&nbsp;)<BR><IMG 
+align="top" id="Codehighlighter1_1901_3617_Open_Image" onclick="this.style.display='none'; Codehighlighter1_1901_3617_Open_Text.style.display='none'; Codehighlighter1_1901_3617_Closed_Image.style.display='inline'; Codehighlighter1_1901_3617_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockStart.gif"></SPAN><SPAN 
+id="Codehighlighter1_1901_3617_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">*</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;points;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector&nbsp;&nbsp;&nbsp;&nbsp;v_prev,&nbsp;v_first,&nbsp;v_next,&nbsp;v_cur;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Angle&nbsp;&nbsp;&nbsp;&nbsp;rotate,&nbsp;angle_in,&nbsp;angle_out;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c,&nbsp;n,&nbsp;first;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orientation;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">!</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">outline&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Invalid_Argument;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;strength&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">/=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">2</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;strength&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Ok;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;orientation&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Outline_Get_Orientation(&nbsp;outline&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;orientation&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_ORIENTATION_NONE&nbsp;)<BR><IMG align="top" 
+id="Codehighlighter1_2259_2354_Open_Image" onclick="this.style.display='none'; Codehighlighter1_2259_2354_Open_Text.style.display='none'; Codehighlighter1_2259_2354_Closed_Image.style.display='inline'; Codehighlighter1_2259_2354_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_2259_2354_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">n_contours&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Invalid_Argument;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Ok;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;orientation&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_ORIENTATION_TRUETYPE&nbsp;)<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rotate&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">FT_ANGLE_PI2;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rotate&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_ANGLE_PI2;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;points&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">points;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;first&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">for</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;c&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;&nbsp;c&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">n_contours;&nbsp;c</SPAN><SPAN style="color: rgb(0, 0, 0);">++</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" id="Codehighlighter1_2548_3595_Open_Image" 
+onclick="this.style.display='none'; Codehighlighter1_2548_3595_Open_Text.style.display='none'; Codehighlighter1_2548_3595_Closed_Image.style.display='inline'; Codehighlighter1_2548_3595_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_2548_3595_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">int</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;last&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">contours[c];<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_first&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;points[first];<BR><IMG align="top" alt="" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_prev&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;points[last];<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_cur&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_first;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">for</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;first;&nbsp;n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;last;&nbsp;n</SPAN><SPAN style="color: rgb(0, 0, 0);">++</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" id="Codehighlighter1_2700_3571_Open_Image" 
+onclick="this.style.display='none'; Codehighlighter1_2700_3571_Open_Text.style.display='none'; Codehighlighter1_2700_3571_Closed_Image.style.display='inline'; Codehighlighter1_2700_3571_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_2700_3571_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">,&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Angle&nbsp;&nbsp;&nbsp;&nbsp;angle_diff;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Pos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Fixed&nbsp;&nbsp;&nbsp;&nbsp;scale;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;last&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_next&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;points[n&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">1</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">];<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_next&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_first;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" id="Codehighlighter1_2863_2898_Open_Image" onclick="this.style.display='none'; Codehighlighter1_2863_2898_Open_Text.style.display='none'; Codehighlighter1_2863_2898_Closed_Image.style.display='inline'; Codehighlighter1_2863_2898_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_2863_2898_Open_Text"><SPAN 
+style="color: rgb(0, 128, 0);">/*</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">&nbsp;compute&nbsp;the&nbsp;in&nbsp;and&nbsp;out&nbsp;vectors&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">*/</SPAN></SPAN><SPAN style="color: rgb(0, 0, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.x&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_prev.x;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.y&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_prev.y;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_next.x&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.x;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_next.y&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.y;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angle_in&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Atan2(&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x,&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angle_out&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Atan2(&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x,&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angle_diff&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Angle_Diff(&nbsp;angle_in,&nbsp;angle_out&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Cos(&nbsp;angle_diff&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">/</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">2</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;scale&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&lt;</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0x4000L</SPAN>&nbsp;<SPAN style="color: rgb(0, 0, 0);">&amp;&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;scale&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&gt;</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">0x4000L</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.x&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" id="Codehighlighter1_3281_3397_Open_Image" 
+onclick="this.style.display='none'; Codehighlighter1_3281_3397_Open_Text.style.display='none'; Codehighlighter1_3281_3397_Closed_Image.style.display='inline'; Codehighlighter1_3281_3397_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_3281_3397_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_DivFix(&nbsp;strength,&nbsp;scale&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Vector_From_Polar(&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">,&nbsp;d,&nbsp;angle_in&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;angle_diff&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">/</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">2</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;rotate&nbsp;);<BR><IMG align="top" alt="" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">outline-&gt;points[n].x&nbsp;=&nbsp;v_cur.x&nbsp;+&nbsp;strength&nbsp;+&nbsp;in.x;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">仾偙傟傪僐儊儞僩倾偻僩偟偨偩偗</SPAN><SPAN style="color: rgb(0, 128, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outline</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">points[n].y&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur.y&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;strength&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 255);">in</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.y;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_prev&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_cur;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_cur&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;v_next;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;last&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">1</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Ok;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockEnd.gif">}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">&nbsp;新的加粗函数</SPAN><SPAN style="color: rgb(0, 128, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 0);">FT_Error&nbsp;New_FT_Outline_Embolden(&nbsp;FT_Outline</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">*</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;&nbsp;outline,&nbsp;FT_Pos&nbsp;str_h,&nbsp;FT_Pos&nbsp;str_v&nbsp;)<BR><IMG 
+align="top" id="Codehighlighter1_3715_4036_Open_Image" onclick="this.style.display='none'; Codehighlighter1_3715_4036_Open_Text.style.display='none'; Codehighlighter1_3715_4036_Closed_Image.style.display='inline'; Codehighlighter1_3715_4036_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockStart.gif"></SPAN><SPAN 
+id="Codehighlighter1_3715_4036_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">!</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">outline&nbsp;)&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Invalid_Argument;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">int</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;orientation&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Outline_Get_Orientation(&nbsp;outline&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;orientation&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_ORIENTATION_NONE&nbsp;)<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;outline</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">n_contours&nbsp;)&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Invalid_Argument;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;Vert_FT_Outline_Embolden(&nbsp;outline,&nbsp;str_v&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;Old_FT_Outline_Embolden(&nbsp;outline,&nbsp;str_h&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Err_Ok;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockEnd.gif">}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">&nbsp;让一个字体槽加粗，并且填充其他的大小属性</SPAN><SPAN style="color: rgb(0, 128, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 255);">void</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;New_GlyphSlot_Embolden(&nbsp;FT_GlyphSlot&nbsp;&nbsp;slot&nbsp;,&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">const</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;Vector2Float&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">embolden)<BR><IMG align="top" id="Codehighlighter1_4143_5557_Open_Image" 
+onclick="this.style.display='none'; Codehighlighter1_4143_5557_Open_Text.style.display='none'; Codehighlighter1_4143_5557_Closed_Image.style.display='inline'; Codehighlighter1_4143_5557_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockStart.gif"></SPAN><SPAN 
+id="Codehighlighter1_4143_5557_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">(embolden&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;Vector2Float::ZERO)<BR><IMG align="top" alt="" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Library&nbsp;&nbsp;library&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">library;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Face&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;face&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">face;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Error&nbsp;&nbsp;&nbsp;&nbsp;error;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;FT_Pos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xstr&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;embolden.x,&nbsp;ystr&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;embolden.y;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;slot</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">format&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">!=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_GLYPH_FORMAT_OUTLINE&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">format&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">!=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_GLYPH_FORMAT_BITMAP&nbsp;)<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;slot</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">format&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_GLYPH_FORMAT_OUTLINE&nbsp;)<BR><IMG align="top" 
+id="Codehighlighter1_4489_4854_Open_Image" onclick="this.style.display='none'; Codehighlighter1_4489_4854_Open_Text.style.display='none'; Codehighlighter1_4489_4854_Closed_Image.style.display='inline'; Codehighlighter1_4489_4854_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_4489_4854_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_BBox&nbsp;oldBox;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Outline_Get_CBox(</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">outline&nbsp;,&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">oldBox);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;New_FT_Outline_Embolden(&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">outline,&nbsp;xstr&nbsp;,&nbsp;ystr);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;error&nbsp;)<BR><IMG align="top" alt="" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_BBox&nbsp;newBox;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Outline_Get_CBox(</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">outline&nbsp;,&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">newBox);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xstr&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(newBox.xMax&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;newBox.xMin)&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(oldBox.xMax&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;oldBox.xMin);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ystr&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(newBox.yMax&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;newBox.yMin)&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(oldBox.yMax&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;oldBox.yMin);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">else</SPAN>&nbsp;<SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;slot</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">format&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_GLYPH_FORMAT_BITMAP&nbsp;)<BR><IMG align="top" 
+id="Codehighlighter1_4909_5106_Open_Image" onclick="this.style.display='none'; Codehighlighter1_4909_5106_Open_Text.style.display='none'; Codehighlighter1_4909_5106_Closed_Image.style.display='inline'; Codehighlighter1_4909_5106_Closed_Text.style.display='inline';" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockStart.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+id="Codehighlighter1_4909_5106_Open_Text"><SPAN 
+style="color: rgb(0, 0, 0);">{<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xstr&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_PIX_FLOOR(&nbsp;xstr&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;xstr&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xstr&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">1</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">&lt;&lt;</SPAN>&nbsp;<SPAN style="color: rgb(0, 0, 0);">6</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ystr&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_PIX_FLOOR(&nbsp;ystr&nbsp;);<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_Bitmap_Embolden(&nbsp;library,&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">bitmap,&nbsp;xstr,&nbsp;ystr&nbsp;);<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;error&nbsp;)<BR><IMG align="top" alt="" 
+src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">return</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedSubBlockEnd.gif">&nbsp;&nbsp;&nbsp;&nbsp;}</SPAN></SPAN><SPAN 
+style="color: rgb(0, 0, 0);"><BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;slot</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">advance.x&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">advance.x&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;xstr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;slot</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">advance.y&nbsp;)<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">advance.y&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;ystr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">metrics.width&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;xstr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">metrics.height&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;ystr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">metrics.horiBearingY&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;ystr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">metrics.horiAdvance&nbsp;&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;xstr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">metrics.vertBearingX&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">-=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;xstr&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">/</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">2</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">metrics.vertBearingY&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;ystr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">metrics.vertAdvance&nbsp;&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;ystr;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">if</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;(&nbsp;slot</SPAN><SPAN style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">format&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">==</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_GLYPH_FORMAT_BITMAP&nbsp;)<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/InBlock.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slot</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">-&gt;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">bitmap_top&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">+=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;ystr&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">&gt;&gt;</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">6</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ExpandedBlockEnd.gif">}</SPAN></SPAN></DIV>
+<H3><SPAN>2.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">斜体</SPAN></H3>
+<P><SPAN style="font-family: 宋体;">斜体在</SPAN><STRONG style="color: black; background-color: rgb(255, 255, 102);">FreeType</STRONG><SPAN 
+style="font-family: 宋体;">中可以通过矩阵变换来实现，只要把矩阵设置成一个切边矩阵就可以了，方法如下：</SPAN></P>
+<DIV style="padding: 4px 5px 4px 4px; border: 1px solid rgb(204, 204, 204); width: 544px; font-size: 13px; -ms-word-break: break-all; background-color: rgb(238, 238, 238);"><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"><SPAN 
+style="color: rgb(0, 128, 0);">//</SPAN><SPAN 
+style="color: rgb(0, 128, 0);">&nbsp;倾斜度，越大就越斜</SPAN><SPAN style="color: rgb(0, 128, 0);"><BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 255);">float</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;lean&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0.5f</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif">FT_Matrix&nbsp;matrix;<BR><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif">matrix.xx&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0x10000L</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif">matrix.xy&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;lean&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">*</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0x10000L</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif">matrix.yx&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif">matrix.yy&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">=</SPAN>&nbsp;<SPAN 
+style="color: rgb(0, 0, 0);">0x10000L</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif">FT_Set_Transform(&nbsp;face,&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">matrix,&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;);<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN></DIV>
+<P><SPAN><BR>3.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;"><STRONG style="color: black; background-color: rgb(160, 255, 255);">描边</STRONG></SPAN></P>
+<P><SPAN style="font-family: 宋体;">网上有不少文章说<STRONG style="color: black; background-color: rgb(160, 255, 255);">描边</STRONG>其实很简单，就是上下左右各移动一个像素渲染一次，最后在中间再渲染一次就可以了。但是，这种方法只对于位图字体有效，对于矢量字体，效果就不好了，特别是大字体，</SPAN>1<SPAN 
+style="font-family: 宋体;">个像素只是很细的边界而已，对于很小的字体，</SPAN>1<SPAN style="font-family: 宋体;">像素又显得太大。</SPAN></P>
+<P><SPAN style="font-family: 宋体;">这里提供另一种实现方案，使用的是</SPAN><STRONG style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG><SPAN 
+style="font-family: 宋体;">的</SPAN>API<SPAN style="font-family: 宋体;">：</SPAN></P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>4.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">使用</SPAN>FT_Stroker_New<SPAN 
+style="font-family: 宋体;">创建一个笔触</SPAN></P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>5.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN>FT_Stroker_Set<SPAN 
+style="font-family: 宋体;">设置笔触为<STRONG style="color: black; background-color: rgb(160, 255, 255);">描边</STRONG></SPAN></P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>6.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">把</SPAN>Load<SPAN 
+style="font-family: 宋体;">后的</SPAN>glyph<SPAN 
+style="font-family: 宋体;">通过</SPAN>FT_Glyph_Copy<SPAN 
+style="font-family: 宋体;">拷贝一份出来</SPAN></P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>7.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">对这个拷贝出来的</SPAN>glyph<SPAN 
+style="font-family: 宋体;">使用</SPAN>FT_Glyph_StrokeBorder<SPAN style="font-family: 宋体;">设置成<STRONG 
+style="color: black; background-color: rgb(160, 255, 255);">描边</STRONG>渲染</SPAN></P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>8.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">使用</SPAN>FT_Outline_Render<SPAN style="font-family: 宋体;">渲染这个<STRONG 
+style="color: black; background-color: rgb(160, 255, 255);">描边</STRONG>的</SPAN>glyph<SPAN 
+style="font-family: 宋体;">，渲染前要设置</SPAN>FT_Raster_Params<SPAN style="font-family: 宋体;">参数成：</SPAN>&nbsp;</P>
+<DIV style="padding: 4px 5px 4px 4px; border: 1px solid rgb(204, 204, 204); width: 544px; font-size: 13px; -ms-word-break: break-all; background-color: rgb(238, 238, 238);"><IMG 
+align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"><SPAN 
+style="color: rgb(0, 0, 0);">FT_Raster_Params&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 255);">params</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">;<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif">memset(</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&amp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">params</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">,&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">0</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">,&nbsp;</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">sizeof</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">(</SPAN><SPAN 
+style="color: rgb(0, 0, 255);">params</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">));<BR><IMG align="top" alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 255);">params</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.flags&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_RASTER_FLAG_AA&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">|</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;FT_RASTER_FLAG_DIRECT;<BR><IMG align="top" 
+alt="" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/None.gif"></SPAN><SPAN 
+style="color: rgb(0, 0, 255);">params</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">.gray_spans&nbsp;</SPAN><SPAN style="color: rgb(0, 0, 0);">=</SPAN><SPAN 
+style="color: rgb(0, 0, 0);">&nbsp;RasterCallback;</SPAN></DIV>
+<P style="margin: 0cm 0cm 0pt 21pt;">&nbsp;</P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>9.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">在回调函数</SPAN>RasterCallback<SPAN style="font-family: 宋体;">中实现像素化到位图中</SPAN></P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>10.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">对原来的</SPAN>glyph<SPAN 
+style="font-family: 宋体;">执行</SPAN>8<SPAN 
+style="font-family: 宋体;">操作，在回调函数</SPAN>RasterCallback<SPAN style="font-family: 宋体;">中实现像素化到位图中，像素化过程使用</SPAN>alphablend<SPAN 
+style="font-family: 宋体;">的方式绘制上去</SPAN></P>
+<P style="margin: 0cm 0cm 0pt 21pt; text-indent: -21pt;"><SPAN>11.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">把位图渲染到屏幕上或保存到文件中</SPAN></P>
+<P>&nbsp;</P>
+<P><SPAN style="font-family: 宋体;">这个方法是</SPAN><STRONG style="color: black; background-color: rgb(255, 255, 102);">Freetype</STRONG><SPAN 
+style="font-family: 宋体;">的一个</SPAN>example<SPAN 
+style="font-family: 宋体;">，只是很少有人注意而已，源码在这里</SPAN>http://www.<STRONG style="color: black; background-color: rgb(255, 255, 102);">freetype</STRONG>.org/<STRONG 
+style="color: black; background-color: rgb(255, 255, 102);">freetype</STRONG>2/docs/tutorial/example2.cpp<SPAN 
+style="font-family: 宋体;">。<BR></SPAN></P>
+<P><BR>&nbsp;<SPAN>12.<SPAN style='font: 7pt/normal "Times New Roman"; font-size-adjust: none; font-stretch: normal;'>&nbsp;</SPAN></SPAN><SPAN 
+style="font-family: 宋体;">阴影</SPAN></P>
+<P><SPAN 
+style="font-family: 宋体;">阴影的实现就比较简单了，只要一个个像素偏移后多渲染几次就可以了，再次不多说。</SPAN></P></SPAN></SPAN>
+	 
+<DIV class="postDesc">posted on 2011-07-13 07:30 <A href="http://www.cppblog.com/wc250en007/">Let 
+me see see</A> 阅读(3942) <A href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html#Post">评论(1)</A> 
+&nbsp;<A href="http://www.cppblog.com/wc250en007/admin/EditPosts.aspx?postid=150809">编辑</A>&nbsp;<A 
+href="http://www.cppblog.com/wc250en007/AddToFavorite.aspx?id=150809">收藏</A> <A 
+href="http://www.cppblog.com/wc250en007/services/trackbacks/150809.aspx">引用</A>  
+所属分类: <A 
+href="http://www.cppblog.com/wc250en007/category/16812.html">FreeType</A> 
+</DIV></DIV><IMG width="1" height="1" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/150809.jpg"> <!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html"
+dc:identifier="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html"
+dc:title="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)"
+trackback:ping="http://www.cppblog.com/wc250en007/services/trackbacks/150809.aspx" />
+</rdf:RDF>
+--> 
+<SCRIPT type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('AjaxHolder$scriptmanager1', document.getElementById('Form1'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tAjaxHolder$UpdatePanel1'], [], [], 90);
+//]]>
+</SCRIPT>
+ 
+<DIV id="AjaxHolder_UpdatePanel1"><A name="pagedcomment"></A> <!--done--> 
+<BR><B>FeedBack:</B> 
+<DIV class="feedbackNoItems"></DIV>
+<DIV class="feedbackItem">
+<DIV class="feedbackListSubtitle">
+<DIV class="feedbacktitle"><A title="permalink: re: 使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)" 
+href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html#202663">#</A>&nbsp;<A 
+name="202663"></A>re: 使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)<A 
+name="Post"></A>&nbsp;2013-08-20 10:44&nbsp;<A id="AjaxHolder_Comments_CommentList_ctl00_NameLink" 
+href="http://www.cppblog.com/Tim/" target="_blank">Tim</A></DIV>
+<DIV align="left">要是能贴上这个字体的图，感觉可能更好些&nbsp;&nbsp;<A onclick='return SetReplyAuhor("Tim")' 
+href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html#post">回复</A>&nbsp;&nbsp;<A 
+title="查看该作者发表过的评论" href="http://www.cppblog.com/comment?author=Tim" target="_blank">更多评论</A><BR><A 
+id="AjaxHolder_Comments_CommentList_ctl00_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl00$DeleteLink','')"></A>&nbsp;&nbsp;<A 
+id="AjaxHolder_Comments_CommentList_ctl00_EditLink"></A>			 </DIV></DIV>
+<DIV id="AjaxHolder_Comments_divRefreshComments" style="text-align: right; font-size: 12px; margin-right: 10px; margin-bottom: 5px;"><A 
+id="AjaxHolder_Comments_refreshList" href="javascript:__doPostBack('AjaxHolder$Comments$refreshList','')">刷新评论列表</A></DIV>
+<STYLE>td { font-size: 12px }
+.commentTextBox 
+{ 
+    font-family : Verdana; 
+    font-size: 13px;
+ }
+</STYLE>
+ <!--Beging Temp Save--> 
+<STYLE>.userData { BEHAVIOR: url(#default#userdata) }
+	</STYLE>
+ 
+<DIV class="userData" id="CommentsPersistDiv"></DIV>
+<SCRIPT type="text/javascript">
+function pageLoad()
+{
+    Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(handleInitializeRequest);
+    //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(handleEndRequest);
+}
+
+function handleInitializeRequest(sender, args)
+{
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var eid = args.get_postBackElement().id;
+    if (eid.indexOf("DeleteLink")>0) 
+    {
+       args.get_postBackElement().innerHTML = "<font color='red'>正在删除...</font>";         
+    }    
+    if (eid.indexOf("btnSubmit")>0) 
+    {
+       document.getElementById("AjaxHolder_PostComment_ltSubmitMsg").innerHTML="正在提交...";
+       document.getElementById("AjaxHolder_PostComment_btnSubmit").disabled = true;
+       
+    }    
+   
+}	
+
+function TempSave(ElementID)
+{
+	try
+	{
+	CommentsPersistDiv.setAttribute("CommentContent",document.getElementById(ElementID).value);
+	CommentsPersistDiv.save("CommentXMLStore");
+	}
+	catch(ex)
+	{
+	}
+	
+}
+function Restore(ElementID)
+{
+	CommentsPersistDiv.load("CommentXMLStore");
+	document.getElementById(ElementID).value=CommentsPersistDiv.getAttribute("CommentContent");
+}	
+			
+			
+</SCRIPT>
+ <!--Ene TempSave--> 
+<DIV class="commentform"><SPAN id="AjaxHolder_PostComment_ltSubmitMsg" style="color: red;"></SPAN> 
+<BR><A name="Feedback"></A>	 
+<TABLE border="0" cellspacing="1" cellpadding="1">
+  <TBODY>
+  <TR>
+    <TD id="AjaxHolder_PostComment_tdOnCommentForm" colspan="3"></TD></TR>
+  <TR>
+    <TD colspan="3">
+<SCRIPT type="Text/Javascript">
+try{
+  GA_googleFillSlot("cppblog_commentbox_up");
+  } catch (e) { }
+</SCRIPT>
+       <BR></TD></TR>
+  <TR>
+    <TD width="75"></TD>
+    <TD></TD>
+    <TD></TD></TR>
+  <TR>
+    <TD></TD>
+    <TD colspan="2"><A href="http://job.cnblogs.com/" 
+      target="_blank">找优秀程序员，就在博客园</A>			 <!--<a href="http://www.cnblogs.com" target="_blank">博客园</a>&nbsp;  <a href="http://q.cnblogs.com/" target="_blank">博问</a>&nbsp; <a href="http://news.cnblogs.com" target="_blank">IT新闻</a>&nbsp; <a href="http://job.cnblogs.com/cate-cpp_programmer/" target="_blank">C++程序员招聘</a>-->
+      			 </TD></TR>
+  <TR>
+    <TD width="55">标题</TD>
+    <TD><INPUT name="AjaxHolder$PostComment$tbTitle" class="commenttb" id="AjaxHolder_PostComment_tbTitle" style="width: 320px;" type="text" value="re: 使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)"></TD>
+    <TD><SPAN id="AjaxHolder_PostComment_RequiredFieldValidator1" style="color: red; visibility: hidden;">请输入标题</SPAN></TD></TR>
+  <TR>
+    <TD>姓名</TD>
+    <TD><INPUT name="AjaxHolder$PostComment$tbName" class="commenttb" id="AjaxHolder_PostComment_tbName" style="width: 320px;" type="text"></TD>
+    <TD><SPAN id="AjaxHolder_PostComment_RequiredFieldValidator2" style="color: red; visibility: hidden;">请输入你的姓名</SPAN></TD></TR>
+  <TR>
+    <TD>主页</TD>
+    <TD><INPUT name="AjaxHolder$PostComment$tbUrl" class="commenttb" id="AjaxHolder_PostComment_tbUrl" style="width: 320px;" type="text"></TD>
+    <TD><FONT face="宋体"></FONT></TD></TR>
+  <TR>
+    <TD align="left" colspan="3">
+      <TABLE class="CommentForm" id="AjaxHolder_PostComment_tbCaptchaImage" 
+      border="0" cellspacing="0" cellpadding="0">
+        <TBODY>
+        <TR>
+          <TD colspan="3"><SPAN id="AjaxHolder_PostComment_Requiredfieldvalidator4" 
+            style="color: red; display: none;">请输入验证码</SPAN>							 <SPAN id="AjaxHolder_PostComment_lblImage" 
+            style="color: red; font-weight: bold;"></SPAN>						 </TD></TR>
+        <TR>
+          <TD width="78">验证码</TD>
+          <TD><INPUT name="AjaxHolder$PostComment$CodeNumberTextBox" id="AjaxHolder_PostComment_CodeNumberTextBox" type="text">*</TD>
+          <TD align="left"><IMG id="AjaxHolder_PostComment_Img1" src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/JpegImage.jpg">
+            						 </TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD colspan="3">内容(提交失败后,可以通过“恢复上次提交”恢复刚刚提交的内容)				 <SPAN id="AjaxHolder_PostComment_RequiredFieldValidator3" 
+      style="color: red; visibility: hidden;">请输入评论内容</SPAN><BR><TEXTAREA name="AjaxHolder$PostComment$tbComment" class="commentTextBox" id="AjaxHolder_PostComment_tbComment" style="width: 480px; height: 220px;" onkeydown="ctlent(event,'AjaxHolder_PostComment_tbComment')" rows="10" cols="50"></TEXTAREA></TD></TR>
+  <TR>
+    <TD colspan="3"><SPAN id="AjaxHolder_PostComment_Message" style="color: red;"></SPAN>
+      		 </TD>
+  <TR>
+    <TD colspan="3"><INPUT name="AjaxHolder$PostComment$chkRemember" tabindex="-1" 
+      id="AjaxHolder_PostComment_chkRemember" type="checkbox" 
+      checked="checked"><LABEL for="AjaxHolder_PostComment_chkRemember">Remember 
+      Me?</LABEL></TD></TR>
+  <TR>
+    <TD height="23"><INPUT name="AjaxHolder$PostComment$btnSubmit" id="AjaxHolder_PostComment_btnSubmit" onclick="TempSave('AjaxHolder_PostComment_tbComment');WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;AjaxHolder$PostComment$btnSubmit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" type="submit" value="提交">
+      				 </TD>
+    <TD height="23" colspan="2">&nbsp;				<A id="AjaxHolder_PostComment_lnkLogin" 
+      href="http://www.cppblog.com/login.aspx?ReturnURL=http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html&amp;SourceURL=/wc250en007/archive/2011/07/13/150809.html">登录</A>&nbsp;&nbsp;<A 
+      id="AjaxHolder_PostComment_linkLoginComment" onclick="if(document.getElementById('AjaxHolder_PostComment_tbComment').value != '') return confirm('未提交的评论内容将会丢失, 你真的要进入高级评论吗?');" 
+      href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html?login=1#Post">使用高级评论</A>&nbsp;&nbsp;<A 
+      href="http://www.cppblog.com/RequireRegister.aspx">新用户注册</A>&nbsp;&nbsp;<A 
+      href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html#Top">返回页首</A>&nbsp;&nbsp;<A 
+      id="AjaxHolder_PostComment_lbRestore" onclick="Restore('AjaxHolder_PostComment_tbComment'); return false;" 
+      href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html#Post">恢复上次提交</A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      				</TD></TR>
+  <TR>
+    <TD colspan="3">[使用Ctrl+Enter键可以直接提交]</TD></TR>
+  <TR>
+    <TD style="line-height: 2.5;" colspan="3"><A href="http://www.ucancode.com/index.htm" 
+      target="_blank">【推荐】超50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</A><BR>
+<SCRIPT type="text/javascript">
+		(function() {
+		var useSSL = 'https:' == document.location.protocol;
+		var src = (useSSL ? 'https:' : 'http:') +
+		'//www.googletagservices.com/tag/js/gpt.js';
+		document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+		})();
+		</SCRIPT>
+      		 
+<SCRIPT type="text/javascript">
+		googletag.defineSlot('/1090369/cppblog_blogpost_bottom', [300, 250], 'div-gpt-ad-1391948236744-0').addService(googletag.pubads());
+		googletag.pubads().enableSyncRendering();
+		googletag.pubads().enableSingleRequest();
+		googletag.enableServices();
+		</SCRIPT>
+      				 <!-- cppblog_blogpost_bottom -->		 
+      <DIV id="div-gpt-ad-1391948236744-0" style="width: 300px; height: 250px;">
+<SCRIPT type="text/javascript">
+		googletag.display('div-gpt-ad-1391948236744-0');
+		</SCRIPT>
+      		 </DIV></TD></TR>
+  <TR>
+    <TD colspan="3"></TD></TR>
+  <TR>
+    <TD height="5" colspan="3">
+      <DIV id="divRelativePosts">相关文章:				 
+      <UL style="line-height: 1.8; margin-top: 0px;">
+        <LI style="list-style: none;"><A id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl01_Hyperlink1" 
+        href="http://www.cppblog.com/wc250en007/archive/2011/08/13/153267.html">freetype之多线程</A>
+        			 </LI>
+        <LI style="list-style: none;"><A id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl02_Hyperlink1" 
+        href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150812.html">教你怎么开发漂亮的描边字体(转)</A>
+        			 </LI>
+        <LI style="list-style: none; display: none;"><A id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl03_Hyperlink1" 
+        href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html">使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)</A>
+        			 </LI>
+        <LI style="list-style: none;"><A id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl04_Hyperlink1" 
+        href="http://www.cppblog.com/wc250en007/archive/2011/07/05/150175.html">Freetype2网址</A>
+        			 </LI>
+        <LI style="list-style: none;"><A id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl05_Hyperlink1" 
+        href="http://www.cppblog.com/wc250en007/archive/2011/05/03/145560.html">freetype2失量中文字库显示</A>
+        			 </LI></UL></DIV></TD></TR>
+  <TR>
+    <TD colspan="3"></TD></TR>
+  <TR>
+    <TD height="1" colspan="3">
+      <DIV id="blogsite">网站导航:			 <A 
+      href="http://www.cnblogs.com/">博客园</A>&nbsp;&nbsp;			<A href="http://news.cnblogs.com/">IT新闻</A>&nbsp;&nbsp;
+      			<A href="http://www.blogjava.net/">BlogJava</A>&nbsp;&nbsp;			<A href="http://kb.cnblogs.com/">知识库</A>&nbsp;&nbsp;
+      			<A href="http://job.cnblogs.com/">程序员招聘</A>&nbsp;&nbsp;			<A href="http://www.cppblog.com/wc250en007/archive/2011/07/13/150809.html?opt=admin">管理</A>
+      			 </DIV></TD></TR>
+  <TR>
+    <TD colspan="3"><BR><BR></TD></TR></TBODY></TABLE></DIV>
+<DIV id="AjaxHolder_PostComment_ValidationSummary1" style="color: red; display: none;"></DIV></DIV><!--done--> 
+<DIV class="footer">		Copyright ©2015 Let me see see Powered by: <A class="footerlink" 
+href="http://www.cnblogs.com/">博客园</A> 模板提供：<A class="footerlink" href="http://blog.hjenglish.com/">沪江博客</A><BR></DIV></DIV>
+<SCRIPT type="text/javascript">
+//<![CDATA[
+var Page_ValidationSummaries =  new Array(document.getElementById("AjaxHolder_PostComment_ValidationSummary1"));
+var Page_Validators =  new Array(document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator1"), document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator2"), document.getElementById("AjaxHolder_PostComment_Requiredfieldvalidator4"), document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator3"));
+//]]>
+</SCRIPT>
+ 
+<SCRIPT type="text/javascript">
+//<![CDATA[
+var AjaxHolder_PostComment_RequiredFieldValidator1 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator1"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator1");
+AjaxHolder_PostComment_RequiredFieldValidator1.controltovalidate = "AjaxHolder_PostComment_tbTitle";
+AjaxHolder_PostComment_RequiredFieldValidator1.errormessage = "请输入标题";
+AjaxHolder_PostComment_RequiredFieldValidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator1.initialvalue = "";
+var AjaxHolder_PostComment_RequiredFieldValidator2 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator2"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator2");
+AjaxHolder_PostComment_RequiredFieldValidator2.controltovalidate = "AjaxHolder_PostComment_tbName";
+AjaxHolder_PostComment_RequiredFieldValidator2.errormessage = "请输入你的姓名";
+AjaxHolder_PostComment_RequiredFieldValidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator2.initialvalue = "";
+var AjaxHolder_PostComment_Requiredfieldvalidator4 = document.all ? document.all["AjaxHolder_PostComment_Requiredfieldvalidator4"] : document.getElementById("AjaxHolder_PostComment_Requiredfieldvalidator4");
+AjaxHolder_PostComment_Requiredfieldvalidator4.controltovalidate = "AjaxHolder_PostComment_CodeNumberTextBox";
+AjaxHolder_PostComment_Requiredfieldvalidator4.errormessage = "请输入验证码";
+AjaxHolder_PostComment_Requiredfieldvalidator4.display = "Dynamic";
+AjaxHolder_PostComment_Requiredfieldvalidator4.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_Requiredfieldvalidator4.initialvalue = "";
+var AjaxHolder_PostComment_RequiredFieldValidator3 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator3"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator3");
+AjaxHolder_PostComment_RequiredFieldValidator3.controltovalidate = "AjaxHolder_PostComment_tbComment";
+AjaxHolder_PostComment_RequiredFieldValidator3.errormessage = "请输入评论内容";
+AjaxHolder_PostComment_RequiredFieldValidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator3.initialvalue = "";
+var AjaxHolder_PostComment_ValidationSummary1 = document.all ? document.all["AjaxHolder_PostComment_ValidationSummary1"] : document.getElementById("AjaxHolder_PostComment_ValidationSummary1");
+AjaxHolder_PostComment_ValidationSummary1.showmessagebox = "True";
+AjaxHolder_PostComment_ValidationSummary1.showsummary = "False";
+//]]>
+</SCRIPT>
+ 
+<SCRIPT type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        
+document.getElementById('AjaxHolder_PostComment_ValidationSummary1').dispose = function() {
+    Array.remove(Page_ValidationSummaries, document.getElementById('AjaxHolder_PostComment_ValidationSummary1'));
+}
+Sys.Application.initialize();
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator1').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator1'));
+}
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator2').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator2'));
+}
+
+document.getElementById('AjaxHolder_PostComment_Requiredfieldvalidator4').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_Requiredfieldvalidator4'));
+}
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator3').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator3'));
+}
+//]]>
+</SCRIPT>
+	 
+<SCRIPT src="使用FreeType实现矢量字体的粗体、斜体、描边、阴影效果(转)%20-%20前进的路上%20-%20C++博客_files/ShowHidden.js" type="text/javascript"></SCRIPT>
+   	
+<SCRIPT type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-476124-5']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</SCRIPT>
+ </DIV></FORM></BODY></HTML>

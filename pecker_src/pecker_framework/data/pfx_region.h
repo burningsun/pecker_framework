@@ -41,6 +41,7 @@ struct point_locate
 };
 
 typedef rectangle_size< usize__t > rect_size_t;
+typedef rectangle_size< float_t > rect_sizef_t;
 typedef point_locate< nsize__t > pointi_t;
 typedef point_locate< float_t > pointf_t;
 

@@ -94,6 +94,7 @@
     <ClCompile Include="pfx_cmatrix_test.cpp" />
     <ClCompile Include="pfx_file_inputdata_cmd.cpp" />
     <ClCompile Include="pfx_gles2_displayview_test.cpp" />
+    <ClCompile Include="pfx_graphics_test.cpp" />
     <ClCompile Include="pfx_list_test.cpp" />
     <ClCompile Include="pfx_load_image.cpp" />
     <ClCompile Include="pfx_objectid_test.cpp" />

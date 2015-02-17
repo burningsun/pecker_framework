@@ -1,0 +1,243 @@
+a:link {
+	color: rgb(52, 104, 164);
+}
+a:active {
+	color: rgb(52, 104, 164);
+}
+a:visited {
+	color: rgb(52, 104, 164);
+}
+a:hover {
+	color: gray;
+}
+body {
+	background: url("images/bg.gif") fixed left top rgb(255, 255, 255); margin: 0px; padding: 0px; line-height: 160%; font-family: verdana,Arial,helvetica,sans-seriff; font-size: 13px; -ms-word-break: break-all;
+}
+td {
+	line-height: 150%; font-family: Verdana,Helvetica,Arial; font-size: 12px; -ms-word-break: break-all;
+}
+.header {
+	background: url("images/banner.jpg") fixed top rgb(255, 255, 255); height: 120px; color: rgb(255, 255, 255); padding-top: 30px; padding-left: 30px; border-bottom-color: rgb(0, 0, 0); border-bottom-width: 0px; border-bottom-style: solid;
+}
+a.headermaintitle:visited {
+	color: rgb(255, 255, 255); font-size: 16px; font-weight: bold; text-decoration: none;
+}
+a.headermaintitle:active {
+	color: rgb(255, 255, 255); font-size: 16px; font-weight: bold; text-decoration: none;
+}
+a.headermaintitle:link {
+	color: rgb(255, 255, 255); font-size: 16px; font-weight: bold; text-decoration: none;
+}
+a.headermaintitle:hover {
+	color: gray;
+}
+#leftcontent {
+	border-width: 0px 1px 0px 0px; border-style: solid; border-color: rgb(0, 0, 0) rgb(221, 221, 221) rgb(0, 0, 0) rgb(0, 0, 0); border-image: none; left: 10px; top: 160px; width: 200px; font-family: Arial; font-size: 12px; position: absolute;
+}
+#leftcontentcontainer {
+	padding: 10px; background-image: url("images/bg_leftcontent.jpg"); background-repeat: no-repeat;
+}
+li {
+	font-size: 12px;
+}
+#centercontent {
+	padding-top: 20px; padding-right: 10px; padding-left: 240px;
+}
+#mytopmenu {
+	padding: 0px 10px; border: 0px solid rgb(94, 94, 94); border-image: none; text-align: right; font-size: 12px; margin-top: 5px; margin-right: 0px; margin-left: 0px; background-image: url("images/bg_menu.jpg");
+}
+#mystats {
+	margin-top: 24px;
+}
+a.menu:link {
+	color: rgb(52, 104, 164);
+}
+a.menu:visited {
+	color: rgb(52, 104, 164);
+}
+a.menu:active {
+	color: rgb(52, 104, 164);
+}
+a.menu:hover {
+	color: gray;
+}
+#rightcontent {
+	background: rgb(255, 255, 255); top: 70px; width: 200px; right: 10px; position: absolute;
+}
+#mylinks {
+	padding: 5px 12px 0px; left: 0px; font-size: 12px; position: absolute;
+}
+.footer {
+	padding: 12px 12px 12px 10px; text-align: center; color: rgb(255, 255, 255); line-height: 40px; margin-top: 0px; margin-right: 10px; margin-left: 0px; background-image: url("images/bg_footer.gif"); background-repeat: repeat;
+}
+a.footerlink:link {
+	color: white;
+}
+a.footerlink:visited {
+	color: white;
+}
+a.footerlink:active {
+	color: white;
+}
+a.footerlink:hover {
+	color: rgb(221, 221, 221);
+}
+.day {
+	background-position: right top; padding: 20px; color: rgb(75, 75, 75); margin-bottom: 20px; margin-left: 2px; border-bottom-color: rgb(221, 221, 221); border-bottom-width: 1px; border-bottom-style: solid; background-image: url("images/day_bg.gif"); background-repeat: no-repeat;
+}
+.dayTitle {
+	height: 20px; text-transform: uppercase; padding-left: 25px; font-size: 13px; font-weight: bold; margin-bottom: 20px; background-image: url("images/day.gif"); background-repeat: no-repeat;
+}
+.postSeparator {
+	background: url("images/line.gif") no-repeat top; height: 15px; margin-top: 20px; margin-bottom: 20px; border-top-color: rgb(0, 0, 0); border-top-width: 0px; border-top-style: dotted;
+}
+.news {
+	font-family: Verdana; font-size: 11px; font-weight: bold;
+}
+.newsItem {
+	text-align: center; margin-top: 2px; margin-bottom: 20px;
+}
+.blogstats {
+	padding-top: 5px; font-size: 11px;
+}
+.entrylist {
+	padding: 20px 20px 8px; border: 1px dotted rgb(0, 0, 0); border-image: none; color: rgb(123, 125, 98); background-color: white;
+}
+.listtitle {
+	background: url("images/title.gif") fixed no-repeat left top; height: 40px; color: rgb(102, 102, 102); padding-top: 12px; padding-left: 30px; font-family: verdana; font-size: 14.7px; font-weight: bold; margin-bottom: 10px;
+}
+.entrylistTitle {
+	color: black; font-family: verdana; font-size: 16px; font-weight: bold;
+}
+.entrylistDescription {
+	margin-bottom: 20px;
+}
+.entrylistItemTitle {
+	font-size: 13px; font-weight: bold; text-decoration: none;
+}
+.entrylistItemPostDesc {
+	font-size: 12px;
+}
+.gallery {
+	padding: 20px; border: 1px dotted rgb(0, 0, 0); border-image: none; color: rgb(123, 125, 98); background-color: white;
+}
+.galleryTitle {
+	color: black; font-family: verdana; font-size: 16px; font-weight: bold;
+}
+.galleryDescription {
+	margin-bottom: 20px;
+}
+.galleryThumbnail {
+	padding: 20px 20px 20px 0px;
+}
+.post {
+	background-position: right top; padding: 20px; border: 1px solid rgb(221, 221, 221); border-image: none; color: rgb(75, 75, 75); font-size: 13px; background-image: url("images/day_bg.gif"); background-repeat: no-repeat;
+}
+.postTitle {
+	font-size: 14.7px; font-weight: bold; margin-bottom: 10px;
+}
+.postTitle2 {
+	text-decoration: none;
+}
+.postDesc {
+	text-align: right; color: rgb(48, 48, 48); margin-top: 10px;
+}
+.contact {
+	padding: 20px 20px 20px 22px; border: 1px dotted rgb(0, 0, 0); border-image: none; font-family: Verdana; font-size: 11px; font-weight: bold; background-color: white;
+}
+.comments {
+	border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentColor rgb(221, 221, 221) rgb(221, 221, 221); padding: 0px 20px 20px 22px; border-image: none; font-family: Verdana; font-size: 11px; font-weight: bold;
+}
+.commentsTable {
+	font-family: Verdana; font-size: 11px; margin-top: 15px;
+}
+.feedback {
+	border-width: 0px 1px 1px; border-style: none solid solid; border-color: currentColor rgb(221, 221, 221) rgb(221, 221, 221); padding: 20px 20px 30px; border-image: none; margin-top: 20px; margin-bottom: 0px;
+}
+.feedbackTitle {
+	font-family: Verdana; font-size: 11px; font-weight: bold;
+}
+.feedbackItem {
+	line-height: 200%; margin-top: 20px; margin-bottom: 0px;
+}
+.feedbackNoItems {
+	line-height: 200%; margin-top: 20px; margin-bottom: 0px;
+}
+.feedbackList {
+	list-style: none; padding-right: 0px; padding-left: 0px; margin-right: 0px; margin-left: 0px;
+}
+.feedbackTitle {
+	font-size: 12px; font-weight: normal; border-bottom-color: rgb(221, 221, 221); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.feedbackListTitle {
+	padding: 5px 5px 5px 7px; color: rgb(0, 0, 0); font-size: 9px;
+}
+.feedbackListSubtitle {
+	padding: 5px 7px 5px 5px; border: 1px solid rgb(221, 221, 221); border-image: none; color: rgb(0, 0, 0); font-size: 9px; margin-bottom: 8px;
+}
+.catListTitle {
+	background: url("images/title.gif") fixed no-repeat left top; height: 40px; color: rgb(102, 102, 102); padding-top: 12px; padding-left: 30px; font-family: verdana; font-size: 14.7px; font-weight: bold; margin-bottom: 10px;
+}
+h3 {
+	background: url("images/title.gif") fixed no-repeat left top; height: 40px; color: rgb(102, 102, 102); padding-top: 12px; padding-left: 30px; font-family: verdana; font-size: 14px; font-weight: bold; margin-bottom: 10px;
+}
+.catList {
+	list-style: none; margin: 0px 0px 20px; padding-left: 10px; border-top-color: currentColor; border-top-width: 0px; border-top-style: none;
+}
+catListItem {
+	text-align: left; margin-left: 5px;
+}
+ul {
+	list-style: none; margin: 0px 0px 10px 5px; padding-left: 5px; font-size: 11px;
+}
+.Cal {
+	border: 0px currentColor; border-image: none; width: 95%; height: 180px; font-family: Arial; font-size: 12px; margin-top: 10px; margin-bottom: 10px;
+}
+.CalTitle {
+	padding: 0px; height: 100%; color: rgb(116, 116, 116); font-family: verdana; font-size: 12px; font-weight: bold; margin-left: 0px; background-color: transparent;
+}
+.CalOtherMonthDay {
+	color: rgb(128, 128, 128);
+}
+.CalSelector {
+	background-color: rgb(255, 255, 255);
+}
+a.CalNextPrev {
+	color: rgb(255, 255, 255);
+}
+a.CalNextPrev:link {
+	color: rgb(255, 255, 255);
+}
+a.CalNextPrev:visited {
+	color: rgb(255, 255, 255);
+}
+a.CalNextPrev:active {
+	color: rgb(255, 255, 255);
+}
+.CalNextPrev {
+	color: rgb(255, 255, 255);
+}
+.CalDayHeader {
+	color: rgb(116, 116, 116); font-weight: bold; background-color: transparent;
+}
+.CalSelectedDay {
+	background-color: rgb(204, 204, 204);
+}
+.CalWeekendDay {
+	background-color: transparent;
+}
+.CalTodayDay {
+	color: white; background-color: rgb(85, 85, 85);
+}
+h1 {
+	margin: 10px 0px 5px; text-align: left; color: rgb(102, 102, 102); font-size: 14.7px;
+}
+.feedbackListTitle {
+	color: black; font-size: 12px;
+}
+.feedbackListSubtitle {
+	color: black; font-size: 12px;
+}
+html * {
+	box-sizing: border-box; -moz-box-sizing: border-box;
+}

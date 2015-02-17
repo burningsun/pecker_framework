@@ -444,12 +444,33 @@
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_pen.h">
       <Filter>render\render_util</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cgraphics.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_ctst.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_cbst_iterator.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_ctst_codes.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\data\pfx_tenary_search_tree.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_fontcache.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_line_pen.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_text_pen.h">
+      <Filter>render\render_util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />
-    <None Include="..\pecker_framework\include\carray">
-      <Filter>include</Filter>
-    </None>
     <None Include="..\pecker_framework\include\cbst">
       <Filter>include</Filter>
     </None>
@@ -468,9 +489,6 @@
     <None Include="..\pecker_framework\include\util">
       <Filter>include</Filter>
     </None>
-    <None Include="..\pecker_framework\include\config">
-      <Filter>include</Filter>
-    </None>
     <None Include="..\pecker_framework\include\native">
       <Filter>include</Filter>
     </None>
@@ -481,6 +499,12 @@
       <Filter>include</Filter>
     </None>
     <None Include="..\pecker_framework\include\cshare_object.h">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\config">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\pecker_framework\include\carray">
       <Filter>include</Filter>
     </None>
   </ItemGroup>

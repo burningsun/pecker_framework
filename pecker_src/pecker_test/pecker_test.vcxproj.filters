@@ -18,6 +18,7 @@
     <ClCompile Include="pfx_gles2_displayview_test.cpp" />
     <ClCompile Include="pfx_load_image.cpp" />
     <ClCompile Include="pfx_cmatrix_sse_test.cpp" />
+    <ClCompile Include="pfx_graphics_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pfx_file_inputdata_cmd.h" />

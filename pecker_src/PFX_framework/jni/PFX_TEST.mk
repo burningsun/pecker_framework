@@ -22,6 +22,7 @@ PFX_TEST_LOCAL_SRC_FILES := \
 					$(PFX_TEST_LOCAL_PATH)pfx_share_object_test.cpp \
 					$(PFX_TEST_LOCAL_PATH)pfx_objectid_test.cpp\
 					$(PFX_TEST_LOCAL_PATH)pfx_load_image.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_graphics_test.cpp \
 					$(PFX_TEST_LOCAL_PATH)main.cpp \
 					$(PFX_TEST_LOCAL_PATH)pfx_gles2_displayview_test.cpp \
 					$(PFX_TEST_LOCAL_SUB_FILES)

@@ -1,0 +1,1118 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0047)http://www.linuxidc.com/Linux/2012-01/52143.htm -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><HTML 
+lang="zh" xmlns="http://www.w3.org/1999/xhtml"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ <TITLE>Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站</TITLE> 
+<META http-equiv="content-type" content="text/html;charset=utf-8"> <LINK href="../../favicon.ico" 
+rel="icon" type="image/x-icon"> <LINK href="../../favicon.ico" rel="shortcut icon" 
+type="image/x-icon"> 
+<META name="description" content="网上的FreeType2例子太少，能显示汉字的比较难找，C语言代码写的更难找，能找到的，基本上是被转载了N遍的同一个示例代码，基本上"> 
+<META name="keywords" content="Linux编程,Linux下利用FreeType2的API实现字符的显示,编程,Linux编程,Linux Shell,Android,Android教程,JAVA,C语言,Python,HTML5"> 
+<LINK href="http://www.linuxidc.com/Linux/2012-01/52143.htm" rel="canonical"> 
+<META name="GENERATOR" content="MSHTML 11.00.9600.17631"> 
+<META name="generator" content="Linux"> <LINK href="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/style.css" 
+rel="stylesheet" type="text/css"> 
+<META name="generator" content="专业的Linux网站"> 
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/jquery.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/iwms.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">iwms.urlPrefix="../../";</SCRIPT>
+ 
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/show.js" type="text/javascript"></SCRIPT>
+ </HEAD> 
+<BODY>
+<DIV class="topBar">
+<DIV class="twidth">
+<DIV style="float: right;">
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/language.js" type="text/javascript"></SCRIPT>
+	 </DIV>
+<DIV id="topUser">你好，游客 <A onclick="iwms.logPop()" href="http://www.linuxidc.com/Linux/2012-01/52143.htm#">登录</A>
+	 <A href="http://www.linuxidc.com/memberreg.aspx" rel="nofollow">注册</A>	 <A 
+href="http://www.linuxidc.com/search.aspx" rel="nofollow">搜索</A>
+	 </DIV></DIV></DIV>
+<DIV class="twidth">
+<DIV id="sitehead">
+<DIV class="l"></DIV>
+<DIV class="r"></DIV>
+<DIV class="m">
+<TABLE width="100%">
+  <TBODY>
+  <TR align="center">
+    <TD width="160"><A href="http://www.linuxidc.com/"><IMG width="155" 
+      height="53" alt="Linux公社" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/logo.jpg" 
+      border="0"></A>	 </TD>
+    <TD>
+      <DIV align="center">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux.js" type="text/javascript"></SCRIPT>
+      </DIV></TD></TR></TBODY></TABLE></DIV></DIV>
+<DIV id="navbar">
+<DIV class="l"></DIV>
+<DIV class="r"></DIV>
+<DIV class="m"><A class="first" 
+href="http://www.linuxidc.com/index.htm">首页</A><A href="http://www.linuxidc.com/it/">Linux新闻</A><A 
+href="http://www.linuxidc.com/Linuxit/">Linux教程</A><A href="http://www.linuxidc.com/MySql/">数据库技术</A><A 
+class="thisclass" href="http://www.linuxidc.com/RedLinux/">Linux编程</A><A href="http://www.linuxidc.com/Apache/">服务器应用</A><A 
+href="http://www.linuxidc.com/Unix/">Linux安全</A><A href="http://www.linuxidc.com/download/">Linux下载</A><A 
+href="http://www.linuxidc.com/Linuxrz/">Linux认证</A><A href="http://www.linuxidc.com/theme/">Linux主题</A><A 
+href="http://www.linuxidc.com/Linuxwallpaper/">Linux壁纸</A><A href="http://www.linuxidc.com/linuxsoft/">Linux软件</A><A 
+href="http://www.linuxidc.com/digi/">数码</A><A href="http://www.linuxidc.com/mobile/">手机</A><A 
+href="http://www.linuxidc.com/diannao/">电脑</A> </DIV></DIV>
+<DIV id="navsub">
+<DIV class="l"></DIV>
+<DIV class="r"></DIV>
+<DIV class="m"><A href="http://www.linuxidc.com/index.htm">首页</A> → <A href="http://www.linuxidc.com/RedLinux/">Linux编程</A> 
+</DIV></DIV>
+<DIV class="linuxe1">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linuxe1.htm" type="text/javascript"></SCRIPT>
+</DIV>
+<DIV class="linux1">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux1.htm" type="text/javascript"></SCRIPT>
+</DIV>
+<DIV class="linuxa">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linuxa.htm" type="text/javascript"></SCRIPT>
+</DIV>
+<DIV class="linuxa1">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linuxa1.htm" type="text/javascript"></SCRIPT>
+</DIV>
+<TABLE width="100%" id="middle" style="table-layout: fixed;" cellspacing="0" 
+cellpadding="0">
+  <TBODY>
+  <TR valign="top">
+    <TD>
+      <DIV class="mframe mR">
+      <DIV class="tl"></DIV>
+      <DIV class="tr"></DIV>
+      <DIV class="tm">
+      <DIV class="moreR">背景：
+<SCRIPT type="text/javascript">WriteBg()</SCRIPT>
+      		 </DIV><SPAN class="tt">阅读新闻</SPAN>	 </DIV>
+      <DIV class="wrapper">
+      <DIV class="ml"></DIV>
+      <DIV class="mr"></DIV>
+      <DIV class="mm" id="bodyTd">
+      <DIV id="printBody" style="-ms-word-break: break-all;">
+      <DIV style="text-align: center;">
+      <H1 class="aTitle">Linux下利用FreeType2的API实现字符的显示</H1></DIV>
+      <TABLE width="97%" align="center">
+        <TBODY>
+        <TR>
+          <TD width="140">[日期：2012-01-23]</TD>
+          <TD align="center">来源：Linux社区&nbsp;				作者：liuchao</TD>
+          <TD width="160" align="right">[字体：<A href="javascript:ContentSize(16)">大</A> 
+            <A href="javascript:ContentSize(0)">中</A> <A href="javascript:ContentSize(12)">小</A>]
+            				 </TD></TR></TBODY></TABLE>
+      <DIV id="li_all">
+      <DIV id="li_1">
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux201.htm" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV id="li_2">
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux2.js" type="text/javascript"></SCRIPT>
+      </DIV></DIV>
+      <DIV id="content">
+      <DIV class="linux19">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux19.htm" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="article_content" id="article_content">
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>网上的FreeType2例子太少，能显示汉字的比较难找，C语言代码写的更难找，能找到的，基本上是被转载了N遍的同一个示例代码，基本上解决不了我的问题。</SPAN></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>于是乎，花费了不少时间才完成了这些代码；</SPAN></P>
+      <P><STRONG><SPAN style='color: rgb(51, 51, 255); font-family: "Microsoft YaHei";'>主要功能是：</SPAN></STRONG></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>将传入的GB2312编码的char型字符串转换成图片数组并输出。</SPAN></P>
+      <P><SPAN style='font-family: "Microsoft YaHei";'></SPAN></P>
+      <P><STRONG><SPAN style='color: rgb(51, 51, 255); font-family: "Microsoft YaHei";'>主要原理是：</SPAN></STRONG></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>将GB2312编码的char型字符串，转换成unicode编码的wchar_t型字符串；</SPAN></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>之后，利用FreeType2的API获取汉字的字体位图。</SPAN></P>
+      <P><SPAN style='font-family: "Microsoft YaHei";'></SPAN></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>代码看似不怎么复杂，之前找char转wchar_t的代码，没找到一个合适的，最后呢，东拼西凑，就得到了想要的代码；</SPAN></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>还有，输出的是记录每个像素点的256级灰度的数组，也就是和png图片中alpha通道一样，0 
+      - 255表示透明度， 0为完全透明，255为不透明；<BR></SPAN></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>想要将这些文字贴到图片上，有个公式：</SPAN></P>
+      <P><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 23px; font-size: 14px;"><SPAN 
+      style="color: rgb(0, 153, 0);">r2 = (r1 * alpha + r2 * (255 - alpha)) 
+      /255;<BR>g2 = (g1 * alpha + g2 * (255 - alpha)) /255;<BR>b2 = (b1 * alpha 
+      + b2 * (255 - alpha)) /255;</SPAN></SPAN><BR></SPAN></P>
+      <P><SPAN style="line-height: 23px; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'>r、g、b表示图片的red、green<SPAN 
+      style="line-height: 23px; font-size: 14px;">、</SPAN>blue三种颜色，这三种颜色通过组合可以变成不同的颜色；</SPAN></SPAN></P>
+      <P><SPAN style="line-height: 23px; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'>alpha是文字位图的alpha通道；&nbsp;</SPAN></SPAN></P>
+      <P><SPAN style="line-height: 23px; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'>r2、b2<SPAN 
+      style="line-height: 23px; font-size: 14px;">、</SPAN>g2是图片重叠后该像素点显示的颜色；<BR><SPAN 
+      style="line-height: 23px; font-size: 14px;">r1、b1<SPAN style="line-height: 23px; font-size: 14px;">、</SPAN>g1是文字位图的每个像素点显示的颜色。</SPAN></SPAN></SPAN></P>
+      <P><SPAN style="line-height: 23px; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'>相关信息请参考这篇文章：<A 
+      href="http://www.linuxidc.com/Linux/2012-01/52144.htm">http://www.linuxidc.com/Linux/2012-01/52144.htm</A></SPAN></SPAN></P>
+      <P><SPAN style='font-family: "Microsoft YaHei";'><FONT 
+      color="#ff9900"></FONT></SPAN></P>
+      <P><SPAN style='font-family: "Microsoft YaHei";'><FONT 
+      color="#ff9900"></FONT></SPAN></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>有需要这些代码的人的话，请把代码改一下，因为这是从我的LCUI图形库的代码中复制过来的，不能直接使用。</SPAN></P>
+      <P><SPAN style='font-family: "Microsoft YaHei";'></SPAN></P>
+      <DIV class="dp-highlighter bg_cpp">
+      <DIV class="bar">
+      <DIV class="tools"><B>[cpp]</B> </DIV></DIV>
+      <OL class="dp-cpp">
+        <LI class="alt"><SPAN><SPAN class="preprocessor"><FONT 
+        color="#808080">#include&nbsp;"LCUI_Build.h" 
+        </FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="preprocessor"><FONT 
+        color="#808080">#include&nbsp;LCUI_MAIN_H 
+        </FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="preprocessor"><FONT color="#808080">#include&nbsp;LCUI_FONTS_H&nbsp; 
+        </FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="preprocessor"><FONT 
+        color="#808080">#include&nbsp;"all.h" 
+        </FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*代码转换:从一种编码转为另一种编码*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;code_convert(</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*from_charset,</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*to_charset,</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">const</FONT></STRONG></SPAN><SPAN>&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*inbuf,unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;inlen,&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>unsigned&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*outbuf,unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;outlen)&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;iconv_t&nbsp;cd;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">const</FONT></STRONG></SPAN><SPAN>&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;**pin&nbsp;=&nbsp;&amp;inbuf;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;**pout&nbsp;=&nbsp;&amp;outbuf;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;=&nbsp;iconv_open(to_charset,from_charset);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(cd==0)&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;-1;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;memset(outbuf,0,outlen);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(iconv(cd,(</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>**)pin,&amp;inlen,(</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>**)pout,&amp;outlen)==-1)&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;-1;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;iconv_close(cd);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*GB2312码转为utf-8码*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;GB2312_To_UTF8(</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">const</FONT></STRONG></SPAN><SPAN>&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*inbuf,unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;inlen,unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*outbuf,unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;outlen)&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;code_convert(</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"gb2312"</FONT></SPAN><SPAN>,</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"utf-8"</FONT></SPAN><SPAN>,inbuf,inlen,outbuf,outlen);&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>&nbsp;Get_Unicode(</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*in_gb2312)&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;out[256];&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;rc;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;length_gb2312;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;gb2312码转为utf8码&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;length_gb2312&nbsp;=&nbsp;strlen(in_gb2312);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;rc&nbsp;=&nbsp;GB2312_To_UTF8(in_gb2312,length_gb2312,out,256);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;utf8转unicode码&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>&nbsp;unicode;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;=&nbsp;out[0];&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(unicode&nbsp;&gt;=&nbsp;0xF0)&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[0]&nbsp;&amp;&nbsp;0x07)&nbsp;&lt;&lt;&nbsp;18;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;|=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[1]&nbsp;&amp;&nbsp;0x3F)&nbsp;&lt;&lt;&nbsp;12;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;|=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[2]&nbsp;&amp;&nbsp;0x3F)&nbsp;&lt;&lt;&nbsp;6;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;|=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[3]&nbsp;&amp;&nbsp;0x3F);&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(unicode&nbsp;&gt;=&nbsp;0xE0)&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[0]&nbsp;&amp;&nbsp;0x0F)&nbsp;&lt;&lt;&nbsp;12;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;|=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[1]&nbsp;&amp;&nbsp;0x3F)&nbsp;&lt;&lt;&nbsp;6;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;|=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[2]&nbsp;&amp;&nbsp;0x3F);&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(unicode&nbsp;&gt;=&nbsp;0xC0)&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[0]&nbsp;&amp;&nbsp;0x1F)&nbsp;&lt;&lt;&nbsp;6;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode&nbsp;|=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">short</FONT></STRONG></SPAN><SPAN>)&nbsp;(out[1]&nbsp;&amp;&nbsp;0x3F);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;unicode;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>}&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;Show_Font_Bitmap(Font_Bitmap_Data&nbsp;*in_fonts)&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;功能：在屏幕上以0和1表示字体位图&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;x,y;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(y=0;y&lt;in_fonts-&gt;height;++y){&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(x=0;x&lt;in_fonts-&gt;width;++x){&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(in_fonts-&gt;text_alpha[y*in_fonts-&gt;width+x]&gt;0)&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"1"</FONT></SPAN><SPAN>);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>&nbsp;printf(</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"0"</FONT></SPAN><SPAN>);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"\n"</FONT></SPAN><SPAN>);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;printf(</SPAN><SPAN class="string"><FONT 
+        color="#0000ff">"\n"</FONT></SPAN><SPAN>);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;Get_Fonts_Bitmap(&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*font_file,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;字体文件路径&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;*in_text,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;输入的字符串&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;fonts_pixel_size,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;字体大小&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;space,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;间距&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>Font_Bitmap_Data&nbsp;*out_fonts&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;输出的位图数据,Pic_Data是结构体&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>)&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;******************************************&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;根据传入的字体库路径、字符串、字体尺寸，输&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;出该字符串的位图数组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;本函数使用了freetype2的API&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN></SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;******************************************&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_FT_Lib&nbsp;=&nbsp;NULL;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;库的句柄&nbsp;&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Face&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_FT_Face&nbsp;=&nbsp;NULL;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;face对象的句柄&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Bitmap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bitmap;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_BitmapGlyph&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bitmap_glyph;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Glyph&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glyph;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_GlyphSlot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slot;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;i&nbsp;,&nbsp;j&nbsp;,temp,num,bg_height;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;error_str[200];&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;error&nbsp;=&nbsp;FT_Init_FreeType(&nbsp;&amp;&nbsp;p_FT_Lib);&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;初始化FreeType库&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(error)&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;当初始化库时发生了一个错误&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_FT_Lib&nbsp;=&nbsp;0&nbsp;;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(FT_INIT_ERROR);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;-&nbsp;1&nbsp;;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;从字体库文件中获取字体&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;error&nbsp;=&nbsp;FT_New_Face(p_FT_Lib,&nbsp;font_file&nbsp;,&nbsp;0&nbsp;,&nbsp;&amp;&nbsp;p_FT_Face);&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(&nbsp;error&nbsp;==&nbsp;FT_Err_Unknown_File_Format&nbsp;)&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(FT_UNKNOWN_FILE_FORMAT);&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;未知文件格式&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;-&nbsp;1&nbsp;;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(error)&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(FT_OPEN_FILE_ERROR);</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;打开错误&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;perror(</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"FreeeType2"</FONT></SPAN><SPAN>);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;-&nbsp;1&nbsp;;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;j&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">wchar_t</FONT></STRONG></SPAN><SPAN>&nbsp;*unicode_text;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;用于存储unicode字符&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;ch[256];&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;unicode_text&nbsp;=&nbsp;(</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">wchar_t</FONT></STRONG></SPAN><SPAN>*)calloc(1,</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">sizeof</FONT></STRONG></SPAN><SPAN>(</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">wchar_t</FONT></STRONG></SPAN><SPAN>)*(strlen(in_text)*2));</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;申请内存&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(i=0;i&lt;strlen(in_text);++i){&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memset(ch,0,</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">sizeof</FONT></STRONG></SPAN><SPAN>(ch));&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;所有元素置零&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ch[0]&nbsp;=&nbsp;in_text[i];&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;获取in_text中的第i个元素&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(ch[0]&nbsp;&lt;&nbsp;0)&nbsp;{&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;GB2312编码的汉字，每byte是负数，因此，可以用来判断是否有汉字&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(i&nbsp;&lt;&nbsp;strlen(in_text)-1){</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;如果没有到字符串末尾&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ch[1]&nbsp;=&nbsp;in_text[i+1];&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++i;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">break</FONT></STRONG></SPAN><SPAN>;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unicode_text[j]&nbsp;=&nbsp;Get_Unicode(ch);&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;开始转换编码&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++j;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;num&nbsp;=&nbsp;j;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;记录字符的数量&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;start_x&nbsp;=&nbsp;0,start_y&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;ch_height&nbsp;=&nbsp;0,ch_width&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">int</FONT></STRONG></SPAN><SPAN>&nbsp;k,text_width&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">size_t</FONT></STRONG></SPAN><SPAN>&nbsp;size&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;</SPAN><SPAN class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>&nbsp;**text_alpha;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;bg_height&nbsp;=&nbsp;fonts_pixel_size+5;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;背景图形的高度，这个高度要大于字体的高度，所以是+5&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;分配内存，用于存储字体背景图的数据&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;text_alpha&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>**)malloc(</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">sizeof</FONT></STRONG></SPAN><SPAN>(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>*)*bg_height);&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(i=0;i&lt;bg_height;++i){&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;预先为背景图的每一行分配内存&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_alpha[i]&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>*)malloc(</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">sizeof</FONT></STRONG></SPAN><SPAN>(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>)*1);&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Select_Charmap(p_FT_Face,FT_ENCODING_UNICODE);&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;设定为UNICODE，默认的也是&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Set_Pixel_Sizes(p_FT_Face,0,fonts_pixel_size);&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;设定字体大小&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;slot&nbsp;=&nbsp;p_FT_Face-&gt;glyph;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(temp=0;temp&lt;num;++temp){&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;开始遍历unicode编码的字符串中的每个元素&nbsp;&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;这个函数只是简单地调用FT_Get_Char_Index和FT_Load_Glyph&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error&nbsp;=&nbsp;FT_Load_Char(&nbsp;p_FT_Face,&nbsp;unicode_text[temp],&nbsp;&nbsp;FT_LOAD_RENDER&nbsp;|&nbsp;FT_LOAD_NO_AUTOHINT);&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(!error){&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;从插槽中提取一个字形图像&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;请注意，创建的FT_Glyph对象必须与FT_Done_Glyph成对使用&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error&nbsp;=&nbsp;FT_Get_Glyph(p_FT_Face&nbsp;-&gt;&nbsp;glyph,&nbsp;&amp;glyph);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>&nbsp;(!error)&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(unicode_text[temp]&nbsp;==&nbsp;</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">'&nbsp;'</FONT></SPAN><SPAN>)&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;如果有空格&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ch_width&nbsp;&nbsp;&nbsp;=&nbsp;(fonts_pixel_size&nbsp;-2)/2;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ch_height&nbsp;&nbsp;=&nbsp;fonts_pixel_size;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_width&nbsp;=&nbsp;start_x&nbsp;+&nbsp;ch_width;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_y&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(i=0;i&lt;bg_height;++i){&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_alpha[i]&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>*)realloc(text_alpha[i],</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">sizeof</FONT></STRONG></SPAN><SPAN>(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>)*text_width);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(j=start_x-space;j&lt;text_width;++j)&nbsp;text_alpha[i][j]&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>&nbsp;(&nbsp;i&nbsp;=&nbsp;0&nbsp;;&nbsp;i&nbsp;&lt;&nbsp;ch_height;&nbsp;++i)&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>&nbsp;(&nbsp;j&nbsp;=&nbsp;0&nbsp;;&nbsp;j&nbsp;&lt;&nbsp;ch_width;&nbsp;++j)&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_alpha[start_y&nbsp;+&nbsp;i][start_x&nbsp;+&nbsp;j]&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++k;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_x&nbsp;+=&nbsp;(ch_width+space);&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;画笔向右边移动&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;256级灰度字形转换成位图&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Glyph_To_Bitmap(&amp;glyph,&nbsp;FT_RENDER_MODE_NORMAL,&nbsp;0&nbsp;,1);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;FT_RENDER_MODE_NORMAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这是默认渲染模式，它对应于8位抗锯齿位图。&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bitmap_glyph&nbsp;=&nbsp;(FT_BitmapGlyph)glyph;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bitmap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;bitmap_glyph&nbsp;-&gt;&nbsp;bitmap;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_y&nbsp;=&nbsp;fonts_pixel_size&nbsp;-&nbsp;slot-&gt;bitmap_top&nbsp;+&nbsp;2;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;获取起点的y轴坐标&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(start_y&nbsp;&lt;&nbsp;0)&nbsp;start_y&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(bitmap.rows&nbsp;&gt;&nbsp;bg_height)&nbsp;ch_height&nbsp;=&nbsp;fonts_pixel_size;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>&nbsp;ch_height&nbsp;=&nbsp;bitmap.rows;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(ch_height+start_y&nbsp;&gt;&nbsp;bg_height)&nbsp;ch_height&nbsp;=&nbsp;bg_height&nbsp;-&nbsp;start_y;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ch_width&nbsp;=&nbsp;bitmap.width;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_width&nbsp;=&nbsp;start_x&nbsp;+&nbsp;bitmap.width;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(i=0;i&lt;bg_height;++i){&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;动态扩增存储字体位图的背景图形占用的空间&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_alpha[i]&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>*)realloc(text_alpha[i],</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">sizeof</FONT></STRONG></SPAN><SPAN>(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>)*text_width);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(j=start_x-space;j&lt;text_width;++j)&nbsp;text_alpha[i][j]&nbsp;=&nbsp;0;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;多出来的空间全部置零&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;开始将字体位图贴到背景图形中&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;bg_height;&nbsp;++i){&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(j&nbsp;=&nbsp;0;j&nbsp;&lt;&nbsp;ch_width;&nbsp;++j){&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(i&nbsp;&gt;=&nbsp;start_y&nbsp;&amp;&amp;&nbsp;i&nbsp;&lt;&nbsp;start_y&nbsp;+&nbsp;ch_height){&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;如果在字体位图的范围内&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_alpha[i][start_x&nbsp;+&nbsp;j]&nbsp;=&nbsp;bitmap.buffer[k];&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++k;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>&nbsp;text_alpha[i][start_x&nbsp;+&nbsp;j]&nbsp;=&nbsp;0;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;否则就置零&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start_x&nbsp;+=&nbsp;(ch_width+space);&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;画笔向右边移动&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;释放字形占用的内存&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FT_Done_Glyph(glyph);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glyph&nbsp;=&nbsp;NULL;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf(error_str,</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"FreeType2&nbsp;错误[%d]"</FONT></SPAN><SPAN>,error);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;perror(error_str);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">else</FONT></STRONG></SPAN><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sprintf(error_str,</SPAN><SPAN 
+        class="string"><FONT 
+        color="#0000ff">"FreeType2&nbsp;错误[%d]"</FONT></SPAN><SPAN>,error);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;perror(error_str);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;释放face占用的内存&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Done_Face(p_FT_Face);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;p_FT_Face&nbsp;=&nbsp;NULL;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;释放FreeType&nbsp;Lib占用的内存&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;FT_Done_FreeType(p_FT_Lib);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;p_FT_Lib&nbsp;=&nbsp;NULL;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;temp&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;out_fonts-&gt;width&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;text_width;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;要输出的位图的宽度&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;out_fonts-&gt;height&nbsp;&nbsp;&nbsp;=&nbsp;bg_height;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;要输出的位图的高度&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">if</FONT></STRONG></SPAN><SPAN>(out_fonts-&gt;malloc&nbsp;==&nbsp;IS_TRUE)&nbsp;free(out_fonts-&gt;text_alpha);&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;=&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">sizeof</FONT></STRONG></SPAN><SPAN>(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>)&nbsp;*&nbsp;text_width&nbsp;*&nbsp;bg_height;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;out_fonts-&gt;text_alpha&nbsp;=&nbsp;(unsigned&nbsp;</SPAN><SPAN 
+        class="datatypes"><STRONG><FONT 
+        color="#2e8b57">char</FONT></STRONG></SPAN><SPAN>*)calloc(1,size);&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="comment"><FONT 
+        color="#008200">/*&nbsp;申请内存用来存储&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;k&nbsp;=&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>&nbsp;(&nbsp;i&nbsp;=&nbsp;0&nbsp;;&nbsp;i&nbsp;&lt;&nbsp;bg_height;&nbsp;++i)&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>&nbsp;(&nbsp;j&nbsp;=&nbsp;0&nbsp;;&nbsp;j&nbsp;&lt;&nbsp;text_width;&nbsp;++j)&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out_fonts-&gt;text_alpha[k]&nbsp;=&nbsp;text_alpha[i][j];&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++k;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;out_fonts-&gt;malloc&nbsp;=&nbsp;IS_TRUE;&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="comment"><FONT 
+        color="#008200">/*&nbsp;释放内存&nbsp;*/</FONT></SPAN><SPAN>&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN 
+        class="keyword"><STRONG><FONT 
+        color="#006699">for</FONT></STRONG></SPAN><SPAN>(i=0;i&lt;bg_height;++i){&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free(text_alpha[i]);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI>
+        <LI 
+        class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;free(text_alpha);&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;free(unicode_text);&nbsp;&nbsp;</SPAN></LI>
+        <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class="keyword"><STRONG><FONT 
+        color="#006699">return</FONT></STRONG></SPAN><SPAN>&nbsp;0;&nbsp;&nbsp;</SPAN></LI>
+        <LI><SPAN>}&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+      <P></P>
+      <P><SPAN 
+      style='font-family: "Microsoft YaHei";'>这些代码在我的工程里的运行效果：</SPAN></P>
+      <P><SPAN style='font-family: "Microsoft YaHei";'><IMG alt="" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/120123084674841.gif"></SPAN></P></DIV><A 
+      href="http://www.linuxidc.com/" target="_blank"><IMG width="15" height="17" 
+      alt="linux" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/logo.gif"></A></DIV><A 
+      href="http://www.linuxidc.com/" target="_blank">
+      <DIV class="linux301">
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux301.htm" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="linux3">
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux3.js" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="linux302">
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux302.htm" type="text/javascript"></SCRIPT>
+      </DIV></A></DIV><A href="http://www.linuxidc.com/" target="_blank"></A>
+      <DIV style="padding: 0px 15px;"><A href="http://www.linuxidc.com/" target="_blank">
+      			 </A>
+      <UL class="digg" id="digg"><A href="http://www.linuxidc.com/" target="_blank">
+        				 
+        <LI class="digg1">0</LI></A>
+        <LI class="digg2"><A href="http://www.linuxidc.com/" target="_blank"><A 
+        onclick="iwms.diggIt(this,iwms.aId)" href="http://www.linuxidc.com/Linux/2012-01/52143.htm###">顶一下</A></LI></UL></DIV>
+      <DIV class="linuxfx">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/fx.js" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="linux8">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux8.js" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="linux801">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux801.js" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="nearNews">
+      <DIV class="prevNews"><A href="http://www.linuxidc.com/Linux/2012-01/52142.htm">Linux下的声音编程方法</A></DIV>
+      <DIV class="nextNews"><A href="http://www.linuxidc.com/Linux/2012-01/52144.htm">研究mgaview的源码的成果</A></DIV></DIV></DIV></DIV>
+      <DIV class="bl"></DIV>
+      <DIV class="br"></DIV>
+      <DIV class="bm"></DIV></DIV>
+      <DIV class="mframe mR">
+      <DIV class="tl"></DIV>
+      <DIV class="tr"></DIV>
+      <DIV class="tm"><SPAN class="tt">相关资讯</SPAN> &nbsp; &nbsp; &nbsp;		<A 
+      href="http://www.linuxidc.com/search.aspx?where=nkey&amp;keyword=1931" 
+      target="_blank">Linux编程</A>&nbsp; 	</DIV>
+      <DIV class="wrapper">
+      <DIV class="ml"></DIV>
+      <DIV class="mr"></DIV>
+      <DIV class="mm">
+      <TABLE width="100%">
+        <TBODY>
+        <TR>
+          <TD width="50%" valign="top">
+            <UL class="nl">
+              <LI><A title="Linux编程中接收主函数返回值以及错误码提示" href="http://www.linuxidc.com/Linux/2015-01/111977.htm" 
+              target="_blank">Linux编程中接收主函数返回值以及</A>&nbsp; <SPAN 
+              class="gray">(<SPAN class="time">今 13:50</SPAN>)</SPAN></LI>
+              <LI><A href="http://www.linuxidc.com/Linux/2014-11/109615.htm" 
+              target="_blank">Linux编程基础--什么是I/O</A>&nbsp; <SPAN 
+              class="gray">(11/20/2014 12:16:23)</SPAN></LI>
+              <LI><A href="http://www.linuxidc.com/Linux/2014-06/103488.htm" 
+              target="_blank">Linux编程---套接字</A>&nbsp; <SPAN 
+              class="gray">(06/21/2014 09:16:31)</SPAN></LI></UL></TD>
+          <TD width="50%" valign="top">
+            <UL class="nl">
+              <LI><A title="学习Linux之前需要掌握编程能力么？" href="http://www.linuxidc.com/Linux/2014-12/110567.htm" 
+              target="_blank">学习Linux之前需要掌握编程能力么</A>&nbsp; <SPAN 
+              class="gray">(12/17/2014 08:19:12)</SPAN></LI>
+              <LI><A href="http://www.linuxidc.com/Linux/2014-06/103490.htm" 
+              target="_blank">Linux编程---时间相关</A>&nbsp; <SPAN 
+              class="gray">(06/21/2014 09:24:37)</SPAN></LI>
+              <LI><A href="http://www.linuxidc.com/Linux/2014-06/103327.htm" 
+              target="_blank">Linux编程---一些系统相关的说明</A>&nbsp; <SPAN 
+              class="gray">(06/17/2014 
+      19:52:43)</SPAN></LI></UL></TD></TR></TBODY></TABLE></DIV></DIV>
+      <DIV class="bl"></DIV>
+      <DIV class="br"></DIV>
+      <DIV class="bm"></DIV></DIV>
+      <DIV class="mframe mR">
+      <DIV class="tl"></DIV>
+      <DIV class="tr"></DIV>
+      <DIV class="tm"><SPAN class="tt">图片资讯</SPAN> &nbsp; &nbsp; &nbsp;	</DIV>
+      <DIV class="wrapper">
+      <DIV class="ml"></DIV>
+      <DIV class="mr"></DIV>
+      <DIV class="mm">
+      <DIV class="imgList">
+      <UL>
+        <LI style="width: 25%;"><A title="学习Linux之前需要掌握编程能力么？" href="http://www.linuxidc.com/Linux/2014-12/110567.htm" 
+        target="_blank"><IMG width="120" height="90" alt="学习Linux之前需要掌握编程能力么？" 
+        src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/141217082057081t.jpg">学习Linux之前需要掌</A></LI>
+        <LI style="width: 25%;"><A title="Linux编程女神计划招募新的内核级MM实习生" href="http://www.linuxidc.com/Linux/2013-11/93156.htm" 
+        target="_blank"><IMG width="120" height="90" alt="Linux编程女神计划招募新的内核级MM实习生" 
+        src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/131125185292202t.jpg">Linux编程女神计划招</A></LI>
+        <LI style="width: 25%;"><A href="http://www.linuxidc.com/Linux/2013-06/85903.htm" 
+        target="_blank"><IMG width="120" height="90" alt="Linux多任务编程" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/130612110449491t.jpg">Linux多任务编程</A></LI>
+        <LI style="width: 25%;"><A title="深入Linux网络编程（二）：异步阻塞IO" href="http://www.linuxidc.com/Linux/2012-11/74321.htm" 
+        target="_blank"><IMG width="120" height="90" alt="深入Linux网络编程（二）：异步阻塞IO" 
+        src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/121117192759171t.jpg">深入Linux网络编程（</A></LI>
+        <LI style="width: 25%;"><A title="深入Linux网络编程（一）：同步IO" href="http://www.linuxidc.com/Linux/2012-11/74320.htm" 
+        target="_blank"><IMG width="120" height="90" alt="深入Linux网络编程（一）：同步IO" 
+        src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/121117192476432t.jpg">深入Linux网络编程（</A></LI>
+        <LI style="width: 25%;"><A title="Linux程序设计-POSIX Threads" href="http://www.linuxidc.com/Linux/2012-10/73063.htm" 
+        target="_blank"><IMG width="120" height="90" alt="Linux程序设计-POSIX Threads" 
+        src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/121027071459101t.jpg">Linux程序设计-POSIX 
+        </A></LI>
+        <LI style="width: 25%;"><A title="硬实时Linux(RT-Preempt Patch)在PC上的编译、使用和测试" 
+        href="http://www.linuxidc.com/Linux/2012-10/71708.htm" 
+        target="_blank"><IMG width="120" height="90" alt="硬实时Linux(RT-Preempt Patch)在PC上的编译、使用和测试" 
+        src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/121004103423951t.jpg">硬实时Linux(RT-</A></LI>
+        <LI style="width: 25%;"><A title="Linux进程间通信之信号量" href="http://www.linuxidc.com/Linux/2012-08/67628.htm" 
+        target="_blank"><IMG width="120" height="90" alt="Linux进程间通信之信号量" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/120808164074511t.jpg">Linux进程间通信之信</A></LI></UL></DIV></DIV></DIV>
+      <DIV class="bl"></DIV>
+      <DIV class="br"></DIV>
+      <DIV class="bm"></DIV></DIV>
+      <DIV class="mframe mR">
+      <DIV class="tl"></DIV>
+      <DIV class="tr"></DIV>
+      <DIV class="tm"><SPAN class="tt">本文评论</SPAN>		 	　　<A href="http://www.linuxidc.com/remark.aspx?id=52143" 
+      target="_blank">查看全部评论</A> <SPAN class="gray">(1)</SPAN>	 </DIV>
+      <DIV class="wrapper">
+      <DIV class="ml"></DIV>
+      <DIV class="mr"></DIV>
+      <DIV class="mm">
+      <TABLE width="100%" style="margin: 6px;">
+        <TBODY>
+        <TR>
+          <TD width="100%">
+            <FORM name="fmRemarkSt" onsubmit="return remark.post(this);" action=""><INPUT name="face" type="hidden" value="1">
+            			 表情： <IMG class="face1" style="vertical-align: middle; cursor: pointer;" 
+            onmouseout="remark.hideFace()" onclick="remark.dispFace(this)" alt="表情" 
+            src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/b.gif">
+            			姓名： 
+<INPUT name="username" class="inputbg" style="width: 60px;" type="text" maxlength="15">
+            			 <INPUT id="rmAnonymitySt" onclick="remark.anony(this)" type="checkbox"><LABEL 
+            for="rmAnonymitySt">匿名</LABEL>			字数 <INPUT id="bodyLen" style="background: none; border-width: 0px; vertical-align: middle;" type="text" size="3" readonly="readonly" value="0">
+            			 <BR><TEXTAREA name="body" style="margin: 3px 0px; width: 40em; height: 100px; -ms-overflow-y: auto;" onkeydown="remark.dispLen(this)" onkeyup="remark.handle(event,this);remark.dispLen(this)" rows="4" cols="40"></TEXTAREA>
+            				 <BR>　　　<INPUT id="rmAgreeSt" type="checkbox" 
+            checked="checked"><LABEL for="rmAgreeSt">同意评论声明</LABEL>		　　　<BUTTON 
+            style="width: 50px;" type="submit">发表</BUTTON>			 </FORM></TD></TR>
+        <TR>
+          <TD width="100%">评论声明			 
+            <UL style="margin: 5px 0px 0px 1em; padding: 0px; list-style-type: square;">
+              <LI>尊重网上道德，遵守中华人民共和国的各项有关法律法规</LI>
+              <LI>承担一切因您的行为而直接或间接导致的民事或刑事法律责任</LI>
+              <LI>本站管理人员有权保留或删除其管辖留言中的任意内容</LI>
+              <LI>本站有权在网站内转载或引用您的评论</LI>
+              <LI>参与本评论即表明您已经阅读并接受上述条款</LI></UL></TD></TR></TBODY></TABLE>
+<SCRIPT src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/remark.js" type="text/javascript"></SCRIPT>
+      		 
+<SCRIPT type="text/javascript">
+			remark.maxSize=500;
+			remark.minSize=2;
+			remark.sourceEle=$(document.fmRemarkSt).find("button").get(0);
+			iwms.vCode="D2BDA41E";
+			iwms.user.name.length==0 ? $i("rmAnonymitySt").click() : $i("rmAnonymitySt").form.username.value=iwms.user.name;
+		</SCRIPT>
+      				 
+      <DIV class="reCont" id="reContainer">
+      <DIV class="reHead">
+      <DIV class="reLayer">第 1 楼</DIV><IMG class="face1" alt="*" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/b.gif"> 
+      <SPAN class="reName">啊</SPAN> 发表于 <SPAN class="reDate">2012/7/16 
+      11:53:30</SPAN></DIV>
+      <DIV class="reBody">你那all.h我们都不知道，你这代码让人怎么改啊？！谢谢！！！</DIV>
+      <DIV class="reFun"><A onclick="remark.disp(this,4142)" href="http://www.linuxidc.com/Linux/2012-01/52143.htm###">回复</A> 
+      <A onclick="remark.vote(this,4142,1)" href="http://www.linuxidc.com/Linux/2012-01/52143.htm###">支持</A><SPAN> 
+      (2)</SPAN> <A onclick="remark.vote(this,4142,0)" href="http://www.linuxidc.com/Linux/2012-01/52143.htm###">反对</A><SPAN> 
+      (0)</SPAN></DIV></DIV></DIV></DIV>
+      <DIV class="bl"></DIV>
+      <DIV class="br"></DIV>
+      <DIV class="bm"></DIV></DIV></TD>
+    <TD width="300" valign="top">
+      <DIV class="linux901">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux901.htm" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="linux902">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux902.js" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="linux903">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux903.js" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="linux905">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux905.htm" type="text/javascript"></SCRIPT>
+      </DIV>
+      <DIV class="lframe">
+      <DIV class="tl"></DIV>
+      <DIV class="tr"></DIV>
+      <DIV class="tm"><SPAN class="tt">最新资讯</SPAN>	 </DIV>
+      <DIV class="wrapper">
+      <DIV class="ml"></DIV>
+      <DIV class="mr"></DIV>
+      <DIV class="mm">
+      <UL class="nl">
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111977.htm" target="_blank">Linux编程中接收主函数返回值以及错误码提示</A></LI>
+        <LI><A title="Ubuntu使用fbterm无法打开fb设备的解决及fcitx-fbterm安装" href="http://www.linuxidc.com/Linux/2015-01/111976.htm" 
+        target="_blank">Ubuntu使用fbterm无法打开fb设备的解决及fcitx-</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111975.htm" target="_blank">Ubuntu 
+        14.04 终端模式下中文输入 听歌</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111974.htm" target="_blank">Ubuntu 
+        14.04下Java开发环境的搭建</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111973.htm" target="_blank">Linux下文件轻松比对，自由开源的比较软件</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111972.htm" target="_blank">XDA 
+        指责小米违反 GPL 许可证</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111971.htm" target="_blank">Ubuntu 
+        14.04 下安装Samba 及SSH 服务端的方法</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111970.htm" target="_blank">Ubuntu 
+        14.04 下FTP服务器的搭建</A></LI>
+        <LI><A title="OpenCV使用RANSAC的仿射变换估计 estimateAffine2D" href="http://www.linuxidc.com/Linux/2015-01/111969.htm" 
+        target="_blank">OpenCV使用RANSAC的仿射变换估计 estimateAffin</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111968.htm" target="_blank">OpenCV 
+        动态调节canny参数 边缘检测</A></LI></UL></DIV></DIV>
+      <DIV class="bl"></DIV>
+      <DIV class="br"></DIV>
+      <DIV class="bm"></DIV></DIV>
+      <DIV class="lframe">
+      <DIV class="tl"></DIV>
+      <DIV class="tr"></DIV>
+      <DIV class="tm"><SPAN class="tt">本周热门</SPAN>	 </DIV>
+      <DIV class="wrapper">
+      <DIV class="ml"></DIV>
+      <DIV class="mr"></DIV>
+      <DIV class="mm">
+      <UL class="nl">
+        <LI><A href="http://www.linuxidc.com/Linux/2013-05/84871.htm" target="_blank">iOS开发入门教程</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2011-04/33966.htm" target="_blank">Android核心分析</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2012-02/53030.htm" target="_blank">Shell 
+        for&amp;while 循环详细总结</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2012-10/72267.htm" target="_blank">Java面试题及答案（基础题120道）</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2010-05/26066.htm" target="_blank">史上最牛的Linux内核学习方法论</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2011-02/32211.htm" target="_blank">./configure,make,make 
+        install的作用</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2015-01/111648.htm" target="_blank">2015届华为校园招聘机试题</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2011-08/39673.htm" target="_blank">Android游戏开发入门： 
+        贪吃蛇 源代码分析</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2012-06/63652.htm" target="_blank">PyQt4 
+        精彩实例分析</A></LI>
+        <LI><A href="http://www.linuxidc.com/Linux/2011-08/40115.htm" target="_blank">Android教程：ImageView 
+        设置图片</A></LI></UL></DIV></DIV>
+      <DIV class="bl"></DIV>
+      <DIV class="br"></DIV>
+      <DIV class="bm"></DIV></DIV>
+      <DIV class="linuxy9">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/y9.js" type="text/javascript"></SCRIPT>
+      </DIV></TD></TR></TBODY></TABLE>
+<DIV class="linux906">
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linux906.htm" type="text/javascript"></SCRIPT>
+</DIV>
+<DIV id="footer"><A href="http://www.linuxidc.com/aboutus.htm">Linux公社简介</A> - 
+<A href="http://www.linuxidc.com/adsense.htm">广告服务</A> - <A href="http://www.linuxidc.com/sitemap.aspx">网站地图</A> 
+- <A href="http://www.linuxidc.com/help.htm">帮助信息</A> - <A href="http://www.linuxidc.com/contactus.htm">联系我们</A><BR>本站（LinuxIDC）所刊载文章不代表同意其说法或描述，仅为提供更多信息，也不构成任何建议。<BR>
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/qq.js" type="text/javascript"></SCRIPT>
+<BR>
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/foot.js" type="text/javascript"></SCRIPT>
+<BR>Copyright © 2006-2014　<A href="http://www.linuxidc.com/">Linux公社</A>　All 
+rights reserved 浙ICP备06018118号	 
+<SCRIPT type="text/javascript">iwms.aId=52143;$(function(){iwms.imgCont=$i('content');iwms.imgResize();InitContStyle();iwms.getVars();})</SCRIPT>
+	 </DIV></DIV>
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linuxren1.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linuxren2.htm" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT language="javaScript" src="Linux下利用FreeType2的API实现字符的显示_Linux编程_Linux公社-Linux系统门户网站_files/linuxren3.js" type="text/javascript"></SCRIPT>
+ </BODY></HTML>

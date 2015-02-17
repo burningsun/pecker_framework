@@ -78,6 +78,8 @@ struct find_cstrstring_operate
 
 	typedef find_cstrstring_operate < stringa_t, stringb_t, elem_compare_t > find_string_t;
 
+	typedef find_string_operate	< element_t, elem_compare_t > find_chars_t;
+
 	static PFX_INLINE int same_string (const stringa_t& str1, const stringb_t& str2);
 
 	static PFX_INLINE int same_string (const stringa_t& str1, const stringb_t& str2, usize__t& same_count);
@@ -86,7 +88,6 @@ struct find_cstrstring_operate
 
 	static PFX_INLINE uindex_t	find_near_string (const stringa_t& str1, const stringb_t& str2,
 																						usize__t& same_chars_count);
-
 	static PFX_INLINE int same_string (const_iteratorA_t& str1, const_iteratorB_t& str2);
 
 	static PFX_INLINE int same_string (const_iteratorA_t& str1, const_iteratorB_t& str2, usize__t& same_count);
@@ -113,6 +114,7 @@ struct PFX_DATA_TEMPLATE_API string_compare
 	typedef elem_compare										elem_compare_t;
 
 	typedef find_cstrstring_operate< stringa_t, stringb_t, elem_compare_t >		find_t;
+	typedef typename find_t::find_chars_t                                       find_chars_t;
 
 
 	PFX_INLINE int operator () (const string_type1& str1,const string_type2& str2) const
@@ -145,7 +147,36 @@ struct PFX_DATA_TEMPLATE_API string_compare
 	
 		return cmp_result;
 	}
-	
+	static PFX_INLINE int compare(const string_type1& str1, const element_t* str_ptr, 
+		usize__t str_size)
+	{
+		int cmp_result;
+		switch (cmp_type)
+		{
+		case CMP_ALL_STRING_SAME:
+			cmp_result = find_chars_t::same_string(str1.get_string(), str1.get_length(),
+				str_ptr, str_size);
+			break;
+		case CMP_SAME_AS_ONE_STRING:
+		{
+			usize__t same_count = 0;
+			cmp_result = find_chars_t::same_string(str1.get_string(), str1.get_length(),
+				str_ptr, str_size, same_count);
+			if (same_count)
+			{
+				cmp_result = 0;
+			}
+		}
+			break;
+		default:
+			cmp_result = find_chars_t::same_string(str1.get_string(), str1.get_length(),
+				str_ptr, str_size);
+			break;
+		}
+
+
+		return cmp_result;
+	}
 };
 
 #define pfx_memcmp memcmp
@@ -186,6 +217,7 @@ struct PFX_DATA_TEMPLATE_API ascii_string_compare
 	{
 		return compare_chr_mem(str1.get_string(), str1.get_length(), str2.get_string(), str2.get_length());
 	}
+
 };
 
 template < class ascii_string_typeA >

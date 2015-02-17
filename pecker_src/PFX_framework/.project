@@ -51,7 +51,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.fullBuildTarget</key>
-					<value>DEBUG=1 V=1</value>
+					<value>V=1</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.stopOnError</key>
@@ -268,6 +268,11 @@
 			<name>jni/pecker_test/pfx_gles2_displayview_test.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_gles2_displayview_test.cpp</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_test/pfx_graphics_test.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_graphics_test.cpp</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_test/pfx_list_test.cpp</name>
@@ -510,11 +515,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/include/cmatrix</locationURI>
 		</link>
 		<link>
-			<name>jni/pecker_framework/include/cmatrix4</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/include/cmatrix4</locationURI>
-		</link>
-		<link>
 			<name>jni/pecker_framework/include/cmp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/include/cmp</locationURI>
@@ -523,16 +523,6 @@
 			<name>jni/pecker_framework/include/config</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/include/config</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_framework/include/cshare_object</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/include/cshare_object</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_framework/include/cstring</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/include/cstring</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/include/cvector</name>
@@ -1043,11 +1033,6 @@
 			<name>jni/pecker_framework/render/render_system/pfx_texture.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/pfx_texture.h</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_framework/render/render_system/render_system.mk</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/render_system.mk</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/render/render_util/pfx_load_uncompress_bitmap.h</name>
