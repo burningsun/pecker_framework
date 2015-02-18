@@ -107,7 +107,7 @@ public:
 			if (status)
 			{
 				PECKER_LOG_ERR("m_display_context.show_view",
-						"status = %d", status);
+						"status = %d", (int)status);
 				m_display_context.close_view();
 			}
 		}
@@ -143,7 +143,7 @@ public:
 			if (status)
 			{
 				PECKER_LOG_ERR("m_display_context.show_view",
-						"status = %d", status);
+						"status = %d", (int)status);
 				m_display_context.close_view();
 			}
 		}

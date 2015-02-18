@@ -6,7 +6,11 @@
  */
 #include "pfx_framebuffer_object_gles.h"
 #include "pfx_texture_gles.h"
+//#if (defined(__GNUC__) && defined(ANDROID) && defined(_DEBUG))
+//#warning "ANDROID DEBUG NO FBO OES"
+//#else
 #include <GLES2/gl2ext.h>
+//#endif
 
 PECKER_BEGIN
 

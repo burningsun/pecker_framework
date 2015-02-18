@@ -463,7 +463,7 @@ result_t bytes_to_hexstring(const byte_t* PARAM_IN bytes_buffer_ptr,
 		string_size -= offset;
 		++__index;
 	}
-	chr_ptr = "\0";
+	//chr_ptr = "\0";
 	return status;
 
 }

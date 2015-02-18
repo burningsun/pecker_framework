@@ -27,7 +27,11 @@
 #define PFX_IMPORT_API
 #define PFX_INLINE inline
 #define PFX_INLINE_CODE PFX_INLINE //有些编译器不支持c/cpp文件内写inline
+#ifdef __nodebug__
 #define PFX_FORCE_INLINE inline __attribute__((__always_inline__, __nodebug__))
+#else
+#define PFX_FORCE_INLINE inline __attribute__((__always_inline__))
+#endif
 #define PFX_RESTRICT __restrict__
 #else
 #ifdef _MSC_VER

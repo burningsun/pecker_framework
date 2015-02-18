@@ -210,11 +210,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/pfx_os_hal.h</locationURI>
 		</link>
 		<link>
-			<name>jni/pecker_framework/pfx_virtual_class_test.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_virtual_class_test.cpp</locationURI>
-		</link>
-		<link>
 			<name>jni/pecker_framework/render</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -323,6 +318,11 @@
 			<name>jni/pecker_test/pfx_vector_test.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_vector_test.cpp</locationURI>
+		</link>
+		<link>
+			<name>jni/pecker_test/pfx_virtual_class_test.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_virtual_class_test.cpp</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/data/pecker_data.h</name>
@@ -1073,11 +1073,6 @@
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_display_context_gles.h</locationURI>
-		</link>
-		<link>
-			<name>jni/pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.cpp</locationURI>
 		</link>
 		<link>
 			<name>jni/pecker_framework/render/render_system/opengles2/pfx_framebuffer_object_gles.h</name>

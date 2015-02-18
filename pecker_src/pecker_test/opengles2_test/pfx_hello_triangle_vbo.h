@@ -189,7 +189,7 @@ public:
 		PECKER_LOG_INFO("on_closing_render_device escape time = %lld",__escape_time);
 		if (m_vertexbufferobject_ptr)
 		{
-			PECKER_LOG_INFO("m_vertexbufferobject_ptr = %08X",(long_t)m_vertexbufferobject_ptr);
+			PECKER_LOG_INFO("m_vertexbufferobject_ptr = %08X",(unsigned int)(lpointer_t)m_vertexbufferobject_ptr);
 			m_vertexbufferobject_ptr->dispose_buffer();
 			m_vertexbufferobject_ptr = null;
 			PECKER_LOG_INFO("m_vertexbufferobject_ptr->release_reference()(%lld)",__escape_time);
@@ -221,7 +221,7 @@ public:
 		buffer_bits_t lock_buffer_bits;
 		result_t status;
 		status = m_vertexattbi_buffer_ptr->lock_cache_buffer(lock_buffer_bits);
-		PECKER_LOG_INFO("m_vertexattbi_buffer.lock_cache_buffer status = %d", status);
+		PECKER_LOG_INFO("m_vertexattbi_buffer.lock_cache_buffer status = %d", (int)status);
 		if (PFX_STATUS_OK == status)
 		{
 			pos_clr_t* vex_attrib_ptr = (pos_clr_t*)lock_buffer_bits.m_bits_ptr;

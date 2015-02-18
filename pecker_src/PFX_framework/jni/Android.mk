@@ -1,9 +1,13 @@
+$(call __ndk_info, 进入Android.mk文件)
 LOCAL_PATH :=  $(call my-dir)#$(realpath $(call my-dir)/../../)
 PFX_MK := /PFX.mk
 PFX_TEST_MK := /PFX_TEST.mk
 ZLIB_MK := /depends_lib/zlib.mk
 PNGLIB_MK := /depends_lib/pnglib.mk
 FFT2LIB_MK := /depends_lib/freetype2.mk
+APP_MK := /Application.mk
+
+$(call __ndk_info, 导入mk文件) 
 
 #编译依赖库
 #include $(CLEAR_VARS)
@@ -51,6 +55,7 @@ include $(CLEAR_VARS)
 #include $(LOCAL_PATH)$(PNGLIB_MK)
 include $(LOCAL_PATH)$(PFX_MK)
 include $(LOCAL_PATH)$(PFX_TEST_MK)
+include $(LOCAL_PATH)$(APP_MK)
 
 LOCAL_STATIC_LIBRARIES := PFX_DEPENDS #附加依赖库
 
@@ -64,10 +69,16 @@ LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) $(PFX_TEST_LOCAL_SRC_FILES)
 LOCAL_MODULE    := PFX_framework
 LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES)# android_native_app_glue.cpp PFX_framework.cpp
 
+$(call __ndk_info, APP_OPTIM =,$(APP_OPTIM))
+$(call __ndk_info, OPTIM_FLAG =,$(OPTIM_FLAG))
+LOCAL_CFLAGS += $(OPTIM_FLAG)
+
+
 #LOCAL_CFLAGS += -fshort-wchar
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
         LOCAL_CFLAGS += -mfpu=neon
-        LOCAL_ARM_NEON  := true       
+        LOCAL_ARM_NEON  := true 
+        $(call __ndk_info,LOCAL_ARM_NEON=,$(LOCAL_ARM_NEON))      
 endif # TARGET_ARCH_ABI == armeabi-v7a
 
 #ifeq ($(TARGET_ARCH_ABI),arm64-v8a)

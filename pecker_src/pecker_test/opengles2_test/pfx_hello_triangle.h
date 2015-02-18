@@ -198,7 +198,7 @@ public:
 		buffer_bits_t lock_buffer_bits;
 		result_t status;
 		status = m_vertexattbi_buffer_ptr->lock_cache_buffer(lock_buffer_bits);
-		PECKER_LOG_INFO("m_vertexattbi_buffer.lock_cache_buffer status = %d", status);
+		PECKER_LOG_INFO("m_vertexattbi_buffer.lock_cache_buffer status = %d", (int)status);
 		if (PFX_STATUS_OK == status)
 		{
 			pos_clr_t* vex_attrib_ptr = (pos_clr_t*)lock_buffer_bits.m_bits_ptr;

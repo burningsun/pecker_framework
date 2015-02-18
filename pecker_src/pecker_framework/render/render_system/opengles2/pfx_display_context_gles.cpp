@@ -394,7 +394,7 @@ result_t cdisplay_context_gles::create_egl_device(window_contex_t& PARAM_INOUT _
 	cOn_render_view_t* on_view_ptr)
 {
 	result_t status;
-	char_t*		msg_info_ptr = null;
+	const char_t*		msg_info_ptr = null;
 	usize__t 	msg_info_len = 0;
 	char_t		msg_temp_buff[256];
 	configs_stack_t config_list;

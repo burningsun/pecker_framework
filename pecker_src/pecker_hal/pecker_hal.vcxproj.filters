@@ -123,7 +123,7 @@
     <ClCompile Include="..\pecker_framework\render\render_system\glsl_10\pfx_gles10_shader_source.cpp">
       <Filter>render\render_system\glsl10</Filter>
     </ClCompile>
-    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_framebuffer_object_gles.cpp">
+    <ClCompile Include="..\pecker_framework\render\render_system\opengles2\pfx_framebuffer_obj_gles.cpp">
       <Filter>render\render_system\opengles</Filter>
     </ClCompile>
   </ItemGroup>

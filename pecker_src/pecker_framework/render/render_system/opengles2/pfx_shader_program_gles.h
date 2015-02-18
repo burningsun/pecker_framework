@@ -183,11 +183,11 @@ public:
 protected:
 	cshader_gles2()
 	{ 
-		RPROGRAM_LOG_INFO("create...0x%08X", (lpointer_t)this);
+		RPROGRAM_LOG_INFO("create...0x%08X", (unsigned int)(lpointer_t)this);
 	}
 	virtual ~cshader_gles2()
 	{
-		RPROGRAM_LOG_INFO("release...0x%08X", (lpointer_t)this);
+		RPROGRAM_LOG_INFO("release...0x%08X", (unsigned int)(lpointer_t)this);
 	}
 	virtual PFX_INLINE result_t real_dispose()
 	{
