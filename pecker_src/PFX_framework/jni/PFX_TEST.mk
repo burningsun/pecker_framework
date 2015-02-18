@@ -11,6 +11,7 @@ PFX_TEST_LOCAL_SUB_FILES :=
 
 PFX_TEST_LOCAL_SRC_FILES := \
 					$(PFX_TEST_LOCAL_PATH)pfx_list_test.cpp \
+					$(PFX_TEST_LOCAL_PATH)pfx_virtual_class_test.cpp\
 					$(PFX_TEST_LOCAL_PATH)pfx_string_test.cpp \
 					$(PFX_TEST_LOCAL_PATH)pfx_file_inputdata_cmd.cpp \
 					$(PFX_TEST_LOCAL_PATH)pfx_bst_test.cpp \

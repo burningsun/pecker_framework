@@ -8,7 +8,11 @@
 #ifndef		PFX_CANVUS_H_
 #define		PFX_CANVUS_H_
 
-#include "../../pfx_defines.h"
+#include "../render_system/pfx_render_state.h"
+
+#include "pfx_pen.h"
+#include "pfx_text_pen.h"
+#include "pfx_line_pen.h"
 
 PFX_C_EXTERN_BEGIN
 
@@ -20,6 +24,8 @@ PECKER_BEGIN
 PFX_Interface IPfx_canvus
 {
 	virtual ~IPfx_canvus(){ ; }
+	virtual result_t use_render_state(IPfx_render_state* PARAM_IN render_state_ptr) = 0;
+	virtual IPfx_render_state* get_render_state() const = 0;
 };
 
 PECKER_END

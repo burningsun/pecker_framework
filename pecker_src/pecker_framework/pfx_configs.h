@@ -49,7 +49,7 @@
 
 #define OS_32BIT
 #define __APP_MAIN_SHOW__
-//#define	ANDROID			(1)
+#define	ANDROID			(1)
 
 #define	OS_WINDOWS		(1)
 #define	OS_ANDROID		(1<<1)

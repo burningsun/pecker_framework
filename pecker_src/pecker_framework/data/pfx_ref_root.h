@@ -70,7 +70,29 @@ public:
 	virtual creference_root* new_object() = 0; 
 };
 
-#define DELARE_REF_METHOD(THIS_CLASS_NAME,INTERFACE_NAME,THIS_ALLOCATOR) __NATIVE_DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) 
+//#define DELARE_REF_METHOD(THIS_CLASS_NAME,INTERFACE_NAME,THIS_ALLOCATOR) __NATIVE_DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR)
+
+#define DELARE_REF_METHOD(THIS_CLASS_NAME,INTERFACE_NAME,THIS_ALLOCATOR) \
+	DELARE_REF_METHOD_S(THIS_CLASS_NAME, INTERFACE_NAME, THIS_ALLOCATOR, native_t)\
+	__NATIVE_REF_METHOD
+
+
+#define DELARE_REF_METHOD_S(THIS_CLASS_NAME,INTERFACE_NAME,THIS_ALLOCATOR, NATIVE_TYPE) 	\
+    __DELARE_REF_METHOD(THIS_CLASS_NAME, THIS_ALLOCATOR)\
+	__NATIVE_REF_METHOD_X(NATIVE_TYPE)
+
+
+#define __NATIVE_REF_METHOD_X(native_type)				\
+public: \
+virtual	PFX_INLINE void get_native_ptr(native_type*& native_ptr)			 \
+{										 \
+	native_ptr = &m_native;				 \
+}										 \
+virtual	PFX_INLINE void get_native_ptr(const native_type*& native_ptr) const\
+{										 \
+	native_ptr = &m_native;				 \
+}										 \
+
 
 #define __NATIVE_REF_METHOD				\
 public: \
@@ -91,20 +113,26 @@ PFX_INLINE const native_t* native_ptr() const\
 return &m_native;					  \
 }										  \
 
+#define __NATIVE_DELARE_REF_METHOD_S(THIS_CLASS_NAME,THIS_ALLOCATOR,NATIVE_TYPE) \
+	__DELARE_REF_METHOD(THIS_CLASS_NAME, THIS_ALLOCATOR)\
+	__NATIVE_REF_METHOD_X(NATIVE_TYPE)
+
 #define __NATIVE_DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) \
 	__DELARE_REF_METHOD(THIS_CLASS_NAME, THIS_ALLOCATOR)\
-	__NATIVE_REF_METHOD
+	__NATIVE_REF_METHOD\
+	__NATIVE_REF_METHOD_X(native_t)
+
 
 #define __DELARE_REF_METHOD(THIS_CLASS_NAME,THIS_ALLOCATOR) \
 protected:\
-PFX_INLINE result_t __real_dispose()\
+virtual PFX_INLINE result_t __real_dispose()\
 {									 \
 	THIS_CLASS_NAME* del_ptr = this;  \
 	REF_LOG_INFO("__real_dispose (%d)", creference_root::get_ref_count()); \
 	return THIS_ALLOCATOR::deallocate_object(del_ptr);\
 }  \
 public:\
-PFX_INLINE THIS_CLASS_NAME* new_ref()  \
+virtual PFX_INLINE THIS_CLASS_NAME* new_ref()  \
 {										\
 		if (creference_root::share())	 \
 		{	\
@@ -124,11 +152,11 @@ static PFX_INLINE THIS_CLASS_NAME * create_new_object()\
 {											\
 	return THIS_ALLOCATOR::allocate_object();  \
 }											\
-PFX_INLINE creference_root* new_object() \
+virtual PFX_INLINE creference_root* new_object() \
 {										 \
 	return create_object();				 \
 }										 \
-PFX_INLINE result_t dispose_object()	  \
+virtual PFX_INLINE result_t dispose_object()	  \
 {										  \
 	result_t status = creference_root::dispose();\
 	REF_LOG_INFO("dispose (%d)", creference_root::get_ref_count());\

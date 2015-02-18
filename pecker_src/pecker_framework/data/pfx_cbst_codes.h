@@ -1676,7 +1676,7 @@ const PFX_CBST_ELEM_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr)
 	typedef PFX_CBST_ELEM_FIND_NODE_TYPE::node_t node_t;
 	typedef PFX_CBST_ELEM_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
 
-	const node_t* find_node_ptr = root_node_ptr
+	const node_t* find_node_ptr = root_node_ptr;
 	while (find_node_ptr)
 	{
 		int cmp_result = cmp_t::compare(find_node_ptr->get_item(), __key);
@@ -1823,7 +1823,7 @@ const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr)
 	typedef PFX_CBST_STR_FIND_NODE_TYPE::node_t node_t;
 	typedef PFX_CBST_STR_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
 
-	const node_t* find_node_ptr = root_node_ptr
+	const node_t* find_node_ptr = root_node_ptr;
 	while (find_node_ptr)
 	{
 		int cmp_result = cmp_t::compare(find_node_ptr->get_item(), __chars_ptr, chars_count);
@@ -1892,7 +1892,7 @@ const PFX_CBST_STR_FIND_NODE_TYPE::node_t* PARAM_IN root_node_ptr)
 	typedef PFX_CBST_STR_FIND_NODE_TYPE::node_t node_t;
 	typedef PFX_CBST_STR_FIND_NODE_TYPE::compare_two_elemen_t cmp_t;
 
-	const node_t* find_node_ptr = root_node_ptr
+	const node_t* find_node_ptr = root_node_ptr;
 	while (find_node_ptr)
 	{
 		int cmp_result = cmp_t::compare(find_node_ptr->get_item(), __key);

@@ -14,6 +14,7 @@
 #include "../pfx_color.h"
 #include "../render_system/pfx_shader_program.h"
 #include "../render_system/pfx_framebuffer_object.h"
+#include "../render_system/pfx_render_state.h"
 #include "../../math/pfx_math.h"
 #include "pfx_brush.h"
 
@@ -43,6 +44,9 @@ PFX_Interface IPfx_pen : public creference_root
 
 	virtual result_t set_viewport(const viewport_rect_t& viewport) = 0;
 	virtual const viewport_rect_t& get_viewport() const = 0;
+
+	virtual result_t use_render_state(IPfx_render_state* PARAM_IN render_state_ptr) = 0;
+	virtual IPfx_render_state* get_render_state() const = 0;
 
 	virtual Ipfx_shader_program* select_program(Ipfx_shader_program* PARAM_IN program_ptr, 
 		result_t& PARAM_OUT status) = 0;

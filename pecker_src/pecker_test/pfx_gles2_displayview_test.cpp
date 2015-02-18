@@ -54,7 +54,7 @@ chello_lena_fbo_view_gles2 lena_fbo_v;
 //#define test_view lena_v
 #define test_view lena_fbo_v
 //hello_tri_vbo
-
+extern void virtual_class_test();
 
 #if (defined(__ANDROID__)|| defined(__APP_MAIN_SHOW__))
 chellogles_activity hellow;
@@ -62,6 +62,8 @@ chellogles_activity hellow;
 
 int PFX_main(pecker_sdk::native_form_t* PARAM_INOUT main_form)
 {
+	PECKER_LOG_INFO("PFX_main...%d",0);
+	virtual_class_test();
 	main_form->init(&hellow);
 	hellow.init(&test_view);
 	main_form->show_form(false);

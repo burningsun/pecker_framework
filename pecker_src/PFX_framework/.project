@@ -210,6 +210,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/pfx_os_hal.h</locationURI>
 		</link>
 		<link>
+			<name>jni/pecker_framework/pfx_virtual_class_test.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/pecker_test/pfx_virtual_class_test.cpp</locationURI>
+		</link>
+		<link>
 			<name>jni/pecker_framework/render</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>

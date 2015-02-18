@@ -10,6 +10,7 @@
 
 #include "pfx_configs.h"
 #include <stdio.h>
+#include <wchar.h>
 
 #if (OS_CONFIG == OS_WINDOWS)
 

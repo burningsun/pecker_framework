@@ -160,6 +160,7 @@
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_freetypefont.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_line_pen.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_pen.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\pfx_picture_box.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_text_pen.h" />
   </ItemGroup>
   <ItemGroup>
