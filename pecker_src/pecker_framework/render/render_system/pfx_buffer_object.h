@@ -111,6 +111,7 @@ PFX_Interface PFX_RENDER_SYSTEM_API IPfx_buffer_object : public creference_root
 
 	virtual result_t dispose_render_target() = 0;
 
+	virtual u64_t get_version() const = 0;
 };
 
 #ifdef _MSC_VER

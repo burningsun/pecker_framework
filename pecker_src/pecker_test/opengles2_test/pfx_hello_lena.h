@@ -171,7 +171,7 @@ public:
 
 		if (null == m_texture2d_ptr)
 		{
-			m_texture2d_ptr = __state.create_texture2D();
+			m_texture2d_ptr = __state.create_texture2D_gles();
 		}
 
 		if (null == m_texture2d_ptr)
@@ -184,7 +184,7 @@ public:
 
 		if (!m_vertexbufferobject_ptr)
 		{
-			m_vertexbufferobject_ptr = __state.create_buffer();
+			m_vertexbufferobject_ptr = __state.create_buffer_gles();
 			m_vertexbufferobject_ptr->set_vbo_buffer(m_vertexattbi_buffer_ptr);
 		}
 		__state.set_vertex_attrib_array(pos, m_vertexbufferobject_ptr, 4);
@@ -308,8 +308,8 @@ public:
 		math_matrix_test();
 
 		shader_souce_string_t __sys_shader_source;
-		cshader_gles2* __vs_ptr = __state.create_shader(PFXST_VERTEXT_SHADER);
-		cshader_gles2* __fs_ptr = __state.create_shader(PFXST_PIXEL_SHADER);
+		cshader_gles2* __vs_ptr = __state.create_shader_gles(PFXST_VERTEXT_SHADER);
+		cshader_gles2* __fs_ptr = __state.create_shader_gles(PFXST_PIXEL_SHADER);
 		result_t status;
 
 		get_system_defualt_shader_source(__sys_shader_source,
@@ -335,7 +335,7 @@ public:
 
 		if (null == m_program_ptr)
 		{
-			m_program_ptr = __state.create_program();
+			m_program_ptr = __state.create_program_gles();
 		}
 		m_program_ptr->attach_shader(__vs_ptr);
 		m_program_ptr->attach_shader(__fs_ptr);

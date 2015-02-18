@@ -70,18 +70,18 @@ bool cnative_render_state_gles2::is_egl_externsion_supported(EGLDisplay egl_disp
 
 //////////////////////////////////////////////////////////////////////////
 // shader
-cshader_gles2* cnative_render_state_gles2::create_shader(enum_int_t shader_type)
+cshader_gles2* cnative_render_state_gles2::create_shader_gles(enum_int_t shader_type)
 {
 	return cshader_gles2::new_shader(shader_type);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // program
-cshader_program_gles2* cnative_render_state_gles2::create_program()
+cshader_program_gles2* cnative_render_state_gles2::create_program_gles()
 {
 	return cshader_program_gles2::create_new_object();
 }
-cshader_program_gles2* cnative_render_state_gles2::working_program()
+cshader_program_gles2* cnative_render_state_gles2::working_program_gles()
 {
 	if (m_use_program_ptr)
 	{
@@ -93,7 +93,7 @@ cshader_program_gles2* cnative_render_state_gles2::working_program()
 	}
 }
 
-cshader_program_gles2* cnative_render_state_gles2::last_program()
+cshader_program_gles2* cnative_render_state_gles2::last_program_gles()
 {
 	if (m_old_program_ptr)
 	{
@@ -279,7 +279,7 @@ result_t cnative_render_state_gles2::unbind_buffer(long_t __attribute_location)
 	return PFX_STATUS_OK;
 }
 // vbo
-cbuffer_object_gles2* cnative_render_state_gles2::create_buffer()
+cbuffer_object_gles2* cnative_render_state_gles2::create_buffer_gles()
 {
 	cbuffer_object_gles2* new_buffer_ptr = cbuffer_object_gles2::create_new_object();
 	if (new_buffer_ptr)

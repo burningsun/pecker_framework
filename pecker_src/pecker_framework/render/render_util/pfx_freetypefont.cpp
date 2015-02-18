@@ -181,17 +181,25 @@ result_t cfreetype_font::render_char(ulong_t char_code,
 
 		img_bits.m_width = slot->bitmap.width;
 		img_bits.m_height = slot->bitmap.rows;
-		img_bits.m_color_format = PFX_LUMINANCE_FMT;
-		img_bits.m_stride = color_format_size<PFX_LUMINANCE_FMT>::SIZE();
+		img_bits.m_color_format = PFX_ALPHA_FMT;
+		img_bits.m_stride = color_format_size<PFX_ALPHA_FMT>::SIZE();
 		img_bits.m_bits_ptr = slot->bitmap.buffer;
 		img_bits.m_bytes_count = img_bits.m_width *	img_bits.m_height;
 		if (x < 0)
 		{
 			x = slot->bitmap_left;
 		}
+		else
+		{
+			x += slot->bitmap_left;
+		}
 		if (y < 0)
 		{
 			y = slot->bitmap_top;
+		}
+		else
+		{
+			y += slot->bitmap_top;
 		}
 		return render_char_ptr->draw_char(&img_bits, x, y);
 	}

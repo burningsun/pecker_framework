@@ -331,7 +331,7 @@ public:
 		return 	m_programID;
 	}
 
-	u64_t	get_version() const;
+	static u64_t	get_version();
 };
 
 class PFX_RENDER_SYSTEM_API cshader_program_gles2 : public Ipfx_shader_program
@@ -395,7 +395,7 @@ public:
 
 	PFX_INLINE u64_t get_version() const
 	{
-		return this->native().get_version();
+		return native_t::get_version();
 	}
 
 	PFX_INLINE Ipfx_shader_program* new_share()

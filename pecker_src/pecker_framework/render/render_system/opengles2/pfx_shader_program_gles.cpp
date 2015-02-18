@@ -581,7 +581,7 @@ long_t	cnative_shader_program_gles2::get_location_by_name
 	return INVALID_SHADER;
 }
 
-u64_t cnative_shader_program_gles2::get_version() const
+u64_t cnative_shader_program_gles2::get_version()
 {
 	return (get_hal_instanse_ID().m_version);
 }

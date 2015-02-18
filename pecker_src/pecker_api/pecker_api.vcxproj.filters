@@ -474,6 +474,9 @@
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_freetypefont.h">
       <Filter>render\render_util</Filter>
     </ClInclude>
+    <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_state.h">
+      <Filter>render\render_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.txt" />

@@ -102,7 +102,7 @@ public:
 
 		if (!m_vertexbufferobject_ptr)
 		{
-			m_vertexbufferobject_ptr = __state.create_buffer();
+			m_vertexbufferobject_ptr = __state.create_buffer_gles();
 			m_vertexbufferobject_ptr->set_vbo_buffer(m_vertexattbi_buffer_ptr);
 		}
 	
@@ -128,8 +128,8 @@ public:
 		PECKER_LOG_INFO("on_load escape time = %lld",__escape_time);
 
 		shader_souce_string_t __sys_shader_source;
-		cshader_gles2* __vs_ptr = __state.create_shader(PFXST_VERTEXT_SHADER);
-		cshader_gles2* __fs_ptr = __state.create_shader(PFXST_PIXEL_SHADER);
+		cshader_gles2* __vs_ptr = __state.create_shader_gles(PFXST_VERTEXT_SHADER);
+		cshader_gles2* __fs_ptr = __state.create_shader_gles(PFXST_PIXEL_SHADER);
 		result_t status;
 
 		get_system_defualt_shader_source(__sys_shader_source, //HELLO_SHADER_SOURCE,
@@ -157,7 +157,7 @@ public:
 
 		if (null == m_program_ptr)
 		{
-			m_program_ptr = __state.create_program();
+			m_program_ptr = __state.create_program_gles();
 		}
 		m_program_ptr->attach_shader(__vs_ptr);
 		m_program_ptr->attach_shader(__fs_ptr);
