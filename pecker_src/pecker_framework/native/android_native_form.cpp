@@ -734,6 +734,7 @@ void android_native_form::app_main (PFX_main_callback __PFX_main_func, ANativeAc
 	jboolean isCopy;
 
 	const char* chr_path = env->GetStringUTFChars((jstring) jstring_object, &isCopy);
+	PECKER_LOG_STR(chr_path);
 
 	usize__t path_size = env->GetStringLength((jstring) jstring_object);
 	gstr_app_path.init_string(chr_path, path_size);

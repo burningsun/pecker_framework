@@ -36,5 +36,11 @@ public class PFXNativeActivityBase extends NativeActivity {
  
 
 	 }
+	 
+	 static 
+	 {
+	     System.loadLibrary("PFX_CORE_GLES_S");
+	 }
+
 
 }
