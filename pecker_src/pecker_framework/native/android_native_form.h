@@ -404,6 +404,15 @@ public:
 		return m_init_state;
 	}
 
+public:
+	static const cstring_ascii_t& get_meta_data_value (ANativeActivity* activity,
+			const char* str_name_ptr,
+			cstring_ascii_t& value);
+	static const cstring_ascii_t& get_app_path(ANativeActivity* activity,
+				cstring_ascii_t& str_path);
+	static const cstring_ascii_t& get_user_package_name(ANativeActivity* activity,
+					cstring_ascii_t& str_name);
+
 };
 
 

@@ -726,8 +726,121 @@ void android_native_form::app_main (PFX_main_callback __PFX_main_func, ANativeAc
 		PFX_main_func = __PFX_main_func;
 	}
 
+	get_app_path(activity, gstr_app_path);
+
+	gAsset_manager = activity->assetManager;
+
+	form.create_window(activity, savedState, savedStateSize);
+}
+
+#define GET_META_DATA (0x00000080)
+const cstring_ascii_t& android_native_form::get_meta_data_value (ANativeActivity* activity,
+			const char* str_name_ptr,
+			cstring_ascii_t& str_value)
+{
+	JNIEnv* env = activity->env;
+
+	////////////////////////////////////
+	jclass class_context = env->GetObjectClass(activity->clazz);
+	//PECKER_LOG_INFO(" class_context class(%p)",class_context);
+
+	jclass class_PackageManager = env->FindClass("android/content/pm/PackageManager");
+	//PECKER_LOG_INFO(" class_PackageManager(%p)",class_PackageManager);
+
+	jclass class_ApplicationInfo = env->FindClass("android/content/pm/ApplicationInfo");
+	//PECKER_LOG_INFO(" class_ApplicationInfo (%p)",class_ApplicationInfo);
+
+	jclass class_Bundle = env->FindClass("android/os/Bundle");
+	//PECKER_LOG_INFO(" class_Bundle (%p)",class_Bundle);
+	///////////////////////////////////
+	jmethodID getPackageManager_methodID = env->GetMethodID(class_context, "getPackageManager",
+			"()Landroid/content/pm/PackageManager;");
+	//PECKER_LOG_INFO(" getPackageManager_methodID(%p)",getPackageManager_methodID);
+
+	jmethodID getPackageName_methodID = env->GetMethodID(class_context, "getPackageName",
+			"()Ljava/lang/String;");
+	//PECKER_LOG_INFO(" getPackageName_methodID(%p)", getPackageName_methodID);
+
+	jmethodID getApplicationInfo_methodID = env->GetMethodID(class_PackageManager, "getApplicationInfo",
+			"(Ljava/lang/String;I)Landroid/content/pm/ApplicationInfo;");
+	//PECKER_LOG_INFO(" getApplicationInfo_methodID(%p)",getApplicationInfo_methodID);
+
+	jfieldID metaData_fieldID = env->GetFieldID(class_ApplicationInfo, "metaData",
+				"Landroid/os/Bundle;");
+	//PECKER_LOG_INFO(" metaData_fieldID(%p)",metaData_fieldID);
+
+	jmethodID getString_methodID = env->GetMethodID(class_Bundle, "getString",
+						"(Ljava/lang/String;)Ljava/lang/String;");
+	//PECKER_LOG_INFO(" getString_methodID(%p)",getString_methodID);
+	//////////////////////////////////////////////////////
+	jobject jContext_obj = activity->clazz;
+	//PECKER_LOG_INFO(" jContext_obj = (%p)", jContext_obj);
+
+	jobject jPackageManager_obj = null;
+	if (class_context && getPackageManager_methodID)
+	{
+		jPackageManager_obj = env->CallObjectMethod(jContext_obj, getPackageManager_methodID);
+	}
+	//PECKER_LOG_INFO(" getPackageManager() = (%p)", jPackageManager_obj);
+
+	jobject jstring_packname = null;
+	if (class_context && getPackageName_methodID)
+	{
+		jstring_packname = env->CallObjectMethod(jContext_obj, getPackageName_methodID);
+	}
+	//PECKER_LOG_INFO(" getPackageName() = (%p)",jstring_packname);
+
+	jobject jApplicationInfo_obj = null;
+	if (class_PackageManager && getApplicationInfo_methodID && jstring_packname)
+	{
+		jApplicationInfo_obj = env->CallObjectMethod(jPackageManager_obj, getApplicationInfo_methodID,
+				(jstring)jstring_packname, GET_META_DATA);
+	}
+	//PECKER_LOG_INFO(" getApplicationInfo() = (%p)",jApplicationInfo_obj);
+
+
+	jstring jmeta_data_name = env->NewStringUTF(str_name_ptr);
+	jobject jmetaData_obj = null;
+	if (jApplicationInfo_obj && metaData_fieldID)
+	{
+		jmetaData_obj = env->GetObjectField(jApplicationInfo_obj, metaData_fieldID);
+	}
+	//PECKER_LOG_INFO(" metaData() = (%p)",jmetaData_obj);
+
+
+    if (jmetaData_obj && getString_methodID)
+    {
+    	jobject jvalue_string = env->CallObjectMethod(jmetaData_obj, getString_methodID,
+    					jmeta_data_name);
+
+    	jboolean isCopy;
+    	const char* chr_path = env->GetStringUTFChars((jstring) jvalue_string, &isCopy);
+    	PECKER_LOG_STR(chr_path);
+
+    	usize__t path_size = env->GetStringLength((jstring) jvalue_string);
+    	str_value.init_string(chr_path, path_size);
+    	str_value.append_string("\0",1);
+    	str_value.resize_string(path_size);
+
+    	env->ReleaseStringUTFChars((jstring)jvalue_string,chr_path);
+    }
+
+    env->DeleteLocalRef (jmeta_data_name);
+	return str_value;
+}
+
+const cstring_ascii_t& android_native_form::get_app_path (ANativeActivity* activity,
+			cstring_ascii_t& str_path)
+{
+
 	JNIEnv* env = activity->env;
 	jclass clazz = env->GetObjectClass(activity->clazz);
+
+	if (!env || !clazz)
+	{
+		return str_path;
+	}
+
 	jmethodID methodID = env->GetMethodID(clazz, "getPackageCodePath",
 			"()Ljava/lang/String;");
 	jobject jstring_object = env->CallObjectMethod(activity->clazz, methodID);
@@ -737,16 +850,46 @@ void android_native_form::app_main (PFX_main_callback __PFX_main_func, ANativeAc
 	PECKER_LOG_STR(chr_path);
 
 	usize__t path_size = env->GetStringLength((jstring) jstring_object);
-	gstr_app_path.init_string(chr_path, path_size);
-	gstr_app_path.append_string("\0",1);
-	gstr_app_path.resize_string(path_size);
+	str_path.init_string(chr_path, path_size);
+	str_path.append_string("\0",1);
+	str_path.resize_string(path_size);
 
 	env->ReleaseStringUTFChars((jstring) jstring_object,chr_path);
+	return str_path;
+}
+
+const cstring_ascii_t& android_native_form::get_user_package_name(ANativeActivity* activity,
+					cstring_ascii_t& str_name)
+{
+	JNIEnv* env = activity->env;
+	jobject jContext_obj = activity->clazz;
+	////////////////////////////////////
+	jclass class_context = env->GetObjectClass(activity->clazz);
+	jmethodID getPackageName_methodID = env->GetMethodID(class_context, "getPackageName",
+				"()Ljava/lang/String;");
+
+	jobject jstring_packname = null;
+	if (class_context && getPackageName_methodID)
+	{
+		jstring_packname = env->CallObjectMethod(jContext_obj, getPackageName_methodID);
+	}
+
+    if (jstring_packname)
+    {
+    	jboolean isCopy;
+    	const char* chr_path = env->GetStringUTFChars((jstring) jstring_packname, &isCopy);
+    	PECKER_LOG_STR(chr_path);
+
+    	usize__t path_size = env->GetStringLength((jstring) jstring_packname);
+    	str_name.init_string(chr_path, path_size);
+    	str_name.append_string("\0",1);
+    	str_name.resize_string(path_size);
+
+    	env->ReleaseStringUTFChars((jstring)jstring_packname,chr_path);
+    }
+    return str_name;
 
 
-	gAsset_manager = activity->assetManager;
-
-	form.create_window(activity, savedState, savedStateSize);
 }
 
 

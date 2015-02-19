@@ -10,16 +10,8 @@ APP_MK := /Application.mk
 
 $(call __ndk_info, µº»ÎmkŒƒº˛) 
 
-#±‡“Î“¿¿µø‚
-#include $(CLEAR_VARS)
-#include $(LOCAL_PATH)$(FFT2LIB_MK)#freetype2lib
-#LOCAL_MODULE    := ft2_static
-#LOCAL_C_INCLUDES += $(FT2_LOCAL_EXPORT_C_INCLUDES)
-#LOCAL_CFLAGS  += $(FT2_LOCAL_CFLAGS)
-#LOCAL_SRC_FILES :=   $(FT2LIB_LOCAL_SRC_FILES) 
-#LOCAL_LDLIBS    := # -ldl -llog
-#include $(BUILD_STATIC_LIBRARY)
 
+#####################################################
 $(call __ndk_info, ±‡“Î“¿¿µø‚)
 include $(CLEAR_VARS)
 include $(LOCAL_PATH)$(ZLIB_MK)   #zlib
@@ -49,8 +41,10 @@ LOCAL_LDLIBS    :=
 #-ldl -llog
 
 include $(BUILD_STATIC_LIBRARY)
+########################################################
 
 
+########################################################
 $(call __ndk_info, ±‡“ÎÕº–Œø‚)
 #±‡“ÎÕº–Œø‚
 include $(CLEAR_VARS)
@@ -59,20 +53,14 @@ include $(LOCAL_PATH)$(APP_MK)
 
 LOCAL_STATIC_LIBRARIES := PFX_DEPENDS #∏Ωº”“¿¿µø‚
 
-
-LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) #$(PFX_TEST_LOCAL_SRC_FILES)
-
-
-#LOCAL_CFLAGS := -D_ARM_ASSEM_
-#LOCAL_ARM_MODE := arm
+LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) 
 
 LOCAL_MODULE    := PFX_CORE_GLES_A
-LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES)# android_native_app_glue.cpp PFX_framework.cpp
+LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES)
 
 $(call __ndk_info, APP_OPTIM =,$(APP_OPTIM))
 $(call __ndk_info, OPTIM_FLAG =,$(OPTIM_FLAG))
 LOCAL_CFLAGS += $(OPTIM_FLAG)
-
 
 #LOCAL_CFLAGS += -fshort-wchar
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
@@ -81,31 +69,30 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
         $(call __ndk_info,LOCAL_ARM_NEON=,$(LOCAL_ARM_NEON))      
 endif # TARGET_ARCH_ABI == armeabi-v7a
 
-
-
 LOCAL_LDLIBS    := -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid 
 #ƒ„√√µƒandroid◊‘º∫∏„¡À∏ˆpthreadªπ∏˜÷÷∫Ø ˝—À∏Ó
 #-lpthread
 #LOCAL_LDLIBS_RELEASE := -lEGL -lGLESv2 -llog -lz -landroid
 include $(BUILD_STATIC_LIBRARY)
+################################################################
 
+
+#################################################################
 $(call __ndk_info, ±‡“ÎÕº–Œ∂ØÃ¨ø‚)
-#LOCAL_MODULE    := PFX_CORE_GLES_S
 include $(CLEAR_VARS)
 include $(LOCAL_PATH)$(PFX_MK)
 include $(LOCAL_PATH)$(APP_MK)
 
 LOCAL_STATIC_LIBRARIES := PFX_DEPENDS #∏Ωº”“¿¿µø‚
 
-LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) #$(PFX_TEST_LOCAL_SRC_FILES)
+LOCAL_SUB_SRC_FILES	:= $(PFX_LOCAL_SRC_FILES) 
 
 LOCAL_MODULE    := PFX_CORE_GLES_S
-LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES)# android_native_app_glue.cpp PFX_framework.cpp
+LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES)
 
 $(call __ndk_info, APP_OPTIM =,$(APP_OPTIM))
 $(call __ndk_info, OPTIM_FLAG =,$(OPTIM_FLAG))
 LOCAL_CFLAGS += $(OPTIM_FLAG)
-
 
 #LOCAL_CFLAGS += -fshort-wchar
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
@@ -116,24 +103,25 @@ endif # TARGET_ARCH_ABI == armeabi-v7a
 
 LOCAL_LDLIBS    := -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid 
 include $(BUILD_SHARED_LIBRARY)
+############################################################
 
-
-
-
-
-$(call __ndk_info, ±‡“Î÷¥––≥Ã–Ú)
+#############################################################
+$(call __ndk_info, ±‡“Î‘À–– ±ø‚)
 #÷¥––≥Ã–Ú
 include $(CLEAR_VARS)
-include $(LOCAL_PATH)$(PFX_TEST_MK)
 include $(LOCAL_PATH)$(APP_MK)
+include $(LOCAL_PATH)$(PFX_TEST_MK)
+include $(LOCAL_PATH)$(PFX_MK)
 
 
-LOCAL_STATIC_LIBRARIES := PFX_CORE_GLES_S#∏Ωº”“¿¿µø‚
+#LOCAL_STATIC_LIBRARIES := PFX_CORE_GLES_A#∏Ωº”“¿¿µø‚
+LOCAL_SHARED_LIBRARIES := PFX_CORE_GLES_S#∏Ωº”“¿¿µø‚
 
 LOCAL_SUB_SRC_FILES	:=  $(PFX_TEST_LOCAL_SRC_FILES)
 
 LOCAL_MODULE    := PFX_framework
-LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES)# android_native_app_glue.cpp PFX_framework.cpp
+LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES) \
+                   #$(PFX_LOCAL_PATH)pfx_android_load_pfx.cpp
 
 $(call __ndk_info, APP_OPTIM =,$(APP_OPTIM))
 $(call __ndk_info, OPTIM_FLAG =,$(OPTIM_FLAG))
@@ -149,3 +137,36 @@ endif # TARGET_ARCH_ABI == armeabi-v7a
 LOCAL_LDLIBS    := -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid -ldl 
 
 include $(BUILD_SHARED_LIBRARY)
+###################################################################
+
+#############################################################
+#$(call __ndk_info, ±‡“Î÷¥––≥Ã–Ú)
+##÷¥––≥Ã–Ú
+#include $(CLEAR_VARS)
+#include $(LOCAL_PATH)$(PFX_TEST_MK)
+#include $(LOCAL_PATH)$(APP_MK)
+#include $(LOCAL_PATH)$(PFX_MK)
+#
+#
+#LOCAL_SHARED_LIBRARIES := PFX_CORE_GLES_S#∏Ωº”“¿¿µø‚
+#
+#LOCAL_SUB_SRC_FILES	:=  $(PFX_TEST_LOCAL_SRC_FILES)
+#
+#LOCAL_MODULE    := PFX_test
+#LOCAL_SRC_FILES := $(LOCAL_SUB_SRC_FILES) 
+#
+#$(call __ndk_info, APP_OPTIM =,$(APP_OPTIM))
+#$(call __ndk_info, OPTIM_FLAG =,$(OPTIM_FLAG))
+#LOCAL_CFLAGS += $(OPTIM_FLAG)
+#
+#
+#ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+#        LOCAL_CFLAGS += -mfpu=neon
+#        LOCAL_ARM_NEON  := true 
+#        $(call __ndk_info,LOCAL_ARM_NEON=,$(LOCAL_ARM_NEON))      
+#endif # TARGET_ARCH_ABI == armeabi-v7a
+#
+#LOCAL_LDLIBS    := -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid -ldl 
+#
+#include $(BUILD_SHARED_LIBRARY)
+###################################################################
