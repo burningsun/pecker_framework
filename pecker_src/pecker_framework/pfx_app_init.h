@@ -36,8 +36,9 @@ int main()
 
 #else
 
-#if (defined(__ANDROID__) && !defined(MASTER_LIB))
+#if (defined(__ANDROID__))
 
+#if (!defined(PURE_NATIVE_CODE))
 #include "native/android_native_form.h"
 
 //#include "pfx_android_load_pfx.h"
@@ -55,12 +56,13 @@ void ANativeActivity_onCreate(ANativeActivity* activity,
 	//cdl_load::dl_load().load_dl(activity->env, "PFX_CORE_GLES_S");
 	pecker_sdk::android_native_form::app_main(PFX_main, activity, savedState, savedStateSize);
 }
-#else
+#else //if (!defined(PURE_NATIVE_CODE))
 #include "native/android_native_form.h"
-extern "C"
-{
-   int PFX_main(pecker_sdk::android_native_form* PARAM_INOUT main_form);
-}
+
+int PFX_main(pecker_sdk::android_native_form* PARAM_INOUT main_form);
+
+#endif	//if (!defined(PURE_NATIVE_CODE))
+
 #endif	// #ifdef __ANDROID__
 
 #endif // #if (OS_CONFIG == OS_WINDOWS) && defined (__APP_MAIN_SHOW__)

@@ -10,7 +10,7 @@
 #include "../pecker_framework/native/pfx_resource_reader.h"
 #include "../pecker_framework/native/pfx_log.h"
 
-//#define TEST_ASET_RESOURCE
+#define TEST_ASET_RESOURCE
 
 USING_PECKER_SDK
 result_t load_png_img(const char_t* pfile_name, cImage& __img);

@@ -17,11 +17,13 @@ candroid_application::~candroid_application()
 {
 	close_working_lib ();
 }
-result_t candroid_application::init (ANativeActivity* activity)
+result_t candroid_application::init (ANativeActivity* activity,
+		const char* str_check_flag_name,
+		const char* str_lib_name)
 {
 	cstring_ascii_t str_value;
 	android_native_form::get_meta_data_value (activity,
-					"working_lib_in_apk",
+			        str_check_flag_name,//"working_lib_in_apk",
 					str_value);
 	bool _lib_in_apk = false;
 	if (0 == str_value.get_length() ||
@@ -35,7 +37,7 @@ result_t candroid_application::init (ANativeActivity* activity)
 		cstring_ascii_t str_value;
 		cstring_ascii_t str_package_name;
 		android_native_form::get_meta_data_value (activity,
-									"working_lib_name",
+									str_lib_name,//"working_lib_name",
 									str_value);
 		android_native_form::get_user_package_name (activity,
 				                    str_package_name);
@@ -60,7 +62,7 @@ result_t candroid_application::init (ANativeActivity* activity)
 	else
 	{
 		android_native_form::get_meta_data_value (activity,
-									"working_lib_name",
+				                    str_lib_name,//"working_lib_name",
 									m_working_lib_name);
 	}
 
@@ -75,21 +77,20 @@ result_t candroid_application::init (ANativeActivity* activity)
 		return PFX_STATUS_FAIL;
 	}
 
-
-
 }
 result_t candroid_application::load_working_lib (const char* dl_name, int flag)
 {
 	if (m_handle)
 	{
-
 		close_working_lib ();
 	}
 
 	PECKER_LOG_STR(dl_name);
+	PECKER_LOG_INFO("before dlopen %p (%s)", m_handle, dlerror());
+
 	m_handle = dlopen(dl_name, flag);
 
-	PECKER_LOG_INFO("dlopen - %sn", dlerror());
+	PECKER_LOG_INFO("after dlopen %p (%s)", m_handle, dlerror());
 	if (m_handle)
 	{
 		return PFX_STATUS_OK;
@@ -109,17 +110,15 @@ result_t candroid_application::close_working_lib ()
 	}
 	return PFX_STATUS_OK;
 }
-android_native_form::PFX_main_callback candroid_application::enter_point()
+void* candroid_application::func_addr(const char* str_name)
 {
-	android_native_form::PFX_main_callback main_fuc = null;
+	void* func = null;
 	if (m_working_lib_name.get_length() && m_handle)
 	{
-		main_fuc = (android_native_form::PFX_main_callback)
-				dlsym(m_handle, "PFX_main");
-
-		PECKER_LOG_INFO("main_fuc - %p", main_fuc);
+		func = dlsym(m_handle, str_name);
+		PECKER_LOG_INFO("%s - %p",str_name, func);
 	}
-	return main_fuc;
+	return func;
 
 }
 
@@ -128,13 +127,33 @@ const char* candroid_application::get_working_lib_path () const
 	return m_working_lib_name.get_string();
 }
 
+void* candroid_application::handle ()
+{
+	return m_handle;
+}
+
 PECKER_END
 
-#if defined(SLAVE_LIB)
+#if !defined(PURE_NATIVE_CODE)
 
 #else
+// 纯NDK，是附加任何JAR
 //extern int PFX_main(pecker_sdk::android_native_form* PARAM_INOUT main_form);
 static pecker_sdk::candroid_application gandorid_app;
+
+static int(*gmain_func)(void*) = 0;
+static int __PFX_main(pecker_sdk::android_native_form* PARAM_INOUT main_form)
+{
+	if (gmain_func)
+	{
+		return gmain_func(main_form);
+	}
+	else
+	{
+		return PFX_STATUS_NOT_EXISTS;
+	}
+}
+
 void ANativeActivity_onCreate(ANativeActivity* activity,
 	void* savedState, size_t savedStateSize)
 {
@@ -145,22 +164,26 @@ void ANativeActivity_onCreate(ANativeActivity* activity,
 						savedState,
 						savedStateSize);
 
-//	pecker_sdk::cstring_ascii_t str_value;
-//	pecker_sdk::android_native_form::get_meta_data_value (activity,
-//				"working_lib_name",
-//				str_value);
-//	pecker_sdk::android_native_form::get_app_path (activity,
-//					str_value);
-//	pecker_sdk::android_native_form::get_user_package_name (activity,
-//						str_value);
 	gandorid_app.init(activity);
-	gandorid_app.load_working_lib(gandorid_app.get_working_lib_path(),RTLD_NOW);
 
-	pecker_sdk::android_native_form::PFX_main_callback main_fuc = gandorid_app.enter_point();
-	//pecker_sdk::android_native_form::PFX_main_callback main_fuc = PFX_main;
-	if (main_fuc)
+	//加载运行的库
+	if (null == gandorid_app.handle())
 	{
-		pecker_sdk::android_native_form::app_main(main_fuc, activity, savedState, savedStateSize);
+		gandorid_app.load_working_lib(gandorid_app.get_working_lib_path(),RTLD_GLOBAL);
+	}
+
+	//获取代码入口
+	gmain_func = (int(*)(void*))gandorid_app.func_addr("pecker_program");
+
+	//运行代码
+	if (gmain_func)
+	{
+		pecker_sdk::android_native_form::app_main(__PFX_main, activity, savedState, savedStateSize);
+	}
+	else
+	{
+		PECKER_LOG_ERR("get pecker_program() failed (handle = %p)",
+				gandorid_app.handle());
 	}
 
 }

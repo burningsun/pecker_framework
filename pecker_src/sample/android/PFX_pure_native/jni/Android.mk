@@ -9,9 +9,9 @@ LOCAL_LIB_TEST_INCLUDE :=  $(realpath $(call my-dir)/../../../../pecker_test)
  
 $(call __ndk_info, ±‡“Î“¿¿µø‚)
 include $(CLEAR_VARS)
-LOCAL_MODULE := PFX_CORE_GLES_S
+LOCAL_MODULE := pecker_framework
 
-PFX_LIB_NAME := $(LOCAL_LIB_PATH)/$(TARGET_ARCH_ABI)/libPFX_CORE_GLES_S.so
+PFX_LIB_NAME := $(LOCAL_LIB_PATH)/$(TARGET_ARCH_ABI)/libpecker_framework.so
 $(call __ndk_info, $(PFX_LIB_NAME))
 LOCAL_SRC_FILES := $(PFX_LIB_NAME)
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_LIB_INCLUDE) 
@@ -27,12 +27,15 @@ LOCAL_C_INCLUDES := $(LOCAL_LIB_INCLUDE) \
                     
  $(call __ndk_info, $(LOCAL_C_INCLUDES))
                     
-LOCAL_MODULE    := PFX_Sample
+LOCAL_MODULE    := PFX_pure_native
 LOCAL_SRC_FILES := \
                    $(LOCAL_LIB_TEST_INCLUDE)/pfx_load_image.cpp \
-                   PFX_Sample.cpp 
+                   PFX_pure_native.cpp 
+                   
+LOCAL_CFLAGS += $(OPTIM_FLAG) \
+                -DPURE_NATIVE_CODE
 
-LOCAL_SHARED_LIBRARIES := PFX_CORE_GLES_S#∏Ωº”“¿¿µø‚
+LOCAL_SHARED_LIBRARIES := pecker_framework #∏Ωº”“¿¿µø‚
 
 LOCAL_LDLIBS    := -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid -ldl 
 
@@ -40,3 +43,4 @@ LOCAL_LDLIBS    := -llog -lEGL -lGLESv1_CM -lGLESv2 -landroid -ldl
 
 
 include $(BUILD_SHARED_LIBRARY)
+

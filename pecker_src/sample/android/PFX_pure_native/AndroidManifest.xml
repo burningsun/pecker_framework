@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.pfx_pure_native"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        
+         <!-- 导入执行用的库 -->  
+        <meta-data android:name="working_lib_in_apk"
+                    android:value="yes" />
+            
+        <meta-data android:name="working_lib_name"
+                    android:value="PFX_pure_native" />
+              
+        <!-- 使用NativeActivity -->
+     	<activity             
+     	    android:name="android.app.NativeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|navigation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
+            android:screenOrientation="nosensor"
+           >
+    
+            <meta-data android:name="android.app.lib_name"
+                    android:value="pecker_framework" />
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+    
+    
+
+</manifest>

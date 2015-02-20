@@ -67,3 +67,4 @@ Release Library
 /pecker_src/depends_lib/freetype-2.5.3/objs/release
 /pecker_src/depends_lib/freetype-2.5.3/builds/windows/vc2010/*.sdf
 /pecker_src/sample/android/PFX_Sample/bin
+/pecker_src/sample/android/PFX_pure_native/bin

@@ -12,6 +12,25 @@
 
 extern void symbiont_object();
 
+extern "C"
+{
+ int hehe();
+}
+
+
+int hehe()
+{
+	   PECKER_LOG_STR("hehe");
+	   return 0;
+}
+
+static int load_info ()
+{
+	PECKER_LOG_("load test %s","111");
+	return 0;
+}
+static int a = load_info ();
+
 class  chellogles_activity : public opengles2_activity_t
 {
 private:
@@ -69,6 +88,17 @@ int PFX_main(pecker_sdk::native_form_t* PARAM_INOUT main_form)
 	main_form->show_form(false);
 	return 0;
 }
+
+extern "C"
+{
+int pecker_program(void* form)
+{
+	return PFX_main((pecker_sdk::native_form_t*)form);
+}
+}
+
+
+
 #else
 #include <iostream>
 void gles2_displayview_test ()
