@@ -955,11 +955,6 @@
 			<location>C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/pecker_framework/test_data/bst_test_data_9.txt</location>
 		</link>
 		<link>
-			<name>jni/pecker_framework/test_data/pfx_android_load_pfx.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/pecker_framework/pfx_android_load_pfx.cpp</locationURI>
-		</link>
-		<link>
 			<name>jni/pecker_framework/test_data/tst_test_data1.txt</name>
 			<type>1</type>
 			<location>C:/codes/git/pecker_framework/pecker_framework_c/pecker_src/pecker_framework/test_data/tst_test_data1.txt</location>

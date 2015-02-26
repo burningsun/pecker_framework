@@ -670,9 +670,10 @@ const screen_info_t* android_native_form::get_screen_info ()
 {
 	return gscreen_info_ptr;
 }
+
+//static volatile int app_entry_count = 0;
 long android_native_form::on_app_entry(proxy_status_t* __proxy_status_ptr)
 {
-
 	PECKER_LOG_INFO("on_app_entry proxy=%p", __proxy_status_ptr);
 	m_config_ptr = AConfiguration_new();
 	AConfiguration_fromAssetManager(m_config_ptr,
@@ -696,8 +697,13 @@ long android_native_form::on_app_entry(proxy_status_t* __proxy_status_ptr)
 	m_brunning = false;
 	m_started_window = false;
 	status = dispose();
-	PECKER_LOG_INFO("exit app %d", status);
-	exit(0);
+	PECKER_LOG_INFO("exiting app %d", status);
+	//--app_entry_count;
+	//if (app_entry_count <= 0)
+	//{
+	//	PECKER_LOG_INFO("exit app %d", status);
+		exit(0);
+	//}
 	return 0;
 
 }
@@ -717,10 +723,33 @@ struct AAssetManager* android_native_form::get_app_assertManager()
 
 void android_native_form::app_main (PFX_main_callback __PFX_main_func, ANativeActivity* activity, void* savedState, size_t savedStateSize)
 {
-	PECKER_LOG_INFO("activtiy = %p, savedState= %p savedStateSize = %d",
-			activity, savedState, savedStateSize);
+	//++app_entry_count;
+//	PECKER_LOG_INFO(" entry_count = %d,"
+//			"thread count = %ld",
+//			"activtiy = %p, savedState= %p savedStateSize = %d",
+//			app_entry_count,
+//			thread_t::get_thread_count(),
+//			activity, savedState, savedStateSize);
 	static android_native_form form; //= new pecker_sdk::android_native_form();
 	PECKER_LOG_INFO ("app main form = %p",&form);
+
+//	if (app_entry_count > 1)
+//	{
+//		int wait_count = 0;
+//		while (thread_t::get_thread_count() > 0)
+//		{
+//			sleep(1);
+//			++wait_count;
+//			if (wait_count >5)
+//			{
+//				break;
+//			}
+//		}
+//	}
+
+	PECKER_LOG_INFO(" thread_count = %d",thread_t::get_thread_count());
+
+
 	if (__PFX_main_func)
 	{
 		PFX_main_func = __PFX_main_func;

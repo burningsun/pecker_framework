@@ -31,6 +31,7 @@
     <ClCompile Include="..\pecker_framework\render\pfx_image.cpp" />
     <ClCompile Include="..\pecker_framework\render\pfx_image_png.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_system\pfx_texture.cpp" />
+    <ClCompile Include="..\pecker_framework\render\render_util\ctext_pen.cpp" />
     <ClCompile Include="..\pecker_framework\render\render_util\pfx_freetypefont.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_render_target.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_shader_program.h" />
     <ClInclude Include="..\pecker_framework\render\render_system\pfx_texture.h" />
+    <ClInclude Include="..\pecker_framework\render\render_util\ctext_pen.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_brush.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_camera.h" />
     <ClInclude Include="..\pecker_framework\render\render_util\pfx_canvus.h" />

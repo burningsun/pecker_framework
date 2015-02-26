@@ -23,6 +23,8 @@ protected:
 	static void* __on_thread_callback(void* lpParamers)
 	{
 		thread_proxy_interface_t* proxy_obect_ptr = (thread_proxy_interface_t*)lpParamers;
+		volatile long_t& __count = thread_count();
+		++__count;
 		if (proxy_obect_ptr)
 		{
 			long status;
@@ -31,9 +33,22 @@ protected:
 			status = proxy_obect_ptr->run_proxy();
 			proxy_obect_ptr->m_bExit_ok = true;
 			err_pointer = (void*)status;
+			--__count;
 			return err_pointer;
 		}
+		--__count;
 		return null;
+	}
+protected:
+	static volatile long_t& thread_count()
+	{
+		static volatile long_t __count = 0;
+		return __count;
+	}
+public:
+	static volatile long_t get_thread_count()
+	{
+		return thread_count();
 	}
 public:
 	android_thread ():m_thread_handle(0),m_create_thread_status(-1),
