@@ -165,7 +165,8 @@ PFX_Interface IPfx_texture : public IPfx_rendertarget
 	
 	virtual result_t   create_rendertarget(usize__t width, usize__t height, enum_int_t color_format) = 0;
 	virtual result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null, 
-		                               enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE) = 0;
+		                               enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE,
+									   bool bforce_update = false) = 0;
 
 
 	virtual result_t   update_rect(const texture_rect_t& __rect,
@@ -188,6 +189,8 @@ PFX_Interface IPfx_texture : public IPfx_rendertarget
 	virtual result_t bind_texture() = 0;
 	virtual long_t   get_native_handle() const = 0;
 	virtual u64_t    get_version() const = 0;
+
+	virtual IPfx_texture* new_share() = 0;
 };
 
 #ifdef _MSC_VER

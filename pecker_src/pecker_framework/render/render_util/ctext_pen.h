@@ -9,6 +9,7 @@
 #define		CTEXT_PEN_H_
 
 #include "pfx_text_pen.h"
+#include "../pfx_image.h"
 
 
 PFX_C_EXTERN_BEGIN
@@ -23,11 +24,21 @@ PECKER_BEGIN
 class ctext_pen : public IPfx_text_pen
 {
 private:
-	IPfx_render_state* m_render_state_ptr;
-	Ipfx_shader_program* m_shader_program_ptr = null;
+	IPfx_render_state*   m_render_state_ptr;
+	Ipfx_shader_program* m_shader_program_ptr;
+	IPfx_framebuffer*    m_frame_buffer_ptr;
+	IPfx_texture*        m_temp_chars_tex_ptr;
+
+	IPfx_fontcache*      m_fontcache_ptr;
+	sImage_t*            m_image_ptr;
+	ctexture_surface*    m_surface_ptr;
+	pen_info_t           m_pen_info;
+	viewport_rect_t      m_viewport;
 public:
 	ctext_pen();
-	virtual ~ctext_pen();
+	virtual ~ctext_pen();		
+protected:
+	ctext_pen(const ctext_pen& PARAM_IN __other);
 public:
 	virtual result_t init(const pen_info_t& __pen_info);
 	virtual result_t use();
@@ -45,7 +56,8 @@ public:
 
 	virtual Ipfx_shader_program* select_program(Ipfx_shader_program* PARAM_IN program_ptr,
 		result_t& PARAM_OUT status);
-	virtual IPfx_framebuffer* select_frame_buffer(IPfx_framebuffer* PARAM_IN framebuffer_ptr);
+	virtual IPfx_framebuffer* select_frame_buffer(IPfx_framebuffer* PARAM_IN framebuffer_ptr,
+		result_t& PARAM_OUT status);
 
 public:
 	virtual IPfx_fontcache* select_fontcache(IPfx_fontcache* PARAM_INOUT fontcache_ptr);

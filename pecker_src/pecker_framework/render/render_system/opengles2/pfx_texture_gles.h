@@ -142,6 +142,11 @@ public:
 		usize__t bytes_count,
 		uindex_t miplevel = 0);
 
+	PFX_INLINE void Invalidate()
+	{
+		m_bupdate = true;
+	}
+
 	void bind();
 
 	void dispose();
@@ -248,15 +253,25 @@ public:
 	}
 
 	PFX_INLINE result_t   update_surface(ctexture_surface* PARAM_IN surface_ptr = null,
-		enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE)
+		enum_int_t surface_type = PFX_TEXTURE_DEFUALT_SURFACE,
+		bool bforce_update = false)
 	{
 		RETURN_INVALID_RESULT(PFX_TEXTURE_2D_SURFACE != surface_type &&
 			PFX_TEXTURE_DEFUALT_SURFACE != surface_type, PFX_STATUS_INVALID_PARAMS);
+		
+		if (bforce_update)
+		{
+			m_native.Invalidate();
+		}
 		return m_native.update_surface(surface_ptr);
 	}
 
-	PFX_INLINE result_t update_default()
+	PFX_INLINE result_t update_default(bool bforce_update = false)
 	{
+		if (bforce_update)
+		{
+			m_native.Invalidate();
+		}
 		return m_native.update_surface(null);
 	}
 
@@ -268,6 +283,7 @@ public:
 	{
 		RETURN_INVALID_RESULT(PFX_TEXTURE_2D_SURFACE != surface_type &&
 			PFX_TEXTURE_DEFUALT_SURFACE != surface_type, PFX_STATUS_INVALID_PARAMS);
+
 		return m_native.update_rect(__rect, buffer_ptr, bytes_count, miplevel);
 	}
 
@@ -356,6 +372,10 @@ public:
 		return m_native.get_size(__size, level);
 	}
 
+	PFX_INLINE IPfx_texture* new_share()
+	{
+		return new_ref();
+	}
 
 };
 

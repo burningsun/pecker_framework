@@ -70,9 +70,10 @@ public:
 	cnative_renderbuffer_gles2();
 	virtual ~cnative_renderbuffer_gles2();
 	result_t create_rendertarget(enum_int_t usage_type, //  PFX_RENDER_BUFFER_FMT_t
-		enum_int_t format,
-		usize__t width, usize__t height);
-	result_t update_default();
+		enum_int_t format,			   
+		usize__t width, usize__t height,
+		bool bforce_update = false);
+	result_t update_default(bool bforce_update = false);
 	result_t bind();
 	result_t dispose();
 	result_t dispose_render_target();
@@ -148,9 +149,9 @@ public:
 	{
 		return m_native.check_status();
 	}
-	PFX_INLINE result_t update_default()
+	PFX_INLINE result_t update_default(bool bforce_update = false)
 	{
-		return m_native.update_default();
+		return m_native.update_default(bforce_update);
 	}
 
 	PFX_INLINE result_t bind_renderbuffer()
@@ -226,6 +227,11 @@ public:
 		__size.m_height = m_native.height();
 		__size.m_width = m_native.width();
 		return &__size;
+	}
+
+	PFX_INLINE IPfx_renderbuffer* new_share()
+	{
+		return new_ref();
 	}
 };
 
@@ -307,7 +313,7 @@ public:
 	result_t dispose_render_target();
 	result_t bind();
 	result_t bind_framebuffer();
-	result_t update_default();
+	result_t update_default(bool bforce_update = false);
 
 	PFX_INLINE bool     check_status() const
 	{
@@ -411,6 +417,10 @@ protected:
 
 public:
 
+	PFX_INLINE IPfx_framebuffer* new_share()
+	{
+		return new_ref();
+	}
 	PFX_INLINE result_t attach_renderbuffer(
 		IPfx_renderbuffer* PARAM_IN render_buffer,
 		uindex_t attachment_index = 0
@@ -477,9 +487,9 @@ public:
 	}
 
 
-	PFX_INLINE result_t update_default()
+	PFX_INLINE result_t update_default(bool bforce_update = false)
 	{
-		return m_native.update_default();
+		return m_native.update_default(bforce_update);
 	}
 	PFX_INLINE result_t bind()
 	{

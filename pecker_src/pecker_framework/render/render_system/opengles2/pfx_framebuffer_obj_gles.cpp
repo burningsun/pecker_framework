@@ -120,7 +120,8 @@ cnative_renderbuffer_gles2::~cnative_renderbuffer_gles2()
 
 result_t cnative_renderbuffer_gles2::create_rendertarget(enum_int_t usage_type, //  PFX_RENDER_BUFFER_FMT_t
 enum_int_t format,
-usize__t width, usize__t height)
+usize__t width, usize__t height,
+bool bforce_update)
 {
 	RETURN_INVALID_RESULT((!width || !height || usage_type >= PFX_UNKOWN_RENDER_BUFFER_FMT),
 		PFX_STATUS_INVALID_PARAMS);
@@ -143,7 +144,7 @@ usize__t width, usize__t height)
 	if (m_renderbufferID)
 	{
 		::glBindRenderbuffer(GL_RENDERBUFFER, m_renderbufferID);
-		if (usage_type != m_usage_type || m_internalformat != format || m_width != width || height != m_height)
+		if (bforce_update || usage_type != m_usage_type || m_internalformat != format || m_width != width || height != m_height)
 		{
 			::glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
 			m_usage_type = usage_type;
@@ -155,18 +156,11 @@ usize__t width, usize__t height)
 	return PFX_STATUS_OK;
 }
 
-result_t cnative_renderbuffer_gles2::update_default()
+result_t cnative_renderbuffer_gles2::update_default(bool bforce_update)
 {
 	if (!m_width || !m_height || m_usage_type < PFX_UNKOWN_RENDER_BUFFER_FMT)
 	{
-		if (m_renderbufferID)
-		{
-			return create_rendertarget(m_usage_type, m_internalformat, m_width, m_height);
-		}
-		else
-		{
-			return PFX_STATUS_OK;
-		}
+		return create_rendertarget(m_usage_type, m_internalformat, m_width, m_height);
 	}
 	else
 	{
@@ -628,7 +622,7 @@ result_t cnative_framebuffer_gles2::bind_framebuffer()
 		return PFX_STATUS_UNINIT;
 	}
 }
-result_t cnative_framebuffer_gles2::update_default()
+result_t cnative_framebuffer_gles2::update_default(bool bforce_update)
 {
 	if (m_framebufferID)
 	{
@@ -642,7 +636,7 @@ result_t cnative_framebuffer_gles2::update_default()
 		--i;
 		if (m_fbo_tag.m_render_target_ptr[i])
 		{
-			status = m_fbo_tag.m_render_target_ptr[i]->update_default();
+			status = m_fbo_tag.m_render_target_ptr[i]->update_default(bforce_update);
 		}
 		if (PFX_STATUS_OK > status)
 		{

@@ -50,7 +50,10 @@ PFX_Interface IPfx_pen : public creference_root
 
 	virtual Ipfx_shader_program* select_program(Ipfx_shader_program* PARAM_IN program_ptr, 
 		result_t& PARAM_OUT status) = 0;
-	virtual IPfx_framebuffer* select_frame_buffer(IPfx_framebuffer* PARAM_IN framebuffer_ptr) = 0;
+	virtual IPfx_framebuffer* select_frame_buffer(IPfx_framebuffer* PARAM_IN framebuffer_ptr,
+		result_t& PARAM_OUT status) = 0;
+	
+
 };
 
 PECKER_END

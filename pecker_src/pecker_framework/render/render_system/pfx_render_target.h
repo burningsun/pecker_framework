@@ -27,7 +27,7 @@ typedef enum enumRENDER_TARGET_TYPE
 PFX_Interface  IPfx_rendertarget : public creference_root
 {
 	virtual result_t dispose_render_target() = 0;
-	virtual result_t update_default() = 0;
+	virtual result_t update_default(bool bforce_update = false) = 0;
 	virtual result_t bind() = 0;
 	virtual bool     check_status() const = 0;
 	virtual long_t   get_native_handle() const = 0;

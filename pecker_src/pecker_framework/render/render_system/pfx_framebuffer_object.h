@@ -127,6 +127,8 @@ PFX_Interface  IPfx_renderbuffer : public IPfx_rendertarget
 
 	virtual long_t   get_native_handle() const = 0;
 	virtual u64_t    get_version() const = 0;
+
+	virtual IPfx_renderbuffer* new_share() = 0;
 };
 
 PFX_Interface  IPfx_framebuffer : public IPfx_rendertarget
@@ -163,6 +165,8 @@ PFX_Interface  IPfx_framebuffer : public IPfx_rendertarget
 
 	virtual long_t   get_native_handle() const = 0;
 	virtual u64_t    get_version() const = 0;
+
+	virtual IPfx_framebuffer* new_share() = 0;
 };
 
 

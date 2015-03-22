@@ -67,6 +67,8 @@ PFX_Interface IPfx_fontcache : public creference_root
 	virtual result_t clean_text_cache(const fontcache_rect_t& PARAM_IN rect) = 0;
 	virtual result_t clean() = 0;
 
+	virtual IPfx_fontcache* new_share() = 0;
+
 };
 
 PECKER_END
