@@ -1640,7 +1640,7 @@ PFX_INLINE PFX_CBST_ELEM_FIND_TYPE::const_iterator_t* PFX_CBST_ELEM_FIND::find_n
 	int cmp_result = 0;
 	while (traval_node_ptr)
 	{
-		int cmp_result = cmp_t::compare (traval_node_ptr->get_item(), __key);
+		cmp_result = cmp_t::compare(__key, traval_node_ptr->get_item());
 		near_node_ptr = traval_node_ptr;
 
 		if (cmp_result < 0)
@@ -1713,7 +1713,7 @@ int& PARAM_INOUT last_cmp_result)
 	int cmp_result = 0;
 	while (traval_node_ptr)
 	{
-		int cmp_result = cmp_t::compare(traval_node_ptr->get_item(), __key);
+		cmp_result = cmp_t::compare(__key, traval_node_ptr->get_item());
 		near_node_ptr = traval_node_ptr;
 
 		if (cmp_result < 0)
@@ -1786,7 +1786,7 @@ PFX_INLINE PFX_CBST_ELEM_FINDX_TYPE::const_iterator_t* PFX_CBST_ELEM_FINDX::find
 	int cmp_result = 0;
 	while (traval_node_ptr)
 	{
-		int cmp_result = cmp_t::compare(traval_node_ptr->get_item(), __key);
+		cmp_result = cmp_t::compare(__key, traval_node_ptr->get_item());
 		near_node_ptr = traval_node_ptr;
 
 		if (cmp_result < 0)
@@ -1860,17 +1860,17 @@ int& PARAM_INOUT last_cmp_result)
 	int cmp_result = 0;
 	while (traval_node_ptr)
 	{
-		int cmp_result = cmp_t::compare(traval_node_ptr->get_item(), 
+		cmp_result = cmp_t::compare(traval_node_ptr->get_item(), 
 			__chars_ptr, 
 			chars_count);
 
 		near_node_ptr = traval_node_ptr;
 
-		if (cmp_result < 0)
+		if (cmp_result > 0)
 		{
 			traval_node_ptr = traval_node_ptr->get_left_node();
 		}
-		else if (cmp_result > 0)
+		else if (cmp_result < 0)
 		{
 			traval_node_ptr = traval_node_ptr->get_right_node();
 		}
@@ -1929,7 +1929,7 @@ int& PARAM_INOUT last_cmp_result)
 	int cmp_result = 0;
 	while (traval_node_ptr)
 	{
-		int cmp_result = cmp_t::compare(traval_node_ptr->get_item(), __key);
+		cmp_result = cmp_t::compare(__key, traval_node_ptr->get_item());
 		near_node_ptr = traval_node_ptr;
 
 		if (cmp_result < 0)
